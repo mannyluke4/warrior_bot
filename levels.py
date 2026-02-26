@@ -166,16 +166,38 @@ class LevelMap:
                 # Close fell back into or below zone — reset break streak
                 lv.break_count = 0
 
+        # --- Dynamic rejection zone creation ---
+        # If bar made a high into "no man's land" (not near any existing level)
+        # and closed red with a meaningful rejection, create a new level there.
+        # This captures intraday resistance at non-round-number prices.
+        if c < o and h > 0:  # Red bar
+            near_existing = any(
+                abs(lv.price - h) < lv.zone_width * 2
+                for lv in self.levels if not lv.is_broken
+            )
+            # Meaningful rejection: high at least 0.5% above close
+            if not near_existing and h > c * 1.005:
+                self._add_level(h, "rejection")
+
     # ------------------------------------------------------------------
     # Entry gate
     # ------------------------------------------------------------------
 
-    def blocks_entry(self, entry_price: float) -> tuple[bool, str]:
+    def blocks_entry(self, entry_price: float, session_hod: float = 0.0) -> tuple[bool, str]:
         """Check if entry_price is near a failed resistance level.
+
+        Args:
+            entry_price: the proposed entry price
+            session_hod: current session high of day. If entry is near HOD (within 1%),
+                         the gate is bypassed — the stock is in price discovery, not resistance.
 
         Returns (blocked: bool, reason: str).
         """
         if not self.enabled:
+            return False, ""
+
+        # At or near session HOD = price discovery, not resistance. Don't block.
+        if session_hod > 0 and entry_price >= session_hod * 0.99:
             return False, ""
 
         for lv in self.levels:

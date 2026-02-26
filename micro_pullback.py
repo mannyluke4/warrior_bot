@@ -575,7 +575,7 @@ class MicroPullbackDetector:
 
         # --- LevelMap resistance gate ---
         if self.level_map is not None:
-            blocked, block_reason = self.level_map.blocks_entry(entry)
+            blocked, block_reason = self.level_map.blocks_entry(entry, session_hod=self.session_hod_1m)
             if blocked:
                 return f"1M NO_ARM level_gate: {block_reason}"
 
@@ -767,7 +767,7 @@ class MicroPullbackDetector:
 
             # LevelMap resistance gate
             if self.level_map is not None:
-                blocked, block_reason = self.level_map.blocks_entry(entry)
+                blocked, block_reason = self.level_map.blocks_entry(entry, session_hod=self.session_hod_1m)
                 if blocked:
                     self._full_reset_1m()
                     return f"1M NO_ARM level_gate: {block_reason}"

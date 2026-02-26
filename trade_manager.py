@@ -1707,16 +1707,18 @@ class PaperTradeManager:
                 return
 
         # Parabolic regime detector (new) or legacy grace
-        if self.parabolic_regime_enabled:
-            det = self._parabolic_detectors.get(symbol)
-            if det and det.should_suppress_exit():
-                log_event("be_exit_suppressed_parabolic_regime", symbol,
+        # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
+        if self.exit_mode != "signal":
+            if self.parabolic_regime_enabled:
+                det = self._parabolic_detectors.get(symbol)
+                if det and det.should_suppress_exit():
+                    log_event("be_exit_suppressed_parabolic_regime", symbol,
+                              entry=t.entry, r=t.r, price=float(self.last_price.get(symbol, 0)))
+                    return
+            elif self._in_parabolic_grace(symbol):
+                log_event("be_exit_suppressed_parabolic", symbol,
                           entry=t.entry, r=t.r, price=float(self.last_price.get(symbol, 0)))
                 return
-        elif self._in_parabolic_grace(symbol):
-            log_event("be_exit_suppressed_parabolic", symbol,
-                      entry=t.entry, r=t.r, price=float(self.last_price.get(symbol, 0)))
-            return
 
         if symbol in self.pending_exits:
             log_event("exit_signal_ignored_pending_exit", symbol, signal="bearish_engulfing")
@@ -1758,8 +1760,9 @@ class PaperTradeManager:
             return
 
         # Suppress pattern exits (TW, L2) during parabolic regime — hard stops NEVER suppressed
+        # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
         if signal_name in ("topping_wicky", "l2_bearish", "l2_ask_wall"):
-            if self.parabolic_regime_enabled:
+            if self.exit_mode != "signal" and self.parabolic_regime_enabled:
                 det = self._parabolic_detectors.get(symbol)
                 if det and det.should_suppress_exit():
                     log_event("pattern_exit_suppressed_parabolic_regime", symbol,
@@ -1854,8 +1857,10 @@ class PaperTradeManager:
                     self._exit(symbol, qty=t.qty_total, reason="max_loss_hit", price=bid)
                 return
 
-        # --- Chandelier stop (parabolic regime) ---
-        if self.parabolic_regime_enabled:
+        # --- Chandelier stop (parabolic regime, classic mode ONLY) ---
+        # In signal mode, the existing signal trail handles exits;
+        # Chandelier is wider and causes worse exits on flash spikes / cascading re-entry stocks
+        if self.parabolic_regime_enabled and self.exit_mode == "classic":
             det = self._parabolic_detectors.get(symbol)
             if det:
                 chandelier = det.get_chandelier_stop()

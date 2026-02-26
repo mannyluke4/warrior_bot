@@ -773,7 +773,11 @@ def run_simulation(
                 )
 
             # Check parabolic suppression (new detector or legacy)
+            # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
             def _should_suppress_pattern_exit() -> tuple[bool, str]:
+                if _exit_mode == "signal":
+                    # Signal mode: no exit suppression (VERO's edge comes from exit + re-enter)
+                    return False, ""
                 if _parabolic_det is not None:
                     if _parabolic_det.should_suppress_exit():
                         return True, "parabolic_regime"
@@ -934,8 +938,11 @@ def run_simulation(
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)
 
-                # Parabolic Chandelier stop check (wider trail during parabolic regime)
+                # Parabolic Chandelier stop check — ONLY in classic mode
+                # In signal mode, the existing signal trail handles exits;
+                # Chandelier is wider and causes worse exits on flash spikes / cascading re-entry stocks
                 if (_parabolic_det is not None
+                    and _exit_mode == "classic"
                     and sim_mgr.open_trade is not None
                     and not sim_mgr.open_trade.closed):
                     chandelier = _parabolic_det.get_chandelier_stop()
