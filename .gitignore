@@ -1,0 +1,22 @@
+# Secrets — NEVER push
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Logs (large, regenerable)
+logs/
+*.log
+
+# Cached data
+l2_cache/
+
+# Ephemeral state
+last_session_symbols.txt
+watchlist.txt
