@@ -203,7 +203,16 @@ class LevelMap:
         for lv in self.levels:
             if lv.is_broken:
                 continue
-            if lv.fail_count < self.min_fail_count:
+
+            # Per-level-type fail thresholds:
+            # Structural levels (whole/half dollar, PM high, VWAP) gate at min_fail_count (1)
+            # Dynamic rejection zones need more evidence — gate at minimum 2 fails
+            if lv.level_type == "rejection":
+                required_fails = max(self.min_fail_count, 2)  # minimum 2 for rejections
+            else:
+                required_fails = self.min_fail_count  # 1 for structural levels
+
+            if lv.fail_count < required_fails:
                 continue
             # Check if entry price is within the level's zone
             if lv.zone_bottom <= entry_price <= lv.zone_top:
