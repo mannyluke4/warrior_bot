@@ -157,6 +157,7 @@ class MicroPullbackDetector:
         self.fast_mode_max_bar = int(os.getenv("WB_FAST_MODE_MAX_BAR", "30"))
         self.fast_mode_min_gap_pct = float(os.getenv("WB_FAST_MODE_MIN_GAP_PCT", "10.0"))
         self.fast_mode_min_green_bars = int(os.getenv("WB_FAST_MODE_MIN_GREEN_BARS", "3"))
+        self.fast_mode_min_bars = int(os.getenv("WB_FAST_MODE_MIN_BARS", "10"))
         self.fast_mode_min_rel_vol = float(os.getenv("WB_FAST_MODE_MIN_REL_VOL", "2.0"))
         self.fast_mode_min_range_pct = float(os.getenv("WB_FAST_MODE_MIN_RANGE_PCT", "5.0"))
         self.fast_mode_entry_buffer_pct = float(os.getenv("WB_FAST_MODE_ENTRY_BUFFER_PCT", "0.3"))
@@ -266,31 +267,45 @@ class MicroPullbackDetector:
         if bar_count > self.fast_mode_max_bar:
             return None
 
+        _fm_debug = os.getenv("WB_FAST_MODE_DEBUG", "0") == "1"
+
         # Gap threshold
         if self.gap_pct is None or abs(self.gap_pct) < self.fast_mode_min_gap_pct:
+            if _fm_debug: print(f"  FM_DBG bar={bar_count}: gap={self.gap_pct} < {self.fast_mode_min_gap_pct}", flush=True)
             return None
 
         # Session range threshold
-        if self._session_range_pct() < self.fast_mode_min_range_pct:
+        sr = self._session_range_pct()
+        if sr < self.fast_mode_min_range_pct:
+            if _fm_debug: print(f"  FM_DBG bar={bar_count}: range={sr:.1f}% < {self.fast_mode_min_range_pct}%", flush=True)
             return None
 
-        # Need enough bars for volume comparison
-        if bar_count < max(10, self.fast_mode_min_green_bars):
+        # Need enough bars for volume comparison + green bar check
+        if bar_count < max(self.fast_mode_min_bars, self.fast_mode_min_green_bars):
+            if _fm_debug: print(f"  FM_DBG bar={bar_count}: need {max(self.fast_mode_min_bars, self.fast_mode_min_green_bars)} bars", flush=True)
             return None
 
         # Consecutive green bars check
         recent = list(self.bars_1m)[-self.fast_mode_min_green_bars:]
         if not all(b["c"] > b["o"] for b in recent):
+            if _fm_debug:
+                greens = ["G" if b["c"] > b["o"] else "R" for b in recent]
+                print(f"  FM_DBG bar={bar_count}: green check FAIL {greens}", flush=True)
             return None
 
-        # Relative volume surge: recent 5 bars vs earlier 5 bars
-        recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
-        earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
-        if earlier_vol > 0 and recent_vol / earlier_vol < self.fast_mode_min_rel_vol:
+        # Relative volume surge: adaptive window (half recent vs half earlier)
+        half = max(2, bar_count // 2)
+        recent_vol = sum(b["v"] for b in list(self.bars_1m)[-half:])
+        earlier_vol = sum(b["v"] for b in list(self.bars_1m)[:-half])
+        if earlier_vol == 0:
+            earlier_vol = recent_vol  # avoid div/zero, pass the check
+        if recent_vol / earlier_vol < self.fast_mode_min_rel_vol:
+            if _fm_debug: print(f"  FM_DBG bar={bar_count}: vol ratio={recent_vol/earlier_vol:.2f} < {self.fast_mode_min_rel_vol}", flush=True)
             return None
 
         # Must be above VWAP
         if vwap is None or c <= vwap:
+            if _fm_debug: print(f"  FM_DBG bar={bar_count}: c={c:.2f} <= vwap={vwap}", flush=True)
             return None
 
         # Must be near or above premarket high (if available)
@@ -337,7 +352,7 @@ class MicroPullbackDetector:
 
     def _session_range_pct(self) -> float:
         """Session range (high - low) / low * 100, from bars_1m."""
-        if len(self.bars_1m) < 5:
+        if len(self.bars_1m) < 2:
             return 0.0
         hi = max(b["h"] for b in self.bars_1m)
         lo = min(b["l"] for b in self.bars_1m)
