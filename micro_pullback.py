@@ -137,6 +137,20 @@ class MicroPullbackDetector:
         self.bars_since_new_hod_1m: int = 0
         self.session_hod_1m: float = float("-inf")
 
+        # --- Conviction floor (trap stock filter) ---
+        self.conviction_floor_enabled = os.getenv("WB_CONVICTION_FLOOR", "0") == "1"
+        self.conviction_floor_min_score = float(os.getenv("WB_CONVICTION_FLOOR_MIN_SCORE", "6.0"))
+        self.conviction_floor_min_gap_pct = float(os.getenv("WB_CONVICTION_FLOOR_MIN_GAP_PCT", "1.0"))
+        self.gap_pct: float | None = None  # set by caller (simulate.py or bot.py)
+
+        # --- Post-halt sizing override ---
+        self.halt_sizing_enabled = os.getenv("WB_HALT_SIZING_OVERRIDE", "0") == "1"
+        self.halt_range_multiplier = float(os.getenv("WB_HALT_RANGE_MULT", "5.0"))
+        self.halt_stop_atr_mult = float(os.getenv("WB_HALT_STOP_ATR_MULT", "2.5"))
+        self.halt_persist_bars = int(os.getenv("WB_HALT_PERSIST_BARS", "5"))
+        self._bar_ranges_1m: deque = deque(maxlen=14)
+        self._halt_active_bars: int = 0
+
     def _has_active_structure(self) -> bool:
         return self.in_impulse or self.pullback_count > 0 or (self.armed is not None)
 
@@ -188,6 +202,37 @@ class MicroPullbackDetector:
             if pct < self.stale_vol_decay_pct:
                 return True, f"vol_decay_{pct:.0f}pct_of_peak"
         return False, ""
+
+    def _fails_conviction_floor(self, score: float) -> tuple[bool, str]:
+        """Block entries when ALL THREE: low score + no tags + tiny gap.
+        Returns (blocked, reason)."""
+        if not self.conviction_floor_enabled:
+            return False, ""
+        if self.gap_pct is None:
+            return False, ""  # no gap data = allow (conservative)
+        if score >= self.conviction_floor_min_score:
+            return False, ""
+        if self.last_patterns:  # has pattern tags
+            return False, ""
+        if abs(self.gap_pct) >= self.conviction_floor_min_gap_pct:
+            return False, ""
+        return True, (
+            f"conviction_floor: score={score:.1f}<{self.conviction_floor_min_score} "
+            f"tags=[] gap={self.gap_pct:+.1f}%<±{self.conviction_floor_min_gap_pct}%"
+        )
+
+    def _halt_adjusted_stop(self, entry: float, raw_stop: float) -> tuple[float, bool]:
+        """If in a post-halt period, tighten the stop using average bar range.
+        Returns (adjusted_stop, was_adjusted).
+        Uses max() to pick the TIGHTER stop (closer to entry = smaller R = bigger qty)."""
+        if not self.halt_sizing_enabled or self._halt_active_bars <= 0:
+            return raw_stop, False
+        if len(self._bar_ranges_1m) < 3:
+            return raw_stop, False
+        avg_range = sum(self._bar_ranges_1m) / len(self._bar_ranges_1m)
+        override_stop = entry - (self.halt_stop_atr_mult * avg_range)
+        adjusted = max(raw_stop, override_stop)  # pick TIGHTER stop
+        return adjusted, (adjusted != raw_stop)
 
     def _tags_str(self) -> str:
         if not self.last_patterns:
@@ -562,6 +607,10 @@ class MicroPullbackDetector:
                     raw_stop = highest_stack
 
         stop_low = raw_stop - self.STOP_PAD
+
+        # Post-halt sizing override: tighten stop for meaningful position sizing
+        stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+
         r = entry - stop_low
         if r <= 0:
             return "1M SKIP (invalid R)"
@@ -581,6 +630,11 @@ class MicroPullbackDetector:
 
         # --- Scoring ---
         score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
+
+        # Conviction floor (trap stock filter) — SKIP, don't reset state machine
+        blocked, block_reason = self._fails_conviction_floor(score)
+        if blocked:
+            return f"1M SKIP {block_reason}"
 
         # --- Exhaustion filters (dynamic: scale thresholds to session range) ---
         sr = self._session_range_pct()
@@ -750,6 +804,9 @@ class MicroPullbackDetector:
 
             stop_low = raw_stop - self.STOP_PAD
 
+            # Post-halt sizing override: tighten stop for meaningful position sizing
+            stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+
             r = entry - stop_low
             if r <= 0:
                 self._full_reset_1m()
@@ -773,6 +830,11 @@ class MicroPullbackDetector:
                     return f"1M NO_ARM level_gate: {block_reason}"
 
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
+
+            # Conviction floor (trap stock filter) — SKIP, don't reset state machine
+            blocked, block_reason = self._fails_conviction_floor(score)
+            if blocked:
+                return f"1M SKIP {block_reason}"
 
             # Exhaustion filters (dynamic: scale thresholds to session range)
             sr = self._session_range_pct()
@@ -875,6 +937,17 @@ class MicroPullbackDetector:
         if len(self.bars_1m) >= 5:
             recent_5 = sum(b["v"] for b in list(self.bars_1m)[-5:])
             self.peak_5bar_vol_1m = max(self.peak_5bar_vol_1m, recent_5)
+
+        # Post-halt range tracking
+        if self.halt_sizing_enabled:
+            bar_range = h - l
+            if len(self._bar_ranges_1m) >= 3:
+                avg_range = sum(self._bar_ranges_1m) / len(self._bar_ranges_1m)
+                if avg_range > 0 and bar_range > self.halt_range_multiplier * avg_range:
+                    self._halt_active_bars = self.halt_persist_bars
+                elif self._halt_active_bars > 0:
+                    self._halt_active_bars -= 1
+            self._bar_ranges_1m.append(bar_range)
 
         # Pattern signals (keep a short memory so patterns don't "blink" off)
         pattern_sigs = self.patterns.update(o, h, l, c, v)

@@ -35,6 +35,7 @@ bar_builder: TradeBarBuilder | None = None
 bar_builder_1m: TradeBarBuilder | None = None
 l2_detector: L2SignalDetector | None = None
 ibkr_feed = None  # IBKRFeed instance (lazy, only if WB_ENABLE_L2=1)
+_stock_info_cache: dict = {}  # StockInfo cache for gap_pct injection into detectors
 
 if not API_KEY or not API_SECRET:
     raise RuntimeError("Missing APCA_API_KEY_ID or APCA_API_SECRET_KEY in .env")
@@ -259,6 +260,9 @@ def ensure_detector(symbol: str) -> MicroPullbackDetector:
                 zone_width_pct=float(os.getenv("WB_LEVEL_ZONE_WIDTH_PCT", "0.5")),
                 break_confirm_bars=int(os.getenv("WB_LEVEL_BREAK_CONFIRM_BARS", "2")),
             )
+        # Pass gap_pct for conviction floor gate
+        if symbol in _stock_info_cache and hasattr(_stock_info_cache[symbol], 'gap_pct'):
+            det.gap_pct = _stock_info_cache[symbol].gap_pct
         detectors[symbol] = det
         print(f"Detector created for {symbol}: max_pullback_bars={det.max_pullback_bars}", flush=True)
     return detectors[symbol]
@@ -695,11 +699,14 @@ def main():
     filtered_result = filter_watchlist(raw_watchlist)
 
     # Normalize: filter returns dict {symbol: StockInfo} when successful, set when disabled/failed
+    global _stock_info_cache
     if isinstance(filtered_result, dict):
         stock_info_cache = filtered_result
+        _stock_info_cache = stock_info_cache
         filtered_watchlist = set(filtered_result.keys())
     else:
         stock_info_cache = {}
+        _stock_info_cache = {}
         filtered_watchlist = filtered_result
 
     print(f"\n✅ Filtered watchlist: {len(filtered_watchlist)} symbols", flush=True)

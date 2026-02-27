@@ -582,6 +582,10 @@ def run_simulation(
     # Create components
     det = MicroPullbackDetector()
 
+    # Pass gap_pct for conviction floor gate
+    if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
+        det.gap_pct = _sim_stock_info.gap_pct
+
     # LevelMap resistance tracking (entry gate)
     _level_map_enabled = os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1"
     if _level_map_enabled:
