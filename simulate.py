@@ -476,6 +476,7 @@ def run_simulation(
     use_l2_entry: bool = False,
     no_fundamentals: bool = False,
     use_ticks: bool = False,
+    feed: str = "alpaca",
 ):
     # l2-entry implies l2 data
     if use_l2_entry:
@@ -894,8 +895,20 @@ def run_simulation(
             bb_1m.seed_bar_close(symbol, o, h, l, c, v, ts)
 
         # Fetch actual trades for the sim window
-        print(f"  Fetching tick data...", flush=True)
-        tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
+        if feed == "databento":
+            print(f"  Fetching tick data from Databento...", flush=True)
+            from databento_feed import fetch_trades_historical
+            _db_trades_raw = fetch_trades_historical(
+                symbol, date_str,
+                start_et=start_et_str, end_et=end_et_str,
+            )
+            # Convert dicts to simple objects with .price, .size, .timestamp
+            from collections import namedtuple
+            _DbnTick = namedtuple("_DbnTick", ["price", "size", "timestamp"])
+            tick_trades = [_DbnTick(t["price"], t["size"], t["timestamp"]) for t in _db_trades_raw]
+        else:
+            print(f"  Fetching tick data from Alpaca...", flush=True)
+            tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
         print(f"  Tick replay: {len(tick_trades)} trades for sim window", flush=True)
 
         if not tick_trades:
@@ -1272,6 +1285,8 @@ def main():
     parser.add_argument("--l2-entry", action="store_true", help="Use L2-driven entry strategy instead of micro pullback")
     parser.add_argument("--no-fundamentals", action="store_true", help="Skip fetching fundamental data (faster batch runs)")
     parser.add_argument("--ticks", action="store_true", help="Use tick-level data for bar construction (matches live bot behavior)")
+    parser.add_argument("--feed", choices=["alpaca", "databento"], default="alpaca",
+                        help="Data source for tick data (default: alpaca). Use 'databento' for high-fidelity trade data.")
     args = parser.parse_args()
 
     # Parse positional args: symbols, date, optional start/end times
@@ -1303,9 +1318,14 @@ def main():
         print("Error: no symbols provided")
         sys.exit(1)
 
+    # When --feed databento is used, force tick mode on
+    if args.feed == "databento":
+        args.ticks = True
+
+    feed_str = f" | Feed: {args.feed.upper()}" if args.feed != "alpaca" else ""
     mode_str = "TICK MODE" if args.ticks else "BAR MODE"
     print(f"\n{'=' * 70}")
-    print(f"  WARRIOR BOT BACKTESTER ({mode_str})")
+    print(f"  WARRIOR BOT BACKTESTER ({mode_str}{feed_str})")
     print(f"  Symbols: {', '.join(symbols)}  |  Date: {date_str}  |  Window: {start_et} -> {end_et} ET")
     print(f"{'=' * 70}")
 
@@ -1324,6 +1344,7 @@ def main():
             use_l2_entry=args.l2_entry,
             no_fundamentals=args.no_fundamentals,
             use_ticks=args.ticks,
+            feed=args.feed,
         )
         all_trades.extend(trades)
 
