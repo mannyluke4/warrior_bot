@@ -67,7 +67,8 @@ class AlpacaFeed(DataFeed):
 
     def __init__(self, api_key: str, api_secret: str):
         from alpaca.data.live import StockDataStream
-        self._stream = StockDataStream(api_key, api_secret)
+        from alpaca.data.enums import DataFeed as AlpacaDataFeed
+        self._stream = StockDataStream(api_key, api_secret, feed=AlpacaDataFeed.SIP)
 
     def connect(self) -> bool:
         return True  # Alpaca connects lazily on run()
