@@ -152,6 +152,11 @@ class MicroPullbackDetector:
         self._bar_ranges_1m: deque = deque(maxlen=14)
         self._halt_active_bars: int = 0
 
+        # --- Volatility floor (wider stops on volatile stocks) ---
+        self.vol_floor_enabled = os.getenv("WB_VOL_FLOOR_ENABLED", "0") == "1"
+        self.vol_floor_atr_mult = float(os.getenv("WB_VOL_FLOOR_ATR_MULT", "1.5"))
+        self.vol_floor_pct = float(os.getenv("WB_VOL_FLOOR_PCT", "0"))  # min stop as % of entry price (e.g., 5 = 5%)
+
         # --- Fast Mode (anticipation entry for fast movers) ---
         self.fast_mode_enabled = os.getenv("WB_FAST_MODE", "0") == "1"
         self.fast_mode_max_bar = int(os.getenv("WB_FAST_MODE_MAX_BAR", "30"))
@@ -252,6 +257,39 @@ class MicroPullbackDetector:
         override_stop = entry - (self.halt_stop_atr_mult * avg_range)
         adjusted = max(raw_stop, override_stop)  # pick TIGHTER stop
         return adjusted, (adjusted != raw_stop)
+
+    def _vol_floor_stop(self, entry: float, raw_stop: float) -> tuple[float, bool]:
+        """If R is too small for the stock's volatility, widen the stop.
+        Returns (adjusted_stop, was_adjusted).
+        Two mechanisms (takes the wider):
+          1. ATR-based: min R = vol_floor_atr_mult * avg_bar_range
+          2. Price-based: min R = vol_floor_pct% of entry price
+        """
+        if not self.vol_floor_enabled:
+            return raw_stop, False
+
+        candidates = []
+
+        # ATR-based floor (needs bar history)
+        if len(self._bar_ranges_1m) >= 3:
+            avg_range = sum(self._bar_ranges_1m) / len(self._bar_ranges_1m)
+            atr_stop = entry - (self.vol_floor_atr_mult * avg_range)
+            candidates.append(atr_stop)
+
+        # Price-percentage floor (always available)
+        if self.vol_floor_pct > 0:
+            pct_stop = entry * (1 - self.vol_floor_pct / 100)
+            candidates.append(pct_stop)
+
+        if not candidates:
+            return raw_stop, False
+
+        vol_stop = min(candidates)  # widest stop (farthest from entry)
+        if vol_stop >= raw_stop:
+            return raw_stop, False  # raw stop is already wider
+        if vol_stop <= 0:
+            return raw_stop, False  # safety: don't go negative
+        return vol_stop, True
 
     def _check_fast_mode(self, c: float, vwap: float, macd_score: float) -> Optional[str]:
         """Anticipation entry for fast movers — fires before normal ARM.
@@ -631,6 +669,9 @@ class MicroPullbackDetector:
             raw_stop = self.pullback_low if self.pullback_low is not None else l
             stop_low = raw_stop - self.STOP_PAD
 
+            # Volatility floor: widen stop if R is too small for stock's volatility
+            stop_low, vol_adjusted = self._vol_floor_stop(entry, stop_low)
+
             r = entry - stop_low
             if r <= 0:
                 self._full_reset()
@@ -640,7 +681,7 @@ class MicroPullbackDetector:
                 self._full_reset()
                 return f"RESET (R too small: {r:.4f})"
 
-            # ✅ REMOVE the old “30-bar bullish pattern hard gate”
+            # ✅ REMOVE the old "30-bar bullish pattern hard gate"
             # ✅ Replace with scoring threshold (only influences arming)
 
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
@@ -659,9 +700,10 @@ class MicroPullbackDetector:
                 score=score,
                 score_detail=detail,
             )
+            vf_tag = " [VOL_FLOOR]" if vol_adjusted else ""
             return (
                 f"ARMED entry={entry:.4f} stop={stop_low:.4f} R={r:.4f} "
-                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}"
+                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}"
             )
 
         return None
@@ -719,8 +761,15 @@ class MicroPullbackDetector:
 
         stop_low = raw_stop - self.STOP_PAD
 
+        # Volatility floor: widen stop if R is too small for stock's volatility
+        stop_low, vol_adjusted = self._vol_floor_stop(entry, stop_low)
+
         # Post-halt sizing override: tighten stop for meaningful position sizing
-        stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+        # Skip if vol floor already widened (they have opposite goals)
+        if not vol_adjusted:
+            stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+        else:
+            halt_adjusted = False
 
         r = entry - stop_low
         if r <= 0:
@@ -803,9 +852,10 @@ class MicroPullbackDetector:
             score=score,
             score_detail=detail,
         )
+        vf_tag = " [VOL_FLOOR]" if vol_adjusted else ""
         return (
             f"ARMED entry={entry:.4f} stop={stop_low:.4f} R={r:.4f} "
-            f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}"
+            f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}"
         )
 
     # -----------------------------
@@ -915,8 +965,15 @@ class MicroPullbackDetector:
 
             stop_low = raw_stop - self.STOP_PAD
 
+            # Volatility floor: widen stop if R is too small for stock's volatility
+            stop_low, vol_adjusted = self._vol_floor_stop(entry, stop_low)
+
             # Post-halt sizing override: tighten stop for meaningful position sizing
-            stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+            # Skip if vol floor already widened (they have opposite goals)
+            if not vol_adjusted:
+                stop_low, halt_adjusted = self._halt_adjusted_stop(entry, stop_low)
+            else:
+                halt_adjusted = False
 
             r = entry - stop_low
             if r <= 0:
@@ -1001,9 +1058,10 @@ class MicroPullbackDetector:
                 score=score,
                 score_detail=detail,
             )
+            vf_tag = " [VOL_FLOOR]" if vol_adjusted else ""
             return (
                 f"ARMED entry={entry:.4f} stop={stop_low:.4f} R={r:.4f} "
-                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}"
+                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}"
             )
 
         return None
