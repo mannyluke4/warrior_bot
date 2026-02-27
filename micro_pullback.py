@@ -141,6 +141,7 @@ class MicroPullbackDetector:
         self.conviction_floor_enabled = os.getenv("WB_CONVICTION_FLOOR", "0") == "1"
         self.conviction_floor_min_score = float(os.getenv("WB_CONVICTION_FLOOR_MIN_SCORE", "6.0"))
         self.conviction_floor_min_gap_pct = float(os.getenv("WB_CONVICTION_FLOOR_MIN_GAP_PCT", "1.0"))
+        self.conviction_floor_min_bars = int(os.getenv("WB_CONVICTION_FLOOR_MIN_BARS", "15"))
         self.gap_pct: float | None = None  # set by caller (simulate.py or bot.py)
 
         # --- Post-halt sizing override ---
@@ -205,11 +206,16 @@ class MicroPullbackDetector:
 
     def _fails_conviction_floor(self, score: float) -> tuple[bool, str]:
         """Block entries when ALL THREE: low score + no tags + tiny gap.
+        Only active after enough bars for patterns to develop (timing gate).
         Returns (blocked, reason)."""
         if not self.conviction_floor_enabled:
             return False, ""
         if self.gap_pct is None:
             return False, ""  # no gap data = allow (conservative)
+        # Timing gate: don't apply in first N bars — Profile A stocks enter
+        # early when scores/tags are still building
+        if len(self.bars_1m) < self.conviction_floor_min_bars:
+            return False, ""
         if score >= self.conviction_floor_min_score:
             return False, ""
         if self.last_patterns:  # has pattern tags
@@ -218,7 +224,8 @@ class MicroPullbackDetector:
             return False, ""
         return True, (
             f"conviction_floor: score={score:.1f}<{self.conviction_floor_min_score} "
-            f"tags=[] gap={self.gap_pct:+.1f}%<±{self.conviction_floor_min_gap_pct}%"
+            f"tags=[] gap={self.gap_pct:+.1f}%<±{self.conviction_floor_min_gap_pct}% "
+            f"bars={len(self.bars_1m)}≥{self.conviction_floor_min_bars}"
         )
 
     def _halt_adjusted_stop(self, entry: float, raw_stop: float) -> tuple[float, bool]:
