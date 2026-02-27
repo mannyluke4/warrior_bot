@@ -152,6 +152,17 @@ class MicroPullbackDetector:
         self._bar_ranges_1m: deque = deque(maxlen=14)
         self._halt_active_bars: int = 0
 
+        # --- Fast Mode (anticipation entry for fast movers) ---
+        self.fast_mode_enabled = os.getenv("WB_FAST_MODE", "0") == "1"
+        self.fast_mode_max_bar = int(os.getenv("WB_FAST_MODE_MAX_BAR", "30"))
+        self.fast_mode_min_gap_pct = float(os.getenv("WB_FAST_MODE_MIN_GAP_PCT", "10.0"))
+        self.fast_mode_min_green_bars = int(os.getenv("WB_FAST_MODE_MIN_GREEN_BARS", "3"))
+        self.fast_mode_min_rel_vol = float(os.getenv("WB_FAST_MODE_MIN_REL_VOL", "2.0"))
+        self.fast_mode_min_range_pct = float(os.getenv("WB_FAST_MODE_MIN_RANGE_PCT", "5.0"))
+        self.fast_mode_entry_buffer_pct = float(os.getenv("WB_FAST_MODE_ENTRY_BUFFER_PCT", "0.3"))
+        self.fast_mode_stop_mult = float(os.getenv("WB_FAST_MODE_STOP_MULT", "1.5"))
+        self._fast_mode_fired = False  # one-shot per session
+
     def _has_active_structure(self) -> bool:
         return self.in_impulse or self.pullback_count > 0 or (self.armed is not None)
 
@@ -240,6 +251,84 @@ class MicroPullbackDetector:
         override_stop = entry - (self.halt_stop_atr_mult * avg_range)
         adjusted = max(raw_stop, override_stop)  # pick TIGHTER stop
         return adjusted, (adjusted != raw_stop)
+
+    def _check_fast_mode(self, c: float, vwap: float, macd_score: float) -> Optional[str]:
+        """Anticipation entry for fast movers — fires before normal ARM.
+        Targets stocks with large premarket gaps that are ramping with volume.
+        One-shot per session. Returns ARM string if conditions met, None otherwise."""
+        if not self.fast_mode_enabled or self._fast_mode_fired:
+            return None
+        if self.armed:
+            return None  # normal ARM takes priority
+
+        # Timing gate: only in first N bars of session
+        bar_count = len(self.bars_1m)
+        if bar_count > self.fast_mode_max_bar:
+            return None
+
+        # Gap threshold
+        if self.gap_pct is None or abs(self.gap_pct) < self.fast_mode_min_gap_pct:
+            return None
+
+        # Session range threshold
+        if self._session_range_pct() < self.fast_mode_min_range_pct:
+            return None
+
+        # Need enough bars for volume comparison
+        if bar_count < max(10, self.fast_mode_min_green_bars):
+            return None
+
+        # Consecutive green bars check
+        recent = list(self.bars_1m)[-self.fast_mode_min_green_bars:]
+        if not all(b["c"] > b["o"] for b in recent):
+            return None
+
+        # Relative volume surge: recent 5 bars vs earlier 5 bars
+        recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
+        earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
+        if earlier_vol > 0 and recent_vol / earlier_vol < self.fast_mode_min_rel_vol:
+            return None
+
+        # Must be above VWAP
+        if vwap is None or c <= vwap:
+            return None
+
+        # Must be near or above premarket high (if available)
+        if self.premarket_high and c < self.premarket_high * 0.99:
+            return None
+
+        # ---- All conditions met — fire anticipation entry ----
+        self._fast_mode_fired = True  # one-shot
+
+        entry = round(c * (1 + self.fast_mode_entry_buffer_pct / 100), 4)
+        avg_range = sum(b["h"] - b["l"] for b in recent) / len(recent)
+        stop = round(entry - (self.fast_mode_stop_mult * avg_range), 4)
+        r = round(entry - stop, 4)
+        if r <= 0:
+            return None
+
+        score = max(macd_score * 0.6, 4.0)
+        detail = (
+            f"fast_mode: gap={self.gap_pct:+.1f}% "
+            f"range={self._session_range_pct():.1f}% "
+            f"green={self.fast_mode_min_green_bars}"
+        )
+
+        self.armed = ArmedTrade(
+            trigger_high=entry,
+            stop_low=stop,
+            entry_price=entry,
+            r=r,
+            score=score,
+            score_detail=detail,
+            setup_type="fast_mode",
+        )
+
+        return (
+            f"ARMED entry={entry:.4f} stop={stop:.4f} R={r:.4f} "
+            f"score={score:.1f} macd_score={macd_score:.1f} "
+            f"tags={self._tags_str()} why={detail}"
+        )
 
     def _tags_str(self) -> str:
         if not self.last_patterns:
@@ -1032,6 +1121,12 @@ class MicroPullbackDetector:
             if self._has_active_structure_1m():
                 self._full_reset_1m()
             return f"1M RESET (extended: {self.consecutive_green_1m} green candles)"
+
+        # --- Fast Mode: anticipation entry for fast movers ---
+        if self.fast_mode_enabled and not self._fast_mode_fired and not self.armed:
+            fast_msg = self._check_fast_mode(c, vwap, macd_score)
+            if fast_msg:
+                return fast_msg
 
         # If already armed, keep waiting for trigger on live ticks
         if self.armed:
