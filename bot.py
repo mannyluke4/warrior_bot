@@ -407,6 +407,7 @@ def on_bar_close_10s(bar):
     # Topping wicky exit: if we're in a trade and the pattern fires, get out
     # Grace period: skip exit within first N minutes of entry (breakout volatility)
     _tw_grace_sec = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3")) * 60
+    _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
     if (trade_manager
         and getattr(trade_manager, 'exit_on_topping_wicky', False)
         and symbol in trade_manager.open
@@ -414,7 +415,14 @@ def on_bar_close_10s(bar):
         t = trade_manager.open[symbol]
         age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds() if t.created_at_utc else 999
         if age_sec >= _tw_grace_sec:
-            trade_manager.on_exit_signal(symbol, "topping_wicky")
+            # Profit gate: suppress TW only in small positive profit (< min R)
+            # Skip in signal mode — exits are part of the cascading strategy
+            _tw_unreal = bar.close - t.entry
+            _exit_mode = getattr(trade_manager, 'exit_mode', 'signal')
+            if _exit_mode != "signal" and _tw_min_profit_r > 0 and t.r > 0 and 0 < _tw_unreal < _tw_min_profit_r * t.r:
+                print(f"  TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * t.r:.2f}) {symbol} @ {bar.close:.4f}", flush=True)
+            else:
+                trade_manager.on_exit_signal(symbol, "topping_wicky")
 
 
 def on_bar_close_1m(bar):

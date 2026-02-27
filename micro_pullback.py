@@ -70,6 +70,7 @@ class MicroPullbackDetector:
         self.use_scoring = os.getenv("WB_USE_SCORING", "1") == "1"
         self.min_score = float(os.getenv("WB_MIN_SCORE", "6"))
         self.max_score = float(os.getenv("WB_MAX_SCORE", "99"))
+        self.min_tags = int(os.getenv("WB_MIN_TAGS", "1"))
         self.macd_hard_gate = os.getenv("WB_MACD_HARD_GATE", "1") == "1"
 
         # Gap and Go settings
@@ -156,6 +157,8 @@ class MicroPullbackDetector:
         self.vol_floor_enabled = os.getenv("WB_VOL_FLOOR_ENABLED", "0") == "1"
         self.vol_floor_atr_mult = float(os.getenv("WB_VOL_FLOOR_ATR_MULT", "1.5"))
         self.vol_floor_pct = float(os.getenv("WB_VOL_FLOOR_PCT", "0"))  # min stop as % of entry price (e.g., 5 = 5%)
+        self.vol_floor_min_gap_pct = float(os.getenv("WB_VOL_FLOOR_MIN_GAP_PCT", "20"))
+        self.vol_floor_max_r_pct = float(os.getenv("WB_VOL_FLOOR_MAX_R_PCT", "3"))  # only activate when R/entry < this %
 
         # --- Fast Mode (anticipation entry for fast movers) ---
         self.fast_mode_enabled = os.getenv("WB_FAST_MODE", "0") == "1"
@@ -264,9 +267,20 @@ class MicroPullbackDetector:
         Two mechanisms (takes the wider):
           1. ATR-based: min R = vol_floor_atr_mult * avg_bar_range
           2. Price-based: min R = vol_floor_pct% of entry price
+        Targeted activation: only when gap% > min AND R/entry < max%
         """
         if not self.vol_floor_enabled:
             return raw_stop, False
+
+        # Targeted activation criteria
+        raw_r = entry - raw_stop
+        if self.vol_floor_min_gap_pct > 0 and self.gap_pct is not None:
+            if abs(self.gap_pct) < self.vol_floor_min_gap_pct:
+                return raw_stop, False  # gap too small, stock isn't volatile enough
+        if self.vol_floor_max_r_pct > 0 and entry > 0 and raw_r > 0:
+            r_pct = (raw_r / entry) * 100
+            if r_pct >= self.vol_floor_max_r_pct:
+                return raw_stop, False  # R is already wide enough relative to price
 
         candidates = []
 
@@ -686,11 +700,12 @@ class MicroPullbackDetector:
 
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
 
-            if self.use_scoring and (score < self.min_score or score > self.max_score):
-                # Not a full reset — we just decline arming this trigger attempt.
-                # But structure continues, so next bar can trigger again.
-                tag = f"<{self.min_score:.1f}" if score < self.min_score else f">{self.max_score:.1f}"
-                return f"NO_ARM score={score:.1f}{tag} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+            _tag_count = len(self.last_patterns) if self.last_patterns else 0
+            if self.use_scoring and score > self.max_score:
+                return f"NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+            if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
+                # Combined gate: block only when BOTH score AND tags are below minimum
+                return f"NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
 
             self.armed = ArmedTrade(
                 trigger_high=trigger_high,
@@ -835,11 +850,13 @@ class MicroPullbackDetector:
             imb = l2_state.get("imbalance", 0) if l2_state else 0
             return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
 
-        # Score gate
-        if self.use_scoring and (score < self.min_score or score > self.max_score):
-            tag = f"<{self.min_score:.1f}" if score < self.min_score else f">{self.max_score:.1f}"
+        # Score gate (combined with tag count)
+        _tag_count = len(self.last_patterns) if self.last_patterns else 0
+        if self.use_scoring and score > self.max_score:
+            return f"1M NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+        if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
             return (
-                f"1M NO_ARM score={score:.1f}{tag} "
+                f"1M NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} "
                 f"macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
             )
 
@@ -1046,9 +1063,11 @@ class MicroPullbackDetector:
                 imb = l2_state.get("imbalance", 0) if l2_state else 0
                 return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
 
-            if self.use_scoring and (score < self.min_score or score > self.max_score):
-                tag = f"<{self.min_score:.1f}" if score < self.min_score else f">{self.max_score:.1f}"
-                return f"1M NO_ARM score={score:.1f}{tag} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+            _tag_count = len(self.last_patterns) if self.last_patterns else 0
+            if self.use_scoring and score > self.max_score:
+                return f"1M NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+            if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
+                return f"1M NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
 
             self.armed = ArmedTrade(
                 trigger_high=trigger_high,

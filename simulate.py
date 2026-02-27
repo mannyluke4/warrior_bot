@@ -118,6 +118,7 @@ class SimTradeManager:
         max_entries_per_symbol: int = 2,
         symbol_cooldown_min: int = 10,
         max_loss_r: float = 2.0,
+        reentry_cooldown_bars: int = 0,
         stock_info=None,
         quality_min_float: float = 0.5,
         # 3-tranche exit scaling
@@ -144,6 +145,7 @@ class SimTradeManager:
         self.max_entries_per_symbol = max_entries_per_symbol
         self.symbol_cooldown_min = symbol_cooldown_min
         self.max_loss_r = max_loss_r
+        self.reentry_cooldown_bars = reentry_cooldown_bars
         self.stock_info = stock_info
         self.quality_min_float = quality_min_float
 
@@ -165,6 +167,8 @@ class SimTradeManager:
         # Per-symbol re-entry cooldown tracking
         self._symbol_entry_count: dict[str, int] = {}
         self._symbol_cooldown_until: dict[str, int] = {}  # symbol -> minute offset when cooldown expires
+        # Stop-hit cooldown: bars remaining before re-entry allowed
+        self._stop_hit_cooldown: dict[str, int] = {}  # symbol -> bars remaining
 
     def _time_to_minutes(self, time_str: str) -> int:
         """Convert 'HH:MM' to minutes since midnight for cooldown tracking."""
@@ -181,7 +185,7 @@ class SimTradeManager:
         if r <= 0 or r < self.min_r:
             return None
 
-        # Per-symbol re-entry cooldown
+        # Per-symbol re-entry cooldown (entry-count based)
         now_min = self._time_to_minutes(time_str)
         cooldown_until = self._symbol_cooldown_until.get(symbol)
         if cooldown_until is not None:
@@ -191,6 +195,10 @@ class SimTradeManager:
                 # Cooldown expired, reset
                 self._symbol_entry_count[symbol] = 0
                 self._symbol_cooldown_until.pop(symbol, None)
+
+        # Stop-hit cooldown: block re-entry for N bars after stop_hit
+        if symbol in self._stop_hit_cooldown:
+            return None
 
         # Quality gate: check cached fundamentals
         if self.stock_info is not None:
@@ -418,9 +426,19 @@ class SimTradeManager:
             if t.qty_t2 > 0 or t.qty_runner > 0:
                 self._close(t)
 
+    def on_bar_close_1m_cooldown(self):
+        """Decrement stop-hit cooldowns on each 1m bar close."""
+        for sym in list(self._stop_hit_cooldown):
+            self._stop_hit_cooldown[sym] -= 1
+            if self._stop_hit_cooldown[sym] <= 0:
+                del self._stop_hit_cooldown[sym]
+
     def _close(self, t: SimTrade):
         t.closed = True
         self.closed_trades.append(t)
+        # If closed by stop_hit, start re-entry cooldown
+        if self.reentry_cooldown_bars > 0 and t.core_exit_reason in ("stop_hit",):
+            self._stop_hit_cooldown[t.symbol] = self.reentry_cooldown_bars
         self.open_trade = None
 
 
@@ -523,6 +541,9 @@ def run_simulation(
     _cooldown_min = int(os.getenv("WB_SYMBOL_COOLDOWN_MIN", "10"))
     _max_loss_r = float(os.getenv("WB_MAX_LOSS_R", "2.0"))
     _tw_grace_min = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3"))
+    _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
+    _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
+    _reentry_cooldown_bars = int(os.getenv("WB_REENTRY_COOLDOWN_BARS", "5"))
 
     # 3-tranche exit scaling
     _3tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -632,6 +653,7 @@ def run_simulation(
         t1_tp_r=_t1_tp_r,
         t2_tp_r=_t2_tp_r,
         t2_stop_lock_r=_t2_stop_lock_r,
+        reentry_cooldown_bars=_reentry_cooldown_bars,
     )
 
     # ── L2 data (optional) ──
@@ -795,15 +817,25 @@ def run_simulation(
             # Topping wicky exit on 10s bars (with grace period after entry)
             if ("TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
-                suppress, suppress_reason = _should_suppress_pattern_exit()
-                if suppress:
-                    if verbose:
-                        print(f"  [{time_str}] TW_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
-                else:
-                    sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                    if verbose:
-                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
-                    return
+                # Profit gate: suppress TW only in small positive profit (< min R)
+                # Skip in signal mode — exits are part of the cascading strategy
+                _tw_profit_ok = True
+                if _exit_mode != "signal" and _tw_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+                    _tw_unreal = bar.close - sim_mgr.open_trade.entry
+                    if 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                        _tw_profit_ok = False
+                        if verbose:
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
+                if _tw_profit_ok:
+                    suppress, suppress_reason = _should_suppress_pattern_exit()
+                    if suppress:
+                        if verbose:
+                            print(f"  [{time_str}] TW_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
+                    else:
+                        sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+                        if verbose:
+                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                        return
 
             # Bearish engulfing exit on 10s bars (with time + parabolic grace)
             if _exit_on_bear_engulf and prev is not None:
@@ -813,14 +845,24 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] BE_SUPPRESSED (time grace) @ {bar.close:.4f}", flush=True)
                     else:
-                        suppress, suppress_reason = _should_suppress_pattern_exit()
-                        if suppress:
-                            if verbose:
-                                print(f"  [{time_str}] BE_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
-                        else:
-                            sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
-                            if verbose:
-                                print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
+                        # Profit gate: suppress BE only in small positive profit (< min R)
+                        # Skip in signal mode — BE exits are part of the cascading strategy
+                        _be_profit_ok = True
+                        if _exit_mode != "signal" and _be_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+                            _be_unreal = bar.close - sim_mgr.open_trade.entry
+                            if 0 < _be_unreal < _be_min_profit_r * sim_mgr.open_trade.r:
+                                _be_profit_ok = False
+                                if verbose:
+                                    print(f"  [{time_str}] BE_SUPPRESSED (profit_gate: ${_be_unreal:.2f} < {_be_min_profit_r}R=${_be_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
+                        if _be_profit_ok:
+                            suppress, suppress_reason = _should_suppress_pattern_exit()
+                            if suppress:
+                                if verbose:
+                                    print(f"  [{time_str}] BE_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
+                            else:
+                                sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
+                                if verbose:
+                                    print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
 
             # Parabolic exhaustion trim signal
             if _parabolic_det is not None and _parabolic_det.should_trim():
@@ -857,9 +899,19 @@ def run_simulation(
                 and not sim_mgr.open_trade.closed
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
-                sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                if verbose:
-                    print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                # Profit gate: suppress TW only in small positive profit (< min R)
+                # Skip in signal mode — exits are part of the cascading strategy
+                _tw_profit_ok = True
+                if _exit_mode != "signal":
+                    _tw_unreal = bar.close - sim_mgr.open_trade.entry
+                    if _tw_min_profit_r > 0 and 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                        _tw_profit_ok = False
+                        if verbose:
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
+                if _tw_profit_ok:
+                    sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+                    if verbose:
+                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
 
             # L2 exit signal
             if (sim_mgr.open_trade is not None
@@ -870,6 +922,9 @@ def run_simulation(
                     sim_mgr.on_exit_signal(l2_exit, bar.close, time_str)
                     if verbose:
                         print(f"  [{time_str}] {l2_exit.upper()}_EXIT @ {bar.close:.4f}", flush=True)
+
+            # Decrement stop-hit re-entry cooldown
+            sim_mgr.on_bar_close_1m_cooldown()
 
             if verbose and msg:
                 print(f"  [{time_str}] {msg}", flush=True)
@@ -1028,14 +1083,27 @@ def run_simulation(
 
             msg = det.on_bar_close_1m(bar_obj, vwap=vwap, l2_state=l2_state)
 
+            # Decrement stop-hit re-entry cooldown
+            sim_mgr.on_bar_close_1m_cooldown()
+
             # Topping wicky exit (with grace period after entry)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace_bar(time_str)):
-                sim_mgr.on_exit_signal("topping_wicky", c, time_str)
-                if verbose:
-                    print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
+                # Profit gate: suppress TW only in small positive profit (< min R)
+                # Skip in signal mode — exits are part of the cascading strategy
+                _tw_profit_ok = True
+                if _exit_mode != "signal":
+                    _tw_unreal = c - sim_mgr.open_trade.entry
+                    if _tw_min_profit_r > 0 and 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                        _tw_profit_ok = False
+                        if verbose:
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {c:.4f}", flush=True)
+                if _tw_profit_ok:
+                    sim_mgr.on_exit_signal("topping_wicky", c, time_str)
+                    if verbose:
+                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
 
             # L2 exit signal
             if (sim_mgr.open_trade is not None

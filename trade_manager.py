@@ -187,6 +187,11 @@ class PaperTradeManager:
         self.last_bid: Dict[str, float] = {}
         self.last_ask: Dict[str, float] = {}
 
+        # Stop-hit re-entry cooldown (bars converted to seconds: N bars * 60s)
+        _cooldown_bars = int(os.getenv("WB_REENTRY_COOLDOWN_BARS", "5"))
+        self._reentry_cooldown_sec = _cooldown_bars * 60
+        self._stop_hit_cooldown_until: Dict[str, datetime] = {}  # symbol -> UTC timestamp
+
         # -----------------------------
         # ✅ Stale-price guardrails
         # -----------------------------
@@ -616,6 +621,14 @@ class PaperTradeManager:
             plan = self.parse_plan(msg)
             if not plan:
                 return
+
+            # Stop-hit re-entry cooldown
+            cooldown_until = self._stop_hit_cooldown_until.get(symbol)
+            if cooldown_until and datetime.now(timezone.utc) < cooldown_until:
+                log_event("skip_entry_reentry_cooldown", symbol, cooldown_until=cooldown_until.isoformat())
+                return
+            elif cooldown_until:
+                self._stop_hit_cooldown_until.pop(symbol, None)
 
             # Quality gate: check cached fundamentals before entry
             passes, gate_reason = self._passes_quality_gate(symbol)
@@ -1192,6 +1205,10 @@ class PaperTradeManager:
             if qty <= 0:
                 return
 
+            # Set re-entry cooldown on stop_hit
+            if reason == "stop_hit" and self._reentry_cooldown_sec > 0:
+                self._stop_hit_cooldown_until[symbol] = datetime.now(timezone.utc) + timedelta(seconds=self._reentry_cooldown_sec)
+
             if not self.armed:
                 log_event("exit_preview", symbol, qty=qty, reason=reason, price=float(price), armed=False)
                 print(f"🟫 EXIT PREVIEW {symbol} qty={qty} reason={reason} px={price:.4f} (DISARMED)", flush=True)
@@ -1761,6 +1778,16 @@ class PaperTradeManager:
             elif self._in_parabolic_grace(symbol):
                 log_event("be_exit_suppressed_parabolic", symbol,
                           entry=t.entry, r=t.r, price=float(self.last_price.get(symbol, 0)))
+                return
+
+        # Profit gate: suppress BE only in small positive profit (< min R)
+        # Skip in signal mode — BE exits are part of the cascading strategy
+        _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
+        if self.exit_mode != "signal" and _be_min_profit_r > 0 and t.r > 0:
+            px_now = float(self.last_price.get(symbol, c))
+            _be_unreal = px_now - t.entry
+            if 0 < _be_unreal < _be_min_profit_r * t.r:
+                print(f"  BE_SUPPRESSED (profit_gate: ${_be_unreal:.2f} < {_be_min_profit_r}R=${_be_min_profit_r * t.r:.2f}) {symbol} @ {px_now:.4f}", flush=True)
                 return
 
         if symbol in self.pending_exits:
