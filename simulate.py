@@ -17,8 +17,10 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import os
+import statistics
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone, time
@@ -78,6 +80,7 @@ class SimTrade:
     # State
     tp_hit: bool = False    # T1 hit
     peak: float = 0.0
+    peak_time: str = ""
     runner_stop: float = 0.0
     closed: bool = False
 
@@ -264,7 +267,9 @@ class SimTradeManager:
         if t is None or t.closed:
             return
 
-        t.peak = max(t.peak, price)
+        if price > t.peak:
+            t.peak = price
+            t.peak_time = time_str
 
         # --- MAX LOSS CAP (hard safety net) ---
         if self.max_loss_r > 0 and t.r > 0:
@@ -478,6 +483,368 @@ def synthetic_ticks(o, h, l, c):
 
 
 # ─────────────────────────────────────────────
+# Behavior Study Metrics (--export-json)
+# ─────────────────────────────────────────────
+
+class BehaviorMetrics:
+    """Accumulates behavioral metrics over 1-minute bars for the study export."""
+
+    def __init__(self, sim_start_time: str):
+        self.sim_start_time = sim_start_time
+        self.sim_start_min = self._to_min(sim_start_time)
+        self._bars: list[dict] = []  # all 1m bars: {o, h, l, c, v, time_str, vwap}
+        self._running_high = 0.0
+        self._last_high_time: str = ""
+        self._new_high_times: list[int] = []  # minutes-since-midnight of each new high
+        self._pullbacks: list[dict] = []  # {depth_pct, start_min, end_min}
+        self._in_pullback = False
+        self._pullback_start_high = 0.0
+        self._pullback_start_min = 0
+        self._pullback_low = 0.0
+
+    @staticmethod
+    def _to_min(t: str) -> int:
+        parts = t.split(":")
+        return int(parts[0]) * 60 + int(parts[1])
+
+    def on_1m_bar(self, o: float, h: float, l: float, c: float, v: float,
+                  time_str: str, vwap: float = 0.0):
+        bar = {"o": o, "h": h, "l": l, "c": c, "v": v, "time": time_str, "vwap": vwap}
+        self._bars.append(bar)
+        bar_min = self._to_min(time_str)
+
+        # New high tracking (close > all prior closes)
+        prior_closes = [b["c"] for b in self._bars[:-1]]
+        if not prior_closes or c > max(prior_closes):
+            self._new_high_times.append(bar_min)
+
+        # Running high for pullback tracking
+        if h > self._running_high:
+            self._running_high = h
+            self._last_high_time = time_str
+
+        # Pullback detection
+        if self._running_high > 0:
+            drop_pct = (self._running_high - l) / self._running_high * 100
+            if not self._in_pullback and drop_pct > 0.3:
+                self._in_pullback = True
+                self._pullback_start_high = self._running_high
+                self._pullback_start_min = bar_min
+                self._pullback_low = l
+            elif self._in_pullback:
+                self._pullback_low = min(self._pullback_low, l)
+                if c > self._pullback_start_high:
+                    depth = (self._pullback_start_high - self._pullback_low) / self._pullback_start_high * 100
+                    self._pullbacks.append({
+                        "depth_pct": depth,
+                        "start_min": self._pullback_start_min,
+                        "end_min": bar_min,
+                    })
+                    self._in_pullback = False
+
+    def _first_n_bars(self, n: int) -> list[dict]:
+        return self._bars[:n]
+
+    def to_dict(self) -> dict:
+        bars_30m = self._first_n_bars(30)
+        if not bars_30m:
+            return {}
+
+        # --- NEW HIGH BEHAVIOR ---
+        cutoff_min = self.sim_start_min + 30
+        nh_30 = [t for t in self._new_high_times if t < cutoff_min]
+        nh_count = len(nh_30)
+        if len(nh_30) >= 2:
+            cadences = [(nh_30[i+1] - nh_30[i]) * 60 for i in range(len(nh_30)-1)]
+            nh_cadence_avg = statistics.mean(cadences)
+            nh_cadence_std = statistics.stdev(cadences) if len(cadences) > 1 else 0
+        else:
+            nh_cadence_avg = 0
+            nh_cadence_std = 0
+
+        # --- PULLBACK BEHAVIOR ---
+        pb_30 = [p for p in self._pullbacks if p["start_min"] < cutoff_min]
+        pb_count = len(pb_30)
+        pb_depth_avg = statistics.mean([p["depth_pct"] for p in pb_30]) if pb_30 else 0
+        pb_depth_max = max([p["depth_pct"] for p in pb_30]) if pb_30 else 0
+        pb_recovery_avg = statistics.mean([(p["end_min"] - p["start_min"]) * 60 for p in pb_30]) if pb_30 else 0
+
+        # --- VOLUME SHAPE ---
+        vols = [b["v"] for b in bars_30m]
+        vol_total = sum(vols)
+        vol_first_5m = sum(vols[:5])
+        last_5_start = max(0, len(bars_30m) - 5)
+        vol_last_5m = sum(vols[last_5_start:])
+        vol_decay = vol_last_5m / vol_first_5m if vol_first_5m > 0 else 0
+        spike_count = 0
+        for i, v in enumerate(vols):
+            start_idx = max(0, i - 5)
+            window = vols[start_idx:i] if i > 0 else [v]
+            avg_w = statistics.mean(window) if window else v
+            if avg_w > 0 and v > 2 * avg_w:
+                spike_count += 1
+
+        # --- TREND STRENGTH ---
+        greens = sum(1 for b in bars_30m if b["c"] >= b["o"])
+        green_ratio = greens / len(bars_30m) if bars_30m else 0
+        max_consec_green = max_consec_red = cur_green = cur_red = 0
+        for b in bars_30m:
+            if b["c"] >= b["o"]:
+                cur_green += 1
+                cur_red = 0
+            else:
+                cur_red += 1
+                cur_green = 0
+            max_consec_green = max(max_consec_green, cur_green)
+            max_consec_red = max(max_consec_red, cur_red)
+        first_c = bars_30m[0]["o"]
+        last_c = bars_30m[-1]["c"]
+        hi_30 = max(b["h"] for b in bars_30m)
+        lo_30 = min(b["l"] for b in bars_30m)
+        range_pct = (hi_30 - lo_30) / lo_30 * 100 if lo_30 > 0 else 0
+
+        # --- BAR CHARACTER ---
+        uw_ratios = []
+        body_ratios = []
+        for b in bars_30m:
+            rng = b["h"] - b["l"]
+            if rng > 0:
+                upper_wick = b["h"] - max(b["o"], b["c"])
+                body = abs(b["c"] - b["o"])
+                uw_ratios.append(upper_wick / rng)
+                body_ratios.append(body / rng)
+        uw_avg = statistics.mean(uw_ratios) if uw_ratios else 0
+        body_avg = statistics.mean(body_ratios) if body_ratios else 0
+        bars_last_10 = bars_30m[max(0, len(bars_30m)-10):]
+        uw_last10 = []
+        body_last10 = []
+        for b in bars_last_10:
+            rng = b["h"] - b["l"]
+            if rng > 0:
+                uw_last10.append((b["h"] - max(b["o"], b["c"])) / rng)
+                body_last10.append(abs(b["c"] - b["o"]) / rng)
+        uw_avg_last10 = statistics.mean(uw_last10) if uw_last10 else 0
+        body_avg_last10 = statistics.mean(body_last10) if body_last10 else 0
+
+        # --- VWAP RELATIONSHIP ---
+        bars_with_vwap = [b for b in bars_30m if b["vwap"] > 0]
+        above_vwap = sum(1 for b in bars_with_vwap if b["c"] > b["vwap"])
+        pct_above_vwap = above_vwap / len(bars_with_vwap) if bars_with_vwap else 0
+        vwap_crosses = 0
+        for i in range(1, len(bars_with_vwap)):
+            prev_above = bars_with_vwap[i-1]["c"] > bars_with_vwap[i-1]["vwap"]
+            curr_above = bars_with_vwap[i]["c"] > bars_with_vwap[i]["vwap"]
+            if prev_above != curr_above:
+                vwap_crosses += 1
+        max_vwap_dist = 0
+        for b in bars_with_vwap:
+            if b["vwap"] > 0:
+                dist = abs(b["c"] - b["vwap"]) / b["vwap"] * 100
+                max_vwap_dist = max(max_vwap_dist, dist)
+
+        # --- PRICE AT KEY TIMESTAMPS ---
+        def _price_at_offset(offset_min: int) -> float | None:
+            target = self.sim_start_min + offset_min
+            for b in self._bars:
+                if self._to_min(b["time"]) >= target:
+                    return b["c"]
+            return None
+
+        def _high_by_offset(offset_min: int) -> float | None:
+            target = self.sim_start_min + offset_min
+            matching = [b for b in self._bars if self._to_min(b["time"]) < target]
+            return max(b["h"] for b in matching) if matching else None
+
+        def _low_by_offset(offset_min: int) -> float | None:
+            target = self.sim_start_min + offset_min
+            matching = [b for b in self._bars if self._to_min(b["time"]) < target]
+            return min(b["l"] for b in matching) if matching else None
+
+        return {
+            "new_high_count_30m": nh_count,
+            "new_high_cadence_avg_sec": round(nh_cadence_avg, 1),
+            "new_high_cadence_stdev_sec": round(nh_cadence_std, 1),
+            "pullback_count_30m": pb_count,
+            "pullback_depth_avg_pct": round(pb_depth_avg, 2),
+            "pullback_depth_max_pct": round(pb_depth_max, 2),
+            "pullback_recovery_avg_sec": round(pb_recovery_avg, 0),
+            "vol_spike_count_30m": spike_count,
+            "vol_total_30m": int(vol_total),
+            "vol_first_5m": int(vol_first_5m),
+            "vol_last_5m_of_30": int(vol_last_5m),
+            "vol_decay_ratio": round(vol_decay, 3),
+            "green_bar_ratio_30m": round(green_ratio, 2),
+            "max_consecutive_green": max_consec_green,
+            "max_consecutive_red": max_consec_red,
+            "price_range_30m_pct": round(range_pct, 2),
+            "upper_wick_ratio_avg": round(uw_avg, 3),
+            "upper_wick_ratio_last_10m": round(uw_avg_last10, 3),
+            "body_ratio_avg": round(body_avg, 3),
+            "body_ratio_last_10m": round(body_avg_last10, 3),
+            "pct_bars_above_vwap_30m": round(pct_above_vwap, 2),
+            "vwap_cross_count_30m": vwap_crosses,
+            "max_vwap_distance_pct": round(max_vwap_dist, 2),
+            "price_at_5m": _price_at_offset(5),
+            "price_at_10m": _price_at_offset(10),
+            "price_at_15m": _price_at_offset(15),
+            "price_at_30m": _price_at_offset(30),
+            "price_at_60m": _price_at_offset(60),
+            "high_at_30m": _high_by_offset(30),
+            "high_at_60m": _high_by_offset(60),
+            "low_at_30m": _low_by_offset(30),
+            "low_at_60m": _low_by_offset(60),
+        }
+
+    def get_post_exit_data(self, exit_time: str, entry_price: float, exit_price: float) -> dict:
+        """Get price data at intervals after a trade exit."""
+        exit_min = self._to_min(exit_time)
+
+        def _price_after(offset_min: int) -> float | None:
+            target = exit_min + offset_min
+            for b in self._bars:
+                if self._to_min(b["time"]) >= target:
+                    return b["c"]
+            return None
+
+        # High/low in 30 minutes after exit
+        bars_after = [b for b in self._bars
+                      if exit_min < self._to_min(b["time"]) <= exit_min + 30]
+        high_after = max((b["h"] for b in bars_after), default=None)
+        low_after = min((b["l"] for b in bars_after), default=None)
+
+        # Left on table calculation
+        left_on_table = None
+        if high_after is not None and entry_price > 0:
+            denom = high_after - entry_price
+            if denom > 0:
+                left_on_table = round((high_after - exit_price) / denom * 100, 1)
+                left_on_table = max(0, min(100, left_on_table))
+            else:
+                left_on_table = 0
+
+        return {
+            "price_1m_after_exit": _price_after(1),
+            "price_5m_after_exit": _price_after(5),
+            "price_10m_after_exit": _price_after(10),
+            "price_30m_after_exit": _price_after(30),
+            "high_after_exit_30m": high_after,
+            "low_after_exit_30m": low_after,
+            "left_on_table_pct": left_on_table,
+        }
+
+
+def export_study_json(symbol: str, date_str: str, start_et: str, end_et: str,
+                      trades: list, metrics: BehaviorMetrics,
+                      stock_info, config: dict):
+    """Write the study JSON file after simulation completes."""
+    os.makedirs("study_data", exist_ok=True)
+    outpath = f"study_data/{symbol}_{date_str}.json"
+
+    # Fundamentals
+    fundamentals = {}
+    if stock_info:
+        fundamentals["gap_pct"] = getattr(stock_info, "gap_pct", None)
+        fundamentals["float_shares"] = getattr(stock_info, "float_shares", None)
+    if metrics._bars:
+        fundamentals["price_at_sim_start"] = metrics._bars[0]["o"]
+
+    # Per-trade data
+    trade_list = []
+    for i, t in enumerate(trades):
+        exit_price = t.core_exit_price if t.core_exit_price > 0 else t.entry
+        exit_time = t.core_exit_time or t.entry_time
+        exit_reason = t.core_exit_reason or "unknown"
+        hold_sec = 0
+        if t.entry_time and exit_time:
+            e_min = BehaviorMetrics._to_min(t.entry_time)
+            x_min = BehaviorMetrics._to_min(exit_time)
+            hold_sec = (x_min - e_min) * 60
+
+        peak_r = (t.peak - t.entry) / t.r if t.r > 0 else 0
+        time_to_peak = 0
+        if t.entry_time and t.peak_time:
+            time_to_peak = (BehaviorMetrics._to_min(t.peak_time) - BehaviorMetrics._to_min(t.entry_time)) * 60
+        dd_from_peak = 0
+        if t.peak > 0:
+            dd_from_peak = (t.peak - exit_price) / t.peak * 100
+
+        # Extract tags from score_detail (format: "macd=7.5*0.6;bull_struct=+3;vol_surge=+2")
+        tag_names = []
+        _skip_tags = {"macd"}
+        for part in (t.score_detail or "").split(";"):
+            name = part.split("=")[0].strip()
+            # Skip macd, R-threshold entries, and empty/numeric names
+            if not name or name.startswith("R>") or name in _skip_tags:
+                continue
+            tag_names.append(name)
+
+        td = {
+            "trade_num": i + 1,
+            "entry_price": round(t.entry, 4),
+            "entry_time": t.entry_time,
+            "stop": round(t.stop, 4),
+            "r": round(t.r, 4),
+            "score": t.score,
+            "score_detail": t.score_detail,
+            "tags": tag_names,
+            "exit_price": round(exit_price, 4),
+            "exit_time": exit_time,
+            "exit_reason": exit_reason,
+            "pnl": round(t.pnl(), 2),
+            "r_multiple": round(t.r_multiple(), 2),
+            "qty": t.qty_total,
+            "hold_time_sec": hold_sec,
+            "peak_price": round(t.peak, 4),
+            "peak_time": t.peak_time,
+            "peak_unrealized_r": round(peak_r, 2),
+            "time_to_peak_sec": time_to_peak,
+            "drawdown_from_peak_at_exit_pct": round(dd_from_peak, 2),
+        }
+
+        # Post-exit tracking
+        if exit_time:
+            post = metrics.get_post_exit_data(exit_time, t.entry, exit_price)
+            td.update(post)
+
+        trade_list.append(td)
+
+    # Summary
+    wins = sum(1 for t in trades if t.pnl() >= 0)
+    losses = sum(1 for t in trades if t.pnl() < 0)
+    total = wins + losses
+    net_pnl = sum(t.pnl() for t in trades)
+    avg_r = statistics.mean([t.r_multiple() for t in trades]) if trades else 0
+    avg_hold = statistics.mean([td["hold_time_sec"] for td in trade_list]) if trade_list else 0
+    lot_vals = [td.get("left_on_table_pct") for td in trade_list if td.get("left_on_table_pct") is not None]
+    avg_lot = statistics.mean(lot_vals) if lot_vals else 0
+
+    result = {
+        "symbol": symbol,
+        "date": date_str,
+        "sim_start": start_et,
+        "sim_end": end_et,
+        "config": config,
+        "fundamentals": fundamentals,
+        "stock_metrics": metrics.to_dict(),
+        "trades": trade_list,
+        "summary": {
+            "total_trades": total,
+            "wins": wins,
+            "losses": losses,
+            "net_pnl": round(net_pnl, 2),
+            "avg_r": round(avg_r, 2),
+            "win_rate": round(wins / total * 100, 1) if total > 0 else 0,
+            "avg_hold_time_sec": round(avg_hold, 0),
+            "total_left_on_table_pct_avg": round(avg_lot, 1),
+        },
+    }
+
+    with open(outpath, "w") as f:
+        json.dump(result, f, indent=2, default=str)
+    print(f"  Study JSON exported: {outpath}", flush=True)
+
+
+# ─────────────────────────────────────────────
 # Simulation engine
 # ─────────────────────────────────────────────
 
@@ -495,6 +862,7 @@ def run_simulation(
     no_fundamentals: bool = False,
     use_ticks: bool = False,
     feed: str = "alpaca",
+    export_json: bool = False,
 ):
     # l2-entry implies l2 data
     if use_l2_entry:
@@ -655,6 +1023,9 @@ def run_simulation(
         t2_stop_lock_r=_t2_stop_lock_r,
         reentry_cooldown_bars=_reentry_cooldown_bars,
     )
+
+    # ── Behavior metrics (for --export-json study) ──
+    _bm = BehaviorMetrics(start_et_str) if export_json else None
 
     # ── L2 data (optional) ──
     l2_snapshots = []
@@ -894,6 +1265,10 @@ def run_simulation(
 
             msg = det.on_bar_close_1m(bar, vwap=vwap, l2_state=l2_state_bar)
 
+            # Feed behavior metrics
+            if _bm is not None:
+                _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
+
             # Topping wicky exit after 1m bar close (with grace period after entry)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
@@ -1083,6 +1458,10 @@ def run_simulation(
 
             msg = det.on_bar_close_1m(bar_obj, vwap=vwap, l2_state=l2_state)
 
+            # Feed behavior metrics
+            if _bm is not None:
+                _bm.on_1m_bar(o, h, l, c, v, time_str, vwap)
+
             # Decrement stop-hit re-entry cooldown
             sim_mgr.on_bar_close_1m_cooldown()
 
@@ -1227,6 +1606,27 @@ def run_simulation(
         cooldown_min=_cooldown_min,
     )
 
+    # Export study JSON if requested
+    if export_json and _bm is not None:
+        config = {
+            "exit_mode": _exit_mode,
+            "risk": _risk,
+            "tw_min_profit_r": _tw_min_profit_r,
+            "be_min_profit_r": _be_min_profit_r,
+            "reentry_cooldown_bars": _reentry_cooldown_bars,
+            "min_tags": int(os.getenv("WB_MIN_TAGS", "1")),
+        }
+        export_study_json(
+            symbol=symbol,
+            date_str=date_str,
+            start_et=start_et_str,
+            end_et=end_et_str,
+            trades=trades,
+            metrics=_bm,
+            stock_info=_sim_stock_info,
+            config=config,
+        )
+
     return trades
 
 
@@ -1355,6 +1755,7 @@ def main():
     parser.add_argument("--ticks", action="store_true", help="Use tick-level data for bar construction (matches live bot behavior)")
     parser.add_argument("--feed", choices=["alpaca", "databento"], default="alpaca",
                         help="Data source for tick data (default: alpaca). Use 'databento' for high-fidelity trade data.")
+    parser.add_argument("--export-json", action="store_true", help="Export behavioral study JSON to study_data/")
     args = parser.parse_args()
 
     # Parse positional args: symbols, date, optional start/end times
@@ -1413,6 +1814,7 @@ def main():
             no_fundamentals=args.no_fundamentals,
             use_ticks=args.ticks,
             feed=args.feed,
+            export_json=args.export_json,
         )
         all_trades.extend(trades)
 
