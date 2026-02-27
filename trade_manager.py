@@ -564,13 +564,42 @@ class PaperTradeManager:
                 log_event("exception", symbol, where="reconcile_pending_by_id", bot_pending=bot_pending_id, error=str(e))
                 return
 
+    def _reconcile_all_positions(self):
+        """Safety net: query ALL Alpaca positions and adopt any the bot doesn't know about."""
+        try:
+            positions = self.client.get_all_positions()
+        except Exception as e:
+            log_event("exception", None, where="reconcile_all_positions", error=str(e))
+            return
+        for pos in positions:
+            sym = str(pos.symbol)
+            side = str(getattr(pos, "side", "")).lower()
+            if side != "long":
+                continue
+            alp_qty = int(float(pos.qty))
+            alp_avg = float(pos.avg_entry_price)
+            with self._lock:
+                bot_trade = self.open.get(sym)
+                bot_pending = self.pending.get(sym)
+            if bot_trade or bot_pending:
+                continue  # bot already knows about this symbol
+            log_event("reconcile_orphan_detected", sym, alp_qty=alp_qty, alp_avg=alp_avg)
+            print(f"🟧 ORPHAN POSITION DETECTED {sym}: {alp_qty} shares @ ${alp_avg:.4f} — adopting", flush=True)
+            with self._lock:
+                self._ensure_open_trade_from_alpaca(sym, alp_qty, alp_avg)
+
     def start_reconcile_thread(self, symbols_provider):
         def loop():
+            cycle = 0
             while True:
                 try:
                     syms = list(symbols_provider())
                     for sym in syms:
                         self.reconcile_symbol(sym)
+                    # Every 10th cycle (~30s), also sweep ALL Alpaca positions
+                    cycle += 1
+                    if cycle % 10 == 0:
+                        self._reconcile_all_positions()
                 except Exception as e:
                     log_event("exception", None, where="reconcile_loop", error=str(e))
                 time.sleep(self.RECONCILE_EVERY_SEC)
@@ -1008,9 +1037,16 @@ class PaperTradeManager:
 
             # Guard: max attempts
             if p.reprice_count >= self.entry_max_attempts:
-                log_event("entry_give_up", symbol, order_id=p.order_id, reprice_count=p.reprice_count, reason="max_attempts")
+                order_id = p.order_id
+                log_event("entry_give_up", symbol, order_id=order_id, reprice_count=p.reprice_count, reason="max_attempts")
                 print(f"🟥 ENTRY GIVE UP {symbol} attempts={p.reprice_count}", flush=True)
                 self.pending.pop(symbol, None)
+                # Cancel the Alpaca order so it doesn't fill after we forget about it
+                try:
+                    self.client.cancel_order_by_id(order_id)
+                    log_event("entry_give_up_cancel_sent", symbol, order_id=order_id)
+                except Exception as e:
+                    log_event("entry_give_up_cancel_failed", symbol, order_id=order_id, error=str(e))
                 return
 
             current_order_id = p.order_id
@@ -1054,10 +1090,11 @@ class PaperTradeManager:
 
             # Cap check
             if float(p.last_limit) >= float(max_pay) - 1e-9:
+                order_id = p.order_id
                 log_event(
                     "entry_give_up",
                     symbol,
-                    order_id=p.order_id,
+                    order_id=order_id,
                     reprice_count=p.reprice_count,
                     reason="at_max_chase_cap",
                     last_limit=float(p.last_limit),
@@ -1065,6 +1102,12 @@ class PaperTradeManager:
                 )
                 print(f"🟥 ENTRY GIVE UP {symbol} at_max_chase last_limit={p.last_limit} cap={max_pay}", flush=True)
                 self.pending.pop(symbol, None)
+                # Cancel the Alpaca order so it doesn't fill after we forget about it
+                try:
+                    self.client.cancel_order_by_id(order_id)
+                    log_event("entry_give_up_cancel_sent", symbol, order_id=order_id)
+                except Exception as e:
+                    log_event("entry_give_up_cancel_failed", symbol, order_id=order_id, error=str(e))
                 return
 
             old_order_id = p.order_id
