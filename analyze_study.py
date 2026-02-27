@@ -136,7 +136,7 @@ def make_correlation_matrix(df: pd.DataFrame, output_path: str):
 def generate_report(stock_df: pd.DataFrame, trades_df: pd.DataFrame, data: list[dict]) -> str:
     """Generate the markdown analysis report."""
     lines = []
-    lines.append("# Phase 1 Behavior Study — Analysis Report")
+    lines.append("# Behavior Study — Analysis Report")
     lines.append(f"**Generated**: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}")
     lines.append(f"**Stocks analyzed**: {len(stock_df)}")
     lines.append(f"**Total trades**: {len(trades_df)}")
@@ -201,12 +201,18 @@ def generate_report(stock_df: pd.DataFrame, trades_df: pd.DataFrame, data: list[
                 )
     lines.append("")
 
+    # Add log-transformed vol_decay_ratio for better analysis
+    if "vol_decay_ratio" in stock_df.columns:
+        stock_df["vol_decay_ratio_log"] = np.log1p(stock_df["vol_decay_ratio"])
+
     # Correlations with P&L
     lines.append("---")
     lines.append("## 3. Top Features Correlated with P&L")
     lines.append("")
+    exclude_from_corr = {"vol_decay_ratio"}  # use log version instead
     numeric_cols = [c for c in stock_df.columns
-                    if stock_df[c].dtype in ("float64", "int64") and c != "net_pnl"]
+                    if stock_df[c].dtype in ("float64", "int64") and c != "net_pnl"
+                    and c not in exclude_from_corr]
     if "net_pnl" in stock_df.columns and len(numeric_cols) > 0:
         correlations = {}
         for c in numeric_cols:
@@ -264,6 +270,53 @@ def generate_report(stock_df: pd.DataFrame, trades_df: pd.DataFrame, data: list[
                 )
             lines.append("")
 
+        # Hold time breakdown
+        if "hold_time_sec" in trades_df.columns:
+            lines.append("### Hold Time vs Outcome")
+            lines.append("")
+            lines.append("| Hold Time | Trades | Avg P&L | Win Rate | Avg Peak R |")
+            lines.append("|-----------|--------|---------|----------|------------|")
+
+            def hold_bucket(x):
+                if x == 0: return "Instant (0s)"
+                elif x <= 60: return "Quick (1-60s)"
+                elif x <= 300: return "Medium (1-5m)"
+                else: return "Long (5m+)"
+
+            trades_df["_hold_bucket"] = trades_df["hold_time_sec"].apply(hold_bucket)
+            bucket_order = ["Instant (0s)", "Quick (1-60s)", "Medium (1-5m)", "Long (5m+)"]
+            for bucket in bucket_order:
+                grp = trades_df[trades_df["_hold_bucket"] == bucket]
+                if len(grp) > 0:
+                    wr = (grp["pnl"] > 0).mean() * 100
+                    peak_r = grp["peak_unrealized_r"].mean() if "peak_unrealized_r" in grp.columns else 0
+                    lines.append(f"| {bucket} | {len(grp)} | ${grp['pnl'].mean():+,.0f} | {wr:.0f}% | {peak_r:.1f}R |")
+            trades_df.drop(columns=["_hold_bucket"], inplace=True)
+            lines.append("")
+
+        # Bearish engulfing deep dive
+        be_trades = trades_df[trades_df["exit_reason"] == "bearish_engulfing_exit_full"]
+        if len(be_trades) > 0:
+            lines.append("### Bearish Engulfing Deep Dive")
+            lines.append("")
+            be_higher = be_trades[be_trades.get("high_after_exit_30m", pd.Series(dtype=float)) > be_trades["exit_price"]]
+            lines.append(f"- **BE exits**: {len(be_trades)} of {len(trades_df)} total trades ({len(be_trades)/len(trades_df)*100:.0f}%)")
+            lines.append(f"- **Stock went HIGHER within 30m after BE exit**: {len(be_higher)} ({len(be_higher)/len(be_trades)*100:.0f}%)")
+            be_wins = be_trades[be_trades["pnl"] > 0]
+            be_losses = be_trades[be_trades["pnl"] < 0]
+            if len(be_wins) > 0:
+                lines.append(f"- **Winning BE exits**: {len(be_wins)}, avg ${be_wins['pnl'].mean():+,.0f}")
+            if len(be_losses) > 0:
+                lines.append(f"- **Losing BE exits**: {len(be_losses)}, avg ${be_losses['pnl'].mean():+,.0f}")
+            if "left_on_table_pct" in be_trades.columns:
+                lot_wins = be_wins["left_on_table_pct"].dropna()
+                lot_losses = be_losses["left_on_table_pct"].dropna()
+                if len(lot_wins) > 0:
+                    lines.append(f"- **Avg left on table (BE wins)**: {lot_wins.mean():.1f}%")
+                if len(lot_losses) > 0:
+                    lines.append(f"- **Avg left on table (BE losses)**: {lot_losses.mean():.1f}%")
+            lines.append("")
+
         # Tag frequency analysis
         if "tags" in trades_df.columns:
             all_tags = {}
@@ -315,45 +368,129 @@ def generate_report(stock_df: pd.DataFrame, trades_df: pd.DataFrame, data: list[
                 )
             lines.append("")
 
-    # Stock type clustering (preliminary)
+    # Stock type clustering
     lines.append("---")
-    lines.append("## 6. Preliminary Stock Clustering")
+    lines.append("## 6. Stock Clustering")
     lines.append("")
-    if len(stock_df) >= 5:
-        # Classify by behavioral patterns
-        lines.append("### By Price Action Type (first 30 minutes)")
+
+    # --- 6A: Rule-based classification ---
+    lines.append("### 6A. Rule-Based Classification")
+    lines.append("")
+
+    classify_cols = ["new_high_count_30m", "pullback_count_30m", "green_bar_ratio_30m",
+                     "upper_wick_ratio_avg", "vol_decay_ratio", "max_consecutive_red",
+                     "pct_bars_above_vwap_30m", "pullback_depth_avg_pct"]
+    if all(c in stock_df.columns for c in classify_cols[:3]):
+        def classify_stock(row):
+            nh = row.get("new_high_count_30m", 0)
+            pb = row.get("pullback_count_30m", 0)
+            gr = row.get("green_bar_ratio_30m", 0.5)
+            uw = row.get("upper_wick_ratio_avg", 0.2)
+            vd = row.get("vol_decay_ratio", 1.0)
+            mr = row.get("max_consecutive_red", 0)
+            vwap = row.get("pct_bars_above_vwap_30m", 0.5)
+            pd_avg = row.get("pullback_depth_avg_pct", 0)
+
+            if nh >= 8 and gr >= 0.6:
+                if pb >= 4 and pd_avg >= 3:
+                    return "Cascading"
+                else:
+                    return "Smooth"
+            if vd < 0.2 and mr >= 4:
+                return "Fade"
+            if nh <= 3 and pb >= 2 and gr < 0.55:
+                return "Chop"
+            if nh <= 2 and vwap < 0.3 and uw >= 0.25:
+                return "Trap"
+            if nh >= 5:
+                return "Moderate Runner"
+            if gr >= 0.6:
+                return "Grinder"
+            return "Uncategorized"
+
+        stock_df["behavior_type"] = stock_df.apply(classify_stock, axis=1)
+
+        lines.append("| Behavior Type | Count | Avg P&L | Avg New Highs | Avg Win Rate |")
+        lines.append("|---------------|-------|---------|---------------|--------------|")
+        for btype in ["Cascading", "Smooth", "Moderate Runner", "Grinder", "Chop", "Fade", "Trap", "Uncategorized"]:
+            grp = stock_df[stock_df["behavior_type"] == btype]
+            if len(grp) > 0:
+                nh = grp["new_high_count_30m"].mean()
+                wr = grp["win_rate"].mean()
+                lines.append(f"| {btype} | {len(grp)} | ${grp['net_pnl'].mean():+,.0f} | {nh:.1f} | {wr:.0f}% |")
         lines.append("")
 
-        # Runners: many new highs, low pullback, strong green
-        runners = stock_df[
-            (stock_df.get("new_high_count_30m", pd.Series(dtype=float)) >= 10) &
-            (stock_df.get("green_bar_ratio_30m", pd.Series(dtype=float)) >= 0.6)
-        ] if "new_high_count_30m" in stock_df.columns else pd.DataFrame()
+        for btype in ["Cascading", "Smooth", "Moderate Runner", "Grinder", "Chop", "Fade", "Trap", "Uncategorized"]:
+            grp = stock_df[stock_df["behavior_type"] == btype]
+            if len(grp) > 0:
+                syms = ", ".join(grp.sort_values("net_pnl", ascending=False)["symbol"].tolist())
+                lines.append(f"- **{btype}**: {syms}")
+        lines.append("")
 
-        # Choppy: many pullbacks, low green ratio
-        choppy = stock_df[
-            (stock_df.get("pullback_count_30m", pd.Series(dtype=float)) >= 5) &
-            (stock_df.get("green_bar_ratio_30m", pd.Series(dtype=float)) < 0.55)
-        ] if "pullback_count_30m" in stock_df.columns else pd.DataFrame()
+    # --- 6B: K-Means clustering (data-driven) ---
+    lines.append("### 6B. K-Means Clustering (Data-Driven)")
+    lines.append("")
 
-        # Faders: low new highs, high upper wick
-        faders = stock_df[
-            (stock_df.get("new_high_count_30m", pd.Series(dtype=float)) <= 5) &
-            (stock_df.get("upper_wick_ratio_avg", pd.Series(dtype=float)) >= 0.3)
-        ] if "new_high_count_30m" in stock_df.columns else pd.DataFrame()
+    try:
+        from sklearn.cluster import KMeans
+        from sklearn.preprocessing import StandardScaler
 
-        lines.append(f"- **Runners** (10+ new highs, 60%+ green bars): {len(runners)} stocks")
-        if len(runners) > 0:
-            lines.append(f"  - Stocks: {', '.join(runners['symbol'].tolist())}")
-            lines.append(f"  - Avg P&L: ${runners['net_pnl'].mean():+,.0f}")
-        lines.append(f"- **Choppy** (5+ pullbacks, <55% green bars): {len(choppy)} stocks")
-        if len(choppy) > 0:
-            lines.append(f"  - Stocks: {', '.join(choppy['symbol'].tolist())}")
-            lines.append(f"  - Avg P&L: ${choppy['net_pnl'].mean():+,.0f}")
-        lines.append(f"- **Faders** (5 or fewer new highs, high upper wicks): {len(faders)} stocks")
-        if len(faders) > 0:
-            lines.append(f"  - Stocks: {', '.join(faders['symbol'].tolist())}")
-            lines.append(f"  - Avg P&L: ${faders['net_pnl'].mean():+,.0f}")
+        cluster_features = [
+            "new_high_count_30m", "pullback_count_30m", "pullback_depth_avg_pct",
+            "green_bar_ratio_30m", "max_consecutive_green", "max_consecutive_red",
+            "upper_wick_ratio_avg", "body_ratio_avg", "pct_bars_above_vwap_30m",
+            "vwap_cross_count_30m", "max_vwap_distance_pct", "price_range_30m_pct"
+        ]
+        available_features = [f for f in cluster_features if f in stock_df.columns]
+
+        cluster_df = stock_df[stock_df["total_trades"] > 0].copy()
+        X = cluster_df[available_features].fillna(0).values
+
+        if len(X) >= 10:
+            scaler = StandardScaler()
+            X_scaled = scaler.fit_transform(X)
+
+            n_clusters = min(5, len(X) // 5)
+            n_clusters = max(3, n_clusters)
+
+            kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+            cluster_df["cluster"] = kmeans.fit_predict(X_scaled)
+
+            lines.append(f"**Clustered {len(cluster_df)} stocks into {n_clusters} groups** using: {', '.join(available_features)}")
+            lines.append("")
+            lines.append("| Cluster | Count | Avg P&L | Avg New Highs | Avg Pullbacks | Avg Green Ratio | Avg VWAP Dist |")
+            lines.append("|---------|-------|---------|---------------|---------------|-----------------|---------------|")
+
+            for c in sorted(cluster_df["cluster"].unique()):
+                grp = cluster_df[cluster_df["cluster"] == c]
+                nh = grp["new_high_count_30m"].mean() if "new_high_count_30m" in grp.columns else 0
+                pb = grp["pullback_count_30m"].mean() if "pullback_count_30m" in grp.columns else 0
+                gr = grp["green_bar_ratio_30m"].mean() if "green_bar_ratio_30m" in grp.columns else 0
+                vd = grp["max_vwap_distance_pct"].mean() if "max_vwap_distance_pct" in grp.columns else 0
+                lines.append(f"| {c} | {len(grp)} | ${grp['net_pnl'].mean():+,.0f} | {nh:.1f} | {pb:.1f} | {gr:.2f} | {vd:.1f}% |")
+            lines.append("")
+
+            for c in sorted(cluster_df["cluster"].unique()):
+                grp = cluster_df[cluster_df["cluster"] == c]
+                syms = ", ".join(grp.sort_values("net_pnl", ascending=False)["symbol"].tolist())
+                lines.append(f"- **Cluster {c}**: {syms}")
+            lines.append("")
+
+            lines.append("**Cluster-Differentiating Features** (highest variance across cluster means):")
+            lines.append("")
+            cluster_means = cluster_df.groupby("cluster")[available_features].mean()
+            feature_variance = cluster_means.var()
+            top_features = feature_variance.sort_values(ascending=False).head(5)
+            for feat, var in top_features.items():
+                vals = " | ".join([f"C{c}={cluster_means.loc[c, feat]:.2f}" for c in sorted(cluster_df["cluster"].unique())])
+                lines.append(f"- `{feat}`: {vals}")
+            lines.append("")
+        else:
+            lines.append("Not enough stocks with trades for K-means clustering (need 10+)")
+            lines.append("")
+
+    except ImportError:
+        lines.append("sklearn not available — install with `pip install scikit-learn` for K-means clustering")
         lines.append("")
 
     # Volume profile
@@ -365,13 +502,27 @@ def generate_report(stock_df: pd.DataFrame, trades_df: pd.DataFrame, data: list[
         lines.append("")
         lines.append("| Volume Decay Bucket | Stocks | Avg P&L | Avg New Highs |")
         lines.append("|---------------------|--------|---------|---------------|")
-        stock_df["_vd_bucket"] = pd.cut(stock_df["vol_decay_ratio"],
-                                         bins=[0, 0.3, 0.6, 1.0, 10],
-                                         labels=["Heavy decay (<0.3)", "Moderate (0.3-0.6)",
-                                                  "Steady (0.6-1.0)", "Increasing (>1.0)"])
-        for bucket, grp in stock_df.groupby("_vd_bucket", observed=True):
-            nh = grp["new_high_count_30m"].mean() if "new_high_count_30m" in grp.columns else 0
-            lines.append(f"| {bucket} | {len(grp)} | ${grp['net_pnl'].mean():+,.0f} | {nh:.1f} |")
+
+        def vd_bucket(x):
+            if x < 0.3:
+                return "Heavy decay (<0.3)"
+            elif x < 0.6:
+                return "Moderate (0.3-0.6)"
+            elif x < 1.0:
+                return "Steady (0.6-1.0)"
+            elif x < 10:
+                return "Increasing (1.0-10)"
+            else:
+                return "Late starter (>10)"
+
+        stock_df["_vd_bucket"] = stock_df["vol_decay_ratio"].apply(vd_bucket)
+        bucket_order = ["Heavy decay (<0.3)", "Moderate (0.3-0.6)", "Steady (0.6-1.0)",
+                        "Increasing (1.0-10)", "Late starter (>10)"]
+        for bucket in bucket_order:
+            grp = stock_df[stock_df["_vd_bucket"] == bucket]
+            if len(grp) > 0:
+                nh = grp["new_high_count_30m"].mean() if "new_high_count_30m" in grp.columns else 0
+                lines.append(f"| {bucket} | {len(grp)} | ${grp['net_pnl'].mean():+,.0f} | {nh:.1f} |")
         stock_df.drop(columns=["_vd_bucket"], inplace=True)
         lines.append("")
 
