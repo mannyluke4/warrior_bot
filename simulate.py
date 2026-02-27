@@ -545,6 +545,82 @@ class BehaviorMetrics:
     def _first_n_bars(self, n: int) -> list[dict]:
         return self._bars[:n]
 
+    def snapshot_at(self, minutes: int) -> dict:
+        """Return classifier-ready metrics from the first N minutes of bars.
+
+        Recomputes everything on the truncated subset so the classifier
+        sees ONLY what it would see in real-time.
+        """
+        bars = self._bars[:minutes]
+        if not bars:
+            return {
+                "new_high_count": 0, "pullback_count": 0,
+                "pullback_depth_avg_pct": 0, "green_bar_ratio": 0,
+                "max_vwap_distance_pct": 0, "price_range_pct": 0,
+                "vol_total": 0,
+            }
+
+        # New-high count (close > all prior closes)
+        nh_count = 0
+        for i, b in enumerate(bars):
+            prior = [bb["c"] for bb in bars[:i]]
+            if not prior or b["c"] > max(prior):
+                nh_count += 1
+
+        # Pullback detection on the subset
+        running_high = 0.0
+        in_pb = False
+        pb_start_high = 0.0
+        pb_low = 0.0
+        pullbacks: list[float] = []
+        for b in bars:
+            if b["h"] > running_high:
+                running_high = b["h"]
+            if running_high > 0:
+                drop = (running_high - b["l"]) / running_high * 100
+                if not in_pb and drop > 0.3:
+                    in_pb = True
+                    pb_start_high = running_high
+                    pb_low = b["l"]
+                elif in_pb:
+                    pb_low = min(pb_low, b["l"])
+                    if b["c"] > pb_start_high:
+                        depth = (pb_start_high - pb_low) / pb_start_high * 100
+                        pullbacks.append(depth)
+                        in_pb = False
+
+        pb_count = len(pullbacks)
+        pb_depth_avg = statistics.mean(pullbacks) if pullbacks else 0
+
+        # Green bar ratio
+        greens = sum(1 for b in bars if b["c"] >= b["o"])
+        green_ratio = greens / len(bars)
+
+        # Price range
+        hi = max(b["h"] for b in bars)
+        lo = min(b["l"] for b in bars)
+        range_pct = (hi - lo) / lo * 100 if lo > 0 else 0
+
+        # VWAP distance
+        max_vwap_dist = 0
+        for b in bars:
+            if b.get("vwap", 0) > 0:
+                dist = abs(b["c"] - b["vwap"]) / b["vwap"] * 100
+                max_vwap_dist = max(max_vwap_dist, dist)
+
+        # Volume
+        vol_total = sum(b["v"] for b in bars)
+
+        return {
+            "new_high_count": nh_count,
+            "pullback_count": pb_count,
+            "pullback_depth_avg_pct": round(pb_depth_avg, 2),
+            "green_bar_ratio": round(green_ratio, 2),
+            "max_vwap_distance_pct": round(max_vwap_dist, 2),
+            "price_range_pct": round(range_pct, 2),
+            "vol_total": int(vol_total),
+        }
+
     def to_dict(self) -> dict:
         bars_30m = self._first_n_bars(30)
         if not bars_30m:
@@ -913,6 +989,10 @@ def run_simulation(
     _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
     _reentry_cooldown_bars = int(os.getenv("WB_REENTRY_COOLDOWN_BARS", "5"))
 
+    # Classifier settings (gated OFF by default)
+    _classifier_enabled = os.getenv("WB_CLASSIFIER_ENABLED", "0") == "1"
+    _classifier_reclass = os.getenv("WB_CLASSIFIER_RECLASS_ENABLED", "1") == "1"
+
     # 3-tranche exit scaling
     _3tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
     _scale_t1 = float(os.getenv("WB_SCALE_T1", "0.40"))
@@ -1026,6 +1106,21 @@ def run_simulation(
 
     # ── Behavior metrics (for --export-json study) ──
     _bm = BehaviorMetrics(start_et_str) if export_json else None
+
+    # ── Classifier (Phase 2) — gated off by default ──
+    _clf = None
+    _clf_result = None
+    _clf_1m_count = 0
+    _clf_reclassed_10 = False
+    _clf_reclassed_15 = False
+    if _classifier_enabled:
+        from classifier import StockClassifier
+        _clf = StockClassifier()
+        # Need behavior metrics for snapshot_at — enable _bm if not already
+        if _bm is None:
+            _bm = BehaviorMetrics(start_et_str)
+        if verbose:
+            print("  Classifier: ENABLED", flush=True)
 
     # ── L2 data (optional) ──
     l2_snapshots = []
@@ -1203,10 +1298,22 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                     else:
-                        sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                        if verbose:
-                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
-                        return
+                        # Classifier TW suppression (skip in signal mode — exits enable cascading)
+                        _tw_clf_ok = True
+                        if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
+                            _tw_sup = _clf_result.exit_profile["suppress_tw_under_r"]
+                            if _tw_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
+                                _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
+                                if _cur_r < _tw_sup:
+                                    _tw_clf_ok = False
+                                    if verbose:
+                                        print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                              f"{_cur_r:.1f}R < {_tw_sup}R) @ {bar.close:.4f}", flush=True)
+                        if _tw_clf_ok:
+                            sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+                            if verbose:
+                                print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                            return
 
             # Bearish engulfing exit on 10s bars (with time + parabolic grace)
             if _exit_on_bear_engulf and prev is not None:
@@ -1231,9 +1338,21 @@ def run_simulation(
                                 if verbose:
                                     print(f"  [{time_str}] BE_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                             else:
-                                sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
-                                if verbose:
-                                    print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
+                                # Classifier BE suppression (skip in signal mode — exits enable cascading)
+                                _be_clf_ok = True
+                                if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_be_under_r") is not None:
+                                    _be_sup = _clf_result.exit_profile["suppress_be_under_r"]
+                                    if _be_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
+                                        _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
+                                        if _cur_r < _be_sup:
+                                            _be_clf_ok = False
+                                            if verbose:
+                                                print(f"  [{time_str}] BE_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                                      f"{_cur_r:.1f}R < {_be_sup}R) @ {bar.close:.4f}", flush=True)
+                                if _be_clf_ok:
+                                    sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
+                                    if verbose:
+                                        print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
 
             # Parabolic exhaustion trim signal
             if _parabolic_det is not None and _parabolic_det.should_trim():
@@ -1269,6 +1388,36 @@ def run_simulation(
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
 
+            # ── Classifier: run at 5m, reclassify at 10m/15m ──
+            nonlocal _clf_result, _clf_1m_count, _clf_reclassed_10, _clf_reclassed_15
+            if _clf is not None and _bm is not None:
+                _clf_1m_count += 1
+                if _clf_1m_count == 5 and _clf_result is None:
+                    snap = _bm.snapshot_at(5)
+                    _clf_result = _clf.classify(snap, minutes=5)
+                    if verbose or _clf_result.behavior_type == "avoid":
+                        print(f"  [{time_str}] CLASSIFIER: {symbol} → {_clf_result.behavior_type} "
+                              f"(conf={_clf_result.confidence:.2f}) — {_clf_result.reasoning}", flush=True)
+                elif _classifier_reclass and _clf_result is not None:
+                    if _clf_1m_count == 10 and not _clf_reclassed_10:
+                        snap = _bm.snapshot_at(10)
+                        new_r = _clf.reclassify(snap, _clf_result, minutes=10)
+                        if new_r.behavior_type != _clf_result.behavior_type:
+                            if verbose:
+                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
+                                      f"→ {new_r.behavior_type}", flush=True)
+                        _clf_result = new_r
+                        _clf_reclassed_10 = True
+                    elif _clf_1m_count == 15 and not _clf_reclassed_15:
+                        snap = _bm.snapshot_at(15)
+                        new_r = _clf.reclassify(snap, _clf_result, minutes=15)
+                        if new_r.behavior_type != _clf_result.behavior_type:
+                            if verbose:
+                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
+                                      f"→ {new_r.behavior_type}", flush=True)
+                        _clf_result = new_r
+                        _clf_reclassed_15 = True
+
             # Topping wicky exit after 1m bar close (with grace period after entry)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
@@ -1284,9 +1433,21 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
                 if _tw_profit_ok:
-                    sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                    if verbose:
-                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                    # Classifier TW suppression check (skip in signal mode — exits enable cascading)
+                    _tw_clf_ok = True
+                    if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
+                        _tw_sup_r = _clf_result.exit_profile["suppress_tw_under_r"]
+                        if _tw_sup_r > 0 and sim_mgr.open_trade.r > 0:
+                            _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
+                            if _cur_r < _tw_sup_r:
+                                _tw_clf_ok = False
+                                if verbose:
+                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                          f"{_cur_r:.1f}R < {_tw_sup_r}R) @ {bar.close:.4f}", flush=True)
+                    if _tw_clf_ok:
+                        sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+                        if verbose:
+                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
 
             # L2 exit signal
             if (sim_mgr.open_trade is not None
@@ -1462,6 +1623,35 @@ def run_simulation(
             if _bm is not None:
                 _bm.on_1m_bar(o, h, l, c, v, time_str, vwap)
 
+            # ── Classifier: run at 5m, reclassify at 10m/15m (bar mode) ──
+            if _clf is not None and _bm is not None:
+                _clf_1m_count += 1
+                if _clf_1m_count == 5 and _clf_result is None:
+                    snap = _bm.snapshot_at(5)
+                    _clf_result = _clf.classify(snap, minutes=5)
+                    if verbose or _clf_result.behavior_type == "avoid":
+                        print(f"  [{time_str}] CLASSIFIER: {symbol} → {_clf_result.behavior_type} "
+                              f"(conf={_clf_result.confidence:.2f}) — {_clf_result.reasoning}", flush=True)
+                elif _classifier_reclass and _clf_result is not None:
+                    if _clf_1m_count == 10 and not _clf_reclassed_10:
+                        snap = _bm.snapshot_at(10)
+                        new_r = _clf.reclassify(snap, _clf_result, minutes=10)
+                        if new_r.behavior_type != _clf_result.behavior_type:
+                            if verbose:
+                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
+                                      f"→ {new_r.behavior_type}", flush=True)
+                        _clf_result = new_r
+                        _clf_reclassed_10 = True
+                    elif _clf_1m_count == 15 and not _clf_reclassed_15:
+                        snap = _bm.snapshot_at(15)
+                        new_r = _clf.reclassify(snap, _clf_result, minutes=15)
+                        if new_r.behavior_type != _clf_result.behavior_type:
+                            if verbose:
+                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
+                                      f"→ {new_r.behavior_type}", flush=True)
+                        _clf_result = new_r
+                        _clf_reclassed_15 = True
+
             # Decrement stop-hit re-entry cooldown
             sim_mgr.on_bar_close_1m_cooldown()
 
@@ -1480,9 +1670,21 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {c:.4f}", flush=True)
                 if _tw_profit_ok:
-                    sim_mgr.on_exit_signal("topping_wicky", c, time_str)
-                    if verbose:
-                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
+                    # Classifier TW suppression
+                    _tw_clf_ok = True
+                    if _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
+                        _tw_sup_r = _clf_result.exit_profile["suppress_tw_under_r"]
+                        if _tw_sup_r > 0 and sim_mgr.open_trade.r > 0:
+                            _cur_r = (c - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
+                            if _cur_r < _tw_sup_r:
+                                _tw_clf_ok = False
+                                if verbose:
+                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                          f"{_cur_r:.1f}R < {_tw_sup_r}R) @ {c:.4f}", flush=True)
+                    if _tw_clf_ok:
+                        sim_mgr.on_exit_signal("topping_wicky", c, time_str)
+                        if verbose:
+                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
 
             # L2 exit signal
             if (sim_mgr.open_trade is not None
@@ -1616,6 +1818,17 @@ def run_simulation(
             "reentry_cooldown_bars": _reentry_cooldown_bars,
             "min_tags": int(os.getenv("WB_MIN_TAGS", "1")),
         }
+        # Include classifier output if available
+        if _clf_result is not None:
+            config["classifier"] = {
+                "behavior_type": _clf_result.behavior_type,
+                "confidence": _clf_result.confidence,
+                "reasoning": _clf_result.reasoning,
+                "classification_time_minutes": _clf_result.classification_time_minutes,
+                "exit_profile": _clf_result.exit_profile,
+            }
+            if _clf_result.previous_classifications:
+                config["classifier"]["reclassification_history"] = _clf_result.previous_classifications
         export_study_json(
             symbol=symbol,
             date_str=date_str,
