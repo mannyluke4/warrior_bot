@@ -101,10 +101,13 @@ class StockClassifier:
 
     def __init__(self):
         # Gate thresholds (env-configurable)
-        self.vwap_gate = float(os.getenv("WB_CLASSIFIER_VWAP_GATE", "5"))
+        self.vwap_gate = float(os.getenv("WB_CLASSIFIER_VWAP_GATE", "7"))
         self.range_gate = float(os.getenv("WB_CLASSIFIER_RANGE_GATE", "10"))
         self.nh_gate = int(os.getenv("WB_CLASSIFIER_NH_GATE", "2"))
         self.reclass_enabled = os.getenv("WB_CLASSIFIER_RECLASS_ENABLED", "1") == "1"
+        # Per-type VWAP minimums
+        self.casc_vwap_min = float(os.getenv("WB_CLASSIFIER_CASC_VWAP_MIN", "8"))
+        self.smooth_vwap_min = float(os.getenv("WB_CLASSIFIER_SMOOTH_VWAP_MIN", "10"))
 
     # ── Main classify method ────────────────────────────────────────
 
@@ -148,13 +151,13 @@ class StockClassifier:
 
         # ── Stage 2: Behavior classification ────────────────────────
 
-        # CASCADING: lots of new highs + pullbacks + meaningful depth
-        if nh >= 6 and pb >= 3 and pb_depth >= 2:
+        # CASCADING: lots of new highs + pullbacks + meaningful depth + VWAP floor
+        if nh >= 6 and pb >= 3 and pb_depth >= 2 and vwap_dist >= self.casc_vwap_min:
             btype = "cascading"
             conf = min(1.0, 0.6 + (nh - 6) * 0.05 + (pb - 3) * 0.05)
             reasons.append(
                 f"Cascading: {nh} new highs, {pb} pullbacks, "
-                f"{pb_depth:.1f}% avg depth"
+                f"{pb_depth:.1f}% avg depth, VWAP {vwap_dist:.1f}%"
             )
 
         # ONE BIG MOVE: extreme VWAP dist + huge range
@@ -166,13 +169,13 @@ class StockClassifier:
                 f"range {price_range:.1f}%"
             )
 
-        # SMOOTH TREND: new highs, few pullbacks, mostly green
-        elif nh >= 3 and pb <= 1 and green_ratio >= 0.6:
+        # SMOOTH TREND: new highs, few pullbacks, mostly green + VWAP floor
+        elif nh >= 3 and pb <= 1 and green_ratio >= 0.6 and vwap_dist >= self.smooth_vwap_min:
             btype = "smooth_trend"
             conf = min(1.0, 0.5 + nh * 0.05 + green_ratio * 0.2)
             reasons.append(
                 f"Smooth trend: {nh} new highs, {pb} pullbacks, "
-                f"green ratio {green_ratio:.2f}"
+                f"green ratio {green_ratio:.2f}, VWAP {vwap_dist:.1f}%"
             )
 
         # CHOPPY: deep pullbacks, mixed direction

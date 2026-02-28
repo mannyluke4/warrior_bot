@@ -1,109 +1,109 @@
-symbol,date,actual_pnl,total_trades,win_rate,classifier_type,classifier_confidence,classifier_reasoning,actual_best_type,match,be_exits,be_went_higher,be_suppressed_gain,nh,pb,vwap_dist,range_pct,vol
-AAOI,2026-02-18,-414.8,1,0.0,smooth_trend,0.8,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.77",should_have_avoided,False,0,0,0.0,3,1,0.67,1.6,7577
-AAOI,2026-02-27,-1950.35,3,0.0,cascading,0.8,"Cascading: 8 new highs, 5 pullbacks, 6.4% avg depth",smooth_trend_clipped,False,0,0,0.0,8,5,8.79,18.61,7242429
-ACCL,2026-01-16,-1071.85,2,0.0,one_big_move,0.6,"One big move: VWAP dist 20.2%, range 79.7%",choppy,False,0,0,0.0,6,2,20.2,79.69,2850697
-ACON,2026-01-06,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.87, VWAP=4.8%, range=12.7%",no_trade,False,0,0,0.0,1,0,4.79,12.68,3233
-ACON,2026-01-08,-2121.61,3,0.0,early_bird,0.5,"Early bird: VWAP dist 9.6%, vol 4,420,273",choppy,False,0,0,0.0,4,2,9.57,18.76,4420273
-ACON,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.3% < 5.0%, range 4.1% < 10.0%, NH 0 < 2",no_trade,True,0,0,0.0,0,0,3.33,4.08,13248
-ACON,2026-02-13,38.46,1,100.0,avoid,0.85,"AVOID gate: VWAP dist 4.8% < 5.0%, range 5.9% < 10.0%, NH 0 < 2",mixed,False,0,0,0.0,0,0,4.8,5.91,3414
-AEVA,2026-02-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.4% < 5.0%, range 8.7% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,3.37,8.71,420202
-AGIG,2026-02-27,0,0,0,smooth_trend,1.0,"Smooth trend: 9 new highs, 0 pullbacks, green ratio 0.67",no_trade,False,0,0,0.0,9,0,4.63,12.6,145630
-ALMS,2026-01-06,3406.64,4,75.0,one_big_move,0.72,"One big move: VWAP dist 32.1%, range 105.0%",cascading,False,0,0,0.0,0,0,32.1,104.99,4644071
-ALMS,2026-01-09,-1154.02,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 2.1% < 5.0%, range 5.7% < 10.0%, NH 1 < 2",should_have_avoided,True,0,0,0.0,1,1,2.12,5.66,27893
-ALMS,2026-01-16,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 0.5% < 5.0%, range 5.3% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,0.45,5.28,13609
-ALMS,2026-02-13,-236.11,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 1.9% < 5.0%, range 5.1% < 10.0%, NH 0 < 2",should_have_avoided,True,0,0,0.0,0,0,1.92,5.08,36820
-ANNA,2026-02-27,-1088.07,1,0.0,uncertain,0.3,"No strong pattern: NH=6, PB=2, green=0.40, VWAP=17.9%, range=68.3%",smooth_trend_clipped,False,0,0,0.0,6,2,17.85,68.33,266095
-ANPA,2026-01-06,-2729.57,2,0.0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.60, VWAP=8.6%, range=18.4%",should_have_avoided,False,0,0,0.0,0,0,8.63,18.37,1819
-ANPA,2026-01-09,2088.42,2,50.0,one_big_move,0.71,"One big move: VWAP dist 30.7%, range 136.2%",one_big_move,True,0,0,0.0,1,0,30.73,136.2,212154
-ANPA,2026-02-13,0,0,0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.57, VWAP=5.8%, range=8.5%",no_trade,False,0,0,0.0,0,0,5.81,8.46,10695
-APVO,2026-01-09,7622.28,1,100.0,early_bird,0.5,"Early bird: VWAP dist 13.2%, vol 3,941,648",one_big_move,False,0,0,0.0,1,0,13.22,58.11,3941648
-APVO,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 1.9% < 5.0%, range 9.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,1.94,9.43,8446
-ARLO,2026-02-27,-691.56,1,0.0,cascading,0.95,"Cascading: 12 new highs, 4 pullbacks, 3.7% avg depth",smooth_trend_clipped,False,0,0,0.0,12,4,4.74,9.24,969971
-AZI,2026-01-06,782.5,4,25.0,early_bird,0.5,"Early bird: VWAP dist 11.2%, vol 2,397,513",choppy,False,0,0,0.0,1,1,11.16,24.0,2397513
-AZI,2026-01-09,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.67, VWAP=2.3%, range=4.4%",no_trade,False,0,0,0.0,2,0,2.34,4.4,11796
-AZI,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.83, VWAP=4.6%, range=6.5%",no_trade,False,0,0,0.0,2,0,4.62,6.47,16040
-BATL,2026-02-18,-499.5,1,0.0,smooth_trend,0.8,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.77",should_have_avoided,False,0,0,0.0,3,1,5.92,9.49,50199
-BATL,2026-02-27,1972.29,3,100.0,cascading,1.0,"Cascading: 17 new highs, 6 pullbacks, 4.6% avg depth",cascading,True,0,0,0.0,17,6,12.75,47.36,7198728
-BCTX,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=6, PB=3, green=0.83, VWAP=3.1%, range=16.1%",no_trade,False,0,0,0.0,6,3,3.06,16.14,52410
-BCTX,2026-01-27,0.0,1,100.0,early_bird,0.5,"Early bird: VWAP dist 13.1%, vol 589,835",mixed,False,0,0,0.0,7,3,13.06,54.62,589835
-BNAI,2026-01-16,-674.18,2,0.0,smooth_trend,0.8,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.73",should_have_avoided,False,0,0,0.0,3,1,6.29,2.8,18774
-BNAI,2026-01-28,5610.35,4,50.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.50, VWAP=6.6%, range=5.2%",cascading,False,0,0,0.0,3,1,6.63,5.2,56542
-BNAI,2026-02-05,160.21,2,50.0,early_bird,0.5,"Early bird: VWAP dist 21.0%, vol 1,743,352",choppy,False,0,0,0.0,5,1,20.98,28.61,1743352
-CDIO,2026-02-27,791.46,2,50.0,early_bird,0.5,"Early bird: VWAP dist 8.6%, vol 4,129,655",mixed,False,0,0,0.0,3,1,8.62,19.19,4129655
-ELAB,2026-01-06,0,0,0,early_bird,0.5,"Early bird: VWAP dist 18.0%, vol 2,131,620",no_trade,False,0,0,0.0,0,0,18.01,59.13,2131620
-ELAB,2026-01-08,0,0,0,uncertain,0.3,"No strong pattern: NH=4, PB=2, green=0.47, VWAP=6.1%, range=6.8%",no_trade,False,0,0,0.0,4,2,6.11,6.78,131186
-ELAB,2026-01-09,0,0,0,smooth_trend,0.79,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.70",no_trade,False,0,0,0.0,3,1,3.12,4.67,11775
-ENVB,2026-02-19,474.34,1,100.0,one_big_move,0.62,"One big move: VWAP dist 22.2%, range 101.8%",mixed,False,0,0,0.0,1,0,22.2,101.79,10643274
-FEED,2026-01-09,0,0,0,early_bird,0.5,"Early bird: VWAP dist 17.3%, vol 1,822,009",no_trade,False,0,0,0.0,1,0,17.31,40.71,1822009
-FEED,2026-01-16,0,0,0,smooth_trend,0.82,"Smooth trend: 3 new highs, 0 pullbacks, green ratio 0.83",no_trade,False,0,0,0.0,3,0,1.92,4.26,13357
-FIGS,2026-02-27,-1102.58,2,0.0,cascading,0.75,"Cascading: 8 new highs, 4 pullbacks, 2.3% avg depth",smooth_trend_clipped,False,0,0,0.0,8,4,3.85,6.94,1345243
-FLYX,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.8% < 5.0%, range 5.2% < 10.0%, NH 0 < 2",no_trade,True,0,0,0.0,0,0,2.76,5.25,2099
-FLYX,2026-01-08,473.2,1,100.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.80, VWAP=8.4%, range=44.1%",mixed,False,0,0,0.0,1,1,8.43,44.06,410818
-FLYX,2026-01-27,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=1, green=0.80, VWAP=1.8%, range=3.3%",no_trade,False,0,0,0.0,2,1,1.78,3.31,15922
-FLYX,2026-02-13,0,0,0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.90, VWAP=5.6%, range=6.9%",no_trade,False,0,0,0.0,0,0,5.61,6.93,6514
-GRI,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.8% < 5.0%, range 8.0% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,3.77,7.96,15451
-GRI,2026-01-28,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.0% < 5.0%, range 7.6% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,3.04,7.6,14006
-GWAV,2026-01-06,0,0,0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.77, VWAP=5.5%, range=11.1%",no_trade,False,0,0,0.0,0,0,5.54,11.14,17504
-GWAV,2026-01-16,6734.82,2,50.0,early_bird,0.5,"Early bird: VWAP dist 17.1%, vol 2,650,390",one_big_move,False,0,0,0.0,5,3,17.14,57.28,2650390
-GWAV,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.5% < 5.0%, range 4.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,2.52,4.4,3419
-GWAV,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.0% < 5.0%, range 6.1% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,1.99,6.06,3898
-HCTI,2026-02-27,0,0,0,smooth_trend,0.79,"Smooth trend: 3 new highs, 0 pullbacks, green ratio 0.70",no_trade,False,0,0,0.0,3,0,5.07,13.92,120043
-HIND,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.77, VWAP=6.1%, range=8.6%",no_trade,False,0,0,0.0,1,1,6.1,8.64,12295
-HIND,2026-01-27,1621.05,2,100.0,one_big_move,0.65,"One big move: VWAP dist 24.7%, range 153.7%",mixed,False,0,0,0.0,0,0,24.73,153.71,24355613
-HIND,2026-02-05,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=1, green=0.77, VWAP=8.0%, range=9.2%",no_trade,False,0,0,0.0,2,1,7.98,9.15,34262
-IBIO,2026-01-06,-1444.36,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.70, VWAP=5.9%, range=16.4%",choppy,False,0,0,0.0,1,1,5.89,16.41,192156
-IBIO,2026-01-08,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.5% < 5.0%, range 6.5% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,4.52,6.54,31502
-IBIO,2026-01-09,-266.64,1,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.57, VWAP=7.3%, range=19.2%",should_have_avoided,False,0,0,0.0,1,0,7.27,19.23,2136625
-INDO,2026-02-27,-486.59,2,0.0,cascading,0.85,"Cascading: 10 new highs, 4 pullbacks, 3.9% avg depth",should_have_avoided,False,0,0,0.0,10,4,6.39,16.29,334944
-KORE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=5, PB=0, green=0.57, VWAP=1.7%, range=14.4%",no_trade,False,0,0,0.0,5,0,1.73,14.44,493221
-LBGJ,2026-02-27,-110.29,2,50.0,one_big_move,0.66,"One big move: VWAP dist 26.3%, range 71.8%",smooth_trend_clipped,False,0,0,0.0,5,2,26.29,71.83,6567743
-LCFY,2026-01-16,-627.36,2,0.0,one_big_move,0.76,"One big move: VWAP dist 36.2%, range 145.0%",should_have_avoided,False,0,0,0.0,0,0,36.22,145.0,5863204
-MLEC,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 5.0% < 5.0%, range 8.8% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,4.96,8.75,12896
-MLEC,2026-01-28,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.90, VWAP=4.3%, range=10.3%",no_trade,False,0,0,0.0,1,0,4.28,10.34,2007
-MLEC,2026-02-13,173.28,4,25.0,one_big_move,0.72,"One big move: VWAP dist 32.2%, range 158.0%",mixed,False,0,0,0.0,0,0,32.21,158.0,8244860
-MNTS,2026-02-06,862.14,1,100.0,avoid,0.85,"AVOID gate: VWAP dist 3.2% < 5.0%, range 6.4% < 10.0%, NH 0 < 2",mixed,False,0,0,0.0,0,0,3.16,6.38,6374
-MOVE,2026-01-23,-156.47,1,0.0,early_bird,0.5,"Early bird: VWAP dist 19.1%, vol 1,601,953",choppy,False,0,0,0.0,2,1,19.09,18.21,1601953
-MOVE,2026-01-27,5502.4,3,66.7,cascading,0.75,"Cascading: 7 new highs, 5 pullbacks, 4.0% avg depth",cascading,True,0,0,0.0,7,5,7.4,13.62,20711
-MRM,2026-02-27,-1416.56,2,0.0,early_bird,0.5,"Early bird: VWAP dist 8.9%, vol 10,117,994",choppy,False,0,0,0.0,5,2,8.88,34.75,10117994
-NAMM,2026-02-27,0,0,0,smooth_trend,0.88,"Smooth trend: 5 new highs, 1 pullbacks, green ratio 0.67",no_trade,False,0,0,0.0,5,1,4.41,9.33,123347
-NGNE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=0, green=0.37, VWAP=10.2%, range=24.3%",no_trade,False,0,0,0.0,3,0,10.18,24.29,72584
-ONMD,2026-02-27,-2146.26,5,0.0,uncertain,0.3,"No strong pattern: NH=5, PB=2, green=0.53, VWAP=7.9%, range=50.3%",smooth_trend_clipped,False,0,0,0.0,5,2,7.92,50.28,18868783
-OPTX,2026-01-06,-78.39,2,50.0,early_bird,0.5,"Early bird: VWAP dist 11.7%, vol 3,427,597",mixed,False,0,0,0.0,0,0,11.72,33.0,3427597
-OPTX,2026-01-08,-1222.95,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 1.8% < 5.0%, range 6.5% < 10.0%, NH 0 < 2",should_have_avoided,True,0,0,0.0,0,0,1.83,6.53,9706
-OPTX,2026-01-09,-1478.68,4,50.0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.87, VWAP=3.5%, range=7.2%",mixed,False,0,0,0.0,2,0,3.48,7.16,57991
-PAVM,2026-01-16,0,0,0,smooth_trend,0.84,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.93",no_trade,False,0,0,0.0,3,1,6.32,8.39,752
-PAVM,2026-01-21,-909.96,3,33.3,one_big_move,0.61,"One big move: VWAP dist 20.9%, range 157.6%",mixed,False,0,0,0.0,1,0,20.9,157.63,2671190
-PAVM,2026-02-05,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.87, VWAP=9.3%, range=14.8%",no_trade,False,0,0,0.0,2,0,9.29,14.79,5264
-PBYI,2026-02-27,20.61,2,50.0,uncertain,0.3,"No strong pattern: NH=11, PB=4, green=0.67, VWAP=6.2%, range=9.1%",mixed,False,0,0,0.0,11,4,6.25,9.06,335948
-RBNE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=9, PB=0, green=0.57, VWAP=4.5%, range=12.3%",no_trade,False,0,0,0.0,9,0,4.52,12.34,179897
-RELY,2026-02-19,-1090.12,6,33.3,cascading,0.6,"Cascading: 6 new highs, 3 pullbacks, 2.4% avg depth",cascading,True,0,0,0.0,6,3,2.39,2.98,96234
-ROLR,2026-01-06,-1422.35,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.67, VWAP=9.8%, range=18.5%",should_have_avoided,False,0,0,0.0,1,0,9.82,18.5,42777
-ROLR,2026-01-14,1413.16,5,40.0,smooth_trend,0.8,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.73",mixed,False,0,0,0.0,3,1,15.8,174.29,2208175
-ROLR,2026-01-16,-1227.88,3,33.3,cascading,0.85,"Cascading: 9 new highs, 5 pullbacks, 4.3% avg depth",smooth_trend_clipped,False,0,0,0.0,9,5,6.94,9.82,36243
-ROLR,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.5% < 5.0%, range 4.0% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,2.46,4.0,10355
-RUN,2026-02-27,0,0,0,early_bird,0.5,"Early bird: VWAP dist 12.8%, vol 7,329,625",no_trade,False,0,0,0.0,1,0,12.77,29.06,7329625
-RVSN,2026-01-27,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.97, VWAP=5.2%, range=9.1%",no_trade,False,0,0,0.0,2,0,5.19,9.14,40198
-RVSN,2026-02-05,-1555.4,1,0.0,uncertain,0.3,"No strong pattern: NH=5, PB=2, green=0.83, VWAP=4.4%, range=11.5%",smooth_trend_clipped,False,0,0,0.0,5,2,4.36,11.5,9923
-SHPH,2026-01-09,-1032.75,1,0.0,uncertain,0.3,"No strong pattern: NH=2, PB=2, green=0.73, VWAP=7.9%, range=10.5%",should_have_avoided,False,0,0,0.0,2,2,7.92,10.47,80491
-SHPH,2026-01-16,-2610.95,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.90, VWAP=7.1%, range=20.1%",should_have_avoided,False,0,0,0.0,1,1,7.09,20.14,41858
-SLE,2026-01-23,-389.74,1,0.0,early_bird,0.5,"Early bird: VWAP dist 18.9%, vol 3,499,119",should_have_avoided,False,0,0,0.0,0,0,18.95,82.25,3499119
-SLE,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.9% < 5.0%, range 9.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,4.91,9.38,5502
-SND,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=4, PB=3, green=0.63, VWAP=6.4%, range=19.1%",no_trade,False,0,0,0.0,4,3,6.41,19.07,271613
-SNSE,2026-01-28,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.63, VWAP=6.0%, range=6.9%",no_trade,False,0,0,0.0,1,0,6.0,6.87,2511
-SNSE,2026-02-05,-543.6,1,0.0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.43, VWAP=5.5%, range=13.2%",should_have_avoided,False,0,0,0.0,0,0,5.45,13.18,7184
-SNSE,2026-02-18,87.63,2,50.0,one_big_move,0.92,"One big move: VWAP dist 51.9%, range 327.2%",mixed,False,0,0,0.0,0,0,51.91,327.17,2897423
-STKH,2026-01-16,-696.9,1,0.0,one_big_move,0.7,"One big move: VWAP dist 30.3%, range 88.2%",should_have_avoided,False,0,0,0.0,1,0,30.29,88.24,460392
-STRZ,2026-02-27,93.62,3,33.3,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.70, VWAP=7.3%, range=18.7%",mixed,False,0,0,0.0,1,1,7.33,18.72,48515
-STSS,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.57, VWAP=7.4%, range=11.1%",no_trade,False,0,0,0.0,1,0,7.36,11.11,238414
-SXTP,2026-01-27,-2077.52,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.73, VWAP=4.5%, range=12.3%",choppy,False,0,0,0.0,1,1,4.47,12.26,31652
-SXTP,2026-01-28,0,0,0,early_bird,0.5,"Early bird: VWAP dist 8.1%, vol 877,976",no_trade,False,0,0,0.0,2,1,8.05,28.81,877976
-TMDE,2026-02-27,-707.27,1,0.0,cascading,0.6,"Cascading: 6 new highs, 3 pullbacks, 7.2% avg depth",smooth_trend_clipped,False,0,0,0.0,6,3,8.05,21.18,332385
-TNMG,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.7% < 5.0%, range 7.2% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,4.73,7.22,21311
-TNMG,2026-01-16,-480.75,1,0.0,one_big_move,0.71,"One big move: VWAP dist 30.7%, range 71.7%",choppy,False,0,0,0.0,3,1,30.74,71.66,4984456
-TSSI,2026-02-27,-1115.78,1,0.0,smooth_trend,0.78,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.63",should_have_avoided,False,0,0,0.0,3,1,1.99,5.27,36111
-TWG,2026-01-20,0,0,0,cascading,1.0,"Cascading: 15 new highs, 4 pullbacks, 17.0% avg depth",no_trade,False,0,0,0.0,15,4,33.9,104.15,12255979
-VERO,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.0% < 5.0%, range 7.5% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,0,3.98,7.48,26085
-VERO,2026-01-16,6889.82,4,75.0,cascading,1.0,"Cascading: 15 new highs, 8 pullbacks, 11.9% avg depth",choppy,False,0,0,0.0,15,8,55.82,92.24,16625860
-VERO,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.0% < 5.0%, range 4.6% < 10.0%, NH 1 < 2",no_trade,True,0,0,0.0,1,1,1.97,4.61,21332
-XWEL,2026-02-27,-2948.79,4,0.0,early_bird,0.5,"Early bird: VWAP dist 11.3%, vol 6,144,668",choppy,False,0,0,0.0,2,2,11.33,20.41,6144668
-XYZ,2026-02-27,-248.45,2,0.0,uncertain,0.3,"No strong pattern: NH=4, PB=0, green=0.53, VWAP=2.5%, range=9.7%",should_have_avoided,False,0,0,0.0,4,0,2.55,9.68,9183872
+symbol,date,actual_pnl,total_trades,win_rate,classifier_type,classifier_confidence,classifier_reasoning,actual_best_type,match,be_exits,be_would_suppress,be_went_higher,be_suppress_gain,be_suppress_loss,tw_exits,tw_would_suppress,tw_suppress_gain,tw_suppress_loss,nh,pb,vwap_dist,range_pct,vol
+AAOI,2026-02-18,-414.8,1,0.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.77, VWAP=0.7%, range=1.6%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,1,0.67,1.6,7577
+AAOI,2026-02-27,-1950.35,3,0.0,cascading,0.8,"Cascading: 8 new highs, 5 pullbacks, 6.4% avg depth, VWAP 8.8%",smooth_trend_clipped,False,2,0,2,0.0,0.0,0,0,0.0,0.0,8,5,8.79,18.61,7242429
+ACCL,2026-01-16,-1071.85,2,0.0,one_big_move,0.6,"One big move: VWAP dist 20.2%, range 79.7%",choppy,False,1,1,1,710.7,0.0,0,0,0.0,0.0,6,2,20.2,79.69,2850697
+ACON,2026-01-06,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.87, VWAP=4.8%, range=12.7%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,4.79,12.68,3233
+ACON,2026-01-08,-2121.61,3,0.0,early_bird,0.5,"Early bird: VWAP dist 9.6%, vol 4,420,273",choppy,False,1,1,1,828.92,0.0,0,0,0.0,0.0,4,2,9.57,18.76,4420273
+ACON,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.3% < 7.0%, range 4.1% < 10.0%, NH 0 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,3.33,4.08,13248
+ACON,2026-02-13,38.46,1,100.0,avoid,0.85,"AVOID gate: VWAP dist 4.8% < 7.0%, range 5.9% < 10.0%, NH 0 < 2",mixed,False,0,0,0,0.0,0.0,1,0,0.0,0.0,0,0,4.8,5.91,3414
+AEVA,2026-02-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.4% < 7.0%, range 8.7% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,3.37,8.71,420202
+AGIG,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=9, PB=0, green=0.67, VWAP=4.6%, range=12.6%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,9,0,4.63,12.6,145630
+ALMS,2026-01-06,3406.64,4,75.0,one_big_move,0.72,"One big move: VWAP dist 32.1%, range 105.0%",cascading,False,3,2,3,6033.04,0.0,0,0,0.0,0.0,0,0,32.1,104.99,4644071
+ALMS,2026-01-09,-1154.02,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 2.1% < 7.0%, range 5.7% < 10.0%, NH 1 < 2",should_have_avoided,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,2.12,5.66,27893
+ALMS,2026-01-16,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 0.5% < 7.0%, range 5.3% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,0.45,5.28,13609
+ALMS,2026-02-13,-236.11,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 1.9% < 7.0%, range 5.1% < 10.0%, NH 0 < 2",should_have_avoided,True,1,0,1,0.0,0.0,0,0,0.0,0.0,0,0,1.92,5.08,36820
+ANNA,2026-02-27,-1088.07,1,0.0,uncertain,0.3,"No strong pattern: NH=6, PB=2, green=0.40, VWAP=17.9%, range=68.3%",smooth_trend_clipped,False,0,0,0,0.0,0.0,0,0,0.0,0.0,6,2,17.85,68.33,266095
+ANPA,2026-01-06,-2729.57,2,0.0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.60, VWAP=8.6%, range=18.4%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,8.63,18.37,1819
+ANPA,2026-01-09,2088.42,2,50.0,one_big_move,0.71,"One big move: VWAP dist 30.7%, range 136.2%",one_big_move,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,30.73,136.2,212154
+ANPA,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 5.8% < 7.0%, range 8.5% < 10.0%, NH 0 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,5.81,8.46,10695
+APVO,2026-01-09,7622.28,1,100.0,early_bird,0.5,"Early bird: VWAP dist 13.2%, vol 3,941,648",one_big_move,False,1,0,1,0.0,0.0,0,0,0.0,0.0,1,0,13.22,58.11,3941648
+APVO,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 1.9% < 7.0%, range 9.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,1.94,9.43,8446
+ARLO,2026-02-27,-691.56,1,0.0,uncertain,0.3,"No strong pattern: NH=12, PB=4, green=0.67, VWAP=4.7%, range=9.2%",smooth_trend_clipped,False,0,0,0,0.0,0.0,1,0,0.0,0.0,12,4,4.74,9.24,969971
+AZI,2026-01-06,782.5,4,25.0,early_bird,0.5,"Early bird: VWAP dist 11.2%, vol 2,397,513",choppy,False,4,3,2,1394.1,1912.68,0,0,0.0,0.0,1,1,11.16,24.0,2397513
+AZI,2026-01-09,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.67, VWAP=2.3%, range=4.4%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,0,2.34,4.4,11796
+AZI,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.83, VWAP=4.6%, range=6.5%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,0,4.62,6.47,16040
+BATL,2026-02-18,-499.5,1,0.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.77, VWAP=5.9%, range=9.5%",should_have_avoided,False,0,0,0,0.0,0.0,1,0,0.0,0.0,3,1,5.92,9.49,50199
+BATL,2026-02-27,1972.29,3,100.0,cascading,1.0,"Cascading: 17 new highs, 6 pullbacks, 4.6% avg depth, VWAP 12.8%",cascading,True,3,0,3,0.0,0.0,0,0,0.0,0.0,17,6,12.75,47.36,7198728
+BCTX,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=6, PB=3, green=0.83, VWAP=3.1%, range=16.1%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,6,3,3.06,16.14,52410
+BCTX,2026-01-27,0.0,1,100.0,early_bird,0.5,"Early bird: VWAP dist 13.1%, vol 589,835",mixed,False,0,0,0,0.0,0.0,0,0,0.0,0.0,7,3,13.06,54.62,589835
+BNAI,2026-01-16,-674.18,2,0.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.73, VWAP=6.3%, range=2.8%",should_have_avoided,False,2,0,2,0.0,0.0,0,0,0.0,0.0,3,1,6.29,2.8,18774
+BNAI,2026-01-28,5610.35,4,50.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.50, VWAP=6.6%, range=5.2%",cascading,False,2,0,2,0.0,0.0,1,0,0.0,0.0,3,1,6.63,5.2,56542
+BNAI,2026-02-05,160.21,2,50.0,early_bird,0.5,"Early bird: VWAP dist 21.0%, vol 1,743,352",choppy,False,2,1,2,1794.96,0.0,0,0,0.0,0.0,5,1,20.98,28.61,1743352
+CDIO,2026-02-27,791.46,2,50.0,early_bird,0.5,"Early bird: VWAP dist 8.6%, vol 4,129,655",mixed,False,2,1,1,0.0,3393.4,0,0,0.0,0.0,3,1,8.62,19.19,4129655
+ELAB,2026-01-06,0,0,0,early_bird,0.5,"Early bird: VWAP dist 18.0%, vol 2,131,620",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,18.01,59.13,2131620
+ELAB,2026-01-08,0,0,0,uncertain,0.3,"No strong pattern: NH=4, PB=2, green=0.47, VWAP=6.1%, range=6.8%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,4,2,6.11,6.78,131186
+ELAB,2026-01-09,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.70, VWAP=3.1%, range=4.7%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,1,3.12,4.67,11775
+ENVB,2026-02-19,474.34,1,100.0,one_big_move,0.62,"One big move: VWAP dist 22.2%, range 101.8%",mixed,False,1,1,1,461.52,0.0,0,0,0.0,0.0,1,0,22.2,101.79,10643274
+FEED,2026-01-09,0,0,0,early_bird,0.5,"Early bird: VWAP dist 17.3%, vol 1,822,009",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,17.31,40.71,1822009
+FEED,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=0, green=0.83, VWAP=1.9%, range=4.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,0,1.92,4.26,13357
+FIGS,2026-02-27,-1102.58,2,0.0,uncertain,0.3,"No strong pattern: NH=8, PB=4, green=0.57, VWAP=3.9%, range=6.9%",smooth_trend_clipped,False,0,0,0,0.0,0.0,0,0,0.0,0.0,8,4,3.85,6.94,1345243
+FLYX,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.8% < 7.0%, range 5.2% < 10.0%, NH 0 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,2.76,5.25,2099
+FLYX,2026-01-08,473.2,1,100.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.80, VWAP=8.4%, range=44.1%",mixed,False,0,0,0,0.0,0.0,1,0,0.0,0.0,1,1,8.43,44.06,410818
+FLYX,2026-01-27,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=1, green=0.80, VWAP=1.8%, range=3.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,1,1.78,3.31,15922
+FLYX,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 5.6% < 7.0%, range 6.9% < 10.0%, NH 0 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,5.61,6.93,6514
+GRI,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.8% < 7.0%, range 8.0% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,3.77,7.96,15451
+GRI,2026-01-28,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 3.0% < 7.0%, range 7.6% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,3.04,7.6,14006
+GWAV,2026-01-06,0,0,0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.77, VWAP=5.5%, range=11.1%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,5.54,11.14,17504
+GWAV,2026-01-16,6734.82,2,50.0,early_bird,0.5,"Early bird: VWAP dist 17.1%, vol 2,650,390",one_big_move,False,2,1,2,1033.96,0.0,0,0,0.0,0.0,5,3,17.14,57.28,2650390
+GWAV,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.5% < 7.0%, range 4.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,2.52,4.4,3419
+GWAV,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.0% < 7.0%, range 6.1% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,1.99,6.06,3898
+HCTI,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=0, green=0.70, VWAP=5.1%, range=13.9%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,0,5.07,13.92,120043
+HIND,2026-01-16,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 6.1% < 7.0%, range 8.6% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,6.1,8.64,12295
+HIND,2026-01-27,1621.05,2,100.0,one_big_move,0.65,"One big move: VWAP dist 24.7%, range 153.7%",mixed,False,2,2,2,2089.89,0.0,0,0,0.0,0.0,0,0,24.73,153.71,24355613
+HIND,2026-02-05,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=1, green=0.77, VWAP=8.0%, range=9.2%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,1,7.98,9.15,34262
+IBIO,2026-01-06,-1444.36,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.70, VWAP=5.9%, range=16.4%",choppy,False,1,0,1,0.0,0.0,0,0,0.0,0.0,1,1,5.89,16.41,192156
+IBIO,2026-01-08,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.5% < 7.0%, range 6.5% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,4.52,6.54,31502
+IBIO,2026-01-09,-266.64,1,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.57, VWAP=7.3%, range=19.2%",should_have_avoided,False,1,0,1,0.0,0.0,0,0,0.0,0.0,1,0,7.27,19.23,2136625
+INDO,2026-02-27,-486.59,2,0.0,uncertain,0.3,"No strong pattern: NH=10, PB=4, green=0.53, VWAP=6.4%, range=16.3%",should_have_avoided,False,2,0,1,0.0,0.0,0,0,0.0,0.0,10,4,6.39,16.29,334944
+KORE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=5, PB=0, green=0.57, VWAP=1.7%, range=14.4%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,5,0,1.73,14.44,493221
+LBGJ,2026-02-27,-110.29,2,50.0,one_big_move,0.66,"One big move: VWAP dist 26.3%, range 71.8%",smooth_trend_clipped,False,1,1,1,352.92,0.0,0,0,0.0,0.0,5,2,26.29,71.83,6567743
+LCFY,2026-01-16,-627.36,2,0.0,one_big_move,0.76,"One big move: VWAP dist 36.2%, range 145.0%",should_have_avoided,False,1,1,1,2130.7,0.0,1,1,2035.97,0.0,0,0,36.22,145.0,5863204
+MLEC,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 5.0% < 7.0%, range 8.8% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,4.96,8.75,12896
+MLEC,2026-01-28,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.90, VWAP=4.3%, range=10.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,4.28,10.34,2007
+MLEC,2026-02-13,173.28,4,25.0,one_big_move,0.72,"One big move: VWAP dist 32.2%, range 158.0%",mixed,False,3,2,3,8348.98,0.0,0,0,0.0,0.0,0,0,32.21,158.0,8244860
+MNTS,2026-02-06,862.14,1,100.0,avoid,0.85,"AVOID gate: VWAP dist 3.2% < 7.0%, range 6.4% < 10.0%, NH 0 < 2",mixed,False,0,0,0,0.0,0.0,1,0,0.0,0.0,0,0,3.16,6.38,6374
+MOVE,2026-01-23,-156.47,1,0.0,early_bird,0.5,"Early bird: VWAP dist 19.1%, vol 1,601,953",choppy,False,1,1,1,273.4,0.0,0,0,0.0,0.0,2,1,19.09,18.21,1601953
+MOVE,2026-01-27,5502.4,3,66.7,uncertain,0.3,"No strong pattern: NH=7, PB=5, green=0.63, VWAP=7.4%, range=13.6%",cascading,False,1,0,1,0.0,0.0,1,0,0.0,0.0,7,5,7.4,13.62,20711
+MRM,2026-02-27,-1416.56,2,0.0,early_bird,0.5,"Early bird: VWAP dist 8.9%, vol 10,117,994",choppy,False,1,1,1,631.57,0.0,0,0,0.0,0.0,5,2,8.88,34.75,10117994
+NAMM,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=5, PB=1, green=0.67, VWAP=4.4%, range=9.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,5,1,4.41,9.33,123347
+NGNE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=0, green=0.37, VWAP=10.2%, range=24.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,0,10.18,24.29,72584
+ONMD,2026-02-27,-2146.26,5,0.0,uncertain,0.3,"No strong pattern: NH=5, PB=2, green=0.53, VWAP=7.9%, range=50.3%",smooth_trend_clipped,False,4,0,4,0.0,0.0,1,0,0.0,0.0,5,2,7.92,50.28,18868783
+OPTX,2026-01-06,-78.39,2,50.0,early_bird,0.5,"Early bird: VWAP dist 11.7%, vol 3,427,597",mixed,False,1,1,1,7088.93,0.0,0,0,0.0,0.0,0,0,11.72,33.0,3427597
+OPTX,2026-01-08,-1222.95,2,0.0,avoid,0.85,"AVOID gate: VWAP dist 1.8% < 7.0%, range 6.5% < 10.0%, NH 0 < 2",should_have_avoided,True,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,1.83,6.53,9706
+OPTX,2026-01-09,-1478.68,4,50.0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.87, VWAP=3.5%, range=7.2%",mixed,False,2,0,2,0.0,0.0,1,0,0.0,0.0,2,0,3.48,7.16,57991
+PAVM,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.93, VWAP=6.3%, range=8.4%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,1,6.32,8.39,752
+PAVM,2026-01-21,-909.96,3,33.3,one_big_move,0.61,"One big move: VWAP dist 20.9%, range 157.6%",mixed,False,1,1,1,1442.79,0.0,1,0,0.0,0.0,1,0,20.9,157.63,2671190
+PAVM,2026-02-05,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.87, VWAP=9.3%, range=14.8%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,0,9.29,14.79,5264
+PBYI,2026-02-27,20.61,2,50.0,uncertain,0.3,"No strong pattern: NH=11, PB=4, green=0.67, VWAP=6.2%, range=9.1%",mixed,False,1,0,1,0.0,0.0,1,0,0.0,0.0,11,4,6.25,9.06,335948
+RBNE,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=9, PB=0, green=0.57, VWAP=4.5%, range=12.3%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,9,0,4.52,12.34,179897
+RELY,2026-02-19,-1090.12,6,33.3,uncertain,0.3,"No strong pattern: NH=6, PB=3, green=0.63, VWAP=2.4%, range=3.0%",cascading,False,3,0,3,0.0,0.0,1,0,0.0,0.0,6,3,2.39,2.98,96234
+ROLR,2026-01-06,-1422.35,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.67, VWAP=9.8%, range=18.5%",should_have_avoided,False,0,0,0,0.0,0.0,1,0,0.0,0.0,1,0,9.82,18.5,42777
+ROLR,2026-01-14,1413.16,5,40.0,smooth_trend,0.8,"Smooth trend: 3 new highs, 1 pullbacks, green ratio 0.73, VWAP 15.8%",mixed,False,4,3,4,112961.18,0.0,0,0,0.0,0.0,3,1,15.8,174.29,2208175
+ROLR,2026-01-16,-1227.88,3,33.3,uncertain,0.3,"No strong pattern: NH=9, PB=5, green=0.57, VWAP=6.9%, range=9.8%",smooth_trend_clipped,False,2,0,2,0.0,0.0,0,0,0.0,0.0,9,5,6.94,9.82,36243
+ROLR,2026-02-13,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.5% < 7.0%, range 4.0% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,2.46,4.0,10355
+RUN,2026-02-27,0,0,0,early_bird,0.5,"Early bird: VWAP dist 12.8%, vol 7,329,625",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,12.77,29.06,7329625
+RVSN,2026-01-27,0,0,0,uncertain,0.3,"No strong pattern: NH=2, PB=0, green=0.97, VWAP=5.2%, range=9.1%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,0,5.19,9.14,40198
+RVSN,2026-02-05,-1555.4,1,0.0,uncertain,0.3,"No strong pattern: NH=5, PB=2, green=0.83, VWAP=4.4%, range=11.5%",smooth_trend_clipped,False,0,0,0,0.0,0.0,0,0,0.0,0.0,5,2,4.36,11.5,9923
+SHPH,2026-01-09,-1032.75,1,0.0,uncertain,0.3,"No strong pattern: NH=2, PB=2, green=0.73, VWAP=7.9%, range=10.5%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,2,7.92,10.47,80491
+SHPH,2026-01-16,-2610.95,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.90, VWAP=7.1%, range=20.1%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,7.09,20.14,41858
+SLE,2026-01-23,-389.74,1,0.0,early_bird,0.5,"Early bird: VWAP dist 18.9%, vol 3,499,119",should_have_avoided,False,1,1,1,453.76,0.0,0,0,0.0,0.0,0,0,18.95,82.25,3499119
+SLE,2026-01-27,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.9% < 7.0%, range 9.4% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,4.91,9.38,5502
+SND,2026-02-27,0,0,0,uncertain,0.3,"No strong pattern: NH=4, PB=3, green=0.63, VWAP=6.4%, range=19.1%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,4,3,6.41,19.07,271613
+SNSE,2026-01-28,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 6.0% < 7.0%, range 6.9% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,6.0,6.87,2511
+SNSE,2026-02-05,-543.6,1,0.0,uncertain,0.3,"No strong pattern: NH=0, PB=0, green=0.43, VWAP=5.5%, range=13.2%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,5.45,13.18,7184
+SNSE,2026-02-18,87.63,2,50.0,one_big_move,0.92,"One big move: VWAP dist 51.9%, range 327.2%",mixed,False,2,2,2,1362.38,0.0,0,0,0.0,0.0,0,0,51.91,327.17,2897423
+STKH,2026-01-16,-696.9,1,0.0,one_big_move,0.7,"One big move: VWAP dist 30.3%, range 88.2%",should_have_avoided,False,1,1,0,0.0,1605.9,0,0,0.0,0.0,1,0,30.29,88.24,460392
+STRZ,2026-02-27,93.62,3,33.3,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.70, VWAP=7.3%, range=18.7%",mixed,False,2,0,2,0.0,0.0,0,0,0.0,0.0,1,1,7.33,18.72,48515
+STSS,2026-01-16,0,0,0,uncertain,0.3,"No strong pattern: NH=1, PB=0, green=0.57, VWAP=7.4%, range=11.1%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,7.36,11.11,238414
+SXTP,2026-01-27,-2077.52,2,0.0,uncertain,0.3,"No strong pattern: NH=1, PB=1, green=0.73, VWAP=4.5%, range=12.3%",choppy,False,0,0,0,0.0,0.0,1,0,0.0,0.0,1,1,4.47,12.26,31652
+SXTP,2026-01-28,0,0,0,early_bird,0.5,"Early bird: VWAP dist 8.1%, vol 877,976",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,2,1,8.05,28.81,877976
+TMDE,2026-02-27,-707.27,1,0.0,cascading,0.6,"Cascading: 6 new highs, 3 pullbacks, 7.2% avg depth, VWAP 8.1%",smooth_trend_clipped,False,0,0,0,0.0,0.0,1,0,0.0,0.0,6,3,8.05,21.18,332385
+TNMG,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.7% < 7.0%, range 7.2% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,4.73,7.22,21311
+TNMG,2026-01-16,-480.75,1,0.0,one_big_move,0.71,"One big move: VWAP dist 30.7%, range 71.7%",choppy,False,1,1,1,980.73,0.0,0,0,0.0,0.0,3,1,30.74,71.66,4984456
+TSSI,2026-02-27,-1115.78,1,0.0,uncertain,0.3,"No strong pattern: NH=3, PB=1, green=0.63, VWAP=2.0%, range=5.3%",should_have_avoided,False,0,0,0,0.0,0.0,0,0,0.0,0.0,3,1,1.99,5.27,36111
+TWG,2026-01-20,0,0,0,cascading,1.0,"Cascading: 15 new highs, 4 pullbacks, 17.0% avg depth, VWAP 33.9%",no_trade,False,0,0,0,0.0,0.0,0,0,0.0,0.0,15,4,33.9,104.15,12255979
+VERO,2026-01-06,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 4.0% < 7.0%, range 7.5% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,0,3.98,7.48,26085
+VERO,2026-01-16,6889.82,4,75.0,cascading,1.0,"Cascading: 15 new highs, 8 pullbacks, 11.9% avg depth, VWAP 55.8%",choppy,False,2,0,2,0.0,0.0,1,0,0.0,0.0,15,8,55.82,92.24,16625860
+VERO,2026-02-05,0,0,0,avoid,0.85,"AVOID gate: VWAP dist 2.0% < 7.0%, range 4.6% < 10.0%, NH 1 < 2",no_trade,True,0,0,0,0.0,0.0,0,0,0.0,0.0,1,1,1.97,4.61,21332
+XWEL,2026-02-27,-2948.79,4,0.0,early_bird,0.5,"Early bird: VWAP dist 11.3%, vol 6,144,668",choppy,False,3,3,3,2425.38,0.0,0,0,0.0,0.0,2,2,11.33,20.41,6144668
+XYZ,2026-02-27,-248.45,2,0.0,uncertain,0.3,"No strong pattern: NH=4, PB=0, green=0.53, VWAP=2.5%, range=9.7%",should_have_avoided,False,2,0,2,0.0,0.0,0,0,0.0,0.0,4,0,2.55,9.68,9183872

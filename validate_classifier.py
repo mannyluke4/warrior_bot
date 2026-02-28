@@ -107,18 +107,60 @@ def run():
         result = classifier.classify(metrics, minutes=30)
         abt = actual_best_type(data)
 
-        # Count BE exits and what happened after
-        be_exits = [t for t in trades if t.get("exit_reason") == "bearish_engulfing"]
+        # Count BE/TW exits with R-based suppression analysis
+        exit_profile = result.exit_profile
+        be_sup_r = exit_profile.get("suppress_be_under_r") or 0
+        tw_sup_r = exit_profile.get("suppress_tw_under_r") or 0
+
+        be_exits = [t for t in trades if "bearish_engulfing" in (t.get("exit_reason") or "")]
+        tw_exits = [t for t in trades if "topping_wicky" in (t.get("exit_reason") or "")]
+
         be_count = len(be_exits)
+        tw_count = len(tw_exits)
+        be_would_suppress = 0
+        tw_would_suppress = 0
         be_went_higher = 0
-        be_suppressed_pnl_gain = 0.0
+        be_suppress_gain = 0.0
+        be_suppress_loss = 0.0
+        tw_suppress_gain = 0.0
+        tw_suppress_loss = 0.0
+
         for t in be_exits:
+            exit_r = t.get("r_multiple", 0)
+            peak_r = t.get("peak_unrealized_r", 0)
+            qty = t.get("qty", 0)
+            r_val = t.get("r", 0)
             high_after = t.get("high_after_exit_30m")
-            if high_after and high_after > t["exit_price"]:
-                be_went_higher += 1
-                # Hypothetical gain if we'd held (using same qty)
-                extra = (high_after - t["exit_price"]) * t.get("qty", 0)
-                be_suppressed_pnl_gain += extra
+
+            if be_sup_r > 0 and exit_r < be_sup_r:
+                be_would_suppress += 1
+                if high_after and high_after > t["exit_price"]:
+                    be_went_higher += 1
+                    extra = (high_after - t["exit_price"]) * qty
+                    be_suppress_gain += extra
+                else:
+                    # Would have held into further loss
+                    low_after = t.get("low_after_exit_30m")
+                    if low_after and low_after < t["exit_price"]:
+                        loss = (t["exit_price"] - low_after) * qty
+                        be_suppress_loss += loss
+            else:
+                if high_after and high_after > t["exit_price"]:
+                    be_went_higher += 1
+
+        for t in tw_exits:
+            exit_r = t.get("r_multiple", 0)
+            high_after = t.get("high_after_exit_30m")
+            qty = t.get("qty", 0)
+
+            if tw_sup_r > 0 and exit_r < tw_sup_r:
+                tw_would_suppress += 1
+                if high_after and high_after > t["exit_price"]:
+                    tw_suppress_gain += (high_after - t["exit_price"]) * qty
+                else:
+                    low_after = t.get("low_after_exit_30m")
+                    if low_after and low_after < t["exit_price"]:
+                        tw_suppress_loss += (t["exit_price"] - low_after) * qty
 
         row = {
             "symbol": symbol,
@@ -134,8 +176,14 @@ def run():
                      or (result.behavior_type == "avoid" and abt == "should_have_avoided")
                      or (result.behavior_type == "avoid" and abt == "no_trade"),
             "be_exits": be_count,
+            "be_would_suppress": be_would_suppress,
             "be_went_higher": be_went_higher,
-            "be_suppressed_gain": round(be_suppressed_pnl_gain, 2),
+            "be_suppress_gain": round(be_suppress_gain, 2),
+            "be_suppress_loss": round(be_suppress_loss, 2),
+            "tw_exits": tw_count,
+            "tw_would_suppress": tw_would_suppress,
+            "tw_suppress_gain": round(tw_suppress_gain, 2),
+            "tw_suppress_loss": round(tw_suppress_loss, 2),
             "nh": sm.get("new_high_count_30m", 0),
             "pb": sm.get("pullback_count_30m", 0),
             "vwap_dist": sm.get("max_vwap_distance_pct", 0),
@@ -227,25 +275,39 @@ def generate_report(rows: list[dict]) -> str:
         lines.append("- No avoided stocks had trades (all were skipped anyway)\n")
     lines.append("")
 
-    # ── Exit profile hypothetical ────────────────────────────────────
-    lines.append("## BE Exit Suppression Hypothetical\n")
-    lines.append("For non-cascading types, what if BE exits had been suppressed?\n")
+    # ── Exit suppression hypothetical (BE + TW) ─────────────────────
+    lines.append("## Exit Suppression Hypothetical\n")
+    lines.append("For each type, what if BE/TW exits below the profile's R threshold had been suppressed?\n")
 
-    for btype in ["one_big_move", "smooth_trend", "early_bird"]:
+    for btype in ["one_big_move", "smooth_trend", "early_bird", "cascading"]:
         group = by_type.get(btype, [])
         if not group:
             continue
         profile = EXIT_PROFILES[btype]
-        min_r = profile.get("suppress_be_under_r", 0)
+        be_sup = profile.get("suppress_be_under_r", 0)
+        tw_sup = profile.get("suppress_tw_under_r", 0)
+
         total_be = sum(r["be_exits"] for r in group)
-        total_higher = sum(r["be_went_higher"] for r in group)
-        total_gain = sum(r["be_suppressed_gain"] for r in group)
-        lines.append(f"### {btype} (suppress BE under {min_r}R)")
+        total_tw = sum(r["tw_exits"] for r in group)
+        be_would = sum(r["be_would_suppress"] for r in group)
+        tw_would = sum(r["tw_would_suppress"] for r in group)
+        be_higher = sum(r["be_went_higher"] for r in group)
+        be_gain = sum(r["be_suppress_gain"] for r in group)
+        be_loss = sum(r["be_suppress_loss"] for r in group)
+        tw_gain = sum(r["tw_suppress_gain"] for r in group)
+        tw_loss = sum(r["tw_suppress_loss"] for r in group)
+        net = (be_gain - be_loss) + (tw_gain - tw_loss)
+
+        lines.append(f"### {btype} (BE < {be_sup}R, TW < {tw_sup}R)")
         lines.append(f"- Stocks: {len(group)}")
-        lines.append(f"- Total BE exits: {total_be}")
-        lines.append(f"- BE exits where stock went higher: {total_higher}")
-        lines.append(f"- Hypothetical additional P&L if held to 30m high: "
-                      f"**${total_gain:+,.0f}**")
+        lines.append(f"- **BE exits**: {total_be} total, **{be_would} would be suppressed**")
+        if be_would > 0:
+            lines.append(f"  - Of suppressed: {be_higher} stock went higher afterward")
+            lines.append(f"  - Hypothetical gain: **${be_gain:+,.0f}** / loss: **${-be_loss:,.0f}**")
+        lines.append(f"- **TW exits**: {total_tw} total, **{tw_would} would be suppressed**")
+        if tw_would > 0:
+            lines.append(f"  - Hypothetical gain: **${tw_gain:+,.0f}** / loss: **${-tw_loss:,.0f}**")
+        lines.append(f"- **Net impact**: **${net:+,.0f}**")
         lines.append("")
 
     # ── Actual best type distribution ────────────────────────────────
