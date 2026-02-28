@@ -1,0 +1,158 @@
+{
+  "symbol": "ALMS",
+  "date": "2026-02-13",
+  "sim_start": "07:00",
+  "sim_end": "12:00",
+  "config": {
+    "exit_mode": "signal",
+    "risk": 1000.0,
+    "tw_min_profit_r": 1.0,
+    "be_min_profit_r": 0.5,
+    "reentry_cooldown_bars": 5,
+    "min_tags": 1,
+    "classifier": {
+      "behavior_type": "avoid",
+      "confidence": 0.7,
+      "reasoning": "Downgraded at 15m: VWAP dist collapsed to 1.9%",
+      "classification_time_minutes": 15,
+      "exit_profile": {
+        "description": "No edge detected \u2014 skip this stock",
+        "suppress_be_under_r": null,
+        "suppress_tw_under_r": null,
+        "trail_atr_mult": null,
+        "max_re_entries": 0,
+        "re_entry_cooldown_bars": null
+      },
+      "reclassification_history": [
+        {
+          "type": "avoid",
+          "confidence": 0.85,
+          "minutes": 5
+        },
+        {
+          "type": "uncertain",
+          "confidence": 0.3,
+          "minutes": 10
+        }
+      ]
+    }
+  },
+  "fundamentals": {
+    "gap_pct": -0.767178118745832,
+    "float_shares": 66.268932,
+    "price_at_sim_start": 26.85
+  },
+  "stock_metrics": {
+    "new_high_count_30m": 0,
+    "new_high_cadence_avg_sec": 0,
+    "new_high_cadence_stdev_sec": 0,
+    "pullback_count_30m": 0,
+    "pullback_depth_avg_pct": 0,
+    "pullback_depth_max_pct": 0,
+    "pullback_recovery_avg_sec": 0,
+    "vol_spike_count_30m": 6,
+    "vol_total_30m": 36820,
+    "vol_first_5m": 358,
+    "vol_last_5m_of_30": 1645,
+    "vol_decay_ratio": 4.595,
+    "green_bar_ratio_30m": 0.73,
+    "max_consecutive_green": 18,
+    "max_consecutive_red": 3,
+    "price_range_30m_pct": 5.08,
+    "upper_wick_ratio_avg": 0.368,
+    "upper_wick_ratio_last_10m": 0.461,
+    "body_ratio_avg": 0.548,
+    "body_ratio_last_10m": 0.422,
+    "pct_bars_above_vwap_30m": 0.6,
+    "vwap_cross_count_30m": 12,
+    "max_vwap_distance_pct": 1.92,
+    "price_at_5m": 26.86,
+    "price_at_10m": 26.86,
+    "price_at_15m": 26.86,
+    "price_at_30m": 26.86,
+    "price_at_60m": 26.3,
+    "high_at_30m": null,
+    "high_at_60m": 26.86,
+    "low_at_30m": null,
+    "low_at_60m": 26.85
+  },
+  "trades": [
+    {
+      "trade_num": 1,
+      "entry_price": 27.51,
+      "entry_time": "10:22",
+      "stop": 27.19,
+      "r": 0.32,
+      "score": 12.5,
+      "score_detail": "macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1",
+      "tags": [
+        "bull_struct",
+        "vol_surge",
+        "r2g",
+        "whole"
+      ],
+      "exit_price": 27.5,
+      "exit_time": "10:36",
+      "exit_reason": "parabolic_exhaustion_exit_full",
+      "pnl": -21.81,
+      "r_multiple": -0.03,
+      "qty": 2181,
+      "hold_time_sec": 840,
+      "peak_price": 27.69,
+      "peak_time": "10:22",
+      "peak_unrealized_r": 0.56,
+      "time_to_peak_sec": 0,
+      "drawdown_from_peak_at_exit_pct": 0.69,
+      "price_1m_after_exit": 27.5,
+      "price_5m_after_exit": 27.11,
+      "price_10m_after_exit": 27.45,
+      "price_30m_after_exit": 27.8385,
+      "high_after_exit_30m": 27.99,
+      "low_after_exit_30m": 27.07,
+      "left_on_table_pct": 100
+    },
+    {
+      "trade_num": 2,
+      "entry_price": 27.99,
+      "entry_time": "11:02",
+      "stop": 27.665,
+      "r": 0.325,
+      "score": 12.0,
+      "score_detail": "macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1",
+      "tags": [
+        "bull_struct",
+        "vol_surge",
+        "r2g"
+      ],
+      "exit_price": 27.89,
+      "exit_time": "11:02",
+      "exit_reason": "bearish_engulfing_exit_full",
+      "pnl": -214.3,
+      "r_multiple": -0.31,
+      "qty": 2143,
+      "hold_time_sec": 0,
+      "peak_price": 27.99,
+      "peak_time": "",
+      "peak_unrealized_r": 0.0,
+      "time_to_peak_sec": 0,
+      "drawdown_from_peak_at_exit_pct": 0.36,
+      "price_1m_after_exit": 27.87,
+      "price_5m_after_exit": 27.7915,
+      "price_10m_after_exit": 27.745,
+      "price_30m_after_exit": 27.793,
+      "high_after_exit_30m": 28.0,
+      "low_after_exit_30m": 27.57,
+      "left_on_table_pct": 100
+    }
+  ],
+  "summary": {
+    "total_trades": 2,
+    "wins": 0,
+    "losses": 2,
+    "net_pnl": -236.11,
+    "avg_r": -0.17,
+    "win_rate": 0.0,
+    "avg_hold_time_sec": 420,
+    "total_left_on_table_pct_avg": 100
+  }
+}

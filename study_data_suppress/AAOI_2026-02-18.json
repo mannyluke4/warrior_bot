@@ -1,0 +1,125 @@
+{
+  "symbol": "AAOI",
+  "date": "2026-02-18",
+  "sim_start": "07:00",
+  "sim_end": "12:00",
+  "config": {
+    "exit_mode": "signal",
+    "risk": 1000.0,
+    "tw_min_profit_r": 1.0,
+    "be_min_profit_r": 0.5,
+    "reentry_cooldown_bars": 5,
+    "min_tags": 1,
+    "classifier": {
+      "behavior_type": "uncertain",
+      "confidence": 0.3,
+      "reasoning": "No strong pattern: NH=3, PB=0, green=0.80, VWAP=0.4%, range=0.7%",
+      "classification_time_minutes": 15,
+      "exit_profile": {
+        "description": "Unknown pattern \u2014 trade conservatively",
+        "suppress_be_under_r": 0.0,
+        "suppress_tw_under_r": 0.0,
+        "trail_atr_mult": 1.0,
+        "max_re_entries": 2,
+        "re_entry_cooldown_bars": 5
+      },
+      "reclassification_history": [
+        {
+          "type": "uncertain",
+          "confidence": 0.3,
+          "minutes": 5
+        },
+        {
+          "type": "avoid",
+          "confidence": 0.7,
+          "minutes": 10
+        }
+      ]
+    }
+  },
+  "fundamentals": {
+    "gap_pct": 62.95399515738499,
+    "float_shares": 71.693048,
+    "price_at_sim_start": 44.67
+  },
+  "stock_metrics": {
+    "new_high_count_30m": 3,
+    "new_high_cadence_avg_sec": 60,
+    "new_high_cadence_stdev_sec": 0.0,
+    "pullback_count_30m": 1,
+    "pullback_depth_avg_pct": 0.74,
+    "pullback_depth_max_pct": 0.74,
+    "pullback_recovery_avg_sec": 3180,
+    "vol_spike_count_30m": 7,
+    "vol_total_30m": 7577,
+    "vol_first_5m": 59,
+    "vol_last_5m_of_30": 1899,
+    "vol_decay_ratio": 32.186,
+    "green_bar_ratio_30m": 0.77,
+    "max_consecutive_green": 7,
+    "max_consecutive_red": 2,
+    "price_range_30m_pct": 1.6,
+    "upper_wick_ratio_avg": 0.105,
+    "upper_wick_ratio_last_10m": 0.266,
+    "body_ratio_avg": 0.839,
+    "body_ratio_last_10m": 0.567,
+    "pct_bars_above_vwap_30m": 0.43,
+    "vwap_cross_count_30m": 6,
+    "max_vwap_distance_pct": 0.67,
+    "price_at_5m": 44.6,
+    "price_at_10m": 44.51,
+    "price_at_15m": 44.7,
+    "price_at_30m": 44.4,
+    "price_at_60m": 44.6,
+    "high_at_30m": 44.71,
+    "high_at_60m": 44.71,
+    "low_at_30m": 44.5,
+    "low_at_60m": 44.38
+  },
+  "trades": [
+    {
+      "trade_num": 1,
+      "entry_price": 44.095,
+      "entry_time": "10:12",
+      "stop": 43.79,
+      "r": 0.305,
+      "score": 11.0,
+      "score_detail": "macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1",
+      "tags": [
+        "bull_struct",
+        "vol_surge",
+        "r2g",
+        "whole"
+      ],
+      "exit_price": 43.79,
+      "exit_time": "10:19",
+      "exit_reason": "stop_hit",
+      "pnl": -414.8,
+      "r_multiple": -1.0,
+      "qty": 1360,
+      "hold_time_sec": 420,
+      "peak_price": 44.21,
+      "peak_time": "10:14",
+      "peak_unrealized_r": 0.38,
+      "time_to_peak_sec": 120,
+      "drawdown_from_peak_at_exit_pct": 0.95,
+      "price_1m_after_exit": 43.7901,
+      "price_5m_after_exit": 43.965,
+      "price_10m_after_exit": 43.92,
+      "price_30m_after_exit": 44.08,
+      "high_after_exit_30m": 44.2,
+      "low_after_exit_30m": 43.75,
+      "left_on_table_pct": 100
+    }
+  ],
+  "summary": {
+    "total_trades": 1,
+    "wins": 0,
+    "losses": 1,
+    "net_pnl": -414.8,
+    "avg_r": -1.0,
+    "win_rate": 0.0,
+    "avg_hold_time_sec": 420,
+    "total_left_on_table_pct_avg": 100
+  }
+}

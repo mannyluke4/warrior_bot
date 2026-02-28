@@ -1,16 +1,17 @@
 #!/bin/bash
 # run_study_classifier.sh — Run full study with classifier enabled
 # Re-runs the same stocks from study_data/ with classifier ON
-# Outputs to study_data_classifier/ to preserve baseline
+# Outputs to study_data_classifier/ (or STUDY_OUTPUT_DIR) to preserve baseline
 
 set -euo pipefail
 
-export WB_CLASSIFIER_ENABLED=1
-export WB_CLASSIFIER_VWAP_GATE=7
-export WB_CLASSIFIER_CASC_VWAP_MIN=8
-export WB_CLASSIFIER_SMOOTH_VWAP_MIN=10
+export WB_CLASSIFIER_ENABLED=${WB_CLASSIFIER_ENABLED:-1}
+export WB_CLASSIFIER_VWAP_GATE=${WB_CLASSIFIER_VWAP_GATE:-7}
+export WB_CLASSIFIER_CASC_VWAP_MIN=${WB_CLASSIFIER_CASC_VWAP_MIN:-8}
+export WB_CLASSIFIER_SMOOTH_VWAP_MIN=${WB_CLASSIFIER_SMOOTH_VWAP_MIN:-10}
+export WB_CLASSIFIER_SUPPRESS_ENABLED=${WB_CLASSIFIER_SUPPRESS_ENABLED:-0}
 
-OUT_DIR="study_data_classifier"
+OUT_DIR="${STUDY_OUTPUT_DIR:-study_data_classifier}"
 mkdir -p "$OUT_DIR"
 
 TOTAL=0

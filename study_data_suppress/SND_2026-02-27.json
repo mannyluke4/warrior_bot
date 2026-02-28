@@ -1,0 +1,90 @@
+{
+  "symbol": "SND",
+  "date": "2026-02-27",
+  "sim_start": "09:00",
+  "sim_end": "12:00",
+  "config": {
+    "exit_mode": "signal",
+    "risk": 1000.0,
+    "tw_min_profit_r": 1.0,
+    "be_min_profit_r": 0.5,
+    "reentry_cooldown_bars": 5,
+    "min_tags": 1,
+    "classifier": {
+      "behavior_type": "uncertain",
+      "confidence": 0.3,
+      "reasoning": "No strong pattern: NH=8, PB=5, green=0.80, VWAP=5.9%, range=15.4%",
+      "classification_time_minutes": 15,
+      "exit_profile": {
+        "description": "Unknown pattern \u2014 trade conservatively",
+        "suppress_be_under_r": 0.0,
+        "suppress_tw_under_r": 0.0,
+        "trail_atr_mult": 1.0,
+        "max_re_entries": 2,
+        "re_entry_cooldown_bars": 5
+      },
+      "reclassification_history": [
+        {
+          "type": "uncertain",
+          "confidence": 0.3,
+          "minutes": 5
+        },
+        {
+          "type": "cascading",
+          "confidence": 0.55,
+          "minutes": 10
+        }
+      ]
+    }
+  },
+  "fundamentals": {
+    "gap_pct": 2.7559055118110174,
+    "float_shares": 27.332874,
+    "price_at_sim_start": 4.5357
+  },
+  "stock_metrics": {
+    "new_high_count_30m": 4,
+    "new_high_cadence_avg_sec": 580,
+    "new_high_cadence_stdev_sec": 346.4,
+    "pullback_count_30m": 3,
+    "pullback_depth_avg_pct": 3.2,
+    "pullback_depth_max_pct": 4.5,
+    "pullback_recovery_avg_sec": 440,
+    "vol_spike_count_30m": 8,
+    "vol_total_30m": 271613,
+    "vol_first_5m": 2289,
+    "vol_last_5m_of_30": 15322,
+    "vol_decay_ratio": 6.694,
+    "green_bar_ratio_30m": 0.63,
+    "max_consecutive_green": 5,
+    "max_consecutive_red": 3,
+    "price_range_30m_pct": 19.07,
+    "upper_wick_ratio_avg": 0.197,
+    "upper_wick_ratio_last_10m": 0.183,
+    "body_ratio_avg": 0.603,
+    "body_ratio_last_10m": 0.494,
+    "pct_bars_above_vwap_30m": 0.8,
+    "vwap_cross_count_30m": 1,
+    "max_vwap_distance_pct": 6.41,
+    "price_at_5m": 4.67,
+    "price_at_10m": 4.67,
+    "price_at_15m": 4.6,
+    "price_at_30m": 4.89,
+    "price_at_60m": 5.036,
+    "high_at_30m": 4.89,
+    "high_at_60m": 5.2865,
+    "low_at_30m": 4.44,
+    "low_at_60m": 4.44
+  },
+  "trades": [],
+  "summary": {
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "net_pnl": 0,
+    "avg_r": 0,
+    "win_rate": 0,
+    "avg_hold_time_sec": 0,
+    "total_left_on_table_pct_avg": 0
+  }
+}

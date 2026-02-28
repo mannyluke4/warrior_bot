@@ -1,0 +1,153 @@
+{
+  "symbol": "OPTX",
+  "date": "2026-01-08",
+  "sim_start": "07:00",
+  "sim_end": "12:00",
+  "config": {
+    "exit_mode": "signal",
+    "risk": 1000.0,
+    "tw_min_profit_r": 1.0,
+    "be_min_profit_r": 0.5,
+    "reentry_cooldown_bars": 5,
+    "min_tags": 1,
+    "classifier": {
+      "behavior_type": "uncertain",
+      "confidence": 0.3,
+      "reasoning": "No strong pattern: NH=3, PB=0, green=1.00, VWAP=1.8%, range=6.5%",
+      "classification_time_minutes": 15,
+      "exit_profile": {
+        "description": "Unknown pattern \u2014 trade conservatively",
+        "suppress_be_under_r": 0.0,
+        "suppress_tw_under_r": 0.0,
+        "trail_atr_mult": 1.0,
+        "max_re_entries": 2,
+        "re_entry_cooldown_bars": 5
+      },
+      "reclassification_history": [
+        {
+          "type": "uncertain",
+          "confidence": 0.3,
+          "minutes": 5
+        },
+        {
+          "type": "avoid",
+          "confidence": 0.7,
+          "minutes": 10
+        }
+      ]
+    }
+  },
+  "fundamentals": {
+    "gap_pct": -1.6641452344931968,
+    "float_shares": 5.982184,
+    "price_at_sim_start": 2.97
+  },
+  "stock_metrics": {
+    "new_high_count_30m": 0,
+    "new_high_cadence_avg_sec": 0,
+    "new_high_cadence_stdev_sec": 0,
+    "pullback_count_30m": 0,
+    "pullback_depth_avg_pct": 0,
+    "pullback_depth_max_pct": 0,
+    "pullback_recovery_avg_sec": 0,
+    "vol_spike_count_30m": 5,
+    "vol_total_30m": 9706,
+    "vol_first_5m": 5740,
+    "vol_last_5m_of_30": 751,
+    "vol_decay_ratio": 0.131,
+    "green_bar_ratio_30m": 0.93,
+    "max_consecutive_green": 17,
+    "max_consecutive_red": 1,
+    "price_range_30m_pct": 6.53,
+    "upper_wick_ratio_avg": 0.163,
+    "upper_wick_ratio_last_10m": 0.0,
+    "body_ratio_avg": 0.776,
+    "body_ratio_last_10m": 1.0,
+    "pct_bars_above_vwap_30m": 0.37,
+    "vwap_cross_count_30m": 6,
+    "max_vwap_distance_pct": 1.83,
+    "price_at_5m": 2.97,
+    "price_at_10m": 2.97,
+    "price_at_15m": 2.97,
+    "price_at_30m": 2.97,
+    "price_at_60m": 2.97,
+    "high_at_30m": null,
+    "high_at_60m": null,
+    "low_at_30m": null,
+    "low_at_60m": null
+  },
+  "trades": [
+    {
+      "trade_num": 1,
+      "entry_price": 3.07,
+      "entry_time": "08:04",
+      "stop": 2.97,
+      "r": 0.1,
+      "score": 5.0,
+      "score_detail": "macd=7.5*0.6;R>=0.05=+0.5",
+      "tags": [],
+      "exit_price": 2.97,
+      "exit_time": "08:08",
+      "exit_reason": "stop_hit",
+      "pnl": -1000.0,
+      "r_multiple": -1.0,
+      "qty": 10000,
+      "hold_time_sec": 240,
+      "peak_price": 3.07,
+      "peak_time": "",
+      "peak_unrealized_r": 0.0,
+      "time_to_peak_sec": 0,
+      "drawdown_from_peak_at_exit_pct": 3.26,
+      "price_1m_after_exit": 2.9764,
+      "price_5m_after_exit": 2.99,
+      "price_10m_after_exit": 2.99,
+      "price_30m_after_exit": 2.97,
+      "high_after_exit_30m": 3.02,
+      "low_after_exit_30m": 2.97,
+      "left_on_table_pct": 0
+    },
+    {
+      "trade_num": 2,
+      "entry_price": 3.72,
+      "entry_time": "11:58",
+      "stop": 3.585,
+      "r": 0.135,
+      "score": 12.0,
+      "score_detail": "macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1",
+      "tags": [
+        "bull_struct",
+        "vol_surge",
+        "r2g"
+      ],
+      "exit_price": 3.6899,
+      "exit_time": "11:59",
+      "exit_reason": "sim_end",
+      "pnl": -222.95,
+      "r_multiple": -0.22,
+      "qty": 7407,
+      "hold_time_sec": 60,
+      "peak_price": 3.72,
+      "peak_time": "",
+      "peak_unrealized_r": 0.0,
+      "time_to_peak_sec": 0,
+      "drawdown_from_peak_at_exit_pct": 0.81,
+      "price_1m_after_exit": null,
+      "price_5m_after_exit": null,
+      "price_10m_after_exit": null,
+      "price_30m_after_exit": null,
+      "high_after_exit_30m": null,
+      "low_after_exit_30m": null,
+      "left_on_table_pct": null
+    }
+  ],
+  "summary": {
+    "total_trades": 2,
+    "wins": 0,
+    "losses": 2,
+    "net_pnl": -1222.95,
+    "avg_r": -0.61,
+    "win_rate": 0.0,
+    "avg_hold_time_sec": 150,
+    "total_left_on_table_pct_avg": 0
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "symbol": "TNMG",
+  "date": "2026-01-16",
+  "sim_start": "07:00",
+  "sim_end": "12:00",
+  "config": {
+    "exit_mode": "signal",
+    "risk": 1000.0,
+    "tw_min_profit_r": 1.0,
+    "be_min_profit_r": 0.5,
+    "reentry_cooldown_bars": 5,
+    "min_tags": 1,
+    "classifier": {
+      "behavior_type": "choppy",
+      "confidence": 0.81,
+      "reasoning": "Choppy: 15.5% avg pullback depth, green ratio 0.33",
+      "classification_time_minutes": 15,
+      "exit_profile": {
+        "description": "High volatility chop \u2014 tight stops, quick profits",
+        "suppress_be_under_r": 0.0,
+        "suppress_tw_under_r": 0.0,
+        "trail_atr_mult": 0.8,
+        "max_re_entries": 1,
+        "re_entry_cooldown_bars": 15
+      },
+      "reclassification_history": [
+        {
+          "type": "uncertain",
+          "confidence": 0.3,
+          "minutes": 5
+        },
+        {
+          "type": "choppy",
+          "confidence": 0.81,
+          "minutes": 10
+        }
+      ]
+    }
+  },
+  "fundamentals": {
+    "gap_pct": 0.0,
+    "float_shares": 1.150951,
+    "price_at_sim_start": 3.71
+  },
+  "stock_metrics": {
+    "new_high_count_30m": 3,
+    "new_high_cadence_avg_sec": 150,
+    "new_high_cadence_stdev_sec": 127.3,
+    "pullback_count_30m": 1,
+    "pullback_depth_avg_pct": 15.48,
+    "pullback_depth_max_pct": 15.48,
+    "pullback_recovery_avg_sec": 300,
+    "vol_spike_count_30m": 0,
+    "vol_total_30m": 4984456,
+    "vol_first_5m": 1522239,
+    "vol_last_5m_of_30": 138154,
+    "vol_decay_ratio": 0.091,
+    "green_bar_ratio_30m": 0.3,
+    "max_consecutive_green": 2,
+    "max_consecutive_red": 6,
+    "price_range_30m_pct": 71.66,
+    "upper_wick_ratio_avg": 0.221,
+    "upper_wick_ratio_last_10m": 0.232,
+    "body_ratio_avg": 0.453,
+    "body_ratio_last_10m": 0.546,
+    "pct_bars_above_vwap_30m": 0.2,
+    "vwap_cross_count_30m": 3,
+    "max_vwap_distance_pct": 30.74,
+    "price_at_5m": 4.01,
+    "price_at_10m": 3.4,
+    "price_at_15m": 3.12,
+    "price_at_30m": 2.63,
+    "price_at_60m": 2.48,
+    "high_at_30m": 4.24,
+    "high_at_60m": 4.24,
+    "low_at_30m": 2.47,
+    "low_at_60m": 2.47
+  },
+  "trades": [
+    {
+      "trade_num": 1,
+      "entry_price": 3.96,
+      "entry_time": "07:01",
+      "stop": 3.44,
+      "r": 0.52,
+      "score": 4.0,
+      "score_detail": "macd=5.0*0.6;R>=0.08=+1",
+      "tags": [],
+      "exit_price": 3.71,
+      "exit_time": "07:02",
+      "exit_reason": "bearish_engulfing_exit_full",
+      "pnl": -480.75,
+      "r_multiple": -0.48,
+      "qty": 1923,
+      "hold_time_sec": 60,
+      "peak_price": 4.24,
+      "peak_time": "07:01",
+      "peak_unrealized_r": 0.54,
+      "time_to_peak_sec": 0,
+      "drawdown_from_peak_at_exit_pct": 12.5,
+      "price_1m_after_exit": 3.74,
+      "price_5m_after_exit": 3.8,
+      "price_10m_after_exit": 3.31,
+      "price_30m_after_exit": 2.7,
+      "high_after_exit_30m": 4.22,
+      "low_after_exit_30m": 2.47,
+      "left_on_table_pct": 100
+    }
+  ],
+  "summary": {
+    "total_trades": 1,
+    "wins": 0,
+    "losses": 1,
+    "net_pnl": -480.75,
+    "avg_r": -0.48,
+    "win_rate": 0.0,
+    "avg_hold_time_sec": 60,
+    "total_left_on_table_pct_avg": 100
+  }
+}

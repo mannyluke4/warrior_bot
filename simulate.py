@@ -992,6 +992,7 @@ def run_simulation(
     # Classifier settings (gated OFF by default)
     _classifier_enabled = os.getenv("WB_CLASSIFIER_ENABLED", "0") == "1"
     _classifier_reclass = os.getenv("WB_CLASSIFIER_RECLASS_ENABLED", "1") == "1"
+    _classifier_suppress = os.getenv("WB_CLASSIFIER_SUPPRESS_ENABLED", "1") == "1"
 
     # 3-tranche exit scaling
     _3tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -1298,17 +1299,16 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                     else:
-                        # Classifier TW suppression (skip in signal mode — exits enable cascading)
+                        # Classifier TW suppression (cascading profile has 0.0 = no suppression)
                         _tw_clf_ok = True
-                        if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
+                        if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
                             _tw_sup = _clf_result.exit_profile["suppress_tw_under_r"]
                             if _tw_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
                                 _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                                if _cur_r < _tw_sup:
+                                if _cur_r > 0 and _cur_r < _tw_sup:
                                     _tw_clf_ok = False
-                                    if verbose:
-                                        print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                              f"{_cur_r:.1f}R < {_tw_sup}R) @ {bar.close:.4f}", flush=True)
+                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                          f"{_cur_r:.1f}R < {_tw_sup}R) — trade stays open, trail/stop active", flush=True)
                         if _tw_clf_ok:
                             sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
                             if verbose:
@@ -1338,17 +1338,16 @@ def run_simulation(
                                 if verbose:
                                     print(f"  [{time_str}] BE_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                             else:
-                                # Classifier BE suppression (skip in signal mode — exits enable cascading)
+                                # Classifier BE suppression (cascading profile has 0.0 = no suppression)
                                 _be_clf_ok = True
-                                if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_be_under_r") is not None:
+                                if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_be_under_r") is not None:
                                     _be_sup = _clf_result.exit_profile["suppress_be_under_r"]
                                     if _be_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
                                         _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                                        if _cur_r < _be_sup:
+                                        if _cur_r > 0 and _cur_r < _be_sup:
                                             _be_clf_ok = False
-                                            if verbose:
-                                                print(f"  [{time_str}] BE_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                                      f"{_cur_r:.1f}R < {_be_sup}R) @ {bar.close:.4f}", flush=True)
+                                            print(f"  [{time_str}] BE_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                                  f"{_cur_r:.1f}R < {_be_sup}R) — trade stays open, trail/stop active", flush=True)
                                 if _be_clf_ok:
                                     sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
                                     if verbose:
@@ -1433,17 +1432,16 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
                 if _tw_profit_ok:
-                    # Classifier TW suppression check (skip in signal mode — exits enable cascading)
+                    # Classifier TW suppression check (cascading profile has 0.0 = no suppression)
                     _tw_clf_ok = True
-                    if _exit_mode != "signal" and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
+                    if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
                         _tw_sup_r = _clf_result.exit_profile["suppress_tw_under_r"]
                         if _tw_sup_r > 0 and sim_mgr.open_trade.r > 0:
                             _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                            if _cur_r < _tw_sup_r:
+                            if _cur_r > 0 and _cur_r < _tw_sup_r:
                                 _tw_clf_ok = False
-                                if verbose:
-                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                          f"{_cur_r:.1f}R < {_tw_sup_r}R) @ {bar.close:.4f}", flush=True)
+                                print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
+                                      f"{_cur_r:.1f}R < {_tw_sup_r}R) — trade stays open, trail/stop active", flush=True)
                     if _tw_clf_ok:
                         sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
                         if verbose:
