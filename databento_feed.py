@@ -43,16 +43,27 @@ def _cache_path(symbol: str, date_str: str, dataset: str) -> Path:
     return CACHE_DIR / f"{symbol}_{date_str}_{dataset.split('.')[0]}.dbn.zst"
 
 
+# Known NYSE-listed exchanges — expand as needed
+NYSE_EXCHANGES = {"XNYS", "ARCX", "XASE"}  # NYSE, Arca, AMEX
+
+
 def _resolve_dataset(symbol: str) -> str:
     """
-    Determine the Databento dataset based on the exchange.
-    Most small-cap momentum stocks trade on NASDAQ.
-    For now, default to XNAS.ITCH (NASDAQ TotalView).
-    NYSE-listed stocks would use XNYS.PILLAR.
+    Resolve the correct Databento dataset for a symbol.
+    Uses Alpaca metadata if available, otherwise defaults to XNAS.ITCH
+    with fallback to XNYS.PILLAR on fetch failure (existing behavior).
     """
-    # TODO: Auto-detect exchange from Alpaca or Databento metadata
-    # For now, try NASDAQ first (most warrior stocks are NASDAQ-listed)
-    return "XNAS.ITCH"
+    # Try Alpaca asset lookup first
+    try:
+        from alpaca.trading.client import TradingClient
+        client = TradingClient(os.getenv("APCA_API_KEY_ID"), os.getenv("APCA_API_SECRET_KEY"))
+        asset = client.get_asset(symbol)
+        if asset.exchange in NYSE_EXCHANGES:
+            print(f"  [{symbol}] Alpaca exchange={asset.exchange} → XNYS.PILLAR", flush=True)
+            return "XNYS.PILLAR"
+    except Exception:
+        pass
+    return "XNAS.ITCH"  # Default with existing fallback to XNYS.PILLAR on fetch failure
 
 
 def fetch_l2_historical(
