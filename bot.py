@@ -36,6 +36,7 @@ bar_builder_1m: TradeBarBuilder | None = None
 l2_detector: L2SignalDetector | None = None
 ibkr_feed = None  # IBKRFeed instance (lazy, only if WB_ENABLE_L2=1)
 _stock_info_cache: dict = {}  # StockInfo cache for gap_pct injection into detectors
+_session_filtered_out: set = set()  # symbols that failed session-start filter; never trade these
 
 if not API_KEY or not API_SECRET:
     raise RuntimeError("Missing APCA_API_KEY_ID or APCA_API_SECRET_KEY in .env")
@@ -446,6 +447,10 @@ def on_bar_close_1m(bar):
     # PRIMARY: 1-minute setup detection
     msg = det.on_bar_close_1m(bar, vwap=vwap, l2_state=l2_state)
 
+    # Block ARM signals for symbols that failed session-start filter
+    if msg and msg.startswith("ARMED") and symbol in _session_filtered_out:
+        msg = None
+
     # L2 exit signal check (only when L2 data available and position open)
     if (trade_manager
         and l2_state is not None
@@ -569,6 +574,9 @@ def on_trade(symbol: str, price: float, size: int, ts: datetime):
         # Pass is_premarket so Gap and Go doesn't fire on continuously-updating pm_high during premarket
         in_premarket = bar_builder.is_premarket(ts) if bar_builder else False
         msg = det.on_trade_price(price, is_premarket=in_premarket)
+        # Suppress all signal activity for symbols that failed session-start filter
+        if msg and symbol in _session_filtered_out:
+            msg = None
         if msg:
             now = datetime.now(ET).strftime("%H:%M:%S")
             vwap = bar_builder.get_vwap(symbol) if bar_builder else None
@@ -716,6 +724,11 @@ def main():
         stock_info_cache = {}
         _stock_info_cache = {}
         filtered_watchlist = filtered_result
+
+    global _session_filtered_out
+    _session_filtered_out = raw_watchlist - filtered_watchlist
+    if _session_filtered_out:
+        print(f"\n🚫 Blocked symbols (failed filter, will not trade): {sorted(_session_filtered_out)}", flush=True)
 
     print(f"\n✅ Filtered watchlist: {len(filtered_watchlist)} symbols", flush=True)
     print(f"   {sorted(filtered_watchlist)}", flush=True)

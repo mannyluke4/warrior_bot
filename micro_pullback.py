@@ -153,6 +153,9 @@ class MicroPullbackDetector:
         self._bar_ranges_1m: deque = deque(maxlen=14)
         self._halt_active_bars: int = 0
 
+        # --- Warmup gate (block ARMs until N bars of history accumulated) ---
+        self.warmup_bars = int(os.getenv("WB_WARMUP_BARS", "5"))
+
         # --- Volatility floor (wider stops on volatile stocks) ---
         self.vol_floor_enabled = os.getenv("WB_VOL_FLOOR_ENABLED", "0") == "1"
         self.vol_floor_atr_mult = float(os.getenv("WB_VOL_FLOOR_ATR_MULT", "1.5"))
@@ -860,6 +863,10 @@ class MicroPullbackDetector:
                 f"macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
             )
 
+        # Warmup gate: require minimum bar history before arming
+        if len(self.bars_1m) < self.warmup_bars:
+            return f"1M NO_ARM warmup: {len(self.bars_1m)}/{self.warmup_bars} bars"
+
         # --- ARM ---
         self.armed = ArmedTrade(
             trigger_high=entry,
@@ -1068,6 +1075,10 @@ class MicroPullbackDetector:
                 return f"1M NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
             if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
                 return f"1M NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
+
+            # Warmup gate: require minimum bar history before arming
+            if len(self.bars_1m) < self.warmup_bars:
+                return f"1M NO_ARM warmup: {len(self.bars_1m)}/{self.warmup_bars} bars"
 
             self.armed = ArmedTrade(
                 trigger_high=trigger_high,

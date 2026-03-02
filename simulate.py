@@ -992,7 +992,7 @@ def run_simulation(
     # Classifier settings (gated OFF by default)
     _classifier_enabled = os.getenv("WB_CLASSIFIER_ENABLED", "0") == "1"
     _classifier_reclass = os.getenv("WB_CLASSIFIER_RECLASS_ENABLED", "1") == "1"
-    _classifier_suppress = os.getenv("WB_CLASSIFIER_SUPPRESS_ENABLED", "1") == "1"
+    _classifier_suppress = os.getenv("WB_CLASSIFIER_SUPPRESS_ENABLED", "0") == "1"
 
     # 3-tranche exit scaling
     _3tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
