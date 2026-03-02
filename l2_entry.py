@@ -83,6 +83,9 @@ class L2EntryDetector:
         # Minimum score to arm
         self.min_score = float(os.getenv("WB_L2E_MIN_SCORE", "4.0"))
 
+        # Bid-stack stop tightening: only apply when imbalance confirms genuine support
+        self.l2_stop_tighten_min_imbalance = float(os.getenv("WB_L2_STOP_TIGHTEN_MIN_IMBALANCE", "0.65"))
+
         # Internal state
         self.ema: Optional[float] = None
         self.ema_len = 9
@@ -323,17 +326,18 @@ class L2EntryDetector:
 
     def _find_stop(self, l2_state: dict, current_bar: dict) -> float:
         """
-        Find stop level: prefer bid stacking level, else swing low.
+        Find stop level: prefer bid stacking level (when imbalance confirms), else swing low.
         """
-        # If we have bid stacking levels, use the highest one as support
+        # If we have bid stacking levels, use highest as support — only when imbalance confirms
         stack_levels = l2_state.get("bid_stack_levels", [])
         if stack_levels:
-            # Use the highest stacking level as the stop reference
-            highest_stack = max(p for p, _ in stack_levels)
-            stop = highest_stack - self.STOP_PAD
-            # But don't set stop above bar low (that would be absurd)
-            stop = min(stop, current_bar["l"] - self.STOP_PAD)
-            return stop
+            current_imbalance = l2_state.get("imbalance", 0.0)
+            if current_imbalance >= self.l2_stop_tighten_min_imbalance:
+                highest_stack = max(p for p, _ in stack_levels)
+                stop = highest_stack - self.STOP_PAD
+                # Don't set stop above bar low
+                stop = min(stop, current_bar["l"] - self.STOP_PAD)
+                return stop
 
         # Fallback: recent swing low (lowest low of last 3 bars)
         if len(self.bars) >= 3:

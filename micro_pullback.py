@@ -93,7 +93,7 @@ class MicroPullbackDetector:
         self.l2_accel_confirm = os.getenv("WB_L2_ACCEL_CONFIRM", "1") == "1"
         self.l2_hard_gate = os.getenv("WB_L2_HARD_GATE", "1") == "1"
         self.l2_hard_gate_warmup_bars = int(os.getenv("WB_L2_HARD_GATE_WARMUP_BARS", "30"))
-        self.l2_stop_tighten_enabled = os.getenv("WB_L2_STOP_TIGHTEN_ENABLED", "0") == "1"
+        self.l2_stop_tighten_min_imbalance = float(os.getenv("WB_L2_STOP_TIGHTEN_MIN_IMBALANCE", "0.65"))
         self._l2_bars_seen = 0  # bars of L2 data seen — hard gate stays inactive until warmup complete
         self.l2_min_bullish_for_accel = int(os.getenv("WB_L2_MIN_BULLISH_ACCEL", "3"))
 
@@ -773,16 +773,18 @@ class MicroPullbackDetector:
         entry = b1["h"]
         raw_stop = b1["l"]
 
-        # L2-enhanced stop (bid stacking) — disabled by default; creates false floors on volatile small-caps
+        # L2-enhanced stop (bid stacking) — conditional on imbalance confirmation
         if l2_state is not None and l2_state.get("bid_stack_levels"):
             stack_prices = [p for p, _ in l2_state["bid_stack_levels"]]
             if stack_prices:
                 highest_stack = max(stack_prices)
                 if highest_stack > raw_stop and highest_stack < entry:
-                    if self.l2_stop_tighten_enabled:
+                    current_imbalance = l2_state.get("imbalance", 0.0)
+                    if current_imbalance >= self.l2_stop_tighten_min_imbalance:
+                        print(f"  [L2_bid_stack] ACTIVE: stack={highest_stack:.4f} imbalance={current_imbalance:.2f} >= {self.l2_stop_tighten_min_imbalance} (stop {raw_stop:.4f} → {highest_stack:.4f})", flush=True)
                         raw_stop = highest_stack
                     else:
-                        print(f"  [L2_bid_stack] stack at {highest_stack:.4f} (stop={raw_stop:.4f}, entry={entry:.4f}) [NO ADJUSTMENT — disabled]", flush=True)
+                        print(f"  [L2_bid_stack] BLOCKED: stack={highest_stack:.4f} imbalance={current_imbalance:.2f} < {self.l2_stop_tighten_min_imbalance} (stop stays {raw_stop:.4f})", flush=True)
 
         stop_low = raw_stop - self.STOP_PAD
 
@@ -993,16 +995,18 @@ class MicroPullbackDetector:
 
             raw_stop = self.pullback_low_1m if self.pullback_low_1m is not None else b1["l"]
 
-            # L2-enhanced stop (bid stacking) — disabled by default; creates false floors on volatile small-caps
+            # L2-enhanced stop (bid stacking) — conditional on imbalance confirmation
             if l2_state is not None and l2_state.get("bid_stack_levels"):
                 stack_prices = [p for p, _ in l2_state["bid_stack_levels"]]
                 if stack_prices:
                     highest_stack = max(stack_prices)
                     if highest_stack > raw_stop and highest_stack < b1["h"]:
-                        if self.l2_stop_tighten_enabled:
+                        current_imbalance = l2_state.get("imbalance", 0.0)
+                        if current_imbalance >= self.l2_stop_tighten_min_imbalance:
+                            print(f"  [L2_bid_stack] ACTIVE: stack={highest_stack:.4f} imbalance={current_imbalance:.2f} >= {self.l2_stop_tighten_min_imbalance} (stop {raw_stop:.4f} → {highest_stack:.4f})", flush=True)
                             raw_stop = highest_stack
                         else:
-                            print(f"  [L2_bid_stack] stack at {highest_stack:.4f} (stop={raw_stop:.4f}, entry={entry:.4f}) [NO ADJUSTMENT — disabled]", flush=True)
+                            print(f"  [L2_bid_stack] BLOCKED: stack={highest_stack:.4f} imbalance={current_imbalance:.2f} < {self.l2_stop_tighten_min_imbalance} (stop stays {raw_stop:.4f})", flush=True)
 
             stop_low = raw_stop - self.STOP_PAD
 
