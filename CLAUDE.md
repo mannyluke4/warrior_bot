@@ -32,7 +32,7 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 ### Git
 - Push to `origin main` after regression passes
 - Commit messages should reference what changed and why
-- Include `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>`
+- Include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
 
 ## Key Architecture
 
@@ -64,6 +64,31 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 ```python
 det = MicroPullbackDetector()  # NO symbol argument
 ```
+
+## Current Live Config (as of 2026-03-02)
+```
+WB_CLASSIFIER_ENABLED=1
+WB_CLASSIFIER_SUPPRESS_ENABLED=0
+WB_CLASSIFIER_VWAP_GATE=7
+WB_CLASSIFIER_CASC_VWAP_MIN=8
+WB_CLASSIFIER_SMOOTH_VWAP_MIN=10
+WB_CLASSIFIER_RECLASS_ENABLED=1
+WB_WARMUP_BARS=5
+WB_EXHAUSTION_ENABLED=1   # KEEP ON — dynamic scaling handles cascading stocks correctly
+```
+
+### Exhaustion Filter + Dynamic Scaling (CRITICAL INSIGHT)
+The exhaustion filter is enabled by default and works CORRECTLY for cascading stocks because of dynamic scaling:
+- For big runners (VERO $3.50→$12+, ~243% range): `eff_vwap_pct = max(10%, 243 * 0.5) = 121.5%` → cascading re-entries pass ✅
+- For smaller-move stocks (TURB at 21.7% above VWAP): threshold stays near 10% → blocked ✅
+- **DO NOT implement a classifier-aware bypass** — it would break VERO regression ($6,890→$3,452)
+- `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
+
+### Regression Targets (as of 2026-03-02)
+All three regressions PASS with current defaults (exhaustion ON, classifier ON):
+- VERO 2026-01-16: +$6,890 ✅
+- GWAV 2026-01-16: +$6,735 ✅
+- ANPA 2026-01-09: +$2,088 ✅
 
 ## Current Study Status (as of 2026-02-27)
 

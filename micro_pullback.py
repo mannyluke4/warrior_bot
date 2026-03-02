@@ -86,6 +86,7 @@ class MicroPullbackDetector:
         self.trend_strong_range_pct = float(os.getenv("WB_TREND_STRONG_RANGE_PCT", "5"))
         self.exhaustion_vwap_range_mult = float(os.getenv("WB_EXHAUSTION_VWAP_RANGE_MULT", "0.5"))
         self.exhaustion_move_range_mult = float(os.getenv("WB_EXHAUSTION_MOVE_RANGE_MULT", "1.5"))
+        self.exhaustion_enabled = os.getenv("WB_EXHAUSTION_ENABLED", "1") == "1"
 
         # L2 acceleration (active only when l2_state is provided)
         self.l2_accel_impulse = os.getenv("WB_L2_ACCEL_IMPULSE", "1") == "1"
@@ -815,38 +816,39 @@ class MicroPullbackDetector:
             return f"1M SKIP {block_reason}"
 
         # --- Exhaustion filters (dynamic: scale thresholds to session range) ---
-        sr = self._session_range_pct()
-        eff_vwap_pct = max(self.exhaustion_vwap_pct, sr * self.exhaustion_vwap_range_mult)
-        eff_move_pct = max(self.exhaustion_move_pct, sr * self.exhaustion_move_range_mult)
+        if self.exhaustion_enabled:
+            sr = self._session_range_pct()
+            eff_vwap_pct = max(self.exhaustion_vwap_pct, sr * self.exhaustion_vwap_range_mult)
+            eff_move_pct = max(self.exhaustion_move_pct, sr * self.exhaustion_move_range_mult)
 
-        if vwap is not None and vwap > 0:
-            pct_above_vwap = (b1["c"] - vwap) / vwap * 100
-            if pct_above_vwap > eff_vwap_pct:
-                return (
-                    f"1M NO_ARM exhaustion: {pct_above_vwap:.1f}% above VWAP "
-                    f"(max {eff_vwap_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} vwap={vwap:.4f}"
-                )
-
-        if len(self.bars_1m) >= 5:
-            session_low = min(b["l"] for b in self.bars_1m)
-            if session_low > 0:
-                pct_from_low = (b1["c"] - session_low) / session_low * 100
-                if pct_from_low > eff_move_pct:
+            if vwap is not None and vwap > 0:
+                pct_above_vwap = (b1["c"] - vwap) / vwap * 100
+                if pct_above_vwap > eff_vwap_pct:
                     return (
-                        f"1M NO_ARM exhaustion: {pct_from_low:.1f}% from session low "
-                        f"(max {eff_move_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} low={session_low:.4f}"
+                        f"1M NO_ARM exhaustion: {pct_above_vwap:.1f}% above VWAP "
+                        f"(max {eff_vwap_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} vwap={vwap:.4f}"
                     )
 
-        if len(self.bars_1m) >= 10:
-            recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
-            earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
-            if earlier_vol > 0:
-                vol_ratio = recent_vol / earlier_vol
-                if vol_ratio < self.exhaustion_vol_ratio:
-                    return (
-                        f"1M NO_ARM exhaustion: vol_ratio={vol_ratio:.2f} "
-                        f"(min {self.exhaustion_vol_ratio}) recent={recent_vol} earlier={earlier_vol}"
-                    )
+            if len(self.bars_1m) >= 5:
+                session_low = min(b["l"] for b in self.bars_1m)
+                if session_low > 0:
+                    pct_from_low = (b1["c"] - session_low) / session_low * 100
+                    if pct_from_low > eff_move_pct:
+                        return (
+                            f"1M NO_ARM exhaustion: {pct_from_low:.1f}% from session low "
+                            f"(max {eff_move_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} low={session_low:.4f}"
+                        )
+
+            if len(self.bars_1m) >= 10:
+                recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
+                earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
+                if earlier_vol > 0:
+                    vol_ratio = recent_vol / earlier_vol
+                    if vol_ratio < self.exhaustion_vol_ratio:
+                        return (
+                            f"1M NO_ARM exhaustion: vol_ratio={vol_ratio:.2f} "
+                            f"(min {self.exhaustion_vol_ratio}) recent={recent_vol} earlier={earlier_vol}"
+                        )
 
         # L2 hard gate
         if self.l2_hard_gate and self._l2_is_bearish(l2_state):
@@ -1029,41 +1031,42 @@ class MicroPullbackDetector:
                 return f"1M SKIP {block_reason}"
 
             # Exhaustion filters (dynamic: scale thresholds to session range)
-            sr = self._session_range_pct()
-            eff_vwap_pct = max(self.exhaustion_vwap_pct, sr * self.exhaustion_vwap_range_mult)
-            eff_move_pct = max(self.exhaustion_move_pct, sr * self.exhaustion_move_range_mult)
+            if self.exhaustion_enabled:
+                sr = self._session_range_pct()
+                eff_vwap_pct = max(self.exhaustion_vwap_pct, sr * self.exhaustion_vwap_range_mult)
+                eff_move_pct = max(self.exhaustion_move_pct, sr * self.exhaustion_move_range_mult)
 
-            if vwap is not None and vwap > 0:
-                pct_above_vwap = (b1["c"] - vwap) / vwap * 100
-                if pct_above_vwap > eff_vwap_pct:
-                    self._full_reset_1m()
-                    return (
-                        f"1M NO_ARM exhaustion: {pct_above_vwap:.1f}% above VWAP "
-                        f"(max {eff_vwap_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} vwap={vwap:.4f}"
-                    )
-
-            if len(self.bars_1m) >= 5:
-                session_low = min(b["l"] for b in self.bars_1m)
-                if session_low > 0:
-                    pct_from_low = (b1["c"] - session_low) / session_low * 100
-                    if pct_from_low > eff_move_pct:
+                if vwap is not None and vwap > 0:
+                    pct_above_vwap = (b1["c"] - vwap) / vwap * 100
+                    if pct_above_vwap > eff_vwap_pct:
                         self._full_reset_1m()
                         return (
-                            f"1M NO_ARM exhaustion: {pct_from_low:.1f}% from session low "
-                            f"(max {eff_move_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} low={session_low:.4f}"
+                            f"1M NO_ARM exhaustion: {pct_above_vwap:.1f}% above VWAP "
+                            f"(max {eff_vwap_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} vwap={vwap:.4f}"
                         )
 
-            if len(self.bars_1m) >= 10:
-                recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
-                earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
-                if earlier_vol > 0:
-                    vol_ratio = recent_vol / earlier_vol
-                    if vol_ratio < self.exhaustion_vol_ratio:
-                        self._full_reset_1m()
-                        return (
-                            f"1M NO_ARM exhaustion: vol_ratio={vol_ratio:.2f} "
-                            f"(min {self.exhaustion_vol_ratio}) recent={recent_vol} earlier={earlier_vol}"
-                        )
+                if len(self.bars_1m) >= 5:
+                    session_low = min(b["l"] for b in self.bars_1m)
+                    if session_low > 0:
+                        pct_from_low = (b1["c"] - session_low) / session_low * 100
+                        if pct_from_low > eff_move_pct:
+                            self._full_reset_1m()
+                            return (
+                                f"1M NO_ARM exhaustion: {pct_from_low:.1f}% from session low "
+                                f"(max {eff_move_pct:.1f}%, range={sr:.1f}%) close={b1['c']:.4f} low={session_low:.4f}"
+                            )
+
+                if len(self.bars_1m) >= 10:
+                    recent_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
+                    earlier_vol = sum(b["v"] for b in list(self.bars_1m)[-10:-5])
+                    if earlier_vol > 0:
+                        vol_ratio = recent_vol / earlier_vol
+                        if vol_ratio < self.exhaustion_vol_ratio:
+                            self._full_reset_1m()
+                            return (
+                                f"1M NO_ARM exhaustion: vol_ratio={vol_ratio:.2f} "
+                                f"(min {self.exhaustion_vol_ratio}) recent={recent_vol} earlier={earlier_vol}"
+                            )
 
             if self.l2_hard_gate and self._l2_is_bearish(l2_state):
                 self._full_reset_1m()
