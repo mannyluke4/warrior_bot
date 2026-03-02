@@ -92,6 +92,9 @@ class MicroPullbackDetector:
         self.l2_accel_impulse = os.getenv("WB_L2_ACCEL_IMPULSE", "1") == "1"
         self.l2_accel_confirm = os.getenv("WB_L2_ACCEL_CONFIRM", "1") == "1"
         self.l2_hard_gate = os.getenv("WB_L2_HARD_GATE", "1") == "1"
+        self.l2_hard_gate_warmup_bars = int(os.getenv("WB_L2_HARD_GATE_WARMUP_BARS", "30"))
+        self.l2_stop_tighten_enabled = os.getenv("WB_L2_STOP_TIGHTEN_ENABLED", "0") == "1"
+        self._l2_bars_seen = 0  # bars of L2 data seen — hard gate stays inactive until warmup complete
         self.l2_min_bullish_for_accel = int(os.getenv("WB_L2_MIN_BULLISH_ACCEL", "3"))
 
         # Entry mode: "direct" = 1-bar entry, "pullback" = classic 3-bar cycle
@@ -770,13 +773,16 @@ class MicroPullbackDetector:
         entry = b1["h"]
         raw_stop = b1["l"]
 
-        # L2-enhanced stop (bid stacking)
+        # L2-enhanced stop (bid stacking) — disabled by default; creates false floors on volatile small-caps
         if l2_state is not None and l2_state.get("bid_stack_levels"):
             stack_prices = [p for p, _ in l2_state["bid_stack_levels"]]
             if stack_prices:
                 highest_stack = max(stack_prices)
                 if highest_stack > raw_stop and highest_stack < entry:
-                    raw_stop = highest_stack
+                    if self.l2_stop_tighten_enabled:
+                        raw_stop = highest_stack
+                    else:
+                        print(f"  [L2_bid_stack] stack at {highest_stack:.4f} (stop={raw_stop:.4f}, entry={entry:.4f}) [NO ADJUSTMENT — disabled]", flush=True)
 
         stop_low = raw_stop - self.STOP_PAD
 
@@ -850,10 +856,12 @@ class MicroPullbackDetector:
                             f"(min {self.exhaustion_vol_ratio}) recent={recent_vol} earlier={earlier_vol}"
                         )
 
-        # L2 hard gate
+        # L2 hard gate (warmup: gate stays inactive for first N bars of L2 data)
         if self.l2_hard_gate and self._l2_is_bearish(l2_state):
             imb = l2_state.get("imbalance", 0) if l2_state else 0
-            return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
+            if self._l2_bars_seen >= self.l2_hard_gate_warmup_bars:
+                return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
+            print(f"  [L2_warmup] bearish imbalance={imb:.2f} bar={self._l2_bars_seen}/{self.l2_hard_gate_warmup_bars} (hard gate inactive)", flush=True)
 
         # Score gate (combined with tag count)
         _tag_count = len(self.last_patterns) if self.last_patterns else 0
@@ -946,8 +954,11 @@ class MicroPullbackDetector:
                 return "1M RESET (pullback too long)"
 
             if self.l2_hard_gate and self._l2_is_bearish(l2_state):
-                self._full_reset_1m()
-                return "1M RESET (L2 bearish during pullback)"
+                if self._l2_bars_seen >= self.l2_hard_gate_warmup_bars:
+                    self._full_reset_1m()
+                    return "1M RESET (L2 bearish during pullback)"
+                imb = l2_state.get("imbalance", 0) if l2_state else 0
+                print(f"  [L2_warmup] bearish during pullback imbalance={imb:.2f} bar={self._l2_bars_seen}/{self.l2_hard_gate_warmup_bars} (gate inactive)", flush=True)
 
             return f"1M PULLBACK {self.pullback_count_1m}/{self.max_pullback_bars}"
 
@@ -982,12 +993,16 @@ class MicroPullbackDetector:
 
             raw_stop = self.pullback_low_1m if self.pullback_low_1m is not None else b1["l"]
 
+            # L2-enhanced stop (bid stacking) — disabled by default; creates false floors on volatile small-caps
             if l2_state is not None and l2_state.get("bid_stack_levels"):
                 stack_prices = [p for p, _ in l2_state["bid_stack_levels"]]
                 if stack_prices:
                     highest_stack = max(stack_prices)
                     if highest_stack > raw_stop and highest_stack < b1["h"]:
-                        raw_stop = highest_stack
+                        if self.l2_stop_tighten_enabled:
+                            raw_stop = highest_stack
+                        else:
+                            print(f"  [L2_bid_stack] stack at {highest_stack:.4f} (stop={raw_stop:.4f}, entry={entry:.4f}) [NO ADJUSTMENT — disabled]", flush=True)
 
             stop_low = raw_stop - self.STOP_PAD
 
@@ -1069,9 +1084,11 @@ class MicroPullbackDetector:
                             )
 
             if self.l2_hard_gate and self._l2_is_bearish(l2_state):
-                self._full_reset_1m()
                 imb = l2_state.get("imbalance", 0) if l2_state else 0
-                return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
+                if self._l2_bars_seen >= self.l2_hard_gate_warmup_bars:
+                    self._full_reset_1m()
+                    return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
+                print(f"  [L2_warmup] bearish at confirmation imbalance={imb:.2f} bar={self._l2_bars_seen}/{self.l2_hard_gate_warmup_bars} (gate inactive)", flush=True)
 
             _tag_count = len(self.last_patterns) if self.last_patterns else 0
             if self.use_scoring and score > self.max_score:
@@ -1115,6 +1132,8 @@ class MicroPullbackDetector:
 
         # Store L2 state for use in scoring
         self._last_l2_state = l2_state
+        if l2_state is not None:
+            self._l2_bars_seen += 1
 
         # Update shared indicators on 1-minute closes
         self.ema = ema_next(self.ema, c, self.ema_len)
