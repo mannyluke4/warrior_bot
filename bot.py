@@ -19,6 +19,7 @@ from trade_manager import PaperTradeManager
 from stock_filter import StockFilter
 from market_scanner import MarketScanner
 from l2_signals import L2SignalDetector
+from profile_manager import parse_symbol_profile, apply_profile_env, restore_env
 
 load_dotenv()
 
@@ -37,6 +38,7 @@ l2_detector: L2SignalDetector | None = None
 ibkr_feed = None  # IBKRFeed instance (lazy, only if WB_ENABLE_L2=1)
 _stock_info_cache: dict = {}  # StockInfo cache for gap_pct injection into detectors
 _session_filtered_out: set = set()  # symbols that failed session-start filter; never trade these
+symbol_profiles: dict[str, str] = {}  # symbol -> profile code (A/B/C/X)
 
 if not API_KEY or not API_SECRET:
     raise RuntimeError("Missing APCA_API_KEY_ID or APCA_API_SECRET_KEY in .env")
@@ -61,13 +63,22 @@ STALE_WARN_COOLDOWN_SEC = float(os.getenv("WB_STALE_WARN_COOLDOWN_SEC", "20"))  
 def load_watchlist():
     """
     Load watchlist from file (manual mode).
-    Returns set of symbols.
+    Supports SYMBOL:PROFILE_CODE format (e.g., APVO:A, ANPA:B).
+    Plain symbols default to Profile A.
+    Returns set of plain symbols; updates module-level symbol_profiles dict.
     """
+    global symbol_profiles
     try:
         with open(WATCHLIST_FILE, "r") as f:
-            syms = {line.strip().upper() for line in f if line.strip()}
-        # basic sanity: only letters, 1-5 chars
-        return {s for s in syms if s.isalpha() and 1 <= len(s) <= 5}
+            raw = [line.strip().upper() for line in f
+                   if line.strip() and not line.strip().startswith("#")]
+        result = set()
+        for entry in raw:
+            sym, profile = parse_symbol_profile(entry)
+            if sym.isalpha() and 1 <= len(sym) <= 5:
+                result.add(sym)
+                symbol_profiles[sym] = profile
+        return result
     except FileNotFoundError:
         return set()
 
@@ -251,21 +262,26 @@ state_lock = threading.RLock()
 
 def ensure_detector(symbol: str) -> MicroPullbackDetector:
     if symbol not in detectors:
-        det = MicroPullbackDetector(ema_len=9, max_pullback_bars=3)
-        # LevelMap resistance tracking (entry gate)
-        if os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1":
-            from levels import LevelMap
-            det.level_map = LevelMap(
-                enabled=True,
-                min_fail_count=int(os.getenv("WB_LEVEL_MIN_FAILS", "2")),
-                zone_width_pct=float(os.getenv("WB_LEVEL_ZONE_WIDTH_PCT", "0.5")),
-                break_confirm_bars=int(os.getenv("WB_LEVEL_BREAK_CONFIRM_BARS", "2")),
-            )
-        # Pass gap_pct for conviction floor gate
-        if symbol in _stock_info_cache and hasattr(_stock_info_cache[symbol], 'gap_pct'):
-            det.gap_pct = _stock_info_cache[symbol].gap_pct
+        profile = symbol_profiles.get(symbol, "A")
+        saved_env = apply_profile_env(profile)
+        try:
+            det = MicroPullbackDetector(ema_len=9, max_pullback_bars=3)
+            # LevelMap resistance tracking (entry gate)
+            if os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1":
+                from levels import LevelMap
+                det.level_map = LevelMap(
+                    enabled=True,
+                    min_fail_count=int(os.getenv("WB_LEVEL_MIN_FAILS", "2")),
+                    zone_width_pct=float(os.getenv("WB_LEVEL_ZONE_WIDTH_PCT", "0.5")),
+                    break_confirm_bars=int(os.getenv("WB_LEVEL_BREAK_CONFIRM_BARS", "2")),
+                )
+            # Pass gap_pct for conviction floor gate
+            if symbol in _stock_info_cache and hasattr(_stock_info_cache[symbol], 'gap_pct'):
+                det.gap_pct = _stock_info_cache[symbol].gap_pct
+        finally:
+            restore_env(saved_env)
         detectors[symbol] = det
-        print(f"Detector created for {symbol}: max_pullback_bars={det.max_pullback_bars}", flush=True)
+        print(f"Detector created for {symbol} [Profile {profile}]: max_pullback_bars={det.max_pullback_bars}", flush=True)
     return detectors[symbol]
 
 def _now_utc_epoch() -> float:

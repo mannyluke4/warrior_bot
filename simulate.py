@@ -939,6 +939,7 @@ def run_simulation(
     use_ticks: bool = False,
     feed: str = "alpaca",
     export_json: bool = False,
+    profile: str = "A",
 ):
     # l2-entry implies l2 data
     if use_l2_entry:
@@ -959,6 +960,10 @@ def run_simulation(
     seed_start_utc = seed_start_et.astimezone(timezone.utc)
     sim_start_utc = sim_start_et.astimezone(timezone.utc)
     sim_end_utc = sim_end_et.astimezone(timezone.utc)
+
+    # Apply profile env overrides (before reading env vars; explicit args override below)
+    from profile_manager import apply_profile_env, restore_env as _restore_env
+    _saved_env = apply_profile_env(profile)
 
     # Override env vars for this simulation run
     if min_score is not None:
@@ -1011,6 +1016,7 @@ def run_simulation(
 
     if not all_bars:
         print(f"  No bars returned for {symbol} on {date_str}. Skipping.", flush=True)
+        _restore_env(_saved_env)
         return []
 
     # Split into seed and sim bars
@@ -1034,6 +1040,7 @@ def run_simulation(
 
     if not sim_bars:
         print(f"  No sim bars in window {start_et_str}-{end_et_str}. Skipping.", flush=True)
+        _restore_env(_saved_env)
         return []
 
     # Fetch fundamentals for quality gate
@@ -1838,6 +1845,7 @@ def run_simulation(
             config=config,
         )
 
+    _restore_env(_saved_env)
     return trades
 
 
@@ -1967,6 +1975,8 @@ def main():
     parser.add_argument("--feed", choices=["alpaca", "databento"], default="alpaca",
                         help="Data source for tick data (default: alpaca). Use 'databento' for high-fidelity trade data.")
     parser.add_argument("--export-json", action="store_true", help="Export behavioral study JSON to study_data/")
+    parser.add_argument("--profile", default="A",
+                        help="Stock profile: A (micro-float runner), B (mid-float L2), C (fast mover), X (conservative). Default: A")
     args = parser.parse_args()
 
     # Parse positional args: symbols, date, optional start/end times
@@ -2026,6 +2036,7 @@ def main():
             use_ticks=args.ticks,
             feed=args.feed,
             export_json=args.export_json,
+            profile=args.profile,
         )
         all_trades.extend(trades)
 
