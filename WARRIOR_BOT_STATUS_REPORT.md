@@ -1,5 +1,5 @@
 # Warrior Bot — Project Status Report
-## For Claude Code Context Recovery — March 3, 2026 (8:40 AM MST Update)
+## For Claude Code Context Recovery — March 3, 2026 (9:35 AM MST Update)
 
 ---
 
@@ -12,8 +12,9 @@ This led to the **Multi-Profile Trading System** — each stock on the watchlist
 **Current status**:
 - Phase 1+2 COMPLETE: Infrastructure + Profile A lock-in (commit `2175c22`)
 - Phase 3 COMPLETE: **Profile B VALIDATED** (commit `1ac601e`)
-- Phase 4 IN PROGRESS: **Profile C validation** — directive in `PROFILE_C_VALIDATION_DIRECTIVE.md`
-- **Goal**: All profiles validated today for tomorrow's live session
+- Phase 4 COMPLETE: **Profile C NOT VALIDATED** (commit `a9bdcaa`) — Fast Mode found 0 new trades, broke VERO regression
+- Phase 5 IN PROGRESS: **Full 137-stock profile system backtest** — directive in `FULL_PROFILE_BACKTEST_DIRECTIVE.md`
+- **Goal**: Prove the A+B+X profile system works across all 137 stocks before tomorrow's live session
 
 ---
 
@@ -23,11 +24,11 @@ This led to the **Multi-Profile Trading System** — each stock on the watchlist
 
 | Commit | Date | What It Did |
 |--------|------|-------------|
+| `a9bdcaa` | Mar 3 | **Profile C Validation: NOT VALIDATED** — 0 new trades, VERO regression fail |
+| `47c39a4` | Mar 3 | Profile C Validation Directive + Status Report update |
 | `1ac601e` | Mar 3 | **Profile B Validation: 27 mid-float stocks — VALIDATED** |
 | `34995bc` | Mar 3 | Profile B Validation Directive |
 | `2175c22` | Mar 3 | Phase 1: Multi-Profile Trading System infrastructure |
-| `0026b5a` | Mar 3 | Multi-Profile directive + status report |
-| `b9522b4` | Mar 2 | L2 Phase 3: conditional stop tighten + 137-stock full study |
 
 ### Current Live Config (.env)
 
@@ -50,8 +51,8 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 |---|---|---|---|
 | A | `:A` (default) | **PROVEN** ✅ | Micro-float <5M, 7am scanner, L2 OFF, 44% WR, +$24,737 |
 | B | `:B` | **VALIDATED** ✅ | Mid-float 5-50M, 7am scanner, L2 ON, +$3,157 delta (Alpaca) / +$18,128 delta (Databento) |
-| C | `:C` | **IN PROGRESS** 🔄 | Fast movers, Fast Mode ON, L2 OFF — `PROFILE_C_VALIDATION_DIRECTIVE.md` |
-| X | `:X` | RESERVED | Unknown — max 2 entries, conservative |
+| C | `:C` | **NOT VALIDATED** ❌ | Fast Mode found 0 new trades on 29 zero-trade stocks, broke VERO by -$8,713. Placeholder for future work. |
+| X | `:X` | **TESTING** 🔄 | Everything else — max 2 entries, conservative. Being tested in full 137-stock backtest. |
 
 ### Profile B Key Findings (commit `1ac601e`)
 - **All improvement from 7am scanner stocks** (+$3,158 delta)
@@ -67,10 +68,20 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 | ANPA | 2026-01-09 | `--profile B --ticks` | +$5,091 |
 | BATL | 2026-02-27 | `--profile B --ticks` | +$4,522 |
 
-### Profile C Validation Plan
-- 31 zero-trade 7am micro-float stocks to test with Fast Mode
-- 6 Profile A regression checks (Fast Mode must not break winners)
-- Full plan in `PROFILE_C_VALIDATION_DIRECTIVE.md`
+### Profile C Results (commit `a9bdcaa`)
+- Fast Mode found **0 new trades** on 29 zero-trade stocks — those stocks had no setup, period
+- VERO regression **FAILED**: Profile C = -$1,823 vs Profile A = +$6,890 (-$8,713 swing)
+- Fast Mode fires premature entries at 07:02 on $3.52, consuming entry budget before real move
+- BNAI also degraded by -$1,625 (borderline)
+- Round 6.5 HIND +$663 result is NOT reproducible with current config
+- Profile C is NOT deployed. Do not use `:C` tags in live trading.
+- Full results in `PROFILE_C_VALIDATION_RESULTS.md`
+
+### Full Profile System Backtest (IN PROGRESS)
+- All 137 stocks categorized: 57 Profile A, 16 Profile B, 64 Profile X
+- Run 1: A+B only (skip X) — "what if we only traded what we're good at?"
+- Run 2: A+B+X — "does trading the unknowns add or subtract value?"
+- Full plan in `FULL_PROFILE_BACKTEST_DIRECTIVE.md`
 
 ---
 
@@ -115,15 +126,16 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 | ANPA | 2026-01-09 | +$5,091 | `--profile B --ticks` |
 | BATL | 2026-02-27 | +$4,522 | `--profile B --ticks` |
 
-### Profile C (TBD — add after validation)
+### Profile C (NOT VALIDATED — do not use)
 
 ---
 
 ## Immediate Priorities
 
-1. **EXECUTE `PROFILE_C_VALIDATION_DIRECTIVE.md`** — 31 zero-trade stocks + 6 regressions
-2. After Profile C: run **last Friday's session** and **Monday's session** with all profiles active
-3. **Tomorrow (Wed March 4)**: First live multi-profile session
+1. **EXECUTE `FULL_PROFILE_BACKTEST_DIRECTIVE.md`** — all 137 stocks with A/B/X profiles, Databento ticks
+2. Analyze results: Run 1 (A+B only) vs Run 2 (A+B+X) vs Baseline
+3. Decide whether Profile X adds value or should be skipped in live trading
+4. **Tomorrow (Wed March 4)**: First live multi-profile session
 
 ---
 
@@ -163,7 +175,9 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 
 | File | Purpose |
 |------|---------|
-| `PROFILE_C_VALIDATION_DIRECTIVE.md` | **ACTIVE DIRECTIVE** |
+| `FULL_PROFILE_BACKTEST_DIRECTIVE.md` | **ACTIVE DIRECTIVE** |
+| `PROFILE_C_VALIDATION_RESULTS.md` | Profile C results (NOT validated) |
+| `PROFILE_C_VALIDATION_DIRECTIVE.md` | Profile C directive (completed) |
 | `PROFILE_B_VALIDATION_RESULTS.md` | Profile B results (validated) |
 | `PROFILE_B_VALIDATION_DIRECTIVE.md` | Profile B directive (completed) |
 | `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | Full profile system architecture |
@@ -175,5 +189,5 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 
 ---
 
-*Report updated by Perplexity Computer — March 3, 2026, 8:40 AM MST*
-*Active workstream: Profile C Validation → Full Session Replay*
+*Report updated by Perplexity Computer — March 3, 2026, 9:35 AM MST*
+*Active workstream: Full 137-Stock Profile System Backtest*
