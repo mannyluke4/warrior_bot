@@ -1,9 +1,9 @@
 # EDSA Live Trade Report — March 3, 2026
 
 **Position**: 7,293 shares @ $3.03 entry | Stop $2.92 | Entered 10:45 ET
-**Current** (as of ~1:30 PM ET): ~+$4,800 unrealized | Price ~$3.65
+**Exit**: Manually closed @ $3.55 avg fill (~2:00 PM ET)
 **Peak**: +$7,418 at 11:57 ET (price $4.047)
-**Duration**: Open 3+ hours, no exits fired
+**Duration**: Open ~3.5 hours | Bot blind to position entire time (reconcile bug)
 
 ---
 
@@ -153,15 +153,21 @@ On the actual EDSA move, a trailing stop would have:
 
 ---
 
-## Today's Net Result
+## Final Result
 
 | Event | Shares | Entry | Exit | P&L |
 |-------|--------|-------|------|-----|
-| Trade 1 (stopped out) | 6,666 | $3.00 | $2.96 | -$267 |
-| Trade 2 (open, unmanaged) | 7,293 | $3.03 | TBD | +$4,800 (current) |
-| **Net** | | | | **~+$4,533** |
+| Trade 1 (bearish engulfing exit) | 6,666 | $3.00 | $2.96 | -$267 |
+| Trade 2 (manually closed) | 7,293 | $3.03 | $3.55 | **+$3,792** |
+| **Net EDSA session** | | | | **+$3,525** |
 
-The position needs to be manually closed or will close at market-end. The bot will not exit it on its own.
+**Peak unrealized**: +$7,418 at 11:57 ET ($4.047) — gave back ~$3,900 from peak due to no runner protection.
+
+**What a trailing stop would have captured** (estimated):
+- Stop raised to breakeven at 2R ($3.25, hit at 10:46 ET) → survives early dip, holds runner
+- Trail raised to ~$3.75 as price peaked at $4.05 → exit ~$3.75-$3.80 → **+$5,100-$5,470**
+- vs actual manually-closed result: **+$3,525**
+- Trailing stop improvement estimate: **+$1,575-$1,945**
 
 ---
 
