@@ -1,33 +1,33 @@
 # Warrior Bot — Project Status Report
-## For Claude Code Context Recovery — March 3, 2026
+## For Claude Code Context Recovery — March 3, 2026 (8:40 AM MST Update)
 
 ---
 
 ## Executive Summary
 
-We've completed a **137-stock L2 study** that definitively answered the question: what types of stocks does this bot trade well? The answer: **micro-float (<5M shares), pre-market (7am scanner) stocks** — 44% win rate, +$24,737 P&L. Everything else is net negative.
+We've completed a **137-stock L2 study** that definitively answered the question: what types of stocks does this bot trade well? The answer: **micro-float (<5M shares), pre-market (7am scanner) stocks** — 44% win rate, +$24,737 P&L.
 
-This has led to the **Multi-Profile Trading System** — a new architecture where each stock on the watchlist is tagged with a profile code (`:A`, `:B`, `:C`, `:X`) that tells the bot which configuration to use. This eliminates the tug-of-war where tuning for one stock type hurts another.
+This led to the **Multi-Profile Trading System** — each stock on the watchlist is tagged with a profile code (`:A`, `:B`, `:C`, `:X`) that tells the bot which configuration to use.
 
-**Active directive: `MULTI_PROFILE_SYSTEM_DIRECTIVE.md`** — full architecture, profile definitions, and implementation plan.
+**Current status**:
+- Phase 1+2 COMPLETE: Infrastructure + Profile A lock-in (commit `2175c22`)
+- Phase 3 COMPLETE: **Profile B VALIDATED** (commit `1ac601e`)
+- Phase 4 IN PROGRESS: **Profile C validation** — directive in `PROFILE_C_VALIDATION_DIRECTIVE.md`
+- **Goal**: All profiles validated today for tomorrow's live session
 
 ---
 
 ## Current Architecture State
 
-### What Exists in Repo
+### Recent Commits
 
 | Commit | Date | What It Did |
 |--------|------|-------------|
+| `1ac601e` | Mar 3 | **Profile B Validation: 27 mid-float stocks — VALIDATED** |
+| `34995bc` | Mar 3 | Profile B Validation Directive |
+| `2175c22` | Mar 3 | Phase 1: Multi-Profile Trading System infrastructure |
+| `0026b5a` | Mar 3 | Multi-Profile directive + status report |
 | `b9522b4` | Mar 2 | L2 Phase 3: conditional stop tighten + 137-stock full study |
-| `4c9126d` | Mar 2 | L2 Phase 3 Directive |
-| `4793fe7` | Mar 2 | L2 Phase 2.5: hard gate warmup + stop-tighten disable |
-| `178efc8` | Mar 2 | L2 Phase 2.5 Directive |
-| `07c6685` | Mar 2 | L2 Deep Dive Phase 1+2 |
-| `0b48c24` | Feb 27 | Phase 2.2: Classifier gate + suppression comparison |
-| `aa0e12d` | Feb 27 | Phase 2.1: Classifier threshold tuning |
-| `8f64b87` | Feb 27 | Phase 2: classifier.py creation |
-| `025182ba` | Feb 27 | 108-stock behavior study expansion |
 
 ### Current Live Config (.env)
 
@@ -35,25 +35,46 @@ This has led to the **Multi-Profile Trading System** — a new architecture wher
 WB_EXIT_MODE=signal
 WB_CLASSIFIER_ENABLED=1
 WB_CLASSIFIER_SUPPRESS_ENABLED=0
-WB_CLASSIFIER_VWAP_GATE=7
-WB_CLASSIFIER_CASC_VWAP_MIN=8
-WB_CLASSIFIER_SMOOTH_VWAP_MIN=10
-WB_CLASSIFIER_RECLASS_ENABLED=1
-WB_ENABLE_L2=0                           # L2 OFF (will be per-profile)
-WB_L2_HARD_GATE_WARMUP_BARS=30           # From Phase 2.5
-WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65    # From Phase 3
+WB_ENABLE_L2=0                           # L2 OFF globally (per-profile via B.json)
+WB_L2_HARD_GATE_WARMUP_BARS=30
+WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 ```
 
 ---
 
-## The 137-Stock Study — Key Findings
+## Multi-Profile System
 
-### Overall Results
-- 137 stocks tested, 75 traded, 62 had 0 trades
-- **No-L2 baseline: -$196 total P&L** (essentially breakeven)
-- **32% win rate** (24 winners, 50 losers)
-- **L2 v3: -$7,771** (but 2 outliers account for -$14,101)
-- **Excluding outliers: L2 delta = +$6,526**
+### Profile Status
+
+| Profile | Tag | Status | Description |
+|---|---|---|---|
+| A | `:A` (default) | **PROVEN** ✅ | Micro-float <5M, 7am scanner, L2 OFF, 44% WR, +$24,737 |
+| B | `:B` | **VALIDATED** ✅ | Mid-float 5-50M, 7am scanner, L2 ON, +$3,157 delta (Alpaca) / +$18,128 delta (Databento) |
+| C | `:C` | **IN PROGRESS** 🔄 | Fast movers, Fast Mode ON, L2 OFF — `PROFILE_C_VALIDATION_DIRECTIVE.md` |
+| X | `:X` | RESERVED | Unknown — max 2 entries, conservative |
+
+### Profile B Key Findings (commit `1ac601e`)
+- **All improvement from 7am scanner stocks** (+$3,158 delta)
+- Non-7am mid-float stocks are flat — skip them entirely
+- Max entries=3 is net positive (+$1,396)
+- AZI (44.5M) and CRSR (46.6M) are known L2 losers — tag `:X` or skip
+- simulate.py now auto-enables L2 from profile env var
+- Full results in `PROFILE_B_VALIDATION_RESULTS.md`
+
+### Profile B Regression Benchmarks
+| Stock | Date | Command | Expected P&L |
+|-------|------|---------|-------------|
+| ANPA | 2026-01-09 | `--profile B --ticks` | +$5,091 |
+| BATL | 2026-02-27 | `--profile B --ticks` | +$4,522 |
+
+### Profile C Validation Plan
+- 31 zero-trade 7am micro-float stocks to test with Fast Mode
+- 6 Profile A regression checks (Fast Mode must not break winners)
+- Full plan in `PROFILE_C_VALIDATION_DIRECTIVE.md`
+
+---
+
+## The 137-Stock Study — Key Findings
 
 ### Float Is Everything
 
@@ -72,104 +93,6 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65    # From Phase 3
 | 8:00-8:59 | 4/12 | 25% | -$14,022 |
 | 9:00+ | 3/9 | 25% | -$5,554 |
 
-### The Winning Profile (Combined)
-
-| Filter | W/L | WR | P&L |
-|---|---|---|---|
-| Float < 5M + 7am scanner | 12/15 | **44%** | **+$24,737** |
-| Float < 10M + 7am scanner | 13/19 | **41%** | **+$22,931** |
-| Everything else | mixed | 24% | -$24,933 |
-
----
-
-## Multi-Profile System (THE ACTIVE WORK)
-
-### Architecture
-
-Stocks are tagged with profile codes on watchlist add: `SYMBOL:PROFILE_CODE`
-
-### Profiles
-
-| Profile | Tag | Status | Description |
-|---|---|---|---|
-| A | `:A` (default) | **PROVEN** | Micro-float <5M, 7am scanner, L2 OFF |
-| B | `:B` | CANDIDATE | Mid-float 5-50M, 7am scanner, L2 ON |
-| C | `:C` | EARLY | Fast movers (HIND/GRI/ELAB), Fast Mode ON |
-| X | `:X` | RESERVED | Unknown -- half size, conservative |
-
-### Implementation Phases
-
-1. **Phase 1**: Build profile infrastructure (profiles/ dir, parsing, config loader, --profile flag)
-2. **Phase 2**: Lock in Profile A (extract current config, regression test)
-3. **Phase 3**: Validate Profile B (27 mid-float stocks with L2)
-4. **Phase 4**: Validate Profile C (Fast Mode stocks)
-
-**Full details in `MULTI_PROFILE_SYSTEM_DIRECTIVE.md`**
-
----
-
-## L2 Subsystem Status
-
-### What We Know
-- `l2_bearish_exit` is the dominant L2 mechanism (+$19,976 total helped delta across 28 stocks)
-- L2 HURTS micro-float (thin order books = unreliable signals)
-- L2 HELPS mid/large float (deeper books = accurate signals)
-- Optimal float gate: `WB_L2_MIN_FLOAT_M=5` (best improvement: +$4,994)
-- `l2_entry.py` standalone strategy: DEAD CODE -- zero unique setups across all tests
-- GWAV and BNAI are structurally L2-incompatible (micro-float gap stocks at session open)
-
-### L2 Config (v3, from Phase 3)
-```
-WB_L2_HARD_GATE_WARMUP_BARS=30
-WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
-```
-
-### Going Forward
-- L2 will be controlled per-profile (OFF for Profile A, ON for Profile B)
-- No more global L2 toggle -- the profile system handles it
-- IBKR L2 approval still pending for live data
-
----
-
-## Classifier Status
-
-### What Works
-- **AVOID gate**: +$2,361 net savings, ON for live trading
-- **K-means clusters** identified 5 behavior types (cascading, one_big_move, smooth_trend, choppy, early_bird)
-- **VWAP distance** = #1 predictor (r = +0.306)
-
-### What Doesn't Work
-- **BE suppression**: Net negative (-$1,621) due to threshold being too aggressive
-- **5-minute snapshot classification**: Most stocks are "uncertain" at 5 minutes
-- **Exit profiles per type**: Theoretically sound but too few stocks affected in practice
-
-### Going Forward
-- Classifier stays ON (gate only, no suppression)
-- Profile system supersedes the classifier's per-type exit profiles
-- The classifier's gate logic may need profile-specific thresholds
-
----
-
-## Known Issues / Open Items
-
-### 1. QTTB Investigation
-- Directive sent earlier, results status unknown
-- Check if QTTB_INVESTIGATION_DIRECTIVE.md has been executed
-
-### 2. Duffy (IronClaw AI Agent)
-- Deferred until Lima VM isolation configured (security concerns)
-- Will be trained as watchlist manager using profile identification rules
-- SOUL.md and identity files need to be written once VM is ready
-
-### 3. Entry Timing Problem (TURB example from March 2)
-- Bot enters breakouts at exhausted resistance levels
-- Classifier correctly doesn't block these (VWAP is strong)
-- Needs separate entry quality filter (not part of profile system)
-
-### 4. `WB_MAX_CONSEC_LOSSES=3` -- user put a pin on this
-- Even with Level 2 data, consecutive losses can cascade
-- Revisit after Profile B is validated
-
 ---
 
 ## Regression Benchmarks
@@ -185,26 +108,54 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 | MOVE | 2026-01-27 | +$5,502 | 3-trade runner |
 | ANPA | 2026-01-09 | +$2,088 | One_big_move (no-L2 baseline) |
 
-### Profile B (TBD -- add after validation)
+### Profile B (VALIDATED)
 
 | Stock | Date | Expected P&L | Notes |
 |-------|------|-------------|-------|
-| ANPA | 2026-01-09 | +$5,091 | With L2 enabled |
+| ANPA | 2026-01-09 | +$5,091 | `--profile B --ticks` |
+| BATL | 2026-02-27 | +$4,522 | `--profile B --ticks` |
+
+### Profile C (TBD — add after validation)
+
+---
+
+## Immediate Priorities
+
+1. **EXECUTE `PROFILE_C_VALIDATION_DIRECTIVE.md`** — 31 zero-trade stocks + 6 regressions
+2. After Profile C: run **last Friday's session** and **Monday's session** with all profiles active
+3. **Tomorrow (Wed March 4)**: First live multi-profile session
+
+---
+
+## Known Issues / Open Items
+
+### 1. Duffy (IronClaw AI Agent)
+- Deferred until Lima VM isolation configured
+- Will be trained as watchlist manager using profile identification rules
+
+### 2. `WB_MAX_CONSEC_LOSSES=3` — user put a pin on this
+- Revisit after all profiles validated
+
+### 3. IBKR L2 Approval
+- Still pending for live L2 data (Profile B needs this for live trading)
+
+### 4. Databento Cost
+- ~$0.023/stock for historical L2 data
+- Live feed cost TBD
 
 ---
 
 ## User Preferences (CRITICAL)
 
-- **Signal mode cascading exits must NEVER be suppressed** -- this is the bot's core edge
+- **Signal mode cascading exits must NEVER be suppressed** — this is the bot's core edge
 - "I want 100 $6K winners, not one $90K winner every few weeks"
-- Scanner appearance TIME matters -- if bot took profits before scanner appearance, that P&L doesn't count
-- "We don't care about the initial run. The initial runner sets off our alert, then we take that 9-12k and move on"
-- January was hot, February was cold -- sample from both to avoid bias
+- Scanner appearance TIME matters — if bot took profits before scanner appearance, that P&L doesn't count
+- January was hot, February was cold — sample from both to avoid bias
 - For anything needing direct machine access, update this status document with solid direction
 - User confirmed they cannot run backtests from Perplexity's end (no Alpaca API keys here)
-- VERO/GWAV/ANPA regression benchmarks may need to evolve as profiles are tuned
-- **"I'd rather have consistent $200-500 hits every day than losing 20k"** -- drives the multi-profile approach
-- **Multi-profile system is the strategic direction** -- don't tune global settings, tune per-profile
+- **"I'd rather have consistent $200-500 hits every day than losing 20k"**
+- **Multi-profile system is the strategic direction** — don't tune global settings, tune per-profile
+- **Goal: all profiles validated by March 3 for March 4 live session**
 
 ---
 
@@ -212,28 +163,17 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 
 | File | Purpose |
 |------|---------|
-| `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | **ACTIVE DIRECTIVE** -- full profile system architecture |
-| `WARRIOR_BOT_STATUS_REPORT.md` | This file -- context recovery |
-| `profiles/A.json` | Profile A config (to be created) |
-| `profiles/B.json` | Profile B config (to be created) |
-| `classifier.py` | StockClassifier -- AVOID gate, behavior types |
-| `simulate.py` | Main simulation engine |
-| `l2_signals.py` | L2 signal processing |
-| `l2_entry.py` | L2 entry strategy (DEAD CODE) |
-| `study_data/*.json` | Raw per-stock study data |
-| `L2_FULL_STUDY_RESULTS.md` | 137-stock L2 study results |
-| `L2_INFRASTRUCTURE_AUDIT.md` | 547-line L2 code audit |
+| `PROFILE_C_VALIDATION_DIRECTIVE.md` | **ACTIVE DIRECTIVE** |
+| `PROFILE_B_VALIDATION_RESULTS.md` | Profile B results (validated) |
+| `PROFILE_B_VALIDATION_DIRECTIVE.md` | Profile B directive (completed) |
+| `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | Full profile system architecture |
+| `WARRIOR_BOT_STATUS_REPORT.md` | This file — context recovery |
+| `profiles/A.json`, `B.json`, `C.json`, `X.json` | Profile configs |
+| `profile_manager.py` | Profile parsing/apply/restore |
+| `simulate.py` | Sim engine (supports `--profile` flag) |
+| `classifier.py` | StockClassifier — AVOID gate |
 
 ---
 
-## Immediate Priorities
-
-1. **EXECUTE `MULTI_PROFILE_SYSTEM_DIRECTIVE.md`** -- Phase 1 (infrastructure) + Phase 2 (Profile A lock-in)
-2. Do NOT touch Profile A trading logic -- just formalize what already works
-3. After Phase 2: move to Phase 3 (Profile B validation with L2)
-4. Check QTTB_INVESTIGATION_DIRECTIVE.md status
-
----
-
-*Report updated by Perplexity Computer -- March 3, 2026, 5:48 AM MST*
-*Active workstream: Multi-Profile Trading System*
+*Report updated by Perplexity Computer — March 3, 2026, 8:40 AM MST*
+*Active workstream: Profile C Validation → Full Session Replay*
