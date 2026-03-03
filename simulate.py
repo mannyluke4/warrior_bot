@@ -965,6 +965,10 @@ def run_simulation(
     from profile_manager import apply_profile_env, restore_env as _restore_env
     _saved_env = apply_profile_env(profile)
 
+    # Profile env may enable L2 (WB_ENABLE_L2=1) — respect it if --l2 not already set
+    if not use_l2 and os.getenv("WB_ENABLE_L2", "0") == "1":
+        use_l2 = True
+
     # Override env vars for this simulation run
     if min_score is not None:
         os.environ["WB_MIN_SCORE"] = str(min_score)
