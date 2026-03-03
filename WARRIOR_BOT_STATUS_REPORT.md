@@ -1,5 +1,5 @@
 # Warrior Bot — Project Status Report
-## For Claude Code Context Recovery — March 3, 2026 (9:35 AM MST Update)
+## For Claude Code Context Recovery — March 3, 2026 (12:00 PM MST Update)
 
 ---
 
@@ -9,12 +9,13 @@ We've completed a **137-stock L2 study** that definitively answered the question
 
 This led to the **Multi-Profile Trading System** — each stock on the watchlist is tagged with a profile code (`:A`, `:B`, `:C`, `:X`) that tells the bot which configuration to use.
 
-**Current status**:
-- Phase 1+2 COMPLETE: Infrastructure + Profile A lock-in (commit `2175c22`)
-- Phase 3 COMPLETE: **Profile B VALIDATED** (commit `1ac601e`)
-- Phase 4 COMPLETE: **Profile C NOT VALIDATED** (commit `a9bdcaa`) — Fast Mode found 0 new trades, broke VERO regression
-- Phase 5 IN PROGRESS: **Full 137-stock profile system backtest** — directive in `FULL_PROFILE_BACKTEST_DIRECTIVE.md`
-- **Goal**: Prove the A+B+X profile system works across all 137 stocks before tomorrow's live session
+**Full 137-stock backtest COMPLETE** — Profile A+B corrected view: **+$30,606** vs baseline -$196. Profile X saves money but is net negative (-$6,038). Decision: skip X in live trading, trade only A+B.
+
+**CRITICAL LIVE TRADING BUGS FOUND** — EDSA 2026-03-03 live trade revealed two blockers:
+1. **Reconcile clears positions during Alpaca propagation delay** — BLOCKER for live
+2. **No trailing stop system** — position went from +$7,418 unrealized to +$4,533 realized
+
+Both have directives written. **Reconcile fix must be done before tomorrow's live session.**
 
 ---
 
@@ -24,10 +25,12 @@ This led to the **Multi-Profile Trading System** — each stock on the watchlist
 
 | Commit | Date | What It Did |
 |--------|------|-------------|
-| `a9bdcaa` | Mar 3 | **Profile C Validation: NOT VALIDATED** — 0 new trades, VERO regression fail |
+| `7a1f7ae` | Mar 3 | **CRITICAL: Reconcile grace period + trailing stop directive** |
+| `2a11c6c` | Mar 3 | EDSA trade report: reconcile bug + trailing stop investigation |
+| `f435705` | Mar 3 | Full 137-stock profile backtest: A+B validated, X skipped |
+| `a9bdcaa` | Mar 3 | Profile C Validation: NOT VALIDATED |
 | `47c39a4` | Mar 3 | Profile C Validation Directive + Status Report update |
-| `1ac601e` | Mar 3 | **Profile B Validation: 27 mid-float stocks — VALIDATED** |
-| `34995bc` | Mar 3 | Profile B Validation Directive |
+| `1ac601e` | Mar 3 | Profile B Validation: VALIDATED |
 | `2175c22` | Mar 3 | Phase 1: Multi-Profile Trading System infrastructure |
 
 ### Current Live Config (.env)
@@ -36,7 +39,7 @@ This led to the **Multi-Profile Trading System** — each stock on the watchlist
 WB_EXIT_MODE=signal
 WB_CLASSIFIER_ENABLED=1
 WB_CLASSIFIER_SUPPRESS_ENABLED=0
-WB_ENABLE_L2=0                           # L2 OFF globally (per-profile via B.json)
+WB_ENABLE_L2=0
 WB_L2_HARD_GATE_WARMUP_BARS=30
 WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 ```
@@ -50,38 +53,44 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 | Profile | Tag | Status | Description |
 |---|---|---|---|
 | A | `:A` (default) | **PROVEN** ✅ | Micro-float <5M, 7am scanner, L2 OFF, 44% WR, +$24,737 |
-| B | `:B` | **VALIDATED** ✅ | Mid-float 5-50M, 7am scanner, L2 ON, +$3,157 delta (Alpaca) / +$18,128 delta (Databento) |
-| C | `:C` | **NOT VALIDATED** ❌ | Fast Mode found 0 new trades on 29 zero-trade stocks, broke VERO by -$8,713. Placeholder for future work. |
-| X | `:X` | **TESTING** 🔄 | Everything else — max 2 entries, conservative. Being tested in full 137-stock backtest. |
+| B | `:B` | **VALIDATED** ✅ | Mid-float 5-50M, 7am scanner, L2 ON, +$4,859 Databento |
+| C | `:C` | **NOT VALIDATED** ❌ | Fast Mode found 0 new trades, broke VERO by -$8,713. Do not use. |
+| X | `:X` | **TESTED — SKIP IN LIVE** ⚠️ | -$6,038 but saves $16,290 vs uncontrolled. Skip in live. |
 
-### Profile B Key Findings (commit `1ac601e`)
-- **All improvement from 7am scanner stocks** (+$3,158 delta)
-- Non-7am mid-float stocks are flat — skip them entirely
-- Max entries=3 is net positive (+$1,396)
-- AZI (44.5M) and CRSR (46.6M) are known L2 losers — tag `:X` or skip
-- simulate.py now auto-enables L2 from profile env var
-- Full results in `PROFILE_B_VALIDATION_RESULTS.md`
+### Full 137-Stock Backtest Results (commit `f435705`)
 
-### Profile B Regression Benchmarks
-| Stock | Date | Command | Expected P&L |
-|-------|------|---------|-------------|
-| ANPA | 2026-01-09 | `--profile B --ticks` | +$5,091 |
-| BATL | 2026-02-27 | `--profile B --ticks` | +$4,522 |
+**CRITICAL**: Databento ticks break Profile A. Profile A must use Alpaca ticks.
 
-### Profile C Results (commit `a9bdcaa`)
-- Fast Mode found **0 new trades** on 29 zero-trade stocks — those stocks had no setup, period
-- VERO regression **FAILED**: Profile C = -$1,823 vs Profile A = +$6,890 (-$8,713 swing)
-- Fast Mode fires premature entries at 07:02 on $3.52, consuming entry budget before real move
-- BNAI also degraded by -$1,625 (borderline)
-- Round 6.5 HIND +$663 result is NOT reproducible with current config
-- Profile C is NOT deployed. Do not use `:C` tags in live trading.
-- Full results in `PROFILE_C_VALIDATION_RESULTS.md`
+**Corrected View:**
+- **Profile A + B only**: +$30,606 (baseline: -$196)
+- **Profile X**: -$6,038 (saves $16,290 vs uncontrolled)
+- **Decision**: Trade only A+B in live. Skip X.
 
-### Full Profile System Backtest (IN PROGRESS)
-- All 137 stocks categorized: 57 Profile A, 16 Profile B, 64 Profile X
-- Run 1: A+B only (skip X) — "what if we only traded what we're good at?"
-- Run 2: A+B+X — "does trading the unknowns add or subtract value?"
-- Full plan in `FULL_PROFILE_BACKTEST_DIRECTIVE.md`
+### Scanner Time Window Finding
+- SPRC (07:02, 0.4M float): should be Profile A — +$3,454
+- STSS (07:01, 20.3M): should be Profile B
+- **Directive**: `SCANNER_TIME_WINDOW_DIRECTIVE.md` — widen to 07:00-07:14
+
+---
+
+## EDSA Live Trade — Critical Bugs (March 3, 2026)
+
+EDSA: 7,293 shares @ $3.03, stop $2.92, R=$0.11
+
+### Bug 1: Reconcile Clears Position (CRITICAL BLOCKER)
+- Alpaca propagation delay: reconcile saw alp_qty=0, cleared bot's 7,293 shares
+- Position unmanaged 3+ hours. Stop never fired despite price hitting $2.774
+- **Fix**: 60-second grace period. **Directive**: `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
+
+### Bug 2: No Trailing Stop (HIGH)
+- +$7,418 unrealized → +$4,533 realized (gave back ~$2,900)
+- **Fix**: R-multiple trailing: 2R→BE, 4R→+1R, 6R→trail $0.15
+- Env-gated, OFF by default. **Directive**: `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
+
+### Bug 3: Bearish Engulfing First-Bar Sensitivity (MEDIUM — DEFERRED)
+- Entered $3.00, exited $2.97 after 1 min, recovered to $3.19 next bar
+
+### EDSA Final P&L: +$4,533
 
 ---
 
@@ -108,7 +117,7 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 
 ## Regression Benchmarks
 
-### Profile A (MUST ALWAYS PASS)
+### Profile A (use Alpaca ticks, NOT Databento)
 
 | Stock | Date | Expected P&L | Notes |
 |-------|------|-------------|-------|
@@ -119,55 +128,47 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 | MOVE | 2026-01-27 | +$5,502 | 3-trade runner |
 | ANPA | 2026-01-09 | +$2,088 | One_big_move (no-L2 baseline) |
 
-### Profile B (VALIDATED)
+### Profile B (use Databento ticks)
 
 | Stock | Date | Expected P&L | Notes |
 |-------|------|-------------|-------|
 | ANPA | 2026-01-09 | +$5,091 | `--profile B --ticks` |
 | BATL | 2026-02-27 | +$4,522 | `--profile B --ticks` |
 
-### Profile C (NOT VALIDATED — do not use)
-
 ---
 
 ## Immediate Priorities
 
-1. **EXECUTE `FULL_PROFILE_BACKTEST_DIRECTIVE.md`** — all 137 stocks with A/B/X profiles, Databento ticks
-2. Analyze results: Run 1 (A+B only) vs Run 2 (A+B+X) vs Baseline
-3. Decide whether Profile X adds value or should be skipped in live trading
-4. **Tomorrow (Wed March 4)**: First live multi-profile session
+1. **CRITICAL — Reconcile grace period fix** — BLOCKER. See `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
+2. **HIGH — Trailing stop system** — See `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
+3. **MEDIUM — Scanner time window** — See `SCANNER_TIME_WINDOW_DIRECTIVE.md`
+4. **Tomorrow (Tue March 4)**: Live session — requires reconcile fix minimum
 
 ---
 
 ## Known Issues / Open Items
 
-### 1. Duffy (IronClaw AI Agent)
-- Deferred until Lima VM isolation configured
-- Will be trained as watchlist manager using profile identification rules
-
-### 2. `WB_MAX_CONSEC_LOSSES=3` — user put a pin on this
-- Revisit after all profiles validated
-
-### 3. IBKR L2 Approval
-- Still pending for live L2 data (Profile B needs this for live trading)
-
-### 4. Databento Cost
-- ~$0.023/stock for historical L2 data
-- Live feed cost TBD
+1. **Duffy/IronClaw**: Deferred until Lima VM isolation configured
+2. **WB_MAX_CONSEC_LOSSES=3**: Pinned, revisit after trailing stop
+3. **IBKR L2 Approval**: Pending for live Profile B
+4. **Databento Cost**: ~$0.023/stock historical, live TBD
+5. **Profile A = Alpaca ticks only** (methodology, not bug)
+6. **Bearish engulfing sensitivity**: Deferred, needs 137-stock analysis
+7. **Regression benchmarks may evolve**: User noted
 
 ---
 
 ## User Preferences (CRITICAL)
 
-- **Signal mode cascading exits must NEVER be suppressed** — this is the bot's core edge
+- **Signal mode cascading exits must NEVER be suppressed**
 - "I want 100 $6K winners, not one $90K winner every few weeks"
-- Scanner appearance TIME matters — if bot took profits before scanner appearance, that P&L doesn't count
-- January was hot, February was cold — sample from both to avoid bias
-- For anything needing direct machine access, update this status document with solid direction
-- User confirmed they cannot run backtests from Perplexity's end (no Alpaca API keys here)
-- **"I'd rather have consistent $200-500 hits every day than losing 20k"**
-- **Multi-profile system is the strategic direction** — don't tune global settings, tune per-profile
-- **Goal: all profiles validated by March 3 for March 4 live session**
+- Scanner TIME matters — pre-scanner profits don't count
+- Sample from both hot (Jan) and cold (Feb) markets
+- For machine work, update this status doc with direction
+- Cannot run backtests from Perplexity (no Alpaca API keys)
+- **"Consistent $200-500 hits > losing 20k then one 5k hit"**
+- Multi-profile is the strategic direction
+- **"Let's leave nothing on the table!"**
 
 ---
 
@@ -175,19 +176,20 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 
 | File | Purpose |
 |------|---------|
-| `FULL_PROFILE_BACKTEST_DIRECTIVE.md` | **ACTIVE DIRECTIVE** |
-| `PROFILE_C_VALIDATION_RESULTS.md` | Profile C results (NOT validated) |
-| `PROFILE_C_VALIDATION_DIRECTIVE.md` | Profile C directive (completed) |
-| `PROFILE_B_VALIDATION_RESULTS.md` | Profile B results (validated) |
-| `PROFILE_B_VALIDATION_DIRECTIVE.md` | Profile B directive (completed) |
-| `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | Full profile system architecture |
-| `WARRIOR_BOT_STATUS_REPORT.md` | This file — context recovery |
+| `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md` | **ACTIVE — CRITICAL** |
+| `SCANNER_TIME_WINDOW_DIRECTIVE.md` | **ACTIVE — MEDIUM** |
+| `EDSA_TRADE_REPORT_20260303.md` | EDSA live trade analysis |
+| `FULL_PROFILE_BACKTEST_RESULTS.md` | 137-stock results |
+| `PROFILE_C_VALIDATION_RESULTS.md` | Profile C (NOT validated) |
+| `PROFILE_B_VALIDATION_RESULTS.md` | Profile B (validated) |
+| `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | Profile system architecture |
+| `WARRIOR_BOT_STATUS_REPORT.md` | This file |
 | `profiles/A.json`, `B.json`, `C.json`, `X.json` | Profile configs |
 | `profile_manager.py` | Profile parsing/apply/restore |
-| `simulate.py` | Sim engine (supports `--profile` flag) |
+| `simulate.py` | Sim engine (`--profile` flag) |
 | `classifier.py` | StockClassifier — AVOID gate |
 
 ---
 
-*Report updated by Perplexity Computer — March 3, 2026, 9:35 AM MST*
-*Active workstream: Full 137-Stock Profile System Backtest*
+*Report updated by Perplexity Computer — March 3, 2026, 12:00 PM MST*
+*Active workstream: Reconcile fix (BLOCKER) → Trailing stop → Scanner window widening*
