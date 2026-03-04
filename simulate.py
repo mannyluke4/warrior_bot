@@ -82,6 +82,7 @@ class SimTrade:
     peak: float = 0.0
     peak_time: str = ""
     runner_stop: float = 0.0
+    highest_r: float = 0.0   # Peak R-multiple seen (for WB_TRAILING_STOP)
     closed: bool = False
 
     def pnl(self) -> float:
@@ -292,6 +293,9 @@ class SimTradeManager:
             if t.tp_hit:
                 trail_stop = t.peak * (1.0 - self.signal_trail_pct)
                 t.stop = max(t.stop, trail_stop)
+
+            # NOTE: R-multiple trailing stop is updated on 10s bar closes, not per tick.
+            # See on_10s_close() below. The stop level (t.stop) is checked here every tick.
 
             # Check stop (hard or trailed)
             if price <= t.stop:
@@ -1268,6 +1272,31 @@ def run_simulation(
 
             if sim_mgr.open_trade is None or sim_mgr.open_trade.closed:
                 return
+
+            # R-multiple trailing stop: update on 10s bar close (not per-tick, to avoid spike noise).
+            # Only fires after signal mode's own tp_hit (be_trigger_r) — avoids premature exits
+            # on cascading stocks that pull back before making their run.
+            # Also skips if R < WB_TRAILING_STOP_MIN_R_PCT% of entry (e.g., halt-spike trades with
+            # tiny absolute R on high-priced stocks — trailing stop disrupts their cascade).
+            if os.getenv("WB_TRAILING_STOP_ENABLED", "0") == "1":
+                t = sim_mgr.open_trade
+                _min_r_pct = float(os.getenv("WB_TRAILING_STOP_MIN_R_PCT", "1.0"))
+                _r_pct = (t.r / t.entry * 100.0) if t.entry > 0 else 0.0
+                if t.tp_hit and t.r > 0 and _r_pct >= _min_r_pct:
+                    bar_r = (bar.close - t.entry) / t.r
+                    t.highest_r = max(t.highest_r, bar_r)
+                    _be_thr = float(os.getenv("WB_TRAILING_STOP_BE_THRESHOLD_R", "2"))
+                    _lk_thr = float(os.getenv("WB_TRAILING_STOP_LOCK_THRESHOLD_R", "4"))
+                    _tr_thr = float(os.getenv("WB_TRAILING_STOP_TRAIL_THRESHOLD_R", "6"))
+                    _tr_off = float(os.getenv("WB_TRAILING_STOP_TRAIL_OFFSET", "0.15"))
+                    new_stop = t.stop
+                    if t.highest_r >= _be_thr:
+                        new_stop = max(new_stop, t.entry)           # breakeven
+                    if t.highest_r >= _lk_thr:
+                        new_stop = max(new_stop, t.entry + t.r)     # lock +1R
+                    if t.highest_r >= _tr_thr:
+                        new_stop = max(new_stop, t.peak - _tr_off)  # trail below peak
+                    t.stop = new_stop
 
             # Feed parabolic regime detector
             if _parabolic_det is not None:

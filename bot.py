@@ -420,6 +420,8 @@ def on_bar_close_10s(bar):
     # Feed bar-close candle to trade_manager (for bearish engulfing exit detection)
     if trade_manager:
         trade_manager.on_bar_close(symbol, bar.open, bar.high, bar.low, bar.close, bar.volume)
+        # Update R-multiple trailing stop on 10s bar close (WB_TRAILING_STOP_ENABLED gates this)
+        trade_manager.update_trailing_stop_on_10s_bar(symbol, bar.close, bar.high)
 
     # Topping wicky exit: if we're in a trade and the pattern fires, get out
     # Grace period: skip exit within first N minutes of entry (breakout volatility)

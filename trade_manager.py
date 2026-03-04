@@ -46,6 +46,7 @@ class OpenTrade:
     tp_hit: bool = False    # T1 hit
     peak: float = 0.0
     runner_stop: float = 0.0
+    highest_r: float = 0.0       # Peak R-multiple seen (for WB_TRAILING_STOP)
     created_at_utc: datetime = None
     # T2 (3-tranche only; qty_t2=0 when disabled)
     qty_t2: int = 0
@@ -517,16 +518,31 @@ class PaperTradeManager:
         with self._lock:
             bot_trade = self.open.get(symbol)
             bot_qty = bot_trade.qty_total if bot_trade else 0
+            bot_created_at = bot_trade.created_at_utc if bot_trade else None
             p = self.pending.get(symbol)
             bot_pending_id = p.order_id if p else None
             pending_submitted = p.submitted_at_utc if p else None
 
         if alp_side == "long" and alp_qty != bot_qty:
-            log_event("reconcile_position", symbol, alp_qty=alp_qty, bot_qty=bot_qty, alp_avg=alp_avg, alp_side=alp_side)
+            if alp_qty > 0 and bot_qty == 0:
+                log_event("reconcile_orphan_adopted", symbol, alp_qty=alp_qty, bot_qty=bot_qty, alp_avg=alp_avg)
+                print(f"🔴 CRITICAL: {symbol} bot_qty=0 but Alpaca has {alp_qty} shares — adopting orphan position", flush=True)
+            else:
+                log_event("reconcile_position", symbol, alp_qty=alp_qty, bot_qty=bot_qty, alp_avg=alp_avg, alp_side=alp_side)
             with self._lock:
                 self._ensure_open_trade_from_alpaca(symbol, alp_qty, alp_avg)
 
         if alp_qty == 0 and bot_qty != 0:
+            # Check grace period: Alpaca paper API has 10-30s propagation delay after fills.
+            # Don't clear a position that was just entered — trust the fill event.
+            entry_grace_sec = int(os.getenv("WB_RECONCILE_ENTRY_GRACE_SEC", "60"))
+            if bot_created_at:
+                seconds_since_entry = (datetime.now(timezone.utc) - bot_created_at).total_seconds()
+                if seconds_since_entry < entry_grace_sec:
+                    log_event("reconcile_entry_grace", symbol, alp_qty=0, bot_qty=bot_qty,
+                              seconds_since_entry=round(seconds_since_entry, 1),
+                              grace_sec=entry_grace_sec)
+                    return  # Alpaca propagation delay — keep position, skip reconcile
             log_event("reconcile_position", symbol, alp_qty=0, bot_qty=bot_qty, alp_avg=alp_avg, alp_side=alp_side)
             with self._lock:
                 self.open.pop(symbol, None)
@@ -1695,6 +1711,46 @@ class PaperTradeManager:
         self._manage_exits(symbol)
 
 
+    def update_trailing_stop_on_10s_bar(self, symbol: str, bar_close: float, bar_peak: float):
+        """Update R-multiple trailing stop on each 10-second bar close.
+
+        Called by bot.py on every 10s bar close. Uses bar_close (not tick) to avoid
+        spike noise — a single rogue tick won't advance the trailing stop.
+        bar_peak is the bar high, used for the trail-below-peak tier.
+        """
+        if os.getenv("WB_TRAILING_STOP_ENABLED", "0") != "1":
+            return
+        with self._lock:
+            t = self.open.get(symbol)
+            # Only activate after signal mode's own tp_hit — avoids premature exits
+            # on cascading stocks that pull back before their run.
+            # Also skip if R < WB_TRAILING_STOP_MIN_R_PCT% of entry (halt-spike trades
+            # with tiny absolute R on high-priced stocks disrupt cascade if trailed).
+            if t is None or not t.tp_hit or t.r <= 0:
+                return
+            _min_r_pct = float(os.getenv("WB_TRAILING_STOP_MIN_R_PCT", "1.0"))
+            _r_pct = (t.r / t.entry * 100.0) if t.entry > 0 else 0.0
+            if _r_pct < _min_r_pct:
+                return
+            bar_r = (bar_close - t.entry) / t.r
+            t.highest_r = max(t.highest_r, bar_r)
+            _be_thr = float(os.getenv("WB_TRAILING_STOP_BE_THRESHOLD_R", "2"))
+            _lk_thr = float(os.getenv("WB_TRAILING_STOP_LOCK_THRESHOLD_R", "4"))
+            _tr_thr = float(os.getenv("WB_TRAILING_STOP_TRAIL_THRESHOLD_R", "6"))
+            _tr_off = float(os.getenv("WB_TRAILING_STOP_TRAIL_OFFSET", "0.15"))
+            new_stop = t.stop
+            if t.highest_r >= _be_thr:
+                new_stop = max(new_stop, t.entry)           # breakeven
+            if t.highest_r >= _lk_thr:
+                new_stop = max(new_stop, t.entry + t.r)     # lock +1R
+            if t.highest_r >= _tr_thr:
+                new_stop = max(new_stop, t.peak - _tr_off)  # trail below peak
+            if new_stop > t.stop:
+                log_event("trailing_stop_raise", symbol,
+                          old_stop=round(t.stop, 4), new_stop=round(new_stop, 4),
+                          highest_r=round(t.highest_r, 2), peak=round(t.peak, 4))
+                t.stop = new_stop
+
     def _in_parabolic_grace(self, symbol: str) -> bool:
         """Suppress BE exits during genuine parabolic ramps (not flash spikes)."""
         if not self.be_parabolic_grace:
@@ -1971,6 +2027,9 @@ class PaperTradeManager:
             if t.tp_hit:
                 trail_stop = t.peak * (1.0 - self.signal_trail_pct)
                 t.stop = max(t.stop, trail_stop)
+
+            # NOTE: R-multiple trailing stop is updated on 10s bar closes via
+            # update_trailing_stop_on_10s_bar(). The stop level (t.stop) is checked here every tick.
 
             # Check stop (hard or trailed)
             if bid <= t.stop:
