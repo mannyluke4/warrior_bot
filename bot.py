@@ -19,7 +19,7 @@ from trade_manager import PaperTradeManager
 from stock_filter import StockFilter
 from market_scanner import MarketScanner
 from l2_signals import L2SignalDetector
-from profile_manager import parse_symbol_profile, apply_profile_env, restore_env
+from profile_manager import parse_symbol_profile, apply_profile_env, restore_env, auto_assign_profile
 
 load_dotenv()
 
@@ -742,6 +742,19 @@ def main():
         stock_info_cache = {}
         _stock_info_cache = {}
         filtered_watchlist = filtered_result
+
+    # Auto-assign profiles for dynamic scanner symbols (not manually tagged)
+    enable_dynamic_scanner = os.getenv("WB_ENABLE_DYNAMIC_SCANNER", "0") == "1"
+    if enable_dynamic_scanner and stock_info_cache:
+        now_et = datetime.now(ET)
+        for sym in filtered_watchlist:
+            if sym not in symbol_profiles:
+                info = stock_info_cache.get(sym)
+                float_m = info.float_shares if info else None
+                profile = auto_assign_profile(now_et, float_m)
+                symbol_profiles[sym] = profile
+        assigned = {s: symbol_profiles[s] for s in filtered_watchlist if s in symbol_profiles}
+        print(f"\n📊 Auto-assigned profiles: {assigned}", flush=True)
 
     global _session_filtered_out
     _session_filtered_out = raw_watchlist - filtered_watchlist

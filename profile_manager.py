@@ -14,9 +14,16 @@ Profile codes:
 
 import json
 import os
+from datetime import datetime, time
 from pathlib import Path
+from typing import Optional
 
 PROFILES_DIR = Path(__file__).parent / "profiles"
+
+# Scanner time window: stocks appearing within this many minutes of 07:00 ET
+# are eligible for Profile A/B classification based on float.
+# Stocks outside the window default to Profile X.
+SCANNER_WINDOW_MINUTES = int(os.environ.get("WB_SCANNER_WINDOW_MINUTES", "14"))
 
 
 def parse_symbol_profile(entry: str) -> tuple[str, str]:
@@ -79,3 +86,41 @@ def restore_env(saved: dict):
             os.environ.pop(key, None)
         else:
             os.environ[key] = original
+
+
+def auto_assign_profile(scanner_time_et: datetime,
+                        float_shares_m: Optional[float]) -> str:
+    """
+    Auto-assign a profile based on scanner appearance time and float.
+
+    Args:
+        scanner_time_et: When the stock appeared on the scanner (ET-aware datetime).
+        float_shares_m:  Float in millions of shares, or None if unknown.
+
+    Returns:
+        Profile code: "A", "B", or "X".
+
+    Rules:
+        - Stock must appear within WB_SCANNER_WINDOW_MINUTES of 07:00 ET.
+        - float < 5M  → Profile A (micro-float runner)
+        - float 5-50M → Profile B (mid-float L2-assisted)
+        - float > 50M or unknown → Profile X
+        - Outside window → Profile X
+    """
+    window = int(os.environ.get("WB_SCANNER_WINDOW_MINUTES",
+                                str(SCANNER_WINDOW_MINUTES)))
+
+    market_open = scanner_time_et.replace(hour=7, minute=0, second=0,
+                                          microsecond=0)
+    delta = scanner_time_et - market_open
+    minutes_after_open = delta.total_seconds() / 60.0
+
+    if 0 <= minutes_after_open <= window:
+        if float_shares_m is not None and float_shares_m < 5:
+            return "A"
+        elif float_shares_m is not None and float_shares_m <= 50:
+            return "B"
+        else:
+            return "X"
+    else:
+        return "X"
