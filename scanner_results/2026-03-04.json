@@ -12,6 +12,30 @@
     "profile": "A"
   },
   {
+    "symbol": "TURB",
+    "prev_close": 1.68,
+    "pm_price": 2.36,
+    "gap_pct": 40.48,
+    "pm_volume": 266996.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "float_shares": 1291759,
+    "float_millions": 1.29,
+    "profile": "A"
+  },
+  {
+    "symbol": "ASTN",
+    "prev_close": 12.06,
+    "pm_price": 15.87,
+    "gap_pct": 31.59,
+    "pm_volume": 11555.0,
+    "first_seen_et": "04:07",
+    "sim_start": "07:00",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
     "symbol": "PCLA",
     "prev_close": 2.9,
     "pm_price": 3.5,
@@ -22,6 +46,18 @@
     "float_shares": 733509,
     "float_millions": 0.73,
     "profile": "A"
+  },
+  {
+    "symbol": "HRZN",
+    "prev_close": 4.685,
+    "pm_price": 5.53,
+    "gap_pct": 18.04,
+    "pm_volume": 41870.0,
+    "first_seen_et": "04:08",
+    "sim_start": "07:00",
+    "float_shares": 47429433,
+    "float_millions": 47.43,
+    "profile": "B"
   },
   {
     "symbol": "CANF",
@@ -45,6 +81,18 @@
     "sim_start": "07:00",
     "float_shares": 275033,
     "float_millions": 0.28,
+    "profile": "A"
+  },
+  {
+    "symbol": "VCIG",
+    "prev_close": 7.0,
+    "pm_price": 8.03,
+    "gap_pct": 14.71,
+    "pm_volume": 201.0,
+    "first_seen_et": "04:55",
+    "sim_start": "07:00",
+    "float_shares": 108972,
+    "float_millions": 0.11,
     "profile": "A"
   },
   {
@@ -82,18 +130,6 @@
     "float_shares": 8335676,
     "float_millions": 8.34,
     "profile": "B"
-  },
-  {
-    "symbol": "DUOG",
-    "prev_close": 3.12,
-    "pm_price": 3.53,
-    "gap_pct": 13.14,
-    "pm_volume": 18113.0,
-    "first_seen_et": "04:02",
-    "sim_start": "07:00",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
   },
   {
     "symbol": "EDSA",
@@ -144,6 +180,18 @@
     "profile": "X"
   },
   {
+    "symbol": "CORD",
+    "prev_close": 17.07,
+    "pm_price": 19.09,
+    "gap_pct": 11.83,
+    "pm_volume": 41297.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
     "symbol": "HCTI",
     "prev_close": 2.67,
     "pm_price": 2.975,
@@ -187,9 +235,9 @@
     "pm_volume": 10326.0,
     "first_seen_et": "04:00",
     "sim_start": "07:00",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
+    "float_shares": 629899,
+    "float_millions": 0.63,
+    "profile": "A"
   },
   {
     "symbol": "PIII",

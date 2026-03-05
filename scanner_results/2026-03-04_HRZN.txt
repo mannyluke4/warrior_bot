@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HRZN  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HRZN bars for 2026-03-04...
+  Total bars: 227  |  Seed: 13  |  Sim: 214
+  Fetching L2 from Databento: HRZN 2026-03-04 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: HRZN_2026-03-04_XNAS.dbn.zst
+  L2 data: 40061 records for HRZN
+  L2 snapshots: 3870 (1-second sampled)
+  L2 data loaded: 3870 snapshots
+  Seed complete: EMA9=5.5311
+  Fetching tick data from Alpaca...
+  Tick replay: 22773 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HRZN -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3870 snaps [TICK mode]
+  Bars: 22773 sim + 13 seed  |  EMA9=4.5624  VWAP=4.8376
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
