@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ATON  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ATON bars for 2026-01-13...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=2.1239
+  Fetching tick data from Alpaca...
+  Tick replay: 300955 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ATON -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 300955 sim + 180 seed  |  EMA9=1.9038  VWAP=2.0681
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

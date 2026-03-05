@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CIGL  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CIGL bars for 2026-01-13...
+  Total bars: 83  |  Seed: 14  |  Sim: 69
+  Seed complete: EMA9=2.0338
+  Fetching tick data from Alpaca...
+  Tick replay: 590 trades for sim window
+  [07:28] CLASSIFIER: CIGL → avoid (conf=0.85) — AVOID gate: VWAP dist 2.1% < 7.0%, range 2.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: CIGL -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 590 sim + 14 seed  |  EMA9=1.8260  VWAP=2.0105
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

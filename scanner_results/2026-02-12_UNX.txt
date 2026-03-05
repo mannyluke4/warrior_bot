@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: UNX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching UNX bars for 2026-02-12...
+  Total bars: 273  |  Seed: 48  |  Sim: 225
+  Seed complete: EMA9=3.0294
+  Fetching tick data from Alpaca...
+  Tick replay: 4550 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: UNX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4550 sim + 48 seed  |  EMA9=2.6180  VWAP=2.7389
+======================================================================
+
+  No trades taken.
+
+  Armed: 3  |  Signals: 3
+======================================================================

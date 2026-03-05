@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: STVN  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching STVN bars for 2026-02-10...
+  Total bars: 125  |  Seed: 3  |  Sim: 122
+  Fetching L2 from Databento: STVN 2026-02-10 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: STVN_2026-02-10_XNAS.dbn.zst
+  L2 data: 4233 records for STVN
+  L2 snapshots: 1165 (1-second sampled)
+  L2 data loaded: 1165 snapshots
+  Seed complete: EMA9=16.3180
+  Fetching tick data from Alpaca...
+  Tick replay: 1915 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:30 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.5 entry=16.9900 stop=16.6800 R=0.3100 detail=macd=7.5*0.6;R>=0.08=+1;l2_thin_ask=+1;l2_wide_spread=-2(2.7%) close=16.2700 vwap=16.2790
+    post_block: max_5m=16.7700 max_10m=16.7700 max_30m=16.7700
+
+======================================================================
+  BACKTEST REPORT: STVN -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1165 snaps [TICK mode]
+  Bars: 1915 sim + 3 seed  |  EMA9=15.8600  VWAP=16.1986
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

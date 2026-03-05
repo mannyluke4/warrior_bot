@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IONX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IONX bars for 2026-02-12...
+  Total bars: 333  |  Seed: 83  |  Sim: 250
+  Seed complete: EMA9=10.9772
+  Fetching tick data from Alpaca...
+  Tick replay: 15685 trades for sim window
+  [07:04] CLASSIFIER: IONX → avoid (conf=0.85) — AVOID gate: VWAP dist 1.2% < 7.0%, range 0.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: IONX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 15685 sim + 83 seed  |  EMA9=9.4027  VWAP=9.9667
+======================================================================
+
+  No trades taken.
+
+  Armed: 2  |  Signals: 1
+======================================================================

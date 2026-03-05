@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PEW  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PEW bars for 2026-01-15...
+  Total bars: 166  |  Seed: 12  |  Sim: 154
+  Fetching L2 from Databento: PEW 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: PEW_2026-01-15_XNAS.dbn.zst
+  L2 data: 37176 records for PEW
+  L2 snapshots: 2779 (1-second sampled)
+  L2 data loaded: 2779 snapshots
+  Seed complete: EMA9=3.8016
+  Fetching tick data from Alpaca...
+  Tick replay: 18081 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PEW -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2779 snaps [TICK mode]
+  Bars: 18081 sim + 12 seed  |  EMA9=3.2200  VWAP=2.9795
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

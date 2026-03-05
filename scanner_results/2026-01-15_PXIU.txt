@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PXIU  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PXIU bars for 2026-01-15...
+  Total bars: 82  |  Seed: 4  |  Sim: 78
+  Seed complete: EMA9=2.7147
+  Fetching tick data from Alpaca...
+  Tick replay: 607 trades for sim window
+  [08:00] CLASSIFIER: PXIU → avoid (conf=0.85) — AVOID gate: VWAP dist 6.8% < 7.0%, range 8.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PXIU -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 607 sim + 4 seed  |  EMA9=2.2845  VWAP=2.3923
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

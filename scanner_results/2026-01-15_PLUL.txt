@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PLUL  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PLUL bars for 2026-01-15...
+  Total bars: 21  |  Seed: 3  |  Sim: 18
+  Seed complete: EMA9=16.3268
+  Fetching tick data from Alpaca...
+  Tick replay: 84 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PLUL -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 84 sim + 3 seed  |  EMA9=15.8123  VWAP=16.0840
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RZLV  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RZLV bars for 2026-01-13...
+  Total bars: 372  |  Seed: 100  |  Sim: 272
+  Seed complete: EMA9=4.1176
+  Fetching tick data from Alpaca...
+  Tick replay: 85479 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RZLV -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 85479 sim + 100 seed  |  EMA9=3.6672  VWAP=3.8236
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:30   4.3500   4.2476  0.1024   12.0   4.3595  bearish_engulfing_exit_full       +93    +0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+93  |  Avg R-Multiple: +0.1R
+  Largest Win: $+93  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 3  |  Entered: 1
+======================================================================
+

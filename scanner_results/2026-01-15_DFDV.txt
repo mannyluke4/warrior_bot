@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DFDV  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DFDV bars for 2026-01-15...
+  Total bars: 165  |  Seed: 0  |  Sim: 165
+  Fetching L2 from Databento: DFDV 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: DFDV_2026-01-15_XNAS.dbn.zst
+  L2 data: 16001 records for DFDV
+  L2 snapshots: 2471 (1-second sampled)
+  L2 data loaded: 2471 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 6899 trades for sim window
+  [L2_bid_stack] ACTIVE: stack=8.1000 imbalance=0.79 >= 0.65 (stop 7.9000 → 8.1000)
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=8.3 entry=8.1600 stop=8.0900 R=0.0700 detail=macd=5.5*0.6;R>=0.05=+0.5;l2_imbalance=+2(0.79);l2_bid_stack=+1.5;l2_thin_ask=+1 close=7.9200 vwap=8.0908
+    post_block: max_5m=8.1400 max_10m=8.1400 max_30m=8.2000
+
+======================================================================
+  BACKTEST REPORT: DFDV -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2471 snaps [TICK mode]
+  Bars: 6899 sim + 0 seed  |  EMA9=7.5191  VWAP=7.5375
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

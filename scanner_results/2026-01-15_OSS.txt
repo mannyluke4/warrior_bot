@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: OSS  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OSS bars for 2026-01-15...
+  Total bars: 197  |  Seed: 4  |  Sim: 193
+  Fetching L2 from Databento: OSS 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: OSS_2026-01-15_XNAS.dbn.zst
+  L2 data: 26942 records for OSS
+  L2 snapshots: 2990 (1-second sampled)
+  L2 data loaded: 2990 snapshots
+  Seed complete: EMA9=11.8368
+  Fetching tick data from Alpaca...
+  Tick replay: 10010 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: OSS -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2990 snaps [TICK mode]
+  Bars: 10010 sim + 4 seed  |  EMA9=11.0025  VWAP=11.2911
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

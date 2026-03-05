@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DFLI  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DFLI bars for 2026-02-12...
+  Total bars: 112  |  Seed: 1  |  Sim: 111
+  Fetching L2 from Databento: DFLI 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: DFLI_2026-02-12_XNAS.dbn.zst
+  L2 data: 4714 records for DFLI
+  L2 snapshots: 950 (1-second sampled)
+  L2 data loaded: 950 snapshots
+  Seed complete: EMA9=2.6500
+  Fetching tick data from Alpaca...
+  Tick replay: 1629 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DFLI -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=950 snaps [TICK mode]
+  Bars: 1629 sim + 1 seed  |  EMA9=2.3348  VWAP=2.4183
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

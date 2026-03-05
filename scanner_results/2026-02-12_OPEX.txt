@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: OPEX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OPEX bars for 2026-02-12...
+  Total bars: 106  |  Seed: 3  |  Sim: 103
+  Seed complete: EMA9=8.3500
+  Fetching tick data from Alpaca...
+  Tick replay: 766 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: OPEX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 766 sim + 3 seed  |  EMA9=6.9046  VWAP=7.3035
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

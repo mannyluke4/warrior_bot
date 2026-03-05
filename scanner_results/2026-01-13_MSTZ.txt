@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MSTZ  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MSTZ bars for 2026-01-13...
+  Total bars: 356  |  Seed: 101  |  Sim: 255
+  Seed complete: EMA9=14.3628
+  Fetching tick data from Alpaca...
+  Tick replay: 48813 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MSTZ -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 48813 sim + 101 seed  |  EMA9=13.4463  VWAP=13.8032
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

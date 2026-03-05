@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QUBX  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QUBX bars for 2026-02-10...
+  Total bars: 92  |  Seed: 2  |  Sim: 90
+  Seed complete: EMA9=16.1400
+  Fetching tick data from Alpaca...
+  Tick replay: 1282 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: QUBX -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1282 sim + 2 seed  |  EMA9=16.2968  VWAP=16.1662
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================

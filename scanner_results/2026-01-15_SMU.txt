@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SMU  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SMU bars for 2026-01-15...
+  Total bars: 351  |  Seed: 97  |  Sim: 254
+  Seed complete: EMA9=19.9436
+  Fetching tick data from Alpaca...
+  Tick replay: 13501 trades for sim window
+  [07:04] CLASSIFIER: SMU → avoid (conf=0.85) — AVOID gate: VWAP dist 1.1% < 7.0%, range 1.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SMU -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 13501 sim + 97 seed  |  EMA9=18.1612  VWAP=18.6592
+======================================================================
+
+  No trades taken.
+
+  Armed: 5  |  Signals: 4
+======================================================================

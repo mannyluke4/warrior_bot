@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: COIA  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching COIA bars for 2026-02-12...
+  Total bars: 61  |  Seed: 1  |  Sim: 60
+  Seed complete: EMA9=4.8700
+  Fetching tick data from Alpaca...
+  Tick replay: 218 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: COIA -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 218 sim + 1 seed  |  EMA9=4.0482  VWAP=4.3605
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

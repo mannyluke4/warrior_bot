@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IREG  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IREG bars for 2026-02-12...
+  Total bars: 48  |  Seed: 2  |  Sim: 46
+  Seed complete: EMA9=17.0140
+  Fetching tick data from Alpaca...
+  Tick replay: 286 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IREG -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 286 sim + 2 seed  |  EMA9=15.4424  VWAP=16.2152
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

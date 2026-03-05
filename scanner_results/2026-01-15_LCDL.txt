@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LCDL  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LCDL bars for 2026-01-15...
+  Total bars: 97  |  Seed: 3  |  Sim: 94
+  Seed complete: EMA9=3.4216
+  Fetching tick data from Alpaca...
+  Tick replay: 635 trades for sim window
+  [07:59] CLASSIFIER: LCDL → avoid (conf=0.85) — AVOID gate: VWAP dist 1.9% < 7.0%, range 0.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LCDL -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 635 sim + 3 seed  |  EMA9=3.1274  VWAP=3.1948
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

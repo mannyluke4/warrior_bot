@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LABX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LABX bars for 2026-02-12...
+  Total bars: 262  |  Seed: 44  |  Sim: 218
+  Seed complete: EMA9=9.9194
+  Fetching tick data from Alpaca...
+  Tick replay: 9471 trades for sim window
+  [07:06] CLASSIFIER: LABX → avoid (conf=0.85) — AVOID gate: VWAP dist 1.6% < 7.0%, range 2.3% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:45 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=9.5 entry=10.2500 stop=10.1300 R=0.1200 detail=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=9.6100 vwap=9.9260
+    post_block: max_5m=10.1102 max_10m=10.1102 max_30m=10.1102
+
+======================================================================
+  BACKTEST REPORT: LABX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9471 sim + 44 seed  |  EMA9=8.2477  VWAP=9.2040
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

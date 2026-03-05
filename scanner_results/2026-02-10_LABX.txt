@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LABX  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LABX bars for 2026-02-10...
+  Total bars: 248  |  Seed: 45  |  Sim: 203
+  Seed complete: EMA9=19.1364
+  Fetching tick data from Alpaca...
+  Tick replay: 5592 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: LABX -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5592 sim + 45 seed  |  EMA9=16.5957  VWAP=17.4591
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

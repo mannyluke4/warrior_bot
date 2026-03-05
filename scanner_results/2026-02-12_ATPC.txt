@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ATPC  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ATPC bars for 2026-02-12...
+  Total bars: 54  |  Seed: 5  |  Sim: 49
+  Seed complete: EMA9=2.4123
+  Fetching tick data from Alpaca...
+  Tick replay: 1176 trades for sim window
+  [08:05] CLASSIFIER: ATPC → avoid (conf=0.85) — AVOID gate: VWAP dist 2.4% < 7.0%, range 4.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ATPC -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1176 sim + 5 seed  |  EMA9=2.1221  VWAP=2.2616
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

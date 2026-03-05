@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NVNI  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NVNI bars for 2026-01-15...
+  Total bars: 37  |  Seed: 1  |  Sim: 36
+  Fetching L2 from Databento: NVNI 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NVNI_2026-01-15_XNAS.dbn.zst
+  L2 data: 741 records for NVNI
+  L2 snapshots: 219 (1-second sampled)
+  L2 data loaded: 219 snapshots
+  Seed complete: EMA9=3.0600
+  Fetching tick data from Alpaca...
+  Tick replay: 207 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NVNI -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=219 snaps [TICK mode]
+  Bars: 207 sim + 1 seed  |  EMA9=2.8020  VWAP=2.8139
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

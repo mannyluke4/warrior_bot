@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CONX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CONX bars for 2026-02-12...
+  Total bars: 49  |  Seed: 1  |  Sim: 48
+  Seed complete: EMA9=7.4200
+  Fetching tick data from Alpaca...
+  Tick replay: 202 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CONX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 202 sim + 1 seed  |  EMA9=6.2128  VWAP=6.7618
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

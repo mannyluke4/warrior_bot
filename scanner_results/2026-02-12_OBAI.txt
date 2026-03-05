@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: OBAI  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OBAI bars for 2026-02-12...
+  Total bars: 111  |  Seed: 1  |  Sim: 110
+  Seed complete: EMA9=5.9800
+  Fetching tick data from Alpaca...
+  Tick replay: 1795 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: OBAI -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1795 sim + 1 seed  |  EMA9=4.0411  VWAP=4.6937
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

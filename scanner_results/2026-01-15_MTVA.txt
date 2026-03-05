@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MTVA  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MTVA bars for 2026-01-15...
+  Total bars: 242  |  Seed: 11  |  Sim: 231
+  Seed complete: EMA9=5.3877
+  Fetching tick data from Alpaca...
+  Tick replay: 8582 trades for sim window
+  [07:19] CLASSIFIER: MTVA → avoid (conf=0.85) — AVOID gate: VWAP dist 0.6% < 7.0%, range 0.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MTVA -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 8582 sim + 11 seed  |  EMA9=3.4455  VWAP=3.5047
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,29 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ASST  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ASST bars for 2026-02-10...
+  Total bars: 206  |  Seed: 7  |  Sim: 199
+  Fetching L2 from Databento: ASST 2026-02-10 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: ASST_2026-02-10_XNAS.dbn.zst
+  L2 data: 50042 records for ASST
+  L2 snapshots: 5693 (1-second sampled)
+  L2 data loaded: 5693 snapshots
+  Seed complete: EMA9=10.0816
+  Fetching tick data from Alpaca...
+  Tick replay: 24522 trades for sim window
+  [L2_bid_stack] BLOCKED: stack=9.3900 imbalance=0.59 < 0.65 (stop stays 9.3316)
+
+======================================================================
+  BACKTEST REPORT: ASST -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=5693 snaps [TICK mode]
+  Bars: 24522 sim + 7 seed  |  EMA9=9.5363  VWAP=9.3612
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

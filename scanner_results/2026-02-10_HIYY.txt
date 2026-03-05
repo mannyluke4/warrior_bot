@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HIYY  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HIYY bars for 2026-02-10...
+  Total bars: 7  |  Seed: 1  |  Sim: 6
+  Seed complete: EMA9=14.6100
+  Fetching tick data from Alpaca...
+  Tick replay: 105 trades for sim window
+  [08:52] CLASSIFIER: HIYY → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 0.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: HIYY -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 105 sim + 1 seed  |  EMA9=14.0061  VWAP=14.1221
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

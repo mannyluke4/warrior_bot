@@ -1,0 +1,37 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PODC  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PODC bars for 2026-02-12...
+  Total bars: 225  |  Seed: 20  |  Sim: 205
+  Fetching L2 from Databento: PODC 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: PODC_2026-02-12_XNAS.dbn.zst
+  L2 data: 11934 records for PODC
+  L2 snapshots: 2001 (1-second sampled)
+  L2 data loaded: 2001 snapshots
+  Seed complete: EMA9=3.1219
+  Fetching tick data from Alpaca...
+  Tick replay: 6708 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PODC -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2001 snaps [TICK mode]
+  Bars: 6708 sim + 20 seed  |  EMA9=2.8211  VWAP=2.8943
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:02   3.4600   3.3200  0.1400   11.0   3.1600  max_loss_hit             -2143    -2.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-2,143  |  Avg R-Multiple: -2.1R
+  Largest Win: $+0  |  Largest Loss: $-2,143
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

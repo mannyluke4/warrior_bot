@@ -1,0 +1,29 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: INUV  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INUV bars for 2026-01-15...
+  Total bars: 100  |  Seed: 1  |  Sim: 99
+  Fetching L2 from Databento: INUV 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: INUV_2026-01-15_XNAS.dbn.zst
+  L2 data: 2193 records for INUV
+  L2 snapshots: 345 (1-second sampled)
+  L2 data loaded: 345 snapshots
+  Seed complete: EMA9=3.3700
+  Fetching tick data from Alpaca...
+  Tick replay: 1310 trades for sim window
+  [08:01] CLASSIFIER: INUV → avoid (conf=0.85) — AVOID gate: VWAP dist 1.9% < 7.0%, range 3.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: INUV -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=345 snaps [TICK mode]
+  Bars: 1310 sim + 1 seed  |  EMA9=3.0905  VWAP=3.2040
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

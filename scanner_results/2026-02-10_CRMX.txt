@@ -1,0 +1,36 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CRMX  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRMX bars for 2026-02-10...
+  Total bars: 134  |  Seed: 7  |  Sim: 127
+  Seed complete: EMA9=11.3909
+  Fetching tick data from Alpaca...
+  Tick replay: 1457 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:09 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=1.1 entry=11.5900 stop=11.5104 R=0.0796 detail=macd=1.0*0.6;R>=0.05=+0.5 close=11.5400 vwap=11.5436
+    post_block: max_5m=11.5400 max_10m=11.5400 max_30m=11.5900
+
+======================================================================
+  BACKTEST REPORT: CRMX -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1457 sim + 7 seed  |  EMA9=10.7967  VWAP=11.3105
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:36  12.2800  11.9800  0.3000   12.0  12.0700  bearish_engulfing_exit_full      -700    -0.7R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-700  |  Avg R-Multiple: -0.7R
+  Largest Win: $+0  |  Largest Loss: $-700
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

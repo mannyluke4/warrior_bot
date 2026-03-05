@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IRE  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IRE bars for 2026-02-10...
+  Total bars: 461  |  Seed: 165  |  Sim: 296
+  Seed complete: EMA9=6.9497
+  Fetching tick data from Alpaca...
+  Tick replay: 52460 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IRE -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 52460 sim + 165 seed  |  EMA9=6.9092  VWAP=6.9736
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:35   7.2000   7.0400  0.1600   12.5   7.2600  bearish_engulfing_exit_full      +375    +0.4R
+    2   09:39   7.3200   7.1500  0.1700   11.0   7.1707  bearish_engulfing_exit_full      -878    -0.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $-503  |  Avg R-Multiple: -0.3R
+  Largest Win: $+375  |  Largest Loss: $-878
+  Armed: 8  |  Signals: 6  |  Entered: 2
+======================================================================
+

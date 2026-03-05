@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GCDT  |  Date: 2026-01-15  |  Window: 07:13 -> 12:00 ET
+======================================================================
+
+Fetching GCDT bars for 2026-01-15...
+  Total bars: 92  |  Seed: 0  |  Sim: 92
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 870 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GCDT -- 2026-01-15 (07:13 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 870 sim + 0 seed  |  EMA9=4.8763  VWAP=5.0967
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:44   5.4300   5.3421  0.0879    5.0   5.3000  stop_hit                 -1436    -1.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,436  |  Avg R-Multiple: -1.4R
+  Largest Win: $+0  |  Largest Loss: $-1,436
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

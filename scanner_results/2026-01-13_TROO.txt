@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TROO  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TROO bars for 2026-01-13...
+  Total bars: 144  |  Seed: 7  |  Sim: 137
+  Seed complete: EMA9=5.0833
+  Fetching tick data from Alpaca...
+  Tick replay: 2374 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:13 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.3 entry=5.2300 stop=4.9700 R=0.2600 detail=macd=5.5*0.6;R>=0.08=+1 close=5.0500 vwap=5.0729
+    post_block: max_5m=5.1900 max_10m=5.1900 max_30m=5.1900
+
+======================================================================
+  BACKTEST REPORT: TROO -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2374 sim + 7 seed  |  EMA9=4.9309  VWAP=4.9718
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: APPX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching APPX bars for 2026-02-12...
+  Total bars: 403  |  Seed: 109  |  Sim: 294
+  Seed complete: EMA9=12.5119
+  Fetching tick data from Alpaca...
+  Tick replay: 53917 trades for sim window
+  [07:04] CLASSIFIER: APPX → avoid (conf=0.85) — AVOID gate: VWAP dist 1.9% < 7.0%, range 3.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: APPX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 53917 sim + 109 seed  |  EMA9=8.8977  VWAP=9.7017
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

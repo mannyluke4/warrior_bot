@@ -1,0 +1,29 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: KELYB  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching KELYB bars for 2026-02-12...
+  Total bars: 60  |  Seed: 3  |  Sim: 57
+  Fetching L2 from Databento: KELYB 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: KELYB_2026-02-12_XNAS.dbn.zst
+  L2 data: 2230 records for KELYB
+  L2 snapshots: 542 (1-second sampled)
+  L2 data loaded: 542 snapshots
+  Seed complete: EMA9=17.4948
+  Fetching tick data from Alpaca...
+  Tick replay: 1248 trades for sim window
+  [07:06] CLASSIFIER: KELYB → avoid (conf=0.85) — AVOID gate: VWAP dist 2.8% < 7.0%, range 3.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: KELYB -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=542 snaps [TICK mode]
+  Bars: 1248 sim + 3 seed  |  EMA9=16.4639  VWAP=16.3217
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

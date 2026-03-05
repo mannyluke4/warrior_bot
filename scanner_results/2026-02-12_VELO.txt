@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: VELO  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching VELO bars for 2026-02-12...
+  Total bars: 172  |  Seed: 7  |  Sim: 165
+  Seed complete: EMA9=12.8436
+  Fetching tick data from Alpaca...
+  Tick replay: 8335 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:09 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=3.1 entry=12.9600 stop=12.7267 R=0.2333 detail=macd=3.5*0.6;R>=0.08=+1 close=12.7300 vwap=12.8121
+    post_block: max_5m=12.8500 max_10m=12.9000 max_30m=12.9000
+
+======================================================================
+  BACKTEST REPORT: VELO -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 8335 sim + 7 seed  |  EMA9=11.4180  VWAP=11.8737
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

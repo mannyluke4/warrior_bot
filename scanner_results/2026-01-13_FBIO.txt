@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FBIO  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FBIO bars for 2026-01-13...
+  Total bars: 364  |  Seed: 92  |  Sim: 272
+  Seed complete: EMA9=4.2447
+  Fetching tick data from Alpaca...
+  Tick replay: 33903 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FBIO -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 33903 sim + 92 seed  |  EMA9=3.8460  VWAP=4.3066
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CONL  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CONL bars for 2026-01-15...
+  Total bars: 375  |  Seed: 107  |  Sim: 268
+  Seed complete: EMA9=17.9418
+  Fetching tick data from Alpaca...
+  Tick replay: 49142 trades for sim window
+  [07:04] CLASSIFIER: CONL → avoid (conf=0.85) — AVOID gate: VWAP dist 0.6% < 7.0%, range 0.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: CONL -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 49142 sim + 107 seed  |  EMA9=17.1228  VWAP=17.2474
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================

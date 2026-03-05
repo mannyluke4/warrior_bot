@@ -1,0 +1,29 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: VVPR  |  Date: 2026-01-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching VVPR bars for 2026-01-15...
+  Total bars: 96  |  Seed: 1  |  Sim: 95
+  Fetching L2 from Databento: VVPR 2026-01-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: VVPR_2026-01-15_XNAS.dbn.zst
+  L2 data: 5982 records for VVPR
+  L2 snapshots: 947 (1-second sampled)
+  L2 data loaded: 947 snapshots
+  Seed complete: EMA9=2.9400
+  Fetching tick data from Alpaca...
+  Tick replay: 1212 trades for sim window
+  [07:50] CLASSIFIER: VVPR → avoid (conf=0.85) — AVOID gate: VWAP dist 1.4% < 7.0%, range 2.4% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: VVPR -- 2026-01-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=947 snaps [TICK mode]
+  Bars: 1212 sim + 1 seed  |  EMA9=2.7966  VWAP=2.8401
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

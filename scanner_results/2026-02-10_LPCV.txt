@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LPCV  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LPCV bars for 2026-02-10...
+  Total bars: 19  |  Seed: 2  |  Sim: 17
+  Seed complete: EMA9=10.9140
+  Fetching tick data from Alpaca...
+  Tick replay: 127 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: LPCV -- 2026-02-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 127 sim + 2 seed  |  EMA9=9.9009  VWAP=9.9045
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

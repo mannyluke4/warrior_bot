@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SMCL  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SMCL bars for 2026-02-12...
+  Total bars: 228  |  Seed: 24  |  Sim: 204
+  Seed complete: EMA9=5.0028
+  Fetching tick data from Alpaca...
+  Tick replay: 3464 trades for sim window
+  [07:08] CLASSIFIER: SMCL → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 0.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SMCL -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3464 sim + 24 seed  |  EMA9=4.5086  VWAP=4.7646
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

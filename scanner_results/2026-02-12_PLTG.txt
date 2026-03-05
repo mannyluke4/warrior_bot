@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PLTG  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PLTG bars for 2026-02-12...
+  Total bars: 128  |  Seed: 5  |  Sim: 123
+  Seed complete: EMA9=14.3380
+  Fetching tick data from Alpaca...
+  Tick replay: 1828 trades for sim window
+  [07:20] CLASSIFIER: PLTG → avoid (conf=0.85) — AVOID gate: VWAP dist 1.4% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PLTG -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1828 sim + 5 seed  |  EMA9=12.5518  VWAP=13.5480
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

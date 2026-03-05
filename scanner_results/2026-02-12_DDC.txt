@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DDC  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DDC bars for 2026-02-12...
+  Total bars: 23  |  Seed: 3  |  Sim: 20
+  Fetching L2 from Databento: DDC 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: DDC_2026-02-12_XNAS.dbn.zst
+  L2 data: 439 records for DDC
+  L2 snapshots: 91 (1-second sampled)
+  L2 data loaded: 91 snapshots
+  Seed complete: EMA9=2.4176
+  Fetching tick data from Alpaca...
+  Tick replay: 381 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DDC -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=91 snaps [TICK mode]
+  Bars: 381 sim + 3 seed  |  EMA9=2.4951  VWAP=2.4509
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
