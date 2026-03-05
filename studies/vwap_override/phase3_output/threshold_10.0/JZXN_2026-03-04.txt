@@ -1,0 +1,62 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: JZXN  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching JZXN bars for 2026-03-04...
+  Total bars: 296  |  Seed: 9  |  Sim: 287
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=0.9023
+  LevelMap seeded: PM_HIGH=0.92, ref_price=0.90
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 127957 trades for sim window
+  [07:06] 1M SKIP (R too small: 0.0240)
+  [07:15] ARMED entry=1.1800 stop=0.8940 R=0.2860 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [07:16] ENTRY: 1.2000 stop=0.8940 R=0.3060 qty=3267 score=5.5
+  [07:16] ARMED entry=1.3400 stop=1.0900 R=0.2500 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [07:17] CLASSIFIER: JZXN → uncertain (conf=0.30) — No strong pattern: NH=4, PB=2, green=1.00, VWAP=6.9%, range=64.0%
+  [07:17] ARMED entry=1.4500 stop=1.2000 R=0.2500 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [07:19] TOPPING_WICKY_EXIT @ 1.4500
+  [07:22] CLASSIFIER: reclassified uncertain → cascading
+  [07:27] CLASSIFIER: reclassified cascading → early_bird
+  [07:54] ARMED entry=1.3600 stop=1.2500 R=0.1100 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:55] VWAP_OVERRIDE score=12.5 >= 10.0 bar 1/3 — armed kept entry=1.3600 close=1.2500 vwap=1.2541
+  [07:56] VWAP_OVERRIDE score=12.5 >= 10.0 bar 2/3 — armed kept entry=1.3600 close=1.2000 vwap=1.2535
+  [07:57] VWAP_OVERRIDE score=12.5 >= 10.0 bar 3/3 — armed kept entry=1.3600 close=1.1700 vwap=1.2532
+  [07:58] 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=1.3600 stop=1.2500 R=0.1100 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=1.2300 vwap=1.2528
+  [09:52] 1M NO_ARM stale_stock: no_new_session_hod_154_bars
+  [09:53] 1M NO_ARM stale_stock: no_new_session_hod_155_bars
+  [09:54] 1M NO_ARM stale_stock: no_new_session_hod_156_bars
+  [09:56] 1M NO_ARM stale_stock: no_new_session_hod_158_bars
+  [09:57] 1M NO_ARM stale_stock: no_new_session_hod_159_bars
+  [09:59] 1M NO_ARM stale_stock: no_new_session_hod_161_bars
+  [10:00] 1M RESET (bearish engulfing)
+  [10:02] 1M RESET (topping wicky)
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:58 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=1.3600 stop=1.2500 R=0.1100 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=1.2300 vwap=1.2528
+    post_block: max_5m=1.5600 max_10m=1.5699 max_30m=1.5700
+
+======================================================================
+  BACKTEST REPORT: JZXN -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 127957 sim + 9 seed  |  EMA9=1.1895  VWAP=1.2757
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:16   1.2000   0.8940  0.3060    5.5   1.4500  topping_wicky_exit_full      +817    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+817  |  Avg R-Multiple: +0.8R
+  Largest Win: $+817  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

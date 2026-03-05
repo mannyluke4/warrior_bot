@@ -1,0 +1,57 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TNMG  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TNMG bars for 2026-01-16...
+  Total bars: 310  |  Seed: 9  |  Sim: 301
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=3.1825
+  LevelMap seeded: PM_HIGH=4.49, ref_price=3.72
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 126239 trades for sim window
+  [07:00] ARMED entry=3.9400 stop=3.4400 R=0.5000 score=4.0 macd_score=5.0 tags=[] why=macd=5.0*0.6;R>=0.08=+1
+  [07:01] ENTRY: 3.9600 stop=3.4400 R=0.5200 qty=1923 score=4.0
+  [07:01] ARMED entry=4.2400 stop=3.5700 R=0.6700 score=4.0 macd_score=5.0 tags=[] why=macd=5.0*0.6;R>=0.08=+1
+  [07:02] BEARISH_ENGULFING_EXIT @ 3.7100
+  [07:03] 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.0 entry=4.2400 stop=3.5700 R=0.6700 detail=macd=5.0*0.6;R>=0.08=+1 close=3.7400 vwap=3.7628
+  [07:04] CLASSIFIER: TNMG → uncertain (conf=0.30) — No strong pattern: NH=2, PB=0, green=0.40, VWAP=5.3%, range=27.3%
+  [07:05] ARMED entry=4.2200 stop=3.4700 R=0.7500 score=4.5 macd_score=5.0 tags=[WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;whole=+0.5;R>=0.08=+1
+  [07:08] 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.5 entry=4.2200 stop=3.4700 R=0.7500 detail=macd=5.0*0.6;whole=+0.5;R>=0.08=+1 close=3.7500 vwap=3.7822
+  [07:09] CLASSIFIER: reclassified uncertain → choppy
+  [10:17] 1M SKIP (MACD not bullish) macd_score=-0.5
+  [10:18] 1M NO_ARM stale_stock: no_new_session_hod_122_bars
+  [10:21] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [10:23] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [10:24] 1M RESET (extended: 6 green candles)
+  [10:26] 1M RESET (extended: 7 green candles)
+
+  === VWAP BLOCKED ARMS (2) ===
+  BLOCKED: time=07:03 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.0 entry=4.2400 stop=3.5700 R=0.6700 detail=macd=5.0*0.6;R>=0.08=+1 close=3.7400 vwap=3.7628
+    post_block: max_5m=4.2200 max_10m=4.2200 max_30m=4.2200
+  BLOCKED: time=07:08 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.5 entry=4.2200 stop=3.4700 R=0.7500 detail=macd=5.0*0.6;whole=+0.5;R>=0.08=+1 close=3.7500 vwap=3.7822
+    post_block: max_5m=3.8700 max_10m=3.8700 max_30m=3.8700
+
+======================================================================
+  BACKTEST REPORT: TNMG -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 126239 sim + 9 seed  |  EMA9=3.0370  VWAP=3.3827
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   3.9600   3.4400  0.5200    4.0   3.7100  bearish_engulfing_exit_full      -481    -0.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-481  |  Avg R-Multiple: -0.5R
+  Largest Win: $+0  |  Largest Loss: $-481
+  Armed: 3  |  Signals: 1  |  Entered: 1
+======================================================================
+

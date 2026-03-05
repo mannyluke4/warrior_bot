@@ -1,0 +1,54 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SNSE  |  Date: 2026-02-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SNSE bars for 2026-02-18...
+  Total bars: 183  |  Seed: 0  |  Sim: 183
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 306694 trades for sim window
+  [08:50] 1M NO_ARM warmup: 3/5 bars
+  [08:52] CLASSIFIER: SNSE → one_big_move (conf=0.92) — One big move: VWAP dist 51.9%, range 269.9%
+  [08:53] ARMED entry=29.9900 stop=25.4900 R=4.5000 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:56] 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=29.9900 stop=25.4900 R=4.5000 detail=macd=7.5*0.6;R>=0.08=+1 close=26.8200 vwap=27.8814
+  [10:40] ARMED entry=28.5000 stop=26.0600 R=2.4400 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:41] ENTRY: 28.5200 stop=26.0600 R=2.4600 qty=406 score=12.5
+  [10:41] BEARISH_ENGULFING_EXIT @ 28.8800
+  [10:41] ARMED entry=30.2200 stop=27.5101 R=2.7099 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:46] ENTRY: 30.2400 stop=27.5101 R=2.7299 qty=366 score=12.5
+  [10:46] ARMED entry=30.4500 stop=28.4000 R=2.0500 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:48] BEARISH_ENGULFING_EXIT @ 29.5000
+  [10:49] ARMED entry=30.1999 stop=28.1900 R=2.0099 score=11.0 macd_score=5.0 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:50] 1M RESET (topping wicky)
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:56 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=29.9900 stop=25.4900 R=4.5000 detail=macd=7.5*0.6;R>=0.08=+1 close=26.8200 vwap=27.8814
+    post_block: max_5m=29.2500 max_10m=35.8000 max_30m=36.9500
+
+======================================================================
+  BACKTEST REPORT: SNSE -- 2026-02-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 306694 sim + 0 seed  |  EMA9=26.7802  VWAP=27.7076
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:41  28.5200  26.0600  2.4600   12.5  28.8800  bearish_engulfing_exit_full      +146    +0.1R
+    2   10:46  30.2400  27.5101  2.7299   12.5  29.5000  bearish_engulfing_exit_full      -271    -0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $-125  |  Avg R-Multiple: -0.1R
+  Largest Win: $+146  |  Largest Loss: $-271
+  Armed: 5  |  Signals: 3  |  Entered: 2
+======================================================================
+

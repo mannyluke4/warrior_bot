@@ -1,0 +1,81 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SHPH  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SHPH bars for 2026-01-16...
+  Total bars: 204  |  Seed: 0  |  Sim: 204
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 6508 trades for sim window
+  [07:55] 1M NO_ARM warmup: 4/5 bars
+  [07:56] CLASSIFIER: SHPH → uncertain (conf=0.30) — No strong pattern: NH=3, PB=1, green=1.00, VWAP=1.9%, range=6.9%
+  [07:56] 1M SKIP (R too small: 0.0100)
+  [08:01] 1M SKIP (R too small: 0.0100)
+  [08:07] ARMED entry=1.6700 stop=1.5800 R=0.0900 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:10] 1M RESET (extended: 6 green candles)
+  [08:11] CLASSIFIER: reclassified uncertain → smooth_trend
+  [08:16] 1M SKIP (R too small: 0.0100)
+  [08:26] 1M SKIP (R too small: 0.0100)
+  [08:29] CLASSIFIER: reclassified smooth_trend → uncertain
+  [08:31] 1M SKIP (R too small: 0.0100)
+  [08:49] 1M SKIP (R too small: 0.0161)
+  [08:52] 1M SKIP (R too small: 0.0265)
+  [08:55] 1M SKIP (R too small: 0.0126)
+  [08:56] ARMED entry=1.6800 stop=1.6500 R=0.0300 score=8.6 macd_score=3.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=3.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5
+  [08:57] 1M RESET (extended: 6 green candles)
+  [08:59] 1M RESET (extended: 7 green candles)
+  [10:08] ARMED entry=1.6899 stop=1.6000 R=0.0899 score=12.0 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:09] VWAP_OVERRIDE score=12.0 >= 11.0 bar 1/3 — armed kept entry=1.6899 close=1.6301 vwap=1.6621
+  [10:10] VWAP_OVERRIDE score=12.0 >= 11.0 bar 2/3 — armed kept entry=1.6899 close=1.6599 vwap=1.6621
+  [10:11] VWAP_OVERRIDE score=12.0 >= 11.0 bar 3/3 — armed kept entry=1.6899 close=1.6599 vwap=1.6620
+  [10:13] ENTRY: 1.7099 stop=1.6000 R=0.1099 qty=9099 score=12.0
+  [10:13] ARMED entry=1.6900 stop=1.6100 R=0.0800 score=11.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5
+  [10:14] VWAP_OVERRIDE score=11.5 >= 11.0 bar 1/3 — armed kept entry=1.6900 close=1.6600 vwap=1.6619
+  [10:15] VWAP_OVERRIDE score=11.5 >= 11.0 bar 2/3 — armed kept entry=1.6900 close=1.6420 vwap=1.6619
+  [10:16] TOPPING_WICKY_EXIT @ 1.6300
+  [10:28] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:29] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:33] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:37] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:38] 1M SKIP (weak candle — close in lower 40%)
+  [10:39] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:42] 1M NO_ARM level_gate: resistance_rejection_1.75_failed_7x
+  [10:44] 1M SKIP (R too small: 0.0250)
+  [10:45] ARMED entry=1.8400 stop=1.7700 R=0.0700 score=11.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5
+  [10:46] ENTRY: 1.8600 stop=1.7700 R=0.0900 qty=11111 score=11.5
+  [10:46] ARMED entry=1.8500 stop=1.7900 R=0.0600 score=11.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5
+  [10:47] 1M RESET (bearish engulfing)
+  [10:48] 1M RESET (topping wicky)
+  [10:49] 1M RESET (topping wicky)
+  [11:37] 1M RESET (extended: 6 green candles)
+  [11:38] 1M RESET (topping wicky)
+  [11:39] 1M RESET (topping wicky)
+  [11:40] 1M RESET (topping wicky)
+
+======================================================================
+  BACKTEST REPORT: SHPH -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 6508 sim + 0 seed  |  EMA9=1.7429  VWAP=1.7046
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:13   1.7099   1.6000  0.1099   12.0   1.6300  topping_wicky_exit_full      -727    -0.7R
+    2   10:46   1.8600   1.7700  0.0900   11.5   1.7600  stop_hit                 -1111    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-1,838  |  Avg R-Multiple: -0.9R
+  Largest Win: $+0  |  Largest Loss: $-1,111
+  Armed: 6  |  Signals: 5  |  Entered: 2
+======================================================================
+

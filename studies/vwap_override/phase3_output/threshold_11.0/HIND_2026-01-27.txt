@@ -1,0 +1,50 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HIND  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HIND bars for 2026-01-27...
+  Total bars: 227  |  Seed: 0  |  Sim: 227
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 450015 trades for sim window
+  [08:00] 1M NO_ARM warmup: 2/5 bars
+  [08:01] 1M NO_ARM warmup: 3/5 bars
+  [08:03] CLASSIFIER: HIND → one_big_move (conf=0.65) — One big move: VWAP dist 24.7%, range 149.0%
+  [08:04] ARMED entry=6.2900 stop=5.6900 R=0.6000 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:05] ENTRY: 6.3100 stop=5.6900 R=0.6200 qty=1612 score=5.5
+  [08:05] BEARISH_ENGULFING_EXIT @ 5.8700
+  [08:09] ARMED entry=6.1700 stop=5.5300 R=0.6400 score=4.0 macd_score=5.0 tags=[] why=macd=5.0*0.6;R>=0.08=+1
+  [08:10] ENTRY: 6.1900 stop=5.5300 R=0.6600 qty=1515 score=4.0
+  [08:10] ARMED entry=6.8100 stop=5.9900 R=0.8200 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:11] 1M RESET (extended: 6 green candles)
+  [08:12] BEARISH_ENGULFING_EXIT @ 6.8300
+  [08:12] 1M RESET (extended: 7 green candles)
+  [08:13] 1M RESET (extended: 8 green candles)
+
+======================================================================
+  BACKTEST REPORT: HIND -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 450015 sim + 0 seed  |  EMA9=2.8954  VWAP=5.2482
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:05   6.3100   5.6900  0.6200    5.5   5.8700  bearish_engulfing_exit_full      -709    -0.7R
+    2   08:10   6.1900   5.5300  0.6600    4.0   6.8300  bearish_engulfing_exit_full      +970    +1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+260  |  Avg R-Multiple: +0.1R
+  Largest Win: $+970  |  Largest Loss: $-709
+  Armed: 3  |  Signals: 3  |  Entered: 2
+======================================================================
+

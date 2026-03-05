@@ -1,0 +1,86 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PAVM  |  Date: 2026-01-21  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PAVM bars for 2026-01-21...
+  Total bars: 218  |  Seed: 0  |  Sim: 218
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 770542 trades for sim window
+  [07:45] 1M SKIP (R too small: 0.0100)
+  [07:53] 1M NO_ARM warmup: 4/5 bars
+  [07:56] CLASSIFIER: PAVM → uncertain (conf=0.30) — No strong pattern: NH=5, PB=1, green=1.00, VWAP=2.0%, range=5.4%
+  [07:56] ARMED entry=6.4900 stop=6.4150 R=0.0750 score=5.0 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.05=+0.5
+  [07:57] ENTRY: 6.5100 stop=6.4150 R=0.0950 qty=9216 score=5.0
+  [07:57] ARMED entry=6.5800 stop=6.4800 R=0.1000 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [07:58] 1M SKIP (weak candle — close in lower 40%)
+  [07:59] 1M RESET (bearish engulfing)
+  [08:00] 1M RESET (extended: 6 green candles)
+  [08:01] CLASSIFIER: reclassified uncertain → cascading
+  [08:01] 1M RESET (extended: 7 green candles)
+  [08:04] 1M RESET (extended: 8 green candles)
+  [08:06] CLASSIFIER: reclassified cascading → uncertain
+  [08:07] 1M RESET (extended: 9 green candles)
+  [08:16] 1M SKIP (MACD not bullish) macd_score=-2.5
+  [08:17] ARMED entry=10.0300 stop=8.5280 R=1.5020 score=9.5 macd_score=7.5 tags=[RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [08:18] ENTRY: 10.0500 stop=8.5280 R=1.5220 qty=657 score=9.5
+  [08:18] ARMED entry=11.8000 stop=9.8333 R=1.9667 score=9.5 macd_score=7.5 tags=[RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [08:21] TOPPING_WICKY_EXIT @ 13.1500
+  [08:21] ARMED entry=15.0000 stop=12.5600 R=2.4400 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [08:28] VWAP_OVERRIDE score=12.5 >= 12.0 bar 1/3 — armed kept entry=15.0000 close=12.6484 vwap=12.7321
+  [08:30] VWAP_OVERRIDE score=12.5 >= 12.0 bar 1/3 — armed kept entry=15.0000 close=12.3076 vwap=12.7265
+  [08:31] VWAP_OVERRIDE score=12.5 >= 12.0 bar 2/3 — armed kept entry=15.0000 close=11.8400 vwap=12.7095
+  [08:32] 1M RESET (trend down, range=157.6%)
+  [08:44] 1M RESET (topping wicky)
+  [09:15] 1M NO_ARM level_gate: resistance_rejection_18.57_failed_4x
+  [09:18] 1M RESET (topping wicky)
+  [09:19] 1M RESET (topping wicky)
+  [09:45] ARMED entry=24.4500 stop=21.8200 R=2.6300 score=10.5 macd_score=5.0 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:46] 1M RESET (bearish engulfing)
+  [09:47] 1M RESET (topping wicky)
+  [09:48] ARMED entry=22.9000 stop=21.8600 R=1.0400 score=10.5 macd_score=5.0 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:49] ENTRY: 22.9200 stop=21.8600 R=1.0600 qty=943 score=10.5
+  [09:50] BEARISH_ENGULFING_EXIT @ 22.5400
+  [09:50] 1M RESET (bearish engulfing)
+  [09:51] 1M RESET (topping wicky)
+  [10:33] 1M NO_ARM level_gate: resistance_rejection_23.05_failed_5x
+  [10:34] 1M NO_ARM level_gate: resistance_rejection_23.05_failed_5x
+  [10:36] 1M NO_ARM level_gate: resistance_rejection_23.05_failed_6x
+  [10:38] 1M RESET (topping wicky)
+  [10:39] 1M NO_ARM level_gate: resistance_rejection_21.88_failed_3x
+  [10:41] 1M RESET (topping wicky)
+  [10:42] 1M RESET (topping wicky)
+  [11:10] 1M NO_ARM exhaustion: 40.2% above VWAP (max 29.9%, range=59.8%) close=26.0300 vwap=18.5620
+  [11:11] 1M NO_ARM level_gate: resistance_rejection_27.00_failed_2x
+  [11:12] 1M NO_ARM level_gate: resistance_rejection_27.00_failed_2x
+  [11:14] 1M NO_ARM exhaustion: 44.9% above VWAP (max 24.4%, range=48.8%) close=27.1640 vwap=18.7411
+  [11:15] 1M NO_ARM exhaustion: 45.2% above VWAP (max 22.7%, range=45.4%) close=27.2729 vwap=18.7822
+
+======================================================================
+  BACKTEST REPORT: PAVM -- 2026-01-21 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 770542 sim + 0 seed  |  EMA9=21.1583  VWAP=19.1629
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:57   6.5100   6.5200  0.0950    5.0   6.5000  trail_stop                 -92    -0.1R
+    2   08:18  10.0500  10.0600  1.5220    9.5  13.1500  topping_wicky_exit_full     +2037    +2.0R
+    3   09:49  22.9200  21.8600  1.0600   10.5  22.5400  bearish_engulfing_exit_full      -358    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 3  |  Wins: 1  |  Losses: 2  |  Win Rate: 33.3%
+  Gross P&L: $+1,586  |  Avg R-Multiple: +0.5R
+  Largest Win: $+2,037  |  Largest Loss: $-358
+  Armed: 7  |  Signals: 5  |  Entered: 3
+======================================================================
+
