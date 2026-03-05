@@ -3,6 +3,7 @@
 
 # Python
 venv/
+venv_new/
 __pycache__/
 *.pyc
 *.pyo
@@ -20,3 +21,33 @@ l2_cache/
 # Ephemeral state
 last_session_symbols.txt
 watchlist.txt
+
+# OpenClaw/Duffy identity files
+SOUL.md
+AGENTS.md
+TOOLS.md
+IDENTITY.md
+USER.md
+HEARTBEAT.md
+MEMORY.md
+BOOTSTRAP.md
+
+# Node artifacts
+node_modules/
+package-lock.json
+
+# Scanner results (regenerable)
+scanner_results/
+
+# Full profile backtest outputs (regenerable)
+full_profile_backtest_outputs/
+full_profile_backtest_results.csv
+full_profile_backtest_log.txt
+
+# Session/status docs (ephemeral)
+.openclaw/
+*_ISSUE_*.md
+*_STATUS_*.md
+*_CONSTRAINTS_*.md
+*_GAPS_*.md
+SESSION_*.md

@@ -16,6 +16,7 @@ import os
 import time
 from datetime import datetime, timedelta
 
+import requests
 import pytz
 import yfinance as yf
 from dotenv import load_dotenv
@@ -29,6 +30,34 @@ from alpaca.trading.enums import AssetClass, AssetStatus
 load_dotenv()
 
 ET = pytz.timezone("US/Eastern")
+
+FMP_API_KEY = os.getenv("FMP_API_KEY")
+
+KNOWN_FLOATS = {
+    "SPRC": 400_000,
+    "TNMG": 1_150_000,
+    "MNTS": 1_300_000,
+    "ELAB": 2_100_000,
+    "GWAV": 800_000,
+    "VERO": 1_600_000,
+    "APVO": 900_000,
+    "BNAI": 3_300_000,
+    "MOVE": 600_000,
+    "ANPA": 700_000,
+    "PAVM": 700_000,
+    "ROLR": 3_600_000,
+    "ACON": 700_000,
+    "BDSX": 3_700_000,
+    "HIND": 1_500_000,
+    "MLEC": 700_000,
+    "SNSE": 700_000,
+    "ENVB": 500_000,
+    "SHPH": 1_600_000,
+    "LCFY": 1_400_000,
+    "SXTP": 900_000,
+    "BCTX": 1_700_000,
+    "JZXN": 1_320_000,
+}
 
 API_KEY = os.getenv("APCA_API_KEY_ID")
 API_SECRET = os.getenv("APCA_API_SECRET_KEY")
@@ -53,25 +82,46 @@ def save_float_cache(cache: dict):
 
 
 def get_float(symbol: str, cache: dict) -> float | None:
-    """Look up float shares via yfinance. Returns float in shares or None."""
-    if symbol in cache:
-        val = cache[symbol]
-        return val  # could be None (cached failure)
+    """Look up float shares. Priority: KNOWN_FLOATS → cache → FMP API → yfinance fallback."""
+    # 1. Hardcoded known floats (most reliable for our universe)
+    if symbol in KNOWN_FLOATS:
+        return KNOWN_FLOATS[symbol]
 
-    try:
-        ticker = yf.Ticker(symbol)
-        info = ticker.info
-        float_shares = info.get("floatShares")
-        cache[symbol] = float_shares
-        save_float_cache(cache)
-        time.sleep(0.5)
-        return float_shares
-    except Exception as e:
-        print(f"  [yfinance] {symbol}: {e}")
-        cache[symbol] = None
-        save_float_cache(cache)
-        time.sleep(0.5)
-        return None
+    # 2. Cache (includes previously looked-up values and cached failures)
+    if symbol in cache:
+        return cache[symbol]
+
+    # 3. FMP API (primary lookup)
+    float_shares = None
+    if FMP_API_KEY:
+        try:
+            url = f"https://financialmodelingprep.com/stable/shares-float?symbol={symbol}&apikey={FMP_API_KEY}"
+            resp = requests.get(url, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
+            if data and isinstance(data, list) and len(data) > 0:
+                float_shares = data[0].get("floatShares") or data[0].get("outstandingShares")
+                if float_shares:
+                    print(f"  [FMP] {symbol}: {float_shares/1e6:.2f}M")
+        except Exception as e:
+            print(f"  [FMP] {symbol}: {e}")
+
+    # 4. yfinance fallback
+    if float_shares is None:
+        try:
+            ticker = yf.Ticker(symbol)
+            info = ticker.info
+            float_shares = info.get("floatShares")
+            if float_shares:
+                print(f"  [yfinance] {symbol}: {float_shares/1e6:.2f}M")
+        except Exception as e:
+            print(f"  [yfinance] {symbol}: {e}")
+
+    # Cache result (even None to avoid re-lookups)
+    cache[symbol] = float_shares
+    save_float_cache(cache)
+    time.sleep(0.5)
+    return float_shares
 
 
 def classify_profile(float_shares: float | None) -> str:
@@ -237,7 +287,7 @@ def run_scanner(date_str: str):
     print(f"         {len(candidates)} raw candidates")
 
     # Step 5: Look up float and classify
-    print("  [5/5] Looking up float via yfinance...")
+    print("  [5/5] Looking up float (known → cache → FMP → yfinance)...")
     float_cache = load_float_cache()
     final_candidates = []
 
