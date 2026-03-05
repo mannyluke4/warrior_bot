@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: USGG  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching USGG bars for 2026-03-04...
+  Total bars: 91  |  Seed: 3  |  Sim: 88
+  Seed complete: EMA9=14.8592
+  Fetching tick data from Alpaca...
+  Tick replay: 880 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:01 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=14.9700 stop=14.7100 R=0.2600 detail=macd=7.5*0.6;R>=0.08=+1 close=14.0300 vwap=14.8653
+    post_block: max_5m=15.0000 max_10m=15.0000 max_30m=15.0000
+
+======================================================================
+  BACKTEST REPORT: USGG -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 880 sim + 3 seed  |  EMA9=13.7640  VWAP=13.8980
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BEZ  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BEZ bars for 2026-03-04...
+  Total bars: 70  |  Seed: 1  |  Sim: 69
+  Seed complete: EMA9=19.9900
+  Fetching tick data from Alpaca...
+  Tick replay: 408 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:12 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=20.9900 stop=19.7293 R=1.2607 detail=macd=7.5*0.6;R>=0.08=+1 close=18.9100 vwap=19.2809
+    post_block: max_5m=19.2900 max_10m=20.1700 max_30m=20.3300
+
+======================================================================
+  BACKTEST REPORT: BEZ -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 408 sim + 1 seed  |  EMA9=17.3498  VWAP=18.3288
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

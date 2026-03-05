@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HCTI  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HCTI bars for 2026-03-04...
+  Total bars: 141  |  Seed: 12  |  Sim: 129
+  Seed complete: EMA9=2.9744
+  Fetching tick data from Alpaca...
+  Tick replay: 1831 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HCTI -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1831 sim + 12 seed  |  EMA9=2.6607  VWAP=2.7010
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

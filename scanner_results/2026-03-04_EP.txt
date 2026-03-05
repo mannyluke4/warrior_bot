@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: EP  |  Date: 2026-03-04  |  Window: 07:07 -> 12:00 ET
+======================================================================
+
+Fetching EP bars for 2026-03-04...
+  Total bars: 71  |  Seed: 0  |  Sim: 71
+  Fetching L2 from Databento: EP 2026-03-04 07:07-12:00 (XNAS.ITCH)...
+  L2 cached: EP_2026-03-04_XNAS.dbn.zst
+  L2 data: 2802 records for EP
+  L2 snapshots: 569 (1-second sampled)
+  L2 data loaded: 569 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 783 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: EP -- 2026-03-04 (07:07 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=569 snaps [TICK mode]
+  Bars: 783 sim + 0 seed  |  EMA9=3.2801  VWAP=3.5017
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

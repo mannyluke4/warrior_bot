@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TMDE  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TMDE bars for 2026-03-04...
+  Total bars: 428  |  Seed: 155  |  Sim: 273
+  Seed complete: EMA9=3.1399
+  Fetching tick data from Alpaca...
+  Tick replay: 25795 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TMDE -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 25795 sim + 155 seed  |  EMA9=2.2416  VWAP=2.8160
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

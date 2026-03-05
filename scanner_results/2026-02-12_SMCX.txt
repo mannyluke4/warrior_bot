@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SMCX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SMCX bars for 2026-02-12...
+  Total bars: 222  |  Seed: 22  |  Sim: 200
+  Seed complete: EMA9=12.6318
+  Fetching tick data from Alpaca...
+  Tick replay: 9445 trades for sim window
+  [07:14] CLASSIFIER: SMCX → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 1.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SMCX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9445 sim + 22 seed  |  EMA9=11.3745  VWAP=11.9599
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================

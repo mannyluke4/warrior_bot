@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AVXX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AVXX bars for 2026-02-12...
+  Total bars: 86  |  Seed: 1  |  Sim: 85
+  Seed complete: EMA9=7.2100
+  Fetching tick data from Alpaca...
+  Tick replay: 658 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AVXX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 658 sim + 1 seed  |  EMA9=6.4891  VWAP=6.7530
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

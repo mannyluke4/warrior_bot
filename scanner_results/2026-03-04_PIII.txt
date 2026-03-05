@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PIII  |  Date: 2026-03-04  |  Window: 07:07 -> 12:00 ET
+======================================================================
+
+Fetching PIII bars for 2026-03-04...
+  Total bars: 10  |  Seed: 0  |  Sim: 10
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 697 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PIII -- 2026-03-04 (07:07 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 697 sim + 0 seed  |  EMA9=2.5283  VWAP=2.5601
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

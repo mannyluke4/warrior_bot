@@ -1,0 +1,35 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CANF  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CANF bars for 2026-03-04...
+  Total bars: 217  |  Seed: 1  |  Sim: 216
+  Seed complete: EMA9=5.0000
+  Fetching tick data from Alpaca...
+  Tick replay: 587476 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CANF -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 587476 sim + 1 seed  |  EMA9=6.2565  VWAP=9.1925
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:07   7.3200   5.9300  1.3900    5.5   6.8300  bearish_engulfing_exit_full      -352    -0.4R
+    2   07:12   7.3900   6.6500  0.7400    5.5   7.0700  bearish_engulfing_exit_full      -432    -0.4R
+    3   07:25   7.7200   7.7300  0.2600    7.5   9.5700  topping_wicky_exit_full     +7115    +7.1R
+    4   07:32  10.0300   9.3800  0.6500   11.0   9.8900  bearish_engulfing_exit_full      -215    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 4  |  Wins: 1  |  Losses: 3  |  Win Rate: 25.0%
+  Gross P&L: $+6,115  |  Avg R-Multiple: +1.5R
+  Largest Win: $+7,115  |  Largest Loss: $-432
+  Armed: 11  |  Signals: 10  |  Entered: 4
+======================================================================
+

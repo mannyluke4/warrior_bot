@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: EDSA  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching EDSA bars for 2026-03-04...
+  Total bars: 381  |  Seed: 104  |  Sim: 277
+  Seed complete: EMA9=4.8132
+  Fetching tick data from Alpaca...
+  Tick replay: 25205 trades for sim window
+  [07:04] CLASSIFIER: EDSA → avoid (conf=0.85) — AVOID gate: VWAP dist 5.9% < 7.0%, range 4.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: EDSA -- 2026-03-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 25205 sim + 104 seed  |  EMA9=4.0722  VWAP=4.6741
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:39   5.2600   4.7503  0.5097   12.5   5.1815  bearish_engulfing_exit_full      -154    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-154  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-154
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

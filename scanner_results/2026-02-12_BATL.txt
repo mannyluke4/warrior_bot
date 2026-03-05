@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BATL  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BATL bars for 2026-02-12...
+  Total bars: 161  |  Seed: 25  |  Sim: 136
+  Fetching L2 from Databento: BATL 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: BATL_2026-02-12_XNAS.dbn.zst
+  L2 data: 3136 records for BATL
+  L2 snapshots: 730 (1-second sampled)
+  L2 data loaded: 730 snapshots
+  Seed complete: EMA9=3.0069
+  Fetching tick data from Alpaca...
+  Tick replay: 3057 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BATL -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=730 snaps [TICK mode]
+  Bars: 3057 sim + 25 seed  |  EMA9=2.8154  VWAP=2.8568
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

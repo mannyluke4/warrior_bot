@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FUTG  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FUTG bars for 2026-02-12...
+  Total bars: 80  |  Seed: 1  |  Sim: 79
+  Seed complete: EMA9=12.3500
+  Fetching tick data from Alpaca...
+  Tick replay: 908 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:30 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=2.1 entry=12.4400 stop=12.4025 R=0.0375 detail=macd=3.5*0.6 close=12.0000 vwap=12.1106
+    post_block: max_5m=12.2000 max_10m=12.2000 max_30m=12.2000
+
+======================================================================
+  BACKTEST REPORT: FUTG -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 908 sim + 1 seed  |  EMA9=10.8385  VWAP=11.3809
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

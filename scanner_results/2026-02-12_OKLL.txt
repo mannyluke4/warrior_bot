@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: OKLL  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OKLL bars for 2026-02-12...
+  Total bars: 317  |  Seed: 62  |  Sim: 255
+  Seed complete: EMA9=12.3505
+  Fetching tick data from Alpaca...
+  Tick replay: 14305 trades for sim window
+  [07:04] CLASSIFIER: OKLL → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: OKLL -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 14305 sim + 62 seed  |  EMA9=11.6643  VWAP=12.1073
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:32  12.9800  12.8800  0.1000    9.5  12.8800  stop_hit                  -462    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-462  |  Avg R-Multiple: -0.5R
+  Largest Win: $+0  |  Largest Loss: $-462
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+
