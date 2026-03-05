@@ -1,0 +1,48 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SLE  |  Date: 2026-01-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SLE bars for 2026-01-23...
+  Total bars: 172  |  Seed: 0  |  Sim: 172
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 109276 trades for sim window
+  [09:04] CLASSIFIER: SLE → uncertain (conf=0.30) — No strong pattern: NH=1, PB=0, green=0.80, VWAP=9.1%, range=41.0%
+  [09:06] ARMED entry=11.4700 stop=8.1807 R=3.2893 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [09:07] 1M RESET (lost VWAP)
+  [09:09] CLASSIFIER: reclassified uncertain → smooth_trend
+  [09:09] ARMED entry=10.4997 stop=9.1100 R=1.3897 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [09:10] ENTRY: 10.5197 stop=9.1100 R=1.4097 qty=709 score=5.5
+  [09:10] ARMED entry=11.2800 stop=9.8600 R=1.4200 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [09:12] 1M RESET (extended: 6 green candles)
+  [09:13] BE_SUPPRESSED (time_suppress: 3m < 5m window) @ 9.9700
+  [09:14] ARMED entry=10.6100 stop=9.7100 R=0.9000 score=4.0 macd_score=5.0 tags=[] why=macd=5.0*0.6;R>=0.08=+1
+  [09:15] BEARISH_ENGULFING_EXIT @ 10.0000
+  [09:15] 1M RESET (lost VWAP)
+
+======================================================================
+  BACKTEST REPORT: SLE -- 2026-01-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 109276 sim + 0 seed  |  EMA9=6.1414  VWAP=9.1271
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:10  10.5197   9.1100  1.4097    5.5  10.0000  bearish_engulfing_exit_full      -368    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-368  |  Avg R-Multiple: -0.4R
+  Largest Win: $+0  |  Largest Loss: $-368
+  Armed: 4  |  Signals: 2  |  Entered: 1
+======================================================================
+

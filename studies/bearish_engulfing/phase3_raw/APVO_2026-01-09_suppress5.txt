@@ -1,0 +1,47 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: APVO  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching APVO bars for 2026-01-09...
+  Total bars: 222  |  Seed: 0  |  Sim: 222
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 101748 trades for sim window
+  [07:28] 1M SKIP (MACD not bullish) macd_score=-0.5
+  [07:44] CLASSIFIER: APVO → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 0.1% < 10.0%, NH 1 < 2
+  [08:00] ARMED entry=9.4200 stop=8.9521 R=0.4679 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:05] ENTRY: 9.4400 stop=8.9521 R=0.4879 qty=2049 score=5.5
+  [08:05] 1M RESET (extended: 6 green candles)
+  [08:06] 1M RESET (extended: 7 green candles)
+  [08:08] CLASSIFIER: reclassified avoid → early_bird
+  [08:09] BE_SUPPRESSED (time_suppress: 4m < 5m window) @ 13.1600
+  [08:09] 1M RESET (extended: 8 green candles)
+  [08:11] BEARISH_ENGULFING_EXIT @ 12.6291
+  [08:13] CLASSIFIER: reclassified early_bird → smooth_trend
+
+======================================================================
+  BACKTEST REPORT: APVO -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 101748 sim + 0 seed  |  EMA9=8.5125  VWAP=11.3481
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:05   9.4400   9.4500  0.4879    5.5  12.6291  bearish_engulfing_exit_full     +6534    +6.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+6,534  |  Avg R-Multiple: +6.5R
+  Largest Win: $+6,534  |  Largest Loss: $+0
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

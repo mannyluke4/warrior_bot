@@ -1,0 +1,60 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BNAI  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BNAI bars for 2026-02-05...
+  Total bars: 382  |  Seed: 81  |  Sim: 301
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=29.6773
+  LevelMap seeded: PM_HIGH=31.5, ref_price=29.37
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 287779 trades for sim window
+  [07:00] ARMED entry=32.3500 stop=28.7600 R=3.5900 score=11.3 macd_score=5.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:01] ENTRY: 32.3700 stop=28.7600 R=3.6100 qty=277 score=11.3
+  [07:01] BE_SUPPRESSED (time_suppress: 0m < 3m window) @ 30.5200
+  [07:03] BE_SUPPRESSED (time_suppress: 2m < 3m window) @ 31.1500
+  [07:04] CLASSIFIER: BNAI → uncertain (conf=0.30) — No strong pattern: NH=1, PB=0, green=0.40, VWAP=15.1%, range=12.4%
+  [07:04] 1M SKIP (MACD not bullish) macd_score=-0.5
+  [07:05] BEARISH_ENGULFING_EXIT @ 31.4100
+  [07:05] ARMED entry=32.1800 stop=31.1000 R=1.0800 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:06] ENTRY: 32.2000 stop=31.1000 R=1.1000 qty=909 score=12.5
+  [07:06] BE_SUPPRESSED (time_suppress: 0m < 3m window) @ 32.9400
+  [07:06] 1M NO_ARM exhaustion: 15.5% above VWAP (max 14.7%, range=29.5%) close=32.9400 vwap=28.5098
+  [07:07] 1M NO_ARM exhaustion: 21.0% above VWAP (max 20.5%, range=41.1%) close=35.3300 vwap=29.2043
+  [07:08] BE_SUPPRESSED (time_suppress: 2m < 3m window) @ 34.2300
+  [07:09] BEARISH_ENGULFING_EXIT @ 34.3100
+  [07:09] CLASSIFIER: reclassified uncertain → early_bird
+  [07:10] 1M NO_ARM level_gate: resistance_whole_dollar_34.00_failed_1x
+  [07:11] ARMED entry=36.4700 stop=34.1500 R=2.3200 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:13] ARMED entry=36.9600 stop=34.7100 R=2.2500 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:14] 1M RESET (bearish engulfing)
+  [07:17] 1M RESET (bearish engulfing)
+  [08:07] 1M RESET (topping wicky)
+  [08:08] 1M RESET (topping wicky)
+  [08:09] 1M RESET (topping wicky)
+
+======================================================================
+  BACKTEST REPORT: BNAI -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 287779 sim + 81 seed  |  EMA9=25.0366  VWAP=29.6353
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01  32.3700  28.7600  3.6100   11.3  31.4100  bearish_engulfing_exit_full      -266    -0.3R
+    2   07:06  32.2000  32.2100  1.1000   12.5  34.3100  bearish_engulfing_exit_full     +1918    +1.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+1,652  |  Avg R-Multiple: +0.8R
+  Largest Win: $+1,918  |  Largest Loss: $-266
+  Armed: 4  |  Signals: 4  |  Entered: 2
+======================================================================
+

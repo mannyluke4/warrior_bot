@@ -1,0 +1,54 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ACON  |  Date: 2026-02-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ACON bars for 2026-02-13...
+  Total bars: 13  |  Seed: 0  |  Sim: 13
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 100 trades for sim window
+  [08:00] 1M NO_ARM warmup: 2/5 bars
+  [09:22] 1M SKIP (R too small: 0.0100)
+  [09:30] CLASSIFIER: ACON → uncertain (conf=0.30) — No strong pattern: NH=3, PB=2, green=0.80, VWAP=4.4%, range=5.0%
+  [09:30] ARMED entry=2.6682 stop=2.5800 R=0.0882 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [09:37] ENTRY: 2.6882 stop=2.5800 R=0.1082 qty=9242 score=5.5
+  [09:37] 1M SKIP (R too small: 0.0100)
+  [09:42] 1M RESET (extended: 6 green candles)
+  [09:43] 1M RESET (extended: 7 green candles)
+  [09:44] 1M RESET (extended: 8 green candles)
+  [09:46] CLASSIFIER: reclassified uncertain → cascading
+  [09:46] 1M RESET (extended: 9 green candles)
+  [09:55] 1M SKIP (R too small: 0.0300)
+  [10:03] 1M SKIP (R too small: 0.0100)
+  [10:04] CLASSIFIER: reclassified cascading → uncertain
+  [10:09] 1M SKIP (R too small: 0.0100)
+  [11:14] 1M RESET (extended: 6 green candles)
+  [11:15] 1M RESET (extended: 7 green candles)
+  [11:58] TOPPING_WICKY_EXIT @ 2.6650
+
+======================================================================
+  BACKTEST REPORT: ACON -- 2026-02-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 100 sim + 0 seed  |  EMA9=2.6469  VWAP=2.6196
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:37   2.6882   2.5800  0.1082    5.5   2.6650  topping_wicky_exit_full      -214    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-214  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-214
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

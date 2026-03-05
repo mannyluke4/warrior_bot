@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: APVO  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching APVO bars for 2026-01-09...
+  Total bars: 222  |  Seed: 0  |  Sim: 222
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 101748 trades for sim window
+  [07:44] CLASSIFIER: APVO → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 0.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: APVO -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 101748 sim + 0 seed  |  EMA9=8.5125  VWAP=11.3481
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:05   9.4400   9.4500  0.4879    5.5  12.6291  parabolic_exhaustion_exit_full     +6534    +6.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+6,534  |  Avg R-Multiple: +6.5R
+  Largest Win: $+6,534  |  Largest Loss: $+0
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,57 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GWAV  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GWAV bars for 2026-01-16...
+  Total bars: 293  |  Seed: 5  |  Sim: 288
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=5.1561
+  LevelMap seeded: PM_HIGH=5.36, ref_price=5.36
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 82507 trades for sim window
+  [07:00] ARMED entry=5.4700 stop=5.3500 R=0.1200 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [07:01] ENTRY: 5.4900 stop=5.3500 R=0.1400 qty=7142 score=5.5
+  [07:01] ARMED entry=5.5000 stop=5.4600 R=0.0400 score=4.5 macd_score=7.5 tags=[] why=macd=7.5*0.6
+  [07:06] CLASSIFIER: GWAV → uncertain (conf=0.30) — No strong pattern: NH=2, PB=1, green=1.00, VWAP=3.0%, range=2.6%
+  [07:07] 1M RESET (extended: 6 green candles)
+  [07:08] 1M RESET (extended: 7 green candles)
+  [07:09] 1M RESET (extended: 8 green candles)
+  [07:10] 1M RESET (extended: 9 green candles)
+  [07:11] CLASSIFIER: reclassified uncertain → cascading
+  [07:11] 1M RESET (extended: 10 green candles)
+  [07:13] BEARISH_ENGULFING_EXIT @ 6.5700
+  [07:16] CLASSIFIER: reclassified cascading → early_bird
+  [08:13] 1M RESET (extended: 11 green candles)
+  [08:16] ARMED entry=8.2200 stop=5.3600 R=2.8600 score=9.0 macd_score=7.5 tags=[RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [08:17] ENTRY: 8.2400 stop=5.3600 R=2.8800 qty=347 score=9.0
+  [08:18] BE_SUPPRESSED (time_suppress: 1m < 10m window) @ 5.4200
+  [08:18] BE_SUPPRESSED (time_suppress: 1m < 10m window) @ 5.4500
+  [08:19] ARMED entry=8.3997 stop=5.4100 R=2.9897 score=12.0 macd_score=7.5 tags=[FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [08:20] TOPPING_WICKY_EXIT @ 5.5400
+  [08:20] 1M RESET (lost VWAP)
+
+======================================================================
+  BACKTEST REPORT: GWAV -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 82507 sim + 5 seed  |  EMA9=5.8325  VWAP=6.4354
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   5.4900   5.5000  0.1400    5.5   6.5700  bearish_engulfing_exit_full     +7713    +7.7R
+    2   08:17   8.2400   5.3600  2.8800    9.0   5.5400  topping_wicky_exit_full      -937    -0.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+6,776  |  Avg R-Multiple: +3.4R
+  Largest Win: $+7,713  |  Largest Loss: $-937
+  Armed: 4  |  Signals: 3  |  Entered: 2
+======================================================================
+

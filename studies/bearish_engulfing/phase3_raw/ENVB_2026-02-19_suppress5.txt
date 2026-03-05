@@ -1,0 +1,44 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ENVB  |  Date: 2026-02-19  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ENVB bars for 2026-02-19...
+  Total bars: 242  |  Seed: 2  |  Sim: 240
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=2.4320
+  LevelMap seeded: PM_HIGH=2.46, ref_price=2.32
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 141311 trades for sim window
+  [08:00] ARMED entry=2.9800 stop=2.2200 R=0.7600 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:01] ENTRY: 3.0000 stop=2.2200 R=0.7800 qty=1282 score=5.5
+  [08:02] CLASSIFIER: ENVB → uncertain (conf=0.30) — No strong pattern: NH=3, PB=1, green=0.80, VWAP=6.5%, range=101.8%
+  [08:03] BE_SUPPRESSED (time_suppress: 2m < 5m window) @ 3.3700
+  [08:04] BE_SUPPRESSED (time_suppress: 3m < 5m window) @ 3.6200
+  [08:06] BEARISH_ENGULFING_EXIT @ 2.9400
+  [08:07] CLASSIFIER: reclassified uncertain → smooth_trend
+  [08:12] CLASSIFIER: reclassified smooth_trend → one_big_move
+
+======================================================================
+  BACKTEST REPORT: ENVB -- 2026-02-19 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 141311 sim + 2 seed  |  EMA9=2.3660  VWAP=2.8170
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:01   3.0000   2.2200  0.7800    5.5   2.9400  bearish_engulfing_exit_full       -77    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-77  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-77
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

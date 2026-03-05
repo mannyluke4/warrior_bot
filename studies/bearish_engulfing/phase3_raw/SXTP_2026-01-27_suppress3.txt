@@ -1,0 +1,65 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SXTP  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SXTP bars for 2026-01-27...
+  Total bars: 118  |  Seed: 3  |  Sim: 115
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=4.6356
+  LevelMap seeded: PM_HIGH=4.65, ref_price=4.65
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 2041 trades for sim window
+  [07:06] CLASSIFIER: SXTP → avoid (conf=0.85) — AVOID gate: VWAP dist 4.4% < 7.0%, range 5.8% < 10.0%, NH 1 < 2
+  [08:00] CLASSIFIER: reclassified avoid → uncertain
+  [09:30] 1M SKIP (R too small: 0.0269)
+  [09:33] ARMED entry=4.8400 stop=4.7292 R=0.1108 score=12.0 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:34] ENTRY: 4.8600 stop=4.7292 R=0.1308 qty=7646 score=12.0
+  [09:40] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [10:08] 1M NO_ARM stale_stock: no_new_high_29_bars
+  [10:09] 1M RESET (extended: 6 green candles)
+  [10:10] 1M RESET (extended: 7 green candles)
+  [10:11] 1M RESET (extended: 8 green candles)
+  [10:14] 1M NO_ARM level_gate: resistance_rejection_4.80_failed_2x
+  [10:16] 1M NO_ARM level_gate: resistance_rejection_4.80_failed_3x
+  [10:17] 1M NO_ARM level_gate: resistance_rejection_4.80_failed_3x
+  [10:18] 1M RESET (bearish engulfing)
+  [10:20] ARMED entry=4.8400 stop=4.6800 R=0.1600 score=12.0 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:21] ENTRY: 4.8600 stop=4.6800 R=0.1800 qty=5555 score=12.0
+  [10:22] 1M RESET (topping wicky)
+  [10:23] 1M RESET (topping wicky)
+  [10:24] TOPPING_WICKY_EXIT @ 4.7200
+  [10:24] ARMED entry=4.8600 stop=4.7100 R=0.1500 score=9.6 macd_score=3.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=3.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:26] ARMED entry=4.9000 stop=4.7100 R=0.1900 score=12.0 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:28] ARMED entry=5.0000 stop=4.7410 R=0.2590 score=12.0 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:29] ARMED entry=5.0000 stop=4.8852 R=0.1148 score=12.5 macd_score=7.5 tags=[ASC_TRIANGLE, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:31] 1M NO_ARM exhaustion: vol_ratio=0.40 (min 0.4) recent=10635 earlier=26907
+  [10:33] 1M RESET (extended: 6 green candles)
+  [10:37] 1M SKIP (MACD not bullish) macd_score=-2.5
+  [10:38] 1M RESET (topping wicky)
+  [10:39] 1M RESET (topping wicky)
+
+======================================================================
+  BACKTEST REPORT: SXTP -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2041 sim + 3 seed  |  EMA9=4.5486  VWAP=4.7050
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:34   4.8600   4.7292  0.1308   12.0   4.6900  stop_hit                 -1300    -1.3R
+    2   10:21   4.8600   4.6800  0.1800   12.0   4.7200  topping_wicky_exit_full      -778    -0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-2,078  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-1,300
+  Armed: 6  |  Signals: 6  |  Entered: 2
+======================================================================
+

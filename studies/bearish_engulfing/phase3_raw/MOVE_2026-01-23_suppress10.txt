@@ -1,0 +1,81 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MOVE  |  Date: 2026-01-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MOVE bars for 2026-01-23...
+  Total bars: 476  |  Seed: 179  |  Sim: 297
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=19.1743
+  LevelMap seeded: PM_HIGH=20.9, ref_price=19.01
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 610891 trades for sim window
+  [07:00] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [07:01] 1M RESET (topping wicky)
+  [07:02] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [07:03] 1M RESET (bearish engulfing)
+  [07:04] CLASSIFIER: MOVE → uncertain (conf=0.30) — No strong pattern: NH=2, PB=0, green=0.40, VWAP=19.1%, range=7.3%
+  [07:04] 1M RESET (topping wicky)
+  [07:05] 1M RESET (topping wicky)
+  [07:09] CLASSIFIER: reclassified uncertain → early_bird
+  [08:46] 1M NO_ARM level_gate: resistance_whole_dollar_19.00_failed_9x
+  [08:50] 1M RESET (topping wicky)
+  [08:51] 1M RESET (topping wicky)
+  [08:53] 1M NO_ARM level_gate: resistance_whole_dollar_19.00_failed_10x
+  [08:54] 1M NO_ARM level_gate: resistance_whole_dollar_19.00_failed_10x
+  [08:55] 1M NO_ARM level_gate: resistance_whole_dollar_19.00_failed_10x
+  [08:56] 1M NO_ARM level_gate: resistance_whole_dollar_20.00_failed_6x
+  [08:57] 1M RESET (bearish engulfing)
+  [08:58] 1M SKIP (weak candle — close in lower 40%)
+  [08:59] 1M RESET (extended: 6 green candles)
+  [09:01] 1M RESET (extended: 7 green candles)
+  [09:02] 1M RESET (extended: 8 green candles)
+  [09:06] 1M NO_ARM level_gate: resistance_half_dollar_20.50_failed_4x
+  [09:09] 1M RESET (topping wicky)
+  [09:10] 1M RESET (topping wicky)
+  [09:11] 1M RESET (topping wicky)
+  [09:12] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [09:29] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [09:30] 1M NO_ARM exhaustion: 21.2% above VWAP (max 14.2%, range=28.3%) close=21.6699 vwap=17.8723
+  [09:31] 1M NO_ARM level_gate: resistance_half_dollar_22.50_failed_1x
+  [09:32] 1M NO_ARM exhaustion: 24.5% above VWAP (max 14.2%, range=28.3%) close=22.4500 vwap=18.0394
+  [09:35] 1M RESET (topping wicky)
+  [09:36] 1M RESET (topping wicky)
+  [09:38] 1M NO_ARM level_gate: resistance_whole_dollar_22.00_failed_1x
+  [09:39] 1M NO_ARM level_gate: resistance_whole_dollar_23.00_failed_4x
+  [09:41] 1M NO_ARM exhaustion: 24.9% above VWAP (max 16.9%, range=33.9%) close=23.2200 vwap=18.5951
+  [09:44] 1M NO_ARM level_gate: resistance_whole_dollar_23.00_failed_8x
+  [09:46] 1M RESET (topping wicky)
+  [09:47] 1M RESET (topping wicky)
+  [09:48] 1M RESET (topping wicky)
+  [10:54] ARMED entry=19.6200 stop=18.7000 R=0.9200 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:55] ENTRY: 19.6400 stop=18.7000 R=0.9400 qty=1063 score=12.5
+  [10:56] ARMED entry=19.9000 stop=19.1300 R=0.7700 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:58] BE_SUPPRESSED (time_suppress: 3m < 10m window) @ 19.4928
+  [10:58] BE_SUPPRESSED (time_suppress: 3m < 10m window) @ 19.4000
+  [10:59] ARMED entry=19.7500 stop=19.3000 R=0.4500 score=11.0 macd_score=5.0 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [11:01] 1M RESET (MACD bearish cross)
+
+======================================================================
+  BACKTEST REPORT: MOVE -- 2026-01-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 610891 sim + 179 seed  |  EMA9=17.4560  VWAP=18.6253
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:55  19.6400  18.7000  0.9400   12.5  18.7000  stop_hit                  -999    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-999  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-999
+  Armed: 3  |  Signals: 2  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,56 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BNAI  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BNAI bars for 2026-01-16...
+  Total bars: 371  |  Seed: 103  |  Sim: 268
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=6.1763
+  LevelMap seeded: PM_HIGH=7.1, ref_price=6.14
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 35054 trades for sim window
+  [07:04] CLASSIFIER: BNAI → uncertain (conf=0.30) — No strong pattern: NH=2, PB=0, green=0.40, VWAP=6.3%, range=2.0%
+  [08:00] 1M NO_ARM exhaustion: 10.5% above VWAP (max 10.3%, range=20.6%) close=7.2100 vwap=6.5272
+  [08:16] ARMED entry=6.6600 stop=6.5500 R=0.1100 score=12.0 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [08:17] ENTRY: 6.6800 stop=6.5500 R=0.1300 qty=7692 score=12.0
+  [08:19] ARMED entry=6.6547 stop=6.5900 R=0.0647 score=11.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5
+  [08:20] BEARISH_ENGULFING_EXIT @ 6.6000
+  [08:20] ARMED entry=6.7400 stop=6.5900 R=0.1500 score=12.0 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, RED_TO_GREEN, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [08:21] ENTRY: 6.7600 stop=6.5900 R=0.1700 qty=5882 score=12.0
+  [08:21] BE_SUPPRESSED (time_suppress: 0m < 3m window) @ 6.7500
+  [08:23] 1M SKIP (weak candle — close in lower 40%)
+  [08:24] TOPPING_WICKY_EXIT @ 6.7006
+  [08:24] 1M RESET (bearish engulfing)
+  [08:26] 1M SKIP (MACD not bullish) macd_score=-3.0
+  [08:28] 1M RESET (topping wicky)
+  [08:29] 1M RESET (topping wicky)
+  [08:30] 1M RESET (topping wicky)
+  [08:31] 1M RESET (topping wicky)
+  [09:09] 1M RESET (topping wicky)
+  [09:13] 1M SKIP (MACD not bullish) macd_score=-4.5
+
+======================================================================
+  BACKTEST REPORT: BNAI -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 35054 sim + 103 seed  |  EMA9=6.1761  VWAP=6.7449
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:17   6.6800   6.5500  0.1300   12.0   6.6000  bearish_engulfing_exit_full      -615    -0.6R
+    2   08:21   6.7600   6.5900  0.1700   12.0   6.7006  topping_wicky_exit_full      -349    -0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-965  |  Avg R-Multiple: -0.5R
+  Largest Win: $+0  |  Largest Loss: $-615
+  Armed: 3  |  Signals: 3  |  Entered: 2
+======================================================================
+

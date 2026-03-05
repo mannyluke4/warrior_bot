@@ -1,0 +1,107 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BNAI  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BNAI bars for 2026-01-28...
+  Total bars: 363  |  Seed: 98  |  Sim: 265
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=52.3654
+  LevelMap seeded: PM_HIGH=61.37, ref_price=52.03
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 347582 trades for sim window
+  [07:04] CLASSIFIER: BNAI → uncertain (conf=0.30) — No strong pattern: NH=2, PB=0, green=0.40, VWAP=6.6%, range=5.2%
+  [08:12] 1M NO_ARM level_gate: resistance_whole_dollar_54.00_failed_4x
+  [08:14] 1M NO_ARM level_gate: resistance_whole_dollar_54.00_failed_4x
+  [08:15] 1M NO_ARM level_gate: resistance_whole_dollar_54.00_failed_4x
+  [08:17] 1M RESET (bearish engulfing)
+  [08:22] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [09:26] 1M RESET (extended: 6 green candles)
+  [09:27] 1M RESET (extended: 7 green candles)
+  [09:30] 1M NO_ARM level_gate: resistance_whole_dollar_54.00_failed_17x
+  [09:31] 1M NO_ARM level_gate: resistance_whole_dollar_56.00_failed_3x
+  [09:35] 1M NO_ARM level_gate: resistance_whole_dollar_54.00_failed_18x
+  [09:36] 1M NO_ARM level_gate: resistance_whole_dollar_56.00_failed_5x
+  [09:37] 1M NO_ARM level_gate: resistance_whole_dollar_56.00_failed_5x
+  [09:38] 1M NO_ARM level_gate: resistance_whole_dollar_58.00_failed_3x
+  [09:39] 1M NO_ARM level_gate: resistance_whole_dollar_60.00_failed_2x
+  [09:40] 1M RESET (extended: 6 green candles)
+  [09:42] 1M NO_ARM exhaustion: 15.0% above VWAP (max 14.4%, range=28.7%) close=64.0000 vwap=55.6452
+  [09:44] 1M NO_ARM exhaustion: 14.5% above VWAP (max 14.5%, range=28.9%) close=64.5701 vwap=56.3711
+  [09:45] 1M NO_ARM exhaustion: 19.3% above VWAP (max 18.4%, range=36.9%) close=68.3299 vwap=57.2582
+  [09:47] ARMED entry=68.6799 stop=65.9900 R=2.6899 score=11.0 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:48] ENTRY: 68.6999 stop=65.9900 R=2.7099 qty=369 score=11.0
+  [09:48] BE_SUPPRESSED (time_suppress: 0m < 10m window) @ 69.0266
+  [09:48] ARMED entry=69.7000 stop=67.9900 R=1.7100 score=11.0 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:50] ARMED entry=74.4500 stop=68.2201 R=6.2299 score=12.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:51] BE_SUPPRESSED (time_suppress: 3m < 10m window) @ 74.0300
+  [09:51] TOPPING_WICKY_EXIT @ 73.3000
+  [09:51] 1M SKIP (weak candle — close in lower 40%)
+  [09:52] 1M RESET (bearish engulfing)
+  [09:53] ARMED entry=72.7500 stop=69.3200 R=3.4300 score=11.0 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:54] ENTRY: 72.7700 stop=69.3200 R=3.4500 qty=289 score=11.0
+  [09:54] ARMED entry=75.0000 stop=71.4400 R=3.5600 score=11.0 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:55] 1M RESET (bearish engulfing)
+  [09:56] BE_SUPPRESSED (time_suppress: 2m < 10m window) @ 70.6250
+  [09:56] ARMED entry=75.7499 stop=70.2400 R=5.5099 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:57] TOPPING_WICKY_EXIT @ 75.9500
+  [09:57] 1M RESET (extended: 6 green candles)
+  [09:58] 1M RESET (extended: 7 green candles)
+  [09:59] 1M RESET (bearish engulfing)
+  [10:01] ARMED entry=77.9800 stop=72.9900 R=4.9900 score=9.0 macd_score=5.0 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;bull_struct=+3;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:02] 1M RESET (MACD bearish cross)
+  [10:03] 1M RESET (topping wicky)
+  [10:04] 1M RESET (topping wicky)
+  [10:05] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [10:06] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [10:07] 1M RESET (topping wicky)
+  [10:40] ARMED entry=74.8900 stop=73.2900 R=1.6000 score=12.0 macd_score=7.5 tags=[ABCD, BULL_FLAG, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:41] ENTRY: 74.9100 stop=73.2900 R=1.6200 qty=617 score=12.0
+  [10:41] ARMED entry=74.9600 stop=73.4900 R=1.4700 score=12.0 macd_score=7.5 tags=[ABCD, BULL_FLAG, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:42] 1M NO_ARM exhaustion: 21.4% above VWAP (max 16.9%, range=33.7%) close=82.2600 vwap=67.7627
+  [10:47] TOPPING_WICKY_EXIT @ 85.8850
+  [10:50] 1M RESET (topping wicky)
+  [10:51] 1M SKIP (weak candle — close in lower 40%)
+  [10:52] 1M RESET (bearish engulfing)
+  [10:53] 1M RESET (topping wicky)
+  [10:56] 1M RESET (bearish engulfing)
+  [11:23] ARMED entry=76.1000 stop=73.4900 R=2.6100 score=10.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [11:24] ENTRY: 76.1200 stop=73.4900 R=2.6300 qty=380 score=10.5
+  [11:24] 1M NO_ARM level_gate: resistance_rejection_79.00_failed_8x
+  [11:25] BE_SUPPRESSED (time_suppress: 1m < 10m window) @ 75.5000
+  [11:25] 1M SKIP (weak candle — close in lower 40%)
+  [11:26] BE_SUPPRESSED (time_suppress: 2m < 10m window) @ 76.7000
+  [11:26] BE_SUPPRESSED (time_suppress: 2m < 10m window) @ 76.3400
+  [11:27] TOPPING_WICKY_EXIT @ 76.6600
+  [11:27] ARMED entry=77.0000 stop=75.4900 R=1.5100 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [11:28] 1M NO_ARM level_gate: resistance_rejection_79.00_failed_11x
+  [11:29] 1M RESET (topping wicky)
+  [11:30] 1M NO_ARM level_gate: resistance_rejection_79.00_failed_12x
+  [11:32] 1M RESET (topping wicky)
+
+======================================================================
+  BACKTEST REPORT: BNAI -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 347582 sim + 98 seed  |  EMA9=63.0903  VWAP=69.1044
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:48  68.6999  65.9900  2.7099   11.0  73.3000  topping_wicky_exit_full     +1697    +1.7R
+    2   09:54  72.7700  69.3200  3.4500   11.0  75.9500  topping_wicky_exit_full      +919    +0.9R
+    3   10:41  74.9100  74.9200  1.6200   12.0  85.8850  topping_wicky_exit_full     +6772    +6.8R
+    4   11:24  76.1200  73.4900  2.6300   10.5  76.6600  topping_wicky_exit_full      +205    +0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 4  |  Wins: 4  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+9,593  |  Avg R-Multiple: +2.4R
+  Largest Win: $+6,772  |  Largest Loss: $+0
+  Armed: 11  |  Signals: 9  |  Entered: 4
+======================================================================
+

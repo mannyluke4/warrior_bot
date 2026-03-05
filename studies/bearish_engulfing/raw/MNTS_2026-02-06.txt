@@ -1,0 +1,76 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MNTS  |  Date: 2026-02-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MNTS bars for 2026-02-06...
+  Total bars: 119  |  Seed: 4  |  Sim: 115
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=5.4360
+  LevelMap seeded: PM_HIGH=5.51, ref_price=5.46
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 1948 trades for sim window
+  [07:33] 1M SKIP (R too small: 0.0100)
+  [07:59] 1M SKIP (R too small: 0.0100)
+  [08:00] ARMED entry=5.6700 stop=5.4731 R=0.1969 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [08:01] CLASSIFIER: MNTS → uncertain (conf=0.30) — No strong pattern: NH=3, PB=1, green=0.80, VWAP=3.2%, range=6.4%
+  [08:01] 1M RESET (lost VWAP)
+  [08:08] 1M SKIP (R too small: 0.0100)
+  [08:09] 1M SKIP (R too small: 0.0100)
+  [08:12] 1M RESET (extended: 6 green candles)
+  [08:15] 1M RESET (extended: 7 green candles)
+  [08:18] 1M RESET (extended: 8 green candles)
+  [09:31] 1M RESET (extended: 9 green candles)
+  [09:32] 1M RESET (extended: 10 green candles)
+  [09:33] 1M RESET (extended: 11 green candles)
+  [09:34] 1M RESET (extended: 12 green candles)
+  [09:35] 1M RESET (extended: 13 green candles)
+  [09:37] ARMED entry=5.8000 stop=5.6400 R=0.1600 score=12.0 macd_score=7.5 tags=[ABCD, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:39] ENTRY: 5.8200 stop=5.6400 R=0.1800 qty=5555 score=12.0
+  [09:39] 1M NO_ARM exhaustion: vol_ratio=0.36 (min 0.4) recent=3383 earlier=9494
+  [09:40] ARMED entry=5.9311 stop=5.7700 R=0.1611 score=12.0 macd_score=7.5 tags=[ABCD, FLAT_TOP, RED_TO_GREEN, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:45] 1M NO_ARM level_gate: resistance_whole_dollar_6.00_failed_2x
+  [09:48] TOPPING_WICKY_EXIT @ 5.9752
+  [09:48] ARMED entry=6.0000 stop=5.9400 R=0.0600 score=12.0 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.05=+0.5
+  [09:51] ARMED entry=6.0414 stop=5.8900 R=0.1514 score=12.5 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:53] 1M RESET (topping wicky)
+  [10:49] ARMED entry=5.8280 stop=5.7400 R=0.0880 score=9.6 macd_score=3.5 tags=[ABCD, ASC_TRIANGLE, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=3.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:50] 1M RESET (topping wicky)
+  [11:20] ARMED entry=5.8600 stop=5.6500 R=0.2100 score=10.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;R>=0.08=+1
+  [11:21] 1M RESET (topping wicky)
+  [11:42] 1M RESET (trend failure strong)
+  [11:43] 1M RESET (trend failure strong)
+  [11:44] 1M RESET (trend failure strong)
+  [11:46] 1M RESET (trend failure strong)
+  [11:47] 1M RESET (trend failure strong)
+  [11:48] 1M RESET (trend failure strong)
+  [11:49] 1M RESET (trend failure strong)
+  [11:50] 1M RESET (trend failure strong)
+  [11:51] 1M RESET (trend failure strong)
+  [11:54] 1M NO_ARM exhaustion: vol_ratio=0.05 (min 0.4) recent=6245 earlier=119067
+  [11:56] 1M SKIP (R too small: 0.0100)
+  [11:58] 1M SKIP (R too small: 0.0100)
+
+======================================================================
+  BACKTEST REPORT: MNTS -- 2026-02-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1948 sim + 4 seed  |  EMA9=5.8352  VWAP=5.7635
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:39   5.8200   5.6400  0.1800   12.0   5.9752  topping_wicky_exit_full      +862    +0.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+862  |  Avg R-Multiple: +0.9R
+  Largest Win: $+862  |  Largest Loss: $+0
+  Armed: 7  |  Signals: 3  |  Entered: 1
+======================================================================
+

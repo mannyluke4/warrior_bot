@@ -1,0 +1,54 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ROLR  |  Date: 2026-01-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ROLR bars for 2026-01-06...
+  Total bars: 62  |  Seed: 0  |  Sim: 62
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=None
+  LevelMap seeded: PM_HIGH=None, ref_price=5.00
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 859 trades for sim window
+  [08:07] 1M SKIP (R too small: 0.0100)
+  [08:36] CLASSIFIER: ROLR → uncertain (conf=0.30) — No strong pattern: NH=2, PB=1, green=1.00, VWAP=5.1%, range=3.6%
+  [09:31] ARMED entry=2.7186 stop=2.5977 R=0.1209 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [09:32] ENTRY: 2.7386 stop=2.5977 R=0.1409 qty=7095 score=5.5
+  [09:32] 1M RESET (extended: 6 green candles)
+  [09:34] CLASSIFIER: reclassified uncertain → cascading
+  [09:35] 1M RESET (extended: 7 green candles)
+  [09:39] CLASSIFIER: reclassified cascading → uncertain
+  [09:41] 1M SKIP (MACD not bullish) macd_score=-0.5
+  [09:54] ARMED entry=2.8677 stop=2.8176 R=0.0501 score=11.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5
+  [09:55] 1M RESET (topping wicky)
+  [09:56] ARMED entry=2.8030 stop=2.6800 R=0.1230 score=10.5 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [09:57] ENTRY: 2.8230 stop=2.6800 R=0.1430 qty=6993 score=10.5
+  [09:58] ARMED entry=2.8250 stop=2.6900 R=0.1350 score=10.5 macd_score=5.0 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [10:01] TOPPING_WICKY_EXIT @ 2.8211
+  [10:04] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [10:55] 1M SKIP (R too small: 0.0100)
+
+======================================================================
+  BACKTEST REPORT: ROLR -- 2026-01-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 859 sim + 0 seed  |  EMA9=2.5980  VWAP=2.6547
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:32   2.7386   2.5977  0.1409    5.5   2.5400  stop_hit                 -1409    -1.4R
+    2   09:57   2.8230   2.6800  0.1430   10.5   2.8211  topping_wicky_exit_full       -13    -0.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-1,422  |  Avg R-Multiple: -0.7R
+  Largest Win: $+0  |  Largest Loss: $-1,409
+  Armed: 4  |  Signals: 3  |  Entered: 2
+======================================================================
+

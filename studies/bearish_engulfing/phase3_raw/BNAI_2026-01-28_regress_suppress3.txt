@@ -1,0 +1,35 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BNAI  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BNAI bars for 2026-01-28...
+  Total bars: 363  |  Seed: 98  |  Sim: 265
+  Seed complete: EMA9=52.3654
+  Fetching tick data from Alpaca...
+  Tick replay: 347582 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BNAI -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 347582 sim + 98 seed  |  EMA9=63.0903  VWAP=69.1044
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:48  68.6999  65.9900  2.7099   11.0  74.0300  bearish_engulfing_exit_full     +1967    +2.0R
+    2   09:54  72.7700  69.3200  3.4500   11.0  75.9500  topping_wicky_exit_full      +919    +0.9R
+    3   10:41  74.9100  74.9200  1.6200   12.0  85.8850  topping_wicky_exit_full     +6772    +6.8R
+    4   11:24  76.1200  73.4900  2.6300   10.5  76.6600  topping_wicky_exit_full      +205    +0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 4  |  Wins: 4  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+9,863  |  Avg R-Multiple: +2.5R
+  Largest Win: $+6,772  |  Largest Loss: $+0
+  Armed: 11  |  Signals: 9  |  Entered: 4
+======================================================================
+

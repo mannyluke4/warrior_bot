@@ -1,0 +1,66 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ACON  |  Date: 2026-01-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ACON bars for 2026-01-08...
+  Total bars: 332  |  Seed: 39  |  Sim: 293
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=7.4623
+  LevelMap seeded: PM_HIGH=7.84, ref_price=7.65
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 418618 trades for sim window
+  [07:00] ARMED entry=8.2000 stop=7.4000 R=0.8000 score=12.0 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1
+  [07:01] ENTRY: 8.2200 stop=7.4000 R=0.8200 qty=1219 score=12.0
+  [07:01] BE_SUPPRESSED (time_suppress: 0m < 3m window) @ 8.1200
+  [07:02] ARMED entry=8.1900 stop=7.9400 R=0.2500 score=12.5 macd_score=7.5 tags=[ABCD, ASC_TRIANGLE, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:04] TOPPING_WICKY_EXIT @ 8.0900
+  [07:04] ENTRY: 8.2100 stop=7.9400 R=0.2700 qty=3703 score=12.5
+  [07:04] CLASSIFIER: ACON → early_bird (conf=0.50) — Early bird: VWAP dist 9.6%, vol 1,298,425
+  [07:04] 1M RESET (topping wicky)
+  [07:05] 1M NO_ARM level_gate: resistance_whole_dollar_8.00_failed_1x
+  [07:08] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [07:10] ARMED entry=8.8000 stop=8.0600 R=0.7400 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, TOPPING_WICKY, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [07:17] 1M RESET (MACD bearish cross)
+  [07:18] 1M RESET (topping wicky)
+  [07:19] 1M RESET (topping wicky)
+  [07:20] 1M SKIP (MACD not bullish) macd_score=-4.5
+  [07:21] 1M RESET (topping wicky)
+  [07:43] 1M RESET (extended: 6 green candles)
+  [07:44] 1M RESET (extended: 7 green candles)
+  [07:45] 1M RESET (extended: 8 green candles)
+  [07:46] 1M RESET (bearish engulfing)
+  [07:47] 1M RESET (extended: 9 green candles)
+  [07:48] 1M RESET (extended: 10 green candles)
+  [09:37] ARMED entry=8.5000 stop=8.1900 R=0.3100 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:38] ENTRY: 8.5200 stop=8.1900 R=0.3300 qty=3030 score=12.5
+  [09:38] ARMED entry=8.6700 stop=8.3300 R=0.3400 score=12.5 macd_score=7.5 tags=[ABCD, RED_TO_GREEN, VOLUME_SURGE, WHOLE_DOLLAR_NEARBY] why=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [10:10] 1M NO_ARM stale_stock: no_new_session_hod_124_bars
+  [10:12] 1M NO_ARM stale_stock: no_new_session_hod_126_bars
+  [10:13] 1M RESET (topping wicky)
+
+======================================================================
+  BACKTEST REPORT: ACON -- 2026-01-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 418618 sim + 39 seed  |  EMA9=7.5335  VWAP=8.3411
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   8.2200   7.4000  0.8200   12.0   8.0900  topping_wicky_exit_full      -158    -0.2R
+    2   07:04   8.2100   7.9400  0.2700   12.5   7.9400  stop_hit                 -1000    -1.0R
+    3   09:38   8.5200   8.1900  0.3300   12.5   8.1900  stop_hit                 -1000    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 3  |  Wins: 0  |  Losses: 3  |  Win Rate: 0.0%
+  Gross P&L: $-2,158  |  Avg R-Multiple: -0.7R
+  Largest Win: $+0  |  Largest Loss: $-1,000
+  Armed: 5  |  Signals: 4  |  Entered: 3
+======================================================================
+

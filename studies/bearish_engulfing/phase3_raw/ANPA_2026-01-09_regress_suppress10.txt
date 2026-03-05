@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ANPA  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ANPA bars for 2026-01-09...
+  Total bars: 222  |  Seed: 2  |  Sim: 220
+  Seed complete: EMA9=29.2600
+  Fetching tick data from Alpaca...
+  Tick replay: 104333 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ANPA -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 104333 sim + 2 seed  |  EMA9=66.9985  VWAP=52.2486
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:54  39.9100  39.9200  3.9200    5.5  52.0200  parabolic_exhaustion_exit_full     +3088    +3.1R
+    2   08:33  53.8200  49.9900  3.8300   12.5  49.9900  stop_hit                 -1000    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+2,088  |  Avg R-Multiple: +1.0R
+  Largest Win: $+3,088  |  Largest Loss: $-1,000
+  Armed: 5  |  Signals: 4  |  Entered: 2
+======================================================================
+

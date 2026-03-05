@@ -1,0 +1,107 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BCTX  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BCTX bars for 2026-01-27...
+  Total bars: 268  |  Seed: 6  |  Sim: 262
+  LevelMap: ENABLED
+  Classifier: ENABLED
+  Seed complete: EMA9=4.6263
+  LevelMap seeded: PM_HIGH=4.68, ref_price=4.60
+  Parabolic regime detector: ENABLED
+  Fetching tick data from Alpaca...
+  Tick replay: 15192 trades for sim window
+  [07:11] 1M SKIP (MACD not bullish) macd_score=-0.5
+  [07:14] CLASSIFIER: BCTX → uncertain (conf=0.30) — No strong pattern: NH=4, PB=1, green=1.00, VWAP=1.5%, range=2.0%
+  [07:14] 1M NO_ARM exhaustion: vol_ratio=0.34 (min 0.4) recent=3086 earlier=8989.0
+  [07:15] ARMED entry=4.7500 stop=4.7042 R=0.0458 score=4.5 macd_score=7.5 tags=[] why=macd=7.5*0.6
+  [07:17] ARMED entry=4.7500 stop=4.6900 R=0.0600 score=5.0 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.05=+0.5
+  [07:22] CLASSIFIER: reclassified uncertain → avoid
+  [07:26] 1M SKIP (R too small: 0.0300)
+  [07:27] 1M RESET (bearish engulfing)
+  [07:28] CLASSIFIER: reclassified avoid → uncertain
+  [07:28] 1M SKIP (R too small: 0.0300)
+  [07:30] ARMED entry=4.8900 stop=4.7971 R=0.0929 score=10.0 macd_score=7.5 tags=[ASC_TRIANGLE, FLAT_TOP, RED_TO_GREEN] why=macd=7.5*0.6;bull_struct=+3;r2g=+1.5;R>=0.08=+1
+  [07:31] ENTRY: 4.9100 stop=4.7971 R=0.1129 qty=8860 score=10.0
+  [08:13] 1M NO_ARM level_gate: resistance_pm_high_4.68_failed_8x
+  [08:18] ARMED entry=4.8200 stop=4.6500 R=0.1700 score=10.0 macd_score=7.5 tags=[ABCD, BULL_FLAG, RED_TO_GREEN, TOPPING_WICKY] why=macd=7.5*0.6;bull_struct=+3;r2g=+1.5;R>=0.08=+1
+  [08:20] 1M RESET (lost VWAP)
+  [08:21] 1M RESET (extended: 6 green candles)
+  [08:24] 1M RESET (extended: 7 green candles)
+  [08:26] 1M RESET (extended: 8 green candles)
+  [10:10] 1M RESET (extended: 9 green candles)
+  [10:12] 1M NO_ARM stale_stock: no_new_session_hod_159_bars
+  [10:13] 1M NO_ARM stale_stock: no_new_session_hod_160_bars
+  [10:14] 1M NO_ARM stale_stock: no_new_session_hod_161_bars
+  [10:18] 1M SKIP (MACD not bullish) macd_score=-7.0
+  [10:20] 1M RESET (extended: 6 green candles)
+  [10:36] 1M RESET (extended: 7 green candles)
+  [10:38] 1M RESET (extended: 8 green candles)
+  [10:39] 1M RESET (extended: 9 green candles)
+  [10:42] 1M RESET (topping wicky)
+  [10:43] 1M RESET (extended: 10 green candles)
+  [10:57] 1M RESET (trend failure strong)
+  [10:58] 1M RESET (trend failure strong)
+  [10:59] 1M RESET (trend failure strong)
+  [11:00] 1M RESET (trend failure strong)
+  [11:01] 1M RESET (trend failure strong)
+  [11:02] 1M RESET (trend failure strong)
+  [11:03] 1M RESET (trend failure strong)
+  [11:04] 1M RESET (trend failure strong)
+  [11:05] 1M RESET (trend failure strong)
+  [11:06] 1M RESET (trend failure strong)
+  [11:07] 1M RESET (trend failure strong)
+  [11:08] 1M RESET (trend failure strong)
+  [11:09] 1M RESET (trend failure strong)
+  [11:10] 1M RESET (trend failure strong)
+  [11:11] 1M RESET (trend failure strong)
+  [11:12] 1M RESET (trend failure strong)
+  [11:13] 1M RESET (trend failure strong)
+  [11:22] 1M RESET (topping wicky)
+  [11:23] 1M RESET (topping wicky)
+  [11:24] 1M RESET (extended: 11 green candles)
+  [11:25] 1M RESET (extended: 12 green candles)
+  [11:26] 1M RESET (bearish engulfing)
+  [11:27] 1M RESET (extended: 13 green candles)
+  [11:28] 1M RESET (extended: 14 green candles)
+  [11:30] 1M NO_ARM stale_stock: no_new_session_hod_236_bars
+  [11:31] 1M SKIP (R too small: 0.0280)
+  [11:32] 1M NO_ARM stale_stock: no_new_session_hod_238_bars
+  [11:33] 1M NO_ARM stale_stock: no_new_session_hod_239_bars
+  [11:35] 1M RESET (topping wicky)
+  [11:37] 1M NO_ARM stale_stock: no_new_session_hod_243_bars
+  [11:38] 1M NO_ARM stale_stock: no_new_session_hod_244_bars
+  [11:40] 1M NO_ARM stale_stock: no_new_session_hod_246_bars
+  [11:42] 1M RESET (bearish engulfing)
+  [11:44] 1M RESET (trend failure strong)
+  [11:45] 1M RESET (trend failure strong)
+  [11:46] 1M RESET (trend failure strong)
+  [11:50] 1M RESET (extended: 6 green candles)
+  [11:53] 1M RESET (bearish engulfing)
+  [11:54] 1M RESET (topping wicky)
+  [11:56] 1M RESET (topping wicky)
+  [11:57] 1M RESET (topping wicky)
+  [11:58] 1M SKIP (MACD not bullish) macd_score=-4.5
+
+======================================================================
+  BACKTEST REPORT: BCTX -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 15192 sim + 6 seed  |  EMA9=4.8850  VWAP=4.6951
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:31   4.9100   4.9200  0.1129   10.0   4.9100  trail_stop                  +0    +0.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+0  |  Avg R-Multiple: +0.0R
+  Largest Win: $+0  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

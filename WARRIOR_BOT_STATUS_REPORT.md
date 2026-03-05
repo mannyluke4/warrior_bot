@@ -1,21 +1,11 @@
 # Warrior Bot — Project Status Report
-## For Claude Code Context Recovery — March 3, 2026 (12:00 PM MST Update)
+## Updated: 2026-03-05 (Post-Session)
 
 ---
 
 ## Executive Summary
 
-We've completed a **137-stock L2 study** that definitively answered the question: what types of stocks does this bot trade well? The answer: **micro-float (<5M shares), pre-market (7am scanner) stocks** — 44% win rate, +$24,737 P&L.
-
-This led to the **Multi-Profile Trading System** — each stock on the watchlist is tagged with a profile code (`:A`, `:B`, `:C`, `:X`) that tells the bot which configuration to use.
-
-**Full 137-stock backtest COMPLETE** — Profile A+B corrected view: **+$30,606** vs baseline -$196. Profile X saves money but is net negative (-$6,038). Decision: skip X in live trading, trade only A+B.
-
-**CRITICAL LIVE TRADING BUGS FOUND** — EDSA 2026-03-03 live trade revealed two blockers:
-1. **Reconcile clears positions during Alpaca propagation delay** — BLOCKER for live
-2. **No trailing stop system** — position went from +$7,418 unrealized to +$4,533 realized
-
-Both have directives written. **Reconcile fix must be done before tomorrow's live session.**
+Major infrastructure day. No live trading P&L, but the three-agent workflow is now significantly more autonomous. Duffy can run backtests, talk directly to Claude Code, and read/write the watchlist live. The remaining blocker is autonomous scanner access.
 
 ---
 
@@ -25,13 +15,9 @@ Both have directives written. **Reconcile fix must be done before tomorrow's liv
 
 | Commit | Date | What It Did |
 |--------|------|-------------|
-| `7a1f7ae` | Mar 3 | **CRITICAL: Reconcile grace period + trailing stop directive** |
-| `2a11c6c` | Mar 3 | EDSA trade report: reconcile bug + trailing stop investigation |
-| `f435705` | Mar 3 | Full 137-stock profile backtest: A+B validated, X skipped |
-| `a9bdcaa` | Mar 3 | Profile C Validation: NOT VALIDATED |
-| `47c39a4` | Mar 3 | Profile C Validation Directive + Status Report update |
-| `1ac601e` | Mar 3 | Profile B Validation: VALIDATED |
-| `2175c22` | Mar 3 | Phase 1: Multi-Profile Trading System infrastructure |
+| `80fa4c1` | Mar 3 | Reconcile grace period fix + trailing stop system (validated) |
+| `9675dfd` | Mar 3 | EDSA trade report: final outcome +$3,525 net |
+| `93e67f7` | Mar 3 | Scanner time window directive + status report update |
 
 ### Current Live Config (.env)
 
@@ -40,9 +26,39 @@ WB_EXIT_MODE=signal
 WB_CLASSIFIER_ENABLED=1
 WB_CLASSIFIER_SUPPRESS_ENABLED=0
 WB_ENABLE_L2=0
-WB_L2_HARD_GATE_WARMUP_BARS=30
-WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
+WB_TRAILING_STOP_ENABLED=0  (implemented, off by default)
 ```
+
+---
+
+## Infrastructure — What Changed 2026-03-05
+
+### ✅ Duffy Can Now Run Backtests Directly
+- Linux venv built at `/Users/mannyluke/warrior_bot/venv`
+- All packages installed: alpaca-py, databento, pandas, pytz, python-dotenv, yfinance, etc.
+- Swap added to VM — tick mode backtests no longer OOM
+- Correct invocation confirmed:
+  ```bash
+  cd /Users/mannyluke/warrior_bot && source venv/bin/activate
+  python simulate.py TICKER DATE 07:00 12:00 --profile A --ticks --no-fundamentals
+  ```
+- All 6 Profile A regressions verified independently by Duffy ✅
+
+### ✅ Duffy Can Talk Directly to Claude Code (ACP)
+- `acpx` plugin installed and configured
+- `acp` config block added to `openclaw.json`
+- `acpx` binary installed to user-writable path (permission workaround)
+- ACP spawn confirmed working: `sessions_spawn` with `runtime: "acp"`, `agentId: "claude"`
+- Exec approval bug fixed: `tools.elevated` stuck-flag bug (OpenClaw 2026.3.2) resolved by explicitly setting `elevated.enabled: false` + `elevatedDefault: "off"`
+
+### ✅ Duffy Can Read/Write Watchlist Live
+- `/Users/mannyluke/warrior_bot/watchlist.txt` — full read/write access confirmed
+- Ready for autonomous watchlist management during live sessions
+
+### ❌ Scanner Access — Still Manual
+- CDP approach requires Luke to launch Chrome with `--remote-debugging-port=9222` manually
+- Socket.IO direct auth (no browser) not yet implemented — this is the target solution
+- Today's session: scanner data pasted manually by Luke
 
 ---
 
@@ -54,142 +70,66 @@ WB_L2_STOP_TIGHTEN_MIN_IMBALANCE=0.65
 |---|---|---|---|
 | A | `:A` (default) | **PROVEN** ✅ | Micro-float <5M, 7am scanner, L2 OFF, 44% WR, +$24,737 |
 | B | `:B` | **VALIDATED** ✅ | Mid-float 5-50M, 7am scanner, L2 ON, +$4,859 Databento |
-| C | `:C` | **NOT VALIDATED** ❌ | Fast Mode found 0 new trades, broke VERO by -$8,713. Do not use. |
-| X | `:X` | **TESTED — SKIP IN LIVE** ⚠️ | -$6,038 but saves $16,290 vs uncontrolled. Skip in live. |
-
-### Full 137-Stock Backtest Results (commit `f435705`)
-
-**CRITICAL**: Databento ticks break Profile A. Profile A must use Alpaca ticks.
-
-**Corrected View:**
-- **Profile A + B only**: +$30,606 (baseline: -$196)
-- **Profile X**: -$6,038 (saves $16,290 vs uncontrolled)
-- **Decision**: Trade only A+B in live. Skip X.
-
-### Scanner Time Window Finding
-- SPRC (07:02, 0.4M float): should be Profile A — +$3,454
-- STSS (07:01, 20.3M): should be Profile B
-- **Directive**: `SCANNER_TIME_WINDOW_DIRECTIVE.md` — widen to 07:00-07:14
+| C | `:C` | **NOT VALIDATED** ❌ | Do not use |
+| X | `:X` | **SKIP IN LIVE** ⚠️ | Net negative, skip in live trading |
 
 ---
 
-## EDSA Live Trade — Critical Bugs (March 3, 2026)
+## Regression Benchmarks (All Verified by Duffy 2026-03-05)
 
-EDSA: 7,293 shares @ $3.03, stop $2.92, R=$0.11
+### Profile A (Alpaca ticks, 07:00-12:00 ET, --no-fundamentals)
 
-### Bug 1: Reconcile Clears Position (CRITICAL BLOCKER)
-- Alpaca propagation delay: reconcile saw alp_qty=0, cleared bot's 7,293 shares
-- Position unmanaged 3+ hours. Stop never fired despite price hitting $2.774
-- **Fix**: 60-second grace period. **Directive**: `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
-
-### Bug 2: No Trailing Stop (HIGH)
-- +$7,418 unrealized → +$4,533 realized (gave back ~$2,900)
-- **Fix**: R-multiple trailing: 2R→BE, 4R→+1R, 6R→trail $0.15
-- Env-gated, OFF by default. **Directive**: `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
-
-### Bug 3: Bearish Engulfing First-Bar Sensitivity (MEDIUM — DEFERRED)
-- Entered $3.00, exited $2.97 after 1 min, recovered to $3.19 next bar
-
-### EDSA Final P&L: +$4,533
+| Stock | Date | Expected P&L | Verified |
+|-------|------|-------------|---------|
+| VERO | 2026-01-16 | +$6,890 | ✅ |
+| GWAV | 2026-01-16 | +$6,735 | ✅ |
+| APVO | 2026-01-09 | +$7,622 | ✅ |
+| BNAI | 2026-01-28 | +$5,610 | ✅ |
+| MOVE | 2026-01-27 | +$5,502 | ✅ |
+| ANPA | 2026-01-09 | +$2,088 | ✅ |
 
 ---
 
-## The 137-Stock Study — Key Findings
+## JZXN Study — 2026-03-04
 
-### Float Is Everything
+Ross's big day (~$50k+). JZXN was the only Profile A qualifier on the scanner.
 
-| Float Bucket | Stocks | No-L2 P&L | L2 Delta | Bot Verdict |
-|---|---|---|---|---|
-| < 5M (micro) | 34 | **+$20,344** | **-$12,569** | Bot WINS here, L2 HURTS |
-| 5-10M (small) | 11 | -$2,357 | +$663 | L2 slight help |
-| 10-50M (mid) | 16 | -$12,536 | +$1,231 | L2 helps |
-| > 50M (large) | 14 | -$5,647 | +$3,100 | L2 helps most |
-
-### Scanner Time Is Everything
-
-| Scanner Time | W/L | Win Rate | P&L |
-|---|---|---|---|
-| 7:00 AM | 17/28 | **38%** | **+$20,452** |
-| 8:00-8:59 | 4/12 | 25% | -$14,022 |
-| 9:00+ | 3/9 | 25% | -$5,554 |
-
----
-
-## Regression Benchmarks
-
-### Profile A (use Alpaca ticks, NOT Databento)
-
-| Stock | Date | Expected P&L | Notes |
-|-------|------|-------------|-------|
-| VERO | 2026-01-16 | +$6,890 | Cascading, 4 trades |
-| GWAV | 2026-01-16 | +$6,735 | Early bird, 2 trades |
-| APVO | 2026-01-09 | +$7,622 | Single massive winner |
-| BNAI | 2026-01-28 | +$5,610 | 4-trade cascading |
-| MOVE | 2026-01-27 | +$5,502 | 3-trade runner |
-| ANPA | 2026-01-09 | +$2,088 | One_big_move (no-L2 baseline) |
-
-### Profile B (use Databento ticks)
-
-| Stock | Date | Expected P&L | Notes |
-|-------|------|-------------|-------|
-| ANPA | 2026-01-09 | +$5,091 | `--profile B --ticks` |
-| BATL | 2026-02-27 | +$4,522 | `--profile B --ticks` |
+- Float: 1.32M | Scanner: 7:16 AM ET | Gap: 57-91%
+- Bot result (simulated): **+$333 (+0.3R)**
+- Entry: $1.36 @ 7:17 AM | Exit: $1.45 @ 7:19 AM (bearish engulfing)
+- **Root cause of small capture:** Bearish engulfing exit fired too early on first 3-minute candle of a fast micro-float move
+- **Missed re-entry:** 7:54 AM signal scored 12.5 (ABCD + Volume Surge + Red-to-Green) — blocked by VWAP loss reset
+- Full study: `JZXN_TRADE_STUDY_20260304.md`
+- Sent to Perplexity for tuning analysis
 
 ---
 
 ## Immediate Priorities
 
-1. **CRITICAL — Reconcile grace period fix** — BLOCKER. See `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
-2. **HIGH — Trailing stop system** — See `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md`
-3. **MEDIUM — Scanner time window** — See `SCANNER_TIME_WINDOW_DIRECTIVE.md`
-4. **Tomorrow (Tue March 4)**: Live session — requires reconcile fix minimum
-
----
+1. **CRITICAL — Autonomous scanner access** — Socket.IO direct auth. See `DUFFY_INFRASTRUCTURE_STATUS_20260305.md`
+2. **HIGH — Scanner time window directive** — `SCANNER_TIME_WINDOW_DIRECTIVE.md` — ready for Claude Code
+3. **HIGH — JZXN tuning** — Perplexity analyzing bearish engulfing suppression + high-score VWAP override. See `JZXN_TRADE_STUDY_20260304.md`
+4. **MEDIUM — Trailing stop ON/OFF decision** — passed regressions, not yet tested live
+5. **MEDIUM — YouTube unblocked in VM** — needed for Ross video analysis
 
 ## Known Issues / Open Items
 
-1. **Duffy/IronClaw**: Deferred until Lima VM isolation configured
-2. **WB_MAX_CONSEC_LOSSES=3**: Pinned, revisit after trailing stop
-3. **IBKR L2 Approval**: Pending for live Profile B
-4. **Databento Cost**: ~$0.023/stock historical, live TBD
-5. **Profile A = Alpaca ticks only** (methodology, not bug)
-6. **Bearish engulfing sensitivity**: Deferred, needs 137-stock analysis
-7. **Regression benchmarks may evolve**: User noted
+1. **Scanner access** — highest priority blocker for full autonomy
+2. **Exec approvals** — fixed (elevatedDefault bug), config: `tools.elevated.enabled=false, elevatedDefault=off`
+3. **ports.ubuntu.com blocked** — apt installs require limactl shell from Mac. Swap added manually.
+4. **Profile A = Alpaca ticks only** — use `--ticks --no-fundamentals` for regressions
+5. **ACP sessions don't push results back** — Duffy checks results files directly rather than waiting for push
 
 ---
 
 ## User Preferences (CRITICAL)
 
 - **Signal mode cascading exits must NEVER be suppressed**
-- "I want 100 $6K winners, not one $90K winner every few weeks"
+- "I'd rather have consistent $200-500 hits every day than losing 20k, then getting one good 5k hit"
 - Scanner TIME matters — pre-scanner profits don't count
-- Sample from both hot (Jan) and cold (Feb) markets
-- For machine work, update this status doc with direction
-- Cannot run backtests from Perplexity (no Alpaca API keys)
-- **"Consistent $200-500 hits > losing 20k then one 5k hit"**
-- Multi-profile is the strategic direction
+- Regressions are non-negotiable — all 6 Profile A baselines must hold after every change
 - **"Let's leave nothing on the table!"**
 
 ---
 
-## File Map
-
-| File | Purpose |
-|------|---------|
-| `RECONCILE_AND_TRAILING_STOP_DIRECTIVE.md` | **ACTIVE — CRITICAL** |
-| `SCANNER_TIME_WINDOW_DIRECTIVE.md` | **ACTIVE — MEDIUM** |
-| `EDSA_TRADE_REPORT_20260303.md` | EDSA live trade analysis |
-| `FULL_PROFILE_BACKTEST_RESULTS.md` | 137-stock results |
-| `PROFILE_C_VALIDATION_RESULTS.md` | Profile C (NOT validated) |
-| `PROFILE_B_VALIDATION_RESULTS.md` | Profile B (validated) |
-| `MULTI_PROFILE_SYSTEM_DIRECTIVE.md` | Profile system architecture |
-| `WARRIOR_BOT_STATUS_REPORT.md` | This file |
-| `profiles/A.json`, `B.json`, `C.json`, `X.json` | Profile configs |
-| `profile_manager.py` | Profile parsing/apply/restore |
-| `simulate.py` | Sim engine (`--profile` flag) |
-| `classifier.py` | StockClassifier — AVOID gate |
-
----
-
-*Report updated by Perplexity Computer — March 3, 2026, 12:00 PM MST*
-*Active workstream: Reconcile fix (BLOCKER) → Trailing stop → Scanner window widening*
+*Report updated by Duffy — 2026-03-05 post-session*
