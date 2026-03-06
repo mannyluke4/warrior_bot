@@ -59,6 +59,38 @@ KNOWN_FLOATS = {
     "JZXN": 1_320_000,
 }
 
+LEVERAGED_ETF_BLACKLIST = {
+    "MSTU", "MSTX", "MSTZ",
+    "CONL", "WEBL", "SOXL", "SOXS", "TQQQ", "SQQQ",
+    "UVXY", "SVXY", "NUGT", "DUST", "JNUG", "JDST",
+    "LABU", "LABD", "FNGU", "FNGD", "TECL", "TECS",
+    "SPXL", "SPXS", "TNA", "TZA", "UPRO", "SPXU",
+    "FAS", "FAZ", "ERX", "ERY", "BOIL", "KOLD",
+    "NAIL", "DRV", "CURE", "DRIP", "GUSH",
+    "BITX", "BITU", "SBIT",
+}
+
+
+def is_junk_security(symbol: str, name: str = "") -> bool:
+    """Filter out preferred stock, warrants, units, rights, and leveraged ETFs."""
+    sym = symbol.upper()
+    name_upper = name.upper() if name else ""
+    if sym in LEVERAGED_ETF_BLACKLIST:
+        return True
+    junk_keywords = ["PREFERRED", "WARRANT", " UNIT", "RIGHTS",
+                     "DEPOSITARY", "DEBENTURE", "CONVERTIBLE NOTE"]
+    if any(kw in name_upper for kw in junk_keywords):
+        return True
+    if len(sym) >= 5:
+        if sym[-1] == "P" and not sym[-2:] in ("LP", "EP", "AP", "IP", "OP", "UP"):
+            return True
+        if sym[-1] == "W":
+            return True
+        if sym[-1] == "U" and len(sym) >= 5:
+            return True
+    return False
+
+
 API_KEY = os.getenv("APCA_API_KEY_ID")
 API_SECRET = os.getenv("APCA_API_SECRET_KEY")
 
@@ -144,11 +176,21 @@ def get_all_active_symbols() -> list[str]:
         status=AssetStatus.ACTIVE,
     )
     assets = trading_client.get_all_assets(request)
-    symbols = [
-        a.symbol for a in assets
-        if a.tradable and a.fractionable is not None  # filter out weird entries
-        and not any(c in a.symbol for c in ['.', '/'])  # skip warrants, units
-    ]
+    symbols = []
+    filtered_count = 0
+    for a in assets:
+        if not a.tradable:
+            continue
+        if a.fractionable is None:
+            continue
+        if any(c in a.symbol for c in ['.', '/']):
+            continue
+        asset_name = getattr(a, 'name', '') or ''
+        if is_junk_security(a.symbol, asset_name):
+            filtered_count += 1
+            continue
+        symbols.append(a.symbol)
+    print(f"  Filtered {filtered_count} junk securities (preferred/warrants/leveraged ETFs)")
     return symbols
 
 
