@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MARPS  |  Date: 2026-03-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MARPS bars for 2026-03-02...
+  Total bars: 154  |  Seed: 46  |  Sim: 108
+  Seed complete: EMA9=6.2003
+  Fetching tick data from Alpaca...
+  Tick replay: 1644 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MARPS -- 2026-03-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1644 sim + 46 seed  |  EMA9=5.4188  VWAP=5.8014
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

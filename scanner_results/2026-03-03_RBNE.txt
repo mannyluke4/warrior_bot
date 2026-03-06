@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RBNE  |  Date: 2026-03-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RBNE bars for 2026-03-03...
+  Total bars: 451  |  Seed: 165  |  Sim: 286
+  Seed complete: EMA9=3.4658
+  Fetching tick data from Alpaca...
+  Tick replay: 23473 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RBNE -- 2026-03-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 23473 sim + 165 seed  |  EMA9=3.0452  VWAP=3.4713
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:08   3.6800   3.5200  0.1600   12.0   3.7400  topping_wicky_exit_full      +375    +0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+375  |  Avg R-Multiple: +0.4R
+  Largest Win: $+375  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 3  |  Entered: 1
+======================================================================
+

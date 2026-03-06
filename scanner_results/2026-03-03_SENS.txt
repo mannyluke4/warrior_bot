@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: SENS  |  Date: 2026-03-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SENS bars for 2026-03-03...
+  Total bars: 161  |  Seed: 1  |  Sim: 160
+  Fetching L2 from Databento: SENS 2026-03-03 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: SENS_2026-03-03_XNAS.dbn.zst
+  L2 data: 9953 records for SENS
+  L2 snapshots: 1592 (1-second sampled)
+  L2 data loaded: 1592 snapshots
+  Seed complete: EMA9=7.8900
+  Fetching tick data from Databento...
+  Fetching trades from Databento: SENS 2026-03-03 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: SENS_2026-03-03_trades_XNAS.dbn.zst
+  Trade data: 652 records for SENS
+  Trades: 652 | $7.89-$7.89 | 07:00:00-11:58:18 ET
+  Tick replay: 652 trades for sim window
+  [09:30] CLASSIFIER: SENS → avoid (conf=0.85) — AVOID gate: VWAP dist 1.6% < 7.0%, range 5.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SENS -- 2026-03-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1592 snaps [TICK mode]
+  Bars: 652 sim + 1 seed  |  EMA9=7.5441  VWAP=7.6236
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

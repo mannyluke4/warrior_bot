@@ -1,37 +1,31 @@
 
 ======================================================================
-  WARRIOR BOT BACKTESTER (TICK MODE)
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
   Symbols: ANNA  |  Date: 2026-03-04  |  Window: 07:00 -> 12:00 ET
 ======================================================================
 
 Fetching ANNA bars for 2026-03-04...
   Total bars: 120  |  Seed: 2  |  Sim: 118
-  Fetching L2 from Databento: ANNA 2026-03-04 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: ANNA_2026-03-04_XNAS.dbn.zst
+  L2 cache hit: ANNA_2026-03-04_XNAS.dbn.zst
   L2 data: 3806 records for ANNA
   L2 snapshots: 833 (1-second sampled)
   L2 data loaded: 833 snapshots
   Seed complete: EMA9=3.5200
-  Fetching tick data from Alpaca...
-  Tick replay: 1474 trades for sim window
+  Fetching tick data from Databento...
+  Fetching trades from Databento: ANNA 2026-03-04 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: ANNA_2026-03-04_trades_XNAS.dbn.zst
+  Trade data: 132 records for ANNA
+  Trades: 132 | $3.67-$3.88 | 07:18:57-11:52:41 ET
+  Tick replay: 132 trades for sim window
 
 ======================================================================
   BACKTEST REPORT: ANNA -- 2026-03-04 (07:00 -> 12:00 ET)
 ======================================================================
   Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=833 snaps [TICK mode]
-  Bars: 1474 sim + 2 seed  |  EMA9=3.3729  VWAP=3.5658
+  Bars: 132 sim + 2 seed  |  EMA9=3.3546  VWAP=3.5452
 ======================================================================
 
-    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
-  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   08:00   3.7800   3.6900  0.0900    4.0   3.6500  stop_hit                 -1444    -1.4R
+  No trades taken.
 
-  ──────────────────────────────────────────────────────────────────
-  SUMMARY
-  ──────────────────────────────────────────────────────────────────
-  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
-  Gross P&L: $-1,444  |  Avg R-Multiple: -1.4R
-  Largest Win: $+0  |  Largest Loss: $-1,444
-  Armed: 1  |  Signals: 1  |  Entered: 1
+  Armed: 0  |  Signals: 0
 ======================================================================
-

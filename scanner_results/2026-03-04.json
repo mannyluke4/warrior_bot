@@ -96,18 +96,6 @@
     "profile": "A"
   },
   {
-    "symbol": "MXC",
-    "prev_close": 10.8,
-    "pm_price": 12.31,
-    "gap_pct": 13.98,
-    "pm_volume": 244.0,
-    "first_seen_et": "04:29",
-    "sim_start": "07:00",
-    "float_shares": 839146,
-    "float_millions": 0.84,
-    "profile": "A"
-  },
-  {
     "symbol": "ANNA",
     "prev_close": 3.22,
     "pm_price": 3.67,
@@ -118,6 +106,18 @@
     "float_shares": 9387147,
     "float_millions": 9.39,
     "profile": "B"
+  },
+  {
+    "symbol": "MXC",
+    "prev_close": 10.8,
+    "pm_price": 12.31,
+    "gap_pct": 13.98,
+    "pm_volume": 244.0,
+    "first_seen_et": "04:29",
+    "sim_start": "07:00",
+    "float_shares": 839146,
+    "float_millions": 0.84,
+    "profile": "A"
   },
   {
     "symbol": "AURE",
@@ -168,24 +168,24 @@
     "profile": "B"
   },
   {
-    "symbol": "USGG",
-    "prev_close": 13.4845,
-    "pm_price": 15.08,
-    "gap_pct": 11.83,
-    "pm_volume": 2554.0,
-    "first_seen_et": "06:06",
-    "sim_start": "07:00",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "CORD",
     "prev_close": 17.07,
     "pm_price": 19.09,
     "gap_pct": 11.83,
     "pm_volume": 41297.0,
     "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
+    "symbol": "USGG",
+    "prev_close": 13.4845,
+    "pm_price": 15.08,
+    "gap_pct": 11.83,
+    "pm_volume": 2554.0,
+    "first_seen_et": "06:06",
     "sim_start": "07:00",
     "float_shares": null,
     "float_millions": null,

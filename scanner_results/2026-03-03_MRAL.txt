@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MRAL  |  Date: 2026-03-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MRAL bars for 2026-03-03...
+  Total bars: 236  |  Seed: 42  |  Sim: 194
+  Seed complete: EMA9=3.7721
+  Fetching tick data from Alpaca...
+  Tick replay: 2082 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MRAL -- 2026-03-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2082 sim + 42 seed  |  EMA9=3.7172  VWAP=3.6849
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

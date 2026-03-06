@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: DBGI  |  Date: 2026-03-03  |  Window: 07:04 -> 12:00 ET
+======================================================================
+
+Fetching DBGI bars for 2026-03-03...
+  Total bars: 139  |  Seed: 0  |  Sim: 139
+  Fetching L2 from Databento: DBGI 2026-03-03 07:04-12:00 (XNAS.ITCH)...
+  L2 cached: DBGI_2026-03-03_XNAS.dbn.zst
+  L2 data: 6739 records for DBGI
+  L2 snapshots: 1181 (1-second sampled)
+  L2 data loaded: 1181 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Fetching trades from Databento: DBGI 2026-03-03 07:04-12:00 (XNAS.ITCH)...
+  Trades cached: DBGI_2026-03-03_trades_XNAS.dbn.zst
+  Trade data: 647 records for DBGI
+  Trades: 647 | $3.71-$3.71 | 07:31:35-11:59:31 ET
+  Tick replay: 647 trades for sim window
+  [09:16] CLASSIFIER: DBGI → avoid (conf=0.85) — AVOID gate: VWAP dist 1.7% < 7.0%, range 4.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: DBGI -- 2026-03-03 (07:04 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1181 snaps [TICK mode]
+  Bars: 647 sim + 0 seed  |  EMA9=3.1720  VWAP=3.3605
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

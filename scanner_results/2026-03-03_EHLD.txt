@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: EHLD  |  Date: 2026-03-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching EHLD bars for 2026-03-03...
+  Total bars: 22  |  Seed: 2  |  Sim: 20
+  Seed complete: EMA9=8.7200
+  Fetching tick data from Alpaca...
+  Tick replay: 200 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: EHLD -- 2026-03-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 200 sim + 2 seed  |  EMA9=7.1075  VWAP=7.2766
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: INDO  |  Date: 2026-03-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INDO bars for 2026-03-02...
+  Total bars: 479  |  Seed: 178  |  Sim: 301
+  Fetching L2 from Databento: INDO 2026-03-02 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: INDO_2026-03-02_XNAS.dbn.zst
+  L2 data: 76299 records for INDO
+  L2 snapshots: 7644 (1-second sampled)
+  L2 data loaded: 7644 snapshots
+  Seed complete: EMA9=7.9167
+  Fetching tick data from Databento...
+  Fetching trades from Databento: INDO 2026-03-02 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: INDO_2026-03-02_trades_XNAS.dbn.zst
+  Trade data: 6783 records for INDO
+  Trades: 6783 | $7.82-$9.05 | 07:00:00-11:59:37 ET
+  Tick replay: 6783 trades for sim window
+  [07:04] CLASSIFIER: INDO → avoid (conf=0.85) — AVOID gate: VWAP dist 5.1% < 7.0%, range 3.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: INDO -- 2026-03-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=7644 snaps [TICK mode]
+  Bars: 6783 sim + 178 seed  |  EMA9=6.5447  VWAP=8.1115
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

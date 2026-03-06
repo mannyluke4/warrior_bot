@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MPL  |  Date: 2026-03-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MPL bars for 2026-03-05...
+  Total bars: 96  |  Seed: 4  |  Sim: 92
+  Seed complete: EMA9=8.2165
+  Fetching tick data from Alpaca...
+  Tick replay: 621 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MPL -- 2026-03-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 621 sim + 4 seed  |  EMA9=7.6837  VWAP=7.9386
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

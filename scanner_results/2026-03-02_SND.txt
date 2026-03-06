@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: SND  |  Date: 2026-03-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SND bars for 2026-03-02...
+  Total bars: 135  |  Seed: 2  |  Sim: 133
+  Fetching L2 from Databento: SND 2026-03-02 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: SND_2026-03-02_XNAS.dbn.zst
+  L2 data: 13640 records for SND
+  L2 snapshots: 1704 (1-second sampled)
+  L2 data loaded: 1704 snapshots
+  Seed complete: EMA9=5.2120
+  Fetching tick data from Databento...
+  Fetching trades from Databento: SND 2026-03-02 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: SND_2026-03-02_trades_XNAS.dbn.zst
+  Trade data: 995 records for SND
+  Trades: 995 | $5.20-$5.20 | 09:30:00-11:59:37 ET
+  Tick replay: 995 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SND -- 2026-03-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1704 snaps [TICK mode]
+  Bars: 995 sim + 2 seed  |  EMA9=4.6229  VWAP=4.8414
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

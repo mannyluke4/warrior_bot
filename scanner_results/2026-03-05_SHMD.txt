@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: SHMD  |  Date: 2026-03-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SHMD bars for 2026-03-05...
+  Total bars: 160  |  Seed: 6  |  Sim: 154
+  Fetching L2 from Databento: SHMD 2026-03-05 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: SHMD_2026-03-05_XNAS.dbn.zst
+  L2 data: 9075 records for SHMD
+  L2 snapshots: 1250 (1-second sampled)
+  L2 data loaded: 1250 snapshots
+  Seed complete: EMA9=8.4238
+  Fetching tick data from Databento...
+  Fetching trades from Databento: SHMD 2026-03-05 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: SHMD_2026-03-05_trades_XNAS.dbn.zst
+  Trade data: 1110 records for SHMD
+  Trades: 1110 | $8.45-$8.54 | 07:03:09-11:59:52 ET
+  Tick replay: 1110 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SHMD -- 2026-03-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1250 snaps [TICK mode]
+  Bars: 1110 sim + 6 seed  |  EMA9=7.3488  VWAP=7.8259
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
