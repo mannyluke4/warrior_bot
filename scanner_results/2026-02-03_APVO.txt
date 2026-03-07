@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: APVO  |  Date: 2026-02-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching APVO bars for 2026-02-03...
+  Total bars: 47  |  Seed: 1  |  Sim: 46
+  Seed complete: EMA9=7.5500
+  Fetching tick data from Alpaca...
+  Tick replay: 824 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: APVO -- 2026-02-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 824 sim + 1 seed  |  EMA9=6.6480  VWAP=6.9925
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CRSR  |  Date: 2026-02-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRSR bars for 2026-02-17...
+  Total bars: 226  |  Seed: 15  |  Sim: 211
+  Fetching L2 from Databento: CRSR 2026-02-17 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: CRSR_2026-02-17_XNAS.dbn.zst
+  L2 data: 44295 records for CRSR
+  L2 snapshots: 5434 (1-second sampled)
+  L2 data loaded: 5434 snapshots
+  Seed complete: EMA9=6.6784
+  Fetching tick data from Databento...
+  Fetching trades from Databento: CRSR 2026-02-17 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: CRSR_2026-02-17_trades_XNAS.dbn.zst
+  Trade data: 4924 records for CRSR
+  Trades: 4924 | $6.78-$6.83 | 07:01:10-11:59:50 ET
+  Tick replay: 4924 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CRSR -- 2026-02-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=5434 snaps [TICK mode]
+  Bars: 4924 sim + 15 seed  |  EMA9=5.8995  VWAP=6.2869
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

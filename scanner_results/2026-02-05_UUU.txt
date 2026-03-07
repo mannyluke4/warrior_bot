@@ -1,0 +1,36 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: UUU  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching UUU bars for 2026-02-05...
+  Total bars: 16  |  Seed: 2  |  Sim: 14
+  Seed complete: EMA9=4.6180
+  Fetching tick data from Alpaca...
+  Tick replay: 1441 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:49 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=7.0 entry=4.8200 stop=4.3900 R=0.4300 detail=macd=7.5*0.6;r2g=+1.5;R>=0.08=+1 close=4.4300 vwap=4.5735
+    post_block: max_5m=4.7400 max_10m=4.7400 max_30m=4.7400
+
+======================================================================
+  BACKTEST REPORT: UUU -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1441 sim + 2 seed  |  EMA9=4.4607  VWAP=4.4559
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:42   4.8200   4.4100  0.4100    7.0   4.7307  topping_wicky_exit_full      -218    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-218  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-218
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GNPX  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GNPX bars for 2026-01-16...
+  Total bars: 237  |  Seed: 28  |  Sim: 209
+  Seed complete: EMA9=3.4267
+  Fetching tick data from Alpaca...
+  Tick replay: 4942 trades for sim window
+  [07:11] CLASSIFIER: GNPX → avoid (conf=0.85) — AVOID gate: VWAP dist 0.4% < 7.0%, range 0.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GNPX -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4942 sim + 28 seed  |  EMA9=3.0249  VWAP=3.0649
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

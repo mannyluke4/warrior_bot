@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: DNA  |  Date: 2026-02-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DNA bars for 2026-02-27...
+  Total bars: 242  |  Seed: 20  |  Sim: 222
+  Fetching L2 from Databento: DNA 2026-02-27 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: DNA_2026-02-27_XNAS.dbn.zst
+  L2 data: 21937 records for DNA
+  L2 snapshots: 3361 (1-second sampled)
+  L2 data loaded: 3361 snapshots
+  Seed complete: EMA9=8.0417
+  Fetching tick data from Databento...
+  Fetching trades from Databento: DNA 2026-02-27 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: DNA_2026-02-27_trades_XNAS.dbn.zst
+  Trade data: 1898 records for DNA
+  Trades: 1898 | $8.15-$8.21 | 07:08:39-11:59:06 ET
+  Tick replay: 1898 trades for sim window
+  [07:35] CLASSIFIER: DNA → avoid (conf=0.85) — AVOID gate: VWAP dist 4.1% < 7.0%, range 5.4% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: DNA -- 2026-02-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3361 snaps [TICK mode]
+  Bars: 1898 sim + 20 seed  |  EMA9=7.3102  VWAP=7.7546
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

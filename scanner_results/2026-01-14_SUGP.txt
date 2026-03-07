@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SUGP  |  Date: 2026-01-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SUGP bars for 2026-01-14...
+  Total bars: 78  |  Seed: 31  |  Sim: 47
+  Seed complete: EMA9=6.9548
+  Fetching tick data from Alpaca...
+  Tick replay: 924 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SUGP -- 2026-01-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 924 sim + 31 seed  |  EMA9=6.5738  VWAP=6.9857
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

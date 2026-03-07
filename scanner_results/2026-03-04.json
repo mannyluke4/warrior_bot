@@ -12,18 +12,6 @@
     "profile": "A"
   },
   {
-    "symbol": "TURB",
-    "prev_close": 1.68,
-    "pm_price": 2.36,
-    "gap_pct": 40.48,
-    "pm_volume": 266996.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 1291759,
-    "float_millions": 1.29,
-    "profile": "A"
-  },
-  {
     "symbol": "ASTN",
     "prev_close": 12.06,
     "pm_price": 15.87,
@@ -36,18 +24,6 @@
     "profile": "X"
   },
   {
-    "symbol": "PCLA",
-    "prev_close": 2.9,
-    "pm_price": 3.5,
-    "gap_pct": 20.69,
-    "pm_volume": 455.0,
-    "first_seen_et": "05:24",
-    "sim_start": "07:00",
-    "float_shares": 733509,
-    "float_millions": 0.73,
-    "profile": "A"
-  },
-  {
     "symbol": "HRZN",
     "prev_close": 4.685,
     "pm_price": 5.53,
@@ -58,18 +34,6 @@
     "float_shares": 47429433,
     "float_millions": 47.43,
     "profile": "B"
-  },
-  {
-    "symbol": "CANF",
-    "prev_close": 6.02,
-    "pm_price": 7.04,
-    "gap_pct": 16.94,
-    "pm_volume": 2544683.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 1322337,
-    "float_millions": 1.32,
-    "profile": "A"
   },
   {
     "symbol": "CLIK",
@@ -96,18 +60,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ANNA",
-    "prev_close": 3.22,
-    "pm_price": 3.67,
-    "gap_pct": 13.98,
-    "pm_volume": 1462.0,
-    "first_seen_et": "04:14",
-    "sim_start": "07:00",
-    "float_shares": 9387147,
-    "float_millions": 9.39,
-    "profile": "B"
-  },
-  {
     "symbol": "MXC",
     "prev_close": 10.8,
     "pm_price": 12.31,
@@ -118,6 +70,18 @@
     "float_shares": 839146,
     "float_millions": 0.84,
     "profile": "A"
+  },
+  {
+    "symbol": "ANNA",
+    "prev_close": 3.22,
+    "pm_price": 3.67,
+    "gap_pct": 13.98,
+    "pm_volume": 1462.0,
+    "first_seen_et": "04:14",
+    "sim_start": "07:00",
+    "float_shares": 9387147,
+    "float_millions": 9.39,
+    "profile": "B"
   },
   {
     "symbol": "AURE",

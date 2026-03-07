@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: INV  |  Date: 2026-02-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INV bars for 2026-02-26...
+  Total bars: 151  |  Seed: 1  |  Sim: 150
+  Fetching L2 from Databento: INV 2026-02-26 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: INV_2026-02-26_XNAS.dbn.zst
+  L2 data: 16187 records for INV
+  L2 snapshots: 2235 (1-second sampled)
+  L2 data loaded: 2235 snapshots
+  Seed complete: EMA9=3.2700
+  Fetching tick data from Databento...
+  Fetching trades from Databento: INV 2026-02-26 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: INV_2026-02-26_trades_XNAS.dbn.zst
+  Trade data: 1247 records for INV
+  Trades: 1247 | $3.30-$3.30 | 09:30:01-11:59:55 ET
+  Tick replay: 1247 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: INV -- 2026-02-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2235 snaps [TICK mode]
+  Bars: 1247 sim + 1 seed  |  EMA9=2.9258  VWAP=3.0303
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

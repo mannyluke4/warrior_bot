@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AZI  |  Date: 2026-01-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AZI bars for 2026-01-08...
+  Total bars: 220  |  Seed: 41  |  Sim: 179
+  Fetching L2 from Databento: AZI 2026-01-08 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AZI_2026-01-08_XNAS.dbn.zst
+  L2 data: 4797 records for AZI
+  L2 snapshots: 925 (1-second sampled)
+  L2 data loaded: 925 snapshots
+  Seed complete: EMA9=3.6184
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AZI 2026-01-08 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AZI_2026-01-08_trades_XNAS.dbn.zst
+  Trade data: 289 records for AZI
+  Trades: 289 | $3.65-$3.71 | 07:01:26-11:58:29 ET
+  Tick replay: 289 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AZI -- 2026-01-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=925 snaps [TICK mode]
+  Bars: 289 sim + 41 seed  |  EMA9=3.1362  VWAP=3.4150
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

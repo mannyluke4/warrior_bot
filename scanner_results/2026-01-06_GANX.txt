@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: GANX  |  Date: 2026-01-06  |  Window: 07:04 -> 12:00 ET
+======================================================================
+
+Fetching GANX bars for 2026-01-06...
+  Total bars: 185  |  Seed: 0  |  Sim: 185
+  Fetching L2 from Databento: GANX 2026-01-06 07:04-12:00 (XNAS.ITCH)...
+  L2 cached: GANX_2026-01-06_XNAS.dbn.zst
+  L2 data: 24740 records for GANX
+  L2 snapshots: 2264 (1-second sampled)
+  L2 data loaded: 2264 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Fetching trades from Databento: GANX 2026-01-06 07:04-12:00 (XNAS.ITCH)...
+  Trades cached: GANX_2026-01-06_trades_XNAS.dbn.zst
+  Trade data: 2137 records for GANX
+  Trades: 2137 | $3.05-$3.13 | 07:06:45-11:58:35 ET
+  Tick replay: 2137 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GANX -- 2026-01-06 (07:04 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2264 snaps [TICK mode]
+  Bars: 2137 sim + 0 seed  |  EMA9=2.4571  VWAP=2.6950
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: ATOM  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ATOM bars for 2026-01-28...
+  Total bars: 168  |  Seed: 10  |  Sim: 158
+  Fetching L2 from Databento: ATOM 2026-01-28 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: ATOM_2026-01-28_XNAS.dbn.zst
+  L2 data: 13808 records for ATOM
+  L2 snapshots: 2162 (1-second sampled)
+  L2 data loaded: 2162 snapshots
+  Seed complete: EMA9=3.4090
+  Fetching tick data from Databento...
+  Fetching trades from Databento: ATOM 2026-01-28 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: ATOM_2026-01-28_trades_XNAS.dbn.zst
+  Trade data: 1058 records for ATOM
+  Trades: 1058 | $3.40-$3.41 | 09:25:00-11:57:36 ET
+  Tick replay: 1058 trades for sim window
+  [09:31] CLASSIFIER: ATOM → avoid (conf=0.85) — AVOID gate: VWAP dist 0.8% < 7.0%, range 2.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ATOM -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2162 snaps [TICK mode]
+  Bars: 1058 sim + 10 seed  |  EMA9=2.7974  VWAP=3.0447
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

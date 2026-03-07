@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NXTT  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NXTT bars for 2026-02-09...
+  Total bars: 35  |  Seed: 1  |  Sim: 34
+  Seed complete: EMA9=3.7400
+  Fetching tick data from Alpaca...
+  Tick replay: 394 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NXTT -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 394 sim + 1 seed  |  EMA9=3.5045  VWAP=3.5638
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:03   3.8200   3.7100  0.1100    4.3   3.7000  stop_hit                 -1091    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,091  |  Avg R-Multiple: -1.1R
+  Largest Win: $+0  |  Largest Loss: $-1,091
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

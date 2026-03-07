@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: UGRO  |  Date: 2026-02-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching UGRO bars for 2026-02-17...
+  Total bars: 18  |  Seed: 1  |  Sim: 17
+  Seed complete: EMA9=3.9000
+  Fetching tick data from Alpaca...
+  Tick replay: 149 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: UGRO -- 2026-02-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 149 sim + 1 seed  |  EMA9=3.4843  VWAP=3.5324
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

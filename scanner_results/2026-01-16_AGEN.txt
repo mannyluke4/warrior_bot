@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AGEN  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AGEN bars for 2026-01-16...
+  Total bars: 156  |  Seed: 4  |  Sim: 152
+  Fetching L2 from Databento: AGEN 2026-01-16 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AGEN_2026-01-16_XNAS.dbn.zst
+  L2 data: 15005 records for AGEN
+  L2 snapshots: 2072 (1-second sampled)
+  L2 data loaded: 2072 snapshots
+  Seed complete: EMA9=3.7249
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AGEN 2026-01-16 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AGEN_2026-01-16_trades_XNAS.dbn.zst
+  Trade data: 1045 records for AGEN
+  Trades: 1045 | $3.77-$3.77 | 07:03:23-11:59:57 ET
+  Tick replay: 1045 trades for sim window
+  [09:33] CLASSIFIER: AGEN → avoid (conf=0.85) — AVOID gate: VWAP dist 1.5% < 7.0%, range 3.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: AGEN -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2072 snaps [TICK mode]
+  Bars: 1045 sim + 4 seed  |  EMA9=3.6079  VWAP=3.5780
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

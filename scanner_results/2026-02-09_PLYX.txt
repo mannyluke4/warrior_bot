@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PLYX  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PLYX bars for 2026-02-09...
+  Total bars: 119  |  Seed: 3  |  Sim: 116
+  Seed complete: EMA9=8.3036
+  Fetching tick data from Alpaca...
+  Tick replay: 1581 trades for sim window
+  [07:05] CLASSIFIER: PLYX → avoid (conf=0.85) — AVOID gate: VWAP dist 2.7% < 7.0%, range 4.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PLYX -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1581 sim + 3 seed  |  EMA9=6.2177  VWAP=6.5040
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:37   7.9700   7.1800  0.7900    9.5   7.1000  stop_hit                 -1101    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,101  |  Avg R-Multiple: -1.1R
+  Largest Win: $+0  |  Largest Loss: $-1,101
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

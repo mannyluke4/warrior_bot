@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CGTL  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CGTL bars for 2026-02-09...
+  Total bars: 56  |  Seed: 1  |  Sim: 55
+  Seed complete: EMA9=4.5600
+  Fetching tick data from Alpaca...
+  Tick replay: 1379 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CGTL -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1379 sim + 1 seed  |  EMA9=4.1659  VWAP=4.3960
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

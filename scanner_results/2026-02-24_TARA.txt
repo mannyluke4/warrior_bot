@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: TARA  |  Date: 2026-02-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TARA bars for 2026-02-24...
+  Total bars: 213  |  Seed: 9  |  Sim: 204
+  Fetching L2 from Databento: TARA 2026-02-24 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: TARA_2026-02-24_XNAS.dbn.zst
+  L2 data: 52661 records for TARA
+  L2 snapshots: 4459 (1-second sampled)
+  L2 data loaded: 4459 snapshots
+  Seed complete: EMA9=6.4918
+  Fetching tick data from Databento...
+  Fetching trades from Databento: TARA 2026-02-24 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: TARA_2026-02-24_trades_XNAS.dbn.zst
+  Trade data: 6590 records for TARA
+  Trades: 6590 | $6.51-$6.84 | 07:17:11-11:59:52 ET
+  Tick replay: 6590 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TARA -- 2026-02-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4459 snaps [TICK mode]
+  Bars: 6590 sim + 9 seed  |  EMA9=5.8722  VWAP=6.0329
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

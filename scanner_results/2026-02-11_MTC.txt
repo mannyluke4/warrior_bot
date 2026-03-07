@@ -1,0 +1,37 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: MTC  |  Date: 2026-02-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MTC bars for 2026-02-11...
+  Total bars: 65  |  Seed: 5  |  Sim: 60
+  Fetching L2 from Databento: MTC 2026-02-11 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: MTC_2026-02-11_XNAS.dbn.zst
+  L2 data: 5294 records for MTC
+  L2 snapshots: 773 (1-second sampled)
+  L2 data loaded: 773 snapshots
+  Seed complete: EMA9=4.7248
+  Fetching tick data from Databento...
+  Fetching trades from Databento: MTC 2026-02-11 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: MTC_2026-02-11_trades_XNAS.dbn.zst
+  Trade data: 79 records for MTC
+  Trades: 79 | $4.88-$4.95 | 09:19:55-11:47:38 ET
+  Tick replay: 79 trades for sim window
+  [L2_warmup] bearish imbalance=0.22 bar=2/30 (hard gate inactive)
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:46 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=0.5 entry=4.9500 stop=4.9200 R=0.0300 detail=macd=7.5*0.6;l2_thin_ask=+1;l2_imbalance_bear=-3(0.22);l2_wide_spread=-2(3.5%) close=4.7900 vwap=4.8124
+    post_block: max_5m=4.8300 max_10m=4.8300 max_30m=4.8300
+
+======================================================================
+  BACKTEST REPORT: MTC -- 2026-02-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=773 snaps [TICK mode]
+  Bars: 79 sim + 5 seed  |  EMA9=4.2374  VWAP=4.5093
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

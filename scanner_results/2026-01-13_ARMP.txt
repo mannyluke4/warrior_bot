@@ -1,38 +1,41 @@
 
 ======================================================================
-  WARRIOR BOT BACKTESTER (TICK MODE)
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
   Symbols: ARMP  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
 ======================================================================
 
 Fetching ARMP bars for 2026-01-13...
   Total bars: 109  |  Seed: 1  |  Sim: 108
+  Fetching L2 from Databento: ARMP 2026-01-13 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: ARMP_2026-01-13_XNAS.dbn.zst
+  L2 data: 3425 records for ARMP
+  L2 snapshots: 689 (1-second sampled)
+  L2 data loaded: 689 snapshots
   Seed complete: EMA9=6.8200
-  Fetching tick data from Alpaca...
-  Tick replay: 2496 trades for sim window
-
-  === VWAP BLOCKED ARMS (2) ===
-  BLOCKED: time=07:12 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=7.7400 stop=7.4900 R=0.2500 detail=macd=7.5*0.6;R>=0.08=+1 close=7.5000 vwap=7.5691
-    post_block: max_5m=7.7500 max_10m=8.6800 max_30m=8.6800
-  BLOCKED: time=07:25 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=8.6800 stop=8.3336 R=0.3464 detail=macd=7.5*0.6;R>=0.08=+1 close=7.6500 vwap=8.0512
-    post_block: max_5m=8.2900 max_10m=8.2900 max_30m=8.2900
+  Fetching tick data from Databento...
+  Fetching trades from Databento: ARMP 2026-01-13 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: ARMP_2026-01-13_trades_XNAS.dbn.zst
+  Trade data: 76 records for ARMP
+  Trades: 76 | $7.60-$8.26 | 07:10:17-11:43:39 ET
+  Tick replay: 76 trades for sim window
 
 ======================================================================
   BACKTEST REPORT: ARMP -- 2026-01-13 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
-  Bars: 2496 sim + 1 seed  |  EMA9=6.1014  VWAP=7.0583
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=689 snaps [TICK mode]
+  Bars: 76 sim + 1 seed  |  EMA9=6.0643  VWAP=7.2425
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:21   7.8500   7.8600  0.0900    5.0   8.0100  bearish_engulfing_exit_full     +1223    +1.8R
+    1   07:22   8.1300   7.9225  0.2075    4.5   7.8800  stop_hit                 -1205    -1.2R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
-  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
-  Gross P&L: $+1,223  |  Avg R-Multiple: +1.2R
-  Largest Win: $+1,223  |  Largest Loss: $+0
-  Armed: 3  |  Signals: 1  |  Entered: 1
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,205  |  Avg R-Multiple: -1.2R
+  Largest Win: $+0  |  Largest Loss: $-1,205
+  Armed: 1  |  Signals: 1  |  Entered: 1
 ======================================================================
 

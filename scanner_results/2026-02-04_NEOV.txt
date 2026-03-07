@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: NEOV  |  Date: 2026-02-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NEOV bars for 2026-02-04...
+  Total bars: 125  |  Seed: 3  |  Sim: 122
+  Fetching L2 from Databento: NEOV 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NEOV_2026-02-04_XNAS.dbn.zst
+  L2 data: 6707 records for NEOV
+  L2 snapshots: 1143 (1-second sampled)
+  L2 data loaded: 1143 snapshots
+  Seed complete: EMA9=4.7460
+  Fetching tick data from Databento...
+  Fetching trades from Databento: NEOV 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: NEOV_2026-02-04_trades_XNAS.dbn.zst
+  Trade data: 535 records for NEOV
+  Trades: 535 | $4.77-$4.77 | 07:23:56-11:57:16 ET
+  Tick replay: 535 trades for sim window
+  [08:40] CLASSIFIER: NEOV → avoid (conf=0.85) — AVOID gate: VWAP dist 0.5% < 7.0%, range 0.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: NEOV -- 2026-02-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1143 snaps [TICK mode]
+  Bars: 535 sim + 3 seed  |  EMA9=4.0733  VWAP=4.3239
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

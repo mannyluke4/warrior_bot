@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NOMA  |  Date: 2026-01-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NOMA bars for 2026-01-06...
+  Total bars: 324  |  Seed: 46  |  Sim: 278
+  Seed complete: EMA9=4.8911
+  Fetching tick data from Alpaca...
+  Tick replay: 34394 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NOMA -- 2026-01-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 34394 sim + 46 seed  |  EMA9=3.7660  VWAP=4.5253
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

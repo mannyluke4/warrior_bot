@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: APVO  |  Date: 2026-01-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching APVO bars for 2026-01-05...
+  Total bars: 69  |  Seed: 1  |  Sim: 68
+  Seed complete: EMA9=9.3900
+  Fetching tick data from Alpaca...
+  Tick replay: 1745 trades for sim window
+  [08:00] CLASSIFIER: APVO → avoid (conf=0.85) — AVOID gate: VWAP dist 2.3% < 7.0%, range 8.2% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:03 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=3.1 entry=9.5900 stop=9.4100 R=0.1800 detail=macd=3.5*0.6;R>=0.08=+1 close=9.4100 vwap=9.4503
+    post_block: max_5m=9.4100 max_10m=9.4100 max_30m=9.7200
+
+======================================================================
+  BACKTEST REPORT: APVO -- 2026-01-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1745 sim + 1 seed  |  EMA9=8.5038  VWAP=8.7985
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

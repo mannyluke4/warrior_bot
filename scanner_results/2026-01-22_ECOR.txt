@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: ECOR  |  Date: 2026-01-22  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ECOR bars for 2026-01-22...
+  Total bars: 40  |  Seed: 0  |  Sim: 40
+  Fetching L2 from Databento: ECOR 2026-01-22 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: ECOR_2026-01-22_XNAS.dbn.zst
+  L2 data: 1910 records for ECOR
+  L2 snapshots: 530 (1-second sampled)
+  L2 data loaded: 530 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Fetching trades from Databento: ECOR 2026-01-22 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: ECOR_2026-01-22_trades_XNAS.dbn.zst
+  Trade data: 115 records for ECOR
+  Trades: 115 | $7.59-$7.62 | 08:10:57-11:56:59 ET
+  Tick replay: 115 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ECOR -- 2026-01-22 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=530 snaps [TICK mode]
+  Bars: 115 sim + 0 seed  |  EMA9=7.0959  VWAP=7.3672
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

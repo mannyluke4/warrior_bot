@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GOVX  |  Date: 2026-01-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GOVX bars for 2026-01-26...
+  Total bars: 75  |  Seed: 1  |  Sim: 74
+  Seed complete: EMA9=3.2900
+  Fetching tick data from Alpaca...
+  Tick replay: 753 trades for sim window
+  [07:47] CLASSIFIER: GOVX → avoid (conf=0.85) — AVOID gate: VWAP dist 1.3% < 7.0%, range 1.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GOVX -- 2026-01-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 753 sim + 1 seed  |  EMA9=2.9742  VWAP=3.0791
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FLYE  |  Date: 2026-02-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FLYE bars for 2026-02-06...
+  Total bars: 194  |  Seed: 1  |  Sim: 193
+  Seed complete: EMA9=4.2800
+  Fetching tick data from Alpaca...
+  Tick replay: 164583 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:06 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=6.9299 stop=6.3950 R=0.5349 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=6.2600 vwap=6.5337
+    post_block: max_5m=6.7800 max_10m=6.7800 max_30m=6.7800
+
+======================================================================
+  BACKTEST REPORT: FLYE -- 2026-02-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 164583 sim + 1 seed  |  EMA9=3.3712  VWAP=5.7380
+======================================================================
+
+  No trades taken.
+
+  Armed: 2  |  Signals: 0
+======================================================================

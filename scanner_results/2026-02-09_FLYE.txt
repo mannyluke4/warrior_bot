@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FLYE  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FLYE bars for 2026-02-09...
+  Total bars: 147  |  Seed: 19  |  Sim: 128
+  Seed complete: EMA9=3.2533
+  Fetching tick data from Alpaca...
+  Tick replay: 4848 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FLYE -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4848 sim + 19 seed  |  EMA9=2.5458  VWAP=2.9303
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: FEAM  |  Date: 2026-01-21  |  Window: 07:01 -> 12:00 ET
+======================================================================
+
+Fetching FEAM bars for 2026-01-21...
+  Total bars: 32  |  Seed: 0  |  Sim: 32
+  Fetching L2 from Databento: FEAM 2026-01-21 07:01-12:00 (XNAS.ITCH)...
+  L2 cached: FEAM_2026-01-21_XNAS.dbn.zst
+  L2 data: 709 records for FEAM
+  L2 snapshots: 213 (1-second sampled)
+  L2 data loaded: 213 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Fetching trades from Databento: FEAM 2026-01-21 07:01-12:00 (XNAS.ITCH)...
+  Trades cached: FEAM_2026-01-21_trades_XNAS.dbn.zst
+  Trade data: 55 records for FEAM
+  Trades: 55 | $4.14-$4.14 | 09:30:00-11:56:33 ET
+  Tick replay: 55 trades for sim window
+  [09:58] CLASSIFIER: FEAM → avoid (conf=0.85) — AVOID gate: VWAP dist 2.9% < 7.0%, range 3.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: FEAM -- 2026-01-21 (07:01 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=213 snaps [TICK mode]
+  Bars: 55 sim + 0 seed  |  EMA9=3.9845  VWAP=4.0260
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

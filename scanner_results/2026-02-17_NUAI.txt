@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: NUAI  |  Date: 2026-02-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NUAI bars for 2026-02-17...
+  Total bars: 176  |  Seed: 2  |  Sim: 174
+  Fetching L2 from Databento: NUAI 2026-02-17 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NUAI_2026-02-17_XNAS.dbn.zst
+  L2 data: 18108 records for NUAI
+  L2 snapshots: 2672 (1-second sampled)
+  L2 data loaded: 2672 snapshots
+  Seed complete: EMA9=4.9040
+  Fetching tick data from Databento...
+  Fetching trades from Databento: NUAI 2026-02-17 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: NUAI_2026-02-17_trades_XNAS.dbn.zst
+  Trade data: 1067 records for NUAI
+  Trades: 1067 | $4.85-$4.87 | 07:00:00-11:59:52 ET
+  Tick replay: 1067 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NUAI -- 2026-02-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2672 snaps [TICK mode]
+  Bars: 1067 sim + 2 seed  |  EMA9=4.4676  VWAP=4.5867
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

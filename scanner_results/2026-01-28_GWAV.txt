@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GWAV  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GWAV bars for 2026-01-28...
+  Total bars: 26  |  Seed: 1  |  Sim: 25
+  Seed complete: EMA9=4.9000
+  Fetching tick data from Alpaca...
+  Tick replay: 303 trades for sim window
+  [07:49] CLASSIFIER: GWAV → avoid (conf=0.85) — AVOID gate: VWAP dist 5.3% < 7.0%, range 7.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GWAV -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 303 sim + 1 seed  |  EMA9=4.6888  VWAP=4.7290
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

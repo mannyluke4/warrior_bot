@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: POAS  |  Date: 2026-02-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching POAS bars for 2026-02-06...
+  Total bars: 99  |  Seed: 3  |  Sim: 96
+  Fetching L2 from Databento: POAS 2026-02-06 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: POAS_2026-02-06_XNAS.dbn.zst
+  L2 data: 2170 records for POAS
+  L2 snapshots: 371 (1-second sampled)
+  L2 data loaded: 371 snapshots
+  Seed complete: EMA9=6.8004
+  Fetching tick data from Databento...
+  Fetching trades from Databento: POAS 2026-02-06 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: POAS_2026-02-06_trades_XNAS.dbn.zst
+  Trade data: 177 records for POAS
+  Trades: 177 | $6.64-$6.82 | 07:26:51-11:59:05 ET
+  Tick replay: 177 trades for sim window
+  [09:39] CLASSIFIER: POAS → avoid (conf=0.85) — AVOID gate: VWAP dist 5.2% < 7.0%, range 6.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: POAS -- 2026-02-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=371 snaps [TICK mode]
+  Bars: 177 sim + 3 seed  |  EMA9=5.9135  VWAP=6.1730
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

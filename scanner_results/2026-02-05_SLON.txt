@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SLON  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SLON bars for 2026-02-05...
+  Total bars: 140  |  Seed: 3  |  Sim: 137
+  Seed complete: EMA9=7.2520
+  Fetching tick data from Alpaca...
+  Tick replay: 1238 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SLON -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1238 sim + 3 seed  |  EMA9=6.1143  VWAP=6.1553
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

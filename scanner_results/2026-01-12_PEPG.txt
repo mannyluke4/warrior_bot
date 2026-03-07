@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: PEPG  |  Date: 2026-01-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PEPG bars for 2026-01-12...
+  Total bars: 125  |  Seed: 1  |  Sim: 124
+  Fetching L2 from Databento: PEPG 2026-01-12 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: PEPG_2026-01-12_XNAS.dbn.zst
+  L2 data: 5018 records for PEPG
+  L2 snapshots: 1137 (1-second sampled)
+  L2 data loaded: 1137 snapshots
+  Seed complete: EMA9=6.9200
+  Fetching tick data from Databento...
+  Fetching trades from Databento: PEPG 2026-01-12 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: PEPG_2026-01-12_trades_XNAS.dbn.zst
+  Trade data: 543 records for PEPG
+  Trades: 543 | $6.36-$6.45 | 09:18:06-11:59:55 ET
+  Tick replay: 543 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PEPG -- 2026-01-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1137 snaps [TICK mode]
+  Bars: 543 sim + 1 seed  |  EMA9=6.0475  VWAP=6.1293
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

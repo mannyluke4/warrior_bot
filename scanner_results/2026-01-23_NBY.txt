@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: NBY  |  Date: 2026-01-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NBY bars for 2026-01-23...
+  Total bars: 168  |  Seed: 6  |  Sim: 162
+  Fetching L2 from Databento: NBY 2026-01-23 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NBY_2026-01-23_XNAS.dbn.zst
+  L2 data: 7142 records for NBY
+  L2 snapshots: 1730 (1-second sampled)
+  L2 data loaded: 1730 snapshots
+  Seed complete: EMA9=5.4390
+  Fetching tick data from Databento...
+  Fetching trades from Databento: NBY 2026-01-23 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: NBY_2026-01-23_trades_XNAS.dbn.zst
+  Trade data: 444 records for NBY
+  Trades: 444 | $5.43-$5.45 | 07:02:50-11:56:18 ET
+  Tick replay: 444 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NBY -- 2026-01-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1730 snaps [TICK mode]
+  Bars: 444 sim + 6 seed  |  EMA9=4.7002  VWAP=4.8797
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

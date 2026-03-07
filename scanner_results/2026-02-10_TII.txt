@@ -1,26 +1,29 @@
 
 ======================================================================
-  WARRIOR BOT BACKTESTER (TICK MODE)
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
   Symbols: TII  |  Date: 2026-02-10  |  Window: 07:00 -> 12:00 ET
 ======================================================================
 
 Fetching TII bars for 2026-02-10...
   Total bars: 149  |  Seed: 0  |  Sim: 149
-  Fetching L2 from Databento: TII 2026-02-10 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: TII_2026-02-10_XNAS.dbn.zst
+  L2 cache hit: TII_2026-02-10_XNAS.dbn.zst
   L2 data: 5692 records for TII
   L2 snapshots: 952 (1-second sampled)
   L2 data loaded: 952 snapshots
   Seed complete: EMA9=None
-  Fetching tick data from Alpaca...
-  Tick replay: 1971 trades for sim window
-  [08:01] CLASSIFIER: TII → avoid (conf=0.85) — AVOID gate: VWAP dist 4.1% < 7.0%, range 6.4% < 10.0%, NH 1 < 2
+  Fetching tick data from Databento...
+  Fetching trades from Databento: TII 2026-02-10 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: TII_2026-02-10_trades_XNAS.dbn.zst
+  Trade data: 165 records for TII
+  Trades: 165 | $4.63-$4.63 | 09:16:09-11:56:13 ET
+  Tick replay: 165 trades for sim window
+  [09:37] CLASSIFIER: TII → avoid (conf=0.85) — AVOID gate: VWAP dist 2.7% < 7.0%, range 9.3% < 10.0%, NH 1 < 2
 
 ======================================================================
   BACKTEST REPORT: TII -- 2026-02-10 (07:00 -> 12:00 ET)
 ======================================================================
   Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=952 snaps [TICK mode]
-  Bars: 1971 sim + 0 seed  |  EMA9=4.1293  VWAP=4.3062
+  Bars: 165 sim + 0 seed  |  EMA9=4.1644  VWAP=4.2652
 ======================================================================
 
   No trades taken.

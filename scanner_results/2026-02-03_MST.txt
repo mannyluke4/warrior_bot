@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MST  |  Date: 2026-02-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MST bars for 2026-02-03...
+  Total bars: 131  |  Seed: 6  |  Sim: 125
+  Seed complete: EMA9=4.6386
+  Fetching tick data from Alpaca...
+  Tick replay: 1584 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:03 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=4.7600 stop=4.6757 R=0.0843 detail=macd=7.5*0.6;R>=0.08=+1 close=4.6650 vwap=4.7508
+    post_block: max_5m=4.6797 max_10m=4.6800 max_30m=4.6800
+
+======================================================================
+  BACKTEST REPORT: MST -- 2026-02-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1584 sim + 6 seed  |  EMA9=4.2551  VWAP=4.3066
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

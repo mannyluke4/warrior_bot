@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: LODE  |  Date: 2026-01-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LODE bars for 2026-01-26...
+  Total bars: 209  |  Seed: 19  |  Sim: 190
+  Fetching L2 from Databento: LODE 2026-01-26 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: LODE_2026-01-26_XNAS.dbn.zst
+  L2 data: 33082 records for LODE
+  L2 snapshots: 3142 (1-second sampled)
+  L2 data loaded: 3142 snapshots
+  Seed complete: EMA9=4.6717
+  Fetching tick data from Databento...
+  Fetching trades from Databento: LODE 2026-01-26 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: LODE_2026-01-26_trades_XNAS.dbn.zst
+  Trade data: 1473 records for LODE
+  Trades: 1473 | $4.66-$4.79 | 07:09:54-11:59:44 ET
+  Tick replay: 1473 trades for sim window
+  [07:37] CLASSIFIER: LODE → avoid (conf=0.85) — AVOID gate: VWAP dist 1.2% < 7.0%, range 1.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LODE -- 2026-01-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3142 snaps [TICK mode]
+  Bars: 1473 sim + 19 seed  |  EMA9=4.0980  VWAP=4.3957
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: XCUR  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching XCUR bars for 2026-01-27...
+  Total bars: 41  |  Seed: 1  |  Sim: 40
+  Seed complete: EMA9=4.9900
+  Fetching tick data from Alpaca...
+  Tick replay: 488 trades for sim window
+  [07:55] CLASSIFIER: XCUR → avoid (conf=0.85) — AVOID gate: VWAP dist 1.2% < 7.0%, range 0.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: XCUR -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 488 sim + 1 seed  |  EMA9=4.3939  VWAP=4.6261
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

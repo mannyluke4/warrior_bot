@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AUDC  |  Date: 2026-02-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AUDC bars for 2026-02-03...
+  Total bars: 123  |  Seed: 1  |  Sim: 122
+  Fetching L2 from Databento: AUDC 2026-02-03 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AUDC_2026-02-03_XNAS.dbn.zst
+  L2 data: 12589 records for AUDC
+  L2 snapshots: 2198 (1-second sampled)
+  L2 data loaded: 2198 snapshots
+  Seed complete: EMA9=8.5400
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AUDC 2026-02-03 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AUDC_2026-02-03_trades_XNAS.dbn.zst
+  Trade data: 843 records for AUDC
+  Trades: 843 | $8.60-$8.62 | 07:27:38-11:58:28 ET
+  Tick replay: 843 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AUDC -- 2026-02-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2198 snaps [TICK mode]
+  Bars: 843 sim + 1 seed  |  EMA9=7.4407  VWAP=7.7241
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

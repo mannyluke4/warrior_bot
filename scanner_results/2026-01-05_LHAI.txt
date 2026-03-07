@@ -1,0 +1,42 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: LHAI  |  Date: 2026-01-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LHAI bars for 2026-01-05...
+  Total bars: 112  |  Seed: 1  |  Sim: 111
+  Fetching L2 from Databento: LHAI 2026-01-05 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: LHAI_2026-01-05_XNAS.dbn.zst
+  L2 data: 3446 records for LHAI
+  L2 snapshots: 658 (1-second sampled)
+  L2 data loaded: 658 snapshots
+  Seed complete: EMA9=8.3100
+  Fetching tick data from Databento...
+  Fetching trades from Databento: LHAI 2026-01-05 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: LHAI_2026-01-05_trades_XNAS.dbn.zst
+  Trade data: 423 records for LHAI
+  Trades: 423 | $8.23-$8.24 | 08:07:48-11:54:09 ET
+  Tick replay: 423 trades for sim window
+  [09:28] CLASSIFIER: LHAI → avoid (conf=0.85) — AVOID gate: VWAP dist 3.1% < 7.0%, range 4.4% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LHAI -- 2026-01-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=658 snaps [TICK mode]
+  Bars: 423 sim + 1 seed  |  EMA9=7.8989  VWAP=7.7544
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   11:05   7.9700   7.8696  0.1004   11.5   8.0000  topping_wicky_exit_full      +226    +0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+226  |  Avg R-Multiple: +0.2R
+  Largest Win: $+226  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SXTC  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SXTC bars for 2026-02-09...
+  Total bars: 209  |  Seed: 16  |  Sim: 193
+  Seed complete: EMA9=3.1531
+  Fetching tick data from Alpaca...
+  Tick replay: 48149 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SXTC -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 48149 sim + 16 seed  |  EMA9=2.4036  VWAP=3.5294
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:05   3.4200   3.3045  0.1155   12.0   3.4000  bearish_engulfing_exit_full      -173    -0.2R
+    2   09:06   3.8200   3.8300  0.1745   12.0   3.8103  trail_stop                 -56    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-229  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-173
+  Armed: 3  |  Signals: 3  |  Entered: 2
+======================================================================
+

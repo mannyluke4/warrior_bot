@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PLSM  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PLSM bars for 2026-01-28...
+  Total bars: 17  |  Seed: 1  |  Sim: 16
+  Seed complete: EMA9=7.1000
+  Fetching tick data from Alpaca...
+  Tick replay: 185 trades for sim window
+  [09:32] CLASSIFIER: PLSM → avoid (conf=0.85) — AVOID gate: VWAP dist 5.0% < 7.0%, range 6.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PLSM -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 185 sim + 1 seed  |  EMA9=6.0683  VWAP=6.1610
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

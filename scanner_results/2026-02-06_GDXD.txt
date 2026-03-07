@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: GDXD  |  Date: 2026-02-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GDXD bars for 2026-02-06...
+  Total bars: 324  |  Seed: 66  |  Sim: 258
+  Fetching L2 from Databento: GDXD 2026-02-06 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: GDXD_2026-02-06_XNAS.dbn.zst
+  L2 data: 110784 records for GDXD
+  L2 snapshots: 8238 (1-second sampled)
+  L2 data loaded: 8238 snapshots
+  Seed complete: EMA9=5.2358
+  Fetching tick data from Databento...
+  Fetching trades from Databento: GDXD 2026-02-06 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: GDXD_2026-02-06_trades_XNAS.dbn.zst
+  Trade data: 397 records for GDXD
+  Trades: 397 | $5.22-$5.22 | 07:00:00-11:59:35 ET
+  Tick replay: 397 trades for sim window
+  [08:00] CLASSIFIER: GDXD → avoid (conf=0.85) — AVOID gate: VWAP dist 2.8% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GDXD -- 2026-02-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=8238 snaps [TICK mode]
+  Bars: 397 sim + 66 seed  |  EMA9=4.7663  VWAP=4.9018
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

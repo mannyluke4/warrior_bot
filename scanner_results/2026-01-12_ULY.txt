@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ULY  |  Date: 2026-01-12  |  Window: 07:14 -> 12:00 ET
+======================================================================
+
+Fetching ULY bars for 2026-01-12...
+  Total bars: 58  |  Seed: 0  |  Sim: 58
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 526 trades for sim window
+  [08:43] CLASSIFIER: ULY → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 1.6% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:32 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.0 entry=3.3300 stop=3.2550 R=0.0750 detail=macd=7.5*0.6;R>=0.05=+0.5 close=3.2650 vwap=3.2784
+    post_block: max_5m=3.2700 max_10m=3.2700 max_30m=3.2700
+
+======================================================================
+  BACKTEST REPORT: ULY -- 2026-01-12 (07:14 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 526 sim + 0 seed  |  EMA9=2.9826  VWAP=3.1125
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

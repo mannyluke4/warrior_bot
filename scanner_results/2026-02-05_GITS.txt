@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GITS  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GITS bars for 2026-02-05...
+  Total bars: 77  |  Seed: 3  |  Sim: 74
+  Seed complete: EMA9=4.2640
+  Fetching tick data from Alpaca...
+  Tick replay: 708 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GITS -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 708 sim + 3 seed  |  EMA9=4.1894  VWAP=4.2826
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:01   4.4600   4.2840  0.1760    5.5   4.2800  stop_hit                 -1023    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,023  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-1,023
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

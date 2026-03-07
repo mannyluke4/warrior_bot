@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CGTL  |  Date: 2026-01-28  |  Window: 07:11 -> 12:00 ET
+======================================================================
+
+Fetching CGTL bars for 2026-01-28...
+  Total bars: 53  |  Seed: 0  |  Sim: 53
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 372 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:19 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=3.4200 stop=3.2800 R=0.1400 detail=macd=7.5*0.6;R>=0.08=+1 close=3.3100 vwap=3.3179
+    post_block: max_5m=3.3100 max_10m=3.3100 max_30m=3.3100
+
+======================================================================
+  BACKTEST REPORT: CGTL -- 2026-01-28 (07:11 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 372 sim + 0 seed  |  EMA9=3.0939  VWAP=3.1773
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QBTZ  |  Date: 2026-01-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QBTZ bars for 2026-01-05...
+  Total bars: 273  |  Seed: 45  |  Sim: 228
+  Seed complete: EMA9=7.8376
+  Fetching tick data from Alpaca...
+  Tick replay: 14738 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:05 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=11.0 entry=8.0600 stop=7.9762 R=0.0838 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;whole=+0.5;R>=0.08=+1 close=7.8700 vwap=7.8755
+    post_block: max_5m=7.9200 max_10m=7.9793 max_30m=7.9884
+
+======================================================================
+  BACKTEST REPORT: QBTZ -- 2026-01-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 14738 sim + 45 seed  |  EMA9=6.5224  VWAP=7.0895
+======================================================================
+
+  No trades taken.
+
+  Armed: 3  |  Signals: 2
+======================================================================

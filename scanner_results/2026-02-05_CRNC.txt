@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CRNC  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRNC bars for 2026-02-05...
+  Total bars: 214  |  Seed: 16  |  Sim: 198
+  Fetching L2 from Databento: CRNC 2026-02-05 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: CRNC_2026-02-05_XNAS.dbn.zst
+  L2 data: 60750 records for CRNC
+  L2 snapshots: 5892 (1-second sampled)
+  L2 data loaded: 5892 snapshots
+  Seed complete: EMA9=8.7720
+  Fetching tick data from Databento...
+  Fetching trades from Databento: CRNC 2026-02-05 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: CRNC_2026-02-05_trades_XNAS.dbn.zst
+  Trade data: 8376 records for CRNC
+  Trades: 8376 | $8.94-$8.96 | 07:08:29-11:59:55 ET
+  Tick replay: 8376 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CRNC -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=5892 snaps [TICK mode]
+  Bars: 8376 sim + 16 seed  |  EMA9=7.1930  VWAP=7.2044
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

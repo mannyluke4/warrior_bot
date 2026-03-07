@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ELAB  |  Date: 2026-01-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ELAB bars for 2026-01-08...
+  Total bars: 441  |  Seed: 167  |  Sim: 274
+  Seed complete: EMA9=6.6491
+  Fetching tick data from Alpaca...
+  Tick replay: 19606 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ELAB -- 2026-01-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 19606 sim + 167 seed  |  EMA9=5.8106  VWAP=6.5505
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

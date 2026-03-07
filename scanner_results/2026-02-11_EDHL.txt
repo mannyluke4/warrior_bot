@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: EDHL  |  Date: 2026-02-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching EDHL bars for 2026-02-11...
+  Total bars: 34  |  Seed: 2  |  Sim: 32
+  Seed complete: EMA9=2.8100
+  Fetching tick data from Alpaca...
+  Tick replay: 315 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=11:28 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=7.0 entry=3.0800 stop=2.9500 R=0.1300 detail=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;lowliq=-2.5;R>=0.08=+1 close=2.9941 vwap=2.9999
+    post_block: max_5m=3.0300 max_10m=3.0750 max_30m=3.0750
+
+======================================================================
+  BACKTEST REPORT: EDHL -- 2026-02-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 315 sim + 2 seed  |  EMA9=2.9887  VWAP=2.9994
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

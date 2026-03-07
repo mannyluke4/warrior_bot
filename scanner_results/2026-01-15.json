@@ -72,6 +72,18 @@
     "profile": "X"
   },
   {
+    "symbol": "ILAG",
+    "prev_close": 3.4,
+    "pm_price": 4.0,
+    "gap_pct": 17.65,
+    "pm_volume": 100.0,
+    "first_seen_et": "06:31",
+    "sim_start": "07:00",
+    "float_shares": 986446,
+    "float_millions": 0.99,
+    "profile": "A"
+  },
+  {
     "symbol": "LCDL",
     "prev_close": 2.89,
     "pm_price": 3.4,
@@ -324,18 +336,6 @@
     "profile": "B"
   },
   {
-    "symbol": "CONL",
-    "prev_close": 16.09,
-    "pm_price": 17.9,
-    "gap_pct": 11.25,
-    "pm_volume": 165409.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 36665460,
-    "float_millions": 36.67,
-    "profile": "B"
-  },
-  {
     "symbol": "WOK",
     "prev_close": 2.36,
     "pm_price": 2.62,
@@ -372,15 +372,15 @@
     "profile": "B"
   },
   {
-    "symbol": "MSTX",
-    "prev_close": 4.7,
-    "pm_price": 5.21,
-    "gap_pct": 10.85,
-    "pm_volume": 1251369.0,
-    "first_seen_et": "04:00",
+    "symbol": "VVPR",
+    "prev_close": 2.72,
+    "pm_price": 3.01,
+    "gap_pct": 10.66,
+    "pm_volume": 2723.0,
+    "first_seen_et": "04:45",
     "sim_start": "07:00",
-    "float_shares": 31416048,
-    "float_millions": 31.42,
+    "float_shares": 9859166,
+    "float_millions": 9.86,
     "profile": "B"
   },
   {
@@ -396,18 +396,6 @@
     "profile": "B"
   },
   {
-    "symbol": "VVPR",
-    "prev_close": 2.72,
-    "pm_price": 3.01,
-    "gap_pct": 10.66,
-    "pm_volume": 2723.0,
-    "first_seen_et": "04:45",
-    "sim_start": "07:00",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
-  },
-  {
     "symbol": "MSTP",
     "prev_close": 3.38,
     "pm_price": 3.74,
@@ -418,18 +406,6 @@
     "float_shares": 42337,
     "float_millions": 0.04,
     "profile": "A"
-  },
-  {
-    "symbol": "MSTU",
-    "prev_close": 10.21,
-    "pm_price": 11.29,
-    "gap_pct": 10.58,
-    "pm_volume": 502373.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 20680446,
-    "float_millions": 20.68,
-    "profile": "B"
   },
   {
     "symbol": "TAOX",

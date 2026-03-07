@@ -96,18 +96,6 @@
     "profile": "X"
   },
   {
-    "symbol": "FLYT",
-    "prev_close": 7.95,
-    "pm_price": 9.9,
-    "gap_pct": 24.53,
-    "pm_volume": 178.0,
-    "first_seen_et": "05:06",
-    "sim_start": "07:00",
-    "float_shares": 306365,
-    "float_millions": 0.31,
-    "profile": "A"
-  },
-  {
     "symbol": "HODU",
     "prev_close": 8.03,
     "pm_price": 10.0,
@@ -117,6 +105,18 @@
     "sim_start": "07:00",
     "float_shares": 118688,
     "float_millions": 0.12,
+    "profile": "A"
+  },
+  {
+    "symbol": "FLYT",
+    "prev_close": 7.95,
+    "pm_price": 9.9,
+    "gap_pct": 24.53,
+    "pm_volume": 178.0,
+    "first_seen_et": "05:06",
+    "sim_start": "07:00",
+    "float_shares": 306365,
+    "float_millions": 0.31,
     "profile": "A"
   },
   {
@@ -166,18 +166,6 @@
     "float_shares": 297838,
     "float_millions": 0.3,
     "profile": "A"
-  },
-  {
-    "symbol": "CONL",
-    "prev_close": 5.15,
-    "pm_price": 6.2,
-    "gap_pct": 20.39,
-    "pm_volume": 243751.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 36665460,
-    "float_millions": 36.67,
-    "profile": "B"
   },
   {
     "symbol": "SHPU",
@@ -336,18 +324,6 @@
     "profile": "X"
   },
   {
-    "symbol": "UNX",
-    "prev_close": 2.6,
-    "pm_price": 3.05,
-    "gap_pct": 17.31,
-    "pm_volume": 48035.0,
-    "first_seen_et": "04:02",
-    "sim_start": "07:00",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "BAIG",
     "prev_close": 4.39,
     "pm_price": 5.15,
@@ -358,6 +334,18 @@
     "float_shares": 840023,
     "float_millions": 0.84,
     "profile": "A"
+  },
+  {
+    "symbol": "UNX",
+    "prev_close": 2.6,
+    "pm_price": 3.05,
+    "gap_pct": 17.31,
+    "pm_volume": 48035.0,
+    "first_seen_et": "04:02",
+    "sim_start": "07:00",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "FCUV",
@@ -660,18 +648,6 @@
     "profile": "A"
   },
   {
-    "symbol": "FLWS",
-    "prev_close": 3.69,
-    "pm_price": 4.15,
-    "gap_pct": 12.47,
-    "pm_volume": 288.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 8826987,
-    "float_millions": 8.83,
-    "profile": "B"
-  },
-  {
     "symbol": "RELL",
     "prev_close": 13.15,
     "pm_price": 14.79,
@@ -681,6 +657,18 @@
     "sim_start": "07:00",
     "float_shares": 12025630,
     "float_millions": 12.03,
+    "profile": "B"
+  },
+  {
+    "symbol": "FLWS",
+    "prev_close": 3.69,
+    "pm_price": 4.15,
+    "gap_pct": 12.47,
+    "pm_volume": 288.0,
+    "first_seen_et": "07:00",
+    "sim_start": "07:00",
+    "float_shares": 8826987,
+    "float_millions": 8.83,
     "profile": "B"
   },
   {
@@ -765,18 +753,6 @@
     "sim_start": "07:00",
     "float_shares": 30913511,
     "float_millions": 30.91,
-    "profile": "B"
-  },
-  {
-    "symbol": "WEBL",
-    "prev_close": 17.58,
-    "pm_price": 19.65,
-    "gap_pct": 11.77,
-    "pm_volume": 10185.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 5289247,
-    "float_millions": 5.29,
     "profile": "B"
   },
   {

@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: BGL  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BGL bars for 2026-01-27...
+  Total bars: 250  |  Seed: 30  |  Sim: 220
+  Fetching L2 from Databento: BGL 2026-01-27 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: BGL_2026-01-27_XNAS.dbn.zst
+  L2 data: 11606 records for BGL
+  L2 snapshots: 1863 (1-second sampled)
+  L2 data loaded: 1863 snapshots
+  Seed complete: EMA9=4.1202
+  Fetching tick data from Databento...
+  Fetching trades from Databento: BGL 2026-01-27 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: BGL_2026-01-27_trades_XNAS.dbn.zst
+  Trade data: 846 records for BGL
+  Trades: 846 | $4.10-$4.16 | 07:04:53-11:50:14 ET
+  Tick replay: 846 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BGL -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1863 snaps [TICK mode]
+  Bars: 846 sim + 30 seed  |  EMA9=3.5825  VWAP=3.6474
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

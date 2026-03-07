@@ -1,0 +1,35 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: QMCO  |  Date: 2026-02-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QMCO bars for 2026-02-18...
+  Total bars: 235  |  Seed: 33  |  Sim: 202
+  Fetching L2 from Databento: QMCO 2026-02-18 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: QMCO_2026-02-18_XNAS.dbn.zst
+  L2 data: 38760 records for QMCO
+  L2 snapshots: 4269 (1-second sampled)
+  L2 data loaded: 4269 snapshots
+  Seed complete: EMA9=6.3139
+  Fetching tick data from Databento...
+  Fetching trades from Databento: QMCO 2026-02-18 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: QMCO_2026-02-18_trades_XNAS.dbn.zst
+  Trade data: 3399 records for QMCO
+  Trades: 3399 | $6.28-$6.68 | 07:00:09-11:59:22 ET
+  Tick replay: 3399 trades for sim window
+  [L2_warmup] bearish imbalance=0.06 bar=13/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.13 bar=14/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.15 bar=16/30 (hard gate inactive)
+
+======================================================================
+  BACKTEST REPORT: QMCO -- 2026-02-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4269 snaps [TICK mode]
+  Bars: 3399 sim + 33 seed  |  EMA9=5.7208  VWAP=6.0797
+======================================================================
+
+  No trades taken.
+
+  Armed: 3  |  Signals: 1
+======================================================================

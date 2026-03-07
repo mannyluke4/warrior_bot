@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: PDYN  |  Date: 2026-02-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PDYN bars for 2026-02-04...
+  Total bars: 228  |  Seed: 18  |  Sim: 210
+  Fetching L2 from Databento: PDYN 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: PDYN_2026-02-04_XNAS.dbn.zst
+  L2 data: 35255 records for PDYN
+  L2 snapshots: 4479 (1-second sampled)
+  L2 data loaded: 4479 snapshots
+  Seed complete: EMA9=7.8346
+  Fetching tick data from Databento...
+  Fetching trades from Databento: PDYN 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: PDYN_2026-02-04_trades_XNAS.dbn.zst
+  Trade data: 3660 records for PDYN
+  Trades: 3660 | $7.84-$7.94 | 07:12:13-11:59:56 ET
+  Tick replay: 3660 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PDYN -- 2026-02-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4479 snaps [TICK mode]
+  Bars: 3660 sim + 18 seed  |  EMA9=6.7654  VWAP=7.2135
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

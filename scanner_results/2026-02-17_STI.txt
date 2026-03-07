@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: STI  |  Date: 2026-02-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching STI bars for 2026-02-17...
+  Total bars: 67  |  Seed: 1  |  Sim: 66
+  Seed complete: EMA9=4.9600
+  Fetching tick data from Alpaca...
+  Tick replay: 705 trades for sim window
+  [08:00] CLASSIFIER: STI → avoid (conf=0.85) — AVOID gate: VWAP dist 3.5% < 7.0%, range 8.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: STI -- 2026-02-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 705 sim + 1 seed  |  EMA9=4.0530  VWAP=4.1729
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

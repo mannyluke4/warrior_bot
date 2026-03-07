@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: IRE  |  Date: 2026-02-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IRE bars for 2026-02-20...
+  Total bars: 453  |  Seed: 165  |  Sim: 288
+  Fetching L2 from Databento: IRE 2026-02-20 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: IRE_2026-02-20_XNAS.dbn.zst
+  L2 data: 269565 records for IRE
+  L2 snapshots: 11434 (1-second sampled)
+  L2 data loaded: 11434 snapshots
+  Seed complete: EMA9=6.0471
+  Fetching tick data from Databento...
+  Fetching trades from Databento: IRE 2026-02-20 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: IRE_2026-02-20_trades_XNAS.dbn.zst
+  Trade data: 2014 records for IRE
+  Trades: 2014 | $6.03-$6.39 | 07:00:07-11:59:38 ET
+  Tick replay: 2014 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IRE -- 2026-02-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=11434 snaps [TICK mode]
+  Bars: 2014 sim + 165 seed  |  EMA9=6.0118  VWAP=6.1325
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================

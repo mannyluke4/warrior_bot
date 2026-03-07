@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: NXDT  |  Date: 2026-01-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NXDT bars for 2026-01-02...
+  Total bars: 59  |  Seed: 0  |  Sim: 59
+  Fetching L2 from Databento: NXDT 2026-01-02 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NXDT_2026-01-02_XNAS.dbn.zst
+  L2 data: 3478 records for NXDT
+  L2 snapshots: 695 (1-second sampled)
+  L2 data loaded: 695 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Fetching trades from Databento: NXDT 2026-01-02 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: NXDT_2026-01-02_trades_XNAS.dbn.zst
+  Trade data: 129 records for NXDT
+  Trades: 129 | $3.99-$3.99 | 07:48:19-11:56:13 ET
+  Tick replay: 129 trades for sim window
+  [09:58] CLASSIFIER: NXDT → avoid (conf=0.85) — AVOID gate: VWAP dist 5.5% < 7.0%, range 7.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: NXDT -- 2026-01-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=695 snaps [TICK mode]
+  Bars: 129 sim + 0 seed  |  EMA9=3.6605  VWAP=3.6621
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

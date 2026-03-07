@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: BOOM  |  Date: 2026-02-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BOOM bars for 2026-02-24...
+  Total bars: 164  |  Seed: 8  |  Sim: 156
+  Fetching L2 from Databento: BOOM 2026-02-24 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: BOOM_2026-02-24_XNAS.dbn.zst
+  L2 data: 28030 records for BOOM
+  L2 snapshots: 2963 (1-second sampled)
+  L2 data loaded: 2963 snapshots
+  Seed complete: EMA9=7.0250
+  Fetching tick data from Databento...
+  Fetching trades from Databento: BOOM 2026-02-24 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: BOOM_2026-02-24_trades_XNAS.dbn.zst
+  Trade data: 1804 records for BOOM
+  Trades: 1804 | $7.27-$7.27 | 09:23:57-11:59:18 ET
+  Tick replay: 1804 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BOOM -- 2026-02-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2963 snaps [TICK mode]
+  Bars: 1804 sim + 8 seed  |  EMA9=5.8539  VWAP=6.1831
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

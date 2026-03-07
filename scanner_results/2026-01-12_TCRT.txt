@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TCRT  |  Date: 2026-01-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TCRT bars for 2026-01-12...
+  Total bars: 28  |  Seed: 1  |  Sim: 27
+  Seed complete: EMA9=3.1600
+  Fetching tick data from Alpaca...
+  Tick replay: 169 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TCRT -- 2026-01-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 169 sim + 1 seed  |  EMA9=2.9915  VWAP=3.0236
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

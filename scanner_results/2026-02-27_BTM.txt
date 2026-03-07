@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BTM  |  Date: 2026-02-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BTM bars for 2026-02-27...
+  Total bars: 91  |  Seed: 1  |  Sim: 90
+  Seed complete: EMA9=5.1900
+  Fetching tick data from Alpaca...
+  Tick replay: 1735 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BTM -- 2026-02-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1735 sim + 1 seed  |  EMA9=4.4591  VWAP=4.6988
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

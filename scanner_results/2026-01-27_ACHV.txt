@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: ACHV  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ACHV bars for 2026-01-27...
+  Total bars: 143  |  Seed: 1  |  Sim: 142
+  Fetching L2 from Databento: ACHV 2026-01-27 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: ACHV_2026-01-27_XNAS.dbn.zst
+  L2 data: 17971 records for ACHV
+  L2 snapshots: 2130 (1-second sampled)
+  L2 data loaded: 2130 snapshots
+  Seed complete: EMA9=5.0900
+  Fetching tick data from Databento...
+  Fetching trades from Databento: ACHV 2026-01-27 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: ACHV_2026-01-27_trades_XNAS.dbn.zst
+  Trade data: 1360 records for ACHV
+  Trades: 1360 | $5.02-$5.12 | 07:14:00-11:59:50 ET
+  Tick replay: 1360 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ACHV -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2130 snaps [TICK mode]
+  Bars: 1360 sim + 1 seed  |  EMA9=4.6913  VWAP=4.7857
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================

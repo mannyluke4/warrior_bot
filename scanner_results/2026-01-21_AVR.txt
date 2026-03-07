@@ -1,0 +1,41 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AVR  |  Date: 2026-01-21  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AVR bars for 2026-01-21...
+  Total bars: 455  |  Seed: 156  |  Sim: 299
+  Fetching L2 from Databento: AVR 2026-01-21 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AVR_2026-01-21_XNAS.dbn.zst
+  L2 data: 70602 records for AVR
+  L2 snapshots: 6086 (1-second sampled)
+  L2 data loaded: 6086 snapshots
+  Seed complete: EMA9=6.6404
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AVR 2026-01-21 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AVR_2026-01-21_trades_XNAS.dbn.zst
+  Trade data: 12411 records for AVR
+  Trades: 12411 | $6.75-$7.00 | 07:00:00-11:59:36 ET
+  Tick replay: 12411 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AVR -- 2026-01-21 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=6086 snaps [TICK mode]
+  Bars: 12411 sim + 156 seed  |  EMA9=6.0116  VWAP=6.4174
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:07   7.0200   6.8900  0.1300   12.0   6.8700  stop_hit                 -1154    -1.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,154  |  Avg R-Multiple: -1.2R
+  Largest Win: $+0  |  Largest Loss: $-1,154
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

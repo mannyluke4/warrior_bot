@@ -1,0 +1,38 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: MAXN  |  Date: 2026-02-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MAXN bars for 2026-02-09...
+  Total bars: 121  |  Seed: 6  |  Sim: 115
+  Fetching L2 from Databento: MAXN 2026-02-09 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: MAXN_2026-02-09_XNAS.dbn.zst
+  L2 data: 5777 records for MAXN
+  L2 snapshots: 731 (1-second sampled)
+  L2 data loaded: 731 snapshots
+  Seed complete: EMA9=4.0015
+  Fetching tick data from Databento...
+  Fetching trades from Databento: MAXN 2026-02-09 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: MAXN_2026-02-09_trades_XNAS.dbn.zst
+  Trade data: 404 records for MAXN
+  Trades: 404 | $3.89-$4.15 | 09:30:00-11:54:53 ET
+  Tick replay: 404 trades for sim window
+  [L2_warmup] bearish imbalance=0.20 bar=1/30 (hard gate inactive)
+  [09:34] CLASSIFIER: MAXN → avoid (conf=0.85) — AVOID gate: VWAP dist 4.7% < 7.0%, range 7.8% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:31 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=1.5 entry=4.1500 stop=3.8650 R=0.2850 detail=macd=7.5*0.6;R>=0.08=+1;l2_thin_ask=+1;l2_imbalance_bear=-3(0.20);l2_wide_spread=-2(3.5%) close=3.9200 vwap=3.9685
+    post_block: max_5m=4.1400 max_10m=4.1400 max_30m=4.1400
+
+======================================================================
+  BACKTEST REPORT: MAXN -- 2026-02-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=731 snaps [TICK mode]
+  Bars: 404 sim + 6 seed  |  EMA9=3.3875  VWAP=3.7694
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,36 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: MENS  |  Date: 2026-01-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MENS bars for 2026-01-02...
+  Total bars: 151  |  Seed: 11  |  Sim: 140
+  Fetching L2 from Databento: MENS 2026-01-02 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: MENS_2026-01-02_XNAS.dbn.zst
+  L2 data: 3204 records for MENS
+  L2 snapshots: 793 (1-second sampled)
+  L2 data loaded: 793 snapshots
+  Seed complete: EMA9=3.9581
+  Fetching tick data from Databento...
+  Fetching trades from Databento: MENS 2026-01-02 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: MENS_2026-01-02_trades_XNAS.dbn.zst
+  Trade data: 276 records for MENS
+  Trades: 276 | $3.90-$4.09 | 07:00:24-11:57:42 ET
+  Tick replay: 276 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:33 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=8.5 entry=4.0950 stop=4.0600 R=0.0350 detail=macd=7.5*0.6;bull_struct=+3;r2g=+1.5;whole=+0.5;l2_thin_ask=+1;l2_wide_spread=-2(5.2%) close=3.9500 vwap=3.9860
+    post_block: max_5m=3.9700 max_10m=3.9700 max_30m=3.9700
+
+======================================================================
+  BACKTEST REPORT: MENS -- 2026-01-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=793 snaps [TICK mode]
+  Bars: 276 sim + 11 seed  |  EMA9=3.5743  VWAP=3.8029
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

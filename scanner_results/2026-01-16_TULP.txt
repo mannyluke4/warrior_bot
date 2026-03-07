@@ -1,0 +1,36 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TULP  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TULP bars for 2026-01-16...
+  Total bars: 69  |  Seed: 1  |  Sim: 68
+  Seed complete: EMA9=3.9900
+  Fetching tick data from Alpaca...
+  Tick replay: 628 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:35 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=4.3000 stop=4.1000 R=0.2000 detail=macd=7.5*0.6;R>=0.08=+1 close=4.0600 vwap=4.0603
+    post_block: max_5m=4.1839 max_10m=4.1839 max_30m=4.1900
+
+======================================================================
+  BACKTEST REPORT: TULP -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 628 sim + 1 seed  |  EMA9=4.0747  VWAP=4.0889
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:29   4.1200   3.9900  0.1300    5.5   3.9500  stop_hit                 -1308    -1.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,308  |  Avg R-Multiple: -1.3R
+  Largest Win: $+0  |  Largest Loss: $-1,308
+  Armed: 3  |  Signals: 2  |  Entered: 1
+======================================================================
+

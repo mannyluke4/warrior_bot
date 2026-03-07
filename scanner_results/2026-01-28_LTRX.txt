@@ -1,0 +1,45 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: LTRX  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LTRX bars for 2026-01-28...
+  Total bars: 370  |  Seed: 87  |  Sim: 283
+  Fetching L2 from Databento: LTRX 2026-01-28 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: LTRX_2026-01-28_XNAS.dbn.zst
+  L2 data: 52085 records for LTRX
+  L2 snapshots: 4811 (1-second sampled)
+  L2 data loaded: 4811 snapshots
+  Seed complete: EMA9=8.0414
+  Fetching tick data from Databento...
+  Fetching trades from Databento: LTRX 2026-01-28 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: LTRX_2026-01-28_trades_XNAS.dbn.zst
+  Trade data: 6862 records for LTRX
+  Trades: 6862 | $7.90-$8.84 | 07:00:00-11:59:55 ET
+  Tick replay: 6862 trades for sim window
+  [L2_warmup] bearish imbalance=0.12 bar=25/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.29 bar=29/30 (hard gate inactive)
+
+======================================================================
+  BACKTEST REPORT: LTRX -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4811 snaps [TICK mode]
+  Bars: 6862 sim + 87 seed  |  EMA9=7.0351  VWAP=7.7918
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:28   8.3600   8.2200  0.1400   13.5   8.4000  l2_bearish_exit_full      +286    +0.3R
+    2   07:38   8.4200   8.2900  0.1300    8.0   8.3900  l2_bearish_exit_full      -214    -0.2R
+    3   07:42   8.6000   8.4100  0.1900   10.0   8.5700  l2_bearish_exit_full      -158    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 3  |  Wins: 1  |  Losses: 2  |  Win Rate: 33.3%
+  Gross P&L: $-86  |  Avg R-Multiple: -0.0R
+  Largest Win: $+286  |  Largest Loss: $-214
+  Armed: 6  |  Signals: 5  |  Entered: 3
+======================================================================
+

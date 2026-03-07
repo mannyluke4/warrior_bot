@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AIRS  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AIRS bars for 2026-02-02...
+  Total bars: 108  |  Seed: 1  |  Sim: 107
+  Fetching L2 from Databento: AIRS 2026-02-02 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AIRS_2026-02-02_XNAS.dbn.zst
+  L2 data: 5858 records for AIRS
+  L2 snapshots: 1262 (1-second sampled)
+  L2 data loaded: 1262 snapshots
+  Seed complete: EMA9=3.0200
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AIRS 2026-02-02 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AIRS_2026-02-02_trades_XNAS.dbn.zst
+  Trade data: 671 records for AIRS
+  Trades: 671 | $2.97-$2.97 | 09:28:00-11:59:46 ET
+  Tick replay: 671 trades for sim window
+  [09:35] CLASSIFIER: AIRS → avoid (conf=0.85) — AVOID gate: VWAP dist 1.5% < 7.0%, range 2.4% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: AIRS -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1262 snaps [TICK mode]
+  Bars: 671 sim + 1 seed  |  EMA9=2.8136  VWAP=2.8661
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

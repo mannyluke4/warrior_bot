@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: TROO  |  Date: 2026-02-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TROO bars for 2026-02-23...
+  Total bars: 66  |  Seed: 3  |  Sim: 63
+  Fetching L2 from Databento: TROO 2026-02-23 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: TROO_2026-02-23_XNAS.dbn.zst
+  L2 data: 2907 records for TROO
+  L2 snapshots: 460 (1-second sampled)
+  L2 data loaded: 460 snapshots
+  Seed complete: EMA9=3.9452
+  Fetching tick data from Databento...
+  Fetching trades from Databento: TROO 2026-02-23 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: TROO_2026-02-23_trades_XNAS.dbn.zst
+  Trade data: 135 records for TROO
+  Trades: 135 | $3.87-$3.95 | 08:04:29-11:59:29 ET
+  Tick replay: 135 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TROO -- 2026-02-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=460 snaps [TICK mode]
+  Bars: 135 sim + 3 seed  |  EMA9=3.6892  VWAP=3.9178
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AIDX  |  Date: 2026-02-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AIDX bars for 2026-02-24...
+  Total bars: 106  |  Seed: 14  |  Sim: 92
+  Seed complete: EMA9=9.0028
+  Fetching tick data from Alpaca...
+  Tick replay: 2324 trades for sim window
+  [07:14] CLASSIFIER: AIDX → avoid (conf=0.85) — AVOID gate: VWAP dist 4.1% < 7.0%, range 2.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: AIDX -- 2026-02-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2324 sim + 14 seed  |  EMA9=8.6810  VWAP=8.3516
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
