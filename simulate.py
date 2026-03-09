@@ -81,6 +81,7 @@ class SimTrade:
     tp_hit: bool = False    # T1 hit
     peak: float = 0.0
     peak_time: str = ""
+    peak_ts_utc: datetime = None  # V5: UTC timestamp of last peak (for new high grace)
     runner_stop: float = 0.0
     highest_r: float = 0.0   # Peak R-multiple seen (for WB_TRAILING_STOP)
     closed: bool = False
@@ -163,6 +164,11 @@ class SimTradeManager:
         # When 3-tranche is enabled, force classic exit mode
         if self.three_tranche_enabled and self.exit_mode == "signal":
             self.exit_mode = "classic"
+
+        # V5: Time-based stop tightening
+        self._time_tighten_enabled = os.getenv("WB_TIME_TIGHTEN_ENABLED", "0") == "1"
+        self._time_tighten_sec = int(os.getenv("WB_TIME_TIGHTEN_SEC", "120"))
+        self._time_tighten_r = float(os.getenv("WB_TIME_TIGHTEN_R", "0.5"))
 
         self.open_trade: Optional[SimTrade] = None
         self.closed_trades: list[SimTrade] = []
@@ -263,14 +269,24 @@ class SimTradeManager:
 
         return t
 
-    def on_tick(self, price: float, time_str: str):
+    def on_tick(self, price: float, time_str: str, ts_utc: datetime = None):
         t = self.open_trade
         if t is None or t.closed:
             return
 
-        if price > t.peak:
-            t.peak = price
+        if price >= t.peak:
+            t.peak = max(t.peak, price)
             t.peak_time = time_str
+            if ts_utc is not None:
+                t.peak_ts_utc = ts_utc
+
+        # V5: Time-based stop tightening — if no new high in N seconds, tighten stop
+        if self._time_tighten_enabled and t.r > 0 and t.peak_ts_utc and ts_utc:
+            sec_since_peak = (ts_utc - t.peak_ts_utc).total_seconds()
+            if sec_since_peak >= self._time_tighten_sec:
+                tighter_stop = t.entry - (self._time_tighten_r * t.r)
+                if tighter_stop > t.stop:
+                    t.stop = tighter_stop
 
         # --- MAX LOSS CAP (hard safety net) ---
         if self.max_loss_r > 0 and t.r > 0:
@@ -1000,6 +1016,8 @@ def run_simulation(
     _tw_grace_min = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3"))
     _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
     _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
+    _be_profit_gate_signal = os.getenv("WB_BE_PROFIT_GATE_SIGNAL", "0") == "1"
+    _be_new_high_grace_sec = int(os.getenv("WB_BE_NEW_HIGH_GRACE_SEC", "0"))
     _reentry_cooldown_bars = int(os.getenv("WB_REENTRY_COOLDOWN_BARS", "5"))
 
     # Classifier settings (gated OFF by default)
@@ -1195,6 +1213,8 @@ def run_simulation(
             "last_1m_time": None,
             "prev_10s_bar": None,  # for bearish engulfing detection
             "recent_10s_highs": [],  # for BE parabolic grace
+            "vwap_blocked_arms": [],  # Phase 1 study: track VWAP-blocked armed setups
+            "bar_index": 0,  # 1m bar counter for post-block tracking
         }
         _exit_on_bear_engulf = os.getenv("WB_EXIT_ON_BEAR_ENGULF", "1") == "1"
         _be_parabolic_grace = os.getenv("WB_BE_PARABOLIC_GRACE", "1") == "1"
@@ -1359,14 +1379,21 @@ def run_simulation(
             if _exit_on_bear_engulf and prev is not None:
                 if is_bearish_engulfing(bar.open, bar.high, bar.low, bar.close,
                                         prev["o"], prev["h"], prev["l"], prev["c"]):
+                    # V5: New high grace — suppress BE if stock made new high recently
+                    if _be_new_high_grace_sec > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed and sim_mgr.open_trade.peak_ts_utc:
+                        _sec_since_peak = (bar.start_utc - sim_mgr.open_trade.peak_ts_utc).total_seconds()
+                        if _sec_since_peak < _be_new_high_grace_sec:
+                            if verbose:
+                                print(f"  [{time_str}] BE_SUPPRESSED (new_high_grace: {_sec_since_peak:.0f}s < {_be_new_high_grace_sec}s) @ {bar.close:.4f}", flush=True)
+                            return
                     if _in_be_grace(time_str):
                         if verbose:
                             print(f"  [{time_str}] BE_SUPPRESSED (time grace) @ {bar.close:.4f}", flush=True)
                     else:
-                        # Profit gate: suppress BE only in small positive profit (< min R)
-                        # Skip in signal mode — BE exits are part of the cascading strategy
+                        # Profit gate: suppress BE in small positive profit (< min R)
+                        # V5: Now applies in signal mode too when WB_BE_PROFIT_GATE_SIGNAL=1
                         _be_profit_ok = True
-                        if _exit_mode != "signal" and _be_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+                        if (_be_profit_gate_signal or _exit_mode != "signal") and _be_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
                             _be_unreal = bar.close - sim_mgr.open_trade.entry
                             if 0 < _be_unreal < _be_min_profit_r * sim_mgr.open_trade.r:
                                 _be_profit_ok = False
@@ -1506,6 +1533,29 @@ def run_simulation(
             if msg and "ARMED" in msg:
                 tick_sim_state["armed_count"] += 1
 
+            # Track VWAP-blocked arms for study
+            tick_sim_state["bar_index"] += 1
+            if msg and "VWAP_BLOCKED_ARM" in msg:
+                tick_sim_state["vwap_blocked_arms"].append({
+                    "time": time_str,
+                    "msg": msg,
+                    "bar_close": bar.close,
+                    "bar_high": bar.high,
+                    "bar_index": tick_sim_state["bar_index"],
+                    "max_high_5m": bar.high,
+                    "max_high_10m": bar.high,
+                    "max_high_30m": bar.high,
+                })
+            # Update post-block highs for tracked blocked arms
+            for ba in tick_sim_state["vwap_blocked_arms"]:
+                bars_since = tick_sim_state["bar_index"] - ba["bar_index"]
+                if bars_since <= 5:
+                    ba["max_high_5m"] = max(ba["max_high_5m"], bar.high)
+                if bars_since <= 10:
+                    ba["max_high_10m"] = max(ba["max_high_10m"], bar.high)
+                if bars_since <= 30:
+                    ba["max_high_30m"] = max(ba["max_high_30m"], bar.high)
+
             tick_sim_state["last_1m_msg"] = msg
             tick_sim_state["last_1m_time"] = time_str
 
@@ -1582,7 +1632,7 @@ def run_simulation(
                         )
 
                 # Stop/TP/trail check on every tick
-                sim_mgr.on_tick(price, time_str)
+                sim_mgr.on_tick(price, time_str, ts_utc=ts)
 
                 # Parabolic Chandelier stop check — ONLY in classic mode
                 # In signal mode, the existing signal trail handles exits;
@@ -1612,6 +1662,13 @@ def run_simulation(
                     _parabolic_det.reset()
 
         armed_count = tick_sim_state["armed_count"]
+
+        # Print VWAP blocked arms summary for study
+        if tick_sim_state["vwap_blocked_arms"]:
+            print(f"\n  === VWAP BLOCKED ARMS ({len(tick_sim_state['vwap_blocked_arms'])}) ===")
+            for ba in tick_sim_state["vwap_blocked_arms"]:
+                print(f"  BLOCKED: time={ba['time']} {ba['msg']}")
+                print(f"    post_block: max_5m={ba['max_high_5m']:.4f} max_10m={ba['max_high_10m']:.4f} max_30m={ba['max_high_30m']:.4f}")
 
     else:
         # ── BAR MODE: original 1-min bar simulation ──

@@ -48,6 +48,7 @@ class OpenTrade:
     runner_stop: float = 0.0
     highest_r: float = 0.0       # Peak R-multiple seen (for WB_TRAILING_STOP)
     created_at_utc: datetime = None
+    peak_ts_utc: datetime = None  # V5: when peak was last set (for new high grace)
     # T2 (3-tranche only; qty_t2=0 when disabled)
     qty_t2: int = 0
     take_profit_t2: float = 0.0
@@ -106,8 +107,26 @@ class PaperTradeManager:
         # Trading toggles
         self.armed = os.getenv("WB_ARM_TRADING", "0") == "1"
 
-        # Risk / sizing
-        self.risk_dollars = float(os.getenv("WB_RISK_DOLLARS", "10"))
+        # Risk / sizing — V5: dynamic equity-based risk
+        _dynamic_risk_enabled = os.getenv("WB_DYNAMIC_RISK_ENABLED", "0") == "1"
+        _base_risk = float(os.getenv("WB_RISK_DOLLARS", "10"))
+        if _dynamic_risk_enabled:
+            _base_equity = float(os.getenv("WB_BASE_EQUITY", "30000"))
+            _risk_pct = float(os.getenv("WB_RISK_PCT_OF_EQUITY", "2.5"))
+            _min_risk = float(os.getenv("WB_MIN_RISK_DOLLARS", "250"))
+            _max_risk = float(os.getenv("WB_MAX_RISK_DOLLARS", "1500"))
+            try:
+                from alpaca.trading.client import TradingClient as _TC
+                _tc = _TC(os.getenv("APCA_API_KEY_ID"), os.getenv("APCA_API_SECRET_KEY"), paper=True)
+                current_equity = float(_tc.get_account().equity)
+            except Exception:
+                current_equity = _base_equity
+            dynamic_risk = current_equity * (_risk_pct / 100.0)
+            self.risk_dollars = max(_min_risk, min(_max_risk, dynamic_risk))
+            log_event("dynamic_risk_sizing", equity=current_equity,
+                      risk_pct=_risk_pct, risk_dollars=self.risk_dollars)
+        else:
+            self.risk_dollars = _base_risk
         self.tp_r_mult = float(os.getenv("WB_TAKE_PROFIT_R", "2.0"))  # NOTE: env mismatch is on Mansion Checklist
         self.scale_core = float(os.getenv("WB_SCALE_CORE", "0.8"))
         self.runner_trail_r = float(os.getenv("WB_RUNNER_TRAIL_R", "1.0"))
@@ -1816,6 +1835,15 @@ class PaperTradeManager:
         if not bear:
             return
 
+        # V5: Suppress BE exits if stock made a new high recently
+        _be_new_high_grace_sec = int(os.getenv("WB_BE_NEW_HIGH_GRACE_SEC", "0"))
+        if _be_new_high_grace_sec > 0 and t.peak_ts_utc:
+            sec_since_peak = (datetime.now(timezone.utc) - t.peak_ts_utc).total_seconds()
+            if sec_since_peak < _be_new_high_grace_sec:
+                log_event("be_exit_suppressed_new_high_grace", symbol,
+                          entry=t.entry, peak=t.peak, sec_since_peak=round(sec_since_peak))
+                return
+
         # Time-based BE grace (like TW grace — suppress BE for first N minutes after entry)
         if self.be_grace_sec > 0 and t.created_at_utc:
             age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
@@ -1836,10 +1864,11 @@ class PaperTradeManager:
                           entry=t.entry, r=t.r, price=float(self.last_price.get(symbol, 0)))
                 return
 
-        # Profit gate: suppress BE only in small positive profit (< min R)
-        # Skip in signal mode — BE exits are part of the cascading strategy
+        # Profit gate: suppress BE in small positive profit (< min R)
+        # V5: Now applies in signal mode too — data shows BE exits clip small winners
         _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
-        if self.exit_mode != "signal" and _be_min_profit_r > 0 and t.r > 0:
+        _be_profit_gate_signal = os.getenv("WB_BE_PROFIT_GATE_SIGNAL", "0") == "1"
+        if (_be_profit_gate_signal or self.exit_mode != "signal") and _be_min_profit_r > 0 and t.r > 0:
             px_now = float(self.last_price.get(symbol, c))
             _be_unreal = px_now - t.entry
             if 0 < _be_unreal < _be_min_profit_r * t.r:
@@ -1964,6 +1993,8 @@ class PaperTradeManager:
         if bid is None:
             bid = last
 
+        if float(bid) >= t.peak:
+            t.peak_ts_utc = datetime.now(timezone.utc)
         t.peak = max(t.peak, float(bid))
 
         # --- MAX LOSS CAP (hard safety net) ---
@@ -1982,6 +2013,21 @@ class PaperTradeManager:
                     )
                     self._exit(symbol, qty=t.qty_total, reason="max_loss_hit", price=bid)
                 return
+
+        # V5: Time-based stop tightening — if no new high in N seconds, tighten stop
+        _time_tighten_enabled = os.getenv("WB_TIME_TIGHTEN_ENABLED", "0") == "1"
+        if _time_tighten_enabled and t.r > 0:
+            _time_tighten_sec = int(os.getenv("WB_TIME_TIGHTEN_SEC", "120"))
+            _time_tighten_r = float(os.getenv("WB_TIME_TIGHTEN_R", "0.5"))
+            if t.peak_ts_utc:
+                sec_since_peak = (datetime.now(timezone.utc) - t.peak_ts_utc).total_seconds()
+                if sec_since_peak >= _time_tighten_sec:
+                    tighter_stop = t.entry - (_time_tighten_r * t.r)
+                    if tighter_stop > t.stop:
+                        log_event("time_tighten_stop", symbol,
+                                  old_stop=round(t.stop, 4), new_stop=round(tighter_stop, 4),
+                                  sec_since_peak=round(sec_since_peak))
+                        t.stop = tighter_stop
 
         # --- Chandelier stop (parabolic regime, classic mode ONLY) ---
         # In signal mode, the existing signal trail handles exits;
