@@ -1,0 +1,34 @@
+# V4 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CRWG  |  Date: 2025-11-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRWG bars for 2025-11-06...
+  Total bars: 325  |  Seed: 53  |  Sim: 272
+  Fetching L2 from Databento: CRWG 2025-11-06 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: CRWG_2025-11-06_XNAS.dbn.zst
+  L2 data: 178494 records for CRWG
+  L2 snapshots: 9235 (1-second sampled)
+  L2 data loaded: 9235 snapshots
+  Seed complete: EMA9=9.2318
+  Fetching tick data from Databento...
+  Fetching trades from Databento: CRWG 2025-11-06 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: CRWG_2025-11-06_trades_XNAS.dbn.zst
+  Trade data: 2151 records for CRWG
+  Trades: 2151 | $9.26-$9.55 | 07:00:46-11:58:15 ET
+  Tick replay: 2151 trades for sim window
+  [L2_bid_stack] BLOCKED: stack=9.5300 imbalance=0.37 < 0.65 (stop stays 9.5000)
+
+======================================================================
+  BACKTEST REPORT: CRWG -- 2025-11-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9235 snaps [TICK mode]
+  Bars: 2151 sim + 53 seed  |  EMA9=7.3592  VWAP=8.2827
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

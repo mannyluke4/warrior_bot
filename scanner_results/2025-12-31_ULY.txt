@@ -1,0 +1,42 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ULY  |  Date: 2025-12-31  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ULY bars for 2025-12-31...
+  Total bars: 412  |  Seed: 117  |  Sim: 295
+  Seed complete: EMA9=3.2729
+  Fetching tick data from Alpaca...
+  Tick replay: 62057 trades for sim window
+
+  === VWAP BLOCKED ARMS (3) ===
+  BLOCKED: time=07:05 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.3900 stop=3.2400 R=0.1500 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3500 vwap=3.3590
+    post_block: max_5m=3.5700 max_10m=3.5700 max_30m=3.5700
+  BLOCKED: time=09:24 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.6000 stop=3.4700 R=0.1300 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3600 vwap=3.3877
+    post_block: max_5m=3.6000 max_10m=3.9199 max_30m=3.9199
+  BLOCKED: time=09:29 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.6000 stop=3.5000 R=0.1000 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3700 vwap=3.3983
+    post_block: max_5m=3.9199 max_10m=3.9199 max_30m=3.9199
+
+======================================================================
+  BACKTEST REPORT: ULY -- 2025-12-31 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 62057 sim + 117 seed  |  EMA9=3.3188  VWAP=3.5275
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:09   3.4900   3.3400  0.1500   12.0   3.4100  topping_wicky_exit_full      -400    -0.5R
+    2   09:31   3.8400   3.3800  0.4600   12.0   3.7100  bearish_engulfing_exit_full      -212    -0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-612  |  Avg R-Multiple: -0.4R
+  Largest Win: $+0  |  Largest Loss: $-400
+  Armed: 8  |  Signals: 4  |  Entered: 2
+======================================================================
+

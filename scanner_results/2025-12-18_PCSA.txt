@@ -1,0 +1,33 @@
+# V4 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PCSA  |  Date: 2025-12-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PCSA bars for 2025-12-18...
+  Total bars: 333  |  Seed: 84  |  Sim: 249
+  Seed complete: EMA9=4.4636
+  Fetching tick data from Alpaca...
+  Tick replay: 17041 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PCSA -- 2025-12-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 17041 sim + 84 seed  |  EMA9=3.6953  VWAP=4.1363
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:34   4.9000   4.6800  0.2200   12.0   4.6800  stop_hit                  -250    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-250  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-250
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+
