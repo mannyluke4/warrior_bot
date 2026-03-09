@@ -1,4 +1,4 @@
-# Jan/Feb 2026 Backtest Report — V4 (Tier Restructure + B-Tier Quality Gate)
+# Jan/Feb 2026 Backtest Report — V4 (Tier Restructure + B-Gate)
 
 **Generated:** 2026-03-09
 **Branch:** scanner-sim-backtest
@@ -7,33 +7,42 @@
 ## Version Comparison
 
 | Metric | V1 (No Filters) | V2 (Protective) | V3 (SQS + PM Sort) | V4 (Tier Restructure) |
-|--------|-----------------|-----------------|---------------------|-----------------------|
+|--------|-----------------|-----------------|---------------------|----------------------|
 | **Total P&L** | -$17,885 | -$8,938 | +$566 | **$+5,402** |
 | Total Sims | 51 | 161 | 26 | 63 |
-| Winners | 9 | 7 | 8 | 4 |
-| Losers | — | 18 | 17 | 6 |
-| Win Rate | 17.6% | 4.3% | 30.8% | 6.3% |
-| Profitable Days | 2/19 | 3/30 | 5/15 | 4/23 |
+| Winners | 9 | 7 | 9 | 4 |
+| Losers | — | 18 | 11 | 6 |
+| Win Rate | 17.6% | 4.3% | 34.6% | 6.3% |
+| Profitable Days | 2/19 | 3/30 | 5/14 | 4/23 |
 | Cold Market Skips | 0 | 8 | 8 | 8 |
 | Kill Switch Fires | 0 | 2 | 2 | 0 |
 
-## V4 Tier Distribution
+## V4 Tier Mapping
 
-| Tier | SQS Range | Risk | Traded | P&L |
-|------|-----------|------|--------|-----|
-| Shelved (SQS 7-9) | $250 | 4 | $-147 |
-| A-tier (SQS 5-6) | $750 | 42 | $+4,990 |
-| B-tier (SQS 4 (gated)) | $250 | 17 | $+559 |
-| B-GATE SKIP | SQS 4, failed gate | — | 56 blocked |
-| SQS SKIP | SQS 0-3 | — | 48 skipped |
-| **Total Traded** | | **63** | **$+5,402** |
+| Tier | SQS Range | Risk | Change from V3 |
+|------|-----------|------|---------------|
+| Shelved | 7-9 | $250 | Was A+ $1,000 — demoted (n=1 active trade) |
+| A-tier | 5-6 | $750 | Was B $500 — promoted (42.9% WR, 4.8x R:R) |
+| B-tier | 4 | $250 | Was C $250 — must pass quality gate |
+| Skip | 0-3 | $0 | Was 0-2 — SQS=3 demoted (-$998 in V3) |
+
+## SQS Distribution
+
+| Tier | Count | P&L |
+|------|-------|-----|
+| Shelved (SQS 7-9, $250) | 4 | $-147 |
+| A-tier (SQS 5-6, $750) | 42 | $+4,990 |
+| B-tier (SQS 4, $250) — gate passed | 17 | $+559 |
+| B-GATE SKIP (SQS 4, gate failed) | 56 | N/A |
+| SQS SKIP (0-3) | 48 | N/A |
+| **Total** | **167** | **$+5,402** |
 
 ## B-Tier Quality Gate Stats
 
-- **Gate:** gap >= 14% AND pm_vol >= 10,000 (applies to SQS=4 only)
-- **Passed:** 17
-- **Blocked:** 56
-- **B-tier P&L (passed only):** $+559
+- SQS=4 candidates considered: **73**
+- Passed gate (gap>=14% AND pm_vol>=10k): **17**
+- Blocked by gate: **56**
+- B-tier P&L (passed): **$+559**
 
 ## Kill Switch Analysis
 

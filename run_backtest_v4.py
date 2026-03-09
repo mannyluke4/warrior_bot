@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Giant Backtest V4 — Tier Restructure + B-Tier Quality Gate
+Giant Backtest V4 — Tier Restructure & C-Tier Tightening
 
 Changes from V3:
-- A-tier (SQS 5-6): risk $500→$750 (promoted — proven 42.9% WR, 4.8x R:R)
-- Shelved (SQS 7-9): risk $1000→$250 (demoted — n=1 insufficient data)
-- B-tier (SQS 4): $250 risk, must pass quality gate (gap>=14% AND pm_vol>=10k)
-- SQS 0-3: Skip (SQS=3 demoted from C-tier — net -$998 across 35 V3 sims)
+- SQS 7-9 → Shelved ($250, was A+ $1000) — insufficient data at n=1
+- SQS 5-6 → A-tier ($750, was B $500) — proven 42.9% WR, 4.8x R:R
+- SQS 4   → B-tier ($250, was C $250) — must pass quality gate
+- SQS 0-3 → Skip (was SQS 0-2) — SQS=3 demoted (-$998 across 35 sims)
+- B-tier quality gate: gap >= 14% AND pm_vol >= 10,000
 
 All other filters unchanged: cold market gate, kill switch, PM vol min, B ceiling 10M.
 """
@@ -47,7 +48,7 @@ def compute_sqs(candidate: dict) -> tuple[int, str, int]:
     gap = candidate.get('gap_pct', 0) or 0
     flt = candidate.get('float_millions')
 
-    # PM Volume score (0-3)
+    # PM Volume score (0-3) — unchanged
     if pm_vol >= 500_000:
         pm_score = 3
     elif pm_vol >= 50_000:
@@ -57,7 +58,7 @@ def compute_sqs(candidate: dict) -> tuple[int, str, int]:
     else:
         pm_score = 0
 
-    # Gap % score (0-3)
+    # Gap % score (0-3) — unchanged
     if gap >= 40:
         gap_score = 3
     elif gap >= 20:
@@ -67,7 +68,7 @@ def compute_sqs(candidate: dict) -> tuple[int, str, int]:
     else:
         gap_score = 0
 
-    # Float score (0-3)
+    # Float score (0-3) — unchanged
     if flt is None or flt > 5.0:
         float_score = 0
     elif flt > 2.0:
@@ -81,13 +82,13 @@ def compute_sqs(candidate: dict) -> tuple[int, str, int]:
 
     # V4 tier mapping
     if sqs >= 7:
-        return sqs, "Shelved", 250
+        return sqs, "Shelved", 250    # was $1000
     elif sqs >= 5:
-        return sqs, "A", 750
+        return sqs, "A", 750          # was $500
     elif sqs >= 4:
-        return sqs, "B", 250
+        return sqs, "B", 250          # same $250, but requires quality gate
     else:
-        return sqs, "Skip", 0
+        return sqs, "Skip", 0         # was SQS 0-2, now SQS 0-3
 
 
 def parse_pnl_from_output(output: str) -> float:
@@ -177,7 +178,7 @@ def process_date(date: str, stats: dict):
             filtered_float.append(f"{c['symbol']} (float={flt}M)")
             stats['float_filtered'] += 1
 
-    # Sort by PM volume descending (from V3)
+    # V3: Sort by PM volume descending (unchanged)
     profile_a.sort(key=lambda x: x.get('pm_volume', 0), reverse=True)
     profile_b.sort(key=lambda x: x.get('pm_volume', 0), reverse=True)
     profile_b = profile_b[:2]
@@ -201,7 +202,7 @@ def process_date(date: str, stats: dict):
         profile = c['profile']
         sim_start = c.get('sim_start', '07:00')
 
-        # V4: Compute Stock Quality Score
+        # V4: Compute Stock Quality Score (returns tier label)
         sqs, tier, risk = compute_sqs(c)
 
         if risk == 0:
@@ -211,17 +212,16 @@ def process_date(date: str, stats: dict):
             stats['sqs_distribution']['skip'] += 1
             continue
 
-        # V4: B-tier quality gate — SQS=4 stocks need gap>=14% AND pm_vol>=10k
+        # V4: B-tier quality gate
+        # SQS=4 stocks must have gap >= 14% AND PM volume >= 10,000
         if tier == "B":
             pm_vol = c.get('pm_volume', 0) or 0
             gap = c.get('gap_pct', 0) or 0
             if gap < 14.0 or pm_vol < 10_000:
                 print(f"  B-GATE SKIP {sym} (SQS={sqs}, gap={gap:.1f}%, pm_vol={pm_vol:,.0f}) — needs gap>=14% AND pm_vol>=10k")
-                stats['b_gate_blocked'] += 1
+                stats['b_gate_skipped'] += 1
                 stats['sqs_distribution']['b_gate_skip'] += 1
                 continue
-            else:
-                stats['b_gate_passed'] += 1
 
         # Check kill switch BEFORE running sim
         if session.should_stop():
@@ -329,55 +329,66 @@ def generate_report(stats: dict):
     total_days_traded = len(stats['day_pnl'])
 
     lines = []
-    lines.append("# Jan/Feb 2026 Backtest Report — V4 (Tier Restructure + B-Tier Quality Gate)")
+    lines.append("# Jan/Feb 2026 Backtest Report — V4 (Tier Restructure + B-Gate)")
     lines.append("")
     lines.append(f"**Generated:** 2026-03-09")
     lines.append(f"**Branch:** scanner-sim-backtest")
     lines.append(f"**Dates:** Jan 2 – Feb 27, 2026 (38 trading days)")
     lines.append("")
 
-    # Version comparison
+    # V1/V2/V3/V4 comparison
     lines.append("## Version Comparison")
     lines.append("")
     lines.append("| Metric | V1 (No Filters) | V2 (Protective) | V3 (SQS + PM Sort) | V4 (Tier Restructure) |")
-    lines.append("|--------|-----------------|-----------------|---------------------|-----------------------|")
+    lines.append("|--------|-----------------|-----------------|---------------------|----------------------|")
     lines.append(f"| **Total P&L** | -$17,885 | -$8,938 | +$566 | **${stats['total_pnl']:+,.0f}** |")
     lines.append(f"| Total Sims | 51 | 161 | 26 | {total} |")
-    lines.append(f"| Winners | 9 | 7 | 8 | {stats['winners']} |")
-    lines.append(f"| Losers | — | 18 | 17 | {stats['losers']} |")
-    lines.append(f"| Win Rate | 17.6% | 4.3% | 30.8% | {win_rate:.1f}% |")
-    lines.append(f"| Profitable Days | 2/19 | 3/30 | 5/15 | {profitable_days}/{total_days_traded} |")
+    lines.append(f"| Winners | 9 | 7 | 9 | {stats['winners']} |")
+    lines.append(f"| Losers | — | 18 | 11 | {stats['losers']} |")
+    lines.append(f"| Win Rate | 17.6% | 4.3% | 34.6% | {win_rate:.1f}% |")
+    lines.append(f"| Profitable Days | 2/19 | 3/30 | 5/14 | {profitable_days}/{total_days_traded} |")
     lines.append(f"| Cold Market Skips | 0 | 8 | 8 | {stats['cold_market_days']} |")
     lines.append(f"| Kill Switch Fires | 0 | 2 | 2 | {stats['kill_switch_days']} |")
     lines.append("")
 
-    # Tier distribution
-    dist = stats['sqs_distribution']
-    lines.append("## V4 Tier Distribution")
+    # V4 Tier Mapping
+    lines.append("## V4 Tier Mapping")
     lines.append("")
-    lines.append("| Tier | SQS Range | Risk | Traded | P&L |")
-    lines.append("|------|-----------|------|--------|-----|")
-    for tier_key, tier_label, sqs_range, risk_label in [
-        ('shelved', 'Shelved', '7-9', '$250'),
-        ('a_tier', 'A-tier', '5-6', '$750'),
-        ('b_tier', 'B-tier', '4 (gated)', '$250'),
-    ]:
-        count = dist.get(tier_key, 0)
-        pnl = stats['tier_pnl'].get(tier_label.split('-')[0].split(' ')[0] if '-' in tier_label else {'Shelved': 'Shelved', 'A-tier': 'A', 'B-tier': 'B'}[tier_label], 0)
-        lines.append(f"| {tier_label} (SQS {sqs_range}) | {risk_label} | {count} | ${pnl:+,.0f} |")
-    lines.append(f"| B-GATE SKIP | SQS 4, failed gate | — | {stats['b_gate_blocked']} blocked |")
-    lines.append(f"| SQS SKIP | SQS 0-3 | — | {stats['sqs_skipped']} skipped |")
-    lines.append(f"| **Total Traded** | | **{total}** | **${stats['total_pnl']:+,.0f}** |")
+    lines.append("| Tier | SQS Range | Risk | Change from V3 |")
+    lines.append("|------|-----------|------|---------------|")
+    lines.append("| Shelved | 7-9 | $250 | Was A+ $1,000 — demoted (n=1 active trade) |")
+    lines.append("| A-tier | 5-6 | $750 | Was B $500 — promoted (42.9% WR, 4.8x R:R) |")
+    lines.append("| B-tier | 4 | $250 | Was C $250 — must pass quality gate |")
+    lines.append("| Skip | 0-3 | $0 | Was 0-2 — SQS=3 demoted (-$998 in V3) |")
+    lines.append("")
+
+    # SQS Distribution
+    dist = stats['sqs_distribution']
+    total_considered = dist['shelved'] + dist['a_tier'] + dist['b_tier'] + dist['b_gate_skip'] + dist['skip']
+    lines.append("## SQS Distribution")
+    lines.append("")
+    lines.append("| Tier | Count | P&L |")
+    lines.append("|------|-------|-----|")
+    shelved_pnl = stats['tier_pnl'].get('Shelved', 0)
+    a_pnl = stats['tier_pnl'].get('A', 0)
+    b_pnl = stats['tier_pnl'].get('B', 0)
+    lines.append(f"| Shelved (SQS 7-9, $250) | {dist['shelved']} | ${shelved_pnl:+,.0f} |")
+    lines.append(f"| A-tier (SQS 5-6, $750) | {dist['a_tier']} | ${a_pnl:+,.0f} |")
+    lines.append(f"| B-tier (SQS 4, $250) — gate passed | {dist['b_tier']} | ${b_pnl:+,.0f} |")
+    lines.append(f"| B-GATE SKIP (SQS 4, gate failed) | {dist['b_gate_skip']} | N/A |")
+    lines.append(f"| SQS SKIP (0-3) | {dist['skip']} | N/A |")
+    lines.append(f"| **Total** | **{total_considered}** | **${stats['total_pnl']:+,.0f}** |")
     lines.append("")
 
     # B-tier gate stats
+    b_total = dist['b_tier'] + dist['b_gate_skip']
     lines.append("## B-Tier Quality Gate Stats")
     lines.append("")
-    lines.append(f"- **Gate:** gap >= 14% AND pm_vol >= 10,000 (applies to SQS=4 only)")
-    lines.append(f"- **Passed:** {stats['b_gate_passed']}")
-    lines.append(f"- **Blocked:** {stats['b_gate_blocked']}")
-    b_pnl = stats['tier_pnl'].get('B', 0)
-    lines.append(f"- **B-tier P&L (passed only):** ${b_pnl:+,.0f}")
+    lines.append(f"- SQS=4 candidates considered: **{b_total}**")
+    lines.append(f"- Passed gate (gap>=14% AND pm_vol>=10k): **{dist['b_tier']}**")
+    lines.append(f"- Blocked by gate: **{dist['b_gate_skip']}**")
+    if dist['b_tier'] > 0:
+        lines.append(f"- B-tier P&L (passed): **${b_pnl:+,.0f}**")
     lines.append("")
 
     # Kill switch analysis
@@ -442,7 +453,7 @@ def generate_report(stats: dict):
 
 def main():
     print("=" * 60)
-    print("  GIANT BACKTEST V4 — TIER RESTRUCTURE + B-TIER GATE")
+    print("  GIANT BACKTEST V4 — TIER RESTRUCTURE + B-GATE")
     print("=" * 60)
 
     stats = {
@@ -455,8 +466,7 @@ def main():
         'pm_vol_filtered': 0,
         'float_filtered': 0,
         'sqs_skipped': 0,
-        'b_gate_passed': 0,
-        'b_gate_blocked': 0,
+        'b_gate_skipped': 0,
         'day_pnl': {},
         'sim_details': [],
         'session_summaries': {},
@@ -491,11 +501,10 @@ def main():
     print(f"  PM Vol Filtered:   {stats['pm_vol_filtered']} stocks")
     print(f"  Float >10M Filter: {stats['float_filtered']} stocks")
     print(f"  SQS Skipped:       {stats['sqs_skipped']} stocks")
-    print(f"  B-Gate Passed:     {stats['b_gate_passed']} stocks")
-    print(f"  B-Gate Blocked:    {stats['b_gate_blocked']} stocks")
+    print(f"  B-Gate Skipped:    {stats['b_gate_skipped']} stocks")
     print()
     dist = stats['sqs_distribution']
-    print(f"  Tier Distribution: Shelved={dist['shelved']} A={dist['a_tier']} B={dist['b_tier']} B-GATE-SKIP={dist['b_gate_skip']} Skip={dist['skip']}")
+    print(f"  SQS Distribution:  Shelved={dist['shelved']} A={dist['a_tier']} B={dist['b_tier']} B-Gate-Skip={dist['b_gate_skip']} Skip={dist['skip']}")
     for tier in ['Shelved', 'A', 'B']:
         pnl = stats['tier_pnl'].get(tier, 0)
         print(f"    {tier} tier P&L: ${pnl:+,.0f}")
@@ -513,8 +522,7 @@ def main():
         'pm_vol_filtered': stats['pm_vol_filtered'],
         'float_filtered': stats['float_filtered'],
         'sqs_skipped': stats['sqs_skipped'],
-        'b_gate_passed': stats['b_gate_passed'],
-        'b_gate_blocked': stats['b_gate_blocked'],
+        'b_gate_skipped': stats['b_gate_skipped'],
         'day_pnl': stats['day_pnl'],
         'sim_details': stats['sim_details'],
         'session_summaries': stats['session_summaries'],
