@@ -1,0 +1,25 @@
+# V3 risk=500 sqs=5
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BESS  |  Date: 2026-02-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BESS bars for 2026-02-23...
+  Total bars: 70  |  Seed: 13  |  Sim: 57
+  Seed complete: EMA9=3.4735
+  Fetching tick data from Alpaca...
+  Tick replay: 415 trades for sim window
+  [07:13] CLASSIFIER: BESS → avoid (conf=0.85) — AVOID gate: VWAP dist 2.1% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: BESS -- 2026-02-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 415 sim + 13 seed  |  EMA9=3.0505  VWAP=3.2609
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

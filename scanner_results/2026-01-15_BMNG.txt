@@ -1,4 +1,4 @@
-# V3 risk=500 sqs=5
+# V4 risk=750 sqs=5 tier=A
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -14,7 +14,7 @@ Fetching BMNG bars for 2026-01-15...
 ======================================================================
   BACKTEST REPORT: BMNG -- 2026-01-15 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 9301 sim + 114 seed  |  EMA9=4.1924  VWAP=4.2071
 ======================================================================
 

@@ -1,4 +1,4 @@
-# V3 risk=1000 sqs=7
+# V4 risk=250 sqs=7 tier=Shelved
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -14,21 +14,21 @@ Fetching DRCT bars for 2026-01-23...
 ======================================================================
   BACKTEST REPORT: DRCT -- 2026-01-23 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 710821 sim + 180 seed  |  EMA9=4.1808  VWAP=4.8340
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:20   5.4100   5.2600  0.1500   10.5   5.2600  stop_hit                 -1000    -1.0R
-    2   08:31   5.6400   5.4700  0.1700   11.0   5.7100  bearish_engulfing_exit_full      +412    +0.4R
+    1   07:20   5.4100   5.2600  0.1500   10.5   5.2600  stop_hit                  -250    -1.0R
+    2   08:31   5.6400   5.4700  0.1700   11.0   5.7100  bearish_engulfing_exit_full      +103    +0.4R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
-  Gross P&L: $-588  |  Avg R-Multiple: -0.3R
-  Largest Win: $+412  |  Largest Loss: $-1,000
+  Gross P&L: $-147  |  Avg R-Multiple: -0.3R
+  Largest Win: $+103  |  Largest Loss: $-250
   Armed: 3  |  Signals: 2  |  Entered: 2
 ======================================================================
 

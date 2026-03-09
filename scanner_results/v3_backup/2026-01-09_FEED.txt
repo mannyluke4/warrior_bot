@@ -1,0 +1,39 @@
+# V3 risk=500 sqs=6
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FEED  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FEED bars for 2026-01-09...
+  Total bars: 307  |  Seed: 31  |  Sim: 276
+  Seed complete: EMA9=2.9210
+  Fetching tick data from Alpaca...
+  Tick replay: 46840 trades for sim window
+
+  === VWAP BLOCKED ARMS (2) ===
+  BLOCKED: time=07:09 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=3.1700 stop=2.9900 R=0.1800 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=2.9300 vwap=3.0353
+    post_block: max_5m=3.1600 max_10m=3.2700 max_30m=3.5600
+  BLOCKED: time=07:16 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=9.5 entry=3.2700 stop=2.9400 R=0.3300 detail=macd=7.5*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=3.0000 vwap=3.0442
+    post_block: max_5m=3.1500 max_10m=3.2000 max_30m=3.5600
+
+======================================================================
+  BACKTEST REPORT: FEED -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 46840 sim + 31 seed  |  EMA9=2.2417  VWAP=2.8084
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:12   3.1200   2.9200  0.2000   12.5   2.9200  stop_hit                  -500    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-500  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-500
+  Armed: 4  |  Signals: 1  |  Entered: 1
+======================================================================
+

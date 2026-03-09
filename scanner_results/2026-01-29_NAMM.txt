@@ -1,4 +1,4 @@
-# V3 risk=500 sqs=5
+# V4 risk=750 sqs=5 tier=A
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -27,7 +27,7 @@ Fetching NAMM bars for 2026-01-29...
 ======================================================================
   BACKTEST REPORT: NAMM -- 2026-01-29 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=8612 snaps [TICK mode]
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=8612 snaps [TICK mode]
   Bars: 11448 sim + 171 seed  |  EMA9=5.8775  VWAP=6.7124
 ======================================================================
 

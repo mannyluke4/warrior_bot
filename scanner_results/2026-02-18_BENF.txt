@@ -1,4 +1,4 @@
-# V3 risk=1000 sqs=7
+# V4 risk=250 sqs=7 tier=Shelved
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -19,7 +19,7 @@ Fetching BENF bars for 2026-02-18...
 ======================================================================
   BACKTEST REPORT: BENF -- 2026-02-18 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 125816 sim + 179 seed  |  EMA9=4.4806  VWAP=5.4572
 ======================================================================
 

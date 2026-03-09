@@ -1,4 +1,4 @@
-# V3 risk=500 sqs=5
+# V4 risk=750 sqs=5 tier=A
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -15,7 +15,7 @@ Fetching BESS bars for 2026-02-23...
 ======================================================================
   BACKTEST REPORT: BESS -- 2026-02-23 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 415 sim + 13 seed  |  EMA9=3.0505  VWAP=3.2609
 ======================================================================
 

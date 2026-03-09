@@ -1,0 +1,24 @@
+# V3 risk=250 sqs=4
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NBIG  |  Date: 2026-02-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NBIG bars for 2026-02-20...
+  Total bars: 165  |  Seed: 17  |  Sim: 148
+  Seed complete: EMA9=9.1437
+  Fetching tick data from Alpaca...
+  Tick replay: 1859 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NBIG -- 2026-02-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1859 sim + 17 seed  |  EMA9=8.3265  VWAP=8.7339
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

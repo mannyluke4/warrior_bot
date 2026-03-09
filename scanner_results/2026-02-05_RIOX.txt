@@ -1,4 +1,4 @@
-# V3 risk=500 sqs=5
+# V4 risk=750 sqs=5 tier=A
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -15,21 +15,21 @@ Fetching RIOX bars for 2026-02-05...
 ======================================================================
   BACKTEST REPORT: RIOX -- 2026-02-05 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 2905 sim + 9 seed  |  EMA9=7.1799  VWAP=7.1026
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   09:30   7.2700   7.1600  0.1100   12.5   7.2600  bearish_engulfing_exit_full       -45    -0.1R
-    2   09:35   7.2900   7.0900  0.2000   11.0   7.7100  topping_wicky_exit_full     +1050    +2.1R
+    1   09:30   7.2700   7.1600  0.1100   12.5   7.2600  bearish_engulfing_exit_full       -68    -0.1R
+    2   09:35   7.2900   7.0900  0.2000   11.0   7.7100  topping_wicky_exit_full     +1575    +2.1R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
-  Gross P&L: $+1,005  |  Avg R-Multiple: +1.0R
-  Largest Win: $+1,050  |  Largest Loss: $-45
+  Gross P&L: $+1,507  |  Avg R-Multiple: +1.0R
+  Largest Win: $+1,575  |  Largest Loss: $-68
   Armed: 6  |  Signals: 6  |  Entered: 2
 ======================================================================
 

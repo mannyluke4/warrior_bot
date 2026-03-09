@@ -1,0 +1,33 @@
+# V3 risk=250 sqs=4
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BAOS  |  Date: 2026-01-21  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BAOS bars for 2026-01-21...
+  Total bars: 69  |  Seed: 8  |  Sim: 61
+  Seed complete: EMA9=3.1793
+  Fetching tick data from Alpaca...
+  Tick replay: 525 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BAOS -- 2026-01-21 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 525 sim + 8 seed  |  EMA9=2.9807  VWAP=3.2557
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:03   3.3400   3.3500  0.0900    5.0   3.5500  bearish_engulfing_exit_full      +583    +2.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+583  |  Avg R-Multiple: +2.3R
+  Largest Win: $+583  |  Largest Loss: $+0
+  Armed: 5  |  Signals: 5  |  Entered: 1
+======================================================================
+
