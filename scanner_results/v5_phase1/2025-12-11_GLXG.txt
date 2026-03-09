@@ -1,0 +1,33 @@
+# V5 risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GLXG  |  Date: 2025-12-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GLXG bars for 2025-12-11...
+  Total bars: 447  |  Seed: 175  |  Sim: 272
+  Seed complete: EMA9=3.9038
+  Fetching tick data from Alpaca...
+  Tick replay: 31216 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GLXG -- 2025-12-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 31216 sim + 175 seed  |  EMA9=3.2645  VWAP=4.3058
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:21   5.2100   3.5100  1.7000   12.5   3.6000  topping_wicky_exit_full      -237    -0.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-237  |  Avg R-Multiple: -0.9R
+  Largest Win: $+0  |  Largest Loss: $-237
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

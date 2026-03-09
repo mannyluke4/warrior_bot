@@ -1,0 +1,32 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: BATL  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BATL bars for 2026-02-02...
+  Total bars: 307  |  Seed: 85  |  Sim: 222
+  L2 cache hit: BATL_2026-02-02_XNAS.dbn.zst
+  L2 data: 9941 records for BATL
+  L2 snapshots: 1784 (1-second sampled)
+  L2 data loaded: 1784 snapshots
+  Seed complete: EMA9=3.7202
+  Fetching tick data from Databento...
+  Trades cache hit: BATL_2026-02-02_trades_XNAS.dbn.zst
+  Trade data: 285 records for BATL
+  Trades: 285 | $3.72-$3.72 | 07:00:00-11:58:33 ET
+  Tick replay: 285 trades for sim window
+  [09:32] CLASSIFIER: BATL → avoid (conf=0.85) — AVOID gate: VWAP dist 3.7% < 7.0%, range 3.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: BATL -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1784 snaps [TICK mode]
+  Bars: 285 sim + 85 seed  |  EMA9=3.0069  VWAP=3.4232
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

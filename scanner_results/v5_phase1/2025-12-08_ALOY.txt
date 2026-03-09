@@ -1,0 +1,24 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ALOY  |  Date: 2025-12-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ALOY bars for 2025-12-08...
+  Total bars: 132  |  Seed: 9  |  Sim: 123
+  Seed complete: EMA9=9.6426
+  Fetching tick data from Alpaca...
+  Tick replay: 1725 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ALOY -- 2025-12-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1725 sim + 9 seed  |  EMA9=8.0757  VWAP=8.6475
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

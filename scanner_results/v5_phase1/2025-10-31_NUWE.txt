@@ -1,0 +1,25 @@
+# V5 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NUWE  |  Date: 2025-10-31  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NUWE bars for 2025-10-31...
+  Total bars: 111  |  Seed: 3  |  Sim: 108
+  Seed complete: EMA9=3.6584
+  Fetching tick data from Alpaca...
+  Tick replay: 1520 trades for sim window
+  [07:31] CLASSIFIER: NUWE → avoid (conf=0.85) — AVOID gate: VWAP dist 1.2% < 7.0%, range 1.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: NUWE -- 2025-10-31 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1520 sim + 3 seed  |  EMA9=3.1690  VWAP=3.3865
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

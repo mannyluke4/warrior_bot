@@ -1,0 +1,24 @@
+# V5 risk=758 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SINT  |  Date: 2025-10-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SINT bars for 2025-10-20...
+  Total bars: 288  |  Seed: 0  |  Sim: 288
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 65821 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SINT -- 2025-10-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$758  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 65821 sim + 0 seed  |  EMA9=3.4506  VWAP=4.4208
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

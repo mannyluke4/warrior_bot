@@ -1,0 +1,35 @@
+# V5 risk=683 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BMNG  |  Date: 2025-12-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BMNG bars for 2025-12-18...
+  Total bars: 299  |  Seed: 56  |  Sim: 243
+  Seed complete: EMA9=3.9615
+  Fetching tick data from Alpaca...
+  Tick replay: 5372 trades for sim window
+  [07:04] CLASSIFIER: BMNG → avoid (conf=0.85) — AVOID gate: VWAP dist 0.6% < 7.0%, range 0.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: BMNG -- 2025-12-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$683  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5372 sim + 56 seed  |  EMA9=4.0834  VWAP=4.1545
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:37   4.2105   4.1300  0.0805   10.5   4.3000  topping_wicky_exit_full      +759    +1.1R
+    2   08:48   4.4200   4.3700  0.1000   12.0   4.3700  stop_hit                  -341    -0.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+418  |  Avg R-Multiple: +0.3R
+  Largest Win: $+759  |  Largest Loss: $-341
+  Armed: 5  |  Signals: 3  |  Entered: 2
+======================================================================
+

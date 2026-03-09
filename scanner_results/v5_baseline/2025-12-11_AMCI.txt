@@ -1,0 +1,25 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AMCI  |  Date: 2025-12-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AMCI bars for 2025-12-11...
+  Total bars: 154  |  Seed: 16  |  Sim: 138
+  Seed complete: EMA9=6.2072
+  Fetching tick data from Alpaca...
+  Tick replay: 2664 trades for sim window
+  [07:06] CLASSIFIER: AMCI → avoid (conf=0.85) — AVOID gate: VWAP dist 4.1% < 7.0%, range 3.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: AMCI -- 2025-12-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2664 sim + 16 seed  |  EMA9=5.0720  VWAP=4.8312
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

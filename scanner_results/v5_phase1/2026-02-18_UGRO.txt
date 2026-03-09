@@ -1,0 +1,28 @@
+# V5 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: UGRO  |  Date: 2026-02-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching UGRO bars for 2026-02-18...
+  Total bars: 372  |  Seed: 133  |  Sim: 239
+  Seed complete: EMA9=4.0295
+  Fetching tick data from Alpaca...
+  Tick replay: 11817 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:01 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=8.0 entry=4.1700 stop=4.0200 R=0.1500 detail=macd=5.0*0.6;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=3.9500 vwap=4.0598
+    post_block: max_5m=4.1300 max_10m=4.1300 max_30m=4.1300
+
+======================================================================
+  BACKTEST REPORT: UGRO -- 2026-02-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 11817 sim + 133 seed  |  EMA9=2.7344  VWAP=3.7496
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

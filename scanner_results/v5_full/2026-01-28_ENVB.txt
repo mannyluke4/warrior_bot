@@ -1,0 +1,24 @@
+# V5 risk=613 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ENVB  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ENVB bars for 2026-01-28...
+  Total bars: 111  |  Seed: 4  |  Sim: 107
+  Seed complete: EMA9=4.3332
+  Fetching tick data from Alpaca...
+  Tick replay: 1509 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ENVB -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$613  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1509 sim + 4 seed  |  EMA9=3.5283  VWAP=3.5915
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,37 @@
+# V5 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FGI  |  Date: 2025-12-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FGI bars for 2025-12-08...
+  Total bars: 153  |  Seed: 37  |  Sim: 116
+  Seed complete: EMA9=9.5199
+  Fetching tick data from Alpaca...
+  Tick replay: 2225 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=10:06 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=8.6 entry=9.9329 stop=9.8200 R=0.1129 detail=macd=1.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=9.8150 vwap=9.8221
+    post_block: max_5m=9.9300 max_10m=9.9300 max_30m=9.9300
+
+======================================================================
+  BACKTEST REPORT: FGI -- 2025-12-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2225 sim + 37 seed  |  EMA9=9.4159  VWAP=9.6998
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:23  10.2100  10.1000  0.2200   12.5  10.3900  topping_wicky_exit_full      +614    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+614  |  Avg R-Multiple: +0.8R
+  Largest Win: $+614  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 1  |  Entered: 1
+======================================================================
+

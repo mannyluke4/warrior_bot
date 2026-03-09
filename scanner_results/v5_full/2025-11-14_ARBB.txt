@@ -1,0 +1,25 @@
+# V5 risk=659 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ARBB  |  Date: 2025-11-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ARBB bars for 2025-11-14...
+  Total bars: 168  |  Seed: 48  |  Sim: 120
+  Seed complete: EMA9=7.7709
+  Fetching tick data from Alpaca...
+  Tick replay: 2650 trades for sim window
+  [07:04] CLASSIFIER: ARBB → avoid (conf=0.85) — AVOID gate: VWAP dist 4.0% < 7.0%, range 9.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ARBB -- 2025-11-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$659  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2650 sim + 48 seed  |  EMA9=6.1268  VWAP=7.1326
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

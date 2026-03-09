@@ -1,0 +1,32 @@
+# V5 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: IONZ  |  Date: 2025-10-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IONZ bars for 2025-10-06...
+  Total bars: 467  |  Seed: 170  |  Sim: 297
+  L2 cache hit: IONZ_2025-10-06_XNAS.dbn.zst
+  L2 data: 260675 records for IONZ
+  L2 snapshots: 11406 (1-second sampled)
+  L2 data loaded: 11406 snapshots
+  Seed complete: EMA9=3.5994
+  Fetching tick data from Databento...
+  Trades cache hit: IONZ_2025-10-06_trades_XNAS.dbn.zst
+  Trade data: 3144 records for IONZ
+  Trades: 3144 | $3.60-$3.62 | 07:00:28-11:59:57 ET
+  Tick replay: 3144 trades for sim window
+  [07:05] CLASSIFIER: IONZ → avoid (conf=0.85) — AVOID gate: VWAP dist 0.3% < 7.0%, range 0.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: IONZ -- 2025-10-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=11406 snaps [TICK mode]
+  Bars: 3144 sim + 170 seed  |  EMA9=3.0730  VWAP=3.4433
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

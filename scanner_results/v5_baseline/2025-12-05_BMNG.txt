@@ -1,0 +1,38 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BMNG  |  Date: 2025-12-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BMNG bars for 2025-12-05...
+  Total bars: 333  |  Seed: 95  |  Sim: 238
+  Seed complete: EMA9=6.0734
+  Fetching tick data from Alpaca...
+  Tick replay: 6275 trades for sim window
+  [07:05] CLASSIFIER: BMNG → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 0.8% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=6.4500 stop=6.3105 R=0.1395 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=6.0800 vwap=6.1293
+    post_block: max_5m=6.1300 max_10m=6.1300 max_30m=6.1300
+
+======================================================================
+  BACKTEST REPORT: BMNG -- 2025-12-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 6275 sim + 95 seed  |  EMA9=5.6374  VWAP=5.9087
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:04   6.1500   6.0200  0.1300   12.5   6.2100  parabolic_exhaustion_exit_full      +346    +0.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+346  |  Avg R-Multiple: +0.5R
+  Largest Win: $+346  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 2  |  Entered: 1
+======================================================================
+

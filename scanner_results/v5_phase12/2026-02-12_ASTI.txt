@@ -1,0 +1,37 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ASTI  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ASTI bars for 2026-02-12...
+  Total bars: 259  |  Seed: 28  |  Sim: 231
+  Seed complete: EMA9=9.3682
+  Fetching tick data from Alpaca...
+  Tick replay: 24704 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:50 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=9.3000 stop=9.1700 R=0.1300 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=8.9700 vwap=8.9996
+    post_block: max_5m=9.1000 max_10m=9.1400 max_30m=9.1400
+
+======================================================================
+  BACKTEST REPORT: ASTI -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 24704 sim + 28 seed  |  EMA9=7.1864  VWAP=7.4055
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:43   9.2200   9.0150  0.4100   12.5   9.1807  topping_wicky_exit_full       -24    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-24  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-24
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

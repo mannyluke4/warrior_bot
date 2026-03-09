@@ -1,0 +1,40 @@
+# V5 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: IONZ  |  Date: 2025-11-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IONZ bars for 2025-11-14...
+  Total bars: 480  |  Seed: 179  |  Sim: 301
+  L2 cache hit: IONZ_2025-11-14_XNAS.dbn.zst
+  L2 data: 780355 records for IONZ
+  L2 snapshots: 16312 (1-second sampled)
+  L2 data loaded: 16312 snapshots
+  Seed complete: EMA9=5.9987
+  Fetching tick data from Databento...
+  Trades cache hit: IONZ_2025-11-14_trades_XNAS.dbn.zst
+  Trade data: 6821 records for IONZ
+  Trades: 6821 | $5.97-$6.56 | 07:00:00-11:59:29 ET
+  Tick replay: 6821 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IONZ -- 2025-11-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=16312 snaps [TICK mode]
+  Bars: 6821 sim + 179 seed  |  EMA9=4.9579  VWAP=5.7155
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:18   6.3400   6.2500  0.0900    9.5   6.4100  topping_wicky_exit_full      +583    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+583  |  Avg R-Multiple: +0.8R
+  Largest Win: $+583  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 3  |  Entered: 1
+======================================================================
+

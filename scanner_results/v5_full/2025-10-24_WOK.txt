@@ -1,0 +1,25 @@
+# V5 risk=758 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WOK  |  Date: 2025-10-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching WOK bars for 2025-10-24...
+  Total bars: 74  |  Seed: 4  |  Sim: 70
+  Seed complete: EMA9=3.9608
+  Fetching tick data from Alpaca...
+  Tick replay: 935 trades for sim window
+  [07:07] CLASSIFIER: WOK → avoid (conf=0.85) — AVOID gate: VWAP dist 2.8% < 7.0%, range 2.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: WOK -- 2025-10-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$758  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 935 sim + 4 seed  |  EMA9=3.9320  VWAP=3.9772
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

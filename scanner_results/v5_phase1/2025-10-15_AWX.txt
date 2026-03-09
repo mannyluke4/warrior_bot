@@ -1,0 +1,34 @@
+# V5 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AWX  |  Date: 2025-10-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AWX bars for 2025-10-15...
+  Total bars: 314  |  Seed: 70  |  Sim: 244
+  Seed complete: EMA9=3.7245
+  Fetching tick data from Alpaca...
+  Tick replay: 6460 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AWX -- 2025-10-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 6460 sim + 70 seed  |  EMA9=3.0737  VWAP=3.4717
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:02   3.7700   3.6600  0.1100   10.5   3.7500  bearish_engulfing_exit_full      -136    -0.2R
+    2   07:04   3.8200   3.7000  0.1200   12.0   3.8900  bearish_engulfing_exit_full      +438    +0.6R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+301  |  Avg R-Multiple: +0.2R
+  Largest Win: $+438  |  Largest Loss: $-136
+  Armed: 6  |  Signals: 4  |  Entered: 2
+======================================================================
+

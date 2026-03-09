@@ -1,0 +1,38 @@
+# V5 risk=677 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QBTZ  |  Date: 2026-01-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QBTZ bars for 2026-01-02...
+  Total bars: 282  |  Seed: 49  |  Sim: 233
+  Seed complete: EMA9=8.9023
+  Fetching tick data from Alpaca...
+  Tick replay: 9262 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=09:24 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=10.5 entry=8.9800 stop=8.9251 R=0.0549 detail=macd=5.0*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.05=+0.5 close=8.9000 vwap=8.9381
+    post_block: max_5m=8.9700 max_10m=9.7500 max_30m=10.0400
+
+======================================================================
+  BACKTEST REPORT: QBTZ -- 2026-01-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$677  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9262 sim + 49 seed  |  EMA9=9.0632  VWAP=9.2932
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:35   9.7700   9.5090  0.2610   12.5   9.7640  topping_wicky_exit_full       -16    -0.0R
+    2   10:11  10.0100   9.8600  0.1500   12.5  10.0500  topping_wicky_exit_full      +181    +0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+165  |  Avg R-Multiple: +0.1R
+  Largest Win: $+181  |  Largest Loss: $-16
+  Armed: 7  |  Signals: 4  |  Entered: 2
+======================================================================
+

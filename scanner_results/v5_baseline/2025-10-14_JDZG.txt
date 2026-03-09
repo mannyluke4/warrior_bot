@@ -1,0 +1,34 @@
+# V4 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: JDZG  |  Date: 2025-10-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching JDZG bars for 2025-10-14...
+  Total bars: 311  |  Seed: 12  |  Sim: 299
+  Seed complete: EMA9=1.9351
+  Fetching tick data from Alpaca...
+  Tick replay: 358809 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: JDZG -- 2025-10-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 358809 sim + 12 seed  |  EMA9=2.5189  VWAP=3.0349
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:05   2.5200   1.9687  0.5513    9.0   3.2700  topping_wicky_exit_full     +1020    +1.4R
+    2   07:16   3.7100   3.2100  0.5000   12.5   3.5100  topping_wicky_exit_full      -300    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+720  |  Avg R-Multiple: +0.5R
+  Largest Win: $+1,020  |  Largest Loss: $-300
+  Armed: 5  |  Signals: 4  |  Entered: 2
+======================================================================
+

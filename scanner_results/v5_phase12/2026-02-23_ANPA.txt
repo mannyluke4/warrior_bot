@@ -1,0 +1,25 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ANPA  |  Date: 2026-02-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ANPA bars for 2026-02-23...
+  Total bars: 137  |  Seed: 24  |  Sim: 113
+  Seed complete: EMA9=9.6353
+  Fetching tick data from Alpaca...
+  Tick replay: 2923 trades for sim window
+  [07:07] CLASSIFIER: ANPA → avoid (conf=0.85) — AVOID gate: VWAP dist 0.5% < 7.0%, range 0.4% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ANPA -- 2026-02-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2923 sim + 24 seed  |  EMA9=8.4622  VWAP=9.1539
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

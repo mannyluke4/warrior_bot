@@ -1,0 +1,25 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: YHGJ  |  Date: 2025-10-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching YHGJ bars for 2025-10-13...
+  Total bars: 160  |  Seed: 33  |  Sim: 127
+  Seed complete: EMA9=7.3540
+  Fetching tick data from Alpaca...
+  Tick replay: 2061 trades for sim window
+  [07:05] CLASSIFIER: YHGJ → avoid (conf=0.85) — AVOID gate: VWAP dist 1.6% < 7.0%, range 3.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: YHGJ -- 2025-10-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2061 sim + 33 seed  |  EMA9=6.3331  VWAP=6.7321
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

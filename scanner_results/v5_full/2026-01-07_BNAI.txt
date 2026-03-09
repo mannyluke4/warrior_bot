@@ -1,0 +1,24 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BNAI  |  Date: 2026-01-07  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BNAI bars for 2026-01-07...
+  Total bars: 262  |  Seed: 48  |  Sim: 214
+  Seed complete: EMA9=4.5541
+  Fetching tick data from Alpaca...
+  Tick replay: 4821 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BNAI -- 2026-01-07 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4821 sim + 48 seed  |  EMA9=4.1722  VWAP=4.3631
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

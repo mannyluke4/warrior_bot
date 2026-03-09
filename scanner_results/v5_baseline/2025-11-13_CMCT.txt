@@ -1,0 +1,24 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CMCT  |  Date: 2025-11-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CMCT bars for 2025-11-13...
+  Total bars: 270  |  Seed: 46  |  Sim: 224
+  Seed complete: EMA9=7.5262
+  Fetching tick data from Alpaca...
+  Tick replay: 5995 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CMCT -- 2025-11-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5995 sim + 46 seed  |  EMA9=6.6212  VWAP=7.0245
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

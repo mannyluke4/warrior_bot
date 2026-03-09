@@ -1,0 +1,50 @@
+# V5 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CYN  |  Date: 2025-10-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CYN bars for 2025-10-14...
+  Total bars: 304  |  Seed: 3  |  Sim: 301
+  L2 cache hit: CYN_2025-10-14_XNAS.dbn.zst
+  L2 data: 402781 records for CYN
+  L2 snapshots: 10911 (1-second sampled)
+  L2 data loaded: 10911 snapshots
+  Seed complete: EMA9=5.4540
+  Fetching tick data from Databento...
+  Trades cache hit: CYN_2025-10-14_trades_XNAS.dbn.zst
+  Trade data: 55426 records for CYN
+  Trades: 55426 | $5.57-$7.48 | 07:00:35-11:59:23 ET
+  Tick replay: 55426 trades for sim window
+  [L2_warmup] bearish imbalance=0.14 bar=3/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.24 bar=13/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.25 bar=18/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.26 bar=24/30 (hard gate inactive)
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:15 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=3.0 entry=7.1200 stop=6.5600 R=0.5600 detail=macd=7.5*0.6;whole=+0.5;R>=0.08=+1;l2_imbalance_bear=-3(0.24) close=6.5800 vwap=6.6207
+    post_block: max_5m=7.1100 max_10m=7.3900 max_30m=7.4700
+
+======================================================================
+  BACKTEST REPORT: CYN -- 2025-10-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10911 snaps [TICK mode]
+  Bars: 55426 sim + 3 seed  |  EMA9=6.1465  VWAP=6.7575
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:03   6.6000   5.7900  0.8100    1.5   6.2100  parabolic_exhaustion_exit_full      -120    -0.5R
+    2   07:11   6.8100   6.4300  0.3800    3.5   7.0000  l2_bearish_exit_full      +125    +0.5R
+    3   07:17   6.8000   6.5000  0.3000    5.5   6.7300  l2_bearish_exit_full       -58    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 3  |  Wins: 1  |  Losses: 2  |  Win Rate: 33.3%
+  Gross P&L: $-54  |  Avg R-Multiple: -0.1R
+  Largest Win: $+125  |  Largest Loss: $-120
+  Armed: 7  |  Signals: 6  |  Entered: 3
+======================================================================
+

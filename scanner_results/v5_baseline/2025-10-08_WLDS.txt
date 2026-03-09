@@ -1,0 +1,28 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WLDS  |  Date: 2025-10-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching WLDS bars for 2025-10-08...
+  Total bars: 181  |  Seed: 6  |  Sim: 175
+  Seed complete: EMA9=4.6404
+  Fetching tick data from Alpaca...
+  Tick replay: 4271 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:29 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=4.8100 stop=4.7100 R=0.1000 detail=macd=7.5*0.6;R>=0.08=+1 close=4.6800 vwap=4.7482
+    post_block: max_5m=4.6800 max_10m=4.9496 max_30m=4.9496
+
+======================================================================
+  BACKTEST REPORT: WLDS -- 2025-10-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4271 sim + 6 seed  |  EMA9=4.0437  VWAP=4.1940
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

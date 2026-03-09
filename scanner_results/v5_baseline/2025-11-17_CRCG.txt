@@ -1,0 +1,28 @@
+# V4 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CRCG  |  Date: 2025-11-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRCG bars for 2025-11-17...
+  Total bars: 333  |  Seed: 81  |  Sim: 252
+  Seed complete: EMA9=3.1585
+  Fetching tick data from Alpaca...
+  Tick replay: 7450 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=11.5 entry=3.2600 stop=3.2064 R=0.0536 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5 close=3.1295 vwap=3.1540
+    post_block: max_5m=3.2200 max_10m=3.2200 max_30m=3.2200
+
+======================================================================
+  BACKTEST REPORT: CRCG -- 2025-11-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 7450 sim + 81 seed  |  EMA9=2.7596  VWAP=2.8719
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

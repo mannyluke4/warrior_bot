@@ -1,0 +1,24 @@
+# V5 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SLGB  |  Date: 2025-10-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SLGB bars for 2025-10-27...
+  Total bars: 351  |  Seed: 59  |  Sim: 292
+  Seed complete: EMA9=5.7974
+  Fetching tick data from Alpaca...
+  Tick replay: 52892 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SLGB -- 2025-10-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 52892 sim + 59 seed  |  EMA9=2.8586  VWAP=4.4841
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

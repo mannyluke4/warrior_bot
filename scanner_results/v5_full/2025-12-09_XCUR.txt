@@ -1,0 +1,24 @@
+# V5 risk=687 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: XCUR  |  Date: 2025-12-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching XCUR bars for 2025-12-09...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=9.0226
+  Fetching tick data from Alpaca...
+  Tick replay: 294023 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: XCUR -- 2025-12-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$687  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 294023 sim + 180 seed  |  EMA9=7.0459  VWAP=8.9708
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
