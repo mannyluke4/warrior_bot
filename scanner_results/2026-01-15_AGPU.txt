@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=5
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,20 +14,20 @@ Fetching AGPU bars for 2026-01-15...
 ======================================================================
   BACKTEST REPORT: AGPU -- 2026-01-15 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 39974 sim + 75 seed  |  EMA9=7.3398  VWAP=8.1768
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:18   8.5700   8.0700  0.5000   12.5   8.4800  bearish_engulfing_exit_full      -180    -0.2R
+    1   07:18   8.5700   8.0700  0.5000   12.5   8.4800  bearish_engulfing_exit_full       -90    -0.2R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
-  Gross P&L: $-180  |  Avg R-Multiple: -0.2R
-  Largest Win: $+0  |  Largest Loss: $-180
+  Gross P&L: $-90  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-90
   Armed: 1  |  Signals: 1  |  Entered: 1
 ======================================================================
 

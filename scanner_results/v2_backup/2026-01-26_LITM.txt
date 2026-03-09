@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: LITM  |  Date: 2026-01-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LITM bars for 2026-01-26...
+  Total bars: 124  |  Seed: 8  |  Sim: 116
+  Fetching L2 from Databento: LITM 2026-01-26 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: LITM_2026-01-26_XNAS.dbn.zst
+  L2 data: 3111 records for LITM
+  L2 snapshots: 595 (1-second sampled)
+  L2 data loaded: 595 snapshots
+  Seed complete: EMA9=3.6933
+  Fetching tick data from Databento...
+  Fetching trades from Databento: LITM 2026-01-26 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: LITM_2026-01-26_trades_XNAS.dbn.zst
+  Trade data: 228 records for LITM
+  Trades: 228 | $3.71-$3.71 | 08:19:50-11:55:45 ET
+  Tick replay: 228 trades for sim window
+  [09:32] CLASSIFIER: LITM → avoid (conf=0.85) — AVOID gate: VWAP dist 1.9% < 7.0%, range 3.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LITM -- 2026-01-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=595 snaps [TICK mode]
+  Bars: 228 sim + 8 seed  |  EMA9=3.3538  VWAP=3.5333
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

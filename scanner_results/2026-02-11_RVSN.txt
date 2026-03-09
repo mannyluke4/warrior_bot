@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,7 +14,7 @@ Fetching RVSN bars for 2026-02-11...
 ======================================================================
   BACKTEST REPORT: RVSN -- 2026-02-11 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 37483 sim + 3 seed  |  EMA9=5.4788  VWAP=7.5293
 ======================================================================
 

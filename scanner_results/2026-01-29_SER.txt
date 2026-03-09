@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=6
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,7 +14,7 @@ Fetching SER bars for 2026-01-29...
 ======================================================================
   BACKTEST REPORT: SER -- 2026-01-29 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 285606 sim + 180 seed  |  EMA9=3.5486  VWAP=4.1692
 ======================================================================
 

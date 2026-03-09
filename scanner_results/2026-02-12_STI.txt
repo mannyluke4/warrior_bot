@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -18,7 +19,7 @@ Fetching STI bars for 2026-02-12...
 ======================================================================
   BACKTEST REPORT: STI -- 2026-02-12 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 711 sim + 6 seed  |  EMA9=5.4481  VWAP=5.7908
 ======================================================================
 

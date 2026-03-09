@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CING  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CING bars for 2026-01-09...
+  Total bars: 112  |  Seed: 1  |  Sim: 111
+  Fetching L2 from Databento: CING 2026-01-09 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: CING_2026-01-09_XNAS.dbn.zst
+  L2 data: 5340 records for CING
+  L2 snapshots: 936 (1-second sampled)
+  L2 data loaded: 936 snapshots
+  Seed complete: EMA9=5.1000
+  Fetching tick data from Databento...
+  Fetching trades from Databento: CING 2026-01-09 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: CING_2026-01-09_trades_XNAS.dbn.zst
+  Trade data: 358 records for CING
+  Trades: 358 | $5.00-$5.10 | 07:20:57-11:49:14 ET
+  Tick replay: 358 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CING -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=936 snaps [TICK mode]
+  Bars: 358 sim + 1 seed  |  EMA9=4.8356  VWAP=4.8528
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

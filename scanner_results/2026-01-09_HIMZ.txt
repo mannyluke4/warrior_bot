@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -20,7 +21,7 @@ Fetching HIMZ bars for 2026-01-09...
 ======================================================================
   BACKTEST REPORT: HIMZ -- 2026-01-09 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9056 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9056 snaps [TICK mode]
   Bars: 3518 sim + 58 seed  |  EMA9=5.8578  VWAP=5.8830
 ======================================================================
 

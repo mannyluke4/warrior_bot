@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -17,21 +18,21 @@ Fetching JL bars for 2026-01-16...
 ======================================================================
   BACKTEST REPORT: JL -- 2026-01-16 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 936 sim + 14 seed  |  EMA9=5.8646  VWAP=6.5936
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   10:07   6.3300   6.0550  0.2750   11.0   6.1500  topping_wicky_exit_full      -654    -0.7R
-    2   10:40   7.0200   6.8650  0.1550   12.5   6.7650  stop_hit                 -1645    -1.6R
+    1   10:07   6.3300   6.0550  0.2750   11.0   6.1500  topping_wicky_exit_full      -164    -0.7R
+    2   10:40   7.0200   6.8650  0.1550   12.5   6.7650  stop_hit                  -411    -1.6R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
-  Gross P&L: $-2,299  |  Avg R-Multiple: -1.1R
-  Largest Win: $+0  |  Largest Loss: $-1,645
+  Gross P&L: $-575  |  Avg R-Multiple: -1.1R
+  Largest Win: $+0  |  Largest Loss: $-411
   Armed: 6  |  Signals: 5  |  Entered: 2
 ======================================================================
 

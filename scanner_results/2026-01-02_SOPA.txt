@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -6,15 +7,13 @@
 
 Fetching SOPA bars for 2026-01-02...
   Total bars: 351  |  Seed: 88  |  Sim: 263
-  Fetching L2 from Databento: SOPA 2026-01-02 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: SOPA_2026-01-02_XNAS.dbn.zst
+  L2 cache hit: SOPA_2026-01-02_XNAS.dbn.zst
   L2 data: 32744 records for SOPA
   L2 snapshots: 3868 (1-second sampled)
   L2 data loaded: 3868 snapshots
   Seed complete: EMA9=3.9521
   Fetching tick data from Databento...
-  Fetching trades from Databento: SOPA 2026-01-02 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: SOPA_2026-01-02_trades_XNAS.dbn.zst
+  Trades cache hit: SOPA_2026-01-02_trades_XNAS.dbn.zst
   Trade data: 2382 records for SOPA
   Trades: 2382 | $3.97-$4.45 | 07:02:45-11:57:48 ET
   Tick replay: 2382 trades for sim window
@@ -22,21 +21,21 @@ Fetching SOPA bars for 2026-01-02...
 ======================================================================
   BACKTEST REPORT: SOPA -- 2026-01-02 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3868 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3868 snaps [TICK mode]
   Bars: 2382 sim + 88 seed  |  EMA9=3.8351  VWAP=3.9917
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   09:35   4.1100   4.0141  0.0959    8.5   4.1500  bearish_engulfing_exit_full      +417    +0.4R
-    2   09:40   4.3700   4.2400  0.1300   12.0   4.3200  bearish_engulfing_exit_full      -385    -0.4R
+    1   09:35   4.1100   4.0141  0.0959    8.5   4.1500  bearish_engulfing_exit_full      +104    +0.4R
+    2   09:40   4.3700   4.2400  0.1300   12.0   4.3200  bearish_engulfing_exit_full       -96    -0.4R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
-  Gross P&L: $+33  |  Avg R-Multiple: +0.0R
-  Largest Win: $+417  |  Largest Loss: $-385
+  Gross P&L: $+8  |  Avg R-Multiple: +0.0R
+  Largest Win: $+104  |  Largest Loss: $-96
   Armed: 2  |  Signals: 2  |  Entered: 2
 ======================================================================
 

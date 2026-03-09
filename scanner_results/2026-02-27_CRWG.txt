@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=5
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -21,7 +22,7 @@ Fetching CRWG bars for 2026-02-27...
 ======================================================================
   BACKTEST REPORT: CRWG -- 2026-02-27 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10702 snaps [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10702 snaps [TICK mode]
   Bars: 6443 sim + 167 seed  |  EMA9=2.6329  VWAP=2.9514
 ======================================================================
 

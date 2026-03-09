@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ROLR  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ROLR bars for 2026-02-05...
+  Total bars: 149  |  Seed: 5  |  Sim: 144
+  Seed complete: EMA9=5.2931
+  Fetching tick data from Alpaca...
+  Tick replay: 3157 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ROLR -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3157 sim + 5 seed  |  EMA9=4.5633  VWAP=4.6808
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

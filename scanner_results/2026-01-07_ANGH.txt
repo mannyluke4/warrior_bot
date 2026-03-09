@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,20 +14,20 @@ Fetching ANGH bars for 2026-01-07...
 ======================================================================
   BACKTEST REPORT: ANGH -- 2026-01-07 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 898 sim + 9 seed  |  EMA9=4.0007  VWAP=4.2483
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:05   4.5200   4.4100  0.1100    4.3   4.4100  stop_hit                 -1000    -1.0R
+    1   07:05   4.5200   4.4100  0.1100    4.3   4.4100  stop_hit                  -250    -1.0R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
-  Gross P&L: $-1,000  |  Avg R-Multiple: -1.0R
-  Largest Win: $+0  |  Largest Loss: $-1,000
+  Gross P&L: $-250  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-250
   Armed: 1  |  Signals: 1  |  Entered: 1
 ======================================================================
 

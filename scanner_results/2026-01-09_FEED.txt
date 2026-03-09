@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=6
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -19,20 +20,20 @@ Fetching FEED bars for 2026-01-09...
 ======================================================================
   BACKTEST REPORT: FEED -- 2026-01-09 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 46840 sim + 31 seed  |  EMA9=2.2417  VWAP=2.8084
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:12   3.1200   2.9200  0.2000   12.5   2.9200  stop_hit                 -1000    -1.0R
+    1   07:12   3.1200   2.9200  0.2000   12.5   2.9200  stop_hit                  -500    -1.0R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
-  Gross P&L: $-1,000  |  Avg R-Multiple: -1.0R
-  Largest Win: $+0  |  Largest Loss: $-1,000
+  Gross P&L: $-500  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-500
   Armed: 4  |  Signals: 1  |  Entered: 1
 ======================================================================
 

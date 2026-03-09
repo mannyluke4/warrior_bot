@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MKDW  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MKDW bars for 2026-02-02...
+  Total bars: 33  |  Seed: 4  |  Sim: 29
+  Seed complete: EMA9=3.1468
+  Fetching tick data from Alpaca...
+  Tick replay: 273 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:04 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=3.1600 stop=2.9400 R=0.2200 detail=macd=7.5*0.6;R>=0.08=+1 close=3.0100 vwap=3.0727
+    post_block: max_5m=3.1400 max_10m=3.1400 max_30m=3.1400
+
+======================================================================
+  BACKTEST REPORT: MKDW -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 273 sim + 4 seed  |  EMA9=2.8890  VWAP=2.9924
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

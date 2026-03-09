@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SOUX  |  Date: 2026-01-29  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SOUX bars for 2026-01-29...
+  Total bars: 125  |  Seed: 3  |  Sim: 122
+  Seed complete: EMA9=9.8860
+  Fetching tick data from Alpaca...
+  Tick replay: 1736 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SOUX -- 2026-01-29 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1736 sim + 3 seed  |  EMA9=8.7052  VWAP=8.9115
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

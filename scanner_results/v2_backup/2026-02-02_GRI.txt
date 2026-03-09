@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GRI  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GRI bars for 2026-02-02...
+  Total bars: 103  |  Seed: 9  |  Sim: 94
+  Seed complete: EMA9=3.1726
+  Fetching tick data from Alpaca...
+  Tick replay: 1851 trades for sim window
+  [07:21] CLASSIFIER: GRI → avoid (conf=0.85) — AVOID gate: VWAP dist 2.0% < 7.0%, range 2.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GRI -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1851 sim + 9 seed  |  EMA9=2.9369  VWAP=2.9743
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

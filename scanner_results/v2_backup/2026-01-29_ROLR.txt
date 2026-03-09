@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ROLR  |  Date: 2026-01-29  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ROLR bars for 2026-01-29...
+  Total bars: 246  |  Seed: 44  |  Sim: 202
+  Seed complete: EMA9=9.1546
+  Fetching tick data from Alpaca...
+  Tick replay: 9165 trades for sim window
+  [07:06] CLASSIFIER: ROLR → avoid (conf=0.85) — AVOID gate: VWAP dist 3.3% < 7.0%, range 2.0% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:57 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=11.5 entry=9.1900 stop=9.1400 R=0.0500 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5 close=9.0300 vwap=9.0904
+    post_block: max_5m=9.9900 max_10m=9.9900 max_30m=9.9900
+
+======================================================================
+  BACKTEST REPORT: ROLR -- 2026-01-29 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9165 sim + 44 seed  |  EMA9=7.9681  VWAP=8.5918
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

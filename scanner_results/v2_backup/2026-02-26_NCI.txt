@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NCI  |  Date: 2026-02-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NCI bars for 2026-02-26...
+  Total bars: 157  |  Seed: 21  |  Sim: 136
+  Seed complete: EMA9=6.6633
+  Fetching tick data from Alpaca...
+  Tick replay: 4655 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NCI -- 2026-02-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4655 sim + 21 seed  |  EMA9=6.1920  VWAP=6.2119
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

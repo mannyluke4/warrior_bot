@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=5
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,7 +14,7 @@ Fetching BTOG bars for 2026-02-02...
 ======================================================================
   BACKTEST REPORT: BTOG -- 2026-02-02 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 1782 sim + 5 seed  |  EMA9=3.0063  VWAP=3.2213
 ======================================================================
 

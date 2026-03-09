@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -17,7 +18,7 @@ Fetching MST bars for 2026-02-03...
 ======================================================================
   BACKTEST REPORT: MST -- 2026-02-03 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 1584 sim + 6 seed  |  EMA9=4.2551  VWAP=4.3066
 ======================================================================
 

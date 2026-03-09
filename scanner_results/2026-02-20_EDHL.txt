@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=5
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -13,7 +14,7 @@ Fetching EDHL bars for 2026-02-20...
 ======================================================================
   BACKTEST REPORT: EDHL -- 2026-02-20 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 21432 sim + 7 seed  |  EMA9=2.7023  VWAP=3.7729
 ======================================================================
 

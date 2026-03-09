@@ -1,0 +1,27 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RIOX  |  Date: 2026-02-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RIOX bars for 2026-02-04...
+  Total bars: 142  |  Seed: 3  |  Sim: 139
+  Seed complete: EMA9=9.3664
+  Fetching tick data from Alpaca...
+  Tick replay: 2292 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:01 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=9.4900 stop=9.4100 R=0.0800 detail=macd=7.5*0.6;R>=0.08=+1 close=9.3394 vwap=9.3820
+    post_block: max_5m=9.4400 max_10m=9.4400 max_30m=9.4400
+
+======================================================================
+  BACKTEST REPORT: RIOX -- 2026-02-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2292 sim + 3 seed  |  EMA9=7.6429  VWAP=7.9495
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

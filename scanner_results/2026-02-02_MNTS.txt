@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -18,21 +19,21 @@ Fetching MNTS bars for 2026-02-02...
 ======================================================================
   BACKTEST REPORT: MNTS -- 2026-02-02 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 2386 sim + 4 seed  |  EMA9=6.5382  VWAP=6.7214
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   09:40   7.2290   7.0842  0.1448   12.5   7.2500  topping_wicky_exit_full      +145    +0.1R
-    2   09:48   7.2600   7.1100  0.1500   12.0   7.1383  topping_wicky_exit_full      -811    -0.8R
+    1   09:40   7.2290   7.0842  0.1448   12.5   7.2500  topping_wicky_exit_full       +36    +0.1R
+    2   09:48   7.2600   7.1100  0.1500   12.0   7.1383  topping_wicky_exit_full      -203    -0.8R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
-  Gross P&L: $-666  |  Avg R-Multiple: -0.3R
-  Largest Win: $+145  |  Largest Loss: $-811
+  Gross P&L: $-167  |  Avg R-Multiple: -0.3R
+  Largest Win: $+36  |  Largest Loss: $-203
   Armed: 4  |  Signals: 2  |  Entered: 2
 ======================================================================
 

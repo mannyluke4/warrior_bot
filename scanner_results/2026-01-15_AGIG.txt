@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -20,7 +21,7 @@ Fetching AGIG bars for 2026-01-15...
 ======================================================================
   BACKTEST REPORT: AGIG -- 2026-01-15 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1202 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1202 snaps [TICK mode]
   Bars: 230 sim + 50 seed  |  EMA9=2.8819  VWAP=3.1151
 ======================================================================
 

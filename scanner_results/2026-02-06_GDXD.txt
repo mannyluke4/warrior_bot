@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -21,7 +22,7 @@ Fetching GDXD bars for 2026-02-06...
 ======================================================================
   BACKTEST REPORT: GDXD -- 2026-02-06 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=8238 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=8238 snaps [TICK mode]
   Bars: 397 sim + 66 seed  |  EMA9=4.7663  VWAP=4.9018
 ======================================================================
 

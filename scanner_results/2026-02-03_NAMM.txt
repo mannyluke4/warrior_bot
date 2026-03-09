@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -6,15 +7,13 @@
 
 Fetching NAMM bars for 2026-02-03...
   Total bars: 357  |  Seed: 100  |  Sim: 257
-  Fetching L2 from Databento: NAMM 2026-02-03 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: NAMM_2026-02-03_XNAS.dbn.zst
+  L2 cache hit: NAMM_2026-02-03_XNAS.dbn.zst
   L2 data: 24494 records for NAMM
   L2 snapshots: 3092 (1-second sampled)
   L2 data loaded: 3092 snapshots
   Seed complete: EMA9=4.3570
   Fetching tick data from Databento...
-  Fetching trades from Databento: NAMM 2026-02-03 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: NAMM_2026-02-03_trades_XNAS.dbn.zst
+  Trades cache hit: NAMM_2026-02-03_trades_XNAS.dbn.zst
   Trade data: 2800 records for NAMM
   Trades: 2800 | $4.32-$4.59 | 07:04:47-11:59:43 ET
   Tick replay: 2800 trades for sim window
@@ -22,7 +21,7 @@ Fetching NAMM bars for 2026-02-03...
 ======================================================================
   BACKTEST REPORT: NAMM -- 2026-02-03 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3092 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3092 snaps [TICK mode]
   Bars: 2800 sim + 100 seed  |  EMA9=4.2889  VWAP=4.2668
 ======================================================================
 

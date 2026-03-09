@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MST  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MST bars for 2026-01-09...
+  Total bars: 153  |  Seed: 3  |  Sim: 150
+  Seed complete: EMA9=6.5796
+  Fetching tick data from Alpaca...
+  Tick replay: 4049 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MST -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4049 sim + 3 seed  |  EMA9=6.5058  VWAP=6.1980
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: VNCE  |  Date: 2026-01-07  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching VNCE bars for 2026-01-07...
+  Total bars: 47  |  Seed: 0  |  Sim: 47
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 527 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: VNCE -- 2026-01-07 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 527 sim + 0 seed  |  EMA9=3.9537  VWAP=4.0572
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

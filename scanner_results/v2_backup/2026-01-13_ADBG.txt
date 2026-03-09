@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ADBG  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ADBG bars for 2026-01-13...
+  Total bars: 205  |  Seed: 18  |  Sim: 187
+  Seed complete: EMA9=8.7438
+  Fetching tick data from Alpaca...
+  Tick replay: 4675 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ADBG -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4675 sim + 18 seed  |  EMA9=8.1509  VWAP=8.3909
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

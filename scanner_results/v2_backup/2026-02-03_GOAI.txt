@@ -1,0 +1,32 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: GOAI  |  Date: 2026-02-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GOAI bars for 2026-02-03...
+  Total bars: 90  |  Seed: 11  |  Sim: 79
+  Fetching L2 from Databento: GOAI 2026-02-03 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: GOAI_2026-02-03_XNAS.dbn.zst
+  L2 data: 1441 records for GOAI
+  L2 snapshots: 342 (1-second sampled)
+  L2 data loaded: 342 snapshots
+  Seed complete: EMA9=3.5504
+  Fetching tick data from Databento...
+  Fetching trades from Databento: GOAI 2026-02-03 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: GOAI_2026-02-03_trades_XNAS.dbn.zst
+  Trade data: 48 records for GOAI
+  Trades: 48 | $3.60-$3.67 | 09:27:28-11:55:56 ET
+  Tick replay: 48 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GOAI -- 2026-02-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=342 snaps [TICK mode]
+  Bars: 48 sim + 11 seed  |  EMA9=3.4214  VWAP=3.5238
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

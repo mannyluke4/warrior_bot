@@ -1,3 +1,4 @@
+# V3 risk=500 sqs=5
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -14,7 +15,7 @@ Fetching NBIG bars for 2026-02-27...
 ======================================================================
   BACKTEST REPORT: NBIG -- 2026-02-27 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 3084 sim + 12 seed  |  EMA9=6.4409  VWAP=7.1099
 ======================================================================
 

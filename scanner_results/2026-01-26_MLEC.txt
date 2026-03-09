@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -18,7 +19,7 @@ Fetching MLEC bars for 2026-01-26...
 ======================================================================
   BACKTEST REPORT: MLEC -- 2026-01-26 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 1048 sim + 5 seed  |  EMA9=7.4984  VWAP=7.5323
 ======================================================================
 

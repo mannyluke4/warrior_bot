@@ -1,0 +1,24 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MNTS  |  Date: 2026-01-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MNTS bars for 2026-01-23...
+  Total bars: 183  |  Seed: 14  |  Sim: 169
+  Seed complete: EMA9=8.9803
+  Fetching tick data from Alpaca...
+  Tick replay: 5586 trades for sim window
+  [07:07] CLASSIFIER: MNTS → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 1.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MNTS -- 2026-01-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5586 sim + 14 seed  |  EMA9=8.6581  VWAP=9.0992
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

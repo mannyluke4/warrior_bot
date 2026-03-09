@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=4
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE)
@@ -17,21 +18,21 @@ Fetching ELAB bars for 2026-01-13...
 ======================================================================
   BACKTEST REPORT: ELAB -- 2026-01-13 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
   Bars: 3153 sim + 9 seed  |  EMA9=4.3618  VWAP=4.2832
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:36   5.2000   5.0828  0.1172    4.6   5.0400  stop_hit                 -1365    -1.4R
-    2   10:43   4.4700   4.3601  0.1099   12.0   4.4326  topping_wicky_exit_full      -340    -0.3R
+    1   07:36   5.2000   5.0828  0.1172    4.6   5.0400  stop_hit                  -341    -1.4R
+    2   10:43   4.4700   4.3601  0.1099   12.0   4.4326  topping_wicky_exit_full       -85    -0.3R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
-  Gross P&L: $-1,705  |  Avg R-Multiple: -0.9R
-  Largest Win: $+0  |  Largest Loss: $-1,365
+  Gross P&L: $-426  |  Avg R-Multiple: -0.9R
+  Largest Win: $+0  |  Largest Loss: $-341
   Armed: 4  |  Signals: 3  |  Entered: 2
 ======================================================================
 

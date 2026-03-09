@@ -1,3 +1,4 @@
+# V3 risk=250 sqs=3
 
 ======================================================================
   WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
@@ -6,15 +7,13 @@
 
 Fetching CRWG bars for 2026-02-04...
   Total bars: 323  |  Seed: 68  |  Sim: 255
-  Fetching L2 from Databento: CRWG 2026-02-04 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: CRWG_2026-02-04_XNAS.dbn.zst
+  L2 cache hit: CRWG_2026-02-04_XNAS.dbn.zst
   L2 data: 193836 records for CRWG
   L2 snapshots: 9786 (1-second sampled)
   L2 data loaded: 9786 snapshots
   Seed complete: EMA9=3.8847
   Fetching tick data from Databento...
-  Fetching trades from Databento: CRWG 2026-02-04 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: CRWG_2026-02-04_trades_XNAS.dbn.zst
+  Trades cache hit: CRWG_2026-02-04_trades_XNAS.dbn.zst
   Trade data: 2316 records for CRWG
   Trades: 2316 | $3.91-$4.14 | 07:00:00-11:59:42 ET
   Tick replay: 2316 trades for sim window
@@ -24,20 +23,20 @@ Fetching CRWG bars for 2026-02-04...
 ======================================================================
   BACKTEST REPORT: CRWG -- 2026-02-04 (07:00 -> 12:00 ET)
 ======================================================================
-  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9786 snaps [TICK mode]
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9786 snaps [TICK mode]
   Bars: 2316 sim + 68 seed  |  EMA9=3.5892  VWAP=3.8487
 ======================================================================
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   09:38   4.0500   3.9700  0.0800   13.0   4.1000  topping_wicky_exit_full      +625    +0.6R
+    1   09:38   4.0500   3.9700  0.0800   13.0   4.1000  topping_wicky_exit_full      +156    +0.6R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
   Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
-  Gross P&L: $+625  |  Avg R-Multiple: +0.6R
-  Largest Win: $+625  |  Largest Loss: $+0
+  Gross P&L: $+156  |  Avg R-Multiple: +0.6R
+  Largest Win: $+156  |  Largest Loss: $+0
   Armed: 2  |  Signals: 2  |  Entered: 1
 ======================================================================
 

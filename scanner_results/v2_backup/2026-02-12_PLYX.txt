@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PLYX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PLYX bars for 2026-02-12...
+  Total bars: 109  |  Seed: 6  |  Sim: 103
+  Seed complete: EMA9=3.2933
+  Fetching tick data from Alpaca...
+  Tick replay: 2886 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PLYX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2886 sim + 6 seed  |  EMA9=3.0642  VWAP=3.6825
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
