@@ -1,17 +1,5 @@
 [
   {
-    "symbol": "AZI",
-    "prev_close": 0.75,
-    "pm_price": 2.08,
-    "gap_pct": 177.33,
-    "pm_volume": 288834.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 44450443,
-    "float_millions": 44.45,
-    "profile": "B"
-  },
-  {
     "symbol": "TNMG",
     "prev_close": 2.67,
     "pm_price": 3.38,
@@ -168,18 +156,6 @@
     "profile": "X"
   },
   {
-    "symbol": "TII",
-    "prev_close": 4.12,
-    "pm_price": 4.79,
-    "gap_pct": 16.26,
-    "pm_volume": 1427.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 31664610,
-    "float_millions": 31.66,
-    "profile": "B"
-  },
-  {
     "symbol": "MNTS",
     "prev_close": 5.12,
     "pm_price": 5.95,
@@ -276,30 +252,6 @@
     "profile": "X"
   },
   {
-    "symbol": "IRE",
-    "prev_close": 6.15,
-    "pm_price": 7.02,
-    "gap_pct": 14.15,
-    "pm_volume": 580825.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 13675458,
-    "float_millions": 13.68,
-    "profile": "B"
-  },
-  {
-    "symbol": "LVWR",
-    "prev_close": 2.28,
-    "pm_price": 2.6,
-    "gap_pct": 14.04,
-    "pm_volume": 200.0,
-    "first_seen_et": "04:49",
-    "sim_start": "07:00",
-    "float_shares": 12368783,
-    "float_millions": 12.37,
-    "profile": "B"
-  },
-  {
     "symbol": "IREX",
     "prev_close": 10.62,
     "pm_price": 12.09,
@@ -324,18 +276,6 @@
     "profile": "B"
   },
   {
-    "symbol": "VRCA",
-    "prev_close": 6.03,
-    "pm_price": 6.82,
-    "gap_pct": 13.1,
-    "pm_volume": 7344.0,
-    "first_seen_et": "07:15",
-    "sim_start": "07:15",
-    "float_shares": 3316767,
-    "float_millions": 3.32,
-    "profile": "A"
-  },
-  {
     "symbol": "OPTX",
     "prev_close": 7.33,
     "pm_price": 8.29,
@@ -348,6 +288,18 @@
     "profile": "B"
   },
   {
+    "symbol": "VRCA",
+    "prev_close": 6.03,
+    "pm_price": 6.82,
+    "gap_pct": 13.1,
+    "pm_volume": 7344.0,
+    "first_seen_et": "07:15",
+    "sim_start": "07:15",
+    "float_shares": 3316767,
+    "float_millions": 3.32,
+    "profile": "A"
+  },
+  {
     "symbol": "BAIG",
     "prev_close": 5.5,
     "pm_price": 6.21,
@@ -358,42 +310,6 @@
     "float_shares": 840023,
     "float_millions": 0.84,
     "profile": "A"
-  },
-  {
-    "symbol": "VTIX",
-    "prev_close": 5.17,
-    "pm_price": 5.82,
-    "gap_pct": 12.57,
-    "pm_volume": 5195.0,
-    "first_seen_et": "04:31",
-    "sim_start": "07:00",
-    "float_shares": 14758273,
-    "float_millions": 14.76,
-    "profile": "B"
-  },
-  {
-    "symbol": "KULR",
-    "prev_close": 2.85,
-    "pm_price": 3.2,
-    "gap_pct": 12.28,
-    "pm_volume": 477.0,
-    "first_seen_et": "06:54",
-    "sim_start": "07:00",
-    "float_shares": 42638977,
-    "float_millions": 42.64,
-    "profile": "B"
-  },
-  {
-    "symbol": "FRMM",
-    "prev_close": 3.19,
-    "pm_price": 3.58,
-    "gap_pct": 12.23,
-    "pm_volume": 200.0,
-    "first_seen_et": "05:18",
-    "sim_start": "07:00",
-    "float_shares": 14312613,
-    "float_millions": 14.31,
-    "profile": "B"
   },
   {
     "symbol": "EIKN",
@@ -432,18 +348,6 @@
     "profile": "X"
   },
   {
-    "symbol": "STVN",
-    "prev_close": 15.23,
-    "pm_price": 16.99,
-    "gap_pct": 11.56,
-    "pm_volume": 1425.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 48911342,
-    "float_millions": 48.91,
-    "profile": "B"
-  },
-  {
     "symbol": "HIYY",
     "prev_close": 13.1001,
     "pm_price": 14.61,
@@ -466,30 +370,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "UMAC",
-    "prev_close": 12.6,
-    "pm_price": 14.0,
-    "gap_pct": 11.11,
-    "pm_volume": 651.0,
-    "first_seen_et": "06:06",
-    "sim_start": "07:00",
-    "float_shares": 33522455,
-    "float_millions": 33.52,
-    "profile": "B"
-  },
-  {
-    "symbol": "ASST",
-    "prev_close": 9.18,
-    "pm_price": 10.18,
-    "gap_pct": 10.89,
-    "pm_volume": 8618.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 38968293,
-    "float_millions": 38.97,
-    "profile": "B"
   },
   {
     "symbol": "MAXN",
@@ -528,18 +408,6 @@
     "profile": "X"
   },
   {
-    "symbol": "AEVA",
-    "prev_close": 12.94,
-    "pm_price": 14.32,
-    "gap_pct": 10.66,
-    "pm_volume": 2907.0,
-    "first_seen_et": "04:05",
-    "sim_start": "07:00",
-    "float_shares": 26703867,
-    "float_millions": 26.7,
-    "profile": "B"
-  },
-  {
     "symbol": "QUBX",
     "prev_close": 14.46,
     "pm_price": 16.0,
@@ -562,17 +430,5 @@
     "float_shares": 80113,
     "float_millions": 0.08,
     "profile": "A"
-  },
-  {
-    "symbol": "LPCV",
-    "prev_close": 9.9,
-    "pm_price": 10.89,
-    "gap_pct": 10.0,
-    "pm_volume": 360.0,
-    "first_seen_et": "04:10",
-    "sim_start": "07:00",
-    "float_shares": 23000000,
-    "float_millions": 23.0,
-    "profile": "B"
   }
 ]

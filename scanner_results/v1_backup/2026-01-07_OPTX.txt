@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: OPTX  |  Date: 2026-01-07  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OPTX bars for 2026-01-07...
+  Total bars: 151  |  Seed: 10  |  Sim: 141
+  Fetching L2 from Databento: OPTX 2026-01-07 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: OPTX_2026-01-07_XNAS.dbn.zst
+  L2 data: 6009 records for OPTX
+  L2 snapshots: 885 (1-second sampled)
+  L2 data loaded: 885 snapshots
+  Seed complete: EMA9=3.3227
+  Fetching tick data from Databento...
+  Fetching trades from Databento: OPTX 2026-01-07 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: OPTX_2026-01-07_trades_XNAS.dbn.zst
+  Trade data: 543 records for OPTX
+  Trades: 543 | $3.32-$3.36 | 07:01:26-11:56:09 ET
+  Tick replay: 543 trades for sim window
+  [08:17] CLASSIFIER: OPTX → avoid (conf=0.85) — AVOID gate: VWAP dist 0.9% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: OPTX -- 2026-01-07 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=885 snaps [TICK mode]
+  Bars: 543 sim + 10 seed  |  EMA9=3.2396  VWAP=3.2378
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

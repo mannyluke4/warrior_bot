@@ -6,15 +6,13 @@
 
 Fetching CLNN bars for 2026-01-12...
   Total bars: 129  |  Seed: 19  |  Sim: 110
-  Fetching L2 from Databento: CLNN 2026-01-12 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: CLNN_2026-01-12_XNAS.dbn.zst
+  L2 cache hit: CLNN_2026-01-12_XNAS.dbn.zst
   L2 data: 2888 records for CLNN
   L2 snapshots: 680 (1-second sampled)
   L2 data loaded: 680 snapshots
   Seed complete: EMA9=6.3220
   Fetching tick data from Databento...
-  Fetching trades from Databento: CLNN 2026-01-12 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: CLNN_2026-01-12_trades_XNAS.dbn.zst
+  Trades cache hit: CLNN_2026-01-12_trades_XNAS.dbn.zst
   Trade data: 292 records for CLNN
   Trades: 292 | $6.40-$6.73 | 08:30:00-11:58:59 ET
   Tick replay: 292 trades for sim window

@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FIGG  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FIGG bars for 2026-01-16...
+  Total bars: 120  |  Seed: 7  |  Sim: 113
+  Seed complete: EMA9=3.2731
+  Fetching tick data from Alpaca...
+  Tick replay: 903 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FIGG -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 903 sim + 7 seed  |  EMA9=3.0763  VWAP=3.0938
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

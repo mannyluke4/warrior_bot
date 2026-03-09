@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ASTI  |  Date: 2026-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ASTI bars for 2026-01-28...
+  Total bars: 142  |  Seed: 4  |  Sim: 138
+  Seed complete: EMA9=6.2602
+  Fetching tick data from Alpaca...
+  Tick replay: 3154 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ASTI -- 2026-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3154 sim + 4 seed  |  EMA9=6.2164  VWAP=6.0825
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:01   6.4600   6.3594  0.1006    5.5   6.2500  max_loss_hit             -1950    -2.1R
+    2   10:18   6.1800   5.9671  0.2129   12.5   6.1745  topping_wicky_exit_full       -26    -0.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-1,976  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-1,950
+  Armed: 2  |  Signals: 2  |  Entered: 2
+======================================================================
+

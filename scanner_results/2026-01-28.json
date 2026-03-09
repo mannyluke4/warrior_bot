@@ -60,30 +60,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ATOM",
-    "prev_close": 2.8,
-    "pm_price": 3.42,
-    "gap_pct": 22.14,
-    "pm_volume": 9328.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 35303656,
-    "float_millions": 35.3,
-    "profile": "B"
-  },
-  {
-    "symbol": "NBY",
-    "prev_close": 2.0,
-    "pm_price": 2.39,
-    "gap_pct": 19.5,
-    "pm_volume": 14639.0,
-    "first_seen_et": "04:01",
-    "sim_start": "07:00",
-    "float_shares": 25874719,
-    "float_millions": 25.87,
-    "profile": "B"
-  },
-  {
     "symbol": "FEAM",
     "prev_close": 2.26,
     "pm_price": 2.7,
@@ -117,42 +93,6 @@
     "sim_start": "07:00",
     "float_shares": 7028202,
     "float_millions": 7.03,
-    "profile": "B"
-  },
-  {
-    "symbol": "MENS",
-    "prev_close": 2.53,
-    "pm_price": 2.98,
-    "gap_pct": 17.79,
-    "pm_volume": 551.0,
-    "first_seen_et": "05:29",
-    "sim_start": "07:00",
-    "float_shares": 28063591,
-    "float_millions": 28.06,
-    "profile": "B"
-  },
-  {
-    "symbol": "ABVE",
-    "prev_close": 2.21,
-    "pm_price": 2.59,
-    "gap_pct": 17.19,
-    "pm_volume": 7661.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 42806871,
-    "float_millions": 42.81,
-    "profile": "B"
-  },
-  {
-    "symbol": "AZI",
-    "prev_close": 2.5,
-    "pm_price": 2.91,
-    "gap_pct": 16.4,
-    "pm_volume": 47357.0,
-    "first_seen_et": "04:01",
-    "sim_start": "07:00",
-    "float_shares": 44450443,
-    "float_millions": 44.45,
     "profile": "B"
   },
   {
@@ -202,18 +142,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "LTRX",
-    "prev_close": 7.16,
-    "pm_price": 8.13,
-    "gap_pct": 13.55,
-    "pm_volume": 257876.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 33387345,
-    "float_millions": 33.39,
-    "profile": "B"
   },
   {
     "symbol": "ARMU",
@@ -300,30 +228,6 @@
     "profile": "X"
   },
   {
-    "symbol": "MRAM",
-    "prev_close": 13.11,
-    "pm_price": 14.72,
-    "gap_pct": 12.28,
-    "pm_volume": 1576.0,
-    "first_seen_et": "06:03",
-    "sim_start": "07:00",
-    "float_shares": 18536977,
-    "float_millions": 18.54,
-    "profile": "B"
-  },
-  {
-    "symbol": "OM",
-    "prev_close": 5.025,
-    "pm_price": 5.64,
-    "gap_pct": 12.24,
-    "pm_volume": 748.0,
-    "first_seen_et": "05:14",
-    "sim_start": "07:00",
-    "float_shares": 13062782,
-    "float_millions": 13.06,
-    "profile": "B"
-  },
-  {
     "symbol": "CRWU",
     "prev_close": 10.52,
     "pm_price": 11.8,
@@ -372,18 +276,6 @@
     "profile": "A"
   },
   {
-    "symbol": "AARD",
-    "prev_close": 13.25,
-    "pm_price": 14.7,
-    "gap_pct": 10.94,
-    "pm_volume": 349.0,
-    "first_seen_et": "04:54",
-    "sim_start": "07:00",
-    "float_shares": 11173390,
-    "float_millions": 11.17,
-    "profile": "B"
-  },
-  {
     "symbol": "IDX",
     "prev_close": 15.04,
     "pm_price": 16.68,
@@ -394,18 +286,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "GNLX",
-    "prev_close": 2.76,
-    "pm_price": 3.06,
-    "gap_pct": 10.87,
-    "pm_volume": 400.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 30641346,
-    "float_millions": 30.64,
-    "profile": "B"
   },
   {
     "symbol": "PAVM",
@@ -478,17 +358,5 @@
     "float_shares": 425535,
     "float_millions": 0.43,
     "profile": "A"
-  },
-  {
-    "symbol": "DTCX",
-    "prev_close": 2.3,
-    "pm_price": 2.53,
-    "gap_pct": 10.0,
-    "pm_volume": 193.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 11161022,
-    "float_millions": 11.16,
-    "profile": "B"
   }
 ]

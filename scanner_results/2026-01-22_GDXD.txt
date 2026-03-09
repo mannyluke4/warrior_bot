@@ -6,15 +6,13 @@
 
 Fetching GDXD bars for 2026-01-22...
   Total bars: 259  |  Seed: 48  |  Sim: 211
-  Fetching L2 from Databento: GDXD 2026-01-22 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: GDXD_2026-01-22_XNAS.dbn.zst
+  L2 cache hit: GDXD_2026-01-22_XNAS.dbn.zst
   L2 data: 43861 records for GDXD
   L2 snapshots: 5905 (1-second sampled)
   L2 data loaded: 5905 snapshots
   Seed complete: EMA9=4.8913
   Fetching tick data from Databento...
-  Fetching trades from Databento: GDXD 2026-01-22 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: GDXD_2026-01-22_trades_XNAS.dbn.zst
+  Trades cache hit: GDXD_2026-01-22_trades_XNAS.dbn.zst
   Trade data: 478 records for GDXD
   Trades: 478 | $4.91-$4.97 | 07:00:22-11:59:22 ET
   Tick replay: 478 trades for sim window

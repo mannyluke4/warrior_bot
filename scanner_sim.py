@@ -157,13 +157,13 @@ def get_float(symbol: str, cache: dict) -> float | None:
 
 
 def classify_profile(float_shares: float | None) -> str:
-    """Classify stock by float: A (<5M), B (5-50M), X (>50M or unknown)."""
+    """Classify stock by float: A (<5M), B (5-10M), X (>10M or unknown)."""
     if float_shares is None:
         return "X"
     millions = float_shares / 1_000_000
     if millions < 5:
         return "A"
-    elif millions <= 50:
+    elif millions <= 10:
         return "B"
     else:
         return "skip"
@@ -339,7 +339,7 @@ def run_scanner(date_str: str):
         profile = classify_profile(float_shares)
 
         if profile == "skip":
-            print(f"         {sym}: float {float_shares/1e6:.1f}M → skip (>50M)")
+            print(f"         {sym}: float {float_shares/1e6:.1f}M → skip (>10M)")
             continue
 
         float_m = round(float_shares / 1e6, 2) if float_shares else None

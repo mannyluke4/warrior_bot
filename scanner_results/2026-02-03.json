@@ -96,30 +96,6 @@
     "profile": "A"
   },
   {
-    "symbol": "FUSE",
-    "prev_close": 2.12,
-    "pm_price": 2.6,
-    "gap_pct": 22.64,
-    "pm_volume": 197577.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 14965424,
-    "float_millions": 14.97,
-    "profile": "B"
-  },
-  {
-    "symbol": "MRAM",
-    "prev_close": 10.99,
-    "pm_price": 13.41,
-    "gap_pct": 22.02,
-    "pm_volume": 225.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 18536977,
-    "float_millions": 18.54,
-    "profile": "B"
-  },
-  {
     "symbol": "CRDU",
     "prev_close": 8.6,
     "pm_price": 10.33,
@@ -178,18 +154,6 @@
     "float_shares": 1172210,
     "float_millions": 1.17,
     "profile": "A"
-  },
-  {
-    "symbol": "AUDC",
-    "prev_close": 7.35,
-    "pm_price": 8.54,
-    "gap_pct": 16.19,
-    "pm_volume": 918.0,
-    "first_seen_et": "05:20",
-    "sim_start": "07:00",
-    "float_shares": 17435380,
-    "float_millions": 17.44,
-    "profile": "B"
   },
   {
     "symbol": "CRCA",
@@ -286,30 +250,6 @@
     "float_shares": 162939,
     "float_millions": 0.16,
     "profile": "A"
-  },
-  {
-    "symbol": "AZI",
-    "prev_close": 2.06,
-    "pm_price": 2.34,
-    "gap_pct": 13.59,
-    "pm_volume": 61893.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 44450443,
-    "float_millions": 44.45,
-    "profile": "B"
-  },
-  {
-    "symbol": "VTIX",
-    "prev_close": 5.3,
-    "pm_price": 6.02,
-    "gap_pct": 13.58,
-    "pm_volume": 1959.0,
-    "first_seen_et": "04:14",
-    "sim_start": "07:00",
-    "float_shares": 14758273,
-    "float_millions": 14.76,
-    "profile": "B"
   },
   {
     "symbol": "MTEN",
@@ -540,18 +480,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ATLN",
-    "prev_close": 3.62,
-    "pm_price": 4.01,
-    "gap_pct": 10.77,
-    "pm_volume": 386.0,
-    "first_seen_et": "05:53",
-    "sim_start": "07:00",
-    "float_shares": 30278688,
-    "float_millions": 30.28,
-    "profile": "B"
-  },
-  {
     "symbol": "MVLL",
     "prev_close": 16.56,
     "pm_price": 18.34,
@@ -586,41 +514,5 @@
     "float_shares": 668610,
     "float_millions": 0.67,
     "profile": "A"
-  },
-  {
-    "symbol": "CD",
-    "prev_close": 5.47,
-    "pm_price": 6.03,
-    "gap_pct": 10.24,
-    "pm_volume": 105.0,
-    "first_seen_et": "05:25",
-    "sim_start": "07:00",
-    "float_shares": 47122864,
-    "float_millions": 47.12,
-    "profile": "B"
-  },
-  {
-    "symbol": "DFNS",
-    "prev_close": 2.25,
-    "pm_price": 2.48,
-    "gap_pct": 10.22,
-    "pm_volume": 5829.0,
-    "first_seen_et": "05:55",
-    "sim_start": "07:00",
-    "float_shares": 11988780,
-    "float_millions": 11.99,
-    "profile": "B"
-  },
-  {
-    "symbol": "ATOM",
-    "prev_close": 2.66,
-    "pm_price": 2.93,
-    "gap_pct": 10.15,
-    "pm_volume": 370.0,
-    "first_seen_et": "04:57",
-    "sim_start": "07:00",
-    "float_shares": 35303656,
-    "float_millions": 35.3,
-    "profile": "B"
   }
 ]

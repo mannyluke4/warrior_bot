@@ -6,15 +6,13 @@
 
 Fetching CRWG bars for 2026-02-27...
   Total bars: 462  |  Seed: 167  |  Sim: 295
-  Fetching L2 from Databento: CRWG 2026-02-27 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: CRWG_2026-02-27_XNAS.dbn.zst
+  L2 cache hit: CRWG_2026-02-27_XNAS.dbn.zst
   L2 data: 217271 records for CRWG
   L2 snapshots: 10702 (1-second sampled)
   L2 data loaded: 10702 snapshots
   Seed complete: EMA9=3.3432
   Fetching tick data from Databento...
-  Fetching trades from Databento: CRWG 2026-02-27 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: CRWG_2026-02-27_trades_XNAS.dbn.zst
+  Trades cache hit: CRWG_2026-02-27_trades_XNAS.dbn.zst
   Trade data: 6443 records for CRWG
   Trades: 6443 | $3.35-$3.38 | 07:00:00-11:59:03 ET
   Tick replay: 6443 trades for sim window

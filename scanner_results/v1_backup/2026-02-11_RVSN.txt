@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RVSN  |  Date: 2026-02-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RVSN bars for 2026-02-11...
+  Total bars: 210  |  Seed: 3  |  Sim: 207
+  Seed complete: EMA9=7.3060
+  Fetching tick data from Alpaca...
+  Tick replay: 37483 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RVSN -- 2026-02-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 37483 sim + 3 seed  |  EMA9=5.4788  VWAP=7.5293
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

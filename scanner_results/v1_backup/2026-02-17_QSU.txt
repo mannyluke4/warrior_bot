@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QSU  |  Date: 2026-02-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QSU bars for 2026-02-17...
+  Total bars: 56  |  Seed: 1  |  Sim: 55
+  Seed complete: EMA9=3.1700
+  Fetching tick data from Alpaca...
+  Tick replay: 569 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: QSU -- 2026-02-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 569 sim + 1 seed  |  EMA9=2.8913  VWAP=2.9291
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

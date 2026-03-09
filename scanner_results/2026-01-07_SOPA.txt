@@ -6,15 +6,13 @@
 
 Fetching SOPA bars for 2026-01-07...
   Total bars: 305  |  Seed: 42  |  Sim: 263
-  Fetching L2 from Databento: SOPA 2026-01-07 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: SOPA_2026-01-07_XNAS.dbn.zst
+  L2 cache hit: SOPA_2026-01-07_XNAS.dbn.zst
   L2 data: 14138 records for SOPA
   L2 snapshots: 2214 (1-second sampled)
   L2 data loaded: 2214 snapshots
   Seed complete: EMA9=3.4204
   Fetching tick data from Databento...
-  Fetching trades from Databento: SOPA 2026-01-07 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: SOPA_2026-01-07_trades_XNAS.dbn.zst
+  Trades cache hit: SOPA_2026-01-07_trades_XNAS.dbn.zst
   Trade data: 728 records for SOPA
   Trades: 728 | $3.44-$3.65 | 07:05:35-11:52:37 ET
   Tick replay: 728 trades for sim window

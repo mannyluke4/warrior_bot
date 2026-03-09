@@ -1,0 +1,31 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: PODC  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PODC bars for 2026-02-12...
+  Total bars: 225  |  Seed: 20  |  Sim: 205
+  L2 cache hit: PODC_2026-02-12_XNAS.dbn.zst
+  L2 data: 11934 records for PODC
+  L2 snapshots: 2001 (1-second sampled)
+  L2 data loaded: 2001 snapshots
+  Seed complete: EMA9=3.1219
+  Fetching tick data from Databento...
+  Fetching trades from Databento: PODC 2026-02-12 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: PODC_2026-02-12_trades_XNAS.dbn.zst
+  Trade data: 907 records for PODC
+  Trades: 907 | $3.13-$3.61 | 07:02:23-11:58:54 ET
+  Tick replay: 907 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: PODC -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2001 snaps [TICK mode]
+  Bars: 907 sim + 20 seed  |  EMA9=2.8645  VWAP=2.8504
+======================================================================
+
+  No trades taken.
+
+  Armed: 2  |  Signals: 1
+======================================================================

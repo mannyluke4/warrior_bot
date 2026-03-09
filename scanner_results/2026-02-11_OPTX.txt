@@ -6,15 +6,13 @@
 
 Fetching OPTX bars for 2026-02-11...
   Total bars: 205  |  Seed: 7  |  Sim: 198
-  Fetching L2 from Databento: OPTX 2026-02-11 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: OPTX_2026-02-11_XNAS.dbn.zst
+  L2 cache hit: OPTX_2026-02-11_XNAS.dbn.zst
   L2 data: 22996 records for OPTX
   L2 snapshots: 2296 (1-second sampled)
   L2 data loaded: 2296 snapshots
   Seed complete: EMA9=7.3658
   Fetching tick data from Databento...
-  Fetching trades from Databento: OPTX 2026-02-11 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: OPTX_2026-02-11_trades_XNAS.dbn.zst
+  Trades cache hit: OPTX_2026-02-11_trades_XNAS.dbn.zst
   Trade data: 1872 records for OPTX
   Trades: 1872 | $7.41-$7.44 | 07:02:18-11:59:19 ET
   Tick replay: 1872 trades for sim window

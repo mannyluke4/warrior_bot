@@ -12,8 +12,7 @@ Fetching PODC bars for 2026-02-12...
   L2 data loaded: 2001 snapshots
   Seed complete: EMA9=3.1219
   Fetching tick data from Databento...
-  Fetching trades from Databento: PODC 2026-02-12 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: PODC_2026-02-12_trades_XNAS.dbn.zst
+  Trades cache hit: PODC_2026-02-12_trades_XNAS.dbn.zst
   Trade data: 907 records for PODC
   Trades: 907 | $3.13-$3.61 | 07:02:23-11:58:54 ET
   Tick replay: 907 trades for sim window

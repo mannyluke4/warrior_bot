@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RGNT  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RGNT bars for 2026-01-16...
+  Total bars: 169  |  Seed: 5  |  Sim: 164
+  Seed complete: EMA9=8.1875
+  Fetching tick data from Alpaca...
+  Tick replay: 2062 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RGNT -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2062 sim + 5 seed  |  EMA9=7.2328  VWAP=7.9250
+======================================================================
+
+  No trades taken.
+
+  Armed: 2  |  Signals: 1
+======================================================================

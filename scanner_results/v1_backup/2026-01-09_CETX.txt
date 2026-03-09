@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CETX  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CETX bars for 2026-01-09...
+  Total bars: 472  |  Seed: 171  |  Sim: 301
+  Seed complete: EMA9=3.7165
+  Fetching tick data from Alpaca...
+  Tick replay: 124428 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CETX -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 124428 sim + 171 seed  |  EMA9=3.1358  VWAP=3.7096
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

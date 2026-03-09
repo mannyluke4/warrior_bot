@@ -1,0 +1,43 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CRWG  |  Date: 2026-02-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRWG bars for 2026-02-04...
+  Total bars: 323  |  Seed: 68  |  Sim: 255
+  Fetching L2 from Databento: CRWG 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: CRWG_2026-02-04_XNAS.dbn.zst
+  L2 data: 193836 records for CRWG
+  L2 snapshots: 9786 (1-second sampled)
+  L2 data loaded: 9786 snapshots
+  Seed complete: EMA9=3.8847
+  Fetching tick data from Databento...
+  Fetching trades from Databento: CRWG 2026-02-04 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: CRWG_2026-02-04_trades_XNAS.dbn.zst
+  Trade data: 2316 records for CRWG
+  Trades: 2316 | $3.91-$4.14 | 07:00:00-11:59:42 ET
+  Tick replay: 2316 trades for sim window
+  [07:19] CLASSIFIER: CRWG → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 1.0% < 10.0%, NH 1 < 2
+  [L2_bid_stack] BLOCKED: stack=4.1000 imbalance=0.55 < 0.65 (stop stays 4.0400)
+
+======================================================================
+  BACKTEST REPORT: CRWG -- 2026-02-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=9786 snaps [TICK mode]
+  Bars: 2316 sim + 68 seed  |  EMA9=3.5892  VWAP=3.8487
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:38   4.0500   3.9700  0.0800   13.0   4.1000  topping_wicky_exit_full      +625    +0.6R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+625  |  Avg R-Multiple: +0.6R
+  Largest Win: $+625  |  Largest Loss: $+0
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

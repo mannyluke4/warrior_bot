@@ -240,18 +240,6 @@
     "profile": "A"
   },
   {
-    "symbol": "KELYB",
-    "prev_close": 15.49,
-    "pm_price": 18.3,
-    "gap_pct": 18.14,
-    "pm_volume": 833.0,
-    "first_seen_et": "04:48",
-    "sim_start": "07:00",
-    "float_shares": 29029850,
-    "float_millions": 29.03,
-    "profile": "B"
-  },
-  {
     "symbol": "CONX",
     "prev_close": 6.2808,
     "pm_price": 7.42,
@@ -324,18 +312,6 @@
     "profile": "X"
   },
   {
-    "symbol": "BAIG",
-    "prev_close": 4.39,
-    "pm_price": 5.15,
-    "gap_pct": 17.31,
-    "pm_volume": 1190.0,
-    "first_seen_et": "04:10",
-    "sim_start": "07:00",
-    "float_shares": 840023,
-    "float_millions": 0.84,
-    "profile": "A"
-  },
-  {
     "symbol": "UNX",
     "prev_close": 2.6,
     "pm_price": 3.05,
@@ -346,6 +322,18 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "BAIG",
+    "prev_close": 4.39,
+    "pm_price": 5.15,
+    "gap_pct": 17.31,
+    "pm_volume": 1190.0,
+    "first_seen_et": "04:10",
+    "sim_start": "07:00",
+    "float_shares": 840023,
+    "float_millions": 0.84,
+    "profile": "A"
   },
   {
     "symbol": "FCUV",
@@ -360,18 +348,6 @@
     "profile": "A"
   },
   {
-    "symbol": "UPB",
-    "prev_close": 12.8,
-    "pm_price": 14.95,
-    "gap_pct": 16.8,
-    "pm_volume": 3791.0,
-    "first_seen_et": "06:58",
-    "sim_start": "07:00",
-    "float_shares": 34321530,
-    "float_millions": 34.32,
-    "profile": "B"
-  },
-  {
     "symbol": "PODC",
     "prev_close": 2.68,
     "pm_price": 3.12,
@@ -381,18 +357,6 @@
     "sim_start": "07:00",
     "float_shares": 6282135,
     "float_millions": 6.28,
-    "profile": "B"
-  },
-  {
-    "symbol": "DFLI",
-    "prev_close": 2.29,
-    "pm_price": 2.65,
-    "gap_pct": 15.72,
-    "pm_volume": 667.0,
-    "first_seen_et": "04:01",
-    "sim_start": "07:00",
-    "float_shares": 11014330,
-    "float_millions": 11.01,
     "profile": "B"
   },
   {
@@ -432,18 +396,6 @@
     "profile": "A"
   },
   {
-    "symbol": "DDC",
-    "prev_close": 2.5,
-    "pm_price": 2.88,
-    "gap_pct": 15.2,
-    "pm_volume": 2870.0,
-    "first_seen_et": "04:08",
-    "sim_start": "07:00",
-    "float_shares": 14094430,
-    "float_millions": 14.09,
-    "profile": "B"
-  },
-  {
     "symbol": "RGTX",
     "prev_close": 4.7,
     "pm_price": 5.41,
@@ -466,18 +418,6 @@
     "float_shares": 707870,
     "float_millions": 0.71,
     "profile": "A"
-  },
-  {
-    "symbol": "KRNT",
-    "prev_close": 16.25,
-    "pm_price": 18.69,
-    "gap_pct": 15.02,
-    "pm_volume": 3011.0,
-    "first_seen_et": "04:03",
-    "sim_start": "07:00",
-    "float_shares": 41036964,
-    "float_millions": 41.04,
-    "profile": "B"
   },
   {
     "symbol": "NAMM",
@@ -526,18 +466,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "IRE",
-    "prev_close": 5.3,
-    "pm_price": 6.03,
-    "gap_pct": 13.77,
-    "pm_volume": 834270.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 13675458,
-    "float_millions": 13.68,
-    "profile": "B"
   },
   {
     "symbol": "TEMT",
@@ -600,18 +528,6 @@
     "profile": "A"
   },
   {
-    "symbol": "WOLF",
-    "prev_close": 16.0,
-    "pm_price": 18.03,
-    "gap_pct": 12.69,
-    "pm_volume": 2338.0,
-    "first_seen_et": "04:24",
-    "sim_start": "07:00",
-    "float_shares": 28231374,
-    "float_millions": 28.23,
-    "profile": "B"
-  },
-  {
     "symbol": "SLON",
     "prev_close": 4.77,
     "pm_price": 5.37,
@@ -648,18 +564,6 @@
     "profile": "A"
   },
   {
-    "symbol": "RELL",
-    "prev_close": 13.15,
-    "pm_price": 14.79,
-    "gap_pct": 12.47,
-    "pm_volume": 1076.0,
-    "first_seen_et": "06:22",
-    "sim_start": "07:00",
-    "float_shares": 12025630,
-    "float_millions": 12.03,
-    "profile": "B"
-  },
-  {
     "symbol": "FLWS",
     "prev_close": 3.69,
     "pm_price": 4.15,
@@ -669,18 +573,6 @@
     "sim_start": "07:00",
     "float_shares": 8826987,
     "float_millions": 8.83,
-    "profile": "B"
-  },
-  {
-    "symbol": "VTIX",
-    "prev_close": 4.77,
-    "pm_price": 5.35,
-    "gap_pct": 12.16,
-    "pm_volume": 669.0,
-    "first_seen_et": "04:12",
-    "sim_start": "07:00",
-    "float_shares": 14758273,
-    "float_millions": 14.76,
     "profile": "B"
   },
   {
@@ -744,18 +636,6 @@
     "profile": "A"
   },
   {
-    "symbol": "NMAX",
-    "prev_close": 5.3,
-    "pm_price": 5.93,
-    "gap_pct": 11.89,
-    "pm_volume": 100.0,
-    "first_seen_et": "07:00",
-    "sim_start": "07:00",
-    "float_shares": 30913511,
-    "float_millions": 30.91,
-    "profile": "B"
-  },
-  {
     "symbol": "SMCX",
     "prev_close": 11.22,
     "pm_price": 12.53,
@@ -778,18 +658,6 @@
     "float_shares": 165000,
     "float_millions": 0.17,
     "profile": "A"
-  },
-  {
-    "symbol": "PTIR",
-    "prev_close": 13.3,
-    "pm_price": 14.81,
-    "gap_pct": 11.35,
-    "pm_volume": 71137.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 29121493,
-    "float_millions": 29.12,
-    "profile": "B"
   },
   {
     "symbol": "PLYX",
@@ -888,18 +756,6 @@
     "profile": "B"
   },
   {
-    "symbol": "QMCO",
-    "prev_close": 5.79,
-    "pm_price": 6.39,
-    "gap_pct": 10.36,
-    "pm_volume": 10733.0,
-    "first_seen_et": "06:35",
-    "sim_start": "07:00",
-    "float_shares": 14364591,
-    "float_millions": 14.36,
-    "profile": "B"
-  },
-  {
     "symbol": "EDBL",
     "prev_close": 3.39,
     "pm_price": 3.74,
@@ -910,18 +766,6 @@
     "float_shares": 414439,
     "float_millions": 0.41,
     "profile": "A"
-  },
-  {
-    "symbol": "PSFE",
-    "prev_close": 6.34,
-    "pm_price": 6.99,
-    "gap_pct": 10.25,
-    "pm_volume": 1000.0,
-    "first_seen_et": "07:07",
-    "sim_start": "07:07",
-    "float_shares": 28335461,
-    "float_millions": 28.34,
-    "profile": "B"
   },
   {
     "symbol": "HCTI",

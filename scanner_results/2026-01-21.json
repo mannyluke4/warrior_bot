@@ -144,18 +144,6 @@
     "profile": "A"
   },
   {
-    "symbol": "CRML",
-    "prev_close": 15.27,
-    "pm_price": 17.425,
-    "gap_pct": 14.11,
-    "pm_volume": 264997.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 30462953,
-    "float_millions": 30.46,
-    "profile": "B"
-  },
-  {
     "symbol": "MPL",
     "prev_close": 9.99,
     "pm_price": 11.38,
@@ -178,18 +166,6 @@
     "float_shares": 3899702,
     "float_millions": 3.9,
     "profile": "A"
-  },
-  {
-    "symbol": "AVR",
-    "prev_close": 6.06,
-    "pm_price": 6.85,
-    "gap_pct": 13.04,
-    "pm_volume": 1115045.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 25142259,
-    "float_millions": 25.14,
-    "profile": "B"
   },
   {
     "symbol": "BIYA",
@@ -228,18 +204,6 @@
     "profile": "X"
   },
   {
-    "symbol": "RGTX",
-    "prev_close": 13.28,
-    "pm_price": 14.91,
-    "gap_pct": 12.27,
-    "pm_volume": 37134.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "float_shares": 2552648,
-    "float_millions": 2.55,
-    "profile": "A"
-  },
-  {
     "symbol": "QPUX",
     "prev_close": 17.68,
     "pm_price": 19.85,
@@ -250,6 +214,18 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "RGTX",
+    "prev_close": 13.28,
+    "pm_price": 14.91,
+    "gap_pct": 12.27,
+    "pm_volume": 37134.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "float_shares": 2552648,
+    "float_millions": 2.55,
+    "profile": "A"
   },
   {
     "symbol": "FEAM",
@@ -286,30 +262,6 @@
     "float_shares": 3192484,
     "float_millions": 3.19,
     "profile": "A"
-  },
-  {
-    "symbol": "NBY",
-    "prev_close": 5.87,
-    "pm_price": 6.5,
-    "gap_pct": 10.73,
-    "pm_volume": 6107.0,
-    "first_seen_et": "04:29",
-    "sim_start": "07:00",
-    "float_shares": 25874719,
-    "float_millions": 25.87,
-    "profile": "B"
-  },
-  {
-    "symbol": "UMAC",
-    "prev_close": 16.95,
-    "pm_price": 18.67,
-    "gap_pct": 10.15,
-    "pm_volume": 9176.0,
-    "first_seen_et": "04:16",
-    "sim_start": "07:00",
-    "float_shares": 33522455,
-    "float_millions": 33.52,
-    "profile": "B"
   },
   {
     "symbol": "AVXX",

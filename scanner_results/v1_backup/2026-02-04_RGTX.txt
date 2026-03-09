@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RGTX  |  Date: 2026-02-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RGTX bars for 2026-02-04...
+  Total bars: 378  |  Seed: 103  |  Sim: 275
+  Seed complete: EMA9=7.4421
+  Fetching tick data from Alpaca...
+  Tick replay: 14522 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RGTX -- 2026-02-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 14522 sim + 103 seed  |  EMA9=6.1449  VWAP=6.7848
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FEED  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FEED bars for 2026-02-02...
+  Total bars: 350  |  Seed: 99  |  Sim: 251
+  Seed complete: EMA9=3.2668
+  Fetching tick data from Alpaca...
+  Tick replay: 26087 trades for sim window
+  [07:04] CLASSIFIER: FEED → avoid (conf=0.85) — AVOID gate: VWAP dist 5.6% < 7.0%, range 3.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: FEED -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 26087 sim + 99 seed  |  EMA9=2.7726  VWAP=3.2565
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:52   3.4000   3.2881  0.1119   12.0   3.3600  bearish_engulfing_exit_full      -357    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-357  |  Avg R-Multiple: -0.4R
+  Largest Win: $+0  |  Largest Loss: $-357
+  Armed: 4  |  Signals: 2  |  Entered: 1
+======================================================================
+

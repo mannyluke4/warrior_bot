@@ -6,15 +6,13 @@
 
 Fetching HIMZ bars for 2026-01-09...
   Total bars: 300  |  Seed: 58  |  Sim: 242
-  Fetching L2 from Databento: HIMZ 2026-01-09 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: HIMZ_2026-01-09_XNAS.dbn.zst
+  L2 cache hit: HIMZ_2026-01-09_XNAS.dbn.zst
   L2 data: 207953 records for HIMZ
   L2 snapshots: 9056 (1-second sampled)
   L2 data loaded: 9056 snapshots
   Seed complete: EMA9=6.3604
   Fetching tick data from Databento...
-  Fetching trades from Databento: HIMZ 2026-01-09 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: HIMZ_2026-01-09_trades_XNAS.dbn.zst
+  Trades cache hit: HIMZ_2026-01-09_trades_XNAS.dbn.zst
   Trade data: 3518 records for HIMZ
   Trades: 3518 | $6.36-$6.40 | 07:02:04-11:59:41 ET
   Tick replay: 3518 trades for sim window

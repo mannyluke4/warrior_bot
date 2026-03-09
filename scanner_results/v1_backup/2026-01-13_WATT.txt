@@ -1,0 +1,33 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WATT  |  Date: 2026-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching WATT bars for 2026-01-13...
+  Total bars: 226  |  Seed: 1  |  Sim: 225
+  Seed complete: EMA9=5.5400
+  Fetching tick data from Alpaca...
+  Tick replay: 44589 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: WATT -- 2026-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 44589 sim + 1 seed  |  EMA9=6.1665  VWAP=6.7219
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:16   5.8600   5.6900  0.1700    5.5   6.2400  topping_wicky_exit_full     +2235    +2.2R
+    2   09:33   7.6800   6.8800  0.8000    8.0   7.9050  bearish_engulfing_exit_full      +281    +0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 2  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+2,516  |  Avg R-Multiple: +1.3R
+  Largest Win: $+2,235  |  Largest Loss: $+0
+  Armed: 5  |  Signals: 4  |  Entered: 2
+======================================================================
+

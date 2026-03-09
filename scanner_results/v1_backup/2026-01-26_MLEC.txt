@@ -1,0 +1,28 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MLEC  |  Date: 2026-01-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MLEC bars for 2026-01-26...
+  Total bars: 53  |  Seed: 5  |  Sim: 48
+  Seed complete: EMA9=7.8986
+  Fetching tick data from Alpaca...
+  Tick replay: 1048 trades for sim window
+  [07:04] CLASSIFIER: MLEC → avoid (conf=0.85) — AVOID gate: VWAP dist 7.0% < 7.0%, range 3.2% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=10:41 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=7.8100 stop=7.5900 R=0.2200 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=7.4754 vwap=7.4880
+    post_block: max_5m=7.7150 max_10m=7.7450 max_30m=7.8999
+
+======================================================================
+  BACKTEST REPORT: MLEC -- 2026-01-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1048 sim + 5 seed  |  EMA9=7.4984  VWAP=7.5323
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,38 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MNTS  |  Date: 2026-02-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MNTS bars for 2026-02-02...
+  Total bars: 127  |  Seed: 4  |  Sim: 123
+  Seed complete: EMA9=7.2270
+  Fetching tick data from Alpaca...
+  Tick replay: 2386 trades for sim window
+  [07:25] CLASSIFIER: MNTS → avoid (conf=0.85) — AVOID gate: VWAP dist 1.5% < 7.0%, range 2.5% < 10.0%, NH 1 < 2
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=08:04 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=5.5 entry=7.4942 stop=7.3296 R=0.1646 detail=macd=7.5*0.6;R>=0.08=+1 close=7.0800 vwap=7.0966
+    post_block: max_5m=7.3500 max_10m=7.3500 max_30m=7.3500
+
+======================================================================
+  BACKTEST REPORT: MNTS -- 2026-02-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2386 sim + 4 seed  |  EMA9=6.5382  VWAP=6.7214
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:40   7.2290   7.0842  0.1448   12.5   7.2500  topping_wicky_exit_full      +145    +0.1R
+    2   09:48   7.2600   7.1100  0.1500   12.0   7.1383  topping_wicky_exit_full      -811    -0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $-666  |  Avg R-Multiple: -0.3R
+  Largest Win: $+145  |  Largest Loss: $-811
+  Armed: 4  |  Signals: 2  |  Entered: 2
+======================================================================
+

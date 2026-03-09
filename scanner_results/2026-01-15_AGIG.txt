@@ -12,8 +12,7 @@ Fetching AGIG bars for 2026-01-15...
   L2 data loaded: 1202 snapshots
   Seed complete: EMA9=3.2459
   Fetching tick data from Databento...
-  Fetching trades from Databento: AGIG 2026-01-15 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: AGIG_2026-01-15_trades_XNAS.dbn.zst
+  Trades cache hit: AGIG_2026-01-15_trades_XNAS.dbn.zst
   Trade data: 230 records for AGIG
   Trades: 230 | $3.25-$3.25 | 07:16:09-11:57:57 ET
   Tick replay: 230 trades for sim window

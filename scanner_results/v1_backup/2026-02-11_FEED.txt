@@ -1,0 +1,23 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FEED  |  Date: 2026-02-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FEED bars for 2026-02-11...
+  Total bars: 177  |  Seed: 14  |  Sim: 163
+  Seed complete: EMA9=2.9795
+  Fetching tick data from Alpaca...
+  Tick replay: 2014 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FEED -- 2026-02-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2014 sim + 14 seed  |  EMA9=2.7645  VWAP=2.9082
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 1
+======================================================================
