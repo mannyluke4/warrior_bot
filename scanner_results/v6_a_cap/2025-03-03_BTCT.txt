@@ -1,0 +1,31 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: BTCT  |  Date: 2025-03-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BTCT bars for 2025-03-03...
+  Total bars: 477  |  Seed: 180  |  Sim: 297
+  L2 cache hit: BTCT_2025-03-03_XNAS.dbn.zst
+  L2 data: 36606 records for BTCT
+  L2 snapshots: 4461 (1-second sampled)
+  L2 data loaded: 4461 snapshots
+  Seed complete: EMA9=4.9796
+  Fetching tick data from Databento...
+  Trades cache hit: BTCT_2025-03-03_trades_XNAS.dbn.zst
+  Trade data: 4214 records for BTCT
+  Trades: 4214 | $4.93-$5.50 | 07:00:00-11:59:35 ET
+  Tick replay: 4214 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BTCT -- 2025-03-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4461 snaps [TICK mode]
+  Bars: 4214 sim + 180 seed  |  EMA9=4.7145  VWAP=5.5400
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

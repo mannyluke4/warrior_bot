@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FGI  |  Date: 2025-12-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FGI bars for 2025-12-08...
+  Total bars: 153  |  Seed: 37  |  Sim: 116
+  Seed complete: EMA9=9.5199
+  Fetching tick data from Alpaca...
+  Tick replay: 2225 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FGI -- 2025-12-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2225 sim + 37 seed  |  EMA9=9.4159  VWAP=9.6998
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:23  10.2100   9.9900  0.2200   12.5  10.3900  topping_wicky_exit_full      +409    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+409  |  Avg R-Multiple: +0.8R
+  Largest Win: $+409  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 1  |  Entered: 1
+======================================================================
+

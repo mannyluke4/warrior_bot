@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ASTC  |  Date: 2025-12-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ASTC bars for 2025-12-15...
+  Total bars: 107  |  Seed: 6  |  Sim: 101
+  Seed complete: EMA9=3.9534
+  Fetching tick data from Alpaca...
+  Tick replay: 1410 trades for sim window
+  [07:19] CLASSIFIER: ASTC → avoid (conf=0.85) — AVOID gate: VWAP dist 3.3% < 7.0%, range 4.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ASTC -- 2025-12-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1410 sim + 6 seed  |  EMA9=3.3385  VWAP=3.6022
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

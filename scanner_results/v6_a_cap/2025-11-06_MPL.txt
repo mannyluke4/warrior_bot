@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MPL  |  Date: 2025-11-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MPL bars for 2025-11-06...
+  Total bars: 124  |  Seed: 9  |  Sim: 115
+  Seed complete: EMA9=8.7232
+  Fetching tick data from Alpaca...
+  Tick replay: 761 trades for sim window
+  [07:36] CLASSIFIER: MPL → avoid (conf=0.85) — AVOID gate: VWAP dist 3.5% < 7.0%, range 1.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MPL -- 2025-11-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 761 sim + 9 seed  |  EMA9=7.5912  VWAP=8.0277
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CIGL  |  Date: 2025-07-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CIGL bars for 2025-07-14...
+  Total bars: 173  |  Seed: 28  |  Sim: 145
+  Seed complete: EMA9=3.9268
+  Fetching tick data from Alpaca...
+  Tick replay: 2926 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CIGL -- 2025-07-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2926 sim + 28 seed  |  EMA9=3.5413  VWAP=3.7777
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:20   3.9300   3.8000  0.1300   12.0   3.8734  bearish_engulfing_exit_full      -109    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-109  |  Avg R-Multiple: -0.4R
+  Largest Win: $+0  |  Largest Loss: $-109
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

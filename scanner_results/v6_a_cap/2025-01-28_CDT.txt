@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CDT  |  Date: 2025-01-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CDT bars for 2025-01-28...
+  Total bars: 377  |  Seed: 90  |  Sim: 287
+  Seed complete: EMA9=3.8384
+  Fetching tick data from Alpaca...
+  Tick replay: 15787 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CDT -- 2025-01-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 15787 sim + 90 seed  |  EMA9=3.0766  VWAP=4.5072
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

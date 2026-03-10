@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TCRT  |  Date: 2025-10-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TCRT bars for 2025-10-09...
+  Total bars: 438  |  Seed: 137  |  Sim: 301
+  Seed complete: EMA9=4.8805
+  Fetching tick data from Alpaca...
+  Tick replay: 55968 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TCRT -- 2025-10-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 55968 sim + 137 seed  |  EMA9=3.9625  VWAP=5.6695
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

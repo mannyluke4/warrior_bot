@@ -1,0 +1,40 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CYN  |  Date: 2025-12-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CYN bars for 2025-12-16...
+  Total bars: 281  |  Seed: 0  |  Sim: 281
+  L2 cache hit: CYN_2025-12-16_XNAS.dbn.zst
+  L2 data: 54857 records for CYN
+  L2 snapshots: 4473 (1-second sampled)
+  L2 data loaded: 4473 snapshots
+  Seed complete: EMA9=None
+  Fetching tick data from Databento...
+  Trades cache hit: CYN_2025-12-16_trades_XNAS.dbn.zst
+  Trade data: 4602 records for CYN
+  Trades: 4602 | $3.70-$4.25 | 07:00:24-11:59:26 ET
+  Tick replay: 4602 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CYN -- 2025-12-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=4473 snaps [TICK mode]
+  Bars: 4602 sim + 0 seed  |  EMA9=3.0960  VWAP=3.6547
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:09   4.1000   3.7100  0.3900    6.5   3.7000  stop_hit                  -256    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-256  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-256
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,46 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: CYN  |  Date: 2025-10-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CYN bars for 2025-10-14...
+  Total bars: 304  |  Seed: 3  |  Sim: 301
+  L2 cache hit: CYN_2025-10-14_XNAS.dbn.zst
+  L2 data: 402781 records for CYN
+  L2 snapshots: 10911 (1-second sampled)
+  L2 data loaded: 10911 snapshots
+  Seed complete: EMA9=5.4540
+  Fetching tick data from Databento...
+  Trades cache hit: CYN_2025-10-14_trades_XNAS.dbn.zst
+  Trade data: 55426 records for CYN
+  Trades: 55426 | $5.57-$7.48 | 07:00:35-11:59:23 ET
+  Tick replay: 55426 trades for sim window
+  [L2_warmup] bearish imbalance=0.14 bar=3/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.24 bar=13/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.25 bar=18/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.26 bar=24/30 (hard gate inactive)
+
+======================================================================
+  BACKTEST REPORT: CYN -- 2025-10-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10911 snaps [TICK mode]
+  Bars: 55426 sim + 3 seed  |  EMA9=6.1465  VWAP=6.7575
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:03   6.6000   5.7900  0.8100    1.5   6.3000  bearish_engulfing_exit_full       -46    -0.4R
+    2   07:11   6.8100   6.4300  0.3800    3.5   6.6500  bearish_engulfing_exit_full       -52    -0.4R
+    3   07:17   6.8000   6.5000  0.3000    5.5   6.7300  l2_bearish_exit_full       -29    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 3  |  Wins: 0  |  Losses: 3  |  Win Rate: 0.0%
+  Gross P&L: $-128  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-52
+  Armed: 7  |  Signals: 6  |  Entered: 3
+======================================================================
+

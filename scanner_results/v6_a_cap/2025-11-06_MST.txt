@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MST  |  Date: 2025-11-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MST bars for 2025-11-06...
+  Total bars: 169  |  Seed: 7  |  Sim: 162
+  Seed complete: EMA9=4.8737
+  Fetching tick data from Alpaca...
+  Tick replay: 2691 trades for sim window
+  [07:22] CLASSIFIER: MST → avoid (conf=0.85) — AVOID gate: VWAP dist 0.4% < 7.0%, range 1.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MST -- 2025-11-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2691 sim + 7 seed  |  EMA9=4.3122  VWAP=4.5422
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

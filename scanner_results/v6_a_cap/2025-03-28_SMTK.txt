@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SMTK  |  Date: 2025-03-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SMTK bars for 2025-03-28...
+  Total bars: 141  |  Seed: 26  |  Sim: 115
+  Seed complete: EMA9=3.7864
+  Fetching tick data from Alpaca...
+  Tick replay: 1192 trades for sim window
+  [07:08] CLASSIFIER: SMTK → avoid (conf=0.85) — AVOID gate: VWAP dist 6.7% < 7.0%, range 3.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SMTK -- 2025-03-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1192 sim + 26 seed  |  EMA9=3.1249  VWAP=3.6006
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

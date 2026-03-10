@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CETX  |  Date: 2025-12-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CETX bars for 2025-12-15...
+  Total bars: 268  |  Seed: 32  |  Sim: 236
+  Seed complete: EMA9=3.0486
+  Fetching tick data from Alpaca...
+  Tick replay: 8520 trades for sim window
+  [07:06] CLASSIFIER: CETX → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 1.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: CETX -- 2025-12-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 8520 sim + 32 seed  |  EMA9=2.4724  VWAP=2.6470
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

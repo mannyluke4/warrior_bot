@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ULY  |  Date: 2025-06-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ULY bars for 2025-06-26...
+  Total bars: 235  |  Seed: 58  |  Sim: 177
+  Seed complete: EMA9=7.6260
+  Fetching tick data from Alpaca...
+  Tick replay: 4499 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ULY -- 2025-06-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4499 sim + 58 seed  |  EMA9=6.3573  VWAP=6.9860
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

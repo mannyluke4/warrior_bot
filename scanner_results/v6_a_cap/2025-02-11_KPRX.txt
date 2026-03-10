@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: KPRX  |  Date: 2025-02-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching KPRX bars for 2025-02-11...
+  Total bars: 130  |  Seed: 14  |  Sim: 116
+  Seed complete: EMA9=4.1238
+  Fetching tick data from Alpaca...
+  Tick replay: 2141 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: KPRX -- 2025-02-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2141 sim + 14 seed  |  EMA9=3.3736  VWAP=3.8857
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

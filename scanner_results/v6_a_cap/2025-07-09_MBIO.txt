@@ -1,0 +1,31 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: MBIO  |  Date: 2025-07-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MBIO bars for 2025-07-09...
+  Total bars: 420  |  Seed: 119  |  Sim: 301
+  L2 cache hit: MBIO_2025-07-09_XNAS.dbn.zst
+  L2 data: 235713 records for MBIO
+  L2 snapshots: 10802 (1-second sampled)
+  L2 data loaded: 10802 snapshots
+  Seed complete: EMA9=3.4095
+  Fetching tick data from Databento...
+  Trades cache hit: MBIO_2025-07-09_trades_XNAS.dbn.zst
+  Trade data: 12824 records for MBIO
+  Trades: 12824 | $3.38-$3.86 | 07:00:01-11:59:18 ET
+  Tick replay: 12824 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MBIO -- 2025-07-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10802 snaps [TICK mode]
+  Bars: 12824 sim + 119 seed  |  EMA9=3.0858  VWAP=3.5130
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

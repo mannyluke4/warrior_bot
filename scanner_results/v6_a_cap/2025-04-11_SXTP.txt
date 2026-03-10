@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SXTP  |  Date: 2025-04-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SXTP bars for 2025-04-11...
+  Total bars: 212  |  Seed: 22  |  Sim: 190
+  Seed complete: EMA9=3.3179
+  Fetching tick data from Alpaca...
+  Tick replay: 5392 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SXTP -- 2025-04-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5392 sim + 22 seed  |  EMA9=3.3143  VWAP=3.5665
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:08   3.8400   3.7400  0.1000   10.3   3.7740  bearish_engulfing_exit_full      -165    -0.7R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-165  |  Avg R-Multiple: -0.7R
+  Largest Win: $+0  |  Largest Loss: $-165
+  Armed: 3  |  Signals: 1  |  Entered: 1
+======================================================================
+

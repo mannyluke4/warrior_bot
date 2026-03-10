@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QTTB  |  Date: 2025-12-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QTTB bars for 2025-12-02...
+  Total bars: 452  |  Seed: 161  |  Sim: 291
+  Seed complete: EMA9=4.0128
+  Fetching tick data from Alpaca...
+  Tick replay: 29439 trades for sim window
+  [07:04] CLASSIFIER: QTTB → avoid (conf=0.85) — AVOID gate: VWAP dist 3.7% < 7.0%, range 1.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: QTTB -- 2025-12-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 29439 sim + 161 seed  |  EMA9=3.5091  VWAP=3.9047
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

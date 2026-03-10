@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CRCG  |  Date: 2025-10-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRCG bars for 2025-10-16...
+  Total bars: 279  |  Seed: 65  |  Sim: 214
+  Seed complete: EMA9=9.3311
+  Fetching tick data from Alpaca...
+  Tick replay: 4994 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CRCG -- 2025-10-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4994 sim + 65 seed  |  EMA9=8.8485  VWAP=9.1261
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:12   9.4094   9.3200  0.0894    7.6   9.3200  stop_hit                  -125    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-125  |  Avg R-Multiple: -0.5R
+  Largest Win: $+0  |  Largest Loss: $-125
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

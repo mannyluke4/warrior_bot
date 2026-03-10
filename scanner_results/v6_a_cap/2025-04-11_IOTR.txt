@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IOTR  |  Date: 2025-04-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IOTR bars for 2025-04-11...
+  Total bars: 72  |  Seed: 23  |  Sim: 49
+  Seed complete: EMA9=3.8465
+  Fetching tick data from Alpaca...
+  Tick replay: 423 trades for sim window
+  [07:11] CLASSIFIER: IOTR → avoid (conf=0.85) — AVOID gate: VWAP dist 4.2% < 7.0%, range 6.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: IOTR -- 2025-04-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 423 sim + 23 seed  |  EMA9=3.5011  VWAP=3.8651
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

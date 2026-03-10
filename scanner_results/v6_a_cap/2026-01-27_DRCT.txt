@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DRCT  |  Date: 2026-01-27  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DRCT bars for 2026-01-27...
+  Total bars: 203  |  Seed: 25  |  Sim: 178
+  Seed complete: EMA9=3.2682
+  Fetching tick data from Alpaca...
+  Tick replay: 3540 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DRCT -- 2026-01-27 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3540 sim + 25 seed  |  EMA9=3.2269  VWAP=3.1098
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

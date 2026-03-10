@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QSU  |  Date: 2025-12-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QSU bars for 2025-12-17...
+  Total bars: 145  |  Seed: 11  |  Sim: 134
+  Seed complete: EMA9=7.5703
+  Fetching tick data from Alpaca...
+  Tick replay: 1940 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: QSU -- 2025-12-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1940 sim + 11 seed  |  EMA9=7.7621  VWAP=8.0412
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:43   8.5200   8.4100  0.1100    9.3   8.3700  stop_hit                  -341    -1.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-341  |  Avg R-Multiple: -1.4R
+  Largest Win: $+0  |  Largest Loss: $-341
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

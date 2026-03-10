@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AUUD  |  Date: 2025-08-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AUUD bars for 2025-08-11...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=3.7725
+  Fetching tick data from Alpaca...
+  Tick replay: 156577 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AUUD -- 2025-08-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 156577 sim + 180 seed  |  EMA9=3.1012  VWAP=3.6015
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

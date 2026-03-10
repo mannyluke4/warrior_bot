@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TRAW  |  Date: 2025-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TRAW bars for 2025-01-13...
+  Total bars: 229  |  Seed: 71  |  Sim: 158
+  Seed complete: EMA9=9.2383
+  Fetching tick data from Alpaca...
+  Tick replay: 2589 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TRAW -- 2025-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2589 sim + 71 seed  |  EMA9=7.4175  VWAP=9.1169
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

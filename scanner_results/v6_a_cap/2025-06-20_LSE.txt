@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LSE  |  Date: 2025-06-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LSE bars for 2025-06-20...
+  Total bars: 151  |  Seed: 34  |  Sim: 117
+  Seed complete: EMA9=6.7392
+  Fetching tick data from Alpaca...
+  Tick replay: 1870 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: LSE -- 2025-06-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1870 sim + 34 seed  |  EMA9=6.7426  VWAP=6.8160
+======================================================================
+
+  No trades taken.
+
+  Armed: 3  |  Signals: 0
+======================================================================

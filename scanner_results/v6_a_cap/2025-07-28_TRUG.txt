@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TRUG  |  Date: 2025-07-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TRUG bars for 2025-07-28...
+  Total bars: 351  |  Seed: 68  |  Sim: 283
+  Seed complete: EMA9=8.8748
+  Fetching tick data from Alpaca...
+  Tick replay: 29107 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TRUG -- 2025-07-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 29107 sim + 68 seed  |  EMA9=6.4076  VWAP=8.7230
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

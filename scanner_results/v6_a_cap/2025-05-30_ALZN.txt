@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ALZN  |  Date: 2025-05-30  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ALZN bars for 2025-05-30...
+  Total bars: 304  |  Seed: 71  |  Sim: 233
+  Seed complete: EMA9=5.0987
+  Fetching tick data from Alpaca...
+  Tick replay: 6915 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ALZN -- 2025-05-30 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 6915 sim + 71 seed  |  EMA9=4.3874  VWAP=4.6855
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: PAPL  |  Date: 2025-08-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PAPL bars for 2025-08-04...
+  Total bars: 99  |  Seed: 14  |  Sim: 85
+  Seed complete: EMA9=3.9922
+  Fetching tick data from Alpaca...
+  Tick replay: 1453 trades for sim window
+  [07:24] CLASSIFIER: PAPL → avoid (conf=0.85) — AVOID gate: VWAP dist 1.2% < 7.0%, range 1.5% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PAPL -- 2025-08-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1453 sim + 14 seed  |  EMA9=3.7615  VWAP=3.9115
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

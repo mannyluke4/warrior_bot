@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RBNE  |  Date: 2025-06-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RBNE bars for 2025-06-23...
+  Total bars: 476  |  Seed: 175  |  Sim: 301
+  Seed complete: EMA9=7.8634
+  Fetching tick data from Alpaca...
+  Tick replay: 87835 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RBNE -- 2025-06-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 87835 sim + 175 seed  |  EMA9=7.3368  VWAP=7.8423
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

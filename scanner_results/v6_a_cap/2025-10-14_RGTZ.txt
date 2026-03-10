@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RGTZ  |  Date: 2025-10-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RGTZ bars for 2025-10-14...
+  Total bars: 476  |  Seed: 176  |  Sim: 300
+  Seed complete: EMA9=9.8524
+  Fetching tick data from Alpaca...
+  Tick replay: 59665 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RGTZ -- 2025-10-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 59665 sim + 176 seed  |  EMA9=9.4605  VWAP=9.8032
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

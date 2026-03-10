@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GLTO  |  Date: 2025-10-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GLTO bars for 2025-10-06...
+  Total bars: 65  |  Seed: 8  |  Sim: 57
+  Seed complete: EMA9=3.9646
+  Fetching tick data from Alpaca...
+  Tick replay: 744 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GLTO -- 2025-10-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 744 sim + 8 seed  |  EMA9=3.7808  VWAP=3.8804
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

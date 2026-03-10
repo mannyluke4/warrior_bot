@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=500 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: XBIO  |  Date: 2025-10-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching XBIO bars for 2025-10-13...
+  Total bars: 125  |  Seed: 9  |  Sim: 116
+  Seed complete: EMA9=6.5711
+  Fetching tick data from Alpaca...
+  Tick replay: 1894 trades for sim window
+  [07:06] CLASSIFIER: XBIO → avoid (conf=0.85) — AVOID gate: VWAP dist 4.5% < 7.0%, range 0.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: XBIO -- 2025-10-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1894 sim + 9 seed  |  EMA9=5.9502  VWAP=6.1530
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

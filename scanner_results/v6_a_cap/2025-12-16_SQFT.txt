@@ -1,0 +1,24 @@
+# V6.2-a-cap risk=500 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SQFT  |  Date: 2025-12-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SQFT bars for 2025-12-16...
+  Total bars: 301  |  Seed: 147  |  Sim: 154
+  Seed complete: EMA9=3.7339
+  Fetching tick data from Alpaca...
+  Tick replay: 5467 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SQFT -- 2025-12-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$500  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5467 sim + 147 seed  |  EMA9=3.1568  VWAP=4.5584
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

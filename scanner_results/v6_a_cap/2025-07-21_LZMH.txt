@@ -1,0 +1,25 @@
+# V6.2-a-cap risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LZMH  |  Date: 2025-07-21  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LZMH bars for 2025-07-21...
+  Total bars: 153  |  Seed: 40  |  Sim: 113
+  Seed complete: EMA9=9.0010
+  Fetching tick data from Alpaca...
+  Tick replay: 2830 trades for sim window
+  [07:10] CLASSIFIER: LZMH → avoid (conf=0.85) — AVOID gate: VWAP dist 2.0% < 7.0%, range 2.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LZMH -- 2025-07-21 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2830 sim + 40 seed  |  EMA9=7.3150  VWAP=8.1053
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

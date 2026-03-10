@@ -1,0 +1,33 @@
+# V6.2-a-cap risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: INM  |  Date: 2025-06-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INM bars for 2025-06-02...
+  Total bars: 442  |  Seed: 141  |  Sim: 301
+  Seed complete: EMA9=3.4011
+  Fetching tick data from Alpaca...
+  Tick replay: 582311 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: INM -- 2025-06-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 582311 sim + 141 seed  |  EMA9=4.9946  VWAP=6.3067
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:04   5.4500   3.5700  1.8800   12.5   5.0000  bearish_engulfing_exit_full       -59    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-59  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-59
+  Armed: 3  |  Signals: 1  |  Entered: 1
+======================================================================
+
