@@ -1,0 +1,34 @@
+# V6.1 risk=750 sqs=6 tier=A toxic_args: candidates=10 gap=21.67 pmvol=724331.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BQ  |  Date: 2025-11-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BQ bars for 2025-11-05...
+  Total bars: 436  |  Seed: 144  |  Sim: 292
+  Seed complete: EMA9=3.5103
+  Fetching tick data from Alpaca...
+  Tick replay: 36178 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BQ -- 2025-11-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 36178 sim + 144 seed  |  EMA9=3.2380  VWAP=3.5305
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:08   3.8800   3.6900  0.1900   12.0   3.6900  stop_hit                  -750    -1.0R
+    2   07:47   3.9600   3.7900  0.1700   12.0   3.7800  stop_hit                  -794    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-1,544  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-794
+  Armed: 3  |  Signals: 3  |  Entered: 2
+======================================================================
+

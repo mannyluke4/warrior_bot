@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=16 gap=11.05 pmvol=79405.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: JLHL  |  Date: 2025-10-29  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching JLHL bars for 2025-10-29...
+  Total bars: 113  |  Seed: 33  |  Sim: 80
+  Seed complete: EMA9=4.1112
+  Fetching tick data from Alpaca...
+  Tick replay: 1837 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: JLHL -- 2025-10-29 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1837 sim + 33 seed  |  EMA9=3.7469  VWAP=4.1571
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

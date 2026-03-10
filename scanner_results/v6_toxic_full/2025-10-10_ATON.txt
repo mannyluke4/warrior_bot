@@ -1,0 +1,34 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=65 gap=21.75 pmvol=10749.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ATON  |  Date: 2025-10-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ATON bars for 2025-10-10...
+  Total bars: 173  |  Seed: 13  |  Sim: 160
+  Seed complete: EMA9=7.7647
+  Fetching tick data from Alpaca...
+  Tick replay: 4928 trades for sim window
+  [07:04] CLASSIFIER: ATON → avoid (conf=0.85) — AVOID gate: VWAP dist 2.3% < 7.0%, range 3.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ATON -- 2025-10-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4928 sim + 13 seed  |  EMA9=6.9365  VWAP=7.2624
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:14   8.4200   8.2300  0.1900   11.0   8.2202  stop_hit                  -394    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-394  |  Avg R-Multiple: -0.5R
+  Largest Win: $+0  |  Largest Loss: $-394
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

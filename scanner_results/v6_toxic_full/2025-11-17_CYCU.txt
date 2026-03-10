@@ -1,0 +1,25 @@
+# V6.1 risk=250 sqs=4 tier=B toxic_args: candidates=44 gap=19.07 pmvol=72690.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CYCU  |  Date: 2025-11-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CYCU bars for 2025-11-17...
+  Total bars: 285  |  Seed: 49  |  Sim: 236
+  Seed complete: EMA9=5.3825
+  Fetching tick data from Alpaca...
+  Tick replay: 9331 trades for sim window
+  [07:04] CLASSIFIER: CYCU → avoid (conf=0.85) — AVOID gate: VWAP dist 5.7% < 7.0%, range 5.3% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: CYCU -- 2025-11-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9331 sim + 49 seed  |  EMA9=4.6312  VWAP=4.9307
+======================================================================
+
+  No trades taken.
+
+  Armed: 2  |  Signals: 1
+======================================================================

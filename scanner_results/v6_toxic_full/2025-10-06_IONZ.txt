@@ -1,0 +1,29 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=16 gap=23.88 pmvol=3275922.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IONZ  |  Date: 2025-10-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IONZ bars for 2025-10-06...
+  Total bars: 467  |  Seed: 170  |  Sim: 297
+  L2 cache hit: IONZ_2025-10-06_XNAS.dbn.zst
+  L2 data: 260675 records for IONZ
+  L2 snapshots: 11406 (1-second sampled)
+  L2 data loaded: 11406 snapshots
+  Seed complete: EMA9=3.5994
+  Fetching tick data from Alpaca...
+  Tick replay: 68551 trades for sim window
+  [07:04] CLASSIFIER: IONZ → avoid (conf=0.85) — AVOID gate: VWAP dist 0.3% < 7.0%, range 0.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: IONZ -- 2025-10-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=11406 snaps [TICK mode]
+  Bars: 68551 sim + 170 seed  |  EMA9=3.0725  VWAP=3.2770
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=6 tier=A toxic_args: candidates=54 gap=24.29 pmvol=26039627.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SER  |  Date: 2026-01-29  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SER bars for 2026-01-29...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=4.6508
+  Fetching tick data from Alpaca...
+  Tick replay: 285606 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SER -- 2026-01-29 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 285606 sim + 180 seed  |  EMA9=3.5486  VWAP=4.1692
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

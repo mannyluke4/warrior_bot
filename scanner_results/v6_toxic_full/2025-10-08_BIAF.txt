@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=17 gap=18.69 pmvol=10717668.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BIAF  |  Date: 2025-10-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BIAF bars for 2025-10-08...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=3.2350
+  Fetching tick data from Alpaca...
+  Tick replay: 157992 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BIAF -- 2025-10-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 157992 sim + 180 seed  |  EMA9=3.3374  VWAP=3.3637
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

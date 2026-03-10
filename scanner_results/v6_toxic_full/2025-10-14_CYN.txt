@@ -1,0 +1,45 @@
+# V6.1 risk=250 sqs=4 tier=B toxic_args: candidates=11 gap=15.44 pmvol=2907357.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CYN  |  Date: 2025-10-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CYN bars for 2025-10-14...
+  Total bars: 304  |  Seed: 3  |  Sim: 301
+  L2 cache hit: CYN_2025-10-14_XNAS.dbn.zst
+  L2 data: 402781 records for CYN
+  L2 snapshots: 10911 (1-second sampled)
+  L2 data loaded: 10911 snapshots
+  Seed complete: EMA9=5.4540
+  Fetching tick data from Alpaca...
+  Tick replay: 288845 trades for sim window
+  [L2_warmup] bearish imbalance=0.15 bar=1/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.26 bar=2/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.14 bar=3/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.24 bar=13/30 (hard gate inactive)
+  [L2_warmup] bearish imbalance=0.25 bar=18/30 (hard gate inactive)
+
+======================================================================
+  BACKTEST REPORT: CYN -- 2025-10-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=10911 snaps [TICK mode]
+  Bars: 288845 sim + 3 seed  |  EMA9=6.1353  VWAP=6.7373
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:02   5.9900   5.6200  0.3700    1.5   6.3400  l2_bearish_exit_full      +236    +0.9R
+    2   07:03   6.6200   5.7800  0.8400    1.5   6.4700  bearish_engulfing_exit_full       -45    -0.2R
+    3   07:11   6.8100   6.4300  0.3800    3.5   7.0000  l2_bearish_exit_full      +125    +0.5R
+    4   07:23   7.3400   6.8700  0.4700    9.5   7.2400  l2_bearish_exit_full       -53    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 4  |  Wins: 2  |  Losses: 2  |  Win Rate: 50.0%
+  Gross P&L: $+263  |  Avg R-Multiple: +0.3R
+  Largest Win: $+236  |  Largest Loss: $-53
+  Armed: 7  |  Signals: 6  |  Entered: 4
+======================================================================
+

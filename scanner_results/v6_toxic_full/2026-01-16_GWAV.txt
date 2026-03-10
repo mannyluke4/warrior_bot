@@ -1,0 +1,33 @@
+# V6.1 risk=750 sqs=6 tier=A toxic_args: candidates=25 gap=10.31 pmvol=1537606.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GWAV  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GWAV bars for 2026-01-16...
+  Total bars: 293  |  Seed: 5  |  Sim: 288
+  Seed complete: EMA9=5.1561
+  Fetching tick data from Alpaca...
+  Tick replay: 82507 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GWAV -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 82507 sim + 5 seed  |  EMA9=5.8325  VWAP=6.4354
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   5.4900   5.5000  0.1400    5.5   6.5700  bearish_engulfing_exit_full     +5786    +7.7R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+5,786  |  Avg R-Multiple: +7.7R
+  Largest Win: $+5,786  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 2  |  Entered: 1
+======================================================================
+

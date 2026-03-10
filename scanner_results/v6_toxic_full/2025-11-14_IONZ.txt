@@ -1,0 +1,38 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=24 gap=20.58 pmvol=3037146.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IONZ  |  Date: 2025-11-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IONZ bars for 2025-11-14...
+  Total bars: 480  |  Seed: 179  |  Sim: 301
+  L2 cache hit: IONZ_2025-11-14_XNAS.dbn.zst
+  L2 data: 780355 records for IONZ
+  L2 snapshots: 16312 (1-second sampled)
+  L2 data loaded: 16312 snapshots
+  Seed complete: EMA9=5.9987
+  Fetching tick data from Alpaca...
+  Tick replay: 72005 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IONZ -- 2025-11-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=16312 snaps [TICK mode]
+  Bars: 72005 sim + 179 seed  |  EMA9=4.9599  VWAP=5.5305
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:18   6.3450   6.2500  0.0950    9.5   6.3100  bearish_engulfing_exit_full      -276    -0.4R
+    2   07:21   6.4200   6.3300  0.0900   12.5   6.3300  stop_hit                  -750    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-1,026  |  Avg R-Multiple: -0.7R
+  Largest Win: $+0  |  Largest Loss: $-750
+  Armed: 5  |  Signals: 5  |  Entered: 2
+======================================================================
+

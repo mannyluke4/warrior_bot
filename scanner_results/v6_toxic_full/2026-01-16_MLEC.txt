@@ -1,0 +1,25 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=25 gap=30.1 pmvol=29541.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MLEC  |  Date: 2026-01-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MLEC bars for 2026-01-16...
+  Total bars: 216  |  Seed: 39  |  Sim: 177
+  Seed complete: EMA9=6.6033
+  Fetching tick data from Alpaca...
+  Tick replay: 3753 trades for sim window
+  [07:06] CLASSIFIER: MLEC → avoid (conf=0.85) — AVOID gate: VWAP dist 2.0% < 7.0%, range 2.6% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MLEC -- 2026-01-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3753 sim + 39 seed  |  EMA9=5.1136  VWAP=6.3197
+======================================================================
+
+  No trades taken.
+
+  Armed: 3  |  Signals: 0
+======================================================================

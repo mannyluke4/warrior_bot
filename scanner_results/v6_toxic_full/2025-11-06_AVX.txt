@@ -1,0 +1,33 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=52 gap=24.1 pmvol=35715.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AVX  |  Date: 2025-11-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AVX bars for 2025-11-06...
+  Total bars: 177  |  Seed: 27  |  Sim: 150
+  Seed complete: EMA9=3.1255
+  Fetching tick data from Alpaca...
+  Tick replay: 1869 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AVX -- 2025-11-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1869 sim + 27 seed  |  EMA9=2.5745  VWAP=2.7915
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:05   3.2000   3.1100  0.0900    9.3   3.1000  stop_hit                  -417    -1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-417  |  Avg R-Multiple: -0.6R
+  Largest Win: $+0  |  Largest Loss: $-417
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

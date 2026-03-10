@@ -1,0 +1,29 @@
+# V6.1 risk=250 sqs=4 tier=B toxic_args: candidates=26 gap=23.1 pmvol=54974.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SOAR  |  Date: 2025-10-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SOAR bars for 2025-10-15...
+  Total bars: 287  |  Seed: 50  |  Sim: 237
+  L2 cache hit: SOAR_2025-10-15_XNAS.dbn.zst
+  L2 data: 6310 records for SOAR
+  L2 snapshots: 910 (1-second sampled)
+  L2 data loaded: 910 snapshots
+  Seed complete: EMA9=4.2003
+  Fetching tick data from Alpaca...
+  Tick replay: 6488 trades for sim window
+  [07:04] CLASSIFIER: SOAR → avoid (conf=0.85) — AVOID gate: VWAP dist 4.9% < 7.0%, range 4.9% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: SOAR -- 2025-10-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=910 snaps [TICK mode]
+  Bars: 6488 sim + 50 seed  |  EMA9=3.4033  VWAP=3.6181
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

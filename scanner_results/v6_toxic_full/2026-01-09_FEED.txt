@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=6 tier=A toxic_args: candidates=22 gap=36.36 pmvol=95781.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FEED  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FEED bars for 2026-01-09...
+  Total bars: 307  |  Seed: 31  |  Sim: 276
+  Seed complete: EMA9=2.9210
+  Fetching tick data from Alpaca...
+  Tick replay: 46840 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FEED -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 46840 sim + 31 seed  |  EMA9=2.2417  VWAP=2.8084
+======================================================================
+
+  No trades taken.
+
+  Armed: 4  |  Signals: 0
+======================================================================

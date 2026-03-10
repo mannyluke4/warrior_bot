@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=6 tier=A toxic_args: candidates=13 gap=25.59 pmvol=2122294.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: UCFI  |  Date: 2025-10-01  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching UCFI bars for 2025-10-01...
+  Total bars: 389  |  Seed: 137  |  Sim: 252
+  Seed complete: EMA9=8.4057
+  Fetching tick data from Alpaca...
+  Tick replay: 48213 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: UCFI -- 2025-10-01 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 48213 sim + 137 seed  |  EMA9=5.5191  VWAP=7.1265
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

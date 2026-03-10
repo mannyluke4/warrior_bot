@@ -1,0 +1,24 @@
+# V6.1 risk=750 sqs=5 tier=A toxic_args: candidates=16 gap=22.64 pmvol=3996.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MTEX  |  Date: 2025-12-30  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MTEX bars for 2025-12-30...
+  Total bars: 72  |  Seed: 7  |  Sim: 65
+  Seed complete: EMA9=9.7197
+  Fetching tick data from Alpaca...
+  Tick replay: 772 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MTEX -- 2025-12-30 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 772 sim + 7 seed  |  EMA9=8.3428  VWAP=8.8547
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

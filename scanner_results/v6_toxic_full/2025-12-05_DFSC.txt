@@ -1,0 +1,33 @@
+# V6.1 risk=250 sqs=4 tier=B toxic_args: candidates=26 gap=15.59 pmvol=34863.0
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DFSC  |  Date: 2025-12-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DFSC bars for 2025-12-05...
+  Total bars: 97  |  Seed: 1  |  Sim: 96
+  Seed complete: EMA9=3.8000
+  Fetching tick data from Alpaca...
+  Tick replay: 1617 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DFSC -- 2025-12-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1617 sim + 1 seed  |  EMA9=3.8597  VWAP=4.0407
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:15   4.3100   4.1700  0.1400    5.5   4.3500  bearish_engulfing_exit_full       +71    +0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+71  |  Avg R-Multiple: +0.3R
+  Largest Win: $+71  |  Largest Loss: $+0
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+
