@@ -1018,6 +1018,15 @@ def run_simulation(
     if risk_dollars is not None:
         _risk = risk_dollars
 
+    # V6: Dynamic position sizing (overrides --risk and WB_RISK_DOLLARS when enabled)
+    _dynamic_sizing = os.getenv("WB_DYNAMIC_SIZING_ENABLED", "0") == "1"
+    if _dynamic_sizing:
+        from trade_manager import calculate_dynamic_risk
+        _equity = float(os.getenv("WB_ACCOUNT_EQUITY", "30000"))
+        _dyn_result = calculate_dynamic_risk(_equity, profile)
+        _risk = _dyn_result['risk']
+        print(f"  V6 dynamic sizing: equity=${_equity:,.0f} profile={profile} → risk=${_risk}", flush=True)
+
     # Fetch all bars for the day
     print(f"\nFetching {symbol} bars for {date_str}...", flush=True)
     all_bars = fetch_bars(symbol, seed_start_utc, sim_end_utc)

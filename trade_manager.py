@@ -23,6 +23,42 @@ load_dotenv()
 
 
 # -----------------------------
+# V6: Dynamic position sizing
+# -----------------------------
+def calculate_dynamic_risk(account_equity: float, profile: str) -> dict:
+    """
+    Calculate dynamic position risk based on account equity.
+
+    Args:
+        account_equity: Current settled equity from Alpaca
+        profile: 'A', 'B', or 'Shelved'
+
+    Returns:
+        dict with 'risk', 'scale_factor', 'equity_used'
+    """
+    RISK_PERCENT = 0.025
+    FLOOR = 250
+    CEILING = 1500
+
+    base_risk_a = max(FLOOR, min(CEILING, round(account_equity * RISK_PERCENT)))
+
+    if profile == 'A':
+        risk = base_risk_a
+        baseline = 750
+    else:  # B or Shelved
+        risk = max(FLOOR, min(CEILING, round(base_risk_a / 3)))
+        baseline = 250
+
+    scale_factor = risk / baseline if baseline > 0 else 1.0
+
+    return {
+        'risk': risk,
+        'scale_factor': round(scale_factor, 4),
+        'equity_used': account_equity
+    }
+
+
+# -----------------------------
 # Data models
 # -----------------------------
 @dataclass
@@ -106,8 +142,18 @@ class PaperTradeManager:
         # Trading toggles
         self.armed = os.getenv("WB_ARM_TRADING", "0") == "1"
 
-        # Risk / sizing
-        self.risk_dollars = float(os.getenv("WB_RISK_DOLLARS", "10"))
+        # Risk / sizing — V6: dynamic equity-based risk (profile-aware)
+        self.dynamic_sizing_enabled = os.getenv("WB_DYNAMIC_SIZING_ENABLED", "0") == "1"
+        _base_risk = float(os.getenv("WB_RISK_DOLLARS", "10"))
+        if self.dynamic_sizing_enabled:
+            _equity = float(os.getenv("WB_ACCOUNT_EQUITY", "30000"))
+            _profile = os.getenv("WB_DYNAMIC_SIZING_PROFILE", "A")
+            result = calculate_dynamic_risk(_equity, _profile)
+            self.risk_dollars = result['risk']
+            log_event("dynamic_risk_used", equity=result['equity_used'],
+                      risk=result['risk'], scale=result['scale_factor'])
+        else:
+            self.risk_dollars = _base_risk
         self.tp_r_mult = float(os.getenv("WB_TAKE_PROFIT_R", "2.0"))  # NOTE: env mismatch is on Mansion Checklist
         self.scale_core = float(os.getenv("WB_SCALE_CORE", "0.8"))
         self.runner_trail_r = float(os.getenv("WB_RUNNER_TRAIL_R", "1.0"))
