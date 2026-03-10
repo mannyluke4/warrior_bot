@@ -11,14 +11,6 @@ Fetching ULY bars for 2025-12-31...
   Fetching tick data from Alpaca...
   Tick replay: 62057 trades for sim window
 
-  === VWAP BLOCKED ARMS (3) ===
-  BLOCKED: time=07:05 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.3900 stop=3.2400 R=0.1500 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3500 vwap=3.3590
-    post_block: max_5m=3.5700 max_10m=3.5700 max_30m=3.5700
-  BLOCKED: time=09:24 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.6000 stop=3.4700 R=0.1300 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3600 vwap=3.3877
-    post_block: max_5m=3.6000 max_10m=3.9199 max_30m=3.9199
-  BLOCKED: time=09:29 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=3.6000 stop=3.5000 R=0.1000 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=3.3700 vwap=3.3983
-    post_block: max_5m=3.9199 max_10m=3.9199 max_30m=3.9199
-
 ======================================================================
   BACKTEST REPORT: ULY -- 2025-12-31 (07:00 -> 12:00 ET)
 ======================================================================

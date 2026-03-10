@@ -11,10 +11,6 @@ Fetching ARBB bars for 2025-12-15...
   Fetching tick data from Alpaca...
   Tick replay: 31722 trades for sim window
 
-  === VWAP BLOCKED ARMS (1) ===
-  BLOCKED: time=07:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=9.1600 stop=8.1900 R=0.9700 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=8.1000 vwap=8.1758
-    post_block: max_5m=8.7300 max_10m=8.7300 max_30m=8.7300
-
 ======================================================================
   BACKTEST REPORT: ARBB -- 2025-12-15 (07:00 -> 12:00 ET)
 ======================================================================
@@ -25,14 +21,13 @@ Fetching ARBB bars for 2025-12-15...
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
     1   07:01   8.4800   8.1100  0.3700   12.5   8.5700  bearish_engulfing_exit_full      +182    +0.2R
-    2   08:05   9.1800   9.1900  0.5771   12.0   9.6300  bearish_engulfing_exit_full      +585    +0.8R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
-  Trades: 2  |  Wins: 2  |  Losses: 0  |  Win Rate: 100.0%
-  Gross P&L: $+767  |  Avg R-Multiple: +0.5R
-  Largest Win: $+585  |  Largest Loss: $+0
-  Armed: 3  |  Signals: 2  |  Entered: 2
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+182  |  Avg R-Multiple: +0.2R
+  Largest Win: $+182  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 1  |  Entered: 1
 ======================================================================
 

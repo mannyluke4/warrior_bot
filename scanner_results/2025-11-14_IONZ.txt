@@ -7,15 +7,13 @@
 
 Fetching IONZ bars for 2025-11-14...
   Total bars: 480  |  Seed: 179  |  Sim: 301
-  Fetching L2 from Databento: IONZ 2025-11-14 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: IONZ_2025-11-14_XNAS.dbn.zst
+  L2 cache hit: IONZ_2025-11-14_XNAS.dbn.zst
   L2 data: 780355 records for IONZ
   L2 snapshots: 16312 (1-second sampled)
   L2 data loaded: 16312 snapshots
   Seed complete: EMA9=5.9987
   Fetching tick data from Databento...
-  Fetching trades from Databento: IONZ 2025-11-14 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: IONZ_2025-11-14_trades_XNAS.dbn.zst
+  Trades cache hit: IONZ_2025-11-14_trades_XNAS.dbn.zst
   Trade data: 6821 records for IONZ
   Trades: 6821 | $5.97-$6.56 | 07:00:00-11:59:29 ET
   Tick replay: 6821 trades for sim window

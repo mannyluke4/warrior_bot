@@ -7,22 +7,16 @@
 
 Fetching SDST bars for 2025-11-03...
   Total bars: 229  |  Seed: 10  |  Sim: 219
-  Fetching L2 from Databento: SDST 2025-11-03 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: SDST_2025-11-03_XNAS.dbn.zst
+  L2 cache hit: SDST_2025-11-03_XNAS.dbn.zst
   L2 data: 26777 records for SDST
   L2 snapshots: 2212 (1-second sampled)
   L2 data loaded: 2212 snapshots
   Seed complete: EMA9=4.8785
   Fetching tick data from Databento...
-  Fetching trades from Databento: SDST 2025-11-03 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: SDST_2025-11-03_trades_XNAS.dbn.zst
+  Trades cache hit: SDST_2025-11-03_trades_XNAS.dbn.zst
   Trade data: 3734 records for SDST
   Trades: 3734 | $5.30-$6.05 | 07:00:00-11:53:06 ET
   Tick replay: 3734 trades for sim window
-
-  === VWAP BLOCKED ARMS (1) ===
-  BLOCKED: time=07:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=4.5 entry=6.0400 stop=5.3800 R=0.6600 detail=macd=7.5*0.6;R>=0.08=+1;l2_thin_ask=+1;l2_wide_spread=-2(1.2%) close=5.4000 vwap=5.4756
-    post_block: max_5m=5.8500 max_10m=5.8500 max_30m=5.8500
 
 ======================================================================
   BACKTEST REPORT: SDST -- 2025-11-03 (07:00 -> 12:00 ET)

@@ -9,12 +9,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total P&L** | **$+4,672** |
+| **Total P&L** | **$+5,805** |
 | Total Sims | 166 |
-| Active Trades (non-$0) | 31 |
+| Active Trades (non-$0) | 29 |
 | Winners | 13 |
-| Losers | 18 |
-| Win Rate (active) | 41.9% |
+| Losers | 16 |
+| Win Rate (active) | 44.8% |
 | Profitable Days | 12/69 |
 | Trading Days (total) | 102 |
 | Cold Market Skips | 19 |
@@ -24,9 +24,9 @@
 
 | Month | Days | Sims | Active | W/L | P&L | Best Day | Worst Day |
 |-------|------|------|--------|-----|-----|----------|-----------|
-| 2025-10 | 23 | 33 | 4 | 2/2 | $-24 | 2025-10-14 ($+464) | 2025-10-10 ($-789) |
-| 2025-11 | 19 | 25 | 6 | 1/5 | $-3,135 | 2025-11-14 ($+583) | 2025-11-05 ($-1,544) |
-| 2025-12 | 22 | 45 | 11 | 6/5 | $+2,429 | 2025-12-12 ($+1,221) | 2025-12-31 ($-612) |
+| 2025-10 | 23 | 33 | 4 | 2/2 | $+371 | 2025-10-14 ($+464) | 2025-10-10 ($-394) |
+| 2025-11 | 19 | 25 | 5 | 1/4 | $-2,049 | 2025-11-14 ($+583) | 2025-11-05 ($-1,544) |
+| 2025-12 | 22 | 45 | 10 | 6/4 | $+2,081 | 2025-12-12 ($+1,221) | 2025-12-31 ($-612) |
 | 2026-01 | 19 | 27 | 7 | 3/4 | $+4,187 | 2026-01-16 ($+4,264) | 2026-01-09 ($-750) |
 | 2026-02 | 19 | 36 | 3 | 1/2 | $+1,215 | 2026-02-05 ($+1,507) | 2026-02-02 ($-268) |
 
@@ -34,9 +34,9 @@
 
 | Metric | V1 (No Filters) | V2 (Protective) | V3 (SQS+Sort) | V4 (Jan-Feb) | **V4 (Oct-Feb)** |
 |--------|-----------------|-----------------|---------------|--------------|-----------------|
-| **Total P&L** | -$17,885 | -$8,938 | +$566 | +$5,402 | **$+4,672** |
+| **Total P&L** | -$17,885 | -$8,938 | +$566 | +$5,402 | **$+5,805** |
 | Total Sims | 51 | 161 | 26 | 63 | 166 |
-| Win Rate | 17.6% | 4.3% | 34.6% | 6.3% | 41.9% |
+| Win Rate | 17.6% | 4.3% | 34.6% | 6.3% | 44.8% |
 | Cold Market Skips | 0 | 8 | 8 | 8 | 19 |
 | Kill Switch Fires | 0 | 2 | 2 | 0 | 0 |
 
@@ -44,8 +44,8 @@
 
 | Tier | Sims | Active | W/L | P&L | Avg Win | Avg Loss |
 |------|------|--------|-----|-----|---------|----------|
-| Shelved | 8 | 3 | 0/3 | $-634 | $+0 | $-211 |
-| A | 114 | 23 | 11/12 | $+5,182 | $+1,146 | $-619 |
+| Shelved | 8 | 2 | 0/2 | $-397 | $+0 | $-198 |
+| A | 114 | 22 | 11/11 | $+6,078 | $+1,093 | $-540 |
 | B | 44 | 5 | 2/3 | $+124 | $+327 | $-177 |
 
 ## SQS Distribution
@@ -70,13 +70,13 @@
 | Metric | Value |
 |--------|-------|
 | Starting Balance | $30,000 |
-| Ending Balance | $34,672 |
-| Total Return | +15.6% |
-| Peak Balance | $34,696 (2026-02-05) |
-| Max Drawdown | $3,742 (12.5%) |
+| Ending Balance | $35,805 |
+| Total Return | +19.4% |
+| Peak Balance | $35,829 (2026-02-05) |
+| Max Drawdown | $2,632 (8.7%) |
 | Max Win Streak | 3 days |
-| Max Lose Streak | 5 days |
-| Buying Power (4:1) | $138,688 |
+| Max Lose Streak | 4 days |
+| Buying Power (4:1) | $143,220 |
 
 ## Monster Trades (|P&L| > $1,000)
 
@@ -102,7 +102,7 @@ No kill switch activations.
 | 2025-10-07 | $+0 | 1 | BTM:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-10-08 | $+0 | 3 | BIAF:A SQS=5(A) $750 P&L=$+0; DCOY:A SQS=5(A) $750 P&L=$+0; WLDS:A SQS=5(A) $750 P&L=$+0 |
 | 2025-10-09 | $+0 | 1 | TCRT:A SQS=6(A) $750 P&L=$+0 |
-| 2025-10-10 | $-789 | 1 | ATON:A SQS=5(A) $750 P&L=$-789 |
+| 2025-10-10 | $-394 | 1 | ATON:A SQS=5(A) $750 P&L=$-394 |
 | 2025-10-13 | $+0 | 2 | YHGJ:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; XBIO:A SQS=5(A) $750 P&L=$+0 |
 | 2025-10-14 | $+464 | 3 | JDZG:A SQS=6(A) $750 P&L=$+720; RGTZ:A SQS=5(A) $750 P&L=$+0; CYN:B SQS=4(B) $250 P&L=$-256 [B-GATE:PASS] |
 | 2025-10-15 | $+301 | 2 | AWX:A SQS=5(A) $750 P&L=$+301; SOAR:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
@@ -115,11 +115,11 @@ No kill switch activations.
 | 2025-10-29 | $+0 | 1 | JLHL:A SQS=5(A) $750 P&L=$+0 |
 | 2025-10-30 | $+0 | 1 | CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-10-31 | $+0 | 2 | GWAV:A SQS=5(A) $750 P&L=$+0; NUWE:A SQS=5(A) $750 P&L=$+0 |
-| 2025-11-03 | $-629 | 4 | BQ:A SQS=5(A) $750 P&L=$-629; CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; QCLS:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; SDST:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
+| 2025-11-03 | $-117 | 4 | BQ:A SQS=5(A) $750 P&L=$-117; CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; QCLS:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; SDST:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-11-05 | $-1,544 | 1 | BQ:A SQS=6(A) $750 P&L=$-1,544 |
-| 2025-11-06 | $-833 | 5 | CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; AVX:A SQS=5(A) $750 P&L=$-833; GNPX:A SQS=5(A) $750 P&L=$+0; BMNG:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
+| 2025-11-06 | $-417 | 5 | CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; AVX:A SQS=5(A) $750 P&L=$-417; GNPX:A SQS=5(A) $750 P&L=$+0; BMNG:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-11-07 | $-554 | 1 | MSGM:A SQS=6(A) $750 P&L=$-554 |
-| 2025-11-11 | $-158 | 2 | BODI:A SQS=5(A) $750 P&L=$-158; CRWG:B SQS=5(A) $750 P&L=$+0 |
+| 2025-11-11 | $+0 | 2 | BODI:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=5(A) $750 P&L=$+0 |
 | 2025-11-13 | $+0 | 2 | CMCT:A SQS=5(A) $750 P&L=$+0; BMNG:A SQS=5(A) $750 P&L=$+0 |
 | 2025-11-14 | $+583 | 2 | ARBB:A SQS=6(A) $750 P&L=$+0; IONZ:B SQS=5(A) $750 P&L=$+583 |
 | 2025-11-17 | $+0 | 3 | CRCG:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; CYCU:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; BMNG:A SQS=5(A) $750 P&L=$+0 |
@@ -133,9 +133,9 @@ No kill switch activations.
 | 2025-12-08 | $+614 | 5 | DRMA:A SQS=5(A) $750 P&L=$+0; GURE:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; LICN:A SQS=5(A) $750 P&L=$+0; ALOY:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; FGI:A SQS=5(A) $750 P&L=$+614 |
 | 2025-12-09 | $-250 | 4 | XCUR:A SQS=6(A) $750 P&L=$+0; CETX:A SQS=7(Shelved) $250 P&L=$-250; CMCT:A SQS=5(A) $750 P&L=$+0; PHGE:A SQS=5(A) $750 P&L=$+0 |
 | 2025-12-10 | $+0 | 2 | XCUR:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS]; QCLS:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
-| 2025-12-11 | $-237 | 2 | GLXG:A SQS=7(Shelved) $250 P&L=$-237; AMCI:A SQS=5(A) $750 P&L=$+0 |
+| 2025-12-11 | $+0 | 2 | GLXG:A SQS=7(Shelved) $250 P&L=$+0; AMCI:A SQS=5(A) $750 P&L=$+0 |
 | 2025-12-12 | $+1,221 | 6 | KPLT:A SQS=6(A) $750 P&L=$+1,585; CETX:A SQS=6(A) $750 P&L=$+0; BTTC:A SQS=6(A) $750 P&L=$-364; BMNG:A SQS=5(A) $750 P&L=$+0; GLXG:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
-| 2025-12-15 | $+767 | 4 | ARBB:A SQS=5(A) $750 P&L=$+767; BMNG:A SQS=6(A) $750 P&L=$+0; CETX:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
+| 2025-12-15 | $+182 | 4 | ARBB:A SQS=5(A) $750 P&L=$+182; BMNG:A SQS=6(A) $750 P&L=$+0; CETX:A SQS=5(A) $750 P&L=$+0; CRWG:B SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-12-16 | $+0 | 3 | SQFT:A SQS=6(A) $750 P&L=$+0; WATT:A SQS=6(A) $750 P&L=$+0; ARTV:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-12-17 | $+0 | 2 | BMNG:A SQS=5(A) $750 P&L=$+0; JLHL:A SQS=4(B) $250 P&L=$+0 [B-GATE:PASS] |
 | 2025-12-18 | $+509 | 2 | PCSA:A SQS=4(B) $250 P&L=$-250 [B-GATE:PASS]; BMNG:A SQS=5(A) $750 P&L=$+759 |
@@ -178,7 +178,7 @@ No kill switch activations.
   2025-10-08   DCOY :A SQS=5(A) risk=$750 P&L=$+0
   2025-10-08   WLDS :A SQS=5(A) risk=$750 P&L=$+0
   2025-10-09   TCRT :A SQS=6(A) risk=$750 P&L=$+0
-  2025-10-10   ATON :A SQS=5(A) risk=$750 P&L=$-789
+  2025-10-10   ATON :A SQS=5(A) risk=$750 P&L=$-394
   2025-10-13   YHGJ :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-10-13   XBIO :A SQS=5(A) risk=$750 P&L=$+0
   2025-10-14   JDZG :A SQS=6(A) risk=$750 P&L=$+720
@@ -203,18 +203,18 @@ No kill switch activations.
   2025-10-30   CRCG :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-10-31   GWAV :A SQS=5(A) risk=$750 P&L=$+0
   2025-10-31   NUWE :A SQS=5(A) risk=$750 P&L=$+0
-  2025-11-03     BQ :A SQS=5(A) risk=$750 P&L=$-629
+  2025-11-03     BQ :A SQS=5(A) risk=$750 P&L=$-117
   2025-11-03   CRCG :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-11-03   QCLS :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-11-03   SDST :B SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-11-05     BQ :A SQS=6(A) risk=$750 P&L=$-1,544
   2025-11-06   CRCG :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
-  2025-11-06    AVX :A SQS=5(A) risk=$750 P&L=$-833
+  2025-11-06    AVX :A SQS=5(A) risk=$750 P&L=$-417
   2025-11-06   GNPX :A SQS=5(A) risk=$750 P&L=$+0
   2025-11-06   BMNG :A SQS=5(A) risk=$750 P&L=$+0
   2025-11-06   CRWG :B SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-11-07   MSGM :A SQS=6(A) risk=$750 P&L=$-554
-  2025-11-11   BODI :A SQS=5(A) risk=$750 P&L=$-158
+  2025-11-11   BODI :A SQS=5(A) risk=$750 P&L=$+0
   2025-11-11   CRWG :B SQS=5(A) risk=$750 P&L=$+0
   2025-11-13   CMCT :A SQS=5(A) risk=$750 P&L=$+0
   2025-11-13   BMNG :A SQS=5(A) risk=$750 P&L=$+0
@@ -246,7 +246,7 @@ No kill switch activations.
   2025-12-09   PHGE :A SQS=5(A) risk=$750 P&L=$+0
   2025-12-10   XCUR :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
   2025-12-10   QCLS :A SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
-  2025-12-11   GLXG :A SQS=7(Shelved) risk=$250 P&L=$-237
+  2025-12-11   GLXG :A SQS=7(Shelved) risk=$250 P&L=$+0
   2025-12-11   AMCI :A SQS=5(A) risk=$750 P&L=$+0
   2025-12-12   KPLT :A SQS=6(A) risk=$750 P&L=$+1,585
   2025-12-12   CETX :A SQS=6(A) risk=$750 P&L=$+0
@@ -254,7 +254,7 @@ No kill switch activations.
   2025-12-12   BMNG :A SQS=5(A) risk=$750 P&L=$+0
   2025-12-12   GLXG :A SQS=5(A) risk=$750 P&L=$+0
   2025-12-12   CRWG :B SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]
-  2025-12-15   ARBB :A SQS=5(A) risk=$750 P&L=$+767
+  2025-12-15   ARBB :A SQS=5(A) risk=$750 P&L=$+182
   2025-12-15   BMNG :A SQS=6(A) risk=$750 P&L=$+0
   2025-12-15   CETX :A SQS=5(A) risk=$750 P&L=$+0
   2025-12-15   CRWG :B SQS=4(B) risk=$250 P&L=$+0 [B-GATE:PASS]

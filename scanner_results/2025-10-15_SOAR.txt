@@ -7,15 +7,13 @@
 
 Fetching SOAR bars for 2025-10-15...
   Total bars: 287  |  Seed: 50  |  Sim: 237
-  Fetching L2 from Databento: SOAR 2025-10-15 07:00-12:00 (XNAS.ITCH)...
-  L2 cached: SOAR_2025-10-15_XNAS.dbn.zst
+  L2 cache hit: SOAR_2025-10-15_XNAS.dbn.zst
   L2 data: 6310 records for SOAR
   L2 snapshots: 910 (1-second sampled)
   L2 data loaded: 910 snapshots
   Seed complete: EMA9=4.2003
   Fetching tick data from Databento...
-  Fetching trades from Databento: SOAR 2025-10-15 07:00-12:00 (XNAS.ITCH)...
-  Trades cached: SOAR_2025-10-15_trades_XNAS.dbn.zst
+  Trades cache hit: SOAR_2025-10-15_trades_XNAS.dbn.zst
   Trade data: 306 records for SOAR
   Trades: 306 | $4.10-$4.10 | 07:04:40-11:59:13 ET
   Tick replay: 306 trades for sim window

@@ -11,12 +11,6 @@ Fetching CETX bars for 2025-12-09...
   Fetching tick data from Alpaca...
   Tick replay: 47322 trades for sim window
 
-  === VWAP BLOCKED ARMS (2) ===
-  BLOCKED: time=08:01 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.0 entry=6.8916 stop=6.4913 R=0.4003 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.08=+1 close=5.7300 vwap=5.9466
-    post_block: max_5m=7.2889 max_10m=7.6900 max_30m=7.6900
-  BLOCKED: time=09:39 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=12.5 entry=6.3000 stop=6.0818 R=0.2182 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;whole=+0.5;R>=0.08=+1 close=5.9721 vwap=6.0714
-    post_block: max_5m=6.1200 max_10m=6.1200 max_30m=6.1200
-
 ======================================================================
   BACKTEST REPORT: CETX -- 2025-12-09 (07:00 -> 12:00 ET)
 ======================================================================

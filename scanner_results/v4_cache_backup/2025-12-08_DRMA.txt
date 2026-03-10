@@ -1,0 +1,24 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DRMA  |  Date: 2025-12-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DRMA bars for 2025-12-08...
+  Total bars: 203  |  Seed: 53  |  Sim: 150
+  Seed complete: EMA9=2.9476
+  Fetching tick data from Alpaca...
+  Tick replay: 2381 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DRMA -- 2025-12-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2381 sim + 53 seed  |  EMA9=2.7799  VWAP=2.9317
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

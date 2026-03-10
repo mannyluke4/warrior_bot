@@ -21,16 +21,15 @@ Fetching BQ bars for 2025-11-03...
 
     #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
   ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
-    1   07:17   3.8700   3.7800  0.0900   11.5   3.7800  stop_hit                  -750    -1.0R
-    2   09:45   4.4000   4.4100  0.1600   12.5   4.5100  bearish_engulfing_exit_full      +516    +0.7R
-    3   10:56   6.3200   5.5600  0.7600   12.5   5.9200  topping_wicky_exit_full      -394    -0.5R
+    1   07:17   3.8700   3.7800  0.0900   11.5   3.7800  stop_hit                  -375    -1.0R
+    2   09:45   4.4000   4.4100  0.1600   12.5   4.5100  bearish_engulfing_exit_full      +258    +0.7R
 
   ──────────────────────────────────────────────────────────────────
   SUMMARY
   ──────────────────────────────────────────────────────────────────
-  Trades: 3  |  Wins: 1  |  Losses: 2  |  Win Rate: 33.3%
-  Gross P&L: $-629  |  Avg R-Multiple: -0.3R
-  Largest Win: $+516  |  Largest Loss: $-750
-  Armed: 4  |  Signals: 3  |  Entered: 3
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $-117  |  Avg R-Multiple: -0.1R
+  Largest Win: $+258  |  Largest Loss: $-375
+  Armed: 4  |  Signals: 2  |  Entered: 2
 ======================================================================
 

@@ -1,0 +1,25 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BMNG  |  Date: 2025-12-01  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BMNG bars for 2025-12-01...
+  Total bars: 310  |  Seed: 64  |  Sim: 246
+  Seed complete: EMA9=4.6801
+  Fetching tick data from Alpaca...
+  Tick replay: 5969 trades for sim window
+  [07:05] CLASSIFIER: BMNG → avoid (conf=0.85) — AVOID gate: VWAP dist 1.1% < 7.0%, range 2.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: BMNG -- 2025-12-01 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5969 sim + 64 seed  |  EMA9=4.0837  VWAP=4.3441
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

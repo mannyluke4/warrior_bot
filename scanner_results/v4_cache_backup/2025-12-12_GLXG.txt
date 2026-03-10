@@ -1,0 +1,25 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GLXG  |  Date: 2025-12-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GLXG bars for 2025-12-12...
+  Total bars: 129  |  Seed: 18  |  Sim: 111
+  Seed complete: EMA9=3.0327
+  Fetching tick data from Alpaca...
+  Tick replay: 1733 trades for sim window
+  [07:21] CLASSIFIER: GLXG → avoid (conf=0.85) — AVOID gate: VWAP dist 0.7% < 7.0%, range 1.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: GLXG -- 2025-12-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1733 sim + 18 seed  |  EMA9=2.4826  VWAP=2.6087
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

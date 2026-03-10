@@ -11,10 +11,6 @@ Fetching CRCG bars for 2025-11-17...
   Fetching tick data from Alpaca...
   Tick replay: 7450 trades for sim window
 
-  === VWAP BLOCKED ARMS (1) ===
-  BLOCKED: time=08:02 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=11.5 entry=3.2600 stop=3.2064 R=0.0536 detail=macd=7.5*0.6;bull_struct=+3;vol_surge=+2;r2g=+1.5;R>=0.05=+0.5 close=3.1295 vwap=3.1540
-    post_block: max_5m=3.2200 max_10m=3.2200 max_30m=3.2200
-
 ======================================================================
   BACKTEST REPORT: CRCG -- 2025-11-17 (07:00 -> 12:00 ET)
 ======================================================================
