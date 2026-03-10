@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HOOX  |  Date: 2026-02-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HOOX bars for 2026-02-12...
+  Total bars: 188  |  Seed: 13  |  Sim: 175
+  Seed complete: EMA9=9.1727
+  Fetching tick data from Alpaca...
+  Tick replay: 2512 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HOOX -- 2026-02-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2512 sim + 13 seed  |  EMA9=7.3823  VWAP=8.0020
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

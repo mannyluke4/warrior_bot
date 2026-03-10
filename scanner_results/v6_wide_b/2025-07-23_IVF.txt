@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IVF  |  Date: 2025-07-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IVF bars for 2025-07-23...
+  Total bars: 281  |  Seed: 64  |  Sim: 217
+  Seed complete: EMA9=3.1627
+  Fetching tick data from Alpaca...
+  Tick replay: 5340 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IVF -- 2025-07-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5340 sim + 64 seed  |  EMA9=2.6554  VWAP=2.8496
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

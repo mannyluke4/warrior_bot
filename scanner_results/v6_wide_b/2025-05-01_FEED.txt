@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FEED  |  Date: 2025-05-01  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FEED bars for 2025-05-01...
+  Total bars: 480  |  Seed: 180  |  Sim: 300
+  Seed complete: EMA9=5.0131
+  Fetching tick data from Alpaca...
+  Tick replay: 102963 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: FEED -- 2025-05-01 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 102963 sim + 180 seed  |  EMA9=4.1508  VWAP=4.6384
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,31 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AGIG  |  Date: 2026-02-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AGIG bars for 2026-02-20...
+  Total bars: 265  |  Seed: 38  |  Sim: 227
+  L2 cache hit: AGIG_2026-02-20_XNAS.dbn.zst
+  L2 data: 10812 records for AGIG
+  L2 snapshots: 1474 (1-second sampled)
+  L2 data loaded: 1474 snapshots
+  Seed complete: EMA9=4.1634
+  Fetching tick data from Databento...
+  Trades cache hit: AGIG_2026-02-20_trades_XNAS.dbn.zst
+  Trade data: 577 records for AGIG
+  Trades: 577 | $3.98-$4.06 | 07:05:36-11:59:38 ET
+  Tick replay: 577 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AGIG -- 2026-02-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1474 snaps [TICK mode]
+  Bars: 577 sim + 38 seed  |  EMA9=3.3091  VWAP=3.9038
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

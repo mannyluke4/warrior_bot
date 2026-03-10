@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MAMK  |  Date: 2025-10-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MAMK bars for 2025-10-16...
+  Total bars: 144  |  Seed: 38  |  Sim: 106
+  Seed complete: EMA9=3.2487
+  Fetching tick data from Alpaca...
+  Tick replay: 3251 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MAMK -- 2025-10-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3251 sim + 38 seed  |  EMA9=2.8057  VWAP=3.3210
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SNOA  |  Date: 2025-03-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SNOA bars for 2025-03-11...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=4.3508
+  Fetching tick data from Alpaca...
+  Tick replay: 261946 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SNOA -- 2025-03-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 261946 sim + 180 seed  |  EMA9=3.2571  VWAP=4.1032
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:03   4.5400   4.3400  0.2000   10.5   4.5200  bearish_engulfing_exit_full       -25    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-25  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-25
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

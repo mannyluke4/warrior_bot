@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: SNTI  |  Date: 2025-06-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SNTI bars for 2025-06-18...
+  Total bars: 276  |  Seed: 7  |  Sim: 269
+  Fetching L2 from Databento: SNTI 2025-06-18 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: SNTI_2025-06-18_XNAS.dbn.zst
+  L2 data: 28180 records for SNTI
+  L2 snapshots: 3162 (1-second sampled)
+  L2 data loaded: 3162 snapshots
+  Seed complete: EMA9=2.8856
+  Fetching tick data from Databento...
+  Fetching trades from Databento: SNTI 2025-06-18 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: SNTI_2025-06-18_trades_XNAS.dbn.zst
+  Trade data: 3125 records for SNTI
+  Trades: 3125 | $3.12-$3.89 | 07:00:29-11:56:42 ET
+  Tick replay: 3125 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SNTI -- 2025-06-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3162 snaps [TICK mode]
+  Bars: 3125 sim + 7 seed  |  EMA9=2.5295  VWAP=3.0059
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

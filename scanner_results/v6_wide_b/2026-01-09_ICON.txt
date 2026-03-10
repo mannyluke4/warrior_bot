@@ -1,0 +1,25 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ICON  |  Date: 2026-01-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ICON bars for 2026-01-09...
+  Total bars: 455  |  Seed: 162  |  Sim: 293
+  Seed complete: EMA9=4.1519
+  Fetching tick data from Alpaca...
+  Tick replay: 37556 trades for sim window
+  [07:04] CLASSIFIER: ICON → avoid (conf=0.85) — AVOID gate: VWAP dist 6.8% < 7.0%, range 6.8% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: ICON -- 2026-01-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 37556 sim + 162 seed  |  EMA9=3.1931  VWAP=4.0318
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

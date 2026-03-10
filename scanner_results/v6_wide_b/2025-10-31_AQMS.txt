@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AQMS  |  Date: 2025-10-31  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AQMS bars for 2025-10-31...
+  Total bars: 230  |  Seed: 42  |  Sim: 188
+  Seed complete: EMA9=9.1198
+  Fetching tick data from Alpaca...
+  Tick replay: 5954 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AQMS -- 2025-10-31 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5954 sim + 42 seed  |  EMA9=7.9701  VWAP=8.3465
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

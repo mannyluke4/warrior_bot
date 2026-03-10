@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CRMX  |  Date: 2026-02-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CRMX bars for 2026-02-13...
+  Total bars: 127  |  Seed: 11  |  Sim: 116
+  Seed complete: EMA9=7.5532
+  Fetching tick data from Alpaca...
+  Tick replay: 1272 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CRMX -- 2026-02-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1272 sim + 11 seed  |  EMA9=7.7119  VWAP=7.2225
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

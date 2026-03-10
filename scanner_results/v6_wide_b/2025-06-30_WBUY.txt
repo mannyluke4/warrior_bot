@@ -1,0 +1,37 @@
+# V6.2-wide-B risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WBUY  |  Date: 2025-06-30  |  Window: 07:02 -> 12:00 ET
+======================================================================
+
+Fetching WBUY bars for 2025-06-30...
+  Total bars: 295  |  Seed: 0  |  Sim: 295
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 479524 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: WBUY -- 2025-06-30 (07:02 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 479524 sim + 0 seed  |  EMA9=7.6063  VWAP=8.9744
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:08   8.4200   7.2800  1.1400    5.5   8.3300  bearish_engulfing_exit_full       -59    -0.1R
+    2   07:13   8.7200   8.0300  0.6900    4.0   8.8800  bearish_engulfing_exit_full      +174    +0.2R
+    3   07:31  10.4000   9.7100  0.6900   12.5  10.7700  bearish_engulfing_exit_full      +402    +0.5R
+    4   07:32  11.0200  10.2100  0.8100   12.5  11.0300  bearish_engulfing_exit_full        +9    +0.0R
+    5   07:42  11.6200  10.4500  1.1700   11.0  11.1400  bearish_engulfing_exit_full      -308    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 5  |  Wins: 3  |  Losses: 2  |  Win Rate: 60.0%
+  Gross P&L: $+218  |  Avg R-Multiple: +0.1R
+  Largest Win: $+402  |  Largest Loss: $-308
+  Armed: 10  |  Signals: 9  |  Entered: 5
+======================================================================
+

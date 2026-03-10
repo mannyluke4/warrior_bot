@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AVX  |  Date: 2025-07-29  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AVX bars for 2025-07-29...
+  Total bars: 282  |  Seed: 9  |  Sim: 273
+  Seed complete: EMA9=5.0554
+  Fetching tick data from Alpaca...
+  Tick replay: 111741 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AVX -- 2025-07-29 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 111741 sim + 9 seed  |  EMA9=4.4833  VWAP=6.8167
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

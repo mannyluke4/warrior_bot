@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CETX  |  Date: 2025-12-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CETX bars for 2025-12-09...
+  Total bars: 443  |  Seed: 143  |  Sim: 300
+  Seed complete: EMA9=5.8056
+  Fetching tick data from Alpaca...
+  Tick replay: 47322 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: CETX -- 2025-12-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 47322 sim + 143 seed  |  EMA9=5.1190  VWAP=5.6970
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:35   6.2000   6.0600  0.1400   10.5   6.0600  stop_hit                  -250    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-250  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-250
+  Armed: 3  |  Signals: 1  |  Entered: 1
+======================================================================
+

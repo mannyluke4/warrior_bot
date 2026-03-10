@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: RETO  |  Date: 2025-03-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching RETO bars for 2025-03-10...
+  Total bars: 59  |  Seed: 4  |  Sim: 55
+  Seed complete: EMA9=5.1962
+  Fetching tick data from Alpaca...
+  Tick replay: 807 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: RETO -- 2025-03-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 807 sim + 4 seed  |  EMA9=4.3094  VWAP=4.6876
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:10   5.0533   4.8510  0.2023   10.5   5.0361  topping_wicky_exit_full       -64    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-64  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-64
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

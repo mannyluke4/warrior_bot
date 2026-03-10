@@ -1,0 +1,25 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MFI  |  Date: 2025-06-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MFI bars for 2025-06-12...
+  Total bars: 221  |  Seed: 43  |  Sim: 178
+  Seed complete: EMA9=4.1186
+  Fetching tick data from Alpaca...
+  Tick replay: 3348 trades for sim window
+  [07:09] CLASSIFIER: MFI → avoid (conf=0.85) — AVOID gate: VWAP dist 3.2% < 7.0%, range 2.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: MFI -- 2025-06-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3348 sim + 43 seed  |  EMA9=3.4019  VWAP=3.6088
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

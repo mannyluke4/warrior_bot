@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: VNCE  |  Date: 2025-01-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching VNCE bars for 2025-01-24...
+  Total bars: 293  |  Seed: 60  |  Sim: 233
+  Seed complete: EMA9=3.7124
+  Fetching tick data from Alpaca...
+  Tick replay: 7686 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: VNCE -- 2025-01-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 7686 sim + 60 seed  |  EMA9=3.6395  VWAP=3.7514
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:42   3.9691   3.8750  0.0941   12.0   3.9600  topping_wicky_exit_full       -24    -0.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-24  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-24
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

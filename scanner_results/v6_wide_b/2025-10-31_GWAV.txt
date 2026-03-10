@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GWAV  |  Date: 2025-10-31  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GWAV bars for 2025-10-31...
+  Total bars: 136  |  Seed: 53  |  Sim: 83
+  Seed complete: EMA9=7.0184
+  Fetching tick data from Alpaca...
+  Tick replay: 2348 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GWAV -- 2025-10-31 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2348 sim + 53 seed  |  EMA9=6.7423  VWAP=7.9884
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

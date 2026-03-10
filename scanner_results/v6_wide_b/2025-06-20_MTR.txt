@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MTR  |  Date: 2025-06-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MTR bars for 2025-06-20...
+  Total bars: 76  |  Seed: 9  |  Sim: 67
+  Seed complete: EMA9=7.3632
+  Fetching tick data from Alpaca...
+  Tick replay: 999 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MTR -- 2025-06-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 999 sim + 9 seed  |  EMA9=6.1149  VWAP=6.5863
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

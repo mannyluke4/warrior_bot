@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: QCLS  |  Date: 2025-10-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching QCLS bars for 2025-10-17...
+  Total bars: 203  |  Seed: 20  |  Sim: 183
+  Seed complete: EMA9=5.1299
+  Fetching tick data from Alpaca...
+  Tick replay: 3843 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: QCLS -- 2025-10-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3843 sim + 20 seed  |  EMA9=4.3761  VWAP=4.8151
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

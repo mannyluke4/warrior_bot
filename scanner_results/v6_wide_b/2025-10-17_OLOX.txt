@@ -1,0 +1,44 @@
+# V6.2-wide-B risk=250 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: OLOX  |  Date: 2025-10-17  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching OLOX bars for 2025-10-17...
+  Total bars: 478  |  Seed: 178  |  Sim: 300
+  Fetching L2 from Databento: OLOX 2025-10-17 07:00-12:00 (XNAS.ITCH)...
+  ERROR fetching L2 data: 422 symbology_invalid_request
+None of the symbols could be resolved
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  Trying NYSE (XNYS.PILLAR)...
+  Fetching L2 from Databento: OLOX 2025-10-17 07:00-12:00 (XNYS.PILLAR)...
+  ERROR fetching L2 data: 422 symbology_invalid_request
+None of the symbols could be resolved
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  L2: no data available (running without L2)
+  Seed complete: EMA9=4.0274
+  Fetching tick data from Databento...
+  Fetching trades from Databento: OLOX 2025-10-17 07:00-12:00 (XNAS.ITCH)...
+  ERROR fetching trade data: 422 symbology_invalid_request
+None of the symbols could be resolved
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  Trying NYSE (XNYS.PILLAR)...
+  Fetching trades from Databento: OLOX 2025-10-17 07:00-12:00 (XNYS.PILLAR)...
+  ERROR fetching trade data: 422 symbology_invalid_request
+None of the symbols could be resolved
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  Tick replay: 0 trades for sim window
+  No tick data in window 07:00-12:00. Skipping.
+
+======================================================================
+  BACKTEST REPORT: OLOX -- 2025-10-17 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=OFF [TICK mode]
+  Bars: 0 sim + 178 seed  |  EMA9=4.0274  VWAP=4.5924
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

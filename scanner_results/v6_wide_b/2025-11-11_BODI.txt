@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BODI  |  Date: 2025-11-11  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BODI bars for 2025-11-11...
+  Total bars: 367  |  Seed: 75  |  Sim: 292
+  Seed complete: EMA9=6.3567
+  Fetching tick data from Alpaca...
+  Tick replay: 130620 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BODI -- 2025-11-11 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 130620 sim + 75 seed  |  EMA9=5.9037  VWAP=6.6861
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:02   6.9400   6.1800  0.7600   10.5   6.7800  bearish_engulfing_exit_full       -79    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-79  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-79
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

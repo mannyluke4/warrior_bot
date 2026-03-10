@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BENF  |  Date: 2026-02-19  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BENF bars for 2026-02-19...
+  Total bars: 248  |  Seed: 51  |  Sim: 197
+  Seed complete: EMA9=3.8713
+  Fetching tick data from Alpaca...
+  Tick replay: 5137 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BENF -- 2026-02-19 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 5137 sim + 51 seed  |  EMA9=3.2958  VWAP=3.4789
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

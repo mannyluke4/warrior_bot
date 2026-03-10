@@ -1,0 +1,34 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WAFU  |  Date: 2025-02-25  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching WAFU bars for 2025-02-25...
+  Total bars: 477  |  Seed: 180  |  Sim: 297
+  Seed complete: EMA9=3.7195
+  Fetching tick data from Alpaca...
+  Tick replay: 478633 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: WAFU -- 2025-02-25 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 478633 sim + 180 seed  |  EMA9=3.9506  VWAP=4.8542
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:53   6.1400   5.6400  0.5000   11.0   6.6700  bearish_engulfing_exit_full      +133    +1.1R
+    2   09:56   6.9800   6.5600  0.4200   11.0   6.7501  bearish_engulfing_exit_full       -68    -0.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+64  |  Avg R-Multiple: +0.1R
+  Largest Win: $+133  |  Largest Loss: $-68
+  Armed: 3  |  Signals: 3  |  Entered: 2
+======================================================================
+

@@ -1,0 +1,34 @@
+# V6.2-wide-B risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MSGM  |  Date: 2025-11-07  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MSGM bars for 2025-11-07...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=4.8024
+  Fetching tick data from Alpaca...
+  Tick replay: 525392 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MSGM -- 2025-11-07 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 525392 sim + 180 seed  |  EMA9=3.8278  VWAP=4.5928
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:44   5.3200   5.0900  0.2300    9.5   5.2500  bearish_engulfing_exit_full      -114    -0.3R
+    2   07:47   5.2400   5.0100  0.2300   11.0   5.1400  bearish_engulfing_exit_full      -163    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 0  |  Losses: 2  |  Win Rate: 0.0%
+  Gross P&L: $-277  |  Avg R-Multiple: -0.2R
+  Largest Win: $+0  |  Largest Loss: $-163
+  Armed: 2  |  Signals: 2  |  Entered: 2
+======================================================================
+

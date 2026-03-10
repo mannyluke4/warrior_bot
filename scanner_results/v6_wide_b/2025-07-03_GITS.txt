@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GITS  |  Date: 2025-07-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GITS bars for 2025-07-03...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=5.0348
+  Fetching tick data from Alpaca...
+  Tick replay: 232862 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GITS -- 2025-07-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 232862 sim + 180 seed  |  EMA9=3.5384  VWAP=4.5492
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

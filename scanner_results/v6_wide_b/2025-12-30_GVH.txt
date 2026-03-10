@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GVH  |  Date: 2025-12-30  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GVH bars for 2025-12-30...
+  Total bars: 203  |  Seed: 24  |  Sim: 179
+  Seed complete: EMA9=3.6407
+  Fetching tick data from Alpaca...
+  Tick replay: 4308 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GVH -- 2025-12-30 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4308 sim + 24 seed  |  EMA9=2.8461  VWAP=3.0072
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

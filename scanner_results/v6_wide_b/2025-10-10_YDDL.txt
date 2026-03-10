@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: YDDL  |  Date: 2025-10-10  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching YDDL bars for 2025-10-10...
+  Total bars: 472  |  Seed: 173  |  Sim: 299
+  Fetching L2 from Databento: YDDL 2025-10-10 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: YDDL_2025-10-10_XNAS.dbn.zst
+  L2 data: 32222 records for YDDL
+  L2 snapshots: 6701 (1-second sampled)
+  L2 data loaded: 6701 snapshots
+  Seed complete: EMA9=7.8667
+  Fetching tick data from Databento...
+  Fetching trades from Databento: YDDL 2025-10-10 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: YDDL_2025-10-10_trades_XNAS.dbn.zst
+  Trade data: 8888 records for YDDL
+  Trades: 8888 | $7.84-$10.64 | 07:00:00-11:59:44 ET
+  Tick replay: 8888 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: YDDL -- 2025-10-10 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=6701 snaps [TICK mode]
+  Bars: 8888 sim + 173 seed  |  EMA9=6.6218  VWAP=9.6675
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

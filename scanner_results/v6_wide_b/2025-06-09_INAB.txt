@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: INAB  |  Date: 2025-06-09  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INAB bars for 2025-06-09...
+  Total bars: 255  |  Seed: 15  |  Sim: 240
+  Seed complete: EMA9=3.6344
+  Fetching tick data from Alpaca...
+  Tick replay: 9100 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: INAB -- 2025-06-09 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 9100 sim + 15 seed  |  EMA9=3.0475  VWAP=3.7379
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:03   4.5200   3.7100  0.8100    5.5   4.3000  bearish_engulfing_exit_full      -203    -0.3R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-203  |  Avg R-Multiple: -0.3R
+  Largest Win: $+0  |  Largest Loss: $-203
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

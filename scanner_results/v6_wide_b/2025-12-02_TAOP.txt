@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: TAOP  |  Date: 2025-12-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching TAOP bars for 2025-12-02...
+  Total bars: 480  |  Seed: 180  |  Sim: 300
+  Seed complete: EMA9=3.6122
+  Fetching tick data from Alpaca...
+  Tick replay: 87550 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: TAOP -- 2025-12-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 87550 sim + 180 seed  |  EMA9=2.7077  VWAP=3.3680
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

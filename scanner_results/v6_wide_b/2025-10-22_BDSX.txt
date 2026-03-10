@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BDSX  |  Date: 2025-10-22  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BDSX bars for 2025-10-22...
+  Total bars: 320  |  Seed: 40  |  Sim: 280
+  Seed complete: EMA9=8.2599
+  Fetching tick data from Alpaca...
+  Tick replay: 54760 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BDSX -- 2025-10-22 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 54760 sim + 40 seed  |  EMA9=6.3467  VWAP=8.2199
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

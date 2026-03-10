@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DWTX  |  Date: 2025-12-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DWTX bars for 2025-12-23...
+  Total bars: 90  |  Seed: 8  |  Sim: 82
+  Seed complete: EMA9=4.8843
+  Fetching tick data from Alpaca...
+  Tick replay: 839 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DWTX -- 2025-12-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 839 sim + 8 seed  |  EMA9=4.2619  VWAP=4.5661
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

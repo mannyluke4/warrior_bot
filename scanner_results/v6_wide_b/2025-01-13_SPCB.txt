@@ -1,0 +1,33 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SPCB  |  Date: 2025-01-13  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SPCB bars for 2025-01-13...
+  Total bars: 174  |  Seed: 32  |  Sim: 142
+  Seed complete: EMA9=8.8460
+  Fetching tick data from Alpaca...
+  Tick replay: 2667 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: SPCB -- 2025-01-13 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 2667 sim + 32 seed  |  EMA9=8.0733  VWAP=8.5822
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:36   9.2200   9.0316  0.1884   11.0   9.3200  topping_wicky_exit_full      +133    +0.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+133  |  Avg R-Multiple: +0.5R
+  Largest Win: $+133  |  Largest Loss: $+0
+  Armed: 4  |  Signals: 3  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: IPDN  |  Date: 2025-03-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching IPDN bars for 2025-03-18...
+  Total bars: 53  |  Seed: 19  |  Sim: 34
+  Seed complete: EMA9=2.9474
+  Fetching tick data from Alpaca...
+  Tick replay: 372 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: IPDN -- 2025-03-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 372 sim + 19 seed  |  EMA9=2.5349  VWAP=2.8130
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

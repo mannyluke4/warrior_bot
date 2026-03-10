@@ -1,0 +1,24 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ABTS  |  Date: 2025-05-12  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ABTS bars for 2025-05-12...
+  Total bars: 302  |  Seed: 92  |  Sim: 210
+  Seed complete: EMA9=4.3546
+  Fetching tick data from Alpaca...
+  Tick replay: 4739 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ABTS -- 2025-05-12 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 4739 sim + 92 seed  |  EMA9=3.3830  VWAP=3.7797
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,34 @@
+# V6.2-wide-B risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: JTAI  |  Date: 2025-02-20  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching JTAI bars for 2025-02-20...
+  Total bars: 415  |  Seed: 122  |  Sim: 293
+  Seed complete: EMA9=8.5548
+  Fetching tick data from Alpaca...
+  Tick replay: 45781 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: JTAI -- 2025-02-20 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 45781 sim + 122 seed  |  EMA9=6.9072  VWAP=8.7444
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:38   9.3900   9.1700  0.2200   12.5   9.4800  bearish_engulfing_exit_full      +153    +0.4R
+    2   08:41   9.5100   9.2600  0.2500   12.5   9.4100  bearish_engulfing_exit_full      -150    -0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+3  |  Avg R-Multiple: +0.0R
+  Largest Win: $+153  |  Largest Loss: $-150
+  Armed: 7  |  Signals: 3  |  Entered: 2
+======================================================================
+

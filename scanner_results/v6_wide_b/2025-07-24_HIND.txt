@@ -1,0 +1,25 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HIND  |  Date: 2025-07-24  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HIND bars for 2025-07-24...
+  Total bars: 213  |  Seed: 35  |  Sim: 178
+  Seed complete: EMA9=3.4564
+  Fetching tick data from Alpaca...
+  Tick replay: 1928 trades for sim window
+  [07:09] CLASSIFIER: HIND → avoid (conf=0.85) — AVOID gate: VWAP dist 1.1% < 7.0%, range 1.0% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: HIND -- 2025-07-24 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1928 sim + 35 seed  |  EMA9=3.1419  VWAP=3.2797
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

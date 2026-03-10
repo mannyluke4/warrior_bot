@@ -1,0 +1,34 @@
+# V6.2-wide-B risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ARBB  |  Date: 2025-12-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ARBB bars for 2025-12-15...
+  Total bars: 301  |  Seed: 71  |  Sim: 230
+  Seed complete: EMA9=8.0550
+  Fetching tick data from Alpaca...
+  Tick replay: 31722 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ARBB -- 2025-12-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 31722 sim + 71 seed  |  EMA9=6.7295  VWAP=8.4538
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   8.4800   8.1100  0.3700   12.5   8.5700  bearish_engulfing_exit_full      +182    +0.2R
+    2   08:05   9.1800   9.1900  0.5771   12.0   9.6300  bearish_engulfing_exit_full      +585    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 2  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+767  |  Avg R-Multiple: +0.5R
+  Largest Win: $+585  |  Largest Loss: $+0
+  Armed: 3  |  Signals: 2  |  Entered: 2
+======================================================================
+

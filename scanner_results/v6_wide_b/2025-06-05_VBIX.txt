@@ -1,0 +1,31 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: VBIX  |  Date: 2025-06-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching VBIX bars for 2025-06-05...
+  Total bars: 240  |  Seed: 94  |  Sim: 146
+  L2 cache hit: VBIX_2025-06-05_XNAS.dbn.zst
+  L2 data: 4811 records for VBIX
+  L2 snapshots: 1536 (1-second sampled)
+  L2 data loaded: 1536 snapshots
+  Seed complete: EMA9=10.8829
+  Fetching tick data from Databento...
+  Trades cache hit: VBIX_2025-06-05_trades_XNAS.dbn.zst
+  Trade data: 553 records for VBIX
+  Trades: 553 | $10.24-$13.06 | 07:00:27-11:56:18 ET
+  Tick replay: 553 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: VBIX -- 2025-06-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=1536 snaps [TICK mode]
+  Bars: 553 sim + 94 seed  |  EMA9=7.5891  VWAP=14.5813
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

@@ -1,0 +1,25 @@
+# V6.2-wide-B risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: INM  |  Date: 2025-05-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INM bars for 2025-05-15...
+  Total bars: 131  |  Seed: 10  |  Sim: 121
+  Seed complete: EMA9=3.1426
+  Fetching tick data from Alpaca...
+  Tick replay: 1023 trades for sim window
+  [07:14] CLASSIFIER: INM → avoid (conf=0.85) — AVOID gate: VWAP dist 4.0% < 7.0%, range 5.7% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: INM -- 2025-05-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1023 sim + 10 seed  |  EMA9=3.0355  VWAP=3.1952
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================
