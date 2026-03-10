@@ -205,6 +205,10 @@ def process_date(date: str, stats: dict):
         # V4: Compute Stock Quality Score (returns tier label)
         sqs, tier, risk = compute_sqs(c)
 
+        # V6.2: Profile B risk cap — mid-float stocks capped at $250 regardless of SQS
+        if profile == 'B' and risk > 250:
+            risk = 250
+
         if risk == 0:
             pmv = c.get('pm_volume', 0)
             print(f"  SQS SKIP {sym} (SQS={sqs})")

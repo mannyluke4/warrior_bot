@@ -49,6 +49,10 @@ def calculate_dynamic_risk(account_equity: float, profile: str) -> dict:
         risk = max(FLOOR, min(CEILING, round(base_risk_a / 3)))
         baseline = 250
 
+    # V6.2: Profile B risk cap — mid-float stocks capped at $250 regardless of SQS/equity
+    if profile == 'B' and os.getenv("WB_PROFILE_B_RISK_CAP", "1") == "1":
+        risk = min(risk, 250)
+
     scale_factor = risk / baseline if baseline > 0 else 1.0
 
     return {
