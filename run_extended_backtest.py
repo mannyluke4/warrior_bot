@@ -275,10 +275,15 @@ def process_date(date_str: str, stats: dict):
             gate_str = " [B-GATE: PASS]" if tier == "B" else ""
             print(f"  RUN  {sym} profile={profile} start={sim_start} SQS={sqs}({tier}) risk=${risk} pm_vol={pmv:,.0f} gap={gap:.1f}% float={flt:.2f}M{gate_str}")
 
+            n_candidates = len(candidates)
+            c_gap = c.get('gap_pct', 0) or 0
+            c_pmvol = c.get('pm_volume', 0) or 0
+            toxic_args = f"--candidates {n_candidates} --gap {c_gap} --pmvol {c_pmvol}"
+
             if profile == "B":
-                cmd = f"timeout 180 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile B --ticks --feed databento --l2 --no-fundamentals --risk {risk}"
+                cmd = f"timeout 180 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile B --ticks --feed databento --l2 --no-fundamentals --risk {risk} {toxic_args}"
             else:
-                cmd = f"timeout 120 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile A --ticks --no-fundamentals --risk {risk}"
+                cmd = f"timeout 120 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile A --ticks --no-fundamentals --risk {risk} {toxic_args}"
 
             try:
                 result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=200)
@@ -286,7 +291,7 @@ def process_date(date_str: str, stats: dict):
 
                 if profile == "B" and (result.returncode != 0 or "license_not_found" in output or "403" in output or "Error" in output):
                     print(f"  WARN {sym} Databento failed, falling back to Alpaca")
-                    cmd = f"timeout 120 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile B --ticks --no-fundamentals --risk {risk}"
+                    cmd = f"timeout 120 python simulate.py {sym} {date_str} {sim_start} 12:00 --profile B --ticks --no-fundamentals --risk {risk} {toxic_args}"
                     result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=140)
                     output = result.stdout + result.stderr
 

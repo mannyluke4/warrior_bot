@@ -37,6 +37,7 @@ from candles import is_bearish_engulfing
 from micro_pullback import MicroPullbackDetector
 from l2_signals import L2SignalDetector
 from l2_entry import L2EntryDetector
+from trade_manager import check_toxic_filters
 
 load_dotenv()
 
@@ -944,6 +945,9 @@ def run_simulation(
     feed: str = "alpaca",
     export_json: bool = False,
     profile: str = "A",
+    candidates_count: int = 0,
+    gap_pct: float = 0.0,
+    pm_volume: float = 0.0,
 ):
     # l2-entry implies l2 data
     if use_l2_entry:
@@ -1574,21 +1578,42 @@ def run_simulation(
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(price, is_premarket=is_premarket)
                 if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
-                    trade = sim_mgr.on_signal(
-                        symbol=symbol,
-                        entry=armed_before.trigger_high,
-                        stop=armed_before.stop_low,
-                        r=armed_before.r,
-                        score=armed_before.score,
-                        detail=armed_before.score_detail,
-                        time_str=time_str,
+                    # V6.1: Toxic entry filters
+                    _toxic = check_toxic_filters(
+                        entry_price=armed_before.trigger_high,
+                        stop_price=armed_before.stop_low,
+                        gap_pct=gap_pct,
+                        pm_volume=pm_volume,
+                        candidates_count=candidates_count,
+                        month=date.month,
                     )
-                    if trade and verbose:
-                        print(
-                            f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                            f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
-                            flush=True,
+                    if _toxic['action'] == 'BLOCK':
+                        if verbose:
+                            print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    else:
+                        _saved_risk = None
+                        if _toxic['action'] == 'HALF_RISK':
+                            _saved_risk = sim_mgr.risk_dollars
+                            sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
+                            if verbose:
+                                print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
+                        trade = sim_mgr.on_signal(
+                            symbol=symbol,
+                            entry=armed_before.trigger_high,
+                            stop=armed_before.stop_low,
+                            r=armed_before.r,
+                            score=armed_before.score,
+                            detail=armed_before.score_detail,
+                            time_str=time_str,
                         )
+                        if _saved_risk is not None:
+                            sim_mgr.risk_dollars = _saved_risk
+                        if trade and verbose:
+                            print(
+                                f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
+                                flush=True,
+                            )
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)
@@ -1795,21 +1820,42 @@ def run_simulation(
                     armed_before = det.armed
                     trigger_msg = det.on_trade_price(tick, is_premarket=is_premarket)
                     if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
-                        trade = sim_mgr.on_signal(
-                            symbol=symbol,
-                            entry=armed_before.trigger_high,
-                            stop=armed_before.stop_low,
-                            r=armed_before.r,
-                            score=armed_before.score,
-                            detail=armed_before.score_detail,
-                            time_str=time_str,
+                        # V6.1: Toxic entry filters
+                        _toxic = check_toxic_filters(
+                            entry_price=armed_before.trigger_high,
+                            stop_price=armed_before.stop_low,
+                            gap_pct=gap_pct,
+                            pm_volume=pm_volume,
+                            candidates_count=candidates_count,
+                            month=date.month,
                         )
-                        if trade and verbose:
-                            print(
-                                f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
-                                flush=True,
+                        if _toxic['action'] == 'BLOCK':
+                            if verbose:
+                                print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                        else:
+                            _saved_risk = None
+                            if _toxic['action'] == 'HALF_RISK':
+                                _saved_risk = sim_mgr.risk_dollars
+                                sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
+                                if verbose:
+                                    print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=armed_before.trigger_high,
+                                stop=armed_before.stop_low,
+                                r=armed_before.r,
+                                score=armed_before.score,
+                                detail=armed_before.score_detail,
+                                time_str=time_str,
                             )
+                            if _saved_risk is not None:
+                                sim_mgr.risk_dollars = _saved_risk
+                            if trade and verbose:
+                                print(
+                                    f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
+                                    flush=True,
+                                )
 
                 # Check stops/TP/runner
                 sim_mgr.on_tick(tick, time_str)
@@ -2019,6 +2065,9 @@ def main():
     parser.add_argument("--export-json", action="store_true", help="Export behavioral study JSON to study_data/")
     parser.add_argument("--profile", default="A",
                         help="Stock profile: A (micro-float runner), B (mid-float L2), C (fast mover), X (conservative). Default: A")
+    parser.add_argument("--candidates", type=int, default=0, help="Total scanner candidates for this day (toxic filter 1)")
+    parser.add_argument("--gap", type=float, default=0.0, help="Pre-market gap %% (toxic filter 2)")
+    parser.add_argument("--pmvol", type=float, default=0.0, help="Pre-market volume in shares (toxic filter 2)")
     args = parser.parse_args()
 
     # Parse positional args: symbols, date, optional start/end times
@@ -2079,6 +2128,9 @@ def main():
             feed=args.feed,
             export_json=args.export_json,
             profile=args.profile,
+            candidates_count=args.candidates,
+            gap_pct=args.gap,
+            pm_volume=args.pmvol,
         )
         all_trades.extend(trades)
 

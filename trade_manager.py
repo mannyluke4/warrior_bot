@@ -59,6 +59,59 @@ def calculate_dynamic_risk(account_equity: float, profile: str) -> dict:
 
 
 # -----------------------------
+# V6.1: Toxic entry filters
+# -----------------------------
+COLD_MONTHS = {2, 10, 11}
+HOT_MONTHS = {1}
+
+
+def check_toxic_filters(
+    entry_price: float,
+    stop_price: float,
+    gap_pct: float,
+    pm_volume: float,
+    candidates_count: int,
+    month: int
+) -> dict:
+    """
+    Check entry against toxic trait filters.
+
+    Returns:
+        dict with 'action' ('ALLOW', 'BLOCK', 'HALF_RISK'),
+        'filter' (name), 'reason' (human-readable)
+    """
+    r_pct = abs(entry_price - stop_price) / entry_price * 100
+
+    # Filter 1: Wide R% + Crowded Day → HARD BLOCK
+    if os.getenv("WB_TOXIC_FILTER_1_ENABLED", "1") == "1":
+        if r_pct >= 5.0 and candidates_count >= 20:
+            return {
+                'action': 'BLOCK',
+                'filter': 'wide_r_crowded_day',
+                'reason': f'R%={r_pct:.1f}% + {candidates_count} candidates (toxic combo)',
+                'r_pct': r_pct,
+                'candidates': candidates_count
+            }
+
+    # Filter 2: Cold Market + Low Vol + Small Gap → HALF RISK
+    if os.getenv("WB_TOXIC_FILTER_2_ENABLED", "1") == "1":
+        market_temp = "cold" if month in COLD_MONTHS else "hot" if month in HOT_MONTHS else "neutral"
+        if gap_pct < 30 and pm_volume < 100_000 and market_temp == "cold":
+            multiplier = float(os.getenv("WB_TOXIC_FILTER_2_MULTIPLIER", "0.5"))
+            return {
+                'action': 'HALF_RISK',
+                'filter': 'cold_low_vol_small_gap',
+                'reason': f'Gap={gap_pct:.1f}% + PMVol={pm_volume:,.0f} + {market_temp} market',
+                'multiplier': multiplier,
+                'gap_pct': gap_pct,
+                'pm_volume': pm_volume,
+                'market_temp': market_temp
+            }
+
+    return {'action': 'ALLOW', 'filter': None, 'reason': None}
+
+
+# -----------------------------
 # Data models
 # -----------------------------
 @dataclass
