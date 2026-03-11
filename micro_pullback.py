@@ -98,7 +98,7 @@ class MicroPullbackDetector:
         self.l2_min_bullish_for_accel = int(os.getenv("WB_L2_MIN_BULLISH_ACCEL", "3"))
 
         # Entry mode: "direct" = 1-bar entry, "pullback" = classic 3-bar cycle
-        self.entry_mode = os.getenv("WB_ENTRY_MODE", "direct")
+        self.entry_mode = os.getenv("WB_ENTRY_MODE", "pullback")
 
         self.ema: Optional[float] = None
         self.macd_state = MACDState()
@@ -1191,7 +1191,18 @@ class MicroPullbackDetector:
         # VWAP loss clears structure
         if not above_vwap:
             if self._has_active_structure_1m():
+                blocked_arm = self.armed  # capture before reset clears it
                 self._full_reset_1m()
+                if blocked_arm is not None:
+                    return (
+                        f"1M RESET (lost VWAP) VWAP_BLOCKED_ARM "
+                        f"score={blocked_arm.score:.1f} "
+                        f"entry={blocked_arm.entry_price:.4f} "
+                        f"stop={blocked_arm.stop_low:.4f} "
+                        f"R={blocked_arm.r:.4f} "
+                        f"detail={blocked_arm.score_detail} "
+                        f"close={c:.4f} vwap={vwap:.4f}"
+                    )
                 return "1M RESET (lost VWAP)"
             return None
 
