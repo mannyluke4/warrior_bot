@@ -309,6 +309,30 @@ class PaperTradeManager:
         self.last_quote_ts_utc: Dict[str, datetime] = {}  # symbol -> last quote timestamp (UTC)
         self.last_stale_warn_ts_utc: Dict[str, datetime] = {}  # symbol -> last warning timestamp (UTC)
 
+        # --- Bail Timer: exit if not profitable within N minutes ---
+        self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
+        self.bail_timer_minutes = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
+        # --- Daily risk management ---
+        self.daily_goal = float(os.getenv("WB_DAILY_GOAL", "500"))
+        self.max_daily_loss = float(os.getenv("WB_MAX_DAILY_LOSS", "500"))
+        self.giveback_hard_pct = float(os.getenv("WB_GIVEBACK_HARD_PCT", "50"))
+        self.giveback_warn_pct = float(os.getenv("WB_GIVEBACK_WARN_PCT", "20"))
+        self.max_consecutive_losses = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
+
+        # Warmup sizing: start at reduced size until daily P&L crosses threshold
+        self.warmup_size_pct = float(os.getenv("WB_WARMUP_SIZE_PCT", "25"))
+        self.warmup_size_threshold = float(os.getenv("WB_WARMUP_SIZE_THRESHOLD", "500"))
+
+        # Daily tracking state (reset each trading day)
+        self._daily_pnl: float = 0.0
+        self._daily_peak_pnl: float = 0.0
+        self._consecutive_losses: int = 0
+        self._daily_stopped: bool = False  # hard stop for the day
+        self._giveback_warned: bool = False  # risk reduced due to giveback
+        self._warmup_graduated: bool = False  # switched to full size
+        self._original_risk_dollars: float = self.risk_dollars
+        self._daily_date: str = ""  # date string to detect day change
 
         key = os.getenv("APCA_API_KEY_ID")
         secret = os.getenv("APCA_API_SECRET_KEY")
@@ -493,7 +517,8 @@ class PaperTradeManager:
         if r <= 0 or r < self.min_r:
             return 0
 
-        qty_risk = int(math.floor(self.risk_dollars / r))
+        effective_risk = self._get_effective_risk()
+        qty_risk = int(math.floor(effective_risk / r))
         if qty_risk <= 0:
             return 0
 
@@ -723,8 +748,121 @@ class PaperTradeManager:
     # -----------------------------
     # Entry submission
     # -----------------------------
+    # -----------------------------
+    # Daily risk management
+    # -----------------------------
+    def _check_daily_reset(self):
+        """Reset daily tracking state at the start of each new trading day."""
+        import pytz
+        ET = pytz.timezone("US/Eastern")
+        today = datetime.now(ET).strftime("%Y-%m-%d")
+        if today != self._daily_date:
+            self._daily_date = today
+            self._daily_pnl = 0.0
+            self._daily_peak_pnl = 0.0
+            self._consecutive_losses = 0
+            self._daily_stopped = False
+            self._giveback_warned = False
+            self._warmup_graduated = False
+            self.risk_dollars = self._original_risk_dollars
+            log_event("daily_reset", None, date=today, risk_dollars=self.risk_dollars)
+
+    def _record_trade_pnl(self, pnl: float):
+        """Record a closed trade's P&L for daily management."""
+        self._daily_pnl += pnl
+        self._daily_peak_pnl = max(self._daily_peak_pnl, self._daily_pnl)
+
+        # Track consecutive losses
+        if pnl < 0:
+            self._consecutive_losses += 1
+        else:
+            self._consecutive_losses = 0
+
+        # Check consecutive loser stop
+        if self._consecutive_losses >= self.max_consecutive_losses:
+            self._daily_stopped = True
+            log_event("daily_stopped_consecutive_losses", None,
+                      consecutive=self._consecutive_losses,
+                      daily_pnl=round(self._daily_pnl, 2))
+            print(
+                f"DAILY STOP: {self._consecutive_losses} consecutive losses — "
+                f"no more entries today (daily P&L: ${self._daily_pnl:.2f})",
+                flush=True,
+            )
+
+        # Check daily max loss
+        if self._daily_pnl <= -self.max_daily_loss:
+            self._daily_stopped = True
+            log_event("daily_stopped_max_loss", None,
+                      daily_pnl=round(self._daily_pnl, 2),
+                      max_daily_loss=self.max_daily_loss)
+            print(
+                f"DAILY STOP: daily loss ${self._daily_pnl:.2f} exceeds "
+                f"-${self.max_daily_loss:.2f} — no more entries today",
+                flush=True,
+            )
+
+        # Check giveback rules (only when peak P&L was positive)
+        if self._daily_peak_pnl > 0:
+            giveback = self._daily_peak_pnl - self._daily_pnl
+            giveback_pct = (giveback / self._daily_peak_pnl) * 100
+
+            # Hard stop: gave back 50%+ of peak
+            if giveback_pct >= self.giveback_hard_pct:
+                self._daily_stopped = True
+                log_event("daily_stopped_giveback_hard", None,
+                          daily_pnl=round(self._daily_pnl, 2),
+                          peak_pnl=round(self._daily_peak_pnl, 2),
+                          giveback_pct=round(giveback_pct, 1))
+                print(
+                    f"DAILY STOP: gave back {giveback_pct:.0f}% of peak "
+                    f"(${self._daily_pnl:.2f} from peak ${self._daily_peak_pnl:.2f}) — done for day",
+                    flush=True,
+                )
+
+            # Warning: gave back 20%+ — halve risk
+            elif giveback_pct >= self.giveback_warn_pct and not self._giveback_warned:
+                self._giveback_warned = True
+                self.risk_dollars = self._original_risk_dollars * 0.5
+                log_event("giveback_warning_risk_halved", None,
+                          daily_pnl=round(self._daily_pnl, 2),
+                          peak_pnl=round(self._daily_peak_pnl, 2),
+                          giveback_pct=round(giveback_pct, 1),
+                          new_risk=self.risk_dollars)
+                print(
+                    f"GIVEBACK WARNING: gave back {giveback_pct:.0f}% of peak "
+                    f"— risk reduced to ${self.risk_dollars:.0f} for rest of day",
+                    flush=True,
+                )
+
+    def _get_effective_risk(self) -> float:
+        """Get current risk dollars, accounting for warmup sizing."""
+        if not self._warmup_graduated:
+            if self._daily_pnl >= self.warmup_size_threshold:
+                self._warmup_graduated = True
+                log_event("warmup_graduated", None,
+                          daily_pnl=round(self._daily_pnl, 2),
+                          threshold=self.warmup_size_threshold)
+                print(
+                    f"WARMUP GRADUATED: daily P&L ${self._daily_pnl:.2f} crossed "
+                    f"${self.warmup_size_threshold:.0f} — switching to full size",
+                    flush=True,
+                )
+                return self.risk_dollars
+            # Still in warmup — use reduced size
+            return self.risk_dollars * (self.warmup_size_pct / 100)
+        return self.risk_dollars
+
     def on_signal(self, symbol: str, msg: str):
         with self._lock:
+            # Daily reset check
+            self._check_daily_reset()
+
+            # Daily stop check — no new entries
+            if self._daily_stopped:
+                log_event("skip_entry_daily_stopped", symbol)
+                return
+
             plan = self.parse_plan(msg)
             if not plan:
                 return
@@ -1596,6 +1734,11 @@ class PaperTradeManager:
                 else:
                     log_event("position_closed", symbol, reason=p.reason)
 
+                # Record P&L for daily management
+                if t and t.exit_filled_qty > 0 and t.exit_filled_cost > 0:
+                    realized_pnl = t.exit_filled_cost - (t.entry * t.exit_filled_qty)
+                    self._record_trade_pnl(realized_pnl)
+
                 with self._lock:
                     self.open.pop(symbol, None)
                 # Reset parabolic regime detector for this symbol
@@ -1758,6 +1901,7 @@ class PaperTradeManager:
                     log_event("position_closed", symbol, reason=p.reason,
                               entry=t.entry, exit_avg=round(avg_exit, 4),
                               qty=exit_qty, realized_pnl=round(realized_pnl, 2))
+                    self._record_trade_pnl(realized_pnl)
                 else:
                     log_event("position_closed", symbol, reason=p.reason)
                 self.open.pop(symbol, None)
@@ -2073,6 +2217,26 @@ class PaperTradeManager:
                     )
                     self._exit(symbol, qty=t.qty_total, reason="max_loss_hit", price=bid)
                 return
+
+        # --- Bail Timer: exit if not profitable within N minutes ---
+        if self.bail_timer_enabled and t.created_at_utc and t.r > 0:
+            age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
+            bail_sec = self.bail_timer_minutes * 60
+            if age_sec >= bail_sec:
+                unrealized = float(bid) - t.entry
+                if unrealized <= 0:
+                    if symbol not in self.pending_exits:
+                        log_event("bail_timer_exit", symbol,
+                                  entry=t.entry, bid=float(bid),
+                                  unrealized=round(unrealized, 4),
+                                  age_min=round(age_sec / 60, 1))
+                        print(
+                            f"BAIL TIMER {symbol}: {age_sec/60:.1f}min elapsed, "
+                            f"unrealized=${unrealized:.2f} <= $0 — EXIT qty={t.qty_total}",
+                            flush=True,
+                        )
+                        self._exit(symbol, qty=t.qty_total, reason="bail_timer", price=bid)
+                    return
 
         # --- Chandelier stop (parabolic regime, classic mode ONLY) ---
         # In signal mode, the existing signal trail handles exits;
