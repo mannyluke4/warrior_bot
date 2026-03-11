@@ -48,20 +48,20 @@ os.makedirs(SCANNER_DIR, exist_ok=True)
 # ---------------------------------------------------------------------------
 FMP_API_KEY = os.getenv("FMP_API_KEY")
 
-# Filter thresholds (directive spec)
-MIN_GAP_PCT = 10.0
-MAX_GAP_PCT_A = 40.0   # Profile A: gap 10-40%
-MAX_GAP_PCT_B = 25.0   # Profile B: gap 10-25%
-MIN_PRICE = 3.0
-MAX_PRICE = 10.0
+# Filter thresholds (Phase 1 simplification: widened to match Ross Cameron criteria)
+MIN_GAP_PCT = 5.0           # Ross trades 5%+ gaps
+MAX_GAP_PCT_A = 999.0       # No gap ceiling (Ross traded 500%+ gaps)
+MAX_GAP_PCT_B = 999.0       # Same — no gap ceiling
+MIN_PRICE = 2.0             # Ross trades $2+
+MAX_PRICE = 20.0            # Ross's stated range for small account
 WINDOW_START_HOUR = 7
 WINDOW_START_MINUTE = 0
-WINDOW_END_HOUR = 7
-WINDOW_END_MINUTE = 14
-MIN_FLOAT_A = 500_000       # 0.5M
-MAX_FLOAT_A = 5_000_000     # 5M
-MAX_FLOAT_B = 50_000_000    # 50M
-MAX_PROFILE_B_CANDIDATES = 2
+WINDOW_END_HOUR = 11         # Extended to 11:00 AM ET
+WINDOW_END_MINUTE = 0
+MIN_FLOAT_A = 100_000       # 100K (Ross has no minimum; sane floor)
+MAX_FLOAT_A = 20_000_000    # 20M (Ross says "under 20M ideal")
+MAX_FLOAT_B = 50_000_000    # 50M (unchanged)
+MAX_SCANNER_SYMBOLS = 8     # Cap total symbols across all writes
 
 # Known floats (highest reliability — no API needed)
 KNOWN_FLOATS = {
@@ -145,11 +145,11 @@ def get_float(symbol: str, cache: dict) -> Optional[float]:
 
 
 def classify_profile(float_shares: Optional[float]) -> str:
-    """A (<5M, >=0.5M) | B (5-50M) | X (>50M or unknown)."""
+    """A (<20M, >=100K) | B (20-50M) | X (>50M or unknown)."""
     if float_shares is None:
         return "X"
     if float_shares < MIN_FLOAT_A:
-        return "X"           # < 0.5M — too thin
+        return "X"           # < 100K — too thin
     if float_shares <= MAX_FLOAT_A:
         return "A"
     if float_shares <= MAX_FLOAT_B:
@@ -285,15 +285,13 @@ class LiveScanner:
         gap_pct = (mid - pc) / pc * 100.0
         if gap_pct < MIN_GAP_PCT:
             return
-        if gap_pct > MAX_GAP_PCT_A:   # skip even Profile B above 40%
-            return
 
-        # Timing filter: only accept 4:00 AM – 7:14 AM ET
+        # Timing filter: only accept 4:00 AM – 11:00 AM ET
         ts_et = pd.Timestamp(event.ts_recv, unit="ns", tz="UTC").tz_convert(ET)
         hour, minute = ts_et.hour, ts_et.minute
         if hour < 4:
             return
-        if hour > WINDOW_END_HOUR or (hour == WINDOW_END_HOUR and minute > WINDOW_END_MINUTE):
+        if hour >= WINDOW_END_HOUR:
             return
 
         # Check if already a candidate (just update price)
@@ -320,11 +318,6 @@ class LiveScanner:
         profile = classify_profile(float_shares)
 
         if profile == "X":
-            self._rejected.add(symbol)
-            return
-
-        # Profile B gap cap is tighter (10-25%)
-        if profile == "B" and gap_pct > MAX_GAP_PCT_B:
             self._rejected.add(symbol)
             return
 
@@ -356,13 +349,29 @@ class LiveScanner:
     # -----------------------------------------------------------------------
 
     def write_watchlist(self, label: str = "final"):
-        """Write qualified candidates to watchlist.txt (and save JSON snapshot)."""
+        """Write qualified candidates to watchlist.txt (and save JSON snapshot).
+        Append-only: existing symbols in watchlist are preserved."""
         with self.lock:
             candidates_copy = dict(self.candidates)
 
         if not candidates_copy:
             self.log.info(f"[{label.upper()}] No candidates to write.")
             return
+
+        # Read existing watchlist symbols to preserve (append-only)
+        existing_symbols = set()
+        existing_lines = []
+        if os.path.exists(WATCHLIST_FILE):
+            try:
+                with open(WATCHLIST_FILE, "r") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#"):
+                            existing_lines.append(line)
+                            sym = line.split(":")[0].upper()
+                            existing_symbols.add(sym)
+            except Exception:
+                pass
 
         # Separate A and B; sort each by gap% descending
         a_list = sorted(
@@ -372,9 +381,20 @@ class LiveScanner:
         b_list = sorted(
             [c for c in candidates_copy.values() if c["profile"] == "B"],
             key=lambda x: x["gap_pct"], reverse=True
-        )[:MAX_PROFILE_B_CANDIDATES]   # Only top 1-2 Profile B
+        )
 
-        all_final = a_list + b_list
+        all_candidates = a_list + b_list
+
+        # Apply MAX_SCANNER_SYMBOLS cap (existing symbols count toward the cap)
+        all_final = []
+        total_count = len(existing_symbols)
+        for c in all_candidates:
+            if c["symbol"] in existing_symbols:
+                all_final.append(c)  # already in watchlist, always include
+                continue
+            if total_count < MAX_SCANNER_SYMBOLS:
+                all_final.append(c)
+                total_count += 1
 
         # Print summary
         self.log.info(f"\n{'='*60}")
@@ -394,10 +414,17 @@ class LiveScanner:
             self.log.info("[DRY RUN] Watchlist NOT written.")
             return
 
-        # Write watchlist.txt
+        # Write watchlist.txt (append-only: preserve existing entries)
+        new_symbols = {c["symbol"] for c in all_final}
         with open(WATCHLIST_FILE, "w") as f:
             f.write(f"# Live scanner output — {self.today} {label}\n")
             f.write(f"# Generated at {datetime.now(ET).strftime('%H:%M:%S')} ET\n")
+            # Preserve existing entries not in current candidates
+            for line in existing_lines:
+                sym = line.split(":")[0].upper()
+                if sym not in new_symbols:
+                    f.write(f"{line}\n")
+            # Write current candidates
             for c in all_final:
                 f.write(f"{c['symbol']}:{c['profile']}\n")
 
@@ -436,7 +463,8 @@ class LiveScanner:
         self.log.info(f"      Stream started, replaying from {premarket_start.strftime('%H:%M')} ET...")
 
         try:
-            # Step 3: Time-managed loop
+            # Step 3: Time-managed loop (continuous until 11:00 AM ET)
+            last_update_minute = -1  # track last 5-min update write
             while True:
                 now_et = datetime.now(ET)
                 h, m = now_et.hour, now_et.minute
@@ -445,13 +473,28 @@ class LiveScanner:
                 if h == WINDOW_START_HOUR and m >= WINDOW_START_MINUTE and not self._initial_watchlist_written:
                     self._initial_watchlist_written = True
                     self.write_watchlist("initial")
+                    last_update_minute = m
 
-                # Final watchlist at 7:14 AM — lock and stop
-                if (h > WINDOW_END_HOUR or (h == WINDOW_END_HOUR and m >= WINDOW_END_MINUTE)) \
-                        and not self._final_watchlist_written:
+                # Scheduled write at 7:14 AM
+                if not self._final_watchlist_written and (
+                    h > 7 or (h == 7 and m >= 14)
+                ):
                     self._final_watchlist_written = True
+                    self.write_watchlist("7_14")
+                    last_update_minute = m
+
+                # After 7:14, continue writing every 5 minutes until 11:00 AM
+                if self._final_watchlist_written and h < WINDOW_END_HOUR:
+                    current_5min = (h * 60 + m) // 5
+                    last_5min = (h * 60 + last_update_minute) // 5 if last_update_minute >= 0 else -1
+                    if current_5min > last_5min:
+                        self.write_watchlist(f"update_{h:02d}{m:02d}")
+                        last_update_minute = m
+
+                # Stop at 11:00 AM ET
+                if h >= WINDOW_END_HOUR:
                     self.write_watchlist("final")
-                    self.log.info("Scanner window closed (7:14 AM ET). Stopping stream.")
+                    self.log.info(f"Scanner window closed ({WINDOW_END_HOUR}:00 AM ET). Stopping stream.")
                     break
 
                 time.sleep(5)
