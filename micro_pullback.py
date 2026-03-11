@@ -66,11 +66,7 @@ class MicroPullbackDetector:
         self.ema_len = ema_len
         self.max_pullback_bars = max_pullback_bars
 
-        # Scoring knobs (env-driven, defaults safe)
-        self.use_scoring = os.getenv("WB_USE_SCORING", "1") == "1"
-        self.min_score = float(os.getenv("WB_MIN_SCORE", "6"))
-        self.max_score = float(os.getenv("WB_MAX_SCORE", "99"))
-        self.min_tags = int(os.getenv("WB_MIN_TAGS", "1"))
+        # MACD hard gate (kept — MACD bullish at confirmation is a reasonable filter)
         self.macd_hard_gate = os.getenv("WB_MACD_HARD_GATE", "1") == "1"
 
         # Gap and Go settings
@@ -702,17 +698,8 @@ class MicroPullbackDetector:
                 self._full_reset()
                 return f"RESET (R too small: {r:.4f})"
 
-            # ✅ REMOVE the old "30-bar bullish pattern hard gate"
-            # ✅ Replace with scoring threshold (only influences arming)
-
+            # Score for logging only (no gate — score has never been validated as predictive)
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
-
-            _tag_count = len(self.last_patterns) if self.last_patterns else 0
-            if self.use_scoring and score > self.max_score:
-                return f"NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
-            if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
-                # Combined gate: block only when BOTH score AND tags are below minimum
-                return f"NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
 
             self.armed = ArmedTrade(
                 trigger_high=trigger_high,
@@ -864,16 +851,6 @@ class MicroPullbackDetector:
             if self._l2_bars_seen >= self.l2_hard_gate_warmup_bars:
                 return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
             print(f"  [L2_warmup] bearish imbalance={imb:.2f} bar={self._l2_bars_seen}/{self.l2_hard_gate_warmup_bars} (hard gate inactive)", flush=True)
-
-        # Score gate (combined with tag count)
-        _tag_count = len(self.last_patterns) if self.last_patterns else 0
-        if self.use_scoring and score > self.max_score:
-            return f"1M NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
-        if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
-            return (
-                f"1M NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} "
-                f"macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
-            )
 
         # Warmup gate: require minimum bar history before arming
         if len(self.bars_1m) < self.warmup_bars:
@@ -1093,12 +1070,6 @@ class MicroPullbackDetector:
                     self._full_reset_1m()
                     return f"1M NO_ARM L2_bearish imbalance={imb:.2f}"
                 print(f"  [L2_warmup] bearish at confirmation imbalance={imb:.2f} bar={self._l2_bars_seen}/{self.l2_hard_gate_warmup_bars} (gate inactive)", flush=True)
-
-            _tag_count = len(self.last_patterns) if self.last_patterns else 0
-            if self.use_scoring and score > self.max_score:
-                return f"1M NO_ARM score={score:.1f}>{self.max_score:.1f} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
-            if self.use_scoring and score < self.min_score and _tag_count < self.min_tags:
-                return f"1M NO_ARM score={score:.1f}<{self.min_score:.1f} tags={_tag_count}<{self.min_tags} macd={macd_score:.1f} tags={self._tags_str()} why={detail}"
 
             # Warmup gate: require minimum bar history before arming
             if len(self.bars_1m) < self.warmup_bars:
