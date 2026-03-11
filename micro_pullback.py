@@ -31,7 +31,7 @@ class ArmedTrade:
     r: float
     score: float = 0.0
     score_detail: str = ""
-    setup_type: str = "micro_pullback"  # "micro_pullback" or "gap_and_go"
+    setup_type: str = "micro_pullback"
 
 
 class MicroPullbackDetector:
@@ -69,9 +69,6 @@ class MicroPullbackDetector:
         # MACD hard gate (kept — MACD bullish at confirmation is a reasonable filter)
         self.macd_hard_gate = os.getenv("WB_MACD_HARD_GATE", "1") == "1"
 
-        # Gap and Go settings
-        self.enable_gap_and_go = os.getenv("WB_ENABLE_GAP_AND_GO", "1") == "1"
-        self.gap_and_go_min_score = float(os.getenv("WB_GAP_AND_GO_MIN_SCORE", "4"))
 
         # Exhaustion filter settings (prevents late entries on extended stocks)
         self.exhaustion_vwap_pct = float(os.getenv("WB_EXHAUSTION_VWAP_PCT", "10"))
@@ -110,13 +107,9 @@ class MicroPullbackDetector:
         self.pattern_tags: Deque[str] = deque(maxlen=6)  # remember recent signals
         self.last_patterns: list[str] = []
 
-        # Gap and Go tracking
+        # Premarket level tracking (used by bar builder for PM_HIGH display)
         self.premarket_high: Optional[float] = None
         self.premarket_bull_flag_high: Optional[float] = None
-        # One-shot flag: Gap and Go fires once per session per symbol.
-        # After the first signal is sent, this stays True for the rest of the day
-        # to prevent the rapid-fire re-entry loop that occurs when TP fires immediately.
-        self._gap_and_go_entered: bool = False
 
         # --- 1-minute setup state machine ---
         self.in_impulse_1m = False
@@ -138,11 +131,6 @@ class MicroPullbackDetector:
         self.bars_since_new_hod_1m: int = 0
         self.session_hod_1m: float = float("-inf")
 
-        # --- Conviction floor (trap stock filter) ---
-        self.conviction_floor_enabled = os.getenv("WB_CONVICTION_FLOOR", "0") == "1"
-        self.conviction_floor_min_score = float(os.getenv("WB_CONVICTION_FLOOR_MIN_SCORE", "6.0"))
-        self.conviction_floor_min_gap_pct = float(os.getenv("WB_CONVICTION_FLOOR_MIN_GAP_PCT", "1.0"))
-        self.conviction_floor_min_bars = int(os.getenv("WB_CONVICTION_FLOOR_MIN_BARS", "15"))
         self.gap_pct: float | None = None  # set by caller (simulate.py or bot.py)
 
         # --- Post-halt sizing override ---
@@ -163,17 +151,6 @@ class MicroPullbackDetector:
         self.vol_floor_min_gap_pct = float(os.getenv("WB_VOL_FLOOR_MIN_GAP_PCT", "20"))
         self.vol_floor_max_r_pct = float(os.getenv("WB_VOL_FLOOR_MAX_R_PCT", "3"))  # only activate when R/entry < this %
 
-        # --- Fast Mode (anticipation entry for fast movers) ---
-        self.fast_mode_enabled = os.getenv("WB_FAST_MODE", "0") == "1"
-        self.fast_mode_max_bar = int(os.getenv("WB_FAST_MODE_MAX_BAR", "30"))
-        self.fast_mode_min_gap_pct = float(os.getenv("WB_FAST_MODE_MIN_GAP_PCT", "10.0"))
-        self.fast_mode_min_green_bars = int(os.getenv("WB_FAST_MODE_MIN_GREEN_BARS", "3"))
-        self.fast_mode_min_bars = int(os.getenv("WB_FAST_MODE_MIN_BARS", "10"))
-        self.fast_mode_min_rel_vol = float(os.getenv("WB_FAST_MODE_MIN_REL_VOL", "2.0"))
-        self.fast_mode_min_range_pct = float(os.getenv("WB_FAST_MODE_MIN_RANGE_PCT", "5.0"))
-        self.fast_mode_entry_buffer_pct = float(os.getenv("WB_FAST_MODE_ENTRY_BUFFER_PCT", "0.3"))
-        self.fast_mode_stop_mult = float(os.getenv("WB_FAST_MODE_STOP_MULT", "1.5"))
-        self._fast_mode_fired = False  # one-shot per session
 
     def _has_active_structure(self) -> bool:
         return self.in_impulse or self.pullback_count > 0 or (self.armed is not None)
@@ -226,30 +203,6 @@ class MicroPullbackDetector:
             if pct < self.stale_vol_decay_pct:
                 return True, f"vol_decay_{pct:.0f}pct_of_peak"
         return False, ""
-
-    def _fails_conviction_floor(self, score: float) -> tuple[bool, str]:
-        """Block entries when ALL THREE: low score + no tags + tiny gap.
-        Only active after enough bars for patterns to develop (timing gate).
-        Returns (blocked, reason)."""
-        if not self.conviction_floor_enabled:
-            return False, ""
-        if self.gap_pct is None:
-            return False, ""  # no gap data = allow (conservative)
-        # Timing gate: don't apply in first N bars — Profile A stocks enter
-        # early when scores/tags are still building
-        if len(self.bars_1m) < self.conviction_floor_min_bars:
-            return False, ""
-        if score >= self.conviction_floor_min_score:
-            return False, ""
-        if self.last_patterns:  # has pattern tags
-            return False, ""
-        if abs(self.gap_pct) >= self.conviction_floor_min_gap_pct:
-            return False, ""
-        return True, (
-            f"conviction_floor: score={score:.1f}<{self.conviction_floor_min_score} "
-            f"tags=[] gap={self.gap_pct:+.1f}%<±{self.conviction_floor_min_gap_pct}% "
-            f"bars={len(self.bars_1m)}≥{self.conviction_floor_min_bars}"
-        )
 
     def _halt_adjusted_stop(self, entry: float, raw_stop: float) -> tuple[float, bool]:
         """If in a post-halt period, tighten the stop using average bar range.
@@ -307,98 +260,6 @@ class MicroPullbackDetector:
         if vol_stop <= 0:
             return raw_stop, False  # safety: don't go negative
         return vol_stop, True
-
-    def _check_fast_mode(self, c: float, vwap: float, macd_score: float) -> Optional[str]:
-        """Anticipation entry for fast movers — fires before normal ARM.
-        Targets stocks with large premarket gaps that are ramping with volume.
-        One-shot per session. Returns ARM string if conditions met, None otherwise."""
-        if not self.fast_mode_enabled or self._fast_mode_fired:
-            return None
-        if self.armed:
-            return None  # normal ARM takes priority
-
-        # Timing gate: only in first N bars of session
-        bar_count = len(self.bars_1m)
-        if bar_count > self.fast_mode_max_bar:
-            return None
-
-        _fm_debug = os.getenv("WB_FAST_MODE_DEBUG", "0") == "1"
-
-        # Gap threshold
-        if self.gap_pct is None or abs(self.gap_pct) < self.fast_mode_min_gap_pct:
-            if _fm_debug: print(f"  FM_DBG bar={bar_count}: gap={self.gap_pct} < {self.fast_mode_min_gap_pct}", flush=True)
-            return None
-
-        # Session range threshold
-        sr = self._session_range_pct()
-        if sr < self.fast_mode_min_range_pct:
-            if _fm_debug: print(f"  FM_DBG bar={bar_count}: range={sr:.1f}% < {self.fast_mode_min_range_pct}%", flush=True)
-            return None
-
-        # Need enough bars for volume comparison + green bar check
-        if bar_count < max(self.fast_mode_min_bars, self.fast_mode_min_green_bars):
-            if _fm_debug: print(f"  FM_DBG bar={bar_count}: need {max(self.fast_mode_min_bars, self.fast_mode_min_green_bars)} bars", flush=True)
-            return None
-
-        # Consecutive green bars check
-        recent = list(self.bars_1m)[-self.fast_mode_min_green_bars:]
-        if not all(b["c"] > b["o"] for b in recent):
-            if _fm_debug:
-                greens = ["G" if b["c"] > b["o"] else "R" for b in recent]
-                print(f"  FM_DBG bar={bar_count}: green check FAIL {greens}", flush=True)
-            return None
-
-        # Relative volume surge: adaptive window (half recent vs half earlier)
-        half = max(2, bar_count // 2)
-        recent_vol = sum(b["v"] for b in list(self.bars_1m)[-half:])
-        earlier_vol = sum(b["v"] for b in list(self.bars_1m)[:-half])
-        if earlier_vol == 0:
-            earlier_vol = recent_vol  # avoid div/zero, pass the check
-        if recent_vol / earlier_vol < self.fast_mode_min_rel_vol:
-            if _fm_debug: print(f"  FM_DBG bar={bar_count}: vol ratio={recent_vol/earlier_vol:.2f} < {self.fast_mode_min_rel_vol}", flush=True)
-            return None
-
-        # Must be above VWAP
-        if vwap is None or c <= vwap:
-            if _fm_debug: print(f"  FM_DBG bar={bar_count}: c={c:.2f} <= vwap={vwap}", flush=True)
-            return None
-
-        # Must be near or above premarket high (if available)
-        if self.premarket_high and c < self.premarket_high * 0.99:
-            return None
-
-        # ---- All conditions met — fire anticipation entry ----
-        self._fast_mode_fired = True  # one-shot
-
-        entry = round(c * (1 + self.fast_mode_entry_buffer_pct / 100), 4)
-        avg_range = sum(b["h"] - b["l"] for b in recent) / len(recent)
-        stop = round(entry - (self.fast_mode_stop_mult * avg_range), 4)
-        r = round(entry - stop, 4)
-        if r <= 0:
-            return None
-
-        score = max(macd_score * 0.6, 4.0)
-        detail = (
-            f"fast_mode: gap={self.gap_pct:+.1f}% "
-            f"range={self._session_range_pct():.1f}% "
-            f"green={self.fast_mode_min_green_bars}"
-        )
-
-        self.armed = ArmedTrade(
-            trigger_high=entry,
-            stop_low=stop,
-            entry_price=entry,
-            r=r,
-            score=score,
-            score_detail=detail,
-            setup_type="fast_mode",
-        )
-
-        return (
-            f"ARMED entry={entry:.4f} stop={stop:.4f} R={r:.4f} "
-            f"score={score:.1f} macd_score={macd_score:.1f} "
-            f"tags={self._tags_str()} why={detail}"
-        )
 
     def _tags_str(self) -> str:
         if not self.last_patterns:
@@ -805,11 +666,6 @@ class MicroPullbackDetector:
         # --- Scoring ---
         score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
 
-        # Conviction floor (trap stock filter) — SKIP, don't reset state machine
-        blocked, block_reason = self._fails_conviction_floor(score)
-        if blocked:
-            return f"1M SKIP {block_reason}"
-
         # --- Exhaustion filters (dynamic: scale thresholds to session range) ---
         if self.exhaustion_enabled:
             sr = self._session_range_pct()
@@ -1021,11 +877,6 @@ class MicroPullbackDetector:
 
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
 
-            # Conviction floor (trap stock filter) — SKIP, don't reset state machine
-            blocked, block_reason = self._fails_conviction_floor(score)
-            if blocked:
-                return f"1M SKIP {block_reason}"
-
             # Exhaustion filters (dynamic: scale thresholds to session range)
             if self.exhaustion_enabled:
                 sr = self._session_range_pct()
@@ -1233,12 +1084,6 @@ class MicroPullbackDetector:
                 self._full_reset_1m()
             return f"1M RESET (extended: {self.consecutive_green_1m} green candles)"
 
-        # --- Fast Mode: anticipation entry for fast movers ---
-        if self.fast_mode_enabled and not self._fast_mode_fired and not self.armed:
-            fast_msg = self._check_fast_mode(c, vwap, macd_score)
-            if fast_msg:
-                return fast_msg
-
         # If already armed, keep waiting for trigger on live ticks
         if self.armed:
             return None
@@ -1255,70 +1100,11 @@ class MicroPullbackDetector:
         self.premarket_bull_flag_high = premarket_bull_flag_high
 
     def on_trade_price(self, price: float, is_premarket: bool = False) -> Optional[str]:
-        # 1) Check Gap and Go entry (premarket high break) - only during market hours
-        # During premarket, pm_high updates continuously so this would fire on every new high (false signals)
-        # _gap_and_go_entered is a one-shot flag: once the signal fires, it never fires again this session.
-        # Without this, _full_reset() clears .armed and the signal re-fires on every subsequent tick.
-        if not is_premarket and self.enable_gap_and_go and self.premarket_high is not None and price > 0 and not self._gap_and_go_entered:
-            # Use premarket bull flag high if available, otherwise premarket high
-            pm_trigger = self.premarket_bull_flag_high if self.premarket_bull_flag_high else self.premarket_high
-
-            # Check if price is breaking above premarket level
-            if price >= pm_trigger and not self.armed:
-                # Block if stock is in a downtrend — same rule as on_bar_close
-                current_patterns = set(self.last_patterns or [])
-                if "DANGER_TREND_DOWN" in current_patterns:
-                    return None
-                if "DANGER_TREND_DOWN_STRONG" in current_patterns:
-                    sr = self._session_range_pct()
-                    if sr < self.trend_strong_range_pct:
-                        return None
-
-                # Quick validation: need EMA and basic momentum
-                if self.ema is not None and price >= self.ema:
-                    # Calculate stop and R
-                    # For Gap and Go, stop is typically below premarket consolidation
-                    # Use a conservative stop: 2% below premarket high or $0.10, whichever is larger
-                    stop_offset = max(0.10, pm_trigger * 0.02)
-                    stop_low = pm_trigger - stop_offset
-                    r = pm_trigger - stop_low
-
-                    if r >= self.MIN_R:
-                        macd_score = self.macd_state.strength_score(price)
-                        score, detail = self._score_gap_and_go(pm_trigger, stop_low, macd_score)
-
-                        # Lower threshold for Gap and Go (it's a simpler, cleaner setup)
-                        if not self.use_scoring or score >= self.gap_and_go_min_score:
-                            # Arm Gap and Go setup
-                            self.armed = ArmedTrade(
-                                trigger_high=pm_trigger,
-                                stop_low=stop_low,
-                                entry_price=pm_trigger,
-                                r=r,
-                                score=score,
-                                score_detail=detail,
-                                setup_type="gap_and_go"
-                            )
-
-                            pm_type = "PM_BULL_FLAG" if self.premarket_bull_flag_high else "PM_HIGH"
-                            msg = (
-                                f"GAP_AND_GO ENTRY @ {pm_trigger:.4f} "
-                                f"(break {pm_type}) "
-                                f"stop={stop_low:.4f} R={r:.4f} "
-                                f"score={score:.1f} macd_score={macd_score:.1f} "
-                                f"tags={self._tags_str()} why={detail}"
-                            )
-                            # Set one-shot flag BEFORE reset so it survives _full_reset()
-                            self._gap_and_go_entered = True
-                            self._full_reset()
-                            return msg
-
-        # 2) Check existing armed trade (micro pullback or gap and go)
+        # Check armed trade trigger (micro pullback only — gap-and-go removed)
         if self.armed and price >= self.armed.trigger_high:
             ms = self.macd_state.strength_score(price)
-            setup_label = "GAP_AND_GO" if self.armed.setup_type == "gap_and_go" else "ENTRY SIGNAL"
             msg = (
-                f"{setup_label} @ {self.armed.entry_price:.4f} "
+                f"ENTRY SIGNAL @ {self.armed.entry_price:.4f} "
                 f"(break {self.armed.trigger_high:.4f}) "
                 f"stop={self.armed.stop_low:.4f} R={self.armed.r:.4f} "
                 f"score={self.armed.score:.1f} macd_score={ms:.1f} "
@@ -1328,51 +1114,3 @@ class MicroPullbackDetector:
             return msg
 
         return None
-
-    def _score_gap_and_go(self, entry: float, stop_low: float, macd_score: float) -> tuple[float, str]:
-        """
-        Score Gap and Go setup. Generally more permissive than micro pullback.
-        Returns (score, detail_str).
-        """
-        score = 0.0
-        parts: list[str] = []
-
-        # MACD strength (lighter weight for Gap and Go)
-        score += 0.4 * macd_score
-        parts.append(f"macd={macd_score:.1f}*0.4")
-
-        # Pattern tags
-        tags = set(self.last_patterns or [])
-
-        if "BULL_FLAG" in tags or "FLAT_TOP" in tags:
-            score += 4.0
-            parts.append("bull_struct=+4")
-
-        if "VOLUME_SURGE" in tags:
-            score += 2.5
-            parts.append("vol_surge=+2.5")
-
-        if "RED_TO_GREEN" in tags:
-            score += 2.0
-            parts.append("r2g=+2")
-
-        if "WHOLE_DOLLAR_NEARBY" in tags:
-            score += 1.0
-            parts.append("whole=+1")
-
-        # Penalties
-        if "LOW_LIQUIDITY" in tags:
-            score -= 2.5
-            parts.append("lowliq=-2.5")
-
-        # R quality
-        r = entry - stop_low
-        if r >= 0.10:
-            score += 1.5
-            parts.append("R>=0.10=+1.5")
-        elif r >= 0.05:
-            score += 0.8
-            parts.append("R>=0.05=+0.8")
-
-        detail = ";".join(parts)
-        return score, detail

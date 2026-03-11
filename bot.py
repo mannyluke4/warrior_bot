@@ -216,25 +216,6 @@ def seed_symbol_from_history(symbol: str, minutes: int = 60):
         pm_str = f"{pm_high:.4f}" if pm_high and pm_high > 0 else "N/A"
         print(f"🔥 Seeded {symbol}: {len(bars)} bars (since 4AM ET) EMA9={det.ema:.4f} PM_HIGH={pm_str}", flush=True)
 
-        # Mid-session restart guard: if we're already in market hours and the last
-        # seeded bar's close is >5% above PM_HIGH, the opening Gap and Go cross
-        # already happened — suppress future re-fires silently (chase guard would
-        # catch them too, but this avoids the ⛔ SKIP spam on every trade tick).
-        if (
-            pm_high and pm_high > 0
-            and bars
-            and bar_builder
-            and bar_builder.is_market_hours(end)
-        ):
-            last_close = float(bars[-1].close)
-            if last_close > pm_high * 1.05:
-                det._gap_and_go_entered = True
-                print(
-                    f"   ↳ Gap and Go suppressed for {symbol}: "
-                    f"price {last_close:.4f} is already >{(last_close/pm_high-1)*100:.1f}% above PM_HIGH={pm_high:.4f}",
-                    flush=True,
-                )
-
     except Exception as e:
         print(f"⚠️ Seed failed for {symbol}: {e}", flush=True)
 
@@ -275,9 +256,6 @@ def ensure_detector(symbol: str) -> MicroPullbackDetector:
                     zone_width_pct=float(os.getenv("WB_LEVEL_ZONE_WIDTH_PCT", "0.5")),
                     break_confirm_bars=int(os.getenv("WB_LEVEL_BREAK_CONFIRM_BARS", "2")),
                 )
-            # Pass gap_pct for conviction floor gate
-            if symbol in _stock_info_cache and hasattr(_stock_info_cache[symbol], 'gap_pct'):
-                det.gap_pct = _stock_info_cache[symbol].gap_pct
         finally:
             restore_env(saved_env)
         detectors[symbol] = det
@@ -607,8 +585,8 @@ def on_trade(symbol: str, price: float, size: int, ts: datetime):
             # Only log fast signals; only PRINT entry signals
             log_event("signal_fast", symbol, msg=msg, price=price, vwap=vwap, hod=hod, premarket_high=pm_high)
 
-            # Print and send to trade manager for both ENTRY SIGNAL and GAP_AND_GO
-            if msg.startswith("ENTRY SIGNAL") or msg.startswith("GAP_AND_GO"):
+            # Print and send to trade manager for ENTRY SIGNAL
+            if msg.startswith("ENTRY SIGNAL"):
                 entry_signal_hits += 1
                 print(f"[{now} ET] {symbol} | {msg} | VWAP={vwap_str} HOD={hod_str} PM_HIGH={pm_high_str}", flush=True)
                 if trade_manager:

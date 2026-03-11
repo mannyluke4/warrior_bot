@@ -475,19 +475,7 @@ class PaperTradeManager:
             tp = entry + (self.tp_r_mult * r)
             return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp)
 
-        # Pattern 2: GAP_AND_GO ENTRY @ X ... stop=Y R=Z
-        m = re.search(
-            r"GAP_AND_GO ENTRY\s*@\s*([0-9]*\.?[0-9]+).*?stop=([0-9]*\.?[0-9]+)\s+R=([0-9]*\.?[0-9]+)",
-            msg,
-        )
-        if m:
-            entry = float(m.group(1))
-            stop  = float(m.group(2))
-            r     = float(m.group(3))
-            tp = entry + (self.tp_r_mult * r)
-            return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp)
-
-        # Pattern 3: ENTRY SIGNAL @ X ... stop=Y R=Z (original micro pullback format)
+        # Pattern 2: ENTRY SIGNAL @ X ... stop=Y R=Z (micro pullback format)
         m = re.search(
             r"ENTRY SIGNAL\s*@\s*([0-9]*\.?[0-9]+).*?stop=([0-9]*\.?[0-9]+)\s+R=([0-9]*\.?[0-9]+)",
             msg,
