@@ -18,8 +18,6 @@ from micro_pullback import MicroPullbackDetector
 from trade_manager import PaperTradeManager
 from stock_filter import StockFilter
 from market_scanner import MarketScanner
-from l2_signals import L2SignalDetector
-from profile_manager import parse_symbol_profile, apply_profile_env, restore_env, auto_assign_profile
 
 load_dotenv()
 
@@ -34,11 +32,8 @@ POLL_SECONDS = 0.5
 trade_manager: PaperTradeManager | None = None
 bar_builder: TradeBarBuilder | None = None
 bar_builder_1m: TradeBarBuilder | None = None
-l2_detector: L2SignalDetector | None = None
-ibkr_feed = None  # IBKRFeed instance (lazy, only if WB_ENABLE_L2=1)
 _stock_info_cache: dict = {}  # StockInfo cache for gap_pct injection into detectors
 _session_filtered_out: set = set()  # symbols that failed session-start filter; never trade these
-symbol_profiles: dict[str, str] = {}  # symbol -> profile code (A/B/C/X)
 
 if not API_KEY or not API_SECRET:
     raise RuntimeError("Missing APCA_API_KEY_ID or APCA_API_SECRET_KEY in .env")
@@ -63,21 +58,18 @@ STALE_WARN_COOLDOWN_SEC = float(os.getenv("WB_STALE_WARN_COOLDOWN_SEC", "20"))  
 def load_watchlist():
     """
     Load watchlist from file (manual mode).
-    Supports SYMBOL:PROFILE_CODE format (e.g., APVO:A, ANPA:B).
-    Plain symbols default to Profile A.
-    Returns set of plain symbols; updates module-level symbol_profiles dict.
+    Reads plain SYMBOL lines (one per line). Returns set of symbols.
     """
-    global symbol_profiles
     try:
         with open(WATCHLIST_FILE, "r") as f:
             raw = [line.strip().upper() for line in f
                    if line.strip() and not line.strip().startswith("#")]
         result = set()
         for entry in raw:
-            sym, profile = parse_symbol_profile(entry)
+            # Strip any legacy ":PROFILE" suffix
+            sym = entry.split(":")[0].strip()
             if sym.isalpha() and 1 <= len(sym) <= 5:
                 result.add(sym)
-                symbol_profiles[sym] = profile
         return result
     except FileNotFoundError:
         return set()
@@ -243,23 +235,9 @@ state_lock = threading.RLock()
 
 def ensure_detector(symbol: str) -> MicroPullbackDetector:
     if symbol not in detectors:
-        profile = symbol_profiles.get(symbol, "A")
-        saved_env = apply_profile_env(profile)
-        try:
-            det = MicroPullbackDetector(ema_len=9, max_pullback_bars=3)
-            # LevelMap resistance tracking (entry gate)
-            if os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1":
-                from levels import LevelMap
-                det.level_map = LevelMap(
-                    enabled=True,
-                    min_fail_count=int(os.getenv("WB_LEVEL_MIN_FAILS", "2")),
-                    zone_width_pct=float(os.getenv("WB_LEVEL_ZONE_WIDTH_PCT", "0.5")),
-                    break_confirm_bars=int(os.getenv("WB_LEVEL_BREAK_CONFIRM_BARS", "2")),
-                )
-        finally:
-            restore_env(saved_env)
+        det = MicroPullbackDetector(ema_len=9, max_pullback_bars=3)
         detectors[symbol] = det
-        print(f"Detector created for {symbol} [Profile {profile}]: max_pullback_bars={det.max_pullback_bars}", flush=True)
+        print(f"Detector created for {symbol}: max_pullback_bars={det.max_pullback_bars}", flush=True)
     return detectors[symbol]
 
 def _now_utc_epoch() -> float:
@@ -433,27 +411,12 @@ def on_bar_close_1m(bar):
     vwap = bar_builder.get_vwap(symbol) if bar_builder else None
     pm_high = bar_builder.get_premarket_high(symbol) if bar_builder else None
 
-    # Seed LevelMap on first bar if not yet seeded
-    if det.level_map is not None and det.level_map._bar_count == 0:
-        det.level_map.seed_levels(pm_high=pm_high, current_price=bar.close)
-
-    # Get L2 state if available
-    l2_state = l2_detector.get_state(symbol) if l2_detector else None
-
     # PRIMARY: 1-minute setup detection
-    msg = det.on_bar_close_1m(bar, vwap=vwap, l2_state=l2_state)
+    msg = det.on_bar_close_1m(bar, vwap=vwap)
 
     # Block ARM signals for symbols that failed session-start filter
     if msg and msg.startswith("ARMED") and symbol in _session_filtered_out:
         msg = None
-
-    # L2 exit signal check (only when L2 data available and position open)
-    if (trade_manager
-        and l2_state is not None
-        and symbol in trade_manager.open):
-        l2_exit = det.check_l2_exit(l2_state)
-        if l2_exit:
-            trade_manager.on_exit_signal(symbol, l2_exit)
 
     # Count ARMED events
     if msg and msg.startswith("ARMED"):
@@ -721,19 +684,6 @@ def main():
         _stock_info_cache = {}
         filtered_watchlist = filtered_result
 
-    # Auto-assign profiles for dynamic scanner symbols (not manually tagged)
-    enable_dynamic_scanner = os.getenv("WB_ENABLE_DYNAMIC_SCANNER", "0") == "1"
-    if enable_dynamic_scanner and stock_info_cache:
-        now_et = datetime.now(ET)
-        for sym in filtered_watchlist:
-            if sym not in symbol_profiles:
-                info = stock_info_cache.get(sym)
-                float_m = info.float_shares if info else None
-                profile = auto_assign_profile(now_et, float_m)
-                symbol_profiles[sym] = profile
-        assigned = {s: symbol_profiles[s] for s in filtered_watchlist if s in symbol_profiles}
-        print(f"\n📊 Auto-assigned profiles: {assigned}", flush=True)
-
     global _session_filtered_out
     _session_filtered_out = raw_watchlist - filtered_watchlist
     if _session_filtered_out:
@@ -757,32 +707,6 @@ def main():
     trade_manager.set_stock_info_cache(stock_info_cache)
     print(f"✅ PaperTradeManager initialized (stock_info cached: {len(stock_info_cache)} symbols)", flush=True)
     log_event("paper_manager_initialized", None, stock_info_cached=len(stock_info_cache))
-
-    # --- L2 (Level 2 order book) ---
-    if os.getenv("WB_ENABLE_L2", "0") == "1":
-        l2_detector = L2SignalDetector()
-        print("✅ L2SignalDetector initialized", flush=True)
-
-        try:
-            from ibkr_feed import IBKRFeed
-            ibkr_feed = IBKRFeed()
-            if ibkr_feed.connect():
-                def _on_l2_update(symbol, snapshot):
-                    l2_detector.on_snapshot(snapshot)
-
-                for sym in sorted(filtered_watchlist):
-                    ibkr_feed.subscribe_l2(sym, _on_l2_update)
-
-                print(f"✅ IBKR L2 feed active for {len(filtered_watchlist)} symbols", flush=True)
-                log_event("ibkr_l2_started", None, symbols=len(filtered_watchlist))
-            else:
-                print("⚠️ IBKR connection failed — running without L2", flush=True)
-                ibkr_feed = None
-        except Exception as e:
-            print(f"⚠️ IBKR L2 setup failed: {e} — running without L2", flush=True)
-            ibkr_feed = None
-    else:
-        l2_detector = None
 
     # Reconcile a robust universe (filtered watchlist + any active symbols)
     def reconcile_universe():

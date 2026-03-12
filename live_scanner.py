@@ -3,8 +3,8 @@
 live_scanner.py — Real-time pre-market gap-up scanner using Databento EQUS.MINI.
 
 Streams all US equity pre-market quotes from 4:00 AM ET, identifies stocks that
-are gapping 10-40% with price $3-$10, classifies by float (Profile A/B), and
-writes qualifying candidates to watchlist.txt at 7:14 AM ET.
+are gapping 5%+ with price $2-$20 and float under 50M, and writes qualifying
+candidates to watchlist.txt continuously from 7:00 AM to 11:00 AM ET.
 
 Usage:
     python live_scanner.py             # Normal run
@@ -58,10 +58,9 @@ WINDOW_START_HOUR = 7
 WINDOW_START_MINUTE = 0
 WINDOW_END_HOUR = 11         # Extended to 11:00 AM ET
 WINDOW_END_MINUTE = 0
-MIN_FLOAT_A = 100_000       # 100K (Ross has no minimum; sane floor)
-MAX_FLOAT_A = 20_000_000    # 20M (Ross says "under 20M ideal")
-MAX_FLOAT_B = 50_000_000    # 50M (unchanged)
-MAX_SCANNER_SYMBOLS = 8     # Cap total symbols across all writes
+MIN_FLOAT = 100_000          # 100K (sane floor)
+MAX_FLOAT = 50_000_000       # 50M (single unified ceiling)
+MAX_SCANNER_SYMBOLS = 8      # Cap total symbols across all writes
 
 # Known floats (highest reliability — no API needed)
 KNOWN_FLOATS = {
@@ -144,17 +143,11 @@ def get_float(symbol: str, cache: dict) -> Optional[float]:
     return float_shares
 
 
-def classify_profile(float_shares: Optional[float]) -> str:
-    """A (<20M, >=100K) | B (20-50M) | X (>50M or unknown)."""
+def passes_float_filter(float_shares: Optional[float]) -> bool:
+    """True if float is between MIN_FLOAT and MAX_FLOAT (or unknown → reject)."""
     if float_shares is None:
-        return "X"
-    if float_shares < MIN_FLOAT_A:
-        return "X"           # < 100K — too thin
-    if float_shares <= MAX_FLOAT_A:
-        return "A"
-    if float_shares <= MAX_FLOAT_B:
-        return "B"
-    return "X"              # > 50M — skip
+        return False
+    return MIN_FLOAT <= float_shares <= MAX_FLOAT
 
 
 # ---------------------------------------------------------------------------
@@ -313,11 +306,10 @@ class LiveScanner:
 
     def _add_candidate(self, symbol: str, price: float, gap_pct: float,
                        ts_et: pd.Timestamp, prev_close: float):
-        """Look up float, classify, and add to candidates if profile A or B."""
+        """Look up float and add to candidates if it passes the unified filter."""
         float_shares = get_float(symbol, self.float_cache)
-        profile = classify_profile(float_shares)
 
-        if profile == "X":
+        if not passes_float_filter(float_shares):
             self._rejected.add(symbol)
             return
 
@@ -331,7 +323,6 @@ class LiveScanner:
             "gap_pct": round(gap_pct, 2),
             "float_shares": float_shares,
             "float_millions": float_m,
-            "profile": profile,
             "first_seen_et": first_seen,
         }
 
@@ -341,7 +332,7 @@ class LiveScanner:
         float_str = f"{float_m}M" if float_m else "N/A"
         self.log.info(
             f"CANDIDATE [{first_seen}] {symbol}: "
-            f"gap={gap_pct:+.1f}% ${price:.2f} float={float_str} → {profile}"
+            f"gap={gap_pct:+.1f}% ${price:.2f} float={float_str}"
         )
 
     # -----------------------------------------------------------------------
@@ -373,17 +364,11 @@ class LiveScanner:
             except Exception:
                 pass
 
-        # Separate A and B; sort each by gap% descending
-        a_list = sorted(
-            [c for c in candidates_copy.values() if c["profile"] == "A"],
+        # Sort all candidates by gap% descending
+        all_candidates = sorted(
+            candidates_copy.values(),
             key=lambda x: x["gap_pct"], reverse=True
         )
-        b_list = sorted(
-            [c for c in candidates_copy.values() if c["profile"] == "B"],
-            key=lambda x: x["gap_pct"], reverse=True
-        )
-
-        all_candidates = a_list + b_list
 
         # Apply MAX_SCANNER_SYMBOLS cap (existing symbols count toward the cap)
         all_final = []
@@ -399,12 +384,12 @@ class LiveScanner:
         # Print summary
         self.log.info(f"\n{'='*60}")
         self.log.info(f"  [{label.upper()} WATCHLIST] {datetime.now(ET).strftime('%H:%M')} ET")
-        self.log.info(f"  Profile A: {len(a_list)} | Profile B: {len(b_list)}")
+        self.log.info(f"  Candidates: {len(all_final)}")
         self.log.info(f"{'='*60}")
         for c in all_final:
             float_str = f"{c['float_millions']}M" if c['float_millions'] else "N/A"
             self.log.info(
-                f"  {c['symbol']:<6} :{c['profile']}  "
+                f"  {c['symbol']:<6}  "
                 f"gap={c['gap_pct']:+.1f}%  ${c['price']:.2f}  float={float_str}  "
                 f"first={c['first_seen_et']}"
             )
@@ -426,7 +411,7 @@ class LiveScanner:
                     f.write(f"{line}\n")
             # Write current candidates
             for c in all_final:
-                f.write(f"{c['symbol']}:{c['profile']}\n")
+                f.write(f"{c['symbol']}\n")
 
         self.log.info(f"  Wrote {len(all_final)} symbols to {WATCHLIST_FILE}")
 

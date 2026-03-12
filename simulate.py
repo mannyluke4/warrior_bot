@@ -35,8 +35,6 @@ from alpaca.data.timeframe import TimeFrame
 from bars import TradeBarBuilder, Bar
 from candles import is_bearish_engulfing
 from micro_pullback import MicroPullbackDetector
-from l2_signals import L2SignalDetector
-from l2_entry import L2EntryDetector
 from trade_manager import check_toxic_filters
 
 load_dotenv()
@@ -949,10 +947,6 @@ def run_simulation(
     gap_pct: float = 0.0,
     pm_volume: float = 0.0,
 ):
-    # l2-entry implies l2 data
-    if use_l2_entry:
-        use_l2 = True
-
     # Parse times
     date = datetime.strptime(date_str, "%Y-%m-%d")
 
@@ -968,14 +962,6 @@ def run_simulation(
     seed_start_utc = seed_start_et.astimezone(timezone.utc)
     sim_start_utc = sim_start_et.astimezone(timezone.utc)
     sim_end_utc = sim_end_et.astimezone(timezone.utc)
-
-    # Apply profile env overrides (before reading env vars; explicit args override below)
-    from profile_manager import apply_profile_env, restore_env as _restore_env
-    _saved_env = apply_profile_env(profile)
-
-    # Profile env may enable L2 (WB_ENABLE_L2=1) — respect it if --l2 not already set
-    if not use_l2 and os.getenv("WB_ENABLE_L2", "0") == "1":
-        use_l2 = True
 
     # Override env vars for this simulation run
     if min_score is not None:
@@ -1006,11 +992,6 @@ def run_simulation(
     _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
     _reentry_cooldown_bars = int(os.getenv("WB_REENTRY_COOLDOWN_BARS", "5"))
 
-    # Classifier settings (gated OFF by default)
-    _classifier_enabled = os.getenv("WB_CLASSIFIER_ENABLED", "0") == "1"
-    _classifier_reclass = os.getenv("WB_CLASSIFIER_RECLASS_ENABLED", "1") == "1"
-    _classifier_suppress = os.getenv("WB_CLASSIFIER_SUPPRESS_ENABLED", "0") == "1"
-
     # 3-tranche exit scaling
     _3tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
     _scale_t1 = float(os.getenv("WB_SCALE_T1", "0.40"))
@@ -1022,22 +1003,12 @@ def run_simulation(
     if risk_dollars is not None:
         _risk = risk_dollars
 
-    # V6: Dynamic position sizing (overrides --risk and WB_RISK_DOLLARS when enabled)
-    _dynamic_sizing = os.getenv("WB_DYNAMIC_SIZING_ENABLED", "0") == "1"
-    if _dynamic_sizing:
-        from trade_manager import calculate_dynamic_risk
-        _equity = float(os.getenv("WB_ACCOUNT_EQUITY", "30000"))
-        _dyn_result = calculate_dynamic_risk(_equity, profile)
-        _risk = _dyn_result['risk']
-        print(f"  V6 dynamic sizing: equity=${_equity:,.0f} profile={profile} → risk=${_risk}", flush=True)
-
     # Fetch all bars for the day
     print(f"\nFetching {symbol} bars for {date_str}...", flush=True)
     all_bars = fetch_bars(symbol, seed_start_utc, sim_end_utc)
 
     if not all_bars:
         print(f"  No bars returned for {symbol} on {date_str}. Skipping.", flush=True)
-        _restore_env(_saved_env)
         return []
 
     # Split into seed and sim bars
@@ -1061,7 +1032,6 @@ def run_simulation(
 
     if not sim_bars:
         print(f"  No sim bars in window {start_et_str}-{end_et_str}. Skipping.", flush=True)
-        _restore_env(_saved_env)
         return []
 
     # Fetch fundamentals for quality gate
@@ -1099,9 +1069,6 @@ def run_simulation(
         if verbose:
             print("  LevelMap: ENABLED", flush=True)
 
-    # L2 entry detector (separate strategy, only used with --l2-entry)
-    l2_entry_det = L2EntryDetector() if use_l2_entry else None
-
     # Bar builder for VWAP/HOD/PM_HIGH tracking (no callback needed — we call det directly)
     bar_builder = TradeBarBuilder(on_bar_close=lambda b: None, et_tz=ET, interval_seconds=60)
 
@@ -1136,40 +1103,6 @@ def run_simulation(
     # ── Behavior metrics (for --export-json study) ──
     _bm = BehaviorMetrics(start_et_str) if export_json else None
 
-    # ── Classifier (Phase 2) — gated off by default ──
-    _clf = None
-    _clf_result = None
-    _clf_1m_count = 0
-    _clf_reclassed_10 = False
-    _clf_reclassed_15 = False
-    if _classifier_enabled:
-        from classifier import StockClassifier
-        _clf = StockClassifier()
-        # Need behavior metrics for snapshot_at — enable _bm if not already
-        if _bm is None:
-            _bm = BehaviorMetrics(start_et_str)
-        if verbose:
-            print("  Classifier: ENABLED", flush=True)
-
-    # ── L2 data (optional) ──
-    l2_snapshots = []
-    l2_det = None
-    if use_l2:
-        try:
-            from databento_feed import fetch_l2_historical
-            l2_snapshots = fetch_l2_historical(
-                symbol, date_str,
-                start_et=start_et_str,
-                end_et=end_et_str,
-            )
-            if l2_snapshots:
-                l2_det = L2SignalDetector()
-                print(f"  L2 data loaded: {len(l2_snapshots)} snapshots", flush=True)
-            else:
-                print(f"  L2: no data available (running without L2)", flush=True)
-        except Exception as e:
-            print(f"  L2: failed to load ({e}) — running without L2", flush=True)
-
     # ── Seed phase ──
     for b, ts in seed_bars:
         o = float(b.open)
@@ -1178,8 +1111,6 @@ def run_simulation(
         c = float(b.close)
         v = float(b.volume)
         det.seed_bar_close(o, h, l, c, v)
-        if l2_entry_det:
-            l2_entry_det.seed_bar_close(o, h, l, c, v)
         bar_builder.seed_bar_close(symbol, o, h, l, c, v, ts)
 
     ema_after_seed = det.ema
@@ -1352,21 +1283,10 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                     else:
-                        # Classifier TW suppression (cascading profile has 0.0 = no suppression)
-                        _tw_clf_ok = True
-                        if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
-                            _tw_sup = _clf_result.exit_profile["suppress_tw_under_r"]
-                            if _tw_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
-                                _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                                if _cur_r > 0 and _cur_r < _tw_sup:
-                                    _tw_clf_ok = False
-                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                          f"{_cur_r:.1f}R < {_tw_sup}R) — trade stays open, trail/stop active", flush=True)
-                        if _tw_clf_ok:
-                            sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                            if verbose:
-                                print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
-                            return
+                        sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+                        if verbose:
+                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                        return
 
             # Bearish engulfing exit on 10s bars (with time + parabolic grace)
             if _exit_on_bear_engulf and prev is not None:
@@ -1391,20 +1311,9 @@ def run_simulation(
                                 if verbose:
                                     print(f"  [{time_str}] BE_SUPPRESSED ({suppress_reason}) @ {bar.close:.4f}", flush=True)
                             else:
-                                # Classifier BE suppression (cascading profile has 0.0 = no suppression)
-                                _be_clf_ok = True
-                                if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_be_under_r") is not None:
-                                    _be_sup = _clf_result.exit_profile["suppress_be_under_r"]
-                                    if _be_sup > 0 and sim_mgr.open_trade and sim_mgr.open_trade.r > 0:
-                                        _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                                        if _cur_r > 0 and _cur_r < _be_sup:
-                                            _be_clf_ok = False
-                                            print(f"  [{time_str}] BE_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                                  f"{_cur_r:.1f}R < {_be_sup}R) — trade stays open, trail/stop active", flush=True)
-                                if _be_clf_ok:
-                                    sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
-                                    if verbose:
-                                        print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
+                                sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
+                                if verbose:
+                                    print(f"  [{time_str}] BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
 
             # Parabolic exhaustion trim signal
             if _parabolic_det is not None and _parabolic_det.should_trim():
@@ -1425,50 +1334,11 @@ def run_simulation(
 
             vwap = bb_1m.get_vwap(symbol)
 
-            # Process L2 snapshots for this bar's time window (if available)
-            l2_state_bar = None
-            if l2_det and l2_snapshots:
-                bar_end = bar.start_utc + timedelta(minutes=1)
-                bar_l2 = [s for s in l2_snapshots if bar.start_utc <= s.timestamp < bar_end]
-                for snap in bar_l2:
-                    l2_det.on_snapshot(snap)
-                l2_state_bar = l2_det.get_state(symbol)
-
-            msg = det.on_bar_close_1m(bar, vwap=vwap, l2_state=l2_state_bar)
+            msg = det.on_bar_close_1m(bar, vwap=vwap)
 
             # Feed behavior metrics
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
-
-            # ── Classifier: run at 5m, reclassify at 10m/15m ──
-            nonlocal _clf_result, _clf_1m_count, _clf_reclassed_10, _clf_reclassed_15
-            if _clf is not None and _bm is not None:
-                _clf_1m_count += 1
-                if _clf_1m_count == 5 and _clf_result is None:
-                    snap = _bm.snapshot_at(5)
-                    _clf_result = _clf.classify(snap, minutes=5)
-                    if verbose or _clf_result.behavior_type == "avoid":
-                        print(f"  [{time_str}] CLASSIFIER: {symbol} → {_clf_result.behavior_type} "
-                              f"(conf={_clf_result.confidence:.2f}) — {_clf_result.reasoning}", flush=True)
-                elif _classifier_reclass and _clf_result is not None:
-                    if _clf_1m_count == 10 and not _clf_reclassed_10:
-                        snap = _bm.snapshot_at(10)
-                        new_r = _clf.reclassify(snap, _clf_result, minutes=10)
-                        if new_r.behavior_type != _clf_result.behavior_type:
-                            if verbose:
-                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
-                                      f"→ {new_r.behavior_type}", flush=True)
-                        _clf_result = new_r
-                        _clf_reclassed_10 = True
-                    elif _clf_1m_count == 15 and not _clf_reclassed_15:
-                        snap = _bm.snapshot_at(15)
-                        new_r = _clf.reclassify(snap, _clf_result, minutes=15)
-                        if new_r.behavior_type != _clf_result.behavior_type:
-                            if verbose:
-                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
-                                      f"→ {new_r.behavior_type}", flush=True)
-                        _clf_result = new_r
-                        _clf_reclassed_15 = True
 
             # Topping wicky exit after 1m bar close (with grace period after entry)
             if (sim_mgr.open_trade is not None
@@ -1485,30 +1355,9 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
                 if _tw_profit_ok:
-                    # Classifier TW suppression check (cascading profile has 0.0 = no suppression)
-                    _tw_clf_ok = True
-                    if _classifier_suppress and _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
-                        _tw_sup_r = _clf_result.exit_profile["suppress_tw_under_r"]
-                        if _tw_sup_r > 0 and sim_mgr.open_trade.r > 0:
-                            _cur_r = (bar.close - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                            if _cur_r > 0 and _cur_r < _tw_sup_r:
-                                _tw_clf_ok = False
-                                print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                      f"{_cur_r:.1f}R < {_tw_sup_r}R) — trade stays open, trail/stop active", flush=True)
-                    if _tw_clf_ok:
-                        sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
-                        if verbose:
-                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
-
-            # L2 exit signal
-            if (sim_mgr.open_trade is not None
-                and not sim_mgr.open_trade.closed
-                and l2_state_bar is not None):
-                l2_exit = det.check_l2_exit(l2_state_bar)
-                if l2_exit:
-                    sim_mgr.on_exit_signal(l2_exit, bar.close, time_str)
+                    sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
                     if verbose:
-                        print(f"  [{time_str}] {l2_exit.upper()}_EXIT @ {bar.close:.4f}", flush=True)
+                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
 
             # Decrement stop-hit re-entry cooldown
             sim_mgr.on_bar_close_1m_cooldown()
@@ -1680,49 +1529,11 @@ def run_simulation(
             bar_obj = Bar(symbol=symbol, start_utc=ts, open=o, high=h, low=l, close=c, volume=int(v))
             vwap = bar_builder.get_vwap(symbol)
 
-            # Process L2 snapshots for this bar's time window (if available)
-            l2_state = None
-            if l2_det and l2_snapshots:
-                bar_end = ts + timedelta(minutes=1)
-                bar_l2 = [s for s in l2_snapshots if ts <= s.timestamp < bar_end]
-                for snap in bar_l2:
-                    l2_det.on_snapshot(snap)
-                l2_state = l2_det.get_state(symbol)
-
-            msg = det.on_bar_close_1m(bar_obj, vwap=vwap, l2_state=l2_state)
+            msg = det.on_bar_close_1m(bar_obj, vwap=vwap)
 
             # Feed behavior metrics
             if _bm is not None:
                 _bm.on_1m_bar(o, h, l, c, v, time_str, vwap)
-
-            # ── Classifier: run at 5m, reclassify at 10m/15m (bar mode) ──
-            if _clf is not None and _bm is not None:
-                _clf_1m_count += 1
-                if _clf_1m_count == 5 and _clf_result is None:
-                    snap = _bm.snapshot_at(5)
-                    _clf_result = _clf.classify(snap, minutes=5)
-                    if verbose or _clf_result.behavior_type == "avoid":
-                        print(f"  [{time_str}] CLASSIFIER: {symbol} → {_clf_result.behavior_type} "
-                              f"(conf={_clf_result.confidence:.2f}) — {_clf_result.reasoning}", flush=True)
-                elif _classifier_reclass and _clf_result is not None:
-                    if _clf_1m_count == 10 and not _clf_reclassed_10:
-                        snap = _bm.snapshot_at(10)
-                        new_r = _clf.reclassify(snap, _clf_result, minutes=10)
-                        if new_r.behavior_type != _clf_result.behavior_type:
-                            if verbose:
-                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
-                                      f"→ {new_r.behavior_type}", flush=True)
-                        _clf_result = new_r
-                        _clf_reclassed_10 = True
-                    elif _clf_1m_count == 15 and not _clf_reclassed_15:
-                        snap = _bm.snapshot_at(15)
-                        new_r = _clf.reclassify(snap, _clf_result, minutes=15)
-                        if new_r.behavior_type != _clf_result.behavior_type:
-                            if verbose:
-                                print(f"  [{time_str}] CLASSIFIER: reclassified {_clf_result.behavior_type} "
-                                      f"→ {new_r.behavior_type}", flush=True)
-                        _clf_result = new_r
-                        _clf_reclassed_15 = True
 
             # Decrement stop-hit re-entry cooldown
             sim_mgr.on_bar_close_1m_cooldown()
@@ -1742,120 +1553,64 @@ def run_simulation(
                         if verbose:
                             print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {c:.4f}", flush=True)
                 if _tw_profit_ok:
-                    # Classifier TW suppression
-                    _tw_clf_ok = True
-                    if _clf_result is not None and _clf_result.exit_profile.get("suppress_tw_under_r") is not None:
-                        _tw_sup_r = _clf_result.exit_profile["suppress_tw_under_r"]
-                        if _tw_sup_r > 0 and sim_mgr.open_trade.r > 0:
-                            _cur_r = (c - sim_mgr.open_trade.entry) / sim_mgr.open_trade.r
-                            if _cur_r < _tw_sup_r:
-                                _tw_clf_ok = False
-                                if verbose:
-                                    print(f"  [{time_str}] TW_SUPPRESSED (classifier:{_clf_result.behavior_type} "
-                                          f"{_cur_r:.1f}R < {_tw_sup_r}R) @ {c:.4f}", flush=True)
-                    if _tw_clf_ok:
-                        sim_mgr.on_exit_signal("topping_wicky", c, time_str)
-                        if verbose:
-                            print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
-
-            # L2 exit signal
-            if (sim_mgr.open_trade is not None
-                and not sim_mgr.open_trade.closed
-                and l2_state is not None):
-                l2_exit = det.check_l2_exit(l2_state)
-                if l2_exit:
-                    sim_mgr.on_exit_signal(l2_exit, c, time_str)
+                    sim_mgr.on_exit_signal("topping_wicky", c, time_str)
                     if verbose:
-                        print(f"  [{time_str}] {l2_exit.upper()}_EXIT @ {c:.4f}", flush=True)
-
-            # L2 entry detector (separate strategy)
-            l2e_msg = None
-            if l2_entry_det:
-                l2e_msg = l2_entry_det.on_bar_close(bar_obj, vwap=vwap, l2_state=l2_state)
+                        print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {c:.4f}", flush=True)
 
             if verbose:
                 if msg:
                     print(f"  [{time_str}] {msg}", flush=True)
-                if l2e_msg:
-                    print(f"  [{time_str}] {l2e_msg}", flush=True)
 
-            # Track armed count from whichever strategy is active
-            if l2_entry_det:
-                if l2e_msg and "L2E_ARMED" in l2e_msg:
-                    armed_count += 1
-                if l2_entry_det.armed is not None:
-                    setups_seen += 1
-            else:
-                if msg and "ARMED" in msg:
-                    armed_count += 1
-                if det.armed is not None or (msg and "ARMED" in msg):
-                    setups_seen += 1
+            # Track armed count
+            if msg and "ARMED" in msg:
+                armed_count += 1
+            if det.armed is not None or (msg and "ARMED" in msg):
+                setups_seen += 1
 
             # 3) Walk synthetic ticks for trigger/exit execution
             is_premarket = bar_builder.is_premarket(ts)
             ticks = synthetic_ticks(o, h, l, c)
             for tick in ticks:
-                # Check L2 entry trigger (separate strategy)
-                if l2_entry_det:
-                    l2e_armed_before = l2_entry_det.armed
-                    l2e_trigger = l2_entry_det.on_trade_price(tick)
-                    if l2e_trigger and l2e_armed_before:
+                # Standard micro pullback trigger
+                armed_before = det.armed
+                trigger_msg = det.on_trade_price(tick, is_premarket=is_premarket)
+                if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
+                    # V6.1: Toxic entry filters
+                    _toxic = check_toxic_filters(
+                        entry_price=armed_before.trigger_high,
+                        stop_price=armed_before.stop_low,
+                        gap_pct=gap_pct,
+                        pm_volume=pm_volume,
+                        candidates_count=candidates_count,
+                        month=date.month,
+                    )
+                    if _toxic['action'] == 'BLOCK':
+                        if verbose:
+                            print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    else:
+                        _saved_risk = None
+                        if _toxic['action'] == 'HALF_RISK':
+                            _saved_risk = sim_mgr.risk_dollars
+                            sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
+                            if verbose:
+                                print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
                         trade = sim_mgr.on_signal(
                             symbol=symbol,
-                            entry=l2e_armed_before.trigger_high,
-                            stop=l2e_armed_before.stop_low,
-                            r=l2e_armed_before.r,
-                            score=l2e_armed_before.score,
-                            detail=l2e_armed_before.score_detail,
+                            entry=armed_before.trigger_high,
+                            stop=armed_before.stop_low,
+                            r=armed_before.r,
+                            score=armed_before.score,
+                            detail=armed_before.score_detail,
                             time_str=time_str,
                         )
+                        if _saved_risk is not None:
+                            sim_mgr.risk_dollars = _saved_risk
                         if trade and verbose:
                             print(
-                                f"  [{time_str}] L2E_FILL: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
                                 f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
                                 flush=True,
                             )
-                else:
-                    # Standard micro pullback trigger
-                    armed_before = det.armed
-                    trigger_msg = det.on_trade_price(tick, is_premarket=is_premarket)
-                    if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
-                        # V6.1: Toxic entry filters
-                        _toxic = check_toxic_filters(
-                            entry_price=armed_before.trigger_high,
-                            stop_price=armed_before.stop_low,
-                            gap_pct=gap_pct,
-                            pm_volume=pm_volume,
-                            candidates_count=candidates_count,
-                            month=date.month,
-                        )
-                        if _toxic['action'] == 'BLOCK':
-                            if verbose:
-                                print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
-                        else:
-                            _saved_risk = None
-                            if _toxic['action'] == 'HALF_RISK':
-                                _saved_risk = sim_mgr.risk_dollars
-                                sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
-                                if verbose:
-                                    print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
-                            trade = sim_mgr.on_signal(
-                                symbol=symbol,
-                                entry=armed_before.trigger_high,
-                                stop=armed_before.stop_low,
-                                r=armed_before.r,
-                                score=armed_before.score,
-                                detail=armed_before.score_detail,
-                                time_str=time_str,
-                            )
-                            if _saved_risk is not None:
-                                sim_mgr.risk_dollars = _saved_risk
-                            if trade and verbose:
-                                print(
-                                    f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
-                                    flush=True,
-                                )
 
                 # Check stops/TP/runner
                 sim_mgr.on_tick(tick, time_str)
@@ -1869,9 +1624,7 @@ def run_simulation(
 
     # ── Report ──
     trades = sim_mgr.closed_trades
-    l2_info = f"L2={len(l2_snapshots)} snaps" if l2_snapshots else "L2=OFF"
-    if use_l2_entry:
-        l2_info += " [L2-ENTRY mode]"
+    l2_info = "L2=OFF"
     if use_ticks:
         l2_info += " [TICK mode]"
         report_vwap = bb_1m.get_vwap(symbol)
@@ -1911,17 +1664,6 @@ def run_simulation(
             "reentry_cooldown_bars": _reentry_cooldown_bars,
             "min_tags": int(os.getenv("WB_MIN_TAGS", "1")),
         }
-        # Include classifier output if available
-        if _clf_result is not None:
-            config["classifier"] = {
-                "behavior_type": _clf_result.behavior_type,
-                "confidence": _clf_result.confidence,
-                "reasoning": _clf_result.reasoning,
-                "classification_time_minutes": _clf_result.classification_time_minutes,
-                "exit_profile": _clf_result.exit_profile,
-            }
-            if _clf_result.previous_classifications:
-                config["classifier"]["reclassification_history"] = _clf_result.previous_classifications
         export_study_json(
             symbol=symbol,
             date_str=date_str,
@@ -1933,7 +1675,6 @@ def run_simulation(
             config=config,
         )
 
-    _restore_env(_saved_env)
     return trades
 
 
@@ -2056,15 +1797,11 @@ def main():
     parser.add_argument("--min-score", type=float, default=None, help="Override WB_MIN_SCORE")
     parser.add_argument("--slippage", type=float, default=0.02, help="Entry slippage in dollars (default 0.02)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Print all detector signals")
-    parser.add_argument("--l2", action="store_true", help="Enable Level 2 order book data (requires Databento)")
-    parser.add_argument("--l2-entry", action="store_true", help="Use L2-driven entry strategy instead of micro pullback")
     parser.add_argument("--no-fundamentals", action="store_true", help="Skip fetching fundamental data (faster batch runs)")
     parser.add_argument("--ticks", action="store_true", help="Use tick-level data for bar construction (matches live bot behavior)")
     parser.add_argument("--feed", choices=["alpaca", "databento"], default="alpaca",
                         help="Data source for tick data (default: alpaca). Use 'databento' for high-fidelity trade data.")
     parser.add_argument("--export-json", action="store_true", help="Export behavioral study JSON to study_data/")
-    parser.add_argument("--profile", default="A",
-                        help="Stock profile: A (micro-float runner), B (mid-float L2), C (fast mover), X (conservative). Default: A")
     parser.add_argument("--candidates", type=int, default=0, help="Total scanner candidates for this day (toxic filter 1)")
     parser.add_argument("--gap", type=float, default=0.0, help="Pre-market gap %% (toxic filter 2)")
     parser.add_argument("--pmvol", type=float, default=0.0, help="Pre-market volume in shares (toxic filter 2)")
@@ -2121,13 +1858,10 @@ def main():
             min_score=args.min_score,
             slippage=args.slippage,
             verbose=args.verbose,
-            use_l2=args.l2,
-            use_l2_entry=args.l2_entry,
             no_fundamentals=args.no_fundamentals,
             use_ticks=args.ticks,
             feed=args.feed,
             export_json=args.export_json,
-            profile=args.profile,
             candidates_count=args.candidates,
             gap_pct=args.gap,
             pm_volume=args.pmvol,
