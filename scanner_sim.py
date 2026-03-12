@@ -249,7 +249,7 @@ def fetch_premarket_bars(symbols: list[str], date_str: str) -> dict[str, list]:
 
 
 def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
-    """Find stocks gapping up >= 10% with price $2-$20."""
+    """Find stocks gapping up >= 5% with price $2-$20."""
     candidates = []
     for sym, bars in pm_bars.items():
         if sym not in prev_close:
@@ -303,6 +303,58 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
     return candidates
 
 
+def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> list[dict]:
+    """Find stocks that gap at open but had zero pre-market bars on Alpaca.
+
+    Fetches the first 5 minutes of regular-hours bars (9:30-9:35 AM ET) for
+    symbols that have a prev_close but were NOT already found in pre-market.
+    """
+    check_symbols = list(set(prev_close.keys()) - existing_symbols)
+    if not check_symbols:
+        return []
+
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    rth_start = ET.localize(datetime.combine(date.date(), datetime.min.time().replace(hour=9, minute=30)))
+    rth_end = ET.localize(datetime.combine(date.date(), datetime.min.time().replace(hour=9, minute=35)))
+
+    late_movers = []
+    chunk_size = 1000
+    for i in range(0, len(check_symbols), chunk_size):
+        chunk = check_symbols[i:i + chunk_size]
+        try:
+            request = StockBarsRequest(
+                symbol_or_symbols=chunk,
+                timeframe=TimeFrame.Minute,
+                start=rth_start,
+                end=rth_end,
+            )
+            bars = hist_client.get_stock_bars(request)
+            for sym, bar_list in bars.data.items():
+                if not bar_list:
+                    continue
+                pc = prev_close.get(sym)
+                if not pc or pc <= 0:
+                    continue
+                open_price = bar_list[0].open
+                gap_pct = (open_price - pc) / pc * 100
+                if gap_pct < 5 or open_price < 2.0 or open_price > 20.0:
+                    continue
+                late_movers.append({
+                    "symbol": sym,
+                    "prev_close": round(pc, 4),
+                    "pm_price": round(open_price, 4),
+                    "gap_pct": round(gap_pct, 2),
+                    "pm_volume": sum(b.volume for b in bar_list if b.volume),
+                    "first_seen_et": "09:30",
+                    "sim_start": "09:30",
+                })
+        except Exception as e:
+            print(f"  [late_movers chunk {i}] Error: {e}")
+
+    late_movers.sort(key=lambda x: x["gap_pct"], reverse=True)
+    return late_movers
+
+
 def run_scanner(date_str: str):
     print(f"\n{'=' * 60}")
     print(f"  SCANNER SIMULATOR — {date_str}")
@@ -324,9 +376,23 @@ def run_scanner(date_str: str):
     print(f"         {len(pm_bars)} symbols with PM activity")
 
     # Step 4: Compute gap candidates
-    print("  [4/5] Computing gap candidates (>=10%, $2-$20)...")
+    print("  [4/5] Computing gap candidates (>=5%, $2-$20)...")
     candidates = compute_gap_candidates(prev_close, pm_bars)
     print(f"         {len(candidates)} raw candidates")
+
+    # Step 4b: Check for late movers (gap-at-open, no PM bars)
+    print(f"  [4b/5] Checking for late movers (gap-at-open, no PM bars)...")
+    existing_pm_symbols = {c["symbol"] for c in candidates}
+    late_movers = find_late_movers(prev_close, existing_pm_symbols, date_str)
+    print(f"         {len(late_movers)} late movers found")
+    if late_movers:
+        for lm in late_movers[:5]:  # Show first 5
+            print(f"         LATE: {lm['symbol']} gap={lm['gap_pct']:+.1f}% ${lm['pm_price']:.2f}")
+        if len(late_movers) > 5:
+            print(f"         ... and {len(late_movers) - 5} more")
+    candidates.extend(late_movers)
+    # Re-sort all candidates by gap% descending
+    candidates.sort(key=lambda x: x["gap_pct"], reverse=True)
 
     # Step 5: Look up float and classify
     print("  [5/5] Looking up float (known → cache → FMP → yfinance)...")
