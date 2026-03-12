@@ -324,6 +324,9 @@ class PaperTradeManager:
         self.warmup_size_pct = float(os.getenv("WB_WARMUP_SIZE_PCT", "25"))
         self.warmup_size_threshold = float(os.getenv("WB_WARMUP_SIZE_THRESHOLD", "500"))
 
+        # Callback for quality gate trade-close notification (set by caller)
+        self.on_trade_close_callback = None  # fn(symbol: str, pnl: float)
+
         # Daily tracking state (reset each trading day)
         self._daily_pnl: float = 0.0
         self._daily_peak_pnl: float = 0.0
@@ -1738,6 +1741,12 @@ class PaperTradeManager:
                 if t and t.exit_filled_qty > 0 and t.exit_filled_cost > 0:
                     realized_pnl = t.exit_filled_cost - (t.entry * t.exit_filled_qty)
                     self._record_trade_pnl(realized_pnl)
+                    # Notify quality gate of trade result
+                    if self.on_trade_close_callback is not None:
+                        try:
+                            self.on_trade_close_callback(symbol, realized_pnl)
+                        except Exception:
+                            pass
 
                 with self._lock:
                     self.open.pop(symbol, None)

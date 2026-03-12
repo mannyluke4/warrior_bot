@@ -262,7 +262,7 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
         pm_price = bars[-1].close
         gap_pct = (pm_price - pc) / pc * 100
 
-        if gap_pct < 10:
+        if gap_pct < 5:
             continue
         if pm_price < 2.0 or pm_price > 20.0:
             continue

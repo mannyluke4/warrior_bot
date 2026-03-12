@@ -166,6 +166,7 @@ class SimTradeManager:
         self.open_trade: Optional[SimTrade] = None
         self.closed_trades: list[SimTrade] = []
         self.signals_received: int = 0
+        self.on_trade_close = None  # callback(SimTrade) — set by caller for quality gate integration
 
         # Per-symbol re-entry cooldown tracking
         self._symbol_entry_count: dict[str, int] = {}
@@ -448,6 +449,9 @@ class SimTradeManager:
         if self.reentry_cooldown_bars > 0 and t.core_exit_reason in ("stop_hit",):
             self._stop_hit_cooldown[t.symbol] = self.reentry_cooldown_bars
         self.open_trade = None
+        # Notify quality gate of trade result
+        if self.on_trade_close is not None:
+            self.on_trade_close(t)
 
 
 # ─────────────────────────────────────────────
@@ -1050,6 +1054,7 @@ def run_simulation(
 
     # Create components
     det = MicroPullbackDetector()
+    det.symbol = symbol
 
     # Pass gap_pct for conviction floor gate
     if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
@@ -1099,6 +1104,9 @@ def run_simulation(
         t2_stop_lock_r=_t2_stop_lock_r,
         reentry_cooldown_bars=_reentry_cooldown_bars,
     )
+
+    # Wire up quality gate trade-close callback
+    sim_mgr.on_trade_close = lambda t: det.record_trade_result(t.pnl())
 
     # ── Behavior metrics (for --export-json study) ──
     _bm = BehaviorMetrics(start_et_str) if export_json else None
@@ -1441,11 +1449,19 @@ def run_simulation(
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
                     else:
                         _saved_risk = None
-                        if _toxic['action'] == 'HALF_RISK':
+                        _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
+                        _effective_mult = _toxic.get('multiplier', 1.0) if _toxic['action'] == 'HALF_RISK' else 1.0
+                        _effective_mult *= _qg_size_mult
+                        if _effective_mult < 1.0:
                             _saved_risk = sim_mgr.risk_dollars
-                            sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
+                            sim_mgr.risk_dollars = _saved_risk * _effective_mult
                             if verbose:
-                                print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
+                                parts = []
+                                if _toxic['action'] == 'HALF_RISK':
+                                    parts.append(f"toxic={_toxic['multiplier']:.0%}")
+                                if _qg_size_mult < 1.0:
+                                    parts.append(f"qg_price={_qg_size_mult:.0%}")
+                                print(f"  [{time_str}] SIZE_REDUCE {symbol}: {'+'.join(parts)} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
                         trade = sim_mgr.on_signal(
                             symbol=symbol,
                             entry=armed_before.trigger_high,
@@ -1589,11 +1605,19 @@ def run_simulation(
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
                     else:
                         _saved_risk = None
-                        if _toxic['action'] == 'HALF_RISK':
+                        _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
+                        _effective_mult = _toxic.get('multiplier', 1.0) if _toxic['action'] == 'HALF_RISK' else 1.0
+                        _effective_mult *= _qg_size_mult
+                        if _effective_mult < 1.0:
                             _saved_risk = sim_mgr.risk_dollars
-                            sim_mgr.risk_dollars = _saved_risk * _toxic['multiplier']
+                            sim_mgr.risk_dollars = _saved_risk * _effective_mult
                             if verbose:
-                                print(f"  [{time_str}] TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
+                                parts = []
+                                if _toxic['action'] == 'HALF_RISK':
+                                    parts.append(f"toxic={_toxic['multiplier']:.0%}")
+                                if _qg_size_mult < 1.0:
+                                    parts.append(f"qg_price={_qg_size_mult:.0%}")
+                                print(f"  [{time_str}] SIZE_REDUCE {symbol}: {'+'.join(parts)} (risk ${sim_mgr.risk_dollars:.0f})", flush=True)
                         trade = sim_mgr.on_signal(
                             symbol=symbol,
                             entry=armed_before.trigger_high,

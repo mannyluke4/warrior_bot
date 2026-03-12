@@ -32,6 +32,7 @@ class ArmedTrade:
     score: float = 0.0
     score_detail: str = ""
     setup_type: str = "micro_pullback"
+    size_mult: float = 1.0
 
 
 class MicroPullbackDetector:
@@ -135,6 +136,27 @@ class MicroPullbackDetector:
         # --- Warmup gate (block ARMs until N bars of history accumulated) ---
         self.warmup_bars = int(os.getenv("WB_WARMUP_BARS", "5"))
 
+        # --- Quality Gate (Ross-aligned setup filtering) ---
+        self.quality_gate_enabled = os.getenv("WB_QUALITY_GATE_ENABLED", "0") == "1"
+        self.max_pullback_retrace_pct = float(os.getenv("WB_MAX_PULLBACK_RETRACE_PCT", "65"))
+        self.max_pb_vol_ratio = float(os.getenv("WB_MAX_PB_VOL_RATIO", "70"))
+        self.max_pb_candles = int(os.getenv("WB_MAX_PB_CANDLES", "4"))
+        self.min_impulse_pct = float(os.getenv("WB_MIN_IMPULSE_PCT", "2.0"))
+        self.min_impulse_vol_mult = float(os.getenv("WB_MIN_IMPULSE_VOL_MULT", "1.5"))
+        self.max_symbol_losses = int(os.getenv("WB_MAX_SYMBOL_LOSSES", "1"))
+        self.max_symbol_trades = int(os.getenv("WB_MAX_SYMBOL_TRADES", "2"))
+        self.price_sweet_low = float(os.getenv("WB_PRICE_SWEET_LOW", "3.0"))
+        self.price_sweet_high = float(os.getenv("WB_PRICE_SWEET_HIGH", "15.0"))
+        self.no_reentry_enabled = os.getenv("WB_NO_REENTRY_ENABLED", "0") == "1"
+
+        # Quality gate tracking state
+        self._impulse_bar_1m: Optional[dict] = None
+        self._pullback_vols_1m: list[float] = []
+        self._session_losses: int = 0
+        self._session_trades: int = 0
+        self.symbol: str = ""
+        self.stock_float: Optional[float] = None  # millions, set by caller
+
         # --- Volatility floor (wider stops on volatile stocks) ---
         self.vol_floor_enabled = os.getenv("WB_VOL_FLOOR_ENABLED", "0") == "1"
         self.vol_floor_atr_mult = float(os.getenv("WB_VOL_FLOOR_ATR_MULT", "1.5"))
@@ -162,6 +184,8 @@ class MicroPullbackDetector:
         self.in_impulse_1m = False
         self.pullback_count_1m = 0
         self.pullback_low_1m = None
+        self._impulse_bar_1m = None
+        self._pullback_vols_1m = []
         self.armed = None
 
     def _is_stale_stock(self) -> tuple[bool, str]:
@@ -610,6 +634,13 @@ class MicroPullbackDetector:
         if len(self.bars_1m) < self.warmup_bars:
             return f"1M NO_ARM warmup: {len(self.bars_1m)}/{self.warmup_bars} bars"
 
+        # --- Gate 5 (no re-entry) check for direct mode ---
+        if self.no_reentry_enabled:
+            g5_pass, g5_msg = self._gate5_no_reentry()
+            print(f"  {g5_msg}", flush=True)
+            if not g5_pass:
+                return f"1M NO_ARM quality_gate_failed"
+
         # --- ARM ---
         self.armed = ArmedTrade(
             trigger_high=entry,
@@ -624,6 +655,223 @@ class MicroPullbackDetector:
             f"ARMED entry={entry:.4f} stop={stop_low:.4f} R={r:.4f} "
             f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}"
         )
+
+    # -----------------------------
+    # Quality Gate (Ross-aligned setup filtering)
+    # -----------------------------
+    def record_trade_result(self, pnl: float):
+        """Called by the engine after a trade closes. Updates session counters for Gate 5."""
+        self._session_trades += 1
+        if pnl < 0:
+            self._session_losses += 1
+
+    def _avg_bar_vol(self) -> float:
+        """Average volume across all 1-min bars in the session."""
+        if len(self.bars_1m) < 2:
+            return 0.0
+        return sum(b["v"] for b in self.bars_1m) / len(self.bars_1m)
+
+    def _gate1_clean_pullback(self) -> tuple[bool, str]:
+        """Gate 1: Clean pullback — retrace depth, volume ratio, candle count."""
+        sym = self.symbol or "?"
+        imp = self._impulse_bar_1m
+        if imp is None:
+            return True, f"QUALITY_GATE symbol={sym} gate=clean_pullback result=SKIP reason=no_impulse_data"
+
+        impulse_range = imp["h"] - imp["l"]
+        if impulse_range <= 0:
+            return True, f"QUALITY_GATE symbol={sym} gate=clean_pullback result=SKIP reason=zero_impulse_range"
+
+        # Retrace depth
+        pb_low = self.pullback_low_1m if self.pullback_low_1m is not None else imp["l"]
+        retrace_depth = imp["h"] - pb_low
+        retrace_pct = (retrace_depth / impulse_range) * 100
+
+        if retrace_pct > self.max_pullback_retrace_pct:
+            return False, (
+                f"QUALITY_GATE symbol={sym} gate=clean_pullback result=FAIL "
+                f"reason=retrace_{retrace_pct:.0f}pct_>_max_{self.max_pullback_retrace_pct:.0f}pct"
+            )
+
+        # Volume ratio: avg pullback vol vs impulse vol
+        if self._pullback_vols_1m and imp["v"] > 0:
+            avg_pb_vol = sum(self._pullback_vols_1m) / len(self._pullback_vols_1m)
+            vol_ratio_pct = (avg_pb_vol / imp["v"]) * 100
+            if vol_ratio_pct > self.max_pb_vol_ratio:
+                return False, (
+                    f"QUALITY_GATE symbol={sym} gate=clean_pullback result=FAIL "
+                    f"reason=pb_vol_{vol_ratio_pct:.0f}pct_>_max_{self.max_pb_vol_ratio:.0f}pct"
+                )
+        else:
+            vol_ratio_pct = 0.0
+
+        # Candle count
+        if self.pullback_count_1m > self.max_pb_candles:
+            return False, (
+                f"QUALITY_GATE symbol={sym} gate=clean_pullback result=FAIL "
+                f"reason=pb_candles_{self.pullback_count_1m}_>_max_{self.max_pb_candles}"
+            )
+
+        return True, (
+            f"QUALITY_GATE symbol={sym} gate=clean_pullback result=PASS "
+            f"retrace={retrace_pct:.0f}pct vol_ratio={vol_ratio_pct:.0f}pct candles={self.pullback_count_1m}"
+        )
+
+    def _gate2_impulse_strength(self) -> tuple[bool, str]:
+        """Gate 2: Impulse strength — price move % and volume vs average."""
+        sym = self.symbol or "?"
+        imp = self._impulse_bar_1m
+        if imp is None:
+            return True, f"QUALITY_GATE symbol={sym} gate=impulse_strength result=SKIP reason=no_impulse_data"
+
+        # Impulse move as % of price
+        impulse_move = imp["h"] - imp["l"]
+        if imp["l"] > 0:
+            impulse_pct = (impulse_move / imp["l"]) * 100
+        else:
+            impulse_pct = 0.0
+
+        if impulse_pct < self.min_impulse_pct:
+            return False, (
+                f"QUALITY_GATE symbol={sym} gate=impulse_strength result=FAIL "
+                f"reason=impulse_{impulse_pct:.1f}pct_<_min_{self.min_impulse_pct:.1f}pct"
+            )
+
+        # Volume: impulse bar vs avg bar volume
+        avg_vol = self._avg_bar_vol()
+        if avg_vol > 0:
+            vol_mult = imp["v"] / avg_vol
+            if vol_mult < self.min_impulse_vol_mult:
+                return False, (
+                    f"QUALITY_GATE symbol={sym} gate=impulse_strength result=FAIL "
+                    f"reason=impulse_vol_{vol_mult:.1f}x_<_min_{self.min_impulse_vol_mult:.1f}x"
+                )
+        else:
+            vol_mult = 0.0
+
+        return True, (
+            f"QUALITY_GATE symbol={sym} gate=impulse_strength result=PASS "
+            f"impulse={impulse_pct:.1f}pct vol={vol_mult:.1f}x_avg"
+        )
+
+    def _gate3_volume_dominance(self) -> tuple[bool, str]:
+        """Gate 3: Volume dominance — warn/log only, never blocks."""
+        sym = self.symbol or "?"
+        if len(self.bars_1m) < 5:
+            return True, f"QUALITY_GATE symbol={sym} gate=volume_dominance result=SKIP reason=insufficient_bars"
+
+        # Check if recent volume is strong relative to session average
+        recent_5_vol = sum(b["v"] for b in list(self.bars_1m)[-5:])
+        avg_5_vol = (sum(b["v"] for b in self.bars_1m) / len(self.bars_1m)) * 5
+        if avg_5_vol > 0:
+            vol_ratio = recent_5_vol / avg_5_vol
+        else:
+            vol_ratio = 0.0
+
+        if vol_ratio < 0.5:
+            return True, (
+                f"QUALITY_GATE symbol={sym} gate=volume_dominance result=WARN "
+                f"reason=fading_volume_{vol_ratio:.1f}x_recent_vs_avg"
+            )
+
+        return True, (
+            f"QUALITY_GATE symbol={sym} gate=volume_dominance result=PASS "
+            f"vol_ratio={vol_ratio:.1f}x_recent_vs_avg"
+        )
+
+    def _gate4_price_float(self, entry: float) -> tuple[bool, float, str]:
+        """Gate 4: Price/float sweet spot. Returns (pass, size_mult, log_msg)."""
+        sym = self.symbol or "?"
+        size_mult = 1.0
+
+        # Price check
+        if entry < 2.0 or entry > 20.0:
+            return False, 0.0, (
+                f"QUALITY_GATE symbol={sym} gate=price_float result=FAIL "
+                f"reason=price_{entry:.2f}_outside_2-20_range"
+            )
+
+        if entry < self.price_sweet_low or entry > self.price_sweet_high:
+            size_mult = 0.5
+            float_str = f" float={self.stock_float:.1f}M" if self.stock_float is not None else ""
+            return True, size_mult, (
+                f"QUALITY_GATE symbol={sym} gate=price_float result=REDUCE "
+                f"reason=price_{entry:.2f}_outside_{self.price_sweet_low}-{self.price_sweet_high}_sweet_spot "
+                f"size_mult=0.5{float_str}"
+            )
+
+        float_str = f" float={self.stock_float:.1f}M" if self.stock_float is not None else ""
+        return True, 1.0, (
+            f"QUALITY_GATE symbol={sym} gate=price_float result=PASS "
+            f"price={entry:.2f}{float_str}"
+        )
+
+    def _gate5_no_reentry(self) -> tuple[bool, str]:
+        """Gate 5: No re-entry after loss on this symbol. Runs independently of quality_gate_enabled."""
+        sym = self.symbol or "?"
+
+        if self._session_losses >= self.max_symbol_losses:
+            return False, (
+                f"QUALITY_GATE symbol={sym} gate=no_reentry result=FAIL "
+                f"reason=losses_{self._session_losses}_>=_max_{self.max_symbol_losses}"
+            )
+
+        if self._session_trades >= self.max_symbol_trades:
+            return False, (
+                f"QUALITY_GATE symbol={sym} gate=no_reentry result=FAIL "
+                f"reason=trades_{self._session_trades}_>=_max_{self.max_symbol_trades}"
+            )
+
+        return True, (
+            f"QUALITY_GATE symbol={sym} gate=no_reentry result=PASS "
+            f"losses={self._session_losses}/{self.max_symbol_losses} trades={self._session_trades}/{self.max_symbol_trades}"
+        )
+
+    def _check_quality_gate(self, entry: float) -> tuple[bool, float, list[str]]:
+        """
+        Run all quality gates on the current setup.
+        Returns (passed, size_mult, log_messages).
+        Called after confirmation candle, before ARM gates.
+        """
+        logs: list[str] = []
+        size_mult = 1.0
+        passed = True
+
+        # Gate 5 (no re-entry) always runs, regardless of quality_gate_enabled
+        if self.no_reentry_enabled:
+            g5_pass, g5_msg = self._gate5_no_reentry()
+            logs.append(g5_msg)
+            if not g5_pass:
+                return False, size_mult, logs
+
+        if not self.quality_gate_enabled:
+            return True, size_mult, logs
+
+        # Gate 1: Clean Pullback
+        g1_pass, g1_msg = self._gate1_clean_pullback()
+        logs.append(g1_msg)
+        if not g1_pass:
+            passed = False
+
+        # Gate 2: Impulse Strength
+        g2_pass, g2_msg = self._gate2_impulse_strength()
+        logs.append(g2_msg)
+        if not g2_pass:
+            passed = False
+
+        # Gate 3: Volume Dominance (warn only — never blocks)
+        _g3_pass, g3_msg = self._gate3_volume_dominance()
+        logs.append(g3_msg)
+
+        # Gate 4: Price/Float Sweet Spot
+        g4_pass, g4_mult, g4_msg = self._gate4_price_float(entry)
+        logs.append(g4_msg)
+        if not g4_pass:
+            passed = False
+        else:
+            size_mult = min(size_mult, g4_mult)
+
+        return passed, size_mult, logs
 
     # -----------------------------
     # PULLBACK ENTRY (classic 3-bar cycle)
@@ -656,6 +904,8 @@ class MicroPullbackDetector:
                 self.in_impulse_1m = True
                 self.pullback_count_1m = 0
                 self.pullback_low_1m = None
+                self._impulse_bar_1m = dict(b1)
+                self._pullback_vols_1m = []
                 return "1M IMPULSE detected"
             return None
 
@@ -669,6 +919,7 @@ class MicroPullbackDetector:
         if is_pullback_bar:
             self.pullback_count_1m += 1
             self.pullback_low_1m = b1["l"] if self.pullback_low_1m is None else min(self.pullback_low_1m, b1["l"])
+            self._pullback_vols_1m.append(b1["v"])
 
             if self.pullback_count_1m > self.max_pullback_bars:
                 self._full_reset_1m()
@@ -722,6 +973,14 @@ class MicroPullbackDetector:
             if r < self.MIN_R:
                 self._full_reset_1m()
                 return f"1M RESET (R too small: {r:.4f})"
+
+            # --- Quality Gate (runs between confirmation and ARM gates) ---
+            qg_passed, qg_size_mult, qg_logs = self._check_quality_gate(entry)
+            for qg_msg in qg_logs:
+                print(f"  {qg_msg}", flush=True)
+            if not qg_passed:
+                self._full_reset_1m()
+                return f"1M NO_ARM quality_gate_failed"
 
             # Stale stock filter
             stale, stale_reason = self._is_stale_stock()
@@ -787,11 +1046,13 @@ class MicroPullbackDetector:
                 r=r,
                 score=score,
                 score_detail=detail,
+                size_mult=qg_size_mult,
             )
             vf_tag = " [VOL_FLOOR]" if vol_adjusted else ""
+            qg_tag = f" [QG_SIZE={qg_size_mult:.0%}]" if qg_size_mult < 1.0 else ""
             return (
                 f"ARMED entry={entry:.4f} stop={stop_low:.4f} R={r:.4f} "
-                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}"
+                f"score={score:.1f} macd_score={macd_score:.1f} tags={self._tags_str()} why={detail}{vf_tag}{qg_tag}"
             )
 
         return None

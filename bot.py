@@ -236,6 +236,7 @@ state_lock = threading.RLock()
 def ensure_detector(symbol: str) -> MicroPullbackDetector:
     if symbol not in detectors:
         det = MicroPullbackDetector(ema_len=9, max_pullback_bars=3)
+        det.symbol = symbol
         detectors[symbol] = det
         print(f"Detector created for {symbol}: max_pullback_bars={det.max_pullback_bars}", flush=True)
     return detectors[symbol]
@@ -705,6 +706,13 @@ def main():
 
     trade_manager = PaperTradeManager()
     trade_manager.set_stock_info_cache(stock_info_cache)
+
+    # Wire up quality gate: notify detector of trade results for Gate 5 (no re-entry after loss)
+    def _on_trade_close(symbol: str, pnl: float):
+        if symbol in detectors:
+            detectors[symbol].record_trade_result(pnl)
+    trade_manager.on_trade_close_callback = _on_trade_close
+
     print(f"✅ PaperTradeManager initialized (stock_info cached: {len(stock_info_cache)} symbols)", flush=True)
     log_event("paper_manager_initialized", None, stock_info_cached=len(stock_info_cache))
 
