@@ -1,0 +1,588 @@
+#!/usr/bin/env python3
+"""
+YTD V2 A/B Backtest Runner — Top-5 Ranked + Trade Cap
+Realistic simulation: rank scanner candidates, sim only top 5/day,
+cap at 5 trades/day, daily loss limit, notional tracking.
+"""
+
+import subprocess
+import re
+import os
+import json
+import sys
+import math
+from datetime import datetime
+
+# ── Config ──────────────────────────────────────────────────────────────
+STARTING_EQUITY = 30_000
+RISK_PCT = 0.025  # 2.5% of equity per trade
+MAX_TRADES_PER_DAY = 5
+DAILY_LOSS_LIMIT = -1500  # Stop trading if daily P&L hits this
+MAX_NOTIONAL = 50_000
+TOP_N = 5  # Watchlist size
+
+# Scanner filters
+MIN_PM_VOLUME = 50_000
+MIN_GAP_PCT = 5
+MAX_GAP_PCT = 500
+MAX_FLOAT_MILLIONS = 20
+
+ENV_BASE = {
+    "WB_CLASSIFIER_ENABLED": "1",
+    "WB_CLASSIFIER_RECLASS_ENABLED": "1",
+    "WB_EXHAUSTION_ENABLED": "1",
+    "WB_WARMUP_BARS": "5",
+    "WB_CONTINUATION_HOLD_ENABLED": "1",
+    "WB_CONT_HOLD_5M_TREND_GUARD": "1",
+    "WB_CONT_HOLD_5M_VOL_EXIT_MULT": "2.0",
+    "WB_CONT_HOLD_5M_MIN_BARS": "2",
+    "WB_CONT_HOLD_MIN_VOL_DOM": "2.0",
+    "WB_CONT_HOLD_MIN_SCORE": "8.0",
+    "WB_CONT_HOLD_MAX_LOSS_R": "0.5",
+    "WB_CONT_HOLD_CUTOFF_HOUR": "10",
+    "WB_CONT_HOLD_CUTOFF_MIN": "30",
+    "WB_MAX_NOTIONAL": "50000",
+}
+
+DATES = [
+    # January
+    "2026-01-02", "2026-01-03", "2026-01-05", "2026-01-06", "2026-01-07",
+    "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14",
+    "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22",
+    "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29",
+    "2026-01-30",
+    # February
+    "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06",
+    "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13",
+    "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23",
+    "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27",
+    # March
+    "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06",
+    "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12",
+]
+
+STATE_FILE = "ytd_v2_backtest_state.json"
+SCANNER_DIR = "scanner_results"
+WORKDIR = "/Users/mannyluke/warrior_bot"
+
+
+# ── Candidate ranking ─────────────────────────────────────────────────
+
+def rank_score(candidate):
+    """Composite score: 70% volume + 20% gap + 10% float bonus."""
+    pm_vol = candidate.get("pm_volume", 0) or 0
+    gap_pct = candidate.get("gap_pct", 0) or 0
+    float_m = candidate.get("float_millions", 20) or 20
+
+    vol_score = math.log10(max(pm_vol, 1))
+    gap_score = min(gap_pct, 100) / 100
+    float_penalty = min(float_m, 20) / 20
+
+    return (0.7 * vol_score) + (0.2 * gap_score) + (0.1 * (1 - float_penalty))
+
+
+def load_and_rank(date_str: str) -> tuple:
+    """Load, filter, rank scanner candidates. Returns (top_n, total, passed_filter)."""
+    path = os.path.join(WORKDIR, SCANNER_DIR, f"{date_str}.json")
+    if not os.path.exists(path):
+        return [], 0, 0
+
+    with open(path) as f:
+        all_candidates = json.load(f)
+
+    total = len(all_candidates)
+
+    # Filter
+    filtered = []
+    for c in all_candidates:
+        pm_vol = c.get("pm_volume", 0) or 0
+        gap = c.get("gap_pct", 0) or 0
+        float_m = c.get("float_millions", None)
+        profile = c.get("profile", "")
+
+        if pm_vol < MIN_PM_VOLUME:
+            continue
+        if gap < MIN_GAP_PCT or gap > MAX_GAP_PCT:
+            continue
+        if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
+            continue
+        if profile == "X":
+            continue
+        filtered.append(c)
+
+    # Rank and take top N
+    filtered.sort(key=rank_score, reverse=True)
+    top = filtered[:TOP_N]
+
+    return top, total, len(filtered)
+
+
+# ── Simulation runner ──────────────────────────────────────────────────
+
+TRADE_PAT = re.compile(
+    r'^\s*(\d+)\s+'           # trade number
+    r'(\d{2}:\d{2})\s+'      # time
+    r'([\d.]+)\s+'           # entry
+    r'([\d.]+)\s+'           # stop
+    r'([\d.]+)\s+'           # R
+    r'([\d.]+)\s+'           # score
+    r'([\d.]+)\s+'           # exit
+    r'(\S+)\s+'              # reason
+    r'([+-]?\d+)\s+'         # P&L
+    r'([+-]?[\d.]+R)',       # R-mult
+    re.MULTILINE
+)
+
+
+def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float) -> list:
+    """Run simulate.py and parse trade results."""
+    env = {**os.environ, **ENV_BASE}
+    env["WB_MIN_ENTRY_SCORE"] = str(min_score)
+
+    cmd = [
+        "python", "simulate.py", symbol, date, sim_start, "12:00",
+        "--ticks", "--risk", str(risk), "--no-fundamentals",
+    ]
+    try:
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=300, env=env,
+            cwd=WORKDIR,
+        )
+        output = result.stdout + result.stderr
+    except subprocess.TimeoutExpired:
+        print(f"    TIMEOUT: {symbol} {date}", flush=True)
+        return []
+    except Exception as e:
+        print(f"    ERROR: {symbol} {date}: {e}", flush=True)
+        return []
+
+    trades = []
+    for m in TRADE_PAT.finditer(output):
+        entry_price = float(m.group(3))
+        stop_price = float(m.group(4))
+        r_val = float(m.group(5))
+        # Approximate notional: shares * entry_price
+        # shares ≈ risk / R (distance from entry to stop)
+        r_distance = abs(entry_price - stop_price)
+        if r_distance > 0:
+            shares = risk / r_distance
+        else:
+            shares = risk  # fallback
+        notional = shares * entry_price
+
+        trades.append({
+            "num": int(m.group(1)),
+            "time": m.group(2),
+            "entry": entry_price,
+            "stop": stop_price,
+            "r": r_val,
+            "score": float(m.group(6)),
+            "exit_price": float(m.group(7)),
+            "reason": m.group(8),
+            "pnl": int(float(m.group(9))),
+            "r_mult": m.group(10),
+            "symbol": symbol,
+            "date": date,
+            "notional": notional,
+        })
+
+    return trades
+
+
+# ── State management ───────────────────────────────────────────────────
+
+def load_state():
+    p = os.path.join(WORKDIR, STATE_FILE)
+    if os.path.exists(p):
+        with open(p) as f:
+            return json.load(f)
+    return None
+
+
+def save_state(state):
+    with open(os.path.join(WORKDIR, STATE_FILE), "w") as f:
+        json.dump(state, f, indent=2)
+
+
+# ── Main backtest loop ─────────────────────────────────────────────────
+
+def run_backtest():
+    state = load_state()
+    if state:
+        last_done = state["last_completed_date"]
+        eq_a = state["config_a"]["equity"]
+        eq_b = state["config_b"]["equity"]
+        trades_a = state["config_a"]["trades"]
+        trades_b = state["config_b"]["trades"]
+        daily_a = state["config_a"]["daily"]
+        daily_b = state["config_b"]["daily"]
+        max_eq_a = state["config_a"].get("max_equity", eq_a)
+        max_eq_b = state["config_b"].get("max_equity", eq_b)
+        max_dd_a = state["config_a"].get("max_drawdown", 0)
+        max_dd_b = state["config_b"].get("max_drawdown", 0)
+        missed_opps = state.get("missed_opportunities", [])
+        selection_log = state.get("selection_log", [])
+        start_idx = DATES.index(last_done) + 1 if last_done in DATES else 0
+        print(f"Resuming from {last_done} (A: ${eq_a:,.0f}, B: ${eq_b:,.0f})", flush=True)
+    else:
+        eq_a = STARTING_EQUITY
+        eq_b = STARTING_EQUITY
+        trades_a, trades_b = [], []
+        daily_a, daily_b = [], []
+        max_eq_a, max_eq_b = eq_a, eq_b
+        max_dd_a, max_dd_b = 0, 0
+        missed_opps = []
+        selection_log = []
+        start_idx = 0
+
+    total_dates = len(DATES)
+
+    for i in range(start_idx, total_dates):
+        date = DATES[i]
+        top5, total_cands, passed_filter = load_and_rank(date)
+
+        # Log selection
+        sel_entry = {
+            "date": date,
+            "total_candidates": total_cands,
+            "passed_filter": passed_filter,
+            "selected": [{"symbol": c["symbol"], "pm_volume": c.get("pm_volume", 0),
+                          "gap_pct": c.get("gap_pct", 0), "float_millions": c.get("float_millions", 0),
+                          "rank_score": round(rank_score(c), 3)} for c in top5],
+        }
+        selection_log.append(sel_entry)
+
+        if not top5:
+            daily_a.append({"date": date, "trades": 0, "wins": 0, "losses": 0,
+                           "day_pnl": 0, "equity": eq_a,
+                           "note": f"no candidates (total={total_cands}, passed={passed_filter})"})
+            daily_b.append({"date": date, "trades": 0, "wins": 0, "losses": 0,
+                           "day_pnl": 0, "equity": eq_b,
+                           "note": f"no candidates (total={total_cands}, passed={passed_filter})"})
+            print(f"[{i+1}/{total_dates}] {date}: {total_cands} scanned, {passed_filter} passed filter, 0 selected", flush=True)
+            save_state(_build_state(date, eq_a, eq_b, trades_a, trades_b, daily_a, daily_b,
+                                    max_eq_a, max_eq_b, max_dd_a, max_dd_b, missed_opps, selection_log))
+            continue
+
+        risk_a = max(int(eq_a * RISK_PCT), 50)  # Floor at $50 to avoid 0-risk trades
+        risk_b = max(int(eq_b * RISK_PCT), 50)
+
+        print(f"[{i+1}/{total_dates}] {date}: {total_cands} scanned → {passed_filter} passed → top {len(top5)} selected (risk A=${risk_a}, B=${risk_b})", flush=True)
+        for c in top5:
+            print(f"    #{top5.index(c)+1} {c['symbol']}: vol={c.get('pm_volume',0):,.0f}, gap={c.get('gap_pct',0):.0f}%, float={c.get('float_millions',0):.1f}M", flush=True)
+
+        # Run Config A
+        day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=8.0)
+        # Run Config B
+        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=0)
+
+        eq_a += day_pnl_a
+        eq_b += day_pnl_b
+
+        # Drawdown tracking
+        if eq_a > max_eq_a: max_eq_a = eq_a
+        dd_a = max_eq_a - eq_a
+        if dd_a > max_dd_a: max_dd_a = dd_a
+
+        if eq_b > max_eq_b: max_eq_b = eq_b
+        dd_b = max_eq_b - eq_b
+        if dd_b > max_dd_b: max_dd_b = dd_b
+
+        wins_a = sum(1 for t in day_trades_a if t["pnl"] > 0)
+        losses_a = sum(1 for t in day_trades_a if t["pnl"] < 0)
+        wins_b = sum(1 for t in day_trades_b if t["pnl"] > 0)
+        losses_b = sum(1 for t in day_trades_b if t["pnl"] < 0)
+
+        daily_a.append({"date": date, "trades": len(day_trades_a), "wins": wins_a,
+                        "losses": losses_a, "day_pnl": day_pnl_a, "equity": eq_a})
+        daily_b.append({"date": date, "trades": len(day_trades_b), "wins": wins_b,
+                        "losses": losses_b, "day_pnl": day_pnl_b, "equity": eq_b})
+        trades_a.extend(day_trades_a)
+        trades_b.extend(day_trades_b)
+
+        print(f"  A: {len(day_trades_a)} trades, ${day_pnl_a:+,}, eq=${eq_a:,.0f} | "
+              f"B: {len(day_trades_b)} trades, ${day_pnl_b:+,}, eq=${eq_b:,.0f}", flush=True)
+
+        save_state(_build_state(date, eq_a, eq_b, trades_a, trades_b, daily_a, daily_b,
+                                max_eq_a, max_eq_b, max_dd_a, max_dd_b, missed_opps, selection_log))
+
+    return {
+        "config_a": {"equity": eq_a, "trades": trades_a, "daily": daily_a,
+                      "max_drawdown": max_dd_a, "max_equity": max_eq_a},
+        "config_b": {"equity": eq_b, "trades": trades_b, "daily": daily_b,
+                      "max_drawdown": max_dd_b, "max_equity": max_eq_b},
+        "missed_opportunities": missed_opps,
+        "selection_log": selection_log,
+    }
+
+
+def _run_config_day(top5, date, risk, min_score):
+    """Run one config for one day with trade cap + daily loss limit + notional tracking."""
+    day_trades = []
+    day_pnl = 0
+    day_notional = 0
+
+    for c in top5:
+        if len(day_trades) >= MAX_TRADES_PER_DAY:
+            break
+        if day_pnl <= DAILY_LOSS_LIMIT:
+            break
+
+        sym = c["symbol"]
+        sim_start = c.get("sim_start", "07:00")
+        all_trades = run_sim(sym, date, sim_start, risk, min_score)
+
+        for t in all_trades:
+            if len(day_trades) >= MAX_TRADES_PER_DAY:
+                break
+            if day_pnl <= DAILY_LOSS_LIMIT:
+                break
+            # Notional check
+            if day_notional + t["notional"] > MAX_NOTIONAL:
+                continue
+
+            day_trades.append(t)
+            day_pnl += t["pnl"]
+            day_notional += t["notional"]
+
+    return day_trades, day_pnl
+
+
+def _build_state(date, eq_a, eq_b, trades_a, trades_b, daily_a, daily_b,
+                 max_eq_a, max_eq_b, max_dd_a, max_dd_b, missed_opps, selection_log):
+    return {
+        "last_completed_date": date,
+        "config_a": {"equity": eq_a, "trades": trades_a, "daily": daily_a,
+                     "max_equity": max_eq_a, "max_drawdown": max_dd_a},
+        "config_b": {"equity": eq_b, "trades": trades_b, "daily": daily_b,
+                     "max_equity": max_eq_b, "max_drawdown": max_dd_b},
+        "missed_opportunities": missed_opps,
+        "selection_log": selection_log,
+    }
+
+
+# ── Report generation ──────────────────────────────────────────────────
+
+def calc_stats(trades, equity, max_dd, max_eq):
+    active = [t for t in trades if t["pnl"] != 0]
+    wins = [t for t in active if t["pnl"] > 0]
+    losses = [t for t in active if t["pnl"] < 0]
+    total_pnl = equity - STARTING_EQUITY
+    avg_win = sum(t["pnl"] for t in wins) / len(wins) if wins else 0
+    avg_loss = sum(t["pnl"] for t in losses) / len(losses) if losses else 0
+    gross_wins = sum(t["pnl"] for t in wins)
+    gross_losses = abs(sum(t["pnl"] for t in losses))
+    pf = gross_wins / gross_losses if gross_losses > 0 else float("inf")
+    max_dd_pct = (max_dd / max_eq * 100) if max_eq > 0 else 0
+    largest_win = max((t["pnl"] for t in trades), default=0)
+    largest_loss = min((t["pnl"] for t in trades), default=0)
+    return {
+        "total_pnl": total_pnl, "total_return": total_pnl / STARTING_EQUITY * 100,
+        "total_trades": len(trades),
+        "win_rate_str": f"{len(wins)}/{len(active)} ({len(wins)/len(active)*100:.0f}%)" if active else "0/0",
+        "avg_win": avg_win, "avg_loss": avg_loss, "profit_factor": pf,
+        "max_dd": max_dd, "max_dd_pct": max_dd_pct,
+        "largest_win": largest_win, "largest_loss": largest_loss,
+        "avg_trades_per_day": len(trades) / len(DATES) if DATES else 0,
+    }
+
+
+def generate_report(results):
+    ca = results["config_a"]
+    cb = results["config_b"]
+    sa = calc_stats(ca["trades"], ca["equity"], ca["max_drawdown"], ca["max_equity"])
+    sb = calc_stats(cb["trades"], cb["equity"], cb["max_drawdown"], cb["max_equity"])
+    sel_log = results.get("selection_log", [])
+
+    L = []
+    L.append("# YTD V2 Backtest Results: Top-5 Ranked + Trade Cap")
+    L.append(f"## Generated {datetime.now().strftime('%Y-%m-%d')}")
+    L.append(f"\nPeriod: January 2 - March 12, 2026 ({len(DATES)} trading days)")
+    L.append(f"Starting Equity: ${STARTING_EQUITY:,}")
+    L.append(f"Risk: {RISK_PCT*100:.1f}% of equity (dynamic)")
+    L.append(f"Max trades/day: {MAX_TRADES_PER_DAY} | Daily loss limit: ${DAILY_LOSS_LIMIT:,} | Max notional: ${MAX_NOTIONAL:,}")
+    L.append(f"Scanner filter: PM vol > {MIN_PM_VOLUME:,}, gap {MIN_GAP_PCT}-{MAX_GAP_PCT}%, float < {MAX_FLOAT_MILLIONS}M")
+    L.append(f"Top {TOP_N} candidates per day by composite rank (70% volume + 20% gap + 10% float)")
+
+    # Section 1: V1 vs V2
+    L.append("\n---\n")
+    L.append("## Section 1: V1 vs V2 Comparison\n")
+    L.append("| Metric | V1 Config A | V2 Config A | V2 Config B |")
+    L.append("|--------|-------------|-------------|-------------|")
+    L.append(f"| Total Trades | 184 (11 days) | {sa['total_trades']} ({len(DATES)} days) | {sb['total_trades']} ({len(DATES)} days) |")
+    L.append(f"| Avg Trades/Day | 16.7 | {sa['avg_trades_per_day']:.1f} | {sb['avg_trades_per_day']:.1f} |")
+    L.append(f"| Final Equity | $7,755 | ${ca['equity']:,.0f} | ${cb['equity']:,.0f} |")
+    L.append(f"| Total P&L | -$22,245 | ${sa['total_pnl']:+,.0f} | ${sb['total_pnl']:+,.0f} |")
+    L.append(f"| Total Return | -74.2% | {sa['total_return']:+.1f}% | {sb['total_return']:+.1f}% |")
+
+    # Section 2: Summary
+    L.append("\n---\n")
+    L.append("## Section 2: Summary - Config A vs Config B\n")
+    L.append("| Metric | Config A (Gate=8) | Config B (No Gate) |")
+    L.append("|--------|--------------------|--------------------|")
+    L.append(f"| Final Equity | ${ca['equity']:,.0f} | ${cb['equity']:,.0f} |")
+    L.append(f"| Total P&L | ${sa['total_pnl']:+,.0f} | ${sb['total_pnl']:+,.0f} |")
+    L.append(f"| Total Return | {sa['total_return']:+.1f}% | {sb['total_return']:+.1f}% |")
+    L.append(f"| Total Trades | {sa['total_trades']} | {sb['total_trades']} |")
+    L.append(f"| Avg Trades/Day | {sa['avg_trades_per_day']:.1f} | {sb['avg_trades_per_day']:.1f} |")
+    L.append(f"| Win Rate | {sa['win_rate_str']} | {sb['win_rate_str']} |")
+    L.append(f"| Average Win | ${sa['avg_win']:+,.0f} | ${sb['avg_win']:+,.0f} |")
+    L.append(f"| Average Loss | ${sa['avg_loss']:+,.0f} | ${sb['avg_loss']:+,.0f} |")
+    L.append(f"| Profit Factor | {sa['profit_factor']:.2f} | {sb['profit_factor']:.2f} |")
+    L.append(f"| Max Drawdown $ | ${sa['max_dd']:,.0f} | ${sb['max_dd']:,.0f} |")
+    L.append(f"| Max Drawdown % | {sa['max_dd_pct']:.1f}% | {sb['max_dd_pct']:.1f}% |")
+    L.append(f"| Largest Win | ${sa['largest_win']:+,} | ${sb['largest_win']:+,} |")
+    L.append(f"| Largest Loss | ${sa['largest_loss']:+,} | ${sb['largest_loss']:+,} |")
+
+    # Section 3: Monthly
+    L.append("\n---\n")
+    L.append("## Section 3: Monthly Breakdown\n")
+    L.append("| Month | A P&L | A Trades | B P&L | B Trades |")
+    L.append("|-------|-------|----------|-------|----------|")
+    for pfx, name in [("2026-01", "Jan"), ("2026-02", "Feb"), ("2026-03", "Mar")]:
+        a_pnl = sum(d["day_pnl"] for d in ca["daily"] if d["date"].startswith(pfx))
+        a_tr = sum(d["trades"] for d in ca["daily"] if d["date"].startswith(pfx))
+        b_pnl = sum(d["day_pnl"] for d in cb["daily"] if d["date"].startswith(pfx))
+        b_tr = sum(d["trades"] for d in cb["daily"] if d["date"].startswith(pfx))
+        L.append(f"| {name} | ${a_pnl:+,} | {a_tr} | ${b_pnl:+,} | {b_tr} |")
+
+    # Section 4: Daily Detail
+    L.append("\n---\n")
+    L.append("## Section 4: Daily Detail\n")
+    L.append("| Date | Scanned | Passed | Top N | A Trades | A P&L | A Equity | B Trades | B P&L | B Equity |")
+    L.append("|------|---------|--------|-------|----------|-------|----------|----------|-------|----------|")
+    for da, db, sl in zip(ca["daily"], cb["daily"], sel_log):
+        note = f" {da.get('note','')}" if da.get("note") else ""
+        L.append(
+            f"| {da['date']} | {sl['total_candidates']} | {sl['passed_filter']} | {len(sl['selected'])} | "
+            f"{da['trades']} | ${da['day_pnl']:+,} | ${da['equity']:,.0f}{note} | "
+            f"{db['trades']} | ${db['day_pnl']:+,} | ${db['equity']:,.0f} |"
+        )
+
+    # Section 5: Trade Detail
+    L.append("\n---\n")
+    L.append("## Section 5: Trade-Level Detail\n")
+    L.append("### Config A (Gate=8)\n")
+    L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
+    L.append("|------|--------|-------|-------|------|--------|-----|")
+    for t in ca["trades"]:
+        L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
+
+    L.append("\n### Config B (No Gate)\n")
+    L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
+    L.append("|------|--------|-------|-------|------|--------|-----|")
+    for t in cb["trades"]:
+        L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
+
+    # Section 6: Score Gate Diff
+    L.append("\n---\n")
+    L.append("## Section 6: Score Gate Difference (Trades in B but not A)\n")
+    a_set = set((t["date"], t["symbol"], t["num"]) for t in ca["trades"])
+    diff = [t for t in cb["trades"] if (t["date"], t["symbol"], t["num"]) not in a_set]
+    if diff:
+        L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L (in B) |")
+        L.append("|------|--------|-------|-------|------|--------|------------|")
+        diff_pnl = 0
+        for t in diff:
+            L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
+            diff_pnl += t["pnl"]
+        L.append(f"\n**Total P&L of blocked trades**: ${diff_pnl:+,}")
+        L.append(f"**Score gate net impact**: ${-diff_pnl:+,} (positive = gate helped)")
+    else:
+        L.append("No trades differ between A and B in the top-5 selected candidates.")
+
+    # Section 7: Missed Opportunities (known winners)
+    L.append("\n---\n")
+    L.append("## Section 7: Missed Opportunities (Hindsight)\n")
+    L.append("### Known Winners - Did They Make the Top 5?\n")
+    known_winners = [
+        ("BNAI", "2026-01-14", "PM vol 5,686 — below 50K filter", "+$4,907"),
+        ("ROLR", "2026-01-14", "PM vol 10.6M — should be #1", "+$2,431"),
+        ("GWAV", "2026-01-16", "PM vol 1.5M — should make top 5", "+$6,735 (blocked by gate)"),
+        ("VERO", "2026-01-16", "NOT IN SCANNER", "+$8,360"),
+    ]
+    L.append("| Stock | Date | Scanner Status | Known P&L | In Top 5? |")
+    L.append("|-------|------|----------------|-----------|-----------|")
+    for sym, dt, note, pnl in known_winners:
+        # Check if in selection log
+        in_top5 = "N/A"
+        for sl in sel_log:
+            if sl["date"] == dt:
+                selected_syms = [s["symbol"] for s in sl["selected"]]
+                if sym in selected_syms:
+                    rank = selected_syms.index(sym) + 1
+                    in_top5 = f"YES (#{rank})"
+                else:
+                    in_top5 = "NO"
+                break
+        L.append(f"| {sym} | {dt} | {note} | {pnl} | {in_top5} |")
+
+    # Section 8: Daily Selection Log
+    L.append("\n---\n")
+    L.append("## Section 8: Daily Selection Log\n")
+    for sl in sel_log:
+        if sl["selected"]:
+            syms = ", ".join(f"{s['symbol']}(vol={s['pm_volume']:,.0f})" for s in sl["selected"])
+            L.append(f"**{sl['date']}**: {sl['total_candidates']} scanned → {sl['passed_filter']} passed → {syms}")
+        else:
+            L.append(f"**{sl['date']}**: {sl['total_candidates']} scanned → {sl['passed_filter']} passed filter → none selected")
+
+    # Section 9: Robustness
+    L.append("\n---\n")
+    L.append("## Section 9: Robustness Checks\n")
+    for label, trades, daily in [("Config A", ca["trades"], ca["daily"]), ("Config B", cb["trades"], cb["daily"])]:
+        active = [t for t in trades if t["pnl"] != 0]
+        sorted_wins = sorted([t["pnl"] for t in active if t["pnl"] > 0], reverse=True)
+        top3 = sum(sorted_wins[:3]) if len(sorted_wins) >= 3 else sum(sorted_wins)
+        total = sum(t["pnl"] for t in active)
+        wins = [t for t in active if t["pnl"] > 0]
+        losses_list = [t for t in active if t["pnl"] < 0]
+
+        max_streak = streak = 0
+        for d in daily:
+            if d["day_pnl"] < 0:
+                streak += 1
+                max_streak = max(max_streak, streak)
+            elif d["day_pnl"] > 0:
+                streak = 0
+
+        L.append(f"### {label}")
+        L.append(f"- P&L without top 3 winners: ${total - top3:+,}")
+        L.append(f"- Top 3 winners: ${top3:+,}")
+        L.append(f"- Longest consecutive losing streak (days): {max_streak}")
+        L.append(f"- Win/loss count (excl breakeven): {len(wins)}W / {len(losses_list)}L")
+        L.append("")
+
+    L.append("---\n")
+    L.append("*Generated from YTD V2 backtest | Top-5 ranked, 5 trade cap, daily loss limit | Tick mode, Alpaca feed, dynamic sizing | Branch: v6-dynamic-sizing*")
+
+    report_path = os.path.join(WORKDIR, "YTD_V2_BACKTEST_RESULTS.md")
+    with open(report_path, "w") as f:
+        f.write("\n".join(L))
+    print(f"\nReport saved: {report_path}")
+
+
+# ── Entry point ────────────────────────────────────────────────────────
+
+def main():
+    print("=" * 60)
+    print("YTD V2 A/B BACKTEST: Top-5 Ranked + Trade Cap")
+    print(f"Period: Jan 2 - Mar 12, 2026 ({len(DATES)} trading days)")
+    print(f"Starting equity: ${STARTING_EQUITY:,}")
+    print(f"Max {MAX_TRADES_PER_DAY} trades/day, daily loss limit ${DAILY_LOSS_LIMIT:,}")
+    print("=" * 60)
+
+    results = run_backtest()
+    generate_report(results)
+
+    pnl_a = results["config_a"]["equity"] - STARTING_EQUITY
+    pnl_b = results["config_b"]["equity"] - STARTING_EQUITY
+    print(f"\n{'=' * 60}")
+    print(f"Config A (Gate=8): ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%)")
+    print(f"Config B (No Gate): ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%)")
+    print(f"Gate impact: ${pnl_a - pnl_b:+,.0f}")
+    print(f"{'=' * 60}")
+
+
+if __name__ == "__main__":
+    main()
