@@ -706,6 +706,7 @@ def main():
 
     trade_manager = PaperTradeManager()
     trade_manager.set_stock_info_cache(stock_info_cache)
+    trade_manager._micro_detectors = detectors  # Share detector refs for continuation hold vol_dom
 
     # Wire up quality gate: notify detector of trade results for Gate 5 (no re-entry after loss)
     def _on_trade_close(symbol: str, pnl: float):

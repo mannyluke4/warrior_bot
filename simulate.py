@@ -1027,6 +1027,15 @@ def run_simulation(
     _t2_tp_r = float(os.getenv("WB_T2_TP_R", "2.0"))
     _t2_stop_lock_r = float(os.getenv("WB_T2_STOP_LOCK_R", "0.5"))
 
+    # Continuation hold — suppress TW/BE exits on high-conviction setups
+    _continuation_hold_enabled = os.getenv("WB_CONTINUATION_HOLD_ENABLED", "0") == "1"
+    _cont_hold_min_vol_dom = float(os.getenv("WB_CONT_HOLD_MIN_VOL_DOM", "2.0"))
+    _cont_hold_min_score = float(os.getenv("WB_CONT_HOLD_MIN_SCORE", "8.0"))
+    _cont_hold_max_loss_r = float(os.getenv("WB_CONT_HOLD_MAX_LOSS_R", "0.5"))
+    _cont_hold_cutoff_hour = int(os.getenv("WB_CONT_HOLD_CUTOFF_HOUR", "10"))
+    _cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
+    _cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
+
     if risk_dollars is not None:
         _risk = risk_dollars
 
@@ -1283,17 +1292,69 @@ def run_simulation(
 
             # Check parabolic suppression (new detector or legacy)
             # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
+            def _check_continuation_hold(bar, time_str: str) -> tuple[bool, str]:
+                """Suppress TW/BE exits when trade has high-conviction factors."""
+                t = sim_mgr.open_trade
+                if t is None or t.closed:
+                    return False, ""
+
+                # Track hold count to prevent infinite suppression
+                hold_count = getattr(t, '_cont_hold_count', 0)
+                if hold_count >= _cont_hold_max_holds:
+                    return False, ""
+
+                # Check 1: Volume dominance at current moment (live from detector bars)
+                if len(det.bars_1m) >= 5:
+                    recent_5_vol = sum(b["v"] for b in list(det.bars_1m)[-5:])
+                    avg_5_vol = (sum(b["v"] for b in det.bars_1m) / len(det.bars_1m)) * 5
+                    vol_dom = recent_5_vol / avg_5_vol if avg_5_vol > 0 else 0.0
+                else:
+                    vol_dom = 0.0
+
+                if vol_dom < _cont_hold_min_vol_dom:
+                    return False, ""
+
+                # Check 2: Original setup score
+                if t.score < _cont_hold_min_score:
+                    return False, ""
+
+                # Check 3: Unrealized P&L not too deep
+                unrealized_r = (bar.close - t.entry) / t.r if t.r > 0 else 0
+                if unrealized_r < -_cont_hold_max_loss_r:
+                    return False, ""
+
+                # Check 4: Time of day cutoff
+                try:
+                    hh, mm = int(time_str.split(":")[0]), int(time_str.split(":")[1])
+                    cutoff_total = _cont_hold_cutoff_hour * 60 + _cont_hold_cutoff_min
+                    now_total = hh * 60 + mm
+                    if now_total > cutoff_total:
+                        return False, ""
+                except Exception:
+                    return False, ""
+
+                # All checks passed — suppress this exit
+                t._cont_hold_count = hold_count + 1
+                return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
+
             def _should_suppress_pattern_exit() -> tuple[bool, str]:
+                # Continuation hold runs BEFORE signal mode check — it applies to
+                # all exit modes because its purpose is suppressing premature TW/BE
+                # exits on high-conviction setups regardless of mode
+                if _continuation_hold_enabled:
+                    suppress, reason = _check_continuation_hold(bar, time_str)
+                    if suppress:
+                        return True, reason
+
                 if _exit_mode == "signal":
-                    # Signal mode: no exit suppression (VERO's edge comes from exit + re-enter)
+                    # Signal mode: no other exit suppression (VERO's edge comes from exit + re-enter)
                     return False, ""
                 if _parabolic_det is not None:
                     if _parabolic_det.should_suppress_exit():
                         return True, "parabolic_regime"
-                    return False, ""
-                # Legacy fallback
-                if _in_parabolic_grace_sim(bar.close):
+                elif _in_parabolic_grace_sim(bar.close):
                     return True, "parabolic_grace"
+
                 return False, ""
 
             # Topping wicky exit on 10s bars (with grace period after entry)

@@ -124,6 +124,7 @@ class TradePlan:
     stop: float
     r: float
     take_profit: float
+    score: float = 0.0
 
 
 @dataclass
@@ -140,6 +141,7 @@ class OpenTrade:
     peak: float = 0.0
     runner_stop: float = 0.0
     highest_r: float = 0.0       # Peak R-multiple seen (for WB_TRAILING_STOP)
+    score: float = 0.0           # Setup quality score from ArmedTrade
     created_at_utc: datetime = None
     # T2 (3-tranche only; qty_t2=0 when disabled)
     qty_t2: int = 0
@@ -168,6 +170,7 @@ class PendingEntry:
     reprice_count: int = 0
     qty_t2: int = 0
     take_profit_t2: float = 0.0
+    score: float = 0.0
 
     # ✅ entry fill accounting (filled_qty is cumulative)
     filled_applied: int = 0
@@ -249,6 +252,16 @@ class PaperTradeManager:
         # Parabolic regime detector (replaces simple grace when enabled)
         self.parabolic_regime_enabled = os.getenv("WB_PARABOLIC_REGIME_ENABLED", "0") == "1"
         self._parabolic_detectors: Dict[str, object] = {}  # symbol -> ParabolicRegimeDetector
+
+        # Continuation hold — suppress TW/BE exits on high-conviction setups
+        self._continuation_hold_enabled = os.getenv("WB_CONTINUATION_HOLD_ENABLED", "0") == "1"
+        self._cont_hold_min_vol_dom = float(os.getenv("WB_CONT_HOLD_MIN_VOL_DOM", "2.0"))
+        self._cont_hold_min_score = float(os.getenv("WB_CONT_HOLD_MIN_SCORE", "8.0"))
+        self._cont_hold_max_loss_r = float(os.getenv("WB_CONT_HOLD_MAX_LOSS_R", "0.5"))
+        self._cont_hold_cutoff_hour = int(os.getenv("WB_CONT_HOLD_CUTOFF_HOUR", "10"))
+        self._cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
+        self._cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
+        self._micro_detectors: Dict[str, object] = {}  # symbol -> MicroPullbackDetector (set by bot.py)
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -514,7 +527,12 @@ class PaperTradeManager:
         stop  = float(m.group(2))
         r     = float(m.group(3))
         tp = entry + (self.tp_r_mult * r)
-        return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp)
+        # Extract score if present in the message
+        score = 0.0
+        sm = re.search(r"score=([0-9]*\.?[0-9]+)", msg)
+        if sm:
+            score = float(sm.group(1))
+        return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp, score=score)
 
     def size_qty(self, entry: float, r: float) -> int:
         if r <= 0 or r < self.min_r:
@@ -607,6 +625,7 @@ class PaperTradeManager:
                 tp_hit=False,
                 peak=entry,
                 runner_stop=stop,
+                score=float(getattr(p, 'score', 0.0)) if p else 0.0,
                 created_at_utc=datetime.now(timezone.utc),
             )
         else:
@@ -1075,6 +1094,7 @@ class PaperTradeManager:
                 reprice_count=0,
                 qty_t2=qty_t2,
                 take_profit_t2=take_profit_t2,
+                score=plan.score,
                 filled_applied=0,
             )
 
@@ -1184,6 +1204,7 @@ class PaperTradeManager:
                             tp_hit=False,
                             peak=p.entry,
                             runner_stop=p.stop,
+                            score=getattr(p, 'score', 0.0),
                             created_at_utc=datetime.now(timezone.utc),
                             qty_t2=qty_t2,
                             take_profit_t2=getattr(p, 'take_profit_t2', 0.0),
@@ -1412,6 +1433,7 @@ class PaperTradeManager:
                 cancel_requested=False,
                 last_limit=float(new_limit),
                 reprice_count=p.reprice_count + 1,
+                score=p.score,
                 filled_applied=0,
             )
 
@@ -2019,6 +2041,51 @@ class PaperTradeManager:
                 running_high = bh
         return new_high_count >= self.be_grace_min_new_highs
 
+    def _check_continuation_hold(self, symbol: str, price: float) -> tuple:
+        """Suppress TW/BE exits when high-conviction factors are present."""
+        if not self._continuation_hold_enabled:
+            return False, ""
+        t = self.open.get(symbol)
+        if not t:
+            return False, ""
+
+        hold_count = getattr(t, '_cont_hold_count', 0)
+        if hold_count >= self._cont_hold_max_holds:
+            return False, ""
+
+        # Volume dominance from detector's live 1m bars
+        vol_dom = 0.0
+        det = self._micro_detectors.get(symbol)
+        if det and hasattr(det, 'bars_1m') and len(det.bars_1m) >= 5:
+            recent_5_vol = sum(b["v"] for b in list(det.bars_1m)[-5:])
+            avg_5_vol = (sum(b["v"] for b in det.bars_1m) / len(det.bars_1m)) * 5
+            vol_dom = recent_5_vol / avg_5_vol if avg_5_vol > 0 else 0.0
+
+        if vol_dom < self._cont_hold_min_vol_dom:
+            return False, ""
+
+        if t.score < self._cont_hold_min_score:
+            return False, ""
+
+        # Unrealized P&L check
+        unrealized_r = (price - t.entry) / t.r if t.r > 0 else 0
+        if unrealized_r < -self._cont_hold_max_loss_r:
+            return False, ""
+
+        # Time of day cutoff
+        try:
+            import pytz
+            now_et = datetime.now(pytz.timezone("US/Eastern"))
+            cutoff_total = self._cont_hold_cutoff_hour * 60 + self._cont_hold_cutoff_min
+            now_total = now_et.hour * 60 + now_et.minute
+            if now_total > cutoff_total:
+                return False, ""
+        except Exception:
+            return False, ""
+
+        t._cont_hold_count = hold_count + 1
+        return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
+
     def on_bar_close(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
         with self._lock:
             prev = self.last_bar.get(symbol)
@@ -2065,6 +2132,15 @@ class PaperTradeManager:
             age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
             if age_sec < self.be_grace_sec:
                 return
+
+        # Continuation hold — suppress BE on high-conviction setups (runs in ALL exit modes)
+        suppress, reason = self._check_continuation_hold(symbol, c)
+        if suppress:
+            log_event("be_exit_suppressed_continuation_hold", symbol,
+                      entry=t.entry, r=t.r, reason=reason,
+                      price=float(self.last_price.get(symbol, 0)))
+            print(f"  BE_SUPPRESSED ({reason}) {symbol}", flush=True)
+            return
 
         # Parabolic regime detector (new) or legacy grace
         # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
@@ -2129,9 +2205,19 @@ class PaperTradeManager:
             log_event("exit_signal_ignored_pending_exit", symbol, signal=signal_name)
             return
 
-        # Suppress pattern exits (TW, L2) during parabolic regime — hard stops NEVER suppressed
-        # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
+        # Suppress pattern exits (TW, L2) — hard stops NEVER suppressed
         if signal_name in ("topping_wicky", "l2_bearish", "l2_ask_wall"):
+            # Continuation hold runs in ALL exit modes (suppress premature exits on high-conviction)
+            px_now = float(self.last_price.get(symbol, 0))
+            suppress, reason = self._check_continuation_hold(symbol, px_now)
+            if suppress:
+                log_event("pattern_exit_suppressed_continuation_hold", symbol,
+                          signal=signal_name, entry=t.entry, r=t.r,
+                          reason=reason, price=px_now)
+                print(f"  {signal_name.upper()}_SUPPRESSED ({reason}) {symbol}", flush=True)
+                return
+
+            # Parabolic regime suppression (not in signal mode — cascading re-entry IS the strategy)
             if self.exit_mode != "signal" and self.parabolic_regime_enabled:
                 det = self._parabolic_detectors.get(symbol)
                 if det and det.should_suppress_exit():
