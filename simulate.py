@@ -163,6 +163,11 @@ class SimTradeManager:
         if self.three_tranche_enabled and self.exit_mode == "signal":
             self.exit_mode = "classic"
 
+        # Account tracking for realistic backtesting
+        self.account_equity = float(os.getenv("WB_SIM_ACCOUNT_EQUITY", "0"))  # 0 = disabled
+        self.current_equity = self.account_equity  # tracks running balance
+        self.open_notional = 0.0  # notional value of open positions
+
         self.open_trade: Optional[SimTrade] = None
         self.closed_trades: list[SimTrade] = []
         self.signals_received: int = 0
@@ -218,6 +223,15 @@ class SimTradeManager:
         qty_risk = int(math.floor(self.risk_dollars / actual_r))
         qty_notional = int(math.floor(self.max_notional / max(fill_price, 0.01)))
         qty = min(qty_risk, qty_notional, self.max_shares)
+
+        # Buying power constraint (4x margin for PDT accounts)
+        if self.account_equity > 0:
+            available_bp = (self.current_equity * 4) - self.open_notional
+            if available_bp <= 0:
+                return None  # no buying power left
+            qty_bp = int(math.floor(available_bp / max(fill_price, 0.01)))
+            qty = min(qty, qty_bp)
+
         if qty <= 0:
             return None
 
@@ -254,6 +268,10 @@ class SimTradeManager:
             runner_stop=stop,
         )
         self.open_trade = t
+
+        # Track open notional for buying power
+        if self.account_equity > 0:
+            self.open_notional += qty * fill_price
 
         # Track re-entry count and start cooldown when cap is reached
         entry_count = self._symbol_entry_count.get(symbol, 0) + 1
@@ -445,6 +463,11 @@ class SimTradeManager:
     def _close(self, t: SimTrade):
         t.closed = True
         self.closed_trades.append(t)
+        # Release notional and update equity for buying power tracking
+        if self.account_equity > 0:
+            self.open_notional -= t.qty_total * t.entry  # release original notional
+            self.open_notional = max(0.0, self.open_notional)  # safety clamp
+            self.current_equity += t.pnl()  # adjust equity by P&L
         # If closed by stop_hit, start re-entry cooldown
         if self.reentry_cooldown_bars > 0 and t.core_exit_reason in ("stop_hit",):
             self._stop_hit_cooldown[t.symbol] = self.reentry_cooldown_bars
@@ -1678,6 +1701,11 @@ def run_simulation(
         cooldown_min=_cooldown_min,
     )
 
+    # Equity tracking report (machine-parseable for wrapper scripts)
+    if sim_mgr.account_equity > 0:
+        day_pnl = sum(t.pnl() for t in trades)
+        print(f"  EQUITY: ${sim_mgr.current_equity:,.2f} (day P&L: ${day_pnl:+,.0f}, open notional: ${sim_mgr.open_notional:,.0f})")
+
     # Export study JSON if requested
     if export_json and _bm is not None:
         config = {
@@ -1829,6 +1857,8 @@ def main():
     parser.add_argument("--candidates", type=int, default=0, help="Total scanner candidates for this day (toxic filter 1)")
     parser.add_argument("--gap", type=float, default=0.0, help="Pre-market gap %% (toxic filter 2)")
     parser.add_argument("--pmvol", type=float, default=0.0, help="Pre-market volume in shares (toxic filter 2)")
+    parser.add_argument("--equity", type=float, default=0,
+                        help="Starting account equity for buying power tracking (0=disabled)")
     args = parser.parse_args()
 
     # Parse positional args: symbols, date, optional start/end times
@@ -1859,6 +1889,10 @@ def main():
     if not symbols:
         print("Error: no symbols provided")
         sys.exit(1)
+
+    # Pass equity to env for buying power tracking
+    if args.equity > 0:
+        os.environ["WB_SIM_ACCOUNT_EQUITY"] = str(args.equity)
 
     # When --feed databento is used, force tick mode on
     if args.feed == "databento":
