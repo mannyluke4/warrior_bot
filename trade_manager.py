@@ -268,6 +268,7 @@ class PaperTradeManager:
         self._micro_detectors: Dict[str, object] = {}  # symbol -> MicroPullbackDetector (set by bot.py)
         self._last_1m_bar: Dict[str, dict] = {}  # symbol -> {o,h,l,c} for 1m BE detection
         self._completed_5m_bars: Dict[str, list] = {}  # {symbol: [bar_dict, ...]} for seeded activation
+        self._min_entry_score = float(os.getenv("WB_MIN_ENTRY_SCORE", "0"))
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -642,8 +643,9 @@ class PaperTradeManager:
                 qualifies, _ = self._check_continuation_hold(symbol, entry)
                 if qualifies:
                     completed = self._completed_5m_bars.get(symbol, [])
-                    if len(completed) >= self._cont_hold_5m_min_bars:
-                        recent = completed[-self._cont_hold_5m_min_bars:]
+                    session_bars = [b for b in completed if b.get("time", "00:00") >= "09:30"]
+                    if len(session_bars) >= self._cont_hold_5m_min_bars:
+                        recent = session_bars[-self._cont_hold_5m_min_bars:]
                         green_count = sum(1 for b in recent if b["c"] > b["o"])
                         if green_count >= self._cont_hold_5m_min_bars:
                             new_t._cont_hold_5m_mode = True
@@ -908,6 +910,12 @@ class PaperTradeManager:
 
             plan = self.parse_plan(msg)
             if not plan:
+                return
+
+            # Score gate: block low-score entries
+            if self._min_entry_score > 0 and plan.score < self._min_entry_score:
+                log_event("skip_entry_score_gate", symbol, score=plan.score, min_score=self._min_entry_score)
+                print(f"  ENTRY_BLOCKED {symbol}: score {plan.score:.1f} < min {self._min_entry_score}", flush=True)
                 return
 
             # Stop-hit re-entry cooldown
@@ -1238,8 +1246,9 @@ class PaperTradeManager:
                             qualifies, _ = self._check_continuation_hold(symbol, p.entry)
                             if qualifies:
                                 completed = self._completed_5m_bars.get(symbol, [])
-                                if len(completed) >= self._cont_hold_5m_min_bars:
-                                    recent = completed[-self._cont_hold_5m_min_bars:]
+                                session_bars = [b for b in completed if b.get("time", "00:00") >= "09:30"]
+                                if len(session_bars) >= self._cont_hold_5m_min_bars:
+                                    recent = session_bars[-self._cont_hold_5m_min_bars:]
                                     green_count = sum(1 for b in recent if b["c"] > b["o"])
                                     if green_count >= self._cont_hold_5m_min_bars:
                                         new_t2._cont_hold_5m_mode = True
@@ -2180,10 +2189,13 @@ class PaperTradeManager:
 
     def on_bar_close_5m_trend_guard(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
         """5m bar close: track completed bars + active-phase exit detection."""
-        # Always track completed bars for seeded activation
+        # Always track completed bars for seeded activation (with time for session filter)
+        import pytz
+        now_et = datetime.now(pytz.timezone("US/Eastern"))
+        time_str = now_et.strftime("%H:%M")
         if symbol not in self._completed_5m_bars:
             self._completed_5m_bars[symbol] = []
-        self._completed_5m_bars[symbol].append({"o": o, "h": h, "l": l, "c": c, "v": v})
+        self._completed_5m_bars[symbol].append({"o": o, "h": h, "l": l, "c": c, "v": v, "time": time_str})
 
         if not self._cont_hold_5m_guard or not self._continuation_hold_enabled:
             return

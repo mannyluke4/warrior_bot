@@ -1039,6 +1039,7 @@ def run_simulation(
     _cont_hold_5m_guard = os.getenv("WB_CONT_HOLD_5M_TREND_GUARD", "0") == "1"
     _cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
     _cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "2"))
+    _min_entry_score = float(os.getenv("WB_MIN_ENTRY_SCORE", "0"))
 
     if risk_dollars is not None:
         _risk = risk_dollars
@@ -1665,6 +1666,9 @@ def run_simulation(
                     if _toxic['action'] == 'BLOCK':
                         if verbose:
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
+                        if verbose:
+                            print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
@@ -1717,20 +1721,21 @@ def run_simulation(
                                 def __init__(self, c): self.close = c
                             qualifies, _ = _check_continuation_hold(_BarSnap5(price), time_str)
                             if qualifies:
-                                # SEEDED CHECK: look at already-completed 5m bars
+                                # SEEDED CHECK: look at already-completed 5m bars (session only)
                                 completed = _completed_5m_bars.get(symbol, [])
-                                if len(completed) >= _cont_hold_5m_min_bars:
-                                    recent = completed[-_cont_hold_5m_min_bars:]
+                                session_bars = [b for b in completed if b["time"] >= "09:30"]
+                                if len(session_bars) >= _cont_hold_5m_min_bars:
+                                    recent = session_bars[-_cont_hold_5m_min_bars:]
                                     green_count = sum(1 for b in recent if b["c"] > b["o"])
                                     if green_count >= _cont_hold_5m_min_bars:
                                         trade._cont_hold_5m_mode = True
                                         trade._5m_bars = list(recent)  # seed with historical bars
                                         if verbose:
-                                            print(f"  [{time_str}] 5M_GUARD_SEEDED: {green_count}/{_cont_hold_5m_min_bars} green 5m bars — IMMEDIATE activation (score={trade.score:.1f})", flush=True)
+                                            print(f"  [{time_str}] 5M_GUARD_SEEDED: {green_count}/{_cont_hold_5m_min_bars} green session bars — IMMEDIATE activation (score={trade.score:.1f})", flush=True)
                                     elif verbose:
-                                        print(f"  [{time_str}] 5M_GUARD_SKIP: only {green_count}/{_cont_hold_5m_min_bars} green bars — staying in 10s hold", flush=True)
+                                        print(f"  [{time_str}] 5M_GUARD_SKIP: only {green_count}/{_cont_hold_5m_min_bars} green session bars — staying in 10s hold", flush=True)
                                 elif verbose:
-                                    print(f"  [{time_str}] 5M_GUARD_SKIP: only {len(completed)} completed bars (need {_cont_hold_5m_min_bars}) — staying in 10s hold", flush=True)
+                                    print(f"  [{time_str}] 5M_GUARD_SKIP: only {len(session_bars)} session bars (need {_cont_hold_5m_min_bars}) — staying in 10s hold", flush=True)
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)
@@ -1855,6 +1860,9 @@ def run_simulation(
                     if _toxic['action'] == 'BLOCK':
                         if verbose:
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
+                        if verbose:
+                            print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
