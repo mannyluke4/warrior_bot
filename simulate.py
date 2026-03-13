@@ -1036,6 +1036,9 @@ def run_simulation(
     _cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
     _cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
     _cont_hold_use_1m_exits = os.getenv("WB_CONT_HOLD_USE_1M_EXITS", "0") == "1"
+    _cont_hold_5m_guard = os.getenv("WB_CONT_HOLD_5M_TREND_GUARD", "0") == "1"
+    _cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
+    _cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "3"))
 
     if risk_dollars is not None:
         _risk = risk_dollars
@@ -1249,8 +1252,8 @@ def run_simulation(
             if t is None or t.closed:
                 return False, ""
 
-            # Legacy counter mode (when 1m exits not enabled)
-            if not _cont_hold_use_1m_exits:
+            # Legacy counter mode (when 1m/5m exits not enabled)
+            if not _cont_hold_use_1m_exits and not _cont_hold_5m_guard:
                 hold_count = getattr(t, '_cont_hold_count', 0)
                 if hold_count >= _cont_hold_max_holds:
                     return False, ""
@@ -1286,7 +1289,7 @@ def run_simulation(
                 return False, ""
 
             # All checks passed
-            if not _cont_hold_use_1m_exits:
+            if not _cont_hold_use_1m_exits and not _cont_hold_5m_guard:
                 # Legacy counter mode — increment hold count
                 hold_count = getattr(t, '_cont_hold_count', 0)
                 t._cont_hold_count = hold_count + 1
@@ -1363,12 +1366,15 @@ def run_simulation(
 
                 return False, ""
 
-            # If in 1m exit mode, skip ALL pattern exit detection on 10s bars
+            # If in 5m guard or 1m exit mode, skip ALL pattern exit detection on 10s bars
             # Hard stops (stop_hit, max_loss_hit) are handled separately and always fire
-            if _cont_hold_use_1m_exits and _continuation_hold_enabled:
+            if _continuation_hold_enabled:
                 t = sim_mgr.open_trade
-                if t is not None and not t.closed and getattr(t, '_cont_hold_1m_mode', False):
-                    return  # exit detection handled in on_1m_close instead
+                if t is not None and not t.closed:
+                    if _cont_hold_5m_guard and getattr(t, '_cont_hold_5m_mode', False):
+                        return  # exit detection handled in on_5m_close
+                    if _cont_hold_use_1m_exits and getattr(t, '_cont_hold_1m_mode', False):
+                        return  # exit detection handled in on_1m_close
 
             # Topping wicky exit on 10s bars (with grace period after entry)
             if ("TOPPING_WICKY" in (det.last_patterns or [])
@@ -1446,7 +1452,10 @@ def run_simulation(
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
 
             # --- Continuation Hold: 1m bar exit detection ---
-            if _cont_hold_use_1m_exits and _continuation_hold_enabled:
+            # Skip when in 5m guard mode (5m guard supersedes 1m exits)
+            if _cont_hold_use_1m_exits and _continuation_hold_enabled and not (
+                _cont_hold_5m_guard and sim_mgr.open_trade and not sim_mgr.open_trade.closed
+                and getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)):
                 t = sim_mgr.open_trade
                 if t is not None and not t.closed:
                     still_valid, hold_reason = _check_continuation_hold(bar, time_str)
@@ -1492,6 +1501,7 @@ def run_simulation(
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
+                and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
                 # Profit gate: suppress TW only in small positive profit (< min R)
@@ -1521,11 +1531,65 @@ def run_simulation(
             tick_sim_state["last_1m_time"] = time_str
             tick_sim_state["prev_1m_bar"] = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close}
 
+        def on_5m_close(bar):
+            """5m bar close: trend guard exit detection for continuation hold trades."""
+            ts_et = bar.start_utc.astimezone(ET)
+            time_str = ts_et.strftime("%H:%M")
+
+            if not _cont_hold_5m_guard or not _continuation_hold_enabled:
+                return
+
+            t = sim_mgr.open_trade
+            if t is None or t.closed:
+                return
+            if not getattr(t, '_cont_hold_5m_mode', False):
+                return
+
+            # Track 5m bars for this trade
+            bars_5m = getattr(t, '_5m_bars', [])
+            bars_5m.append({
+                "o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                "v": bar.volume, "time": time_str,
+            })
+            t._5m_bars = bars_5m
+
+            # Re-evaluate continuation hold base conditions
+            still_valid, hold_reason = _check_continuation_hold(bar, time_str)
+
+            if not still_valid:
+                t._cont_hold_5m_mode = False
+                if verbose:
+                    print(f"  [{time_str}] 5M_GUARD_OFF: conditions no longer met", flush=True)
+                return
+
+            # Need minimum bars for average calculation
+            if len(bars_5m) < _cont_hold_5m_min_bars:
+                if verbose:
+                    print(f"  [{time_str}] 5M_GUARD: warmup {len(bars_5m)}/{_cont_hold_5m_min_bars}", flush=True)
+                return
+
+            # Check: Is this a RED bar with HIGH VOLUME?
+            is_red = bar.close < bar.open
+            avg_vol = sum(b["v"] for b in bars_5m[:-1]) / len(bars_5m[:-1])
+            vol_ratio = bar.volume / avg_vol if avg_vol > 0 else 0
+
+            if is_red and vol_ratio >= _cont_hold_5m_vol_mult:
+                if verbose:
+                    print(f"  [{time_str}] 5M_TREND_GUARD_EXIT: red bar vol={bar.volume:,} ({vol_ratio:.1f}x avg={avg_vol:,.0f}) @ {bar.close:.4f}", flush=True)
+                sim_mgr.on_exit_signal("5m_trend_guard_exit", bar.close, time_str)
+                t._cont_hold_5m_mode = False
+                return
+
+            if verbose:
+                bar_type = "RED" if is_red else "green"
+                print(f"  [{time_str}] 5M_GUARD_HOLD: {bar_type} vol={bar.volume:,} ({vol_ratio:.1f}x avg) @ {bar.close:.4f}", flush=True)
+
         # Create bar builders with callbacks
         bb_10s = TradeBarBuilder(on_bar_close=on_10s_close, et_tz=ET, interval_seconds=10)
         bb_1m = TradeBarBuilder(on_bar_close=on_1m_close, et_tz=ET, interval_seconds=60)
+        bb_5m = TradeBarBuilder(on_bar_close=on_5m_close, et_tz=ET, interval_seconds=300)
 
-        # Seed BOTH builders with premarket bars (for VWAP/HOD/PM tracking)
+        # Seed builders with premarket bars (for VWAP/HOD/PM tracking)
         for b, ts in seed_bars:
             o = float(b.open)
             h = float(b.high)
@@ -1534,6 +1598,7 @@ def run_simulation(
             v = float(b.volume)
             bb_10s.seed_bar_close(symbol, o, h, l, c, v, ts)
             bb_1m.seed_bar_close(symbol, o, h, l, c, v, ts)
+            bb_5m.seed_bar_close(symbol, o, h, l, c, v, ts)
 
         # Fetch actual trades for the sim window
         if feed == "databento":
@@ -1571,6 +1636,7 @@ def run_simulation(
                 # Feed to both bar builders (fires callbacks on bar close)
                 bb_10s.on_trade(symbol, price, size, ts)
                 bb_1m.on_trade(symbol, price, size, ts)
+                bb_5m.on_trade(symbol, price, size, ts)
 
                 # Trigger check on every tick (like live bot's on_trade)
                 is_premarket = bb_1m.is_premarket(ts)
@@ -1633,6 +1699,17 @@ def run_simulation(
                                 trade._cont_hold_1m_mode = True
                                 if verbose:
                                     print(f"  [{time_str}] CONT_HOLD_1M_MODE_ON at entry (score={trade.score:.1f})", flush=True)
+                        # Initialize continuation hold 5m trend guard on new trade
+                        if trade and _cont_hold_5m_guard and _continuation_hold_enabled:
+                            trade._cont_hold_5m_mode = False
+                            trade._5m_bars = []
+                            class _BarSnap5:
+                                def __init__(self, c): self.close = c
+                            qualifies, _ = _check_continuation_hold(_BarSnap5(price), time_str)
+                            if qualifies:
+                                trade._cont_hold_5m_mode = True
+                                if verbose:
+                                    print(f"  [{time_str}] CONT_HOLD_5M_MODE_ON at entry (score={trade.score:.1f})", flush=True)
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)

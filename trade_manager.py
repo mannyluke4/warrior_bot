@@ -262,6 +262,9 @@ class PaperTradeManager:
         self._cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
         self._cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
         self._cont_hold_use_1m_exits = os.getenv("WB_CONT_HOLD_USE_1M_EXITS", "0") == "1"
+        self._cont_hold_5m_guard = os.getenv("WB_CONT_HOLD_5M_TREND_GUARD", "0") == "1"
+        self._cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
+        self._cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "3"))
         self._micro_detectors: Dict[str, object] = {}  # symbol -> MicroPullbackDetector (set by bot.py)
         self._last_1m_bar: Dict[str, dict] = {}  # symbol -> {o,h,l,c} for 1m BE detection
 
@@ -2051,8 +2054,8 @@ class PaperTradeManager:
         if not t:
             return False, ""
 
-        # Legacy counter mode (when 1m exits not enabled)
-        if not self._cont_hold_use_1m_exits:
+        # Legacy counter mode (when 1m/5m exits not enabled)
+        if not self._cont_hold_use_1m_exits and not self._cont_hold_5m_guard:
             hold_count = getattr(t, '_cont_hold_count', 0)
             if hold_count >= self._cont_hold_max_holds:
                 return False, ""
@@ -2088,7 +2091,7 @@ class PaperTradeManager:
             return False, ""
 
         # All checks passed
-        if not self._cont_hold_use_1m_exits:
+        if not self._cont_hold_use_1m_exits and not self._cont_hold_5m_guard:
             hold_count = getattr(t, '_cont_hold_count', 0)
             t._cont_hold_count = hold_count + 1
             return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
@@ -2144,6 +2147,47 @@ class PaperTradeManager:
 
         self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
 
+    def on_bar_close_5m_trend_guard(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
+        """5m bar close: trend guard exit detection for continuation hold trades."""
+        if not self._cont_hold_5m_guard or not self._continuation_hold_enabled:
+            return
+
+        t = self.open.get(symbol)
+        if not t or not getattr(t, '_cont_hold_5m_mode', False):
+            return
+
+        # Track 5m bars for this trade
+        bars_5m = getattr(t, '_5m_bars', [])
+        bars_5m.append({"o": o, "h": h, "l": l, "c": c, "v": v})
+        t._5m_bars = bars_5m
+
+        # Re-evaluate continuation hold base conditions
+        still_valid, reason = self._check_continuation_hold(symbol, c)
+
+        if not still_valid:
+            t._cont_hold_5m_mode = False
+            print(f"  5M_GUARD_OFF {symbol}: conditions no longer met", flush=True)
+            return
+
+        # Need minimum bars for average calculation
+        if len(bars_5m) < self._cont_hold_5m_min_bars:
+            print(f"  5M_GUARD_WARMUP {symbol}: {len(bars_5m)}/{self._cont_hold_5m_min_bars}", flush=True)
+            return
+
+        # Check: RED bar with HIGH VOLUME?
+        is_red = c < o
+        avg_vol = sum(b["v"] for b in bars_5m[:-1]) / len(bars_5m[:-1])
+        vol_ratio = v / avg_vol if avg_vol > 0 else 0
+
+        if is_red and vol_ratio >= self._cont_hold_5m_vol_mult:
+            print(f"  5M_TREND_GUARD_EXIT {symbol}: red bar vol={v:,} ({vol_ratio:.1f}x avg={avg_vol:,.0f}) @ {c:.4f}", flush=True)
+            t._cont_hold_5m_mode = False
+            self.on_exit_signal(symbol, "5m_trend_guard_exit")
+            return
+
+        bar_type = "RED" if is_red else "green"
+        print(f"  5M_GUARD_HOLD {symbol}: {bar_type} vol={v:,} ({vol_ratio:.1f}x avg) @ {c:.4f}", flush=True)
+
     def on_bar_close(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
         with self._lock:
             prev = self.last_bar.get(symbol)
@@ -2173,6 +2217,12 @@ class PaperTradeManager:
                 det.on_10s_bar(o, h, l, c, v, t.entry, t.r)
 
         self._manage_exits(symbol)
+
+        # If in 5m guard mode, skip ALL 10s exit detection (handled in 5m handler)
+        if self._cont_hold_5m_guard and self._continuation_hold_enabled:
+            t = self.open.get(symbol)
+            if t and getattr(t, '_cont_hold_5m_mode', False):
+                return
 
         # If in 1m exit mode, skip BE detection on 10s bars (handled in 1m handler)
         if self._cont_hold_use_1m_exits and self._continuation_hold_enabled:
@@ -2271,6 +2321,14 @@ class PaperTradeManager:
 
         # Suppress pattern exits (TW, L2) — hard stops NEVER suppressed
         if signal_name in ("topping_wicky", "l2_bearish", "l2_ask_wall"):
+            # In 5m guard mode, suppress all pattern exits (handled in 5m handler)
+            if self._cont_hold_5m_guard and self._continuation_hold_enabled:
+                if getattr(t, '_cont_hold_5m_mode', False):
+                    log_event("pattern_exit_suppressed_5m_mode", symbol,
+                              signal=signal_name, price=float(self.last_price.get(symbol, 0)))
+                    print(f"  {signal_name.upper()}_SUPPRESSED (5m_guard_mode) {symbol}", flush=True)
+                    return
+
             # In 1m exit mode, suppress all pattern exits from 10s bars
             if self._cont_hold_use_1m_exits and self._continuation_hold_enabled:
                 if getattr(t, '_cont_hold_1m_mode', False):

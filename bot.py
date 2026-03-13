@@ -32,6 +32,7 @@ POLL_SECONDS = 0.5
 trade_manager: PaperTradeManager | None = None
 bar_builder: TradeBarBuilder | None = None
 bar_builder_1m: TradeBarBuilder | None = None
+bar_builder_5m: TradeBarBuilder | None = None
 _stock_info_cache: dict = {}  # StockInfo cache for gap_pct injection into detectors
 _session_filtered_out: set = set()  # symbols that failed session-start filter; never trade these
 
@@ -203,6 +204,8 @@ def seed_symbol_from_history(symbol: str, minutes: int = 60):
                 bar_builder.seed_bar_close(symbol, o, h, l, c, v, ts)
             if bar_builder_1m and hasattr(bar_builder_1m, "seed_bar_close"):
                 bar_builder_1m.seed_bar_close(symbol, o, h, l, c, v, ts)
+            if bar_builder_5m and hasattr(bar_builder_5m, "seed_bar_close"):
+                bar_builder_5m.seed_bar_close(symbol, o, h, l, c, v, ts)
 
         pm_high = bar_builder.get_premarket_high(symbol) if bar_builder else None
         pm_str = f"{pm_high:.4f}" if pm_high and pm_high > 0 else "N/A"
@@ -507,6 +510,16 @@ def pending_heartbeat():
             log_event("exception", None, where="pending_heartbeat", error=traceback.format_exc())
         time.sleep(0.5)
 
+def on_bar_close_5m(bar):
+    """5m bar close: trend guard exit detection for continuation hold trades."""
+    if not trade_manager:
+        return
+    symbol = bar.symbol if hasattr(bar, "symbol") else getattr(bar, "sym", None)
+    if not symbol:
+        return
+    trade_manager.on_bar_close_5m_trend_guard(symbol, bar.open, bar.high, bar.low, bar.close, bar.volume)
+
+
 # -----------------------------
 # Data feed handlers (called by DataFeed with normalized args)
 # -----------------------------
@@ -530,6 +543,8 @@ def on_trade(symbol: str, price: float, size: int, ts: datetime):
 
         if bar_builder_1m:
             bar_builder_1m.on_trade(symbol, price, size, ts)
+        if bar_builder_5m:
+            bar_builder_5m.on_trade(symbol, price, size, ts)
 
         # Feed live price into trade manager (stop/TP/runner logic)
         if trade_manager:
@@ -662,7 +677,7 @@ def _save_session_symbols(symbols: set):
 # Main
 # -----------------------------
 def main():
-    global bar_builder, bar_builder_1m, trade_manager
+    global bar_builder, bar_builder_1m, bar_builder_5m, trade_manager
 
     print("=== Warrior Bot: 1-Min Primary + 10s Exits + Micro Pullback (PAPER EDITION) ===", flush=True)
 
@@ -708,6 +723,7 @@ def main():
 
     bar_builder = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
     bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
+    bar_builder_5m = TradeBarBuilder(on_bar_close=on_bar_close_5m, et_tz=ET, interval_seconds=300)
 
     trade_manager = PaperTradeManager()
     trade_manager.set_stock_info_cache(stock_info_cache)
