@@ -1532,7 +1532,7 @@ def run_simulation(
             tick_sim_state["prev_1m_bar"] = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close}
 
         def on_5m_close(bar):
-            """5m bar close: trend guard exit detection for continuation hold trades."""
+            """5m bar close: graduated guard — observe first, activate if vol_dom sustains."""
             ts_et = bar.start_utc.astimezone(ET)
             time_str = ts_et.strftime("%H:%M")
 
@@ -1542,6 +1542,39 @@ def run_simulation(
             t = sim_mgr.open_trade
             if t is None or t.closed:
                 return
+
+            # ─── OBSERVATION PHASE ───
+            if getattr(t, '_cont_hold_5m_observing', False) and not getattr(t, '_cont_hold_5m_mode', False):
+                still_valid, hold_reason = _check_continuation_hold(bar, time_str)
+
+                vol_dom_checks = getattr(t, '_5m_vol_dom_checks', [])
+                vol_dom_checks.append(still_valid)
+                t._5m_vol_dom_checks = vol_dom_checks
+
+                bars_5m = getattr(t, '_5m_bars', [])
+                bars_5m.append({
+                    "o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                    "v": bar.volume, "time": time_str,
+                })
+                t._5m_bars = bars_5m
+
+                if not still_valid:
+                    t._cont_hold_5m_observing = False
+                    if verbose:
+                        print(f"  [{time_str}] 5M_GUARD_ABORT: vol_dom dropped during observation (bar {len(vol_dom_checks)}/{_cont_hold_5m_min_bars})", flush=True)
+                    return
+
+                if verbose:
+                    print(f"  [{time_str}] 5M_GUARD_OBSERVE: vol_dom sustained, bar {len(vol_dom_checks)}/{_cont_hold_5m_min_bars}", flush=True)
+
+                if len(vol_dom_checks) >= _cont_hold_5m_min_bars:
+                    t._cont_hold_5m_mode = True
+                    t._cont_hold_5m_observing = False
+                    if verbose:
+                        print(f"  [{time_str}] 5M_GUARD_ACTIVATED: vol_dom sustained through {_cont_hold_5m_min_bars} bars — switching to 5m exit mode", flush=True)
+                return
+
+            # ─── ACTIVE PHASE ───
             if not getattr(t, '_cont_hold_5m_mode', False):
                 return
 
@@ -1562,10 +1595,8 @@ def run_simulation(
                     print(f"  [{time_str}] 5M_GUARD_OFF: conditions no longer met", flush=True)
                 return
 
-            # Need minimum bars for average calculation
-            if len(bars_5m) < _cont_hold_5m_min_bars:
-                if verbose:
-                    print(f"  [{time_str}] 5M_GUARD: warmup {len(bars_5m)}/{_cont_hold_5m_min_bars}", flush=True)
+            # Need at least 2 bars for average calculation (observation bars + active bars)
+            if len(bars_5m) < 2:
                 return
 
             # Check: Is this a RED bar with HIGH VOLUME?
@@ -1702,14 +1733,16 @@ def run_simulation(
                         # Initialize continuation hold 5m trend guard on new trade
                         if trade and _cont_hold_5m_guard and _continuation_hold_enabled:
                             trade._cont_hold_5m_mode = False
+                            trade._cont_hold_5m_observing = False
                             trade._5m_bars = []
+                            trade._5m_vol_dom_checks = []
                             class _BarSnap5:
                                 def __init__(self, c): self.close = c
                             qualifies, _ = _check_continuation_hold(_BarSnap5(price), time_str)
                             if qualifies:
-                                trade._cont_hold_5m_mode = True
+                                trade._cont_hold_5m_observing = True
                                 if verbose:
-                                    print(f"  [{time_str}] CONT_HOLD_5M_MODE_ON at entry (score={trade.score:.1f})", flush=True)
+                                    print(f"  [{time_str}] 5M_GUARD_OBSERVE: score={trade.score:.1f}, watching vol_dom for {_cont_hold_5m_min_bars} bars", flush=True)
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)

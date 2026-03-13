@@ -2148,39 +2148,60 @@ class PaperTradeManager:
         self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
 
     def on_bar_close_5m_trend_guard(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
-        """5m bar close: trend guard exit detection for continuation hold trades."""
+        """5m bar close: graduated guard — observe first, activate if vol_dom sustains."""
         if not self._cont_hold_5m_guard or not self._continuation_hold_enabled:
             return
 
         t = self.open.get(symbol)
-        if not t or not getattr(t, '_cont_hold_5m_mode', False):
+        if not t:
             return
 
-        # Track 5m bars for this trade
+        # ─── OBSERVATION PHASE ───
+        if getattr(t, '_cont_hold_5m_observing', False) and not getattr(t, '_cont_hold_5m_mode', False):
+            still_valid, reason = self._check_continuation_hold(symbol, c)
+
+            vol_dom_checks = getattr(t, '_5m_vol_dom_checks', [])
+            vol_dom_checks.append(still_valid)
+            t._5m_vol_dom_checks = vol_dom_checks
+
+            bars_5m = getattr(t, '_5m_bars', [])
+            bars_5m.append({"o": o, "h": h, "l": l, "c": c, "v": v})
+            t._5m_bars = bars_5m
+
+            if not still_valid:
+                t._cont_hold_5m_observing = False
+                print(f"  5M_GUARD_ABORT {symbol}: vol_dom dropped during observation (bar {len(vol_dom_checks)}/{self._cont_hold_5m_min_bars})", flush=True)
+                return
+
+            if len(vol_dom_checks) >= self._cont_hold_5m_min_bars:
+                t._cont_hold_5m_mode = True
+                t._cont_hold_5m_observing = False
+                print(f"  5M_GUARD_ACTIVATED {symbol}: vol_dom sustained through {self._cont_hold_5m_min_bars} bars", flush=True)
+            return
+
+        # ─── ACTIVE PHASE ───
+        if not getattr(t, '_cont_hold_5m_mode', False):
+            return
+
         bars_5m = getattr(t, '_5m_bars', [])
         bars_5m.append({"o": o, "h": h, "l": l, "c": c, "v": v})
         t._5m_bars = bars_5m
 
-        # Re-evaluate continuation hold base conditions
         still_valid, reason = self._check_continuation_hold(symbol, c)
-
         if not still_valid:
             t._cont_hold_5m_mode = False
             print(f"  5M_GUARD_OFF {symbol}: conditions no longer met", flush=True)
             return
 
-        # Need minimum bars for average calculation
-        if len(bars_5m) < self._cont_hold_5m_min_bars:
-            print(f"  5M_GUARD_WARMUP {symbol}: {len(bars_5m)}/{self._cont_hold_5m_min_bars}", flush=True)
+        if len(bars_5m) < 2:
             return
 
-        # Check: RED bar with HIGH VOLUME?
         is_red = c < o
         avg_vol = sum(b["v"] for b in bars_5m[:-1]) / len(bars_5m[:-1])
         vol_ratio = v / avg_vol if avg_vol > 0 else 0
 
         if is_red and vol_ratio >= self._cont_hold_5m_vol_mult:
-            print(f"  5M_TREND_GUARD_EXIT {symbol}: red bar vol={v:,} ({vol_ratio:.1f}x avg={avg_vol:,.0f}) @ {c:.4f}", flush=True)
+            print(f"  5M_TREND_GUARD_EXIT {symbol}: red bar vol={v:,.0f} ({vol_ratio:.1f}x avg)", flush=True)
             t._cont_hold_5m_mode = False
             self.on_exit_signal(symbol, "5m_trend_guard_exit")
             return
