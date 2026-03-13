@@ -1,0 +1,33 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: YMAT  |  Date: 2025-07-31  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching YMAT bars for 2025-07-31...
+  Total bars: 282  |  Seed: 20  |  Sim: 262
+  Seed complete: EMA9=4.8498
+  Fetching tick data from Alpaca...
+  Tick replay: 41591 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: YMAT -- 2025-07-31 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 41591 sim + 20 seed  |  EMA9=4.1250  VWAP=5.7550
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:06   7.0000   6.2500  0.7500    7.5   6.2500  stop_hit                  -750    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-750  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-750
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

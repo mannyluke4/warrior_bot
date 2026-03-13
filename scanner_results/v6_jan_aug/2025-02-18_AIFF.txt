@@ -1,0 +1,44 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AIFF  |  Date: 2025-02-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AIFF bars for 2025-02-18...
+  Total bars: 428  |  Seed: 139  |  Sim: 289
+  Fetching L2 from Databento: AIFF 2025-02-18 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AIFF_2025-02-18_XNAS.dbn.zst
+  L2 data: 31700 records for AIFF
+  L2 snapshots: 5124 (1-second sampled)
+  L2 data loaded: 5124 snapshots
+  Seed complete: EMA9=10.1650
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AIFF 2025-02-18 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AIFF_2025-02-18_trades_XNAS.dbn.zst
+  Trade data: 3264 records for AIFF
+  Trades: 3264 | $10.20-$10.73 | 07:00:00-11:59:56 ET
+  Tick replay: 3264 trades for sim window
+  [07:04] CLASSIFIER: AIFF → avoid (conf=0.85) — AVOID gate: VWAP dist 5.6% < 7.0%, range 6.0% < 10.0%, NH 1 < 2
+  [L2_bid_stack] BLOCKED: stack=10.5800 imbalance=0.27 < 0.65 (stop stays 10.5300)
+
+======================================================================
+  BACKTEST REPORT: AIFF -- 2025-02-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=5124 snaps [TICK mode]
+  Bars: 3264 sim + 139 seed  |  EMA9=9.2015  VWAP=10.0589
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:20  10.5100  10.3686  0.1414    8.5  10.4800  l2_bearish_exit_full       -26    -0.2R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-26  |  Avg R-Multiple: -0.1R
+  Largest Win: $+0  |  Largest Loss: $-26
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

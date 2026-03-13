@@ -1,0 +1,24 @@
+# V6.2 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: REBN  |  Date: 2025-02-03  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching REBN bars for 2025-02-03...
+  Total bars: 463  |  Seed: 180  |  Sim: 283
+  Seed complete: EMA9=6.5035
+  Fetching tick data from Alpaca...
+  Tick replay: 320124 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: REBN -- 2025-02-03 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 320124 sim + 180 seed  |  EMA9=5.9374  VWAP=5.9073
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

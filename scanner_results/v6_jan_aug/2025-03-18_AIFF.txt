@@ -1,0 +1,33 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: AIFF  |  Date: 2025-03-18  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AIFF bars for 2025-03-18...
+  Total bars: 305  |  Seed: 56  |  Sim: 249
+  Fetching L2 from Databento: AIFF 2025-03-18 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: AIFF_2025-03-18_XNAS.dbn.zst
+  L2 data: 31579 records for AIFF
+  L2 snapshots: 3571 (1-second sampled)
+  L2 data loaded: 3571 snapshots
+  Seed complete: EMA9=5.6212
+  Fetching tick data from Databento...
+  Fetching trades from Databento: AIFF 2025-03-18 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: AIFF_2025-03-18_trades_XNAS.dbn.zst
+  Trade data: 2857 records for AIFF
+  Trades: 2857 | $5.65-$6.17 | 07:00:09-11:59:46 ET
+  Tick replay: 2857 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AIFF -- 2025-03-18 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=3571 snaps [TICK mode]
+  Bars: 2857 sim + 56 seed  |  EMA9=5.0365  VWAP=5.5895
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

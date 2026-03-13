@@ -1120,20 +1120,6 @@
     "profile": "A"
   },
   {
-    "symbol": "STI",
-    "prev_close": 3.2,
-    "pm_price": 3.38,
-    "gap_pct": 5.62,
-    "pm_volume": 1211.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 2186283,
-    "float_millions": 2.19,
-    "profile": "A"
-  },
-  {
     "symbol": "RBNE",
     "prev_close": 4.27,
     "pm_price": 4.51,
@@ -1145,6 +1131,20 @@
     "discovery_method": "rescan",
     "float_shares": 2683920,
     "float_millions": 2.68,
+    "profile": "A"
+  },
+  {
+    "symbol": "STI",
+    "prev_close": 3.2,
+    "pm_price": 3.38,
+    "gap_pct": 5.62,
+    "pm_volume": 1211.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 2186283,
+    "float_millions": 2.19,
     "profile": "A"
   },
   {

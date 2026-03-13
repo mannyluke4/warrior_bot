@@ -1,0 +1,33 @@
+# V6.2 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: GV  |  Date: 2025-03-06  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching GV bars for 2025-03-06...
+  Total bars: 472  |  Seed: 180  |  Sim: 292
+  Seed complete: EMA9=5.6647
+  Fetching tick data from Alpaca...
+  Tick replay: 686615 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: GV -- 2025-03-06 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 686615 sim + 180 seed  |  EMA9=4.3946  VWAP=5.9565
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   08:43   6.6000   6.4400  0.1600   10.5   6.4400  stop_hit                  -750    -1.0R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-750  |  Avg R-Multiple: -1.0R
+  Largest Win: $+0  |  Largest Loss: $-750
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

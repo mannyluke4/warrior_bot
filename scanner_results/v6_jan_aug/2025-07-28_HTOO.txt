@@ -1,0 +1,33 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HTOO  |  Date: 2025-07-28  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HTOO bars for 2025-07-28...
+  Total bars: 213  |  Seed: 44  |  Sim: 169
+  Seed complete: EMA9=6.2321
+  Fetching tick data from Alpaca...
+  Tick replay: 3180 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HTOO -- 2025-07-28 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3180 sim + 44 seed  |  EMA9=6.5433  VWAP=6.4743
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:10   6.5200   6.4000  0.1200   10.5   6.6500  topping_wicky_exit_full      +813    +1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+813  |  Avg R-Multiple: +1.1R
+  Largest Win: $+813  |  Largest Loss: $+0
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

@@ -1,0 +1,33 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: MFI  |  Date: 2025-06-25  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching MFI bars for 2025-06-25...
+  Total bars: 139  |  Seed: 15  |  Sim: 124
+  Seed complete: EMA9=6.1082
+  Fetching tick data from Alpaca...
+  Tick replay: 1980 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: MFI -- 2025-06-25 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1980 sim + 15 seed  |  EMA9=5.8144  VWAP=6.2403
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:40   6.5800   6.4600  0.1200   12.5   6.4020  stop_hit                 -1112    -1.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,112  |  Avg R-Multiple: -1.5R
+  Largest Win: $+0  |  Largest Loss: $-1,112
+  Armed: 2  |  Signals: 1  |  Entered: 1
+======================================================================
+

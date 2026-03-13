@@ -1,0 +1,42 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: NA  |  Date: 2025-08-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NA bars for 2025-08-15...
+  Total bars: 321  |  Seed: 65  |  Sim: 256
+  Fetching L2 from Databento: NA 2025-08-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: NA_2025-08-15_XNAS.dbn.zst
+  L2 data: 18182 records for NA
+  L2 snapshots: 2388 (1-second sampled)
+  L2 data loaded: 2388 snapshots
+  Seed complete: EMA9=5.1921
+  Fetching tick data from Databento...
+  Fetching trades from Databento: NA 2025-08-15 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: NA_2025-08-15_trades_XNAS.dbn.zst
+  Trade data: 1816 records for NA
+  Trades: 1816 | $5.16-$5.80 | 07:00:00-11:42:40 ET
+  Tick replay: 1816 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: NA -- 2025-08-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=2388 snaps [TICK mode]
+  Bars: 1816 sim + 65 seed  |  EMA9=4.0079  VWAP=4.7042
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:10   5.4200   5.4300  0.0900    8.5   5.7500  l2_bearish_exit_full      +916    +3.7R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+916  |  Avg R-Multiple: +3.7R
+  Largest Win: $+916  |  Largest Loss: $+0
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

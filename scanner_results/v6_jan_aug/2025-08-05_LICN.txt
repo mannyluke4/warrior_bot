@@ -1,0 +1,25 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: LICN  |  Date: 2025-08-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching LICN bars for 2025-08-05...
+  Total bars: 152  |  Seed: 26  |  Sim: 126
+  Seed complete: EMA9=5.2571
+  Fetching tick data from Alpaca...
+  Tick replay: 1540 trades for sim window
+  [07:05] CLASSIFIER: LICN → avoid (conf=0.85) — AVOID gate: VWAP dist 2.6% < 7.0%, range 4.1% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: LICN -- 2025-08-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1540 sim + 26 seed  |  EMA9=4.8353  VWAP=4.7728
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

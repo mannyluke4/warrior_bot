@@ -1,0 +1,44 @@
+# V6.2 risk=250 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: INDO  |  Date: 2025-06-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching INDO bars for 2025-06-23...
+  Total bars: 466  |  Seed: 169  |  Sim: 297
+  Fetching L2 from Databento: INDO 2025-06-23 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: INDO_2025-06-23_XNAS.dbn.zst
+  L2 data: 65106 records for INDO
+  L2 snapshots: 5727 (1-second sampled)
+  L2 data loaded: 5727 snapshots
+  Seed complete: EMA9=5.8955
+  Fetching tick data from Databento...
+  Fetching trades from Databento: INDO 2025-06-23 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: INDO_2025-06-23_trades_XNAS.dbn.zst
+  Trade data: 9429 records for INDO
+  Trades: 9429 | $5.86-$7.95 | 07:00:00-11:59:49 ET
+  Tick replay: 9429 trades for sim window
+  [L2_bid_stack] BLOCKED: stack=6.7800 imbalance=0.40 < 0.65 (stop stays 6.7400)
+
+======================================================================
+  BACKTEST REPORT: INDO -- 2025-06-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=5727 snaps [TICK mode]
+  Bars: 9429 sim + 169 seed  |  EMA9=6.9527  VWAP=6.4622
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:09   6.2400   6.1500  0.0900   12.0   6.2000  topping_wicky_exit_full      -111    -0.4R
+    2   09:14   6.3400   6.2100  0.1300   11.0   6.6600  l2_bearish_exit_full      +615    +2.5R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $+504  |  Avg R-Multiple: +1.0R
+  Largest Win: $+615  |  Largest Loss: $-111
+  Armed: 4  |  Signals: 3  |  Entered: 2
+======================================================================
+

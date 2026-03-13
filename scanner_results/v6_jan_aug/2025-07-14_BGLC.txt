@@ -1,0 +1,24 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: BGLC  |  Date: 2025-07-14  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching BGLC bars for 2025-07-14...
+  Total bars: 97  |  Seed: 8  |  Sim: 89
+  Seed complete: EMA9=5.1224
+  Fetching tick data from Alpaca...
+  Tick replay: 1655 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: BGLC -- 2025-07-14 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1655 sim + 8 seed  |  EMA9=4.3134  VWAP=4.5255
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

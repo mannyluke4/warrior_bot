@@ -1,0 +1,24 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: ONCO  |  Date: 2025-07-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching ONCO bars for 2025-07-16...
+  Total bars: 204  |  Seed: 18  |  Sim: 186
+  Seed complete: EMA9=4.7126
+  Fetching tick data from Alpaca...
+  Tick replay: 24687 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: ONCO -- 2025-07-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 24687 sim + 18 seed  |  EMA9=3.5827  VWAP=4.6777
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

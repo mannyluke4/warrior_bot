@@ -1,0 +1,33 @@
+# V6.2 risk=750 sqs=6 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: AMST  |  Date: 2025-05-16  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching AMST bars for 2025-05-16...
+  Total bars: 331  |  Seed: 30  |  Sim: 301
+  Seed complete: EMA9=3.4651
+  Fetching tick data from Alpaca...
+  Tick replay: 391530 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: AMST -- 2025-05-16 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 391530 sim + 30 seed  |  EMA9=3.2404  VWAP=3.8270
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:01   4.1200   3.6900  0.4300   12.5   4.6100  topping_wicky_exit_full      +855    +1.1R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+855  |  Avg R-Multiple: +1.1R
+  Largest Win: $+855  |  Largest Loss: $+0
+  Armed: 2  |  Signals: 2  |  Entered: 1
+======================================================================
+

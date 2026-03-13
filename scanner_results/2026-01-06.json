@@ -560,20 +560,6 @@
     "profile": "A"
   },
   {
-    "symbol": "EKSO",
-    "prev_close": 8.55,
-    "pm_price": 9.18,
-    "gap_pct": 7.37,
-    "pm_volume": 95847.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 1806318,
-    "float_millions": 1.81,
-    "profile": "A"
-  },
-  {
     "symbol": "LACG",
     "prev_close": 14.8186,
     "pm_price": 15.91,
@@ -586,6 +572,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "EKSO",
+    "prev_close": 8.55,
+    "pm_price": 9.18,
+    "gap_pct": 7.37,
+    "pm_volume": 95847.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 1806318,
+    "float_millions": 1.81,
+    "profile": "A"
   },
   {
     "symbol": "LCFY",
@@ -840,20 +840,6 @@
     "profile": "A"
   },
   {
-    "symbol": "CVV",
-    "prev_close": 3.66,
-    "pm_price": 3.8981,
-    "gap_pct": 6.51,
-    "pm_volume": 8963.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 5291246,
-    "float_millions": 5.29,
-    "profile": "B"
-  },
-  {
     "symbol": "BLIV",
     "prev_close": 3.38,
     "pm_price": 3.6,
@@ -865,6 +851,20 @@
     "discovery_method": "rescan",
     "float_shares": 5270190,
     "float_millions": 5.27,
+    "profile": "B"
+  },
+  {
+    "symbol": "CVV",
+    "prev_close": 3.66,
+    "pm_price": 3.8981,
+    "gap_pct": 6.51,
+    "pm_volume": 8963.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 5291246,
+    "float_millions": 5.29,
     "profile": "B"
   },
   {
@@ -1428,20 +1428,6 @@
     "profile": "B"
   },
   {
-    "symbol": "SCOR",
-    "prev_close": 6.51,
-    "pm_price": 6.8468,
-    "gap_pct": 5.17,
-    "pm_volume": 300.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 1068537,
-    "float_millions": 1.07,
-    "profile": "A"
-  },
-  {
     "symbol": "WVVI",
     "prev_close": 3.08,
     "pm_price": 3.2391,
@@ -1453,6 +1439,20 @@
     "discovery_method": "rescan",
     "float_shares": 4094595,
     "float_millions": 4.09,
+    "profile": "A"
+  },
+  {
+    "symbol": "SCOR",
+    "prev_close": 6.51,
+    "pm_price": 6.8468,
+    "gap_pct": 5.17,
+    "pm_volume": 300.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 1068537,
+    "float_millions": 1.07,
     "profile": "A"
   },
   {

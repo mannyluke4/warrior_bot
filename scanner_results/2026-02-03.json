@@ -728,20 +728,6 @@
     "profile": "X"
   },
   {
-    "symbol": "AVXX",
-    "prev_close": 9.03,
-    "pm_price": 9.66,
-    "gap_pct": 6.98,
-    "pm_volume": 22479.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 80113,
-    "float_millions": 0.08,
-    "profile": "A"
-  },
-  {
     "symbol": "HPAI",
     "prev_close": 2.921,
     "pm_price": 3.125,
@@ -754,6 +740,20 @@
     "float_shares": 7416946,
     "float_millions": 7.42,
     "profile": "B"
+  },
+  {
+    "symbol": "AVXX",
+    "prev_close": 9.03,
+    "pm_price": 9.66,
+    "gap_pct": 6.98,
+    "pm_volume": 22479.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 80113,
+    "float_millions": 0.08,
+    "profile": "A"
   },
   {
     "symbol": "ONDU",
@@ -1442,20 +1442,6 @@
     "profile": "B"
   },
   {
-    "symbol": "CRWU",
-    "prev_close": 7.26,
-    "pm_price": 7.6694,
-    "gap_pct": 5.64,
-    "pm_volume": 66183.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "CRWG",
     "prev_close": 3.9,
     "pm_price": 4.1199,
@@ -1468,6 +1454,20 @@
     "float_shares": 5196392,
     "float_millions": 5.2,
     "profile": "B"
+  },
+  {
+    "symbol": "CRWU",
+    "prev_close": 7.26,
+    "pm_price": 7.6694,
+    "gap_pct": 5.64,
+    "pm_volume": 66183.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "BDSX",
@@ -1820,20 +1820,6 @@
     "profile": "X"
   },
   {
-    "symbol": "QUBX",
-    "prev_close": 16.77,
-    "pm_price": 17.64,
-    "gap_pct": 5.19,
-    "pm_volume": 712.0,
-    "first_seen_et": "04:15",
-    "sim_start": "07:00",
-    "discovery_time": "04:15",
-    "discovery_method": "premarket",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "SMCL",
     "prev_close": 4.43,
     "pm_price": 4.66,
@@ -1842,6 +1828,20 @@
     "first_seen_et": "04:00",
     "sim_start": "07:00",
     "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
+    "symbol": "QUBX",
+    "prev_close": 16.77,
+    "pm_price": 17.64,
+    "gap_pct": 5.19,
+    "pm_volume": 712.0,
+    "first_seen_et": "04:15",
+    "sim_start": "07:00",
+    "discovery_time": "04:15",
     "discovery_method": "premarket",
     "float_shares": null,
     "float_millions": null,

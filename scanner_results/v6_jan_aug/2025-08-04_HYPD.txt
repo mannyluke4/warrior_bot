@@ -1,0 +1,24 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HYPD  |  Date: 2025-08-04  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HYPD bars for 2025-08-04...
+  Total bars: 177  |  Seed: 24  |  Sim: 153
+  Seed complete: EMA9=7.6883
+  Fetching tick data from Alpaca...
+  Tick replay: 3636 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HYPD -- 2025-08-04 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 3636 sim + 24 seed  |  EMA9=6.5794  VWAP=7.5951
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

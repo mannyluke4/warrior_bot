@@ -1,0 +1,34 @@
+# V6.2 risk=250 sqs=4 tier=B
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE | Feed: DATABENTO)
+  Symbols: PPSI  |  Date: 2025-08-15  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching PPSI bars for 2025-08-15...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Fetching L2 from Databento: PPSI 2025-08-15 07:00-12:00 (XNAS.ITCH)...
+  L2 cached: PPSI_2025-08-15_XNAS.dbn.zst
+  L2 data: 527808 records for PPSI
+  L2 snapshots: 14839 (1-second sampled)
+  L2 data loaded: 14839 snapshots
+  Seed complete: EMA9=5.0490
+  Fetching tick data from Databento...
+  Fetching trades from Databento: PPSI 2025-08-15 07:00-12:00 (XNAS.ITCH)...
+  Trades cached: PPSI_2025-08-15_trades_XNAS.dbn.zst
+  Trade data: 58834 records for PPSI
+  Trades: 58834 | $5.05-$5.49 | 07:00:00-11:59:59 ET
+  Tick replay: 58834 trades for sim window
+  [07:04] CLASSIFIER: PPSI → avoid (conf=0.85) — AVOID gate: VWAP dist 6.3% < 7.0%, range 7.2% < 10.0%, NH 1 < 2
+
+======================================================================
+  BACKTEST REPORT: PPSI -- 2025-08-15 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=3/10m  L2=14839 snaps [TICK mode]
+  Bars: 58834 sim + 180 seed  |  EMA9=4.1574  VWAP=4.9145
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

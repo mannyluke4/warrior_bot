@@ -1,0 +1,24 @@
+# V6.2 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: JZXN  |  Date: 2025-02-21  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching JZXN bars for 2025-02-21...
+  Total bars: 31  |  Seed: 5  |  Sim: 26
+  Seed complete: EMA9=5.3084
+  Fetching tick data from Alpaca...
+  Tick replay: 309 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: JZXN -- 2025-02-21 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 309 sim + 5 seed  |  EMA9=4.7319  VWAP=4.9590
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================
