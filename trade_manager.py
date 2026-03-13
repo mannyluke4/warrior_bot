@@ -264,9 +264,10 @@ class PaperTradeManager:
         self._cont_hold_use_1m_exits = os.getenv("WB_CONT_HOLD_USE_1M_EXITS", "0") == "1"
         self._cont_hold_5m_guard = os.getenv("WB_CONT_HOLD_5M_TREND_GUARD", "0") == "1"
         self._cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
-        self._cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "3"))
+        self._cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "2"))
         self._micro_detectors: Dict[str, object] = {}  # symbol -> MicroPullbackDetector (set by bot.py)
         self._last_1m_bar: Dict[str, dict] = {}  # symbol -> {o,h,l,c} for 1m BE detection
+        self._completed_5m_bars: Dict[str, list] = {}  # {symbol: [bar_dict, ...]} for seeded activation
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -633,6 +634,21 @@ class PaperTradeManager:
                 score=float(getattr(p, 'score', 0.0)) if p else 0.0,
                 created_at_utc=datetime.now(timezone.utc),
             )
+            # Seeded 5m guard activation on new trade
+            new_t = self.open[symbol]
+            if self._cont_hold_5m_guard and self._continuation_hold_enabled:
+                new_t._cont_hold_5m_mode = False
+                new_t._5m_bars = []
+                qualifies, _ = self._check_continuation_hold(symbol, entry)
+                if qualifies:
+                    completed = self._completed_5m_bars.get(symbol, [])
+                    if len(completed) >= self._cont_hold_5m_min_bars:
+                        recent = completed[-self._cont_hold_5m_min_bars:]
+                        green_count = sum(1 for b in recent if b["c"] > b["o"])
+                        if green_count >= self._cont_hold_5m_min_bars:
+                            new_t._cont_hold_5m_mode = True
+                            new_t._5m_bars = list(recent)
+                            print(f"  5M_GUARD_SEEDED {symbol}: {green_count} green bars → IMMEDIATE activation", flush=True)
         else:
             t.qty_total = alp_qty
             if not t.tp_hit:
@@ -1214,6 +1230,21 @@ class PaperTradeManager:
                             qty_t2=qty_t2,
                             take_profit_t2=getattr(p, 'take_profit_t2', 0.0),
                         )
+                        # Seeded 5m guard activation on new trade
+                        new_t2 = self.open[symbol]
+                        if self._cont_hold_5m_guard and self._continuation_hold_enabled:
+                            new_t2._cont_hold_5m_mode = False
+                            new_t2._5m_bars = []
+                            qualifies, _ = self._check_continuation_hold(symbol, p.entry)
+                            if qualifies:
+                                completed = self._completed_5m_bars.get(symbol, [])
+                                if len(completed) >= self._cont_hold_5m_min_bars:
+                                    recent = completed[-self._cont_hold_5m_min_bars:]
+                                    green_count = sum(1 for b in recent if b["c"] > b["o"])
+                                    if green_count >= self._cont_hold_5m_min_bars:
+                                        new_t2._cont_hold_5m_mode = True
+                                        new_t2._5m_bars = list(recent)
+                                        print(f"  5M_GUARD_SEEDED {symbol}: {green_count} green bars → IMMEDIATE activation", flush=True)
                     else:
                         t.qty_total += delta
                         if not t.tp_hit:
@@ -2148,41 +2179,20 @@ class PaperTradeManager:
         self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
 
     def on_bar_close_5m_trend_guard(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
-        """5m bar close: graduated guard — observe first, activate if vol_dom sustains."""
+        """5m bar close: track completed bars + active-phase exit detection."""
+        # Always track completed bars for seeded activation
+        if symbol not in self._completed_5m_bars:
+            self._completed_5m_bars[symbol] = []
+        self._completed_5m_bars[symbol].append({"o": o, "h": h, "l": l, "c": c, "v": v})
+
         if not self._cont_hold_5m_guard or not self._continuation_hold_enabled:
             return
 
         t = self.open.get(symbol)
-        if not t:
-            return
-
-        # ─── OBSERVATION PHASE ───
-        if getattr(t, '_cont_hold_5m_observing', False) and not getattr(t, '_cont_hold_5m_mode', False):
-            still_valid, reason = self._check_continuation_hold(symbol, c)
-
-            vol_dom_checks = getattr(t, '_5m_vol_dom_checks', [])
-            vol_dom_checks.append(still_valid)
-            t._5m_vol_dom_checks = vol_dom_checks
-
-            bars_5m = getattr(t, '_5m_bars', [])
-            bars_5m.append({"o": o, "h": h, "l": l, "c": c, "v": v})
-            t._5m_bars = bars_5m
-
-            if not still_valid:
-                t._cont_hold_5m_observing = False
-                print(f"  5M_GUARD_ABORT {symbol}: vol_dom dropped during observation (bar {len(vol_dom_checks)}/{self._cont_hold_5m_min_bars})", flush=True)
-                return
-
-            if len(vol_dom_checks) >= self._cont_hold_5m_min_bars:
-                t._cont_hold_5m_mode = True
-                t._cont_hold_5m_observing = False
-                print(f"  5M_GUARD_ACTIVATED {symbol}: vol_dom sustained through {self._cont_hold_5m_min_bars} bars", flush=True)
+        if not t or not getattr(t, '_cont_hold_5m_mode', False):
             return
 
         # ─── ACTIVE PHASE ───
-        if not getattr(t, '_cont_hold_5m_mode', False):
-            return
-
         bars_5m = getattr(t, '_5m_bars', [])
         bars_5m.append({"o": o, "h": h, "l": l, "c": c, "v": v})
         t._5m_bars = bars_5m
