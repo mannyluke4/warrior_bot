@@ -1035,6 +1035,7 @@ def run_simulation(
     _cont_hold_cutoff_hour = int(os.getenv("WB_CONT_HOLD_CUTOFF_HOUR", "10"))
     _cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
     _cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
+    _cont_hold_use_1m_exits = os.getenv("WB_CONT_HOLD_USE_1M_EXITS", "0") == "1"
 
     if risk_dollars is not None:
         _risk = risk_dollars
@@ -1179,6 +1180,7 @@ def run_simulation(
             "last_1m_time": None,
             "prev_10s_bar": None,  # for bearish engulfing detection
             "recent_10s_highs": [],  # for BE parabolic grace
+            "prev_1m_bar": None,  # for 1m BE detection in continuation hold
         }
         _exit_on_bear_engulf = os.getenv("WB_EXIT_ON_BEAR_ENGULF", "1") == "1"
         _be_parabolic_grace = os.getenv("WB_BE_PARABOLIC_GRACE", "1") == "1"
@@ -1241,6 +1243,57 @@ def run_simulation(
                     running = bh
             return new_high_count >= _be_grace_min_new_highs
 
+        def _check_continuation_hold(bar, time_str: str) -> tuple[bool, str]:
+            """Check if continuation hold conditions are met (stateless check)."""
+            t = sim_mgr.open_trade
+            if t is None or t.closed:
+                return False, ""
+
+            # Legacy counter mode (when 1m exits not enabled)
+            if not _cont_hold_use_1m_exits:
+                hold_count = getattr(t, '_cont_hold_count', 0)
+                if hold_count >= _cont_hold_max_holds:
+                    return False, ""
+
+            # Check 1: Volume dominance at current moment (live from detector bars)
+            if len(det.bars_1m) >= 5:
+                recent_5_vol = sum(b["v"] for b in list(det.bars_1m)[-5:])
+                avg_5_vol = (sum(b["v"] for b in det.bars_1m) / len(det.bars_1m)) * 5
+                vol_dom = recent_5_vol / avg_5_vol if avg_5_vol > 0 else 0.0
+            else:
+                vol_dom = 0.0
+
+            if vol_dom < _cont_hold_min_vol_dom:
+                return False, ""
+
+            # Check 2: Original setup score
+            if t.score < _cont_hold_min_score:
+                return False, ""
+
+            # Check 3: Unrealized P&L not too deep
+            unrealized_r = (bar.close - t.entry) / t.r if t.r > 0 else 0
+            if unrealized_r < -_cont_hold_max_loss_r:
+                return False, ""
+
+            # Check 4: Time of day cutoff
+            try:
+                hh, mm = int(time_str.split(":")[0]), int(time_str.split(":")[1])
+                cutoff_total = _cont_hold_cutoff_hour * 60 + _cont_hold_cutoff_min
+                now_total = hh * 60 + mm
+                if now_total > cutoff_total:
+                    return False, ""
+            except Exception:
+                return False, ""
+
+            # All checks passed
+            if not _cont_hold_use_1m_exits:
+                # Legacy counter mode — increment hold count
+                hold_count = getattr(t, '_cont_hold_count', 0)
+                t._cont_hold_count = hold_count + 1
+                return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
+            else:
+                return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f})"
+
         def on_10s_close(bar):
             """10s bar close: exit pattern detection (like live bot's on_bar_close_10s)."""
             ts_et = bar.start_utc.astimezone(ET)
@@ -1290,53 +1343,6 @@ def run_simulation(
                     t.entry, t.r,
                 )
 
-            # Check parabolic suppression (new detector or legacy)
-            # In signal mode, do NOT suppress exits — cascading re-entry IS the strategy
-            def _check_continuation_hold(bar, time_str: str) -> tuple[bool, str]:
-                """Suppress TW/BE exits when trade has high-conviction factors."""
-                t = sim_mgr.open_trade
-                if t is None or t.closed:
-                    return False, ""
-
-                # Track hold count to prevent infinite suppression
-                hold_count = getattr(t, '_cont_hold_count', 0)
-                if hold_count >= _cont_hold_max_holds:
-                    return False, ""
-
-                # Check 1: Volume dominance at current moment (live from detector bars)
-                if len(det.bars_1m) >= 5:
-                    recent_5_vol = sum(b["v"] for b in list(det.bars_1m)[-5:])
-                    avg_5_vol = (sum(b["v"] for b in det.bars_1m) / len(det.bars_1m)) * 5
-                    vol_dom = recent_5_vol / avg_5_vol if avg_5_vol > 0 else 0.0
-                else:
-                    vol_dom = 0.0
-
-                if vol_dom < _cont_hold_min_vol_dom:
-                    return False, ""
-
-                # Check 2: Original setup score
-                if t.score < _cont_hold_min_score:
-                    return False, ""
-
-                # Check 3: Unrealized P&L not too deep
-                unrealized_r = (bar.close - t.entry) / t.r if t.r > 0 else 0
-                if unrealized_r < -_cont_hold_max_loss_r:
-                    return False, ""
-
-                # Check 4: Time of day cutoff
-                try:
-                    hh, mm = int(time_str.split(":")[0]), int(time_str.split(":")[1])
-                    cutoff_total = _cont_hold_cutoff_hour * 60 + _cont_hold_cutoff_min
-                    now_total = hh * 60 + mm
-                    if now_total > cutoff_total:
-                        return False, ""
-                except Exception:
-                    return False, ""
-
-                # All checks passed — suppress this exit
-                t._cont_hold_count = hold_count + 1
-                return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
-
             def _should_suppress_pattern_exit() -> tuple[bool, str]:
                 # Continuation hold runs BEFORE signal mode check — it applies to
                 # all exit modes because its purpose is suppressing premature TW/BE
@@ -1356,6 +1362,13 @@ def run_simulation(
                     return True, "parabolic_grace"
 
                 return False, ""
+
+            # If in 1m exit mode, skip ALL pattern exit detection on 10s bars
+            # Hard stops (stop_hit, max_loss_hit) are handled separately and always fire
+            if _cont_hold_use_1m_exits and _continuation_hold_enabled:
+                t = sim_mgr.open_trade
+                if t is not None and not t.closed and getattr(t, '_cont_hold_1m_mode', False):
+                    return  # exit detection handled in on_1m_close instead
 
             # Topping wicky exit on 10s bars (with grace period after entry)
             if ("TOPPING_WICKY" in (det.last_patterns or [])
@@ -1432,9 +1445,53 @@ def run_simulation(
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
 
+            # --- Continuation Hold: 1m bar exit detection ---
+            if _cont_hold_use_1m_exits and _continuation_hold_enabled:
+                t = sim_mgr.open_trade
+                if t is not None and not t.closed:
+                    still_valid, hold_reason = _check_continuation_hold(bar, time_str)
+
+                    if still_valid:
+                        # Mark/keep trade in 1m exit mode
+                        t._cont_hold_1m_mode = True
+
+                        # Check Topping Wicky on THIS 1m bar directly
+                        if len(det.bars_1m) >= 12:
+                            recent_12 = list(det.bars_1m)[-12:]
+                            top = max(b["h"] for b in recent_12)
+                            last_1m = recent_12[-1]
+                            rng = max(1e-9, last_1m["h"] - last_1m["l"])
+                            upper_wick = last_1m["h"] - max(last_1m["o"], last_1m["c"])
+                            body = abs(last_1m["c"] - last_1m["o"])
+                            near_top = abs(last_1m["h"] - top) <= max(0.01, top * 0.002)
+                            if near_top and (upper_wick / rng) >= 0.45 and (body / rng) <= 0.35:
+                                if verbose:
+                                    print(f"  [{time_str}] TOPPING_WICKY_EXIT (1m bar, cont_hold) @ {bar.close:.4f}", flush=True)
+                                sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
+
+                        # Check BE on 1m bar using previous 1m bar
+                        prev_1m = tick_sim_state.get("prev_1m_bar")
+                        if (prev_1m is not None and _exit_on_bear_engulf
+                            and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed):
+                            if is_bearish_engulfing(bar.open, bar.high, bar.low, bar.close,
+                                                     prev_1m["o"], prev_1m["h"], prev_1m["l"], prev_1m["c"]):
+                                if verbose:
+                                    print(f"  [{time_str}] BEARISH_ENGULFING_EXIT (1m bar, cont_hold) @ {bar.close:.4f}", flush=True)
+                                sim_mgr.on_exit_signal("bearish_engulfing", bar.close, time_str)
+
+                        if verbose and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+                            print(f"  [{time_str}] CONT_HOLD_1M_CHECK: no exit signal ({hold_reason})", flush=True)
+                    else:
+                        # Conditions no longer met — exit 1m mode
+                        t._cont_hold_1m_mode = False
+                        if verbose:
+                            print(f"  [{time_str}] CONT_HOLD_1M_MODE_OFF: conditions no longer met", flush=True)
+
             # Topping wicky exit after 1m bar close (with grace period after entry)
+            # Skip when in 1m exit mode (handled by cont hold block above)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
+                and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
                 # Profit gate: suppress TW only in small positive profit (< min R)
@@ -1462,6 +1519,7 @@ def run_simulation(
 
             tick_sim_state["last_1m_msg"] = msg
             tick_sim_state["last_1m_time"] = time_str
+            tick_sim_state["prev_1m_bar"] = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close}
 
         # Create bar builders with callbacks
         bb_10s = TradeBarBuilder(on_bar_close=on_10s_close, et_tz=ET, interval_seconds=10)
@@ -1563,6 +1621,18 @@ def run_simulation(
                                 f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
                                 flush=True,
                             )
+                        # Initialize continuation hold 1m mode on new trade
+                        if trade and _cont_hold_use_1m_exits and _continuation_hold_enabled:
+                            trade._cont_hold_1m_mode = False
+                            # Check if trade qualifies for 1m mode at entry
+                            # Create a minimal bar-like object for the check
+                            class _BarSnap:
+                                def __init__(self, c): self.close = c
+                            qualifies, _ = _check_continuation_hold(_BarSnap(price), time_str)
+                            if qualifies:
+                                trade._cont_hold_1m_mode = True
+                                if verbose:
+                                    print(f"  [{time_str}] CONT_HOLD_1M_MODE_ON at entry (score={trade.score:.1f})", flush=True)
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)

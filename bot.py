@@ -451,6 +451,11 @@ def on_bar_close_1m(bar):
             premarket_high=pm_high,
         )
 
+    # Continuation hold: 1m bar exit detection for live bot
+    if trade_manager:
+        trade_manager.on_bar_close_1m_cont_hold(symbol, bar.open, bar.high, bar.low, bar.close, bar.volume)
+
+    if msg:
         # Console printing policy:
         # - Default: print only ARMED lines (trade-relevant)
         # - Optional: print all 1m bar signals (impulse/pullback/reset)

@@ -261,7 +261,9 @@ class PaperTradeManager:
         self._cont_hold_cutoff_hour = int(os.getenv("WB_CONT_HOLD_CUTOFF_HOUR", "10"))
         self._cont_hold_cutoff_min = int(os.getenv("WB_CONT_HOLD_CUTOFF_MIN", "30"))
         self._cont_hold_max_holds = int(os.getenv("WB_CONT_HOLD_MAX_HOLDS", "2"))
+        self._cont_hold_use_1m_exits = os.getenv("WB_CONT_HOLD_USE_1M_EXITS", "0") == "1"
         self._micro_detectors: Dict[str, object] = {}  # symbol -> MicroPullbackDetector (set by bot.py)
+        self._last_1m_bar: Dict[str, dict] = {}  # symbol -> {o,h,l,c} for 1m BE detection
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = os.getenv("WB_3TRANCHE_ENABLED", "0") == "1"
@@ -2042,16 +2044,18 @@ class PaperTradeManager:
         return new_high_count >= self.be_grace_min_new_highs
 
     def _check_continuation_hold(self, symbol: str, price: float) -> tuple:
-        """Suppress TW/BE exits when high-conviction factors are present."""
+        """Check if continuation hold conditions are met (stateless check)."""
         if not self._continuation_hold_enabled:
             return False, ""
         t = self.open.get(symbol)
         if not t:
             return False, ""
 
-        hold_count = getattr(t, '_cont_hold_count', 0)
-        if hold_count >= self._cont_hold_max_holds:
-            return False, ""
+        # Legacy counter mode (when 1m exits not enabled)
+        if not self._cont_hold_use_1m_exits:
+            hold_count = getattr(t, '_cont_hold_count', 0)
+            if hold_count >= self._cont_hold_max_holds:
+                return False, ""
 
         # Volume dominance from detector's live 1m bars
         vol_dom = 0.0
@@ -2083,8 +2087,62 @@ class PaperTradeManager:
         except Exception:
             return False, ""
 
-        t._cont_hold_count = hold_count + 1
-        return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
+        # All checks passed
+        if not self._cont_hold_use_1m_exits:
+            hold_count = getattr(t, '_cont_hold_count', 0)
+            t._cont_hold_count = hold_count + 1
+            return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f},hold#{hold_count+1})"
+        else:
+            return True, f"continuation_hold(vol_dom={vol_dom:.1f}x,score={t.score:.1f},unreal_r={unrealized_r:.1f})"
+
+    def on_bar_close_1m_cont_hold(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
+        """1m bar close: check TW/BE exits when in continuation hold 1m mode."""
+        if not self._cont_hold_use_1m_exits or not self._continuation_hold_enabled:
+            self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
+            return
+
+        t = self.open.get(symbol)
+        if not t or not getattr(t, '_cont_hold_1m_mode', False):
+            self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
+            return
+
+        # Re-evaluate continuation hold conditions
+        still_valid, reason = self._check_continuation_hold(symbol, c)
+
+        if not still_valid:
+            t._cont_hold_1m_mode = False
+            print(f"  CONT_HOLD_1M_MODE_OFF {symbol}: conditions no longer met", flush=True)
+            self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
+            return
+
+        # Check TW on 1m bar DIRECTLY (do NOT use det.last_patterns — shared with 10s)
+        det = self._micro_detectors.get(symbol)
+        if det and len(det.bars_1m) >= 12:
+            recent_12 = list(det.bars_1m)[-12:]
+            top = max(b["h"] for b in recent_12)
+            last_1m = recent_12[-1]
+            rng = max(1e-9, last_1m["h"] - last_1m["l"])
+            upper_wick = last_1m["h"] - max(last_1m["o"], last_1m["c"])
+            body = abs(last_1m["c"] - last_1m["o"])
+            near_top = abs(last_1m["h"] - top) <= max(0.01, top * 0.002)
+            if near_top and (upper_wick / rng) >= 0.45 and (body / rng) <= 0.35:
+                print(f"  TOPPING_WICKY_EXIT (1m bar, cont_hold) {symbol}", flush=True)
+                self.on_exit_signal(symbol, "topping_wicky")
+                self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
+                return
+
+        # Check BE on 1m bar
+        prev_1m = self._last_1m_bar.get(symbol)
+        if prev_1m is not None and self.exit_on_bear_engulf:
+            if is_bearish_engulfing(o, h, l, c, prev_1m["o"], prev_1m["h"], prev_1m["l"], prev_1m["c"]):
+                print(f"  BEARISH_ENGULFING_EXIT (1m bar, cont_hold) {symbol}", flush=True)
+                # Bypass the 1m mode check in on_exit_signal by temporarily clearing it
+                t._cont_hold_1m_mode = False
+                self.on_exit_signal(symbol, "bearish_engulfing")
+                self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
+                return
+
+        self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
 
     def on_bar_close(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
         with self._lock:
@@ -2115,6 +2173,12 @@ class PaperTradeManager:
                 det.on_10s_bar(o, h, l, c, v, t.entry, t.r)
 
         self._manage_exits(symbol)
+
+        # If in 1m exit mode, skip BE detection on 10s bars (handled in 1m handler)
+        if self._cont_hold_use_1m_exits and self._continuation_hold_enabled:
+            t = self.open.get(symbol)
+            if t and getattr(t, '_cont_hold_1m_mode', False):
+                return
 
         if not self.exit_on_bear_engulf:
             return
@@ -2207,6 +2271,14 @@ class PaperTradeManager:
 
         # Suppress pattern exits (TW, L2) — hard stops NEVER suppressed
         if signal_name in ("topping_wicky", "l2_bearish", "l2_ask_wall"):
+            # In 1m exit mode, suppress all pattern exits from 10s bars
+            if self._cont_hold_use_1m_exits and self._continuation_hold_enabled:
+                if getattr(t, '_cont_hold_1m_mode', False):
+                    log_event("pattern_exit_suppressed_1m_mode", symbol,
+                              signal=signal_name, price=float(self.last_price.get(symbol, 0)))
+                    print(f"  {signal_name.upper()}_SUPPRESSED (1m_exit_mode) {symbol}", flush=True)
+                    return
+
             # Continuation hold runs in ALL exit modes (suppress premature exits on high-conviction)
             px_now = float(self.last_price.get(symbol, 0))
             suppress, reason = self._check_continuation_hold(symbol, px_now)
