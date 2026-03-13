@@ -214,7 +214,12 @@ def fetch_prev_close(symbols: list[str], date_str: str) -> dict[str, float]:
             bars = hist_client.get_stock_bars(request)
             for sym, bar_list in bars.data.items():
                 if bar_list:
-                    prev_close[sym] = bar_list[-1].close
+                    # Filter to bars strictly before the target date
+                    target_date = date.date()
+                    prev_bars = [b for b in bar_list
+                                 if b.timestamp.astimezone(ET).date() < target_date]
+                    if prev_bars:
+                        prev_close[sym] = prev_bars[-1].close
         except Exception as e:
             print(f"  [prev_close chunk {i}] Error: {e}")
 
@@ -304,10 +309,8 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
 
 
 def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> list[dict]:
-    """Find stocks that gap at open but had zero pre-market bars on Alpaca.
-
-    Fetches the first 5 minutes of regular-hours bars (9:30-9:35 AM ET) for
-    symbols that have a prev_close but were NOT already found in pre-market.
+    """Legacy: Find stocks that gap at open but had zero pre-market bars.
+    Kept for backward compatibility. Use find_emerging_movers() instead.
     """
     check_symbols = list(set(prev_close.keys()) - existing_symbols)
     if not check_symbols:
@@ -355,6 +358,114 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
     return late_movers
 
 
+# Continuous scanning checkpoints (all times ET)
+SCAN_CHECKPOINTS = [
+    ("08:00", 8, 0),
+    ("08:30", 8, 30),
+    ("09:00", 9, 0),
+    ("09:30", 9, 30),
+    ("10:00", 10, 0),
+    ("10:30", 10, 30),
+]
+
+# Previous checkpoint for each (to define the fetch window)
+_CHECKPOINT_WINDOWS = [
+    # (label, start_hour, start_min, end_hour, end_min)
+    ("08:00", 7, 15, 8, 0),
+    ("08:30", 8, 0, 8, 30),
+    ("09:00", 8, 30, 9, 0),
+    ("09:30", 9, 0, 9, 30),
+    ("10:00", 9, 30, 10, 0),
+    ("10:30", 10, 0, 10, 30),
+]
+
+
+def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
+                         date_str: str) -> list[dict]:
+    """Continuous re-scan: check for new gap candidates at multiple checkpoints.
+
+    Scans at 8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET for stocks that
+    have gapped >= 5% vs prev_close but weren't caught by the original
+    7:15 AM premarket scan. This catches mid-morning catalysts like ROLR
+    on Jan 14 (news at 8:18 AM, +340% gap).
+
+    Args:
+        prev_close: {symbol: prev_close_price} for all active symbols
+        existing_candidates: list of candidate dicts already found by premarket scan
+        date_str: date string YYYY-MM-DD
+
+    Returns:
+        list of new candidate dicts with discovery_time and discovery_method fields
+    """
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    found_symbols = {c["symbol"] for c in existing_candidates}
+    all_new = []
+
+    for label, win_start_h, win_start_m, win_end_h, win_end_m in _CHECKPOINT_WINDOWS:
+        # Skip symbols already found
+        check_symbols = list(set(prev_close.keys()) - found_symbols)
+        if not check_symbols:
+            break
+
+        win_start = ET.localize(datetime.combine(
+            date.date(), datetime.min.time().replace(hour=win_start_h, minute=win_start_m)))
+        win_end = ET.localize(datetime.combine(
+            date.date(), datetime.min.time().replace(hour=win_end_h, minute=win_end_m)))
+
+        checkpoint_new = []
+        chunk_size = 1000
+        for i in range(0, len(check_symbols), chunk_size):
+            chunk = check_symbols[i:i + chunk_size]
+            try:
+                request = StockBarsRequest(
+                    symbol_or_symbols=chunk,
+                    timeframe=TimeFrame.Minute,
+                    start=win_start,
+                    end=win_end,
+                )
+                bars = hist_client.get_stock_bars(request)
+                for sym, bar_list in bars.data.items():
+                    if not bar_list or sym in found_symbols:
+                        continue
+                    pc = prev_close.get(sym)
+                    if not pc or pc <= 0:
+                        continue
+
+                    # Use the latest bar's close as current price
+                    latest_price = bar_list[-1].close
+                    gap_pct = (latest_price - pc) / pc * 100
+
+                    if gap_pct < 5:
+                        continue
+                    if latest_price < 2.0 or latest_price > 20.0:
+                        continue
+
+                    vol = sum(b.volume for b in bar_list if b.volume)
+
+                    checkpoint_new.append({
+                        "symbol": sym,
+                        "prev_close": round(pc, 4),
+                        "pm_price": round(latest_price, 4),
+                        "gap_pct": round(gap_pct, 2),
+                        "pm_volume": vol,
+                        "first_seen_et": label,
+                        "sim_start": label,
+                        "discovery_time": label,
+                        "discovery_method": "rescan",
+                    })
+                    found_symbols.add(sym)
+            except Exception as e:
+                print(f"  [rescan {label} chunk {i}] Error: {e}")
+
+        if checkpoint_new:
+            checkpoint_new.sort(key=lambda x: x["gap_pct"], reverse=True)
+            for c in checkpoint_new:
+                print(f"         RESCAN [{label}]: {c['symbol']} gap={c['gap_pct']:+.1f}% ${c['pm_price']:.2f}")
+            all_new.extend(checkpoint_new)
+
+    return all_new
+
+
 def run_scanner(date_str: str):
     print(f"\n{'=' * 60}")
     print(f"  SCANNER SIMULATOR — {date_str}")
@@ -380,17 +491,16 @@ def run_scanner(date_str: str):
     candidates = compute_gap_candidates(prev_close, pm_bars)
     print(f"         {len(candidates)} raw candidates")
 
-    # Step 4b: Check for late movers (gap-at-open, no PM bars)
-    print(f"  [4b/5] Checking for late movers (gap-at-open, no PM bars)...")
-    existing_pm_symbols = {c["symbol"] for c in candidates}
-    late_movers = find_late_movers(prev_close, existing_pm_symbols, date_str)
-    print(f"         {len(late_movers)} late movers found")
-    if late_movers:
-        for lm in late_movers[:5]:  # Show first 5
-            print(f"         LATE: {lm['symbol']} gap={lm['gap_pct']:+.1f}% ${lm['pm_price']:.2f}")
-        if len(late_movers) > 5:
-            print(f"         ... and {len(late_movers) - 5} more")
-    candidates.extend(late_movers)
+    # Tag premarket candidates with discovery metadata
+    for c in candidates:
+        c["discovery_time"] = c.get("first_seen_et", "premarket")
+        c["discovery_method"] = "premarket"
+
+    # Step 4b: Continuous re-scan (8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET)
+    print(f"  [4b/5] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
+    emerging = find_emerging_movers(prev_close, candidates, date_str)
+    print(f"         {len(emerging)} emerging movers found across all checkpoints")
+    candidates.extend(emerging)
     # Re-sort all candidates by gap% descending
     candidates.sort(key=lambda x: x["gap_pct"], reverse=True)
 
@@ -425,16 +535,23 @@ def run_scanner(date_str: str):
     txt_path = os.path.join(SCANNER_DIR, f"{date_str}.txt")
     with open(txt_path, "w") as f:
         f.write(f"Scanner Results — {date_str}\n")
-        f.write(f"{'=' * 60}\n")
-        f.write(f"{'Symbol':<8} {'Gap%':>7} {'Price':>7} {'Float':>8} {'Profile':>7} {'SimStart':>8} {'PM Vol':>10}\n")
-        f.write(f"{'─'*8} {'─'*7} {'─'*7} {'─'*8} {'─'*7} {'─'*8} {'─'*10}\n")
+        f.write(f"{'=' * 80}\n")
+        f.write(f"{'Symbol':<8} {'Gap%':>7} {'Price':>7} {'Float':>8} {'Profile':>7} {'SimStart':>8} {'PM Vol':>10} {'Discovery':>10} {'Method':>10}\n")
+        f.write(f"{'─'*8} {'─'*7} {'─'*7} {'─'*8} {'─'*7} {'─'*8} {'─'*10} {'─'*10} {'─'*10}\n")
         for c in final_candidates:
             float_str = f"{c['float_millions']}M" if c['float_millions'] else "N/A"
+            disc_time = c.get("discovery_time", "premarket")
+            disc_method = c.get("discovery_method", "premarket")
             f.write(
                 f"{c['symbol']:<8} {c['gap_pct']:>+7.1f}% {c['pm_price']:>7.2f} {float_str:>8} "
-                f"{c['profile']:>7} {c['sim_start']:>8} {c['pm_volume']:>10,}\n"
+                f"{c['profile']:>7} {c['sim_start']:>8} {c['pm_volume']:>10,} {disc_time:>10} {disc_method:>10}\n"
             )
         f.write(f"\nTotal candidates: {len(final_candidates)}\n")
+        # Summary by discovery method
+        premarket_count = sum(1 for c in final_candidates if c.get("discovery_method") == "premarket")
+        rescan_count = sum(1 for c in final_candidates if c.get("discovery_method") == "rescan")
+        f.write(f"  Premarket (7:15 AM): {premarket_count}\n")
+        f.write(f"  Continuous rescan:   {rescan_count}\n")
 
     print(f"\n  Results saved:")
     print(f"    {json_path}")

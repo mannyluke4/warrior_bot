@@ -634,12 +634,12 @@ class MicroPullbackDetector:
         if len(self.bars_1m) < self.warmup_bars:
             return f"1M NO_ARM warmup: {len(self.bars_1m)}/{self.warmup_bars} bars"
 
-        # --- Gate 5 (no re-entry) check for direct mode ---
-        if self.no_reentry_enabled:
-            g5_pass, g5_msg = self._gate5_no_reentry()
-            print(f"  {g5_msg}", flush=True)
-            if not g5_pass:
-                return f"1M NO_ARM quality_gate_failed"
+        # --- Quality Gate (runs between qualification and ARM) ---
+        qg_passed, qg_size_mult, qg_logs = self._check_quality_gate(entry)
+        for qg_msg in qg_logs:
+            print(f"  {qg_msg}", flush=True)
+        if not qg_passed:
+            return f"1M NO_ARM quality_gate_failed"
 
         # --- ARM ---
         self.armed = ArmedTrade(
