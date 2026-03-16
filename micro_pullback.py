@@ -347,6 +347,41 @@ class MicroPullbackDetector:
             score += 0.5
             parts.append("R>=0.05=+0.5")
 
+        # --- Ross Pillar scoring boosts ---
+        _rvol = float(os.getenv("WB_SCANNER_RVOL", "0"))
+        _float_m = float(os.getenv("WB_SCANNER_FLOAT_M", "20"))
+        _gap = float(os.getenv("WB_SCANNER_GAP_PCT", "0"))
+
+        # Relative Volume boost (Pillar 2)
+        if _rvol > 0:
+            if _rvol >= 10:
+                score += 3.0
+                parts.append("rvol_10x=+3")
+            elif _rvol >= 5:
+                score += 2.0
+                parts.append("rvol_5x=+2")
+            elif _rvol >= 2:
+                score += 1.0
+                parts.append("rvol_2x=+1")
+
+        # Float tightness boost (Pillar 5)
+        if _float_m > 0:
+            if _float_m < 2:
+                score += 1.5
+                parts.append("float_tight=+1.5")
+            elif _float_m < 5:
+                score += 0.5
+                parts.append("float_ok=+0.5")
+
+        # Gap strength boost (Pillar 1 — beyond the 10% hard gate)
+        if _gap > 0:
+            if _gap >= 50:
+                score += 1.5
+                parts.append("gap_50=+1.5")
+            elif _gap >= 25:
+                score += 0.5
+                parts.append("gap_25=+0.5")
+
         detail = ";".join(parts)
         return score, detail
 

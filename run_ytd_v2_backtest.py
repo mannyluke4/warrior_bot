@@ -11,6 +11,7 @@ import os
 import json
 import sys
 import math
+import time
 from datetime import datetime
 
 # ── Config ──────────────────────────────────────────────────────────────
@@ -25,7 +26,7 @@ TOP_N = 5  # Watchlist size
 MIN_PM_VOLUME = 0  # No hard filter — let composite ranking handle it
 MIN_GAP_PCT = 5
 MAX_GAP_PCT = 500
-MAX_FLOAT_MILLIONS = 20
+MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
 
 ENV_BASE = {
     "WB_CLASSIFIER_ENABLED": "1",
@@ -69,16 +70,20 @@ WORKDIR = "/Users/mannyluke/warrior_bot"
 # ── Candidate ranking ─────────────────────────────────────────────────
 
 def rank_score(candidate):
-    """Composite score: 70% volume + 20% gap + 10% float bonus."""
+    """Composite score: 40% RVOL + 30% abs volume + 20% gap + 10% float bonus."""
     pm_vol = candidate.get("pm_volume", 0) or 0
+    rvol = candidate.get("relative_volume", 0) or 0
     gap_pct = candidate.get("gap_pct", 0) or 0
-    float_m = candidate.get("float_millions", 20) or 20
+    float_m = candidate.get("float_millions", 10) or 10
 
-    vol_score = math.log10(max(pm_vol, 1))
+    # Relative volume (log scale, capped) — stocks with unusual interest rank higher
+    rvol_score = math.log10(max(rvol, 0.1) + 1) / math.log10(51)  # 0-1 range, 50x = 1.0
+    # Absolute volume (keep as tiebreaker)
+    vol_score = math.log10(max(pm_vol, 1)) / 8  # normalize
     gap_score = min(gap_pct, 100) / 100
-    float_penalty = min(float_m, 20) / 20
+    float_penalty = min(float_m, 10) / 10  # tightened to 10M
 
-    return (0.7 * vol_score) + (0.2 * gap_score) + (0.1 * (1 - float_penalty))
+    return (0.4 * rvol_score) + (0.3 * vol_score) + (0.2 * gap_score) + (0.1 * (1 - float_penalty))
 
 
 def load_and_rank(date_str: str) -> tuple:
@@ -134,20 +139,31 @@ TRADE_PAT = re.compile(
 )
 
 
-def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float) -> list:
+def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
+            candidate: dict = None) -> list:
     """Run simulate.py and parse trade results."""
     env = {**os.environ, **ENV_BASE}
     env["WB_MIN_ENTRY_SCORE"] = str(min_score)
+    # Pass Ross Pillar data via env vars for entry-time checks
+    if candidate:
+        env["WB_SCANNER_GAP_PCT"] = str(candidate.get("gap_pct", 0))
+        env["WB_SCANNER_RVOL"] = str(candidate.get("relative_volume", 0) or 0)
+        env["WB_SCANNER_FLOAT_M"] = str(candidate.get("float_millions", 20) or 20)
 
     cmd = [
         "python", "simulate.py", symbol, date, sim_start, "12:00",
-        "--ticks", "--risk", str(risk), "--no-fundamentals",
+        "--ticks", "--feed", "databento",
+        "--risk", str(risk), "--no-fundamentals",
     ]
     try:
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=300, env=env,
             cwd=WORKDIR,
         )
+        if result.returncode != 0:
+            print(f"    SIM FAILED: {symbol} {date} (exit code {result.returncode})", flush=True)
+            print(f"    stderr: {result.stderr[-500:]}", flush=True)
+            return []
         output = result.stdout + result.stderr
     except subprocess.TimeoutExpired:
         print(f"    TIMEOUT: {symbol} {date}", flush=True)
@@ -330,7 +346,8 @@ def _run_config_day(top5, date, risk, min_score):
 
         sym = c["symbol"]
         sim_start = "07:00"  # Always sim from market prep — not discovery time
-        all_trades = run_sim(sym, date, sim_start, risk, min_score)
+        all_trades = run_sim(sym, date, sim_start, risk, min_score, candidate=c)
+        time.sleep(1)  # Rate limit: 1 second between API calls
 
         for t in all_trades:
             if len(day_trades) >= MAX_TRADES_PER_DAY:

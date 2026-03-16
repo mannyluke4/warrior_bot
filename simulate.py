@@ -494,14 +494,25 @@ def fetch_bars(symbol: str, start_utc: datetime, end_utc: datetime) -> list:
 
 def fetch_trades(symbol: str, start_utc: datetime, end_utc: datetime) -> list:
     """Fetch tick-level trade data from Alpaca for high-fidelity backtesting."""
+    import time as _time
     req = StockTradesRequest(
         symbol_or_symbols=[symbol],
         start=start_utc,
         end=end_utc,
         feed="sip",
     )
-    trade_set = hist_client.get_stock_trades(req)
-    return trade_set.data.get(symbol, [])
+    for attempt in range(3):
+        try:
+            trade_set = hist_client.get_stock_trades(req)
+            return trade_set.data.get(symbol, [])
+        except Exception as e:
+            if attempt < 2:
+                wait = 2 ** attempt  # 1s, 2s
+                print(f"  [RETRY] fetch_trades {symbol}: {e} — retrying in {wait}s", flush=True)
+                _time.sleep(wait)
+            else:
+                print(f"  [FAILED] fetch_trades {symbol}: {e} — all retries exhausted", flush=True)
+                raise
 
 
 def synthetic_ticks(o, h, l, c):
@@ -1040,6 +1051,14 @@ def run_simulation(
     _cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
     _cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "2"))
     _min_entry_score = float(os.getenv("WB_MIN_ENTRY_SCORE", "0"))
+
+    # Ross Pillar Gates (entry-time checks)
+    _pillar_min_gap = float(os.getenv("WB_PILLAR_MIN_GAP_PCT", "10"))   # Pillar 1: up 10%+
+    _pillar_min_rvol = float(os.getenv("WB_PILLAR_MIN_RVOL", "2.0"))    # Pillar 2: RVOL >= 2x
+    _pillar_min_price = float(os.getenv("WB_PILLAR_MIN_PRICE", "2.0"))  # Pillar 4: price floor
+    _pillar_max_price = float(os.getenv("WB_PILLAR_MAX_PRICE", "20.0")) # Pillar 4: price ceiling
+    _scanner_gap_pct = float(os.getenv("WB_SCANNER_GAP_PCT", "0"))
+    _scanner_rvol = float(os.getenv("WB_SCANNER_RVOL", "0"))
 
     if risk_dollars is not None:
         _risk = risk_dollars
@@ -1666,6 +1685,15 @@ def run_simulation(
                     if _toxic['action'] == 'BLOCK':
                         if verbose:
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    elif _scanner_gap_pct > 0 and _scanner_gap_pct < _pillar_min_gap:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: gap {_scanner_gap_pct:.1f}% < {_pillar_min_gap}%", flush=True)
+                    elif _scanner_rvol > 0 and _scanner_rvol < _pillar_min_rvol:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: RVOL {_scanner_rvol:.1f}x < {_pillar_min_rvol}x", flush=True)
+                    elif armed_before.trigger_high < _pillar_min_price or armed_before.trigger_high > _pillar_max_price:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: price ${armed_before.trigger_high:.2f} outside ${_pillar_min_price}-${_pillar_max_price}", flush=True)
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
@@ -1860,6 +1888,15 @@ def run_simulation(
                     if _toxic['action'] == 'BLOCK':
                         if verbose:
                             print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                    elif _scanner_gap_pct > 0 and _scanner_gap_pct < _pillar_min_gap:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: gap {_scanner_gap_pct:.1f}% < {_pillar_min_gap}%", flush=True)
+                    elif _scanner_rvol > 0 and _scanner_rvol < _pillar_min_rvol:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: RVOL {_scanner_rvol:.1f}x < {_pillar_min_rvol}x", flush=True)
+                    elif armed_before.trigger_high < _pillar_min_price or armed_before.trigger_high > _pillar_max_price:
+                        if verbose:
+                            print(f"  [{time_str}] PILLAR_BLOCK: price ${armed_before.trigger_high:.2f} outside ${_pillar_min_price}-${_pillar_max_price}", flush=True)
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)

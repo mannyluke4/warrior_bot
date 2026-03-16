@@ -225,6 +225,35 @@ def fetch_prev_close(symbols: list[str], date_str: str) -> dict[str, float]:
     return prev_close
 
 
+def fetch_avg_daily_volume(symbols: list[str], date_str: str) -> dict[str, float]:
+    """Fetch 10-day average daily volume for each symbol (for relative volume calculation)."""
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    start = date - timedelta(days=21)  # ~21 calendar days ≈ 15 trading days, take last 10
+
+    avg_vol = {}
+    chunk_size = 1000
+    for i in range(0, len(symbols), chunk_size):
+        chunk = symbols[i:i + chunk_size]
+        try:
+            request = StockBarsRequest(
+                symbol_or_symbols=chunk,
+                timeframe=TimeFrame.Day,
+                start=ET.localize(datetime.combine(start.date(), datetime.min.time())),
+                end=ET.localize(datetime.combine(date.date(), datetime.min.time())),
+            )
+            bars = hist_client.get_stock_bars(request)
+            for sym, bar_list in bars.data.items():
+                target_date = date.date()
+                prev_bars = [b for b in bar_list if b.timestamp.astimezone(ET).date() < target_date]
+                if len(prev_bars) >= 3:  # Need at least 3 days to be meaningful
+                    last_10 = prev_bars[-10:]  # Take up to last 10 trading days
+                    avg_vol[sym] = sum(b.volume for b in last_10) / len(last_10)
+        except Exception as e:
+            print(f"  [avg_vol chunk {i}] Error: {e}")
+
+    return avg_vol
+
+
 def fetch_premarket_bars(symbols: list[str], date_str: str) -> dict[str, list]:
     """Fetch pre-market 1-min bars (4:00-7:15 AM ET) for all symbols."""
     date = datetime.strptime(date_str, "%Y-%m-%d")
@@ -475,36 +504,51 @@ def run_scanner(date_str: str):
     all_symbols = get_all_active_symbols()
     print(f"         {len(all_symbols)} symbols found")
 
-    # Step 2: Fetch previous day close
-    print("  [2/5] Fetching previous-day close...")
+    # Step 2: Fetch previous day close + avg daily volume
+    print("  [2/6] Fetching previous-day close...")
     prev_close = fetch_prev_close(all_symbols, date_str)
     print(f"         {len(prev_close)} symbols with prev close")
+    print("  [2b/6] Fetching 10-day average daily volume...")
+    avg_daily_vol = fetch_avg_daily_volume(all_symbols, date_str)
+    print(f"         {len(avg_daily_vol)} symbols with avg volume data")
 
     # Step 3: Fetch pre-market bars
-    print("  [3/5] Fetching pre-market bars (4:00-7:15 AM ET)...")
+    print("  [3/6] Fetching pre-market bars (4:00-7:15 AM ET)...")
     pm_bars = fetch_premarket_bars(all_symbols, date_str)
     print(f"         {len(pm_bars)} symbols with PM activity")
 
     # Step 4: Compute gap candidates
-    print("  [4/5] Computing gap candidates (>=5%, $2-$20)...")
+    print("  [4/6] Computing gap candidates (>=5%, $2-$20)...")
     candidates = compute_gap_candidates(prev_close, pm_bars)
     print(f"         {len(candidates)} raw candidates")
 
-    # Tag premarket candidates with discovery metadata
+    # Tag premarket candidates with discovery metadata + RVOL
     for c in candidates:
         c["discovery_time"] = c.get("first_seen_et", "premarket")
         c["discovery_method"] = "premarket"
+        sym = c["symbol"]
+        adv = avg_daily_vol.get(sym)
+        c["avg_daily_volume"] = round(adv, 0) if adv else None
+        pm_vol = c.get("pm_volume", 0) or 0
+        c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
 
     # Step 4b: Continuous re-scan (8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET)
-    print(f"  [4b/5] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
+    print(f"  [4b/6] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
     emerging = find_emerging_movers(prev_close, candidates, date_str)
     print(f"         {len(emerging)} emerging movers found across all checkpoints")
+    # Add RVOL to emerging movers
+    for c in emerging:
+        sym = c["symbol"]
+        adv = avg_daily_vol.get(sym)
+        c["avg_daily_volume"] = round(adv, 0) if adv else None
+        pm_vol = c.get("pm_volume", 0) or 0
+        c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
     candidates.extend(emerging)
     # Re-sort all candidates by gap% descending
     candidates.sort(key=lambda x: x["gap_pct"], reverse=True)
 
     # Step 5: Look up float and classify
-    print("  [5/5] Looking up float (known → cache → FMP → yfinance)...")
+    print("  [5/6] Looking up float (known → cache → FMP → yfinance)...")
     float_cache = load_float_cache()
     final_candidates = []
 
