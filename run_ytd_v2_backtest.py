@@ -152,7 +152,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
 
     cmd = [
         "python", "simulate.py", symbol, date, sim_start, "12:00",
-        "--ticks", "--feed", "databento",
+        "--ticks",  # Alpaca feed (default) — strategy tuned on Alpaca data; retry logic handles 500s
         "--risk", str(risk), "--no-fundamentals",
     ]
     try:
