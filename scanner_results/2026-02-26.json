@@ -56,20 +56,6 @@
     "profile": "B"
   },
   {
-    "symbol": "CELT",
-    "prev_close": 13.42,
-    "pm_price": 17.1,
-    "gap_pct": 27.42,
-    "pm_volume": 8520.0,
-    "first_seen_et": "05:21",
-    "sim_start": "07:00",
-    "discovery_time": "05:21",
-    "discovery_method": "premarket",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "GURE",
     "prev_close": 4.48,
     "pm_price": 5.687,
@@ -518,20 +504,6 @@
     "profile": "X"
   },
   {
-    "symbol": "DASX",
-    "prev_close": 9.93,
-    "pm_price": 10.81,
-    "gap_pct": 8.86,
-    "pm_volume": 2105.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "CLRO",
     "prev_close": 4.483,
     "pm_price": 4.87,
@@ -740,6 +712,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "RBOT",
+    "prev_close": 2.07,
+    "pm_price": 2.23,
+    "gap_pct": 7.73,
+    "pm_volume": 3000.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "rescan",
+    "float_shares": 3751250,
+    "float_millions": 3.75,
+    "profile": "A"
   },
   {
     "symbol": "UNX",
@@ -1076,6 +1062,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 3.35,
+    "pm_price": 3.57,
+    "gap_pct": 6.57,
+    "pm_volume": 918.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
   },
   {
     "symbol": "AGIG",
@@ -1468,6 +1468,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "ZDAI",
+    "prev_close": 4.4,
+    "pm_price": 4.65,
+    "gap_pct": 5.68,
+    "pm_volume": 1009.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 539858,
+    "float_millions": 0.54,
+    "profile": "A"
   },
   {
     "symbol": "UONE",

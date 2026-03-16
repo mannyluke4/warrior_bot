@@ -168,6 +168,20 @@
     "profile": "A"
   },
   {
+    "symbol": "PAVS",
+    "prev_close": 1.78,
+    "pm_price": 2.02,
+    "gap_pct": 13.48,
+    "pm_volume": 27208.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 53496,
+    "float_millions": 0.05,
+    "profile": "A"
+  },
+  {
     "symbol": "AGH",
     "prev_close": 3.92,
     "pm_price": 4.44,
@@ -560,6 +574,20 @@
     "profile": "B"
   },
   {
+    "symbol": "MAMO",
+    "prev_close": 3.71,
+    "pm_price": 3.9764,
+    "gap_pct": 7.18,
+    "pm_volume": 7147.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 4940699,
+    "float_millions": 4.94,
+    "profile": "A"
+  },
+  {
     "symbol": "CLRB",
     "prev_close": 3.745,
     "pm_price": 4.01,
@@ -641,6 +669,20 @@
     "discovery_method": "rescan",
     "float_shares": 817430,
     "float_millions": 0.82,
+    "profile": "A"
+  },
+  {
+    "symbol": "WAI",
+    "prev_close": 2.24,
+    "pm_price": 2.3888,
+    "gap_pct": 6.64,
+    "pm_volume": 1635.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 457212,
+    "float_millions": 0.46,
     "profile": "A"
   },
   {
@@ -882,20 +924,6 @@
     "profile": "A"
   },
   {
-    "symbol": "CEPT",
-    "prev_close": 11.63,
-    "pm_price": 12.3,
-    "gap_pct": 5.76,
-    "pm_volume": 1496203.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 4228505,
-    "float_millions": 4.23,
-    "profile": "A"
-  },
-  {
     "symbol": "SSM",
     "prev_close": 7.2,
     "pm_price": 7.615,
@@ -907,6 +935,20 @@
     "discovery_method": "rescan",
     "float_shares": 1147589,
     "float_millions": 1.15,
+    "profile": "A"
+  },
+  {
+    "symbol": "CEPT",
+    "prev_close": 11.63,
+    "pm_price": 12.3,
+    "gap_pct": 5.76,
+    "pm_volume": 1496203.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 4228505,
+    "float_millions": 4.23,
     "profile": "A"
   },
   {
@@ -1246,20 +1288,6 @@
     "profile": "A"
   },
   {
-    "symbol": "NVVE",
-    "prev_close": 3.91,
-    "pm_price": 4.11,
-    "gap_pct": 5.12,
-    "pm_volume": 17853.0,
-    "first_seen_et": "08:30",
-    "sim_start": "08:30",
-    "discovery_time": "08:30",
-    "discovery_method": "rescan",
-    "float_shares": 203095,
-    "float_millions": 0.2,
-    "profile": "A"
-  },
-  {
     "symbol": "CSEX",
     "prev_close": 18.76,
     "pm_price": 19.72,
@@ -1272,6 +1300,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "NVVE",
+    "prev_close": 3.91,
+    "pm_price": 4.11,
+    "gap_pct": 5.12,
+    "pm_volume": 17853.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "rescan",
+    "float_shares": 203095,
+    "float_millions": 0.2,
+    "profile": "A"
   },
   {
     "symbol": "VNCE",

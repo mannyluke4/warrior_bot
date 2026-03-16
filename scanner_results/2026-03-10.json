@@ -252,20 +252,6 @@
     "profile": "X"
   },
   {
-    "symbol": "VVPR",
-    "prev_close": 1.88,
-    "pm_price": 2.1326,
-    "gap_pct": 13.44,
-    "pm_volume": 487.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
-  },
-  {
     "symbol": "HIYY",
     "prev_close": 15.61,
     "pm_price": 17.68,
@@ -669,6 +655,20 @@
     "discovery_method": "rescan",
     "float_shares": 55000,
     "float_millions": 0.06,
+    "profile": "A"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 3.12,
+    "pm_price": 3.38,
+    "gap_pct": 8.33,
+    "pm_volume": 1492.0,
+    "first_seen_et": "04:01",
+    "sim_start": "07:00",
+    "discovery_time": "04:01",
+    "discovery_method": "premarket",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
     "profile": "A"
   },
   {
@@ -1750,20 +1750,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ACON",
-    "prev_close": 3.26,
-    "pm_price": 3.44,
-    "gap_pct": 5.52,
-    "pm_volume": 21909.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 700000,
-    "float_millions": 0.7,
-    "profile": "A"
-  },
-  {
     "symbol": "OCCI",
     "prev_close": 2.81,
     "pm_price": 2.965,
@@ -1776,6 +1762,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "ACON",
+    "prev_close": 3.26,
+    "pm_price": 3.44,
+    "gap_pct": 5.52,
+    "pm_volume": 21909.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 700000,
+    "float_millions": 0.7,
+    "profile": "A"
   },
   {
     "symbol": "ACET",

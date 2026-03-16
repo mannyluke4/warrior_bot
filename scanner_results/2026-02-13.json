@@ -1246,18 +1246,18 @@
     "profile": "A"
   },
   {
-    "symbol": "MBOT",
-    "prev_close": 2.09,
-    "pm_price": 2.235,
+    "symbol": "NBIG",
+    "prev_close": 6.48,
+    "pm_price": 6.93,
     "gap_pct": 6.94,
-    "pm_volume": 995831.0,
+    "pm_volume": 315506.0,
     "first_seen_et": "10:00",
     "sim_start": "10:00",
     "discovery_time": "10:00",
     "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
+    "float_shares": 854469,
+    "float_millions": 0.85,
+    "profile": "A"
   },
   {
     "symbol": "PLU",
@@ -1274,17 +1274,31 @@
     "profile": "X"
   },
   {
-    "symbol": "NBIG",
-    "prev_close": 6.48,
-    "pm_price": 6.93,
+    "symbol": "MBOT",
+    "prev_close": 2.09,
+    "pm_price": 2.235,
     "gap_pct": 6.94,
-    "pm_volume": 315506.0,
+    "pm_volume": 995831.0,
     "first_seen_et": "10:00",
     "sim_start": "10:00",
     "discovery_time": "10:00",
     "discovery_method": "rescan",
-    "float_shares": 854469,
-    "float_millions": 0.85,
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 2.6,
+    "pm_price": 2.78,
+    "gap_pct": 6.92,
+    "pm_volume": 5029.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
     "profile": "A"
   },
   {
@@ -1666,20 +1680,6 @@
     "profile": "X"
   },
   {
-    "symbol": "LITM",
-    "prev_close": 2.91,
-    "pm_price": 3.1,
-    "gap_pct": 6.53,
-    "pm_volume": 18400.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 8734782,
-    "float_millions": 8.73,
-    "profile": "B"
-  },
-  {
     "symbol": "CRWG",
     "prev_close": 4.24,
     "pm_price": 4.5165,
@@ -1831,6 +1831,20 @@
     "discovery_method": "rescan",
     "float_shares": 4504767,
     "float_millions": 4.5,
+    "profile": "A"
+  },
+  {
+    "symbol": "WAI",
+    "prev_close": 2.39,
+    "pm_price": 2.54,
+    "gap_pct": 6.28,
+    "pm_volume": 300.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 457212,
+    "float_millions": 0.46,
     "profile": "A"
   },
   {
@@ -2072,20 +2086,6 @@
     "profile": "A"
   },
   {
-    "symbol": "CRWU",
-    "prev_close": 7.91,
-    "pm_price": 8.3783,
-    "gap_pct": 5.92,
-    "pm_volume": 182978.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "BAIG",
     "prev_close": 4.39,
     "pm_price": 4.65,
@@ -2098,6 +2098,20 @@
     "float_shares": 840023,
     "float_millions": 0.84,
     "profile": "A"
+  },
+  {
+    "symbol": "CRWU",
+    "prev_close": 7.91,
+    "pm_price": 8.3783,
+    "gap_pct": 5.92,
+    "pm_volume": 182978.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "EMAT",
@@ -2300,10 +2314,10 @@
     "prev_close": 5.71,
     "pm_price": 6.04,
     "gap_pct": 5.78,
-    "pm_volume": 1188.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
+    "pm_volume": 777.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
     "discovery_method": "rescan",
     "float_shares": 393061,
     "float_millions": 0.39,
@@ -2618,20 +2632,6 @@
     "profile": "X"
   },
   {
-    "symbol": "LIFE",
-    "prev_close": 10.25,
-    "pm_price": 10.8,
-    "gap_pct": 5.37,
-    "pm_volume": 29341.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 6796538,
-    "float_millions": 6.8,
-    "profile": "B"
-  },
-  {
     "symbol": "SPOG",
     "prev_close": 6.7,
     "pm_price": 7.06,
@@ -2644,6 +2644,20 @@
     "float_shares": 26009,
     "float_millions": 0.03,
     "profile": "A"
+  },
+  {
+    "symbol": "LIFE",
+    "prev_close": 10.25,
+    "pm_price": 10.8,
+    "gap_pct": 5.37,
+    "pm_volume": 29341.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 6796538,
+    "float_millions": 6.8,
+    "profile": "B"
   },
   {
     "symbol": "NAMM",
@@ -2742,20 +2756,6 @@
     "float_shares": 680295,
     "float_millions": 0.68,
     "profile": "A"
-  },
-  {
-    "symbol": "CELT",
-    "prev_close": 10.47,
-    "pm_price": 11.02,
-    "gap_pct": 5.25,
-    "pm_volume": 901.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
   },
   {
     "symbol": "XHLD",

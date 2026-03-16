@@ -522,11 +522,11 @@
     "prev_close": 7.84,
     "pm_price": 8.6,
     "gap_pct": 9.69,
-    "pm_volume": 4078.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
+    "pm_volume": 3442.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
     "float_shares": 9065339,
     "float_millions": 9.07,
     "profile": "B"
@@ -714,6 +714,20 @@
     "profile": "B"
   },
   {
+    "symbol": "WAI",
+    "prev_close": 2.54,
+    "pm_price": 2.748,
+    "gap_pct": 8.19,
+    "pm_volume": 826.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 457212,
+    "float_millions": 0.46,
+    "profile": "A"
+  },
+  {
     "symbol": "FEAM",
     "prev_close": 2.08,
     "pm_price": 2.25,
@@ -894,6 +908,34 @@
     "float_shares": 6294931,
     "float_millions": 6.29,
     "profile": "B"
+  },
+  {
+    "symbol": "APPX",
+    "prev_close": 16.09,
+    "pm_price": 17.3,
+    "gap_pct": 7.52,
+    "pm_volume": 60532.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 2924947,
+    "float_millions": 2.92,
+    "profile": "A"
+  },
+  {
+    "symbol": "GMEX",
+    "prev_close": 2.44,
+    "pm_price": 2.62,
+    "gap_pct": 7.38,
+    "pm_volume": 1601.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
+    "profile": "A"
   },
   {
     "symbol": "NTHI",
@@ -1148,20 +1190,6 @@
     "profile": "B"
   },
   {
-    "symbol": "DASX",
-    "prev_close": 14.75,
-    "pm_price": 15.7,
-    "gap_pct": 6.44,
-    "pm_volume": 8247.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "ZSL",
     "prev_close": 2.36,
     "pm_price": 2.51,
@@ -1244,6 +1272,20 @@
     "float_shares": 227092,
     "float_millions": 0.23,
     "profile": "A"
+  },
+  {
+    "symbol": "HKIT",
+    "prev_close": 1.92,
+    "pm_price": 2.04,
+    "gap_pct": 6.25,
+    "pm_volume": 793.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "rescan",
+    "float_shares": 8657225,
+    "float_millions": 8.66,
+    "profile": "B"
   },
   {
     "symbol": "ASTC",
@@ -1386,20 +1428,6 @@
     "profile": "A"
   },
   {
-    "symbol": "APVO",
-    "prev_close": 7.27,
-    "pm_price": 7.7,
-    "gap_pct": 5.91,
-    "pm_volume": 165.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
-    "float_shares": 900000,
-    "float_millions": 0.9,
-    "profile": "A"
-  },
-  {
     "symbol": "SBC",
     "prev_close": 4.58,
     "pm_price": 4.8501,
@@ -1440,20 +1468,6 @@
     "float_shares": 4625157,
     "float_millions": 4.63,
     "profile": "A"
-  },
-  {
-    "symbol": "LITM",
-    "prev_close": 3.09,
-    "pm_price": 3.2707,
-    "gap_pct": 5.85,
-    "pm_volume": 27524.0,
-    "first_seen_et": "08:30",
-    "sim_start": "08:30",
-    "discovery_time": "08:30",
-    "discovery_method": "rescan",
-    "float_shares": 8734782,
-    "float_millions": 8.73,
-    "profile": "B"
   },
   {
     "symbol": "GMEU",
@@ -1610,20 +1624,6 @@
     "profile": "A"
   },
   {
-    "symbol": "APPX",
-    "prev_close": 16.09,
-    "pm_price": 16.95,
-    "gap_pct": 5.34,
-    "pm_volume": 38656.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
-    "float_shares": 2924947,
-    "float_millions": 2.92,
-    "profile": "A"
-  },
-  {
     "symbol": "AIBD",
     "prev_close": 7.94,
     "pm_price": 8.36,
@@ -1666,6 +1666,20 @@
     "profile": "X"
   },
   {
+    "symbol": "APVO",
+    "prev_close": 7.27,
+    "pm_price": 7.65,
+    "gap_pct": 5.23,
+    "pm_volume": 116.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 900000,
+    "float_millions": 0.9,
+    "profile": "A"
+  },
+  {
     "symbol": "OWLT",
     "prev_close": 12.07,
     "pm_price": 12.7,
@@ -1705,20 +1719,6 @@
     "discovery_method": "rescan",
     "float_shares": 2963574,
     "float_millions": 2.96,
-    "profile": "A"
-  },
-  {
-    "symbol": "CV",
-    "prev_close": 5.02,
-    "pm_price": 5.28,
-    "gap_pct": 5.18,
-    "pm_volume": 31811.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 3679622,
-    "float_millions": 3.68,
     "profile": "A"
   },
   {
@@ -1792,20 +1792,6 @@
     "profile": "X"
   },
   {
-    "symbol": "FLYE",
-    "prev_close": 5.1,
-    "pm_price": 5.36,
-    "gap_pct": 5.1,
-    "pm_volume": 1310.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 1464087,
-    "float_millions": 1.46,
-    "profile": "A"
-  },
-  {
     "symbol": "RMCO",
     "prev_close": 4.12,
     "pm_price": 4.33,
@@ -1818,6 +1804,20 @@
     "float_shares": 6568353,
     "float_millions": 6.57,
     "profile": "B"
+  },
+  {
+    "symbol": "FLYE",
+    "prev_close": 5.1,
+    "pm_price": 5.36,
+    "gap_pct": 5.1,
+    "pm_volume": 1310.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1464087,
+    "float_millions": 1.46,
+    "profile": "A"
   },
   {
     "symbol": "ARTW",

@@ -210,6 +210,20 @@
     "profile": "A"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 1.9977,
+    "pm_price": 2.2276,
+    "gap_pct": 11.51,
+    "pm_volume": 654.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "EEV",
     "prev_close": 14.84,
     "pm_price": 16.54,
@@ -840,20 +854,6 @@
     "profile": "A"
   },
   {
-    "symbol": "CRWS",
-    "prev_close": 2.9,
-    "pm_price": 3.0785,
-    "gap_pct": 6.16,
-    "pm_volume": 5918.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9457807,
-    "float_millions": 9.46,
-    "profile": "B"
-  },
-  {
     "symbol": "STI",
     "prev_close": 4.22,
     "pm_price": 4.48,
@@ -866,6 +866,20 @@
     "float_shares": 2186283,
     "float_millions": 2.19,
     "profile": "A"
+  },
+  {
+    "symbol": "CRWS",
+    "prev_close": 2.9,
+    "pm_price": 3.0785,
+    "gap_pct": 6.16,
+    "pm_volume": 5918.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 9457807,
+    "float_millions": 9.46,
+    "profile": "B"
   },
   {
     "symbol": "EDSA",

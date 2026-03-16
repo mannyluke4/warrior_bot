@@ -28,6 +28,20 @@
     "profile": "A"
   },
   {
+    "symbol": "AKAN",
+    "prev_close": 0.4894,
+    "pm_price": 2.61,
+    "gap_pct": 433.31,
+    "pm_volume": 23906.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 144659,
+    "float_millions": 0.14,
+    "profile": "A"
+  },
+  {
     "symbol": "BDSX",
     "prev_close": 5.46,
     "pm_price": 6.89,
@@ -504,6 +518,20 @@
     "profile": "B"
   },
   {
+    "symbol": "STAI",
+    "prev_close": 2.53,
+    "pm_price": 2.723,
+    "gap_pct": 7.63,
+    "pm_volume": 6448.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 1000957,
+    "float_millions": 1.0,
+    "profile": "A"
+  },
+  {
     "symbol": "VGAS",
     "prev_close": 1.97,
     "pm_price": 2.1199,
@@ -924,6 +952,20 @@
     "profile": "A"
   },
   {
+    "symbol": "RBOT",
+    "prev_close": 2.61,
+    "pm_price": 2.77,
+    "gap_pct": 6.13,
+    "pm_volume": 5716.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 3751250,
+    "float_millions": 3.75,
+    "profile": "A"
+  },
+  {
     "symbol": "AXIL",
     "prev_close": 7.43,
     "pm_price": 7.882,
@@ -1092,20 +1134,6 @@
     "profile": "B"
   },
   {
-    "symbol": "FUTG",
-    "prev_close": 16.6813,
-    "pm_price": 17.64,
-    "gap_pct": 5.75,
-    "pm_volume": 555.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": 165000,
-    "float_millions": 0.17,
-    "profile": "A"
-  },
-  {
     "symbol": "MPG",
     "prev_close": 9.9009,
     "pm_price": 10.47,
@@ -1117,6 +1145,20 @@
     "discovery_method": "rescan",
     "float_shares": 282630,
     "float_millions": 0.28,
+    "profile": "A"
+  },
+  {
+    "symbol": "FUTG",
+    "prev_close": 16.6813,
+    "pm_price": 17.64,
+    "gap_pct": 5.75,
+    "pm_volume": 555.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 165000,
+    "float_millions": 0.17,
     "profile": "A"
   },
   {
@@ -1187,6 +1229,20 @@
     "discovery_method": "rescan",
     "float_shares": 3986094,
     "float_millions": 3.99,
+    "profile": "A"
+  },
+  {
+    "symbol": "TGL",
+    "prev_close": 7.01,
+    "pm_price": 7.4,
+    "gap_pct": 5.56,
+    "pm_volume": 34577.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 3547869,
+    "float_millions": 3.55,
     "profile": "A"
   },
   {

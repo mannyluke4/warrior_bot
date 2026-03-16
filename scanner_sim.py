@@ -179,10 +179,9 @@ def get_all_active_symbols() -> list[str]:
     symbols = []
     filtered_count = 0
     for a in assets:
-        if not a.tradable:
-            continue
-        if a.fractionable is None:
-            continue
+        # Note: tradable=False includes OTC stocks (e.g. VERO) that still have
+        # market data on Alpaca. For backtesting we want these candidates.
+        # The fractionable filter is also removed — it was blocking micro-caps.
         if any(c in a.symbol for c in ['.', '/']):
             continue
         asset_name = getattr(a, 'name', '') or ''

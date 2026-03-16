@@ -5,6 +5,7 @@ Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Met
 OCG      +22969.3%    2.33    0.09M       A    09:00   22,309.0      09:00     rescan
 ASBP     +3965.5%    2.11    2.33M       A    09:00    3,200.0      09:00     rescan
 HUBC     +1451.2%    4.70    0.68M       A    09:00    1,832.0      09:00     rescan
+VERO      +181.5%    4.03     1.6M       A    07:00 26,831,003.0      04:00  premarket
 LCFY      +131.6%    7.25     1.4M       A    08:00  143,179.0      08:00     rescan
 BIYA       +41.9%    6.40     0.1M       A    07:00 7,050,459.0      04:04  premarket
 TNMG       +33.0%    3.14    1.15M       A    07:00 5,424,692.0      06:20  premarket
@@ -13,6 +14,7 @@ SBDS       +27.5%    8.73    0.43M       A    08:30   11,148.0      08:30     re
 GWAV       +26.0%    6.10     0.8M       A    07:00 1,537,606.0      04:52  premarket
 XAIR       +20.4%    2.07    9.41M       B    10:00 2,416,808.0      10:00     rescan
 CGTL       +19.9%    4.57    1.58M       A    07:00   21,479.0      04:00  premarket
+MAMO       +17.5%    4.44    4.94M       A    08:00    3,865.0      08:00     rescan
 SMCX       +14.9%   12.97    6.39M       B    10:00 1,418,883.0      10:00     rescan
 SMCL       +14.6%    5.14      N/A       X    10:00 1,653,342.0      10:00     rescan
 IPWR       +14.2%    3.69    7.13M       B    07:00      500.0      06:33  premarket
@@ -27,6 +29,7 @@ AGCC       +12.3%   12.66    4.83M       A    09:00      500.0      09:00     re
 DTST       +12.0%    4.85    5.45M       B    08:30    1,000.0      08:30     rescan
 NTRP       +11.5%    3.20    6.29M       B    07:00    1,000.0      07:00  premarket
 CHAI       +10.2%    2.48      N/A       A    10:30    9,931.0      10:30     rescan
+ILAG       +10.2%    3.75    0.99M       A    10:30    6,083.0      10:30     rescan
 AGH        +10.0%    4.28     4.6M       A    09:30      970.0      09:30     rescan
 GLXG        +9.9%    2.00    0.55M       A    10:00   38,990.0      10:00     rescan
 TOYO        +9.4%    6.75    9.07M       B    08:30      200.0      08:30     rescan
@@ -67,10 +70,9 @@ UUUG        +6.0%   18.60    0.71M       A    07:00    4,625.0      04:01  prema
 MTR         +6.0%    4.51     1.6M       A    10:30    7,379.0      10:30     rescan
 RGTX        +5.9%   15.53    2.55M       A    10:30  300,166.0      10:30     rescan
 VELO        +5.9%   18.60     3.9M       A    10:00  351,872.0      10:00     rescan
-VVPR        +5.9%    2.88    9.86M       B    08:00   11,441.0      08:00     rescan
 MFI         +5.9%   18.00    0.53M       A    09:30    2,898.0      09:30     rescan
-PXIU        +5.9%    2.35      N/A       X    10:00   35,057.0      10:00     rescan
 ELPW        +5.9%    2.35    0.45M       A    10:00    8,923.0      10:00     rescan
+PXIU        +5.9%    2.35      N/A       X    10:00   35,057.0      10:00     rescan
 AVXX        +5.8%   19.72    0.08M       A    10:30    9,337.0      10:30     rescan
 SEAT        +5.8%    6.89    3.61M       A    10:30   12,603.0      10:30     rescan
 GGR         +5.8%    3.28    10.0M       B    10:00    3,470.0      10:00     rescan
@@ -102,6 +104,6 @@ ASTI        +5.2%    5.09    2.96M       A    07:00    9,940.0      04:00  prema
 ZSL         +5.1%    3.07      N/A       X    08:00 4,059,584.0      08:00     rescan
 WOK         +5.1%    2.48    1.22M       A    07:00    2,398.0      04:07  premarket
 
-Total candidates: 99
-  Premarket (7:15 AM): 22
-  Continuous rescan:   77
+Total candidates: 101
+  Premarket (7:15 AM): 23
+  Continuous rescan:   78

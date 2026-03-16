@@ -2,15 +2,29 @@
   {
     "symbol": "INTS",
     "prev_close": 0.2451,
-    "pm_price": 6.0,
-    "gap_pct": 2347.98,
-    "pm_volume": 8037.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
+    "pm_price": 6.0343,
+    "gap_pct": 2361.97,
+    "pm_volume": 40234.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
     "discovery_method": "rescan",
     "float_shares": 2228699,
     "float_millions": 2.23,
+    "profile": "A"
+  },
+  {
+    "symbol": "ZDAI",
+    "prev_close": 0.4429,
+    "pm_price": 5.8855,
+    "gap_pct": 1228.86,
+    "pm_volume": 3141.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 539858,
+    "float_millions": 0.54,
     "profile": "A"
   },
   {
@@ -82,20 +96,6 @@
     "float_shares": 2260000,
     "float_millions": 2.26,
     "profile": "A"
-  },
-  {
-    "symbol": "DASX",
-    "prev_close": 10.34,
-    "pm_price": 12.27,
-    "gap_pct": 18.67,
-    "pm_volume": 8316.0,
-    "first_seen_et": "07:11",
-    "sim_start": "07:11",
-    "discovery_time": "07:11",
-    "discovery_method": "premarket",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
   },
   {
     "symbol": "PFSA",
@@ -448,6 +448,20 @@
     "profile": "B"
   },
   {
+    "symbol": "LNZA",
+    "prev_close": 8.92,
+    "pm_price": 9.61,
+    "gap_pct": 7.74,
+    "pm_volume": 220.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1195700,
+    "float_millions": 1.2,
+    "profile": "A"
+  },
+  {
     "symbol": "DWSN",
     "prev_close": 2.72,
     "pm_price": 2.93,
@@ -558,20 +572,6 @@
     "float_shares": 854469,
     "float_millions": 0.85,
     "profile": "A"
-  },
-  {
-    "symbol": "VVPR",
-    "prev_close": 2.83,
-    "pm_price": 3.03,
-    "gap_pct": 7.07,
-    "pm_volume": 32613.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
   },
   {
     "symbol": "CDIO",
@@ -812,20 +812,6 @@
     "profile": "B"
   },
   {
-    "symbol": "STRR",
-    "prev_close": 10.01,
-    "pm_price": 10.6,
-    "gap_pct": 5.89,
-    "pm_volume": 1264.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": 2311160,
-    "float_millions": 2.31,
-    "profile": "A"
-  },
-  {
     "symbol": "AVXX",
     "prev_close": 8.24,
     "pm_price": 8.715,
@@ -1005,20 +991,6 @@
     "discovery_method": "rescan",
     "float_shares": 974671,
     "float_millions": 0.97,
-    "profile": "A"
-  },
-  {
-    "symbol": "LNZA",
-    "prev_close": 8.92,
-    "pm_price": 9.4,
-    "gap_pct": 5.38,
-    "pm_volume": 569.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": 1195700,
-    "float_millions": 1.2,
     "profile": "A"
   },
   {
@@ -1229,6 +1201,20 @@
     "discovery_method": "rescan",
     "float_shares": 3920719,
     "float_millions": 3.92,
+    "profile": "A"
+  },
+  {
+    "symbol": "GMEX",
+    "prev_close": 1.98,
+    "pm_price": 2.08,
+    "gap_pct": 5.05,
+    "pm_volume": 1848.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
     "profile": "A"
   },
   {

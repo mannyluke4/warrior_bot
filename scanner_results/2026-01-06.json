@@ -28,6 +28,20 @@
     "profile": "A"
   },
   {
+    "symbol": "NXTT",
+    "prev_close": 7.88,
+    "pm_price": 9.2301,
+    "gap_pct": 17.13,
+    "pm_volume": 48858.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
+  },
+  {
     "symbol": "NOMA",
     "prev_close": 3.75,
     "pm_price": 4.39,
@@ -560,20 +574,6 @@
     "profile": "A"
   },
   {
-    "symbol": "LACG",
-    "prev_close": 14.8186,
-    "pm_price": 15.91,
-    "gap_pct": 7.37,
-    "pm_volume": 672.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "EKSO",
     "prev_close": 8.55,
     "pm_price": 9.18,
@@ -586,6 +586,20 @@
     "float_shares": 1806318,
     "float_millions": 1.81,
     "profile": "A"
+  },
+  {
+    "symbol": "LACG",
+    "prev_close": 14.8186,
+    "pm_price": 15.91,
+    "gap_pct": 7.37,
+    "pm_volume": 672.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "LCFY",
@@ -1106,20 +1120,6 @@
     "profile": "X"
   },
   {
-    "symbol": "YDES",
-    "prev_close": 12.68,
-    "pm_price": 13.4,
-    "gap_pct": 5.68,
-    "pm_volume": 2309.0,
-    "first_seen_et": "04:50",
-    "sim_start": "07:00",
-    "discovery_time": "04:50",
-    "discovery_method": "premarket",
-    "float_shares": 1420759,
-    "float_millions": 1.42,
-    "profile": "A"
-  },
-  {
     "symbol": "XRPT",
     "prev_close": 7.74,
     "pm_price": 8.18,
@@ -1132,6 +1132,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "YDES",
+    "prev_close": 12.68,
+    "pm_price": 13.4,
+    "gap_pct": 5.68,
+    "pm_volume": 2309.0,
+    "first_seen_et": "04:50",
+    "sim_start": "07:00",
+    "discovery_time": "04:50",
+    "discovery_method": "premarket",
+    "float_shares": 1420759,
+    "float_millions": 1.42,
+    "profile": "A"
   },
   {
     "symbol": "VIVS",
@@ -1428,20 +1442,6 @@
     "profile": "B"
   },
   {
-    "symbol": "WVVI",
-    "prev_close": 3.08,
-    "pm_price": 3.2391,
-    "gap_pct": 5.17,
-    "pm_volume": 400.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 4094595,
-    "float_millions": 4.09,
-    "profile": "A"
-  },
-  {
     "symbol": "SCOR",
     "prev_close": 6.51,
     "pm_price": 6.8468,
@@ -1453,6 +1453,20 @@
     "discovery_method": "rescan",
     "float_shares": 1068537,
     "float_millions": 1.07,
+    "profile": "A"
+  },
+  {
+    "symbol": "WVVI",
+    "prev_close": 3.08,
+    "pm_price": 3.2391,
+    "gap_pct": 5.17,
+    "pm_volume": 400.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 4094595,
+    "float_millions": 4.09,
     "profile": "A"
   },
   {
@@ -1566,5 +1580,19 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "PAVS",
+    "prev_close": 2.19,
+    "pm_price": 2.3,
+    "gap_pct": 5.02,
+    "pm_volume": 9135.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 53496,
+    "float_millions": 0.05,
+    "profile": "A"
   }
 ]

@@ -616,6 +616,20 @@
     "profile": "B"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 2.09,
+    "pm_price": 2.24,
+    "gap_pct": 7.18,
+    "pm_volume": 2863.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "BRR",
     "prev_close": 2.24,
     "pm_price": 2.4,
@@ -644,20 +658,6 @@
     "profile": "B"
   },
   {
-    "symbol": "MTVA",
-    "prev_close": 1.9,
-    "pm_price": 2.03,
-    "gap_pct": 6.84,
-    "pm_volume": 5875.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 981536,
-    "float_millions": 0.98,
-    "profile": "A"
-  },
-  {
     "symbol": "AMCI",
     "prev_close": 5.41,
     "pm_price": 5.78,
@@ -669,6 +669,20 @@
     "discovery_method": "rescan",
     "float_shares": 1172210,
     "float_millions": 1.17,
+    "profile": "A"
+  },
+  {
+    "symbol": "MTVA",
+    "prev_close": 1.9,
+    "pm_price": 2.03,
+    "gap_pct": 6.84,
+    "pm_volume": 5875.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 981536,
+    "float_millions": 0.98,
     "profile": "A"
   },
   {
@@ -770,20 +784,6 @@
     "profile": "X"
   },
   {
-    "symbol": "ASTI",
-    "prev_close": 6.74,
-    "pm_price": 7.155,
-    "gap_pct": 6.16,
-    "pm_volume": 20728.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
-    "float_shares": 2963574,
-    "float_millions": 2.96,
-    "profile": "A"
-  },
-  {
     "symbol": "SER",
     "prev_close": 2.76,
     "pm_price": 2.93,
@@ -795,6 +795,20 @@
     "discovery_method": "premarket",
     "float_shares": 3575301,
     "float_millions": 3.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "ASTI",
+    "prev_close": 6.74,
+    "pm_price": 7.155,
+    "gap_pct": 6.16,
+    "pm_volume": 20728.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 2963574,
+    "float_millions": 2.96,
     "profile": "A"
   },
   {
@@ -994,20 +1008,6 @@
     "profile": "A"
   },
   {
-    "symbol": "UONEK",
-    "prev_close": 8.01,
-    "pm_price": 8.46,
-    "gap_pct": 5.62,
-    "pm_volume": 300.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 1813203,
-    "float_millions": 1.81,
-    "profile": "A"
-  },
-  {
     "symbol": "SBU",
     "prev_close": 17.3857,
     "pm_price": 18.34,
@@ -1162,20 +1162,6 @@
     "profile": "X"
   },
   {
-    "symbol": "AIBD",
-    "prev_close": 8.26,
-    "pm_price": 8.69,
-    "gap_pct": 5.21,
-    "pm_volume": 27604.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 249111,
-    "float_millions": 0.25,
-    "profile": "A"
-  },
-  {
     "symbol": "FEAM",
     "prev_close": 2.14,
     "pm_price": 2.25,
@@ -1188,6 +1174,20 @@
     "float_shares": 6171822,
     "float_millions": 6.17,
     "profile": "B"
+  },
+  {
+    "symbol": "GMEX",
+    "prev_close": 2.34,
+    "pm_price": 2.46,
+    "gap_pct": 5.13,
+    "pm_volume": 1192.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
+    "profile": "A"
   },
   {
     "symbol": "REKT",

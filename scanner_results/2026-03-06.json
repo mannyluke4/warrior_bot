@@ -252,6 +252,20 @@
     "profile": "B"
   },
   {
+    "symbol": "AKA",
+    "prev_close": 10.3,
+    "pm_price": 11.66,
+    "gap_pct": 13.2,
+    "pm_volume": 100.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 477515,
+    "float_millions": 0.48,
+    "profile": "A"
+  },
+  {
     "symbol": "HIYY",
     "prev_close": 10.27,
     "pm_price": 11.61,
@@ -278,6 +292,20 @@
     "float_shares": 7525283,
     "float_millions": 7.53,
     "profile": "B"
+  },
+  {
+    "symbol": "WAI",
+    "prev_close": 2.32,
+    "pm_price": 2.5878,
+    "gap_pct": 11.54,
+    "pm_volume": 1091.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 457212,
+    "float_millions": 0.46,
+    "profile": "A"
   },
   {
     "symbol": "EKSO",
@@ -742,6 +770,20 @@
     "profile": "X"
   },
   {
+    "symbol": "ILAG",
+    "prev_close": 2.32,
+    "pm_price": 2.4783,
+    "gap_pct": 6.82,
+    "pm_volume": 2809.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 986446,
+    "float_millions": 0.99,
+    "profile": "A"
+  },
+  {
     "symbol": "CARD",
     "prev_close": 3.1083,
     "pm_price": 3.32,
@@ -994,6 +1036,20 @@
     "profile": "A"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 2.0,
+    "pm_price": 2.121,
+    "gap_pct": 6.05,
+    "pm_volume": 751.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "LSE",
     "prev_close": 5.46,
     "pm_price": 5.7899,
@@ -1218,20 +1274,6 @@
     "profile": "X"
   },
   {
-    "symbol": "QBTX",
-    "prev_close": 14.19,
-    "pm_price": 14.96,
-    "gap_pct": 5.43,
-    "pm_volume": 233169.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "DLTH",
     "prev_close": 2.21,
     "pm_price": 2.33,
@@ -1244,6 +1286,20 @@
     "float_shares": 9825358,
     "float_millions": 9.83,
     "profile": "B"
+  },
+  {
+    "symbol": "QBTX",
+    "prev_close": 14.19,
+    "pm_price": 14.96,
+    "gap_pct": 5.43,
+    "pm_volume": 233169.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "SKRE",

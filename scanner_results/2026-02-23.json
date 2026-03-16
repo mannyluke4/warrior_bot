@@ -392,6 +392,20 @@
     "profile": "A"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 2.14,
+    "pm_price": 2.32,
+    "gap_pct": 8.41,
+    "pm_volume": 1607.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "RLYB",
     "prev_close": 5.06,
     "pm_price": 5.485,
@@ -445,6 +459,20 @@
     "discovery_method": "rescan",
     "float_shares": 1581065,
     "float_millions": 1.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "RBOT",
+    "prev_close": 2.26,
+    "pm_price": 2.44,
+    "gap_pct": 7.96,
+    "pm_volume": 470.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 3751250,
+    "float_millions": 3.75,
     "profile": "A"
   },
   {
@@ -530,20 +558,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "VVPR",
-    "prev_close": 2.37,
-    "pm_price": 2.54,
-    "gap_pct": 7.17,
-    "pm_volume": 124166.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
   },
   {
     "symbol": "NAMM",
@@ -1008,20 +1022,6 @@
     "profile": "A"
   },
   {
-    "symbol": "LEE",
-    "prev_close": 8.62,
-    "pm_price": 9.11,
-    "gap_pct": 5.68,
-    "pm_volume": 19644.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 4045483,
-    "float_millions": 4.05,
-    "profile": "A"
-  },
-  {
     "symbol": "ALBG",
     "prev_close": 13.8527,
     "pm_price": 14.64,
@@ -1034,6 +1034,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "LEE",
+    "prev_close": 8.62,
+    "pm_price": 9.11,
+    "gap_pct": 5.68,
+    "pm_volume": 19644.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 4045483,
+    "float_millions": 4.05,
+    "profile": "A"
   },
   {
     "symbol": "RKLZ",
@@ -1104,6 +1118,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "ILAG",
+    "prev_close": 3.14,
+    "pm_price": 3.31,
+    "gap_pct": 5.41,
+    "pm_volume": 297.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 986446,
+    "float_millions": 0.99,
+    "profile": "A"
   },
   {
     "symbol": "ANNA",

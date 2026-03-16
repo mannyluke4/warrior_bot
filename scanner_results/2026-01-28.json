@@ -98,6 +98,20 @@
     "profile": "A"
   },
   {
+    "symbol": "SHPH",
+    "prev_close": 2.03,
+    "pm_price": 2.38,
+    "gap_pct": 17.24,
+    "pm_volume": 858021.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 1600000,
+    "float_millions": 1.6,
+    "profile": "A"
+  },
+  {
     "symbol": "BATL",
     "prev_close": 3.34,
     "pm_price": 3.85,
@@ -448,6 +462,20 @@
     "profile": "B"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 2.07,
+    "pm_price": 2.23,
+    "gap_pct": 7.73,
+    "pm_volume": 8500.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "BTOG",
     "prev_close": 3.89,
     "pm_price": 4.19,
@@ -708,20 +736,6 @@
     "first_seen_et": "10:30",
     "sim_start": "10:30",
     "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
-    "symbol": "BLSX",
-    "prev_close": 9.35,
-    "pm_price": 9.935,
-    "gap_pct": 6.26,
-    "pm_volume": 107.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
     "discovery_method": "rescan",
     "float_shares": null,
     "float_millions": null,

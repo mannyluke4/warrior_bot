@@ -20,7 +20,6 @@ ATPC       +15.3%    2.33    0.43M       A    09:00    2,368.0      09:00     re
 FLNA       +14.6%    2.43      N/A       X    10:00  472,840.0      10:00     rescan
 PLSM       +14.0%    4.57    2.06M       A    09:30    1,091.0      09:30     rescan
 FGRU       +13.8%   17.46      N/A       X    09:30    9,685.0      09:30     rescan
-VVPR       +13.4%    2.13    9.86M       B    08:00      487.0      08:00     rescan
 HIYY       +13.3%   17.68    0.06M       A    09:30    1,705.0      09:30     rescan
 NIOG       +13.0%   16.43      N/A       X    07:00    9,811.0      04:26  premarket
 LCDL       +12.8%    3.11    0.27M       A    10:00   81,678.0      10:00     rescan
@@ -50,6 +49,7 @@ COHN        +8.4%   18.75    0.99M       A    09:30      794.0      09:30     re
 HIMZ        +8.4%    2.20     6.0M       B    07:00 2,802,204.0      04:00  premarket
 TMDE        +8.4%    2.33    3.56M       A    08:30  290,889.0      08:30     rescan
 GEMG        +8.3%    2.74    0.06M       A    10:00    2,916.0      10:00     rescan
+NXTT        +8.3%    3.38    1.37M       A    07:00    1,492.0      04:01  premarket
 LONA        +8.3%    6.68    2.68M       A    10:30    4,560.0      10:30     rescan
 UUUG        +8.2%   13.78    0.71M       A    10:00   74,225.0      10:00     rescan
 WCT         +8.1%    4.41    0.99M       A    08:00      124.0      08:00     rescan
@@ -127,8 +127,8 @@ CLSX        +5.5%   11.80      N/A       X    08:00    1,381.0      08:00     re
 ALMU        +5.5%   16.25     9.9M       B    10:30   64,437.0      10:30     rescan
 TBMC        +5.5%   10.50    2.14M       A    07:00    3,348.0      06:11  premarket
 DNNG        +5.5%   14.16    0.03M       A    10:00      100.0      10:00     rescan
-ACON        +5.5%    3.44     0.7M       A    10:30   21,909.0      10:30     rescan
 OCCI        +5.5%    2.96      N/A       X    10:30   16,707.0      10:30     rescan
+ACON        +5.5%    3.44     0.7M       A    10:30   21,909.0      10:30     rescan
 ACET        +5.5%    8.03    6.83M       B    10:30   39,840.0      10:30     rescan
 SBTU        +5.5%    4.80      N/A       X    08:30    3,498.0      08:30     rescan
 COIA        +5.5%    7.90     0.3M       A    07:00    1,888.0      04:00  premarket
@@ -168,5 +168,5 @@ CIFU        +5.0%   16.55      N/A       X    07:00      400.0      04:25  prema
 NERV        +5.0%    8.40    6.32M       B    10:30   55,129.0      10:30     rescan
 
 Total candidates: 164
-  Premarket (7:15 AM): 27
-  Continuous rescan:   137
+  Premarket (7:15 AM): 28
+  Continuous rescan:   136

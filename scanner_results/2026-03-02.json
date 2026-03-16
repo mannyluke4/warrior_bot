@@ -644,20 +644,6 @@
     "profile": "X"
   },
   {
-    "symbol": "BLSX",
-    "prev_close": 7.12,
-    "pm_price": 7.78,
-    "gap_pct": 9.27,
-    "pm_volume": 1114.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "PXS",
     "prev_close": 4.16,
     "pm_price": 4.54,
@@ -994,20 +980,6 @@
     "profile": "A"
   },
   {
-    "symbol": "MPL",
-    "prev_close": 7.59,
-    "pm_price": 8.17,
-    "gap_pct": 7.64,
-    "pm_volume": 98218.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 809954,
-    "float_millions": 0.81,
-    "profile": "A"
-  },
-  {
     "symbol": "EBON",
     "prev_close": 2.4433,
     "pm_price": 2.63,
@@ -1020,6 +992,20 @@
     "float_shares": 6539102,
     "float_millions": 6.54,
     "profile": "B"
+  },
+  {
+    "symbol": "MPL",
+    "prev_close": 7.59,
+    "pm_price": 8.17,
+    "gap_pct": 7.64,
+    "pm_volume": 98218.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 809954,
+    "float_millions": 0.81,
+    "profile": "A"
   },
   {
     "symbol": "WTIB",
@@ -1470,20 +1456,6 @@
     "profile": "B"
   },
   {
-    "symbol": "NAMM",
-    "prev_close": 3.8,
-    "pm_price": 4.03,
-    "gap_pct": 6.05,
-    "pm_volume": 157333.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
-    "float_shares": 6811129,
-    "float_millions": 6.81,
-    "profile": "B"
-  },
-  {
     "symbol": "RKLZ",
     "prev_close": 3.47,
     "pm_price": 3.68,
@@ -1496,6 +1468,20 @@
     "float_shares": 162939,
     "float_millions": 0.16,
     "profile": "A"
+  },
+  {
+    "symbol": "NAMM",
+    "prev_close": 3.8,
+    "pm_price": 4.03,
+    "gap_pct": 6.05,
+    "pm_volume": 157333.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 6811129,
+    "float_millions": 6.81,
+    "profile": "B"
   },
   {
     "symbol": "MAXI",
@@ -1736,11 +1722,11 @@
     "profile": "A"
   },
   {
-    "symbol": "EZET",
-    "prev_close": 14.6,
-    "pm_price": 15.42,
+    "symbol": "BULX",
+    "prev_close": 3.5978,
+    "pm_price": 3.7999,
     "gap_pct": 5.62,
-    "pm_volume": 93433.0,
+    "pm_volume": 8040.0,
     "first_seen_et": "10:30",
     "sim_start": "10:30",
     "discovery_time": "10:30",
@@ -1750,11 +1736,11 @@
     "profile": "X"
   },
   {
-    "symbol": "BULX",
-    "prev_close": 3.5978,
-    "pm_price": 3.7999,
+    "symbol": "EZET",
+    "prev_close": 14.6,
+    "pm_price": 15.42,
     "gap_pct": 5.62,
-    "pm_volume": 8040.0,
+    "pm_volume": 93433.0,
     "first_seen_et": "10:30",
     "sim_start": "10:30",
     "discovery_time": "10:30",
@@ -2142,20 +2128,6 @@
     "profile": "A"
   },
   {
-    "symbol": "COIA",
-    "prev_close": 5.95,
-    "pm_price": 6.26,
-    "gap_pct": 5.21,
-    "pm_volume": 13159.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 297838,
-    "float_millions": 0.3,
-    "profile": "A"
-  },
-  {
     "symbol": "FSOL",
     "prev_close": 9.59,
     "pm_price": 10.09,
@@ -2168,6 +2140,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "COIA",
+    "prev_close": 5.95,
+    "pm_price": 6.26,
+    "gap_pct": 5.21,
+    "pm_volume": 13159.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 297838,
+    "float_millions": 0.3,
+    "profile": "A"
   },
   {
     "symbol": "SOEZ",
@@ -2238,20 +2224,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "VVPR",
-    "prev_close": 2.36,
-    "pm_price": 2.48,
-    "gap_pct": 5.08,
-    "pm_volume": 15320.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
   },
   {
     "symbol": "GLNK",

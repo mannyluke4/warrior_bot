@@ -42,6 +42,20 @@
     "profile": "A"
   },
   {
+    "symbol": "VERO",
+    "prev_close": 1.43,
+    "pm_price": 4.025,
+    "gap_pct": 181.47,
+    "pm_volume": 26831003.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 1600000,
+    "float_millions": 1.6,
+    "profile": "A"
+  },
+  {
     "symbol": "LCFY",
     "prev_close": 3.13,
     "pm_price": 7.25,
@@ -151,6 +165,20 @@
     "discovery_method": "premarket",
     "float_shares": 1581065,
     "float_millions": 1.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "MAMO",
+    "prev_close": 3.78,
+    "pm_price": 4.44,
+    "gap_pct": 17.46,
+    "pm_volume": 3865.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 4940699,
+    "float_millions": 4.94,
     "profile": "A"
   },
   {
@@ -347,6 +375,20 @@
     "discovery_method": "rescan",
     "float_shares": 19,
     "float_millions": 0.0,
+    "profile": "A"
+  },
+  {
+    "symbol": "ILAG",
+    "prev_close": 3.4,
+    "pm_price": 3.745,
+    "gap_pct": 10.15,
+    "pm_volume": 6083.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 986446,
+    "float_millions": 0.99,
     "profile": "A"
   },
   {
@@ -910,20 +952,6 @@
     "profile": "A"
   },
   {
-    "symbol": "VVPR",
-    "prev_close": 2.72,
-    "pm_price": 2.88,
-    "gap_pct": 5.88,
-    "pm_volume": 11441.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
-  },
-  {
     "symbol": "MFI",
     "prev_close": 17.0,
     "pm_price": 18.0,
@@ -935,6 +963,20 @@
     "discovery_method": "rescan",
     "float_shares": 525594,
     "float_millions": 0.53,
+    "profile": "A"
+  },
+  {
+    "symbol": "ELPW",
+    "prev_close": 2.22,
+    "pm_price": 2.35,
+    "gap_pct": 5.86,
+    "pm_volume": 8923.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 445542,
+    "float_millions": 0.45,
     "profile": "A"
   },
   {
@@ -950,20 +992,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "ELPW",
-    "prev_close": 2.22,
-    "pm_price": 2.35,
-    "gap_pct": 5.86,
-    "pm_volume": 8923.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 445542,
-    "float_millions": 0.45,
-    "profile": "A"
   },
   {
     "symbol": "AVXX",

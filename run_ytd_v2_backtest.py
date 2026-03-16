@@ -22,7 +22,7 @@ MAX_NOTIONAL = 50_000
 TOP_N = 5  # Watchlist size
 
 # Scanner filters
-MIN_PM_VOLUME = 50_000
+MIN_PM_VOLUME = 0  # No hard filter — let composite ranking handle it
 MIN_GAP_PCT = 5
 MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 20
@@ -329,7 +329,7 @@ def _run_config_day(top5, date, risk, min_score):
             break
 
         sym = c["symbol"]
-        sim_start = c.get("sim_start", "07:00")
+        sim_start = "07:00"  # Always sim from market prep — not discovery time
         all_trades = run_sim(sym, date, sim_start, risk, min_score)
 
         for t in all_trades:
@@ -401,7 +401,7 @@ def generate_report(results):
     L.append(f"Starting Equity: ${STARTING_EQUITY:,}")
     L.append(f"Risk: {RISK_PCT*100:.1f}% of equity (dynamic)")
     L.append(f"Max trades/day: {MAX_TRADES_PER_DAY} | Daily loss limit: ${DAILY_LOSS_LIMIT:,} | Max notional: ${MAX_NOTIONAL:,}")
-    L.append(f"Scanner filter: PM vol > {MIN_PM_VOLUME:,}, gap {MIN_GAP_PCT}-{MAX_GAP_PCT}%, float < {MAX_FLOAT_MILLIONS}M")
+    L.append(f"Scanner filter: PM vol >= {MIN_PM_VOLUME:,} (no hard floor), gap {MIN_GAP_PCT}-{MAX_GAP_PCT}%, float < {MAX_FLOAT_MILLIONS}M")
     L.append(f"Top {TOP_N} candidates per day by composite rank (70% volume + 20% gap + 10% float)")
 
     # Section 1: V1 vs V2

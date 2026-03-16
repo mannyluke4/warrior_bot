@@ -252,6 +252,20 @@
     "profile": "A"
   },
   {
+    "symbol": "NXTT",
+    "prev_close": 2.7,
+    "pm_price": 2.97,
+    "gap_pct": 10.0,
+    "pm_volume": 191.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
+  },
+  {
     "symbol": "IOTR",
     "prev_close": 2.04,
     "pm_price": 2.24,
@@ -305,6 +319,20 @@
     "discovery_method": "rescan",
     "float_shares": 63776,
     "float_millions": 0.06,
+    "profile": "A"
+  },
+  {
+    "symbol": "CHSN",
+    "prev_close": 2.25,
+    "pm_price": 2.4414,
+    "gap_pct": 8.51,
+    "pm_volume": 7285.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
     "profile": "A"
   },
   {
@@ -714,20 +742,6 @@
     "profile": "X"
   },
   {
-    "symbol": "INDO",
-    "prev_close": 4.77,
-    "pm_price": 5.06,
-    "gap_pct": 6.08,
-    "pm_volume": 125921.0,
-    "first_seen_et": "04:00",
-    "sim_start": "07:00",
-    "discovery_time": "04:00",
-    "discovery_method": "premarket",
-    "float_shares": 9523041,
-    "float_millions": 9.52,
-    "profile": "B"
-  },
-  {
     "symbol": "CLRB",
     "prev_close": 2.96,
     "pm_price": 3.14,
@@ -740,6 +754,20 @@
     "float_shares": 3010926,
     "float_millions": 3.01,
     "profile": "A"
+  },
+  {
+    "symbol": "INDO",
+    "prev_close": 4.77,
+    "pm_price": 5.06,
+    "gap_pct": 6.08,
+    "pm_volume": 125921.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "float_shares": 9523041,
+    "float_millions": 9.52,
+    "profile": "B"
   },
   {
     "symbol": "ASTN",

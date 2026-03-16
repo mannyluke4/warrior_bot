@@ -182,6 +182,20 @@
     "profile": "X"
   },
   {
+    "symbol": "SHPH",
+    "prev_close": 2.36,
+    "pm_price": 2.659,
+    "gap_pct": 12.67,
+    "pm_volume": 16787.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 1600000,
+    "float_millions": 1.6,
+    "profile": "A"
+  },
+  {
     "symbol": "GOVX",
     "prev_close": 2.88,
     "pm_price": 3.2341,
@@ -364,6 +378,20 @@
     "profile": "A"
   },
   {
+    "symbol": "RBOT",
+    "prev_close": 2.49,
+    "pm_price": 2.72,
+    "gap_pct": 9.24,
+    "pm_volume": 45259.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 3751250,
+    "float_millions": 3.75,
+    "profile": "A"
+  },
+  {
     "symbol": "AGH",
     "prev_close": 4.03,
     "pm_price": 4.4,
@@ -431,6 +459,20 @@
     "discovery_method": "premarket",
     "float_shares": 1001163,
     "float_millions": 1.0,
+    "profile": "A"
+  },
+  {
+    "symbol": "GMEX",
+    "prev_close": 3.37,
+    "pm_price": 3.65,
+    "gap_pct": 8.31,
+    "pm_volume": 264126.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
     "profile": "A"
   },
   {
@@ -686,6 +728,20 @@
     "profile": "X"
   },
   {
+    "symbol": "NXTT",
+    "prev_close": 5.83,
+    "pm_price": 6.23,
+    "gap_pct": 6.86,
+    "pm_volume": 7400.0,
+    "first_seen_et": "04:42",
+    "sim_start": "07:00",
+    "discovery_time": "04:42",
+    "discovery_method": "premarket",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
+  },
+  {
     "symbol": "SMCX",
     "prev_close": 13.52,
     "pm_price": 14.43,
@@ -854,20 +910,6 @@
     "profile": "A"
   },
   {
-    "symbol": "INDO",
-    "prev_close": 4.23,
-    "pm_price": 4.49,
-    "gap_pct": 6.15,
-    "pm_volume": 34268.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": 9523041,
-    "float_millions": 9.52,
-    "profile": "B"
-  },
-  {
     "symbol": "SPOG",
     "prev_close": 8.8871,
     "pm_price": 9.4341,
@@ -880,6 +922,20 @@
     "float_shares": 26009,
     "float_millions": 0.03,
     "profile": "A"
+  },
+  {
+    "symbol": "INDO",
+    "prev_close": 4.23,
+    "pm_price": 4.49,
+    "gap_pct": 6.15,
+    "pm_volume": 34268.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 9523041,
+    "float_millions": 9.52,
+    "profile": "B"
   },
   {
     "symbol": "GLXG",
@@ -966,20 +1022,6 @@
     "profile": "B"
   },
   {
-    "symbol": "SILC",
-    "prev_close": 16.3,
-    "pm_price": 17.25,
-    "gap_pct": 5.83,
-    "pm_volume": 17243.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 5411057,
-    "float_millions": 5.41,
-    "profile": "B"
-  },
-  {
     "symbol": "WTIU",
     "prev_close": 11.244,
     "pm_price": 11.9,
@@ -992,6 +1034,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "SILC",
+    "prev_close": 16.3,
+    "pm_price": 17.25,
+    "gap_pct": 5.83,
+    "pm_volume": 17243.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 5411057,
+    "float_millions": 5.41,
+    "profile": "B"
   },
   {
     "symbol": "NVNI",
@@ -1288,6 +1344,20 @@
     "profile": "B"
   },
   {
+    "symbol": "ROLR",
+    "prev_close": 10.06,
+    "pm_price": 10.58,
+    "gap_pct": 5.17,
+    "pm_volume": 94491.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 3600000,
+    "float_millions": 3.6,
+    "profile": "A"
+  },
+  {
     "symbol": "CVV",
     "prev_close": 5.61,
     "pm_price": 5.9,
@@ -1314,20 +1384,6 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
-  },
-  {
-    "symbol": "ROLR",
-    "prev_close": 10.06,
-    "pm_price": 10.58,
-    "gap_pct": 5.17,
-    "pm_volume": 94491.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 3600000,
-    "float_millions": 3.6,
-    "profile": "A"
   },
   {
     "symbol": "HUHU",

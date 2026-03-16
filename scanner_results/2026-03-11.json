@@ -714,6 +714,20 @@
     "profile": "A"
   },
   {
+    "symbol": "ILAG",
+    "prev_close": 2.42,
+    "pm_price": 2.6,
+    "gap_pct": 7.44,
+    "pm_volume": 674.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 986446,
+    "float_millions": 0.99,
+    "profile": "A"
+  },
+  {
     "symbol": "DOMH",
     "prev_close": 3.23,
     "pm_price": 3.47,
@@ -1050,20 +1064,6 @@
     "profile": "X"
   },
   {
-    "symbol": "SATG",
-    "prev_close": 14.7216,
-    "pm_price": 15.65,
-    "gap_pct": 6.31,
-    "pm_volume": 5242.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": 393310,
-    "float_millions": 0.39,
-    "profile": "A"
-  },
-  {
     "symbol": "FLYT",
     "prev_close": 7.77,
     "pm_price": 8.26,
@@ -1075,6 +1075,20 @@
     "discovery_method": "rescan",
     "float_shares": 306365,
     "float_millions": 0.31,
+    "profile": "A"
+  },
+  {
+    "symbol": "SATG",
+    "prev_close": 14.7216,
+    "pm_price": 15.65,
+    "gap_pct": 6.31,
+    "pm_volume": 5242.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 393310,
+    "float_millions": 0.39,
     "profile": "A"
   },
   {
@@ -1302,20 +1316,6 @@
     "profile": "A"
   },
   {
-    "symbol": "VVPR",
-    "prev_close": 1.94,
-    "pm_price": 2.05,
-    "gap_pct": 5.67,
-    "pm_volume": 112916.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 9859166,
-    "float_millions": 9.86,
-    "profile": "B"
-  },
-  {
     "symbol": "SMU",
     "prev_close": 17.65,
     "pm_price": 18.65,
@@ -1426,20 +1426,6 @@
     "float_shares": 5196392,
     "float_millions": 5.2,
     "profile": "B"
-  },
-  {
-    "symbol": "BLSX",
-    "prev_close": 8.36,
-    "pm_price": 8.82,
-    "gap_pct": 5.5,
-    "pm_volume": 509.0,
-    "first_seen_et": "08:30",
-    "sim_start": "08:30",
-    "discovery_time": "08:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
   },
   {
     "symbol": "JFBR",

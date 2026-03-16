@@ -826,20 +826,6 @@
     "profile": "X"
   },
   {
-    "symbol": "SKRE",
-    "prev_close": 8.78,
-    "pm_price": 9.35,
-    "gap_pct": 6.49,
-    "pm_volume": 31936.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "TPCS",
     "prev_close": 3.68,
     "pm_price": 3.9189,
@@ -852,6 +838,20 @@
     "float_shares": 8883455,
     "float_millions": 8.88,
     "profile": "B"
+  },
+  {
+    "symbol": "SKRE",
+    "prev_close": 8.78,
+    "pm_price": 9.35,
+    "gap_pct": 6.49,
+    "pm_volume": 31936.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "RDWU",

@@ -448,6 +448,20 @@
     "profile": "A"
   },
   {
+    "symbol": "CHSN",
+    "prev_close": 2.0,
+    "pm_price": 2.18,
+    "gap_pct": 9.0,
+    "pm_volume": 4444.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 384591,
+    "float_millions": 0.38,
+    "profile": "A"
+  },
+  {
     "symbol": "AIRS",
     "prev_close": 1.835,
     "pm_price": 2.0,
@@ -616,20 +630,6 @@
     "profile": "A"
   },
   {
-    "symbol": "DASX",
-    "prev_close": 10.67,
-    "pm_price": 11.57,
-    "gap_pct": 8.43,
-    "pm_volume": 996.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "RDTL",
     "prev_close": 18.36,
     "pm_price": 19.855,
@@ -683,6 +683,20 @@
     "discovery_method": "rescan",
     "float_shares": 3122028,
     "float_millions": 3.12,
+    "profile": "A"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 3.37,
+    "pm_price": 3.63,
+    "gap_pct": 7.72,
+    "pm_volume": 1534.0,
+    "first_seen_et": "06:22",
+    "sim_start": "07:00",
+    "discovery_time": "06:22",
+    "discovery_method": "premarket",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
     "profile": "A"
   },
   {
@@ -1610,20 +1624,6 @@
     "profile": "A"
   },
   {
-    "symbol": "RDWU",
-    "prev_close": 10.8829,
-    "pm_price": 11.45,
-    "gap_pct": 5.21,
-    "pm_volume": 12358.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 49258,
-    "float_millions": 0.05,
-    "profile": "A"
-  },
-  {
     "symbol": "WATT",
     "prev_close": 11.03,
     "pm_price": 11.605,
@@ -1635,6 +1635,20 @@
     "discovery_method": "rescan",
     "float_shares": 1600955,
     "float_millions": 1.6,
+    "profile": "A"
+  },
+  {
+    "symbol": "RDWU",
+    "prev_close": 10.8829,
+    "pm_price": 11.45,
+    "gap_pct": 5.21,
+    "pm_volume": 12358.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 49258,
+    "float_millions": 0.05,
     "profile": "A"
   },
   {

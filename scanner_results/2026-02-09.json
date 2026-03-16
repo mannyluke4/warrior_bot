@@ -126,20 +126,6 @@
     "profile": "A"
   },
   {
-    "symbol": "BLSX",
-    "prev_close": 5.63,
-    "pm_price": 6.735,
-    "gap_pct": 19.63,
-    "pm_volume": 2614.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "QSU",
     "prev_close": 3.96,
     "pm_price": 4.72,
@@ -980,20 +966,6 @@
     "profile": "A"
   },
   {
-    "symbol": "PONX",
-    "prev_close": 17.98,
-    "pm_price": 19.23,
-    "gap_pct": 6.95,
-    "pm_volume": 1686.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "KLRS",
     "prev_close": 8.34,
     "pm_price": 8.92,
@@ -1006,6 +978,20 @@
     "float_shares": 4627165,
     "float_millions": 4.63,
     "profile": "A"
+  },
+  {
+    "symbol": "PONX",
+    "prev_close": 17.98,
+    "pm_price": 19.23,
+    "gap_pct": 6.95,
+    "pm_volume": 1686.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "SBLX",
@@ -1610,20 +1596,6 @@
     "profile": "X"
   },
   {
-    "symbol": "LMBO",
-    "prev_close": 17.7,
-    "pm_price": 18.72,
-    "gap_pct": 5.76,
-    "pm_volume": 9021.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "PLUR",
     "prev_close": 3.47,
     "pm_price": 3.67,
@@ -1636,6 +1608,20 @@
     "float_shares": 4528865,
     "float_millions": 4.53,
     "profile": "A"
+  },
+  {
+    "symbol": "LMBO",
+    "prev_close": 17.7,
+    "pm_price": 18.72,
+    "gap_pct": 5.76,
+    "pm_volume": 9021.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "NUWE",
@@ -1736,20 +1722,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ZENA",
-    "prev_close": 2.93,
-    "pm_price": 3.09,
-    "gap_pct": 5.46,
-    "pm_volume": 11835.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 8361614,
-    "float_millions": 8.36,
-    "profile": "B"
-  },
-  {
     "symbol": "INBS",
     "prev_close": 6.23,
     "pm_price": 6.57,
@@ -1762,6 +1734,20 @@
     "float_shares": 637523,
     "float_millions": 0.64,
     "profile": "A"
+  },
+  {
+    "symbol": "ZENA",
+    "prev_close": 2.93,
+    "pm_price": 3.09,
+    "gap_pct": 5.46,
+    "pm_volume": 11835.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 8361614,
+    "float_millions": 8.36,
+    "profile": "B"
   },
   {
     "symbol": "HYSA",
@@ -1859,6 +1845,20 @@
     "discovery_method": "rescan",
     "float_shares": 435581,
     "float_millions": 0.44,
+    "profile": "A"
+  },
+  {
+    "symbol": "GMEX",
+    "prev_close": 2.1,
+    "pm_price": 2.21,
+    "gap_pct": 5.24,
+    "pm_volume": 13409.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
     "profile": "A"
   },
   {
@@ -1972,6 +1972,20 @@
     "float_shares": 8883455,
     "float_millions": 8.88,
     "profile": "B"
+  },
+  {
+    "symbol": "RBOT",
+    "prev_close": 1.97,
+    "pm_price": 2.07,
+    "gap_pct": 5.08,
+    "pm_volume": 4307.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 3751250,
+    "float_millions": 3.75,
+    "profile": "A"
   },
   {
     "symbol": "VSTL",

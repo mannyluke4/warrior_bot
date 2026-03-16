@@ -1,5 +1,19 @@
 [
   {
+    "symbol": "GMEX",
+    "prev_close": 0.4495,
+    "pm_price": 4.0,
+    "gap_pct": 789.88,
+    "pm_volume": 4858.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 1406779,
+    "float_millions": 1.41,
+    "profile": "A"
+  },
+  {
     "symbol": "ICON",
     "prev_close": 0.5409,
     "pm_price": 3.33,
@@ -182,6 +196,20 @@
     "profile": "A"
   },
   {
+    "symbol": "HKIT",
+    "prev_close": 1.78,
+    "pm_price": 2.0,
+    "gap_pct": 12.36,
+    "pm_volume": 31216.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": 8657225,
+    "float_millions": 8.66,
+    "profile": "B"
+  },
+  {
     "symbol": "NBIG",
     "prev_close": 8.37,
     "pm_price": 9.4,
@@ -222,6 +250,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 7.15,
+    "pm_price": 7.995,
+    "gap_pct": 11.82,
+    "pm_volume": 27689.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
   },
   {
     "symbol": "MLEC",
@@ -924,20 +966,6 @@
     "profile": "A"
   },
   {
-    "symbol": "TXMD",
-    "prev_close": 2.04,
-    "pm_price": 2.16,
-    "gap_pct": 5.88,
-    "pm_volume": 219.0,
-    "first_seen_et": "08:00",
-    "sim_start": "08:00",
-    "discovery_time": "08:00",
-    "discovery_method": "rescan",
-    "float_shares": 9559266,
-    "float_millions": 9.56,
-    "profile": "B"
-  },
-  {
     "symbol": "CV",
     "prev_close": 7.53,
     "pm_price": 7.9729,
@@ -950,6 +978,20 @@
     "float_shares": 3679622,
     "float_millions": 3.68,
     "profile": "A"
+  },
+  {
+    "symbol": "TXMD",
+    "prev_close": 2.04,
+    "pm_price": 2.16,
+    "gap_pct": 5.88,
+    "pm_volume": 219.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 9559266,
+    "float_millions": 9.56,
+    "profile": "B"
   },
   {
     "symbol": "NRXS",
@@ -1159,6 +1201,20 @@
     "discovery_method": "rescan",
     "float_shares": 637523,
     "float_millions": 0.64,
+    "profile": "A"
+  },
+  {
+    "symbol": "JCSE",
+    "prev_close": 2.3,
+    "pm_price": 2.42,
+    "gap_pct": 5.22,
+    "pm_volume": 8762.0,
+    "first_seen_et": "04:01",
+    "sim_start": "07:00",
+    "discovery_time": "04:01",
+    "discovery_method": "premarket",
+    "float_shares": 1806654,
+    "float_millions": 1.81,
     "profile": "A"
   },
   {

@@ -896,6 +896,20 @@
     "profile": "B"
   },
   {
+    "symbol": "TGL",
+    "prev_close": 4.6,
+    "pm_price": 4.89,
+    "gap_pct": 6.3,
+    "pm_volume": 9465.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 3547869,
+    "float_millions": 3.55,
+    "profile": "A"
+  },
+  {
     "symbol": "CGTL",
     "prev_close": 3.66,
     "pm_price": 3.89,
@@ -1076,6 +1090,20 @@
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
+  },
+  {
+    "symbol": "NXTT",
+    "prev_close": 3.14,
+    "pm_price": 3.32,
+    "gap_pct": 5.73,
+    "pm_volume": 988.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
   },
   {
     "symbol": "PRFX",

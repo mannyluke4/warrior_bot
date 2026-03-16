@@ -1,8 +1,38 @@
 {
   "last_completed_date": "2026-03-12",
   "config_a": {
-    "equity": 22550,
+    "equity": 16925,
     "trades": [
+      {
+        "num": 1,
+        "time": "08:19",
+        "entry": 2.0976,
+        "stop": 1.9,
+        "r": 0.1976,
+        "score": 9.0,
+        "exit_price": 1.8903,
+        "reason": "stop_hit",
+        "pnl": -787,
+        "r_mult": "-1.0R",
+        "symbol": "PAVS",
+        "date": "2026-01-02",
+        "notional": 7961.538461538462
+      },
+      {
+        "num": 1,
+        "time": "09:51",
+        "entry": 14.81,
+        "stop": 14.59,
+        "r": 0.22,
+        "score": 10.5,
+        "exit_price": 14.7,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -365,
+        "r_mult": "-0.5R",
+        "symbol": "RGTX",
+        "date": "2026-01-05",
+        "notional": 49142.27272727258
+      },
       {
         "num": 1,
         "time": "11:23",
@@ -12,11 +42,41 @@
         "score": 10.5,
         "exit_price": 4.59,
         "reason": "stop_hit",
-        "pnl": -750,
+        "pnl": -721,
         "r_mult": "-1.0R",
         "symbol": "BNAI",
         "date": "2026-01-06",
-        "notional": 27230.769230769252
+        "notional": 26177.84615384617
+      },
+      {
+        "num": 1,
+        "time": "09:40",
+        "entry": 3.69,
+        "stop": 2.89,
+        "r": 0.8,
+        "score": 12.0,
+        "exit_price": 3.47,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -193,
+        "r_mult": "-0.3R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 3242.587500000001
+      },
+      {
+        "num": 2,
+        "time": "09:48",
+        "entry": 3.52,
+        "stop": 3.35,
+        "r": 0.17,
+        "score": 10.5,
+        "exit_price": 3.35,
+        "reason": "stop_hit",
+        "pnl": -703,
+        "r_mult": "-1.0R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 14556.235294117652
       },
       {
         "num": 1,
@@ -27,14 +87,29 @@
         "score": 12.5,
         "exit_price": 7.95,
         "reason": "stop_hit",
-        "pnl": -731,
+        "pnl": -680,
         "r_mult": "-1.0R",
         "symbol": "ACON",
         "date": "2026-01-08",
-        "notional": 23082.73076923071
+        "notional": 21472.307692307637
       },
       {
         "num": 1,
+        "time": "09:42",
+        "entry": 2.78,
+        "stop": 2.27,
+        "r": 0.51,
+        "score": 12.5,
+        "exit_price": 2.7505,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -39,
+        "r_mult": "-0.1R",
+        "symbol": "SXTC",
+        "date": "2026-01-08",
+        "notional": 3706.666666666668
+      },
+      {
+        "num": 2,
         "time": "10:10",
         "entry": 3.56,
         "stop": 3.29,
@@ -42,11 +117,11 @@
         "score": 12.5,
         "exit_price": 3.5701,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 27,
+        "pnl": 25,
         "r_mult": "+0.0R",
         "symbol": "SXTC",
         "date": "2026-01-08",
-        "notional": 9638.37037037037
+        "notional": 8965.925925925925
       },
       {
         "num": 1,
@@ -57,11 +132,41 @@
         "score": 12.5,
         "exit_price": 8.6621,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 360,
+        "pnl": 335,
         "r_mult": "+0.5R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 15892.394736842074
+        "notional": 14777.92105263155
+      },
+      {
+        "num": 1,
+        "time": "09:58",
+        "entry": 3.96,
+        "stop": 3.85,
+        "r": 0.11,
+        "score": 12.0,
+        "exit_price": 3.91,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -301,
+        "r_mult": "-0.5R",
+        "symbol": "CRWG",
+        "date": "2026-01-12",
+        "notional": 23868.00000000003
+      },
+      {
+        "num": 1,
+        "time": "08:31",
+        "entry": 1.31,
+        "stop": 1.19,
+        "r": 0.12,
+        "score": 10.0,
+        "exit_price": 1.2698,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -222,
+        "r_mult": "-0.3R",
+        "symbol": "XAIR",
+        "date": "2026-01-13",
+        "notional": 7248.666666666661
       },
       {
         "num": 1,
@@ -72,14 +177,59 @@
         "score": 11.0,
         "exit_price": 3.59,
         "reason": "stop_hit",
-        "pnl": -722,
+        "pnl": -664,
         "r_mult": "-1.0R",
         "symbol": "EVTV",
         "date": "2026-01-13",
-        "notional": 8821.937499999993
+        "notional": 8113.249999999994
       },
       {
         "num": 1,
+        "time": "07:41",
+        "entry": 8.77,
+        "stop": 8.12,
+        "r": 0.65,
+        "score": 10.5,
+        "exit_price": 8.25,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -531,
+        "r_mult": "-0.8R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 8958.892307692302
+      },
+      {
+        "num": 1,
+        "time": "09:39",
+        "entry": 12.87,
+        "stop": 12.29,
+        "r": 0.58,
+        "score": 10.5,
+        "exit_price": 13.08,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 227,
+        "r_mult": "+0.4R",
+        "symbol": "AHMA",
+        "date": "2026-01-14",
+        "notional": 13935.10344827586
+      },
+      {
+        "num": 2,
+        "time": "09:57",
+        "entry": 14.02,
+        "stop": 13.09,
+        "r": 0.93,
+        "score": 9.8,
+        "exit_price": 15.13,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 749,
+        "r_mult": "+1.2R",
+        "symbol": "AHMA",
+        "date": "2026-01-14",
+        "notional": 9467.268817204304
+      },
+      {
+        "num": 3,
         "time": "11:55",
         "entry": 14.52,
         "stop": 13.87,
@@ -87,26 +237,11 @@
         "score": 12.5,
         "exit_price": 14.45,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -76,
+        "pnl": -68,
         "r_mult": "-0.1R",
         "symbol": "AHMA",
         "date": "2026-01-14",
-        "notional": 15726.276923076914
-      },
-      {
-        "num": 1,
-        "time": "11:12",
-        "entry": 4.05,
-        "stop": 3.86,
-        "r": 0.19,
-        "score": 11.0,
-        "exit_price": 4.1599,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 406,
-        "r_mult": "+0.6R",
-        "symbol": "CJMB",
-        "date": "2026-01-15",
-        "notional": 14963.68421052632
+        "notional": 14028.553846153838
       },
       {
         "num": 1,
@@ -117,14 +252,59 @@
         "score": 10.5,
         "exit_price": 10.08,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -171,
+        "pnl": -158,
         "r_mult": "-0.2R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 9243.000000000007
+        "notional": 8571.500000000007
       },
       {
         "num": 1,
+        "time": "09:46",
+        "entry": 2.1,
+        "stop": 1.9592,
+        "r": 0.1408,
+        "score": 12.5,
+        "exit_price": 2.07,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -138,
+        "r_mult": "-0.2R",
+        "symbol": "XAIR",
+        "date": "2026-01-16",
+        "notional": 9649.857954545452
+      },
+      {
+        "num": 1,
+        "time": "10:06",
+        "entry": 2.43,
+        "stop": 1.93,
+        "r": 0.5,
+        "score": 12.0,
+        "exit_price": 2.79,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 463,
+        "r_mult": "+0.7R",
+        "symbol": "GITS",
+        "date": "2026-01-21",
+        "notional": 3129.8399999999983
+      },
+      {
+        "num": 1,
+        "time": "09:28",
+        "entry": 2.22,
+        "stop": 2.13,
+        "r": 0.09,
+        "score": 10.5,
+        "exit_price": 2.29,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 501,
+        "r_mult": "+0.8R",
+        "symbol": "SEGG",
+        "date": "2026-01-21",
+        "notional": 15885.333333333281
+      },
+      {
+        "num": 2,
         "time": "10:28",
         "entry": 2.39,
         "stop": 2.25,
@@ -132,11 +312,11 @@
         "score": 12.0,
         "exit_price": 2.315,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -379,
+        "pnl": -345,
         "r_mult": "-0.5R",
         "symbol": "SEGG",
         "date": "2026-01-21",
-        "notional": 12086.571428571418
+        "notional": 10993.999999999993
       },
       {
         "num": 1,
@@ -147,11 +327,11 @@
         "score": 11.0,
         "exit_price": 8.14,
         "reason": "stop_hit",
-        "pnl": -699,
+        "pnl": -659,
         "r_mult": "-1.0R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 12552.875000000035
+        "notional": 11834.541666666699
       },
       {
         "num": 1,
@@ -162,11 +342,26 @@
         "score": 11.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -699,
+        "pnl": -659,
         "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 12132.64285714286
+        "notional": 11438.357142857145
+      },
+      {
+        "num": 1,
+        "time": "09:33",
+        "entry": 2.25,
+        "stop": 2.1215,
+        "r": 0.1285,
+        "score": 12.5,
+        "exit_price": 2.165,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -436,
+        "r_mult": "-0.7R",
+        "symbol": "NAMM",
+        "date": "2026-01-22",
+        "notional": 11538.910505836591
       },
       {
         "num": 1,
@@ -177,11 +372,26 @@
         "score": 12.5,
         "exit_price": 19.4928,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -364,
+        "pnl": -337,
         "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 16957.53846153844
+        "notional": 15706.153846153824
+      },
+      {
+        "num": 1,
+        "time": "10:25",
+        "entry": 2.24,
+        "stop": 1.77,
+        "r": 0.47,
+        "score": 12.5,
+        "exit_price": 2.8227,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 752,
+        "r_mult": "+1.2R",
+        "symbol": "MBAI",
+        "date": "2026-01-26",
+        "notional": 2892.936170212765
       },
       {
         "num": 1,
@@ -192,14 +402,44 @@
         "score": 12.0,
         "exit_price": 3.43,
         "reason": "stop_hit",
-        "pnl": -655,
+        "pnl": -626,
         "r_mult": "-1.0R",
         "symbol": "CYN",
         "date": "2026-01-27",
-        "notional": 10016.041666666675
+        "notional": 9572.583333333341
       },
       {
         "num": 1,
+        "time": "09:40",
+        "entry": 4.09,
+        "stop": 3.9958,
+        "r": 0.0942,
+        "score": 10.8,
+        "exit_price": 3.99,
+        "reason": "stop_hit",
+        "pnl": -664,
+        "r_mult": "-1.1R",
+        "symbol": "GDXD",
+        "date": "2026-01-27",
+        "notional": 27179.830148620003
+      },
+      {
+        "num": 1,
+        "time": "09:44",
+        "entry": 3.44,
+        "stop": 3.04,
+        "r": 0.4,
+        "score": 9.5,
+        "exit_price": 3.04,
+        "reason": "stop_hit",
+        "pnl": -593,
+        "r_mult": "-1.0R",
+        "symbol": "SLGB",
+        "date": "2026-01-28",
+        "notional": 5099.800000000001
+      },
+      {
+        "num": 2,
         "time": "10:18",
         "entry": 4.19,
         "stop": 3.76,
@@ -207,14 +447,44 @@
         "score": 12.5,
         "exit_price": 4.14,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -74,
+        "pnl": -69,
         "r_mult": "-0.1R",
         "symbol": "SLGB",
         "date": "2026-01-28",
-        "notional": 6216.790697674411
+        "notional": 5778.302325581388
       },
       {
         "num": 1,
+        "time": "09:09",
+        "entry": 2.2582,
+        "stop": 2.15,
+        "r": 0.1082,
+        "score": 12.0,
+        "exit_price": 2.2498,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -45,
+        "r_mult": "-0.1R",
+        "symbol": "FEED",
+        "date": "2026-01-29",
+        "notional": 12042.341959334557
+      },
+      {
+        "num": 2,
+        "time": "09:44",
+        "entry": 3.44,
+        "stop": 3.0401,
+        "r": 0.3999,
+        "score": 12.0,
+        "exit_price": 3.87,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 620,
+        "r_mult": "+1.1R",
+        "symbol": "FEED",
+        "date": "2026-01-29",
+        "notional": 4963.4408602150515
+      },
+      {
+        "num": 3,
         "time": "11:31",
         "entry": 4.11,
         "stop": 3.91,
@@ -222,14 +492,14 @@
         "score": 11.0,
         "exit_price": 4.104,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -19,
+        "pnl": -17,
         "r_mult": "-0.0R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 13069.79999999999
+        "notional": 11857.34999999999
       },
       {
-        "num": 2,
+        "num": 4,
         "time": "11:44",
         "entry": 4.45,
         "stop": 4.31,
@@ -237,14 +507,44 @@
         "score": 12.5,
         "exit_price": 4.47,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 91,
+        "pnl": 82,
         "r_mult": "+0.1R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 20215.714285714203
+        "notional": 18340.35714285707
       },
       {
         "num": 1,
+        "time": "08:02",
+        "entry": 8.52,
+        "stop": 6.11,
+        "r": 2.41,
+        "score": 9.5,
+        "exit_price": 6.1,
+        "reason": "stop_hit",
+        "pnl": -298,
+        "r_mult": "-1.0R",
+        "symbol": "NPT",
+        "date": "2026-02-03",
+        "notional": 2096.4149377593367
+      },
+      {
+        "num": 1,
+        "time": "07:32",
+        "entry": 3.93,
+        "stop": 3.85,
+        "r": 0.08,
+        "score": 10.0,
+        "exit_price": 3.885,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -165,
+        "r_mult": "-0.6R",
+        "symbol": "RKLZ",
+        "date": "2026-02-05",
+        "notional": 28738.124999999975
+      },
+      {
+        "num": 2,
         "time": "10:19",
         "entry": 4.09,
         "stop": 3.97,
@@ -252,41 +552,11 @@
         "score": 9.0,
         "exit_price": 3.992,
         "reason": "topping_wicky_exit_full",
-        "pnl": -260,
+        "pnl": -239,
         "r_mult": "-0.8R",
         "symbol": "RKLZ",
         "date": "2026-02-05",
-        "notional": 21745.166666666726
-      },
-      {
-        "num": 1,
-        "time": "08:48",
-        "entry": 3.84,
-        "stop": 3.64,
-        "r": 0.2,
-        "score": 9.0,
-        "exit_price": 3.84,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 0,
-        "r_mult": "+0.0R",
-        "symbol": "HIMZ",
-        "date": "2026-02-05",
-        "notional": 12249.600000000015
-      },
-      {
-        "num": 2,
-        "time": "08:53",
-        "entry": 4.03,
-        "stop": 3.8095,
-        "r": 0.2205,
-        "score": 10.5,
-        "exit_price": 4.01,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -29,
-        "r_mult": "-0.1R",
-        "symbol": "HIMZ",
-        "date": "2026-02-05",
-        "notional": 11660.498866213133
+        "notional": 19938.750000000055
       },
       {
         "num": 1,
@@ -297,11 +567,11 @@
         "score": 9.5,
         "exit_price": 3.18,
         "reason": "topping_wicky_exit_full",
-        "pnl": 44,
+        "pnl": 40,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 4578.418604651161
+        "notional": 4172.093023255812
       },
       {
         "num": 1,
@@ -316,7 +586,7 @@
         "r_mult": "-0.0R",
         "symbol": "SMX",
         "date": "2026-02-06",
-        "notional": 4716.206572769951
+        "notional": 4297.652582159623
       },
       {
         "num": 2,
@@ -327,26 +597,71 @@
         "score": 12.5,
         "exit_price": 16.3768,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -138,
+        "pnl": -126,
         "r_mult": "-0.4R",
         "symbol": "SMX",
         "date": "2026-02-06",
-        "notional": 5223.11004784689
+        "notional": 4759.569377990431
       },
       {
         "num": 1,
-        "time": "10:14",
-        "entry": 2.6399,
-        "stop": 2.25,
-        "r": 0.3899,
-        "score": 12.5,
-        "exit_price": 2.4,
+        "time": "08:07",
+        "entry": 3.96,
+        "stop": 3.8753,
+        "r": 0.0847,
+        "score": 11.5,
+        "exit_price": 3.95,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -193,
-        "r_mult": "-0.6R",
+        "pnl": -34,
+        "r_mult": "-0.1R",
+        "symbol": "CRWG",
+        "date": "2026-02-09",
+        "notional": 26789.61038961046
+      },
+      {
+        "num": 2,
+        "time": "09:43",
+        "entry": 4.2398,
+        "stop": 4.13,
+        "r": 0.1098,
+        "score": 12.5,
+        "exit_price": 4.13,
+        "reason": "stop_hit",
+        "pnl": -286,
+        "r_mult": "-1.0R",
+        "symbol": "CRWG",
+        "date": "2026-02-09",
+        "notional": 22125.732240437177
+      },
+      {
+        "num": 1,
+        "time": "10:05",
+        "entry": 2.32,
+        "stop": 2.01,
+        "r": 0.31,
+        "score": 8.0,
+        "exit_price": 2.2208,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -90,
+        "r_mult": "-0.3R",
         "symbol": "JZXN",
         "date": "2026-02-10",
-        "notional": 4252.0061554244685
+        "notional": 4228.387096774192
+      },
+      {
+        "num": 2,
+        "time": "10:10",
+        "entry": 2.36,
+        "stop": 2.19,
+        "r": 0.17,
+        "score": 11.0,
+        "exit_price": 2.485,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 208,
+        "r_mult": "+0.7R",
+        "symbol": "JZXN",
+        "date": "2026-02-10",
+        "notional": 7843.529411764709
       },
       {
         "num": 1,
@@ -357,41 +672,56 @@
         "score": 9.5,
         "exit_price": 7.89,
         "reason": "stop_hit",
-        "pnl": -314,
+        "pnl": -282,
         "r_mult": "-1.0R",
         "symbol": "ASTI",
         "date": "2026-02-10",
-        "notional": 18979.555555555526
+        "notional": 17075.555555555526
       },
       {
         "num": 1,
-        "time": "10:50",
-        "entry": 8.96,
-        "stop": 8.76,
-        "r": 0.2,
-        "score": 12.0,
-        "exit_price": 9.045,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 131,
-        "r_mult": "+0.4R",
+        "time": "07:25",
+        "entry": 2.08,
+        "stop": 1.96,
+        "r": 0.12,
+        "score": 12.5,
+        "exit_price": 1.96,
+        "reason": "stop_hit",
+        "pnl": -280,
+        "r_mult": "-1.0R",
+        "symbol": "JZXN",
+        "date": "2026-02-12",
+        "notional": 9723.99999999999
+      },
+      {
+        "num": 1,
+        "time": "09:49",
+        "entry": 8.07,
+        "stop": 7.8776,
+        "r": 0.1924,
+        "score": 12.5,
+        "exit_price": 7.86,
+        "reason": "stop_hit",
+        "pnl": -306,
+        "r_mult": "-1.1R",
         "symbol": "KPTI",
         "date": "2026-02-12",
-        "notional": 27596.799999999857
+        "notional": 23530.50935550934
       },
       {
-        "num": 1,
-        "time": "10:33",
-        "entry": 12.55,
-        "stop": 12.39,
-        "r": 0.16,
-        "score": 12.0,
-        "exit_price": 12.5,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -97,
-        "r_mult": "-0.3R",
-        "symbol": "OKLL",
+        "num": 2,
+        "time": "10:13",
+        "entry": 9.03,
+        "stop": 8.8,
+        "r": 0.23,
+        "score": 11.0,
+        "exit_price": 9.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 83,
+        "r_mult": "+0.3R",
+        "symbol": "APPX",
         "date": "2026-02-13",
-        "notional": 48552.812499999956
+        "notional": 21436.43478260882
       },
       {
         "num": 1,
@@ -402,11 +732,11 @@
         "score": 10.5,
         "exit_price": 4.74,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -96,
+        "pnl": -85,
         "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 6290.415346121774
+        "notional": 5586.94912427023
       },
       {
         "num": 1,
@@ -417,11 +747,11 @@
         "score": 12.5,
         "exit_price": 4.86,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -164,
+        "pnl": -146,
         "r_mult": "-0.5R",
         "symbol": "RIME",
         "date": "2026-02-17",
-        "notional": 10324.466666666673
+        "notional": 9169.86666666667
       },
       {
         "num": 2,
@@ -432,11 +762,26 @@
         "score": 8.5,
         "exit_price": 4.7,
         "reason": "topping_wicky_exit_full",
-        "pnl": -247,
+        "pnl": -219,
         "r_mult": "-0.8R",
         "symbol": "RIME",
         "date": "2026-02-17",
-        "notional": 19826.266666666623
+        "notional": 17609.066666666626
+      },
+      {
+        "num": 1,
+        "time": "08:00",
+        "entry": 2.285,
+        "stop": 2.09,
+        "r": 0.195,
+        "score": 12.5,
+        "exit_price": 1.89,
+        "reason": "max_loss_hit",
+        "pnl": -544,
+        "r_mult": "-2.0R",
+        "symbol": "LRHC",
+        "date": "2026-02-18",
+        "notional": 6292.538461538453
       },
       {
         "num": 1,
@@ -447,11 +792,11 @@
         "score": 11.0,
         "exit_price": 3.1,
         "reason": "topping_wicky_exit_full",
-        "pnl": -72,
+        "pnl": -62,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 9060.000000000002
+        "notional": 7860.000000000002
       },
       {
         "num": 1,
@@ -462,14 +807,29 @@
         "score": 12.5,
         "exit_price": 3.13,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -101,
+        "pnl": -87,
         "r_mult": "-0.3R",
         "symbol": "RIME",
         "date": "2026-02-19",
-        "notional": 15955.666666666652
+        "notional": 13842.33333333332
       },
       {
         "num": 1,
+        "time": "10:17",
+        "entry": 2.96,
+        "stop": 2.789,
+        "r": 0.171,
+        "score": 12.0,
+        "exit_price": 2.95,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -15,
+        "r_mult": "-0.1R",
+        "symbol": "NAMM",
+        "date": "2026-02-19",
+        "notional": 9070.409356725157
+      },
+      {
+        "num": 2,
         "time": "11:40",
         "entry": 3.11,
         "stop": 3.02,
@@ -477,11 +837,41 @@
         "score": 12.0,
         "exit_price": 3.0615,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -163,
+        "pnl": -141,
         "r_mult": "-0.5R",
         "symbol": "NAMM",
         "date": "2026-02-19",
-        "notional": 20871.555555555587
+        "notional": 18107.11111111114
+      },
+      {
+        "num": 1,
+        "time": "10:30",
+        "entry": 2.22,
+        "stop": 2.09,
+        "r": 0.13,
+        "score": 10.5,
+        "exit_price": 2.09,
+        "reason": "stop_hit",
+        "pnl": -258,
+        "r_mult": "-1.0R",
+        "symbol": "GNPX",
+        "date": "2026-02-23",
+        "notional": 8811.692307692287
+      },
+      {
+        "num": 1,
+        "time": "09:46",
+        "entry": 4.13,
+        "stop": 4.04,
+        "r": 0.09,
+        "score": 12.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 141,
+        "r_mult": "+0.6R",
+        "symbol": "CRWG",
+        "date": "2026-02-24",
+        "notional": 23357.44444444448
       },
       {
         "num": 1,
@@ -489,14 +879,29 @@
         "entry": 10.465,
         "stop": 10.3125,
         "r": 0.1525,
-        "score": 10.5,
+        "score": 12.0,
         "exit_price": 10.38,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -166,
+        "pnl": -143,
         "r_mult": "-0.6R",
         "symbol": "IONX",
         "date": "2026-02-25",
-        "notional": 40899.278688524624
+        "notional": 35203.573770491836
+      },
+      {
+        "num": 1,
+        "time": "09:42",
+        "entry": 3.65,
+        "stop": 3.5,
+        "r": 0.15,
+        "score": 12.0,
+        "exit_price": 3.8499,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 342,
+        "r_mult": "+1.3R",
+        "symbol": "CDIO",
+        "date": "2026-02-25",
+        "notional": 12483.000000000005
       },
       {
         "num": 3,
@@ -507,11 +912,11 @@
         "score": 12.5,
         "exit_price": 14.58,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 119,
+        "pnl": 105,
         "r_mult": "+0.4R",
         "symbol": "IONX",
         "date": "2026-02-26",
-        "notional": 18098.3845499042
+        "notional": 15862.88188976375
       },
       {
         "num": 4,
@@ -522,11 +927,26 @@
         "score": 12.5,
         "exit_price": 14.78,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -101,
+        "pnl": -89,
         "r_mult": "-0.3R",
         "symbol": "IONX",
         "date": "2026-02-26",
-        "notional": 23188.97368421048
+        "notional": 20324.684210526277
+      },
+      {
+        "num": 1,
+        "time": "09:49",
+        "entry": 2.32,
+        "stop": 2.1944,
+        "r": 0.1256,
+        "score": 12.0,
+        "exit_price": 2.4,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 165,
+        "r_mult": "+0.6R",
+        "symbol": "SMJF",
+        "date": "2026-02-27",
+        "notional": 9568.152866242042
       },
       {
         "num": 1,
@@ -537,11 +957,11 @@
         "score": 12.5,
         "exit_price": 11.44,
         "reason": "stop_hit",
-        "pnl": -592,
+        "pnl": -523,
         "r_mult": "-1.0R",
         "symbol": "BATL",
         "date": "2026-03-02",
-        "notional": 11879.466666666673
+        "notional": 10494.866666666672
       },
       {
         "num": 1,
@@ -552,11 +972,41 @@
         "score": 12.5,
         "exit_price": 8.76,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -334,
+        "pnl": -295,
         "r_mult": "-0.6R",
         "symbol": "INDO",
         "date": "2026-03-02",
-        "notional": 11608.34782608698
+        "notional": 10255.347826086978
+      },
+      {
+        "num": 1,
+        "time": "08:13",
+        "entry": 7.69,
+        "stop": 6.88,
+        "r": 0.81,
+        "score": 12.5,
+        "exit_price": 7.18,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -316,
+        "r_mult": "-0.6R",
+        "symbol": "NPT",
+        "date": "2026-03-03",
+        "notional": 4765.901234567898
+      },
+      {
+        "num": 1,
+        "time": "08:23",
+        "entry": 15.8,
+        "stop": 13.31,
+        "r": 2.49,
+        "score": 9.5,
+        "exit_price": 15.16,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -127,
+        "r_mult": "-0.3R",
+        "symbol": "VCIG",
+        "date": "2026-03-04",
+        "notional": 3134.618473895582
       },
       {
         "num": 1,
@@ -567,26 +1017,56 @@
         "score": 9.0,
         "exit_price": 6.035,
         "reason": "stop_hit",
-        "pnl": -569,
+        "pnl": -494,
         "r_mult": "-1.0R",
         "symbol": "RGTX",
         "date": "2026-03-04",
-        "notional": 34908.150000000125
+        "notional": 30306.900000000103
       },
       {
         "num": 1,
-        "time": "10:13",
-        "entry": 20.9,
-        "stop": 20.39,
-        "r": 0.51,
-        "score": 12.5,
-        "exit_price": 21.3301,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 468,
-        "r_mult": "+0.8R",
+        "time": "09:24",
+        "entry": 17.35,
+        "stop": 16.71,
+        "r": 0.64,
+        "score": 12.0,
+        "exit_price": 17.35,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 0,
+        "r_mult": "+0.0R",
         "symbol": "BATL",
         "date": "2026-03-05",
-        "notional": 22744.117647058913
+        "notional": 12985.390624999989
+      },
+      {
+        "num": 2,
+        "time": "09:42",
+        "entry": 19.77,
+        "stop": 18.5201,
+        "r": 1.2499,
+        "score": 12.5,
+        "exit_price": 19.57,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -77,
+        "r_mult": "-0.2R",
+        "symbol": "BATL",
+        "date": "2026-03-05",
+        "notional": 7576.470117609408
+      },
+      {
+        "num": 3,
+        "time": "10:31",
+        "entry": 22.58,
+        "stop": 21.99,
+        "r": 0.59,
+        "score": 10.5,
+        "exit_price": 22.3092,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -220,
+        "r_mult": "-0.5R",
+        "symbol": "BATL",
+        "date": "2026-03-05",
+        "notional": 18331.89830508475
       },
       {
         "num": 1,
@@ -597,11 +1077,26 @@
         "score": 8.8,
         "exit_price": 2.14,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -141,
+        "pnl": -118,
         "r_mult": "-0.2R",
         "symbol": "TPET",
         "date": "2026-03-06",
-        "notional": 15281.999999999987
+        "notional": 12716.999999999989
+      },
+      {
+        "num": 1,
+        "time": "10:03",
+        "entry": 2.11,
+        "stop": 1.94,
+        "r": 0.17,
+        "score": 12.5,
+        "exit_price": 2.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -28,
+        "r_mult": "-0.1R",
+        "symbol": "AIFF",
+        "date": "2026-03-06",
+        "notional": 5845.941176470591
       },
       {
         "num": 1,
@@ -612,11 +1107,11 @@
         "score": 12.0,
         "exit_price": 2.2587,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -380,
+        "pnl": -316,
         "r_mult": "-0.7R",
         "symbol": "HIMZ",
         "date": "2026-03-09",
-        "notional": 8857.866666666672
+        "notional": 7363.2000000000035
       },
       {
         "num": 2,
@@ -627,26 +1122,26 @@
         "score": 12.0,
         "exit_price": 2.33,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -225,
+        "pnl": -187,
         "r_mult": "-0.4R",
         "symbol": "HIMZ",
         "date": "2026-03-09",
-        "notional": 13303.190428713822
+        "notional": 11058.424725822502
       },
       {
         "num": 1,
-        "time": "09:39",
-        "entry": 4.04,
-        "stop": 3.955,
-        "r": 0.085,
+        "time": "08:02",
+        "entry": 3.55,
+        "stop": 3.4087,
+        "r": 0.1412,
         "score": 10.5,
-        "exit_price": 4.1302,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 597,
-        "r_mult": "+1.1R",
+        "exit_price": 3.25,
+        "reason": "max_loss_hit",
+        "pnl": -994,
+        "r_mult": "-2.1R",
         "symbol": "CRCG",
         "date": "2026-03-09",
-        "notional": 26759.058823529424
+        "notional": 11757.96178343951
       },
       {
         "num": 1,
@@ -657,11 +1152,11 @@
         "score": 12.5,
         "exit_price": 18.8,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -375,
+        "pnl": -285,
         "r_mult": "-0.7R",
         "symbol": "INKT",
         "date": "2026-03-10",
-        "notional": 6148.218579234978
+        "notional": 4704.1530054644845
       },
       {
         "num": 1,
@@ -672,26 +1167,11 @@
         "score": 9.5,
         "exit_price": 4.56,
         "reason": "topping_wicky_exit_full",
-        "pnl": -62,
+        "pnl": -47,
         "r_mult": "-0.1R",
         "symbol": "CRCG",
         "date": "2026-03-10",
-        "notional": 28192.53567508234
-      },
-      {
-        "num": 1,
-        "time": "10:05",
-        "entry": 2.4499,
-        "stop": 2.3573,
-        "r": 0.0926,
-        "score": 11.5,
-        "exit_price": 2.52,
-        "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": 425,
-        "r_mult": "+0.8R",
-        "symbol": "TMDE",
-        "date": "2026-03-10",
-        "notional": 14868.723542116628
+        "notional": 21570.80131723382
       },
       {
         "num": 1,
@@ -702,21 +1182,21 @@
         "score": 12.0,
         "exit_price": 2.73,
         "reason": "topping_wicky_exit_full",
-        "pnl": 43,
+        "pnl": 32,
         "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
-        "notional": 11758.769230769201
+        "notional": 8829.53846153844
       }
     ],
     "daily": [
       {
         "date": "2026-01-02",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 30000
+        "losses": 1,
+        "day_pnl": -787,
+        "equity": 29213
       },
       {
         "date": "2026-01-03",
@@ -724,40 +1204,40 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 30000,
+        "equity": 29213,
         "note": "no candidates (total=0, passed=0)"
       },
       {
         "date": "2026-01-05",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 30000
+        "losses": 1,
+        "day_pnl": -365,
+        "equity": 28848
       },
       {
         "date": "2026-01-06",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -750,
-        "equity": 29250
+        "day_pnl": -721,
+        "equity": 28127
       },
       {
         "date": "2026-01-07",
-        "trades": 0,
+        "trades": 2,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 29250
+        "losses": 2,
+        "day_pnl": -896,
+        "equity": 27231
       },
       {
         "date": "2026-01-08",
-        "trades": 2,
+        "trades": 3,
         "wins": 1,
-        "losses": 1,
-        "day_pnl": -704,
-        "equity": 28546
+        "losses": 2,
+        "day_pnl": -694,
+        "equity": 26537
       },
       {
         "date": "2026-01-09",
@@ -765,47 +1245,47 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 28546
+        "equity": 26537
       },
       {
         "date": "2026-01-12",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 360,
-        "equity": 28906
-      },
-      {
-        "date": "2026-01-13",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -722,
-        "equity": 28184
-      },
-      {
-        "date": "2026-01-14",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -76,
-        "equity": 28108
-      },
-      {
-        "date": "2026-01-15",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 235,
-        "equity": 28343
+        "day_pnl": 34,
+        "equity": 26571
+      },
+      {
+        "date": "2026-01-13",
+        "trades": 3,
+        "wins": 0,
+        "losses": 3,
+        "day_pnl": -1417,
+        "equity": 25154
+      },
+      {
+        "date": "2026-01-14",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 908,
+        "equity": 26062
+      },
+      {
+        "date": "2026-01-15",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -158,
+        "equity": 25904
       },
       {
         "date": "2026-01-16",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 28343
+        "losses": 1,
+        "day_pnl": -138,
+        "equity": 25766
       },
       {
         "date": "2026-01-20",
@@ -813,63 +1293,63 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 28343
+        "equity": 25766
       },
       {
         "date": "2026-01-21",
-        "trades": 1,
-        "wins": 0,
+        "trades": 3,
+        "wins": 2,
         "losses": 1,
-        "day_pnl": -379,
-        "equity": 27964
+        "day_pnl": 619,
+        "equity": 26385
       },
       {
         "date": "2026-01-22",
-        "trades": 2,
+        "trades": 3,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -1398,
-        "equity": 26566
+        "losses": 3,
+        "day_pnl": -1754,
+        "equity": 24631
       },
       {
         "date": "2026-01-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -364,
-        "equity": 26202
+        "day_pnl": -337,
+        "equity": 24294
       },
       {
         "date": "2026-01-26",
-        "trades": 0,
-        "wins": 0,
+        "trades": 1,
+        "wins": 1,
         "losses": 0,
-        "day_pnl": 0,
-        "equity": 26202
+        "day_pnl": 752,
+        "equity": 25046
       },
       {
         "date": "2026-01-27",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -655,
-        "equity": 25547
+        "losses": 2,
+        "day_pnl": -1290,
+        "equity": 23756
       },
       {
         "date": "2026-01-28",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -74,
-        "equity": 25473
+        "losses": 2,
+        "day_pnl": -662,
+        "equity": 23094
       },
       {
         "date": "2026-01-29",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 72,
-        "equity": 25545
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 640,
+        "equity": 23734
       },
       {
         "date": "2026-01-30",
@@ -877,7 +1357,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25545
+        "equity": 23734
       },
       {
         "date": "2026-02-02",
@@ -885,15 +1365,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25545
+        "equity": 23734
       },
       {
         "date": "2026-02-03",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 25545
+        "losses": 1,
+        "day_pnl": -298,
+        "equity": 23436
       },
       {
         "date": "2026-02-04",
@@ -901,39 +1381,39 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25545
+        "equity": 23436
       },
       {
         "date": "2026-02-05",
-        "trades": 3,
+        "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -289,
-        "equity": 25256
+        "day_pnl": -404,
+        "equity": 23032
       },
       {
         "date": "2026-02-06",
         "trades": 3,
         "wins": 1,
         "losses": 2,
-        "day_pnl": -97,
-        "equity": 25159
+        "day_pnl": -89,
+        "equity": 22943
       },
       {
         "date": "2026-02-09",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 25159
-      },
-      {
-        "date": "2026-02-10",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -507,
-        "equity": 24652
+        "day_pnl": -320,
+        "equity": 22623
+      },
+      {
+        "date": "2026-02-10",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -164,
+        "equity": 22459
       },
       {
         "date": "2026-02-11",
@@ -941,47 +1421,47 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 24652
+        "equity": 22459
       },
       {
         "date": "2026-02-12",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 131,
-        "equity": 24783
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -586,
+        "equity": 21873
       },
       {
         "date": "2026-02-13",
         "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -97,
-        "equity": 24686
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 83,
+        "equity": 21956
       },
       {
         "date": "2026-02-17",
         "trades": 3,
         "wins": 0,
         "losses": 3,
-        "day_pnl": -507,
-        "equity": 24179
+        "day_pnl": -450,
+        "equity": 21506
       },
       {
         "date": "2026-02-18",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 24179
+        "losses": 1,
+        "day_pnl": -544,
+        "equity": 20962
       },
       {
         "date": "2026-02-19",
-        "trades": 3,
+        "trades": 4,
         "wins": 0,
-        "losses": 3,
-        "day_pnl": -336,
-        "equity": 23843
+        "losses": 4,
+        "day_pnl": -305,
+        "equity": 20657
       },
       {
         "date": "2026-02-20",
@@ -989,103 +1469,103 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 23843
+        "equity": 20657
       },
       {
         "date": "2026-02-23",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23843
-      },
-      {
-        "date": "2026-02-24",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23843
-      },
-      {
-        "date": "2026-02-25",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -166,
-        "equity": 23677
+        "day_pnl": -258,
+        "equity": 20399
+      },
+      {
+        "date": "2026-02-24",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 141,
+        "equity": 20540
+      },
+      {
+        "date": "2026-02-25",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 199,
+        "equity": 20739
       },
       {
         "date": "2026-02-26",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 18,
-        "equity": 23695
+        "day_pnl": 16,
+        "equity": 20755
       },
       {
         "date": "2026-02-27",
-        "trades": 0,
-        "wins": 0,
+        "trades": 1,
+        "wins": 1,
         "losses": 0,
-        "day_pnl": 0,
-        "equity": 23695
+        "day_pnl": 165,
+        "equity": 20920
       },
       {
         "date": "2026-03-02",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -926,
-        "equity": 22769
+        "day_pnl": -818,
+        "equity": 20102
       },
       {
         "date": "2026-03-03",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 22769
+        "losses": 1,
+        "day_pnl": -316,
+        "equity": 19786
       },
       {
         "date": "2026-03-04",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -569,
-        "equity": 22200
+        "losses": 2,
+        "day_pnl": -621,
+        "equity": 19165
       },
       {
         "date": "2026-03-05",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 468,
-        "equity": 22668
+        "trades": 3,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -297,
+        "equity": 18868
       },
       {
         "date": "2026-03-06",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -141,
-        "equity": 22527
+        "losses": 2,
+        "day_pnl": -146,
+        "equity": 18722
       },
       {
         "date": "2026-03-09",
         "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -8,
-        "equity": 22519
+        "wins": 0,
+        "losses": 3,
+        "day_pnl": -1497,
+        "equity": 17225
       },
       {
         "date": "2026-03-10",
-        "trades": 3,
-        "wins": 1,
+        "trades": 2,
+        "wins": 0,
         "losses": 2,
-        "day_pnl": -12,
-        "equity": 22507
+        "day_pnl": -332,
+        "equity": 16893
       },
       {
         "date": "2026-03-11",
@@ -1093,23 +1573,68 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 22507
+        "equity": 16893
       },
       {
         "date": "2026-03-12",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 43,
-        "equity": 22550
+        "day_pnl": 32,
+        "equity": 16925
       }
     ],
     "max_equity": 30000,
-    "max_drawdown": 7800
+    "max_drawdown": 13107
   },
   "config_b": {
-    "equity": 22329,
+    "equity": 16581,
     "trades": [
+      {
+        "num": 1,
+        "time": "08:19",
+        "entry": 2.0976,
+        "stop": 1.9,
+        "r": 0.1976,
+        "score": 9.0,
+        "exit_price": 1.8903,
+        "reason": "stop_hit",
+        "pnl": -787,
+        "r_mult": "-1.0R",
+        "symbol": "PAVS",
+        "date": "2026-01-02",
+        "notional": 7961.538461538462
+      },
+      {
+        "num": 1,
+        "time": "09:51",
+        "entry": 14.81,
+        "stop": 14.59,
+        "r": 0.22,
+        "score": 10.5,
+        "exit_price": 14.7,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -365,
+        "r_mult": "-0.5R",
+        "symbol": "RGTX",
+        "date": "2026-01-05",
+        "notional": 49142.27272727258
+      },
+      {
+        "num": 1,
+        "time": "09:10",
+        "entry": 11.75,
+        "stop": 9.5,
+        "r": 2.25,
+        "score": 5.5,
+        "exit_price": 11.3991,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -112,
+        "r_mult": "-0.2R",
+        "symbol": "ELAB",
+        "date": "2026-01-06",
+        "notional": 3765.222222222222
+      },
       {
         "num": 1,
         "time": "11:23",
@@ -1119,11 +1644,41 @@
         "score": 10.5,
         "exit_price": 4.59,
         "reason": "stop_hit",
-        "pnl": -750,
+        "pnl": -721,
         "r_mult": "-1.0R",
         "symbol": "BNAI",
         "date": "2026-01-06",
-        "notional": 27230.769230769252
+        "notional": 26177.84615384617
+      },
+      {
+        "num": 1,
+        "time": "09:40",
+        "entry": 3.69,
+        "stop": 2.89,
+        "r": 0.8,
+        "score": 12.0,
+        "exit_price": 3.47,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -192,
+        "r_mult": "-0.3R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 3228.750000000001
+      },
+      {
+        "num": 2,
+        "time": "09:48",
+        "entry": 3.52,
+        "stop": 3.35,
+        "r": 0.17,
+        "score": 10.5,
+        "exit_price": 3.35,
+        "reason": "stop_hit",
+        "pnl": -700,
+        "r_mult": "-1.0R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 14494.11764705883
       },
       {
         "num": 1,
@@ -1134,14 +1689,29 @@
         "score": 12.5,
         "exit_price": 7.95,
         "reason": "stop_hit",
-        "pnl": -731,
+        "pnl": -678,
         "r_mult": "-1.0R",
         "symbol": "ACON",
         "date": "2026-01-08",
-        "notional": 23082.73076923071
+        "notional": 21409.153846153793
       },
       {
         "num": 1,
+        "time": "09:42",
+        "entry": 2.78,
+        "stop": 2.27,
+        "r": 0.51,
+        "score": 12.5,
+        "exit_price": 2.7505,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -39,
+        "r_mult": "-0.1R",
+        "symbol": "SXTC",
+        "date": "2026-01-08",
+        "notional": 3695.764705882354
+      },
+      {
+        "num": 2,
         "time": "10:10",
         "entry": 3.56,
         "stop": 3.29,
@@ -1149,11 +1719,26 @@
         "score": 12.5,
         "exit_price": 3.5701,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 27,
+        "pnl": 25,
         "r_mult": "+0.0R",
         "symbol": "SXTC",
         "date": "2026-01-08",
-        "notional": 9638.37037037037
+        "notional": 8939.555555555555
+      },
+      {
+        "num": 1,
+        "time": "08:05",
+        "entry": 9.44,
+        "stop": 9.19,
+        "r": 0.25,
+        "score": 5.5,
+        "exit_price": 9.19,
+        "reason": "stop_hit",
+        "pnl": -660,
+        "r_mult": "-1.0R",
+        "symbol": "APVO",
+        "date": "2026-01-09",
+        "notional": 24921.6
       },
       {
         "num": 1,
@@ -1164,11 +1749,41 @@
         "score": 12.5,
         "exit_price": 8.6621,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 360,
+        "pnl": 325,
         "r_mult": "+0.5R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 15892.394736842074
+        "notional": 14354.421052631551
+      },
+      {
+        "num": 1,
+        "time": "09:58",
+        "entry": 3.96,
+        "stop": 3.85,
+        "r": 0.11,
+        "score": 12.0,
+        "exit_price": 3.91,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -293,
+        "r_mult": "-0.5R",
+        "symbol": "CRWG",
+        "date": "2026-01-12",
+        "notional": 23184.000000000025
+      },
+      {
+        "num": 1,
+        "time": "08:31",
+        "entry": 1.31,
+        "stop": 1.19,
+        "r": 0.12,
+        "score": 10.0,
+        "exit_price": 1.2698,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -216,
+        "r_mult": "-0.3R",
+        "symbol": "XAIR",
+        "date": "2026-01-13",
+        "notional": 7041.2499999999945
       },
       {
         "num": 1,
@@ -1179,14 +1794,74 @@
         "score": 11.0,
         "exit_price": 3.59,
         "reason": "stop_hit",
-        "pnl": -722,
+        "pnl": -645,
         "r_mult": "-1.0R",
         "symbol": "EVTV",
         "date": "2026-01-13",
-        "notional": 8821.937499999993
+        "notional": 7881.093749999993
       },
       {
         "num": 1,
+        "time": "07:36",
+        "entry": 7.12,
+        "stop": 6.63,
+        "r": 0.49,
+        "score": 7.5,
+        "exit_price": 7.16,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 53,
+        "r_mult": "+0.1R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 9372.24489795918
+      },
+      {
+        "num": 2,
+        "time": "07:41",
+        "entry": 8.77,
+        "stop": 8.12,
+        "r": 0.65,
+        "score": 10.5,
+        "exit_price": 8.25,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -516,
+        "r_mult": "-0.8R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 8702.538461538457
+      },
+      {
+        "num": 1,
+        "time": "09:39",
+        "entry": 12.87,
+        "stop": 12.29,
+        "r": 0.58,
+        "score": 10.5,
+        "exit_price": 13.08,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 221,
+        "r_mult": "+0.4R",
+        "symbol": "AHMA",
+        "date": "2026-01-14",
+        "notional": 13557.879310344824
+      },
+      {
+        "num": 2,
+        "time": "09:57",
+        "entry": 14.02,
+        "stop": 13.09,
+        "r": 0.93,
+        "score": 9.8,
+        "exit_price": 15.13,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 728,
+        "r_mult": "+1.2R",
+        "symbol": "AHMA",
+        "date": "2026-01-14",
+        "notional": 9210.98924731183
+      },
+      {
+        "num": 3,
         "time": "11:55",
         "entry": 14.52,
         "stop": 13.87,
@@ -1194,26 +1869,11 @@
         "score": 12.5,
         "exit_price": 14.45,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -76,
+        "pnl": -66,
         "r_mult": "-0.1R",
         "symbol": "AHMA",
         "date": "2026-01-14",
-        "notional": 15726.276923076914
-      },
-      {
-        "num": 1,
-        "time": "11:12",
-        "entry": 4.05,
-        "stop": 3.86,
-        "r": 0.19,
-        "score": 11.0,
-        "exit_price": 4.1599,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 406,
-        "r_mult": "+0.6R",
-        "symbol": "CJMB",
-        "date": "2026-01-15",
-        "notional": 14963.68421052632
+        "notional": 13648.799999999992
       },
       {
         "num": 1,
@@ -1224,14 +1884,59 @@
         "score": 10.5,
         "exit_price": 10.08,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -171,
+        "pnl": -154,
         "r_mult": "-0.2R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 9243.000000000007
+        "notional": 8347.666666666673
       },
       {
         "num": 1,
+        "time": "09:46",
+        "entry": 2.1,
+        "stop": 1.9592,
+        "r": 0.1408,
+        "score": 12.5,
+        "exit_price": 2.07,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -134,
+        "r_mult": "-0.2R",
+        "symbol": "XAIR",
+        "date": "2026-01-16",
+        "notional": 9396.306818181816
+      },
+      {
+        "num": 1,
+        "time": "10:06",
+        "entry": 2.43,
+        "stop": 1.93,
+        "r": 0.5,
+        "score": 12.0,
+        "exit_price": 2.79,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 450,
+        "r_mult": "+0.7R",
+        "symbol": "GITS",
+        "date": "2026-01-21",
+        "notional": 3042.359999999999
+      },
+      {
+        "num": 1,
+        "time": "09:28",
+        "entry": 2.22,
+        "stop": 2.13,
+        "r": 0.09,
+        "score": 10.5,
+        "exit_price": 2.29,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 487,
+        "r_mult": "+0.8R",
+        "symbol": "SEGG",
+        "date": "2026-01-21",
+        "notional": 15441.333333333283
+      },
+      {
+        "num": 2,
         "time": "10:28",
         "entry": 2.39,
         "stop": 2.25,
@@ -1239,11 +1944,11 @@
         "score": 12.0,
         "exit_price": 2.315,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -379,
+        "pnl": -335,
         "r_mult": "-0.5R",
         "symbol": "SEGG",
         "date": "2026-01-21",
-        "notional": 12086.571428571418
+        "notional": 10686.714285714275
       },
       {
         "num": 1,
@@ -1254,11 +1959,26 @@
         "score": 11.0,
         "exit_price": 8.14,
         "reason": "stop_hit",
-        "pnl": -699,
+        "pnl": -641,
         "r_mult": "-1.0R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 12552.875000000035
+        "notional": 11511.291666666697
+      },
+      {
+        "num": 1,
+        "time": "07:42",
+        "entry": 2.86,
+        "stop": 2.62,
+        "r": 0.24,
+        "score": 4.0,
+        "exit_price": 3.01,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 400,
+        "r_mult": "+0.6R",
+        "symbol": "NXTS",
+        "date": "2026-01-22",
+        "notional": 7638.58333333334
       },
       {
         "num": 1,
@@ -1269,11 +1989,26 @@
         "score": 11.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -699,
+        "pnl": -641,
         "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 12132.64285714286
+        "notional": 11125.928571428572
+      },
+      {
+        "num": 1,
+        "time": "09:33",
+        "entry": 2.25,
+        "stop": 2.1215,
+        "r": 0.1285,
+        "score": 12.5,
+        "exit_price": 2.165,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -424,
+        "r_mult": "-0.7R",
+        "symbol": "NAMM",
+        "date": "2026-01-22",
+        "notional": 11223.735408560326
       },
       {
         "num": 1,
@@ -1284,11 +2019,26 @@
         "score": 12.5,
         "exit_price": 19.4928,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -364,
+        "pnl": -333,
         "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 16957.53846153844
+        "notional": 15552.923076923054
+      },
+      {
+        "num": 1,
+        "time": "10:25",
+        "entry": 2.24,
+        "stop": 1.77,
+        "r": 0.47,
+        "score": 12.5,
+        "exit_price": 2.8227,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 744,
+        "r_mult": "+1.2R",
+        "symbol": "MBAI",
+        "date": "2026-01-26",
+        "notional": 2859.5744680851053
       },
       {
         "num": 1,
@@ -1299,14 +2049,44 @@
         "score": 12.0,
         "exit_price": 3.43,
         "reason": "stop_hit",
-        "pnl": -655,
+        "pnl": -619,
         "r_mult": "-1.0R",
         "symbol": "CYN",
         "date": "2026-01-27",
-        "notional": 10016.041666666675
+        "notional": 9465.541666666675
       },
       {
         "num": 1,
+        "time": "09:40",
+        "entry": 4.09,
+        "stop": 3.9958,
+        "r": 0.0942,
+        "score": 10.8,
+        "exit_price": 3.99,
+        "reason": "stop_hit",
+        "pnl": -657,
+        "r_mult": "-1.1R",
+        "symbol": "GDXD",
+        "date": "2026-01-27",
+        "notional": 26875.902335456518
+      },
+      {
+        "num": 1,
+        "time": "09:44",
+        "entry": 3.44,
+        "stop": 3.04,
+        "r": 0.4,
+        "score": 9.5,
+        "exit_price": 3.04,
+        "reason": "stop_hit",
+        "pnl": -587,
+        "r_mult": "-1.0R",
+        "symbol": "SLGB",
+        "date": "2026-01-28",
+        "notional": 5048.200000000001
+      },
+      {
+        "num": 2,
         "time": "10:18",
         "entry": 4.19,
         "stop": 3.76,
@@ -1314,14 +2094,44 @@
         "score": 12.5,
         "exit_price": 4.14,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -74,
+        "pnl": -68,
         "r_mult": "-0.1R",
         "symbol": "SLGB",
         "date": "2026-01-28",
-        "notional": 6216.790697674411
+        "notional": 5719.837209302318
       },
       {
         "num": 1,
+        "time": "09:09",
+        "entry": 2.2582,
+        "stop": 2.15,
+        "r": 0.1082,
+        "score": 12.0,
+        "exit_price": 2.2498,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -44,
+        "r_mult": "-0.1R",
+        "symbol": "FEED",
+        "date": "2026-01-29",
+        "notional": 11917.118299445465
+      },
+      {
+        "num": 2,
+        "time": "09:44",
+        "entry": 3.44,
+        "stop": 3.0401,
+        "r": 0.3999,
+        "score": 12.0,
+        "exit_price": 3.87,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 614,
+        "r_mult": "+1.1R",
+        "symbol": "FEED",
+        "date": "2026-01-29",
+        "notional": 4911.827956989246
+      },
+      {
+        "num": 3,
         "time": "11:31",
         "entry": 4.11,
         "stop": 3.91,
@@ -1329,14 +2139,14 @@
         "score": 11.0,
         "exit_price": 4.104,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -19,
+        "pnl": -17,
         "r_mult": "-0.0R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 13069.79999999999
+        "notional": 11734.04999999999
       },
       {
-        "num": 2,
+        "num": 4,
         "time": "11:44",
         "entry": 4.45,
         "stop": 4.31,
@@ -1344,11 +2154,26 @@
         "score": 12.5,
         "exit_price": 4.47,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 91,
+        "pnl": 82,
         "r_mult": "+0.1R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 20215.714285714203
+        "notional": 18149.642857142786
+      },
+      {
+        "num": 1,
+        "time": "08:02",
+        "entry": 8.52,
+        "stop": 6.11,
+        "r": 2.41,
+        "score": 9.5,
+        "exit_price": 6.1,
+        "reason": "stop_hit",
+        "pnl": -293,
+        "r_mult": "-1.0R",
+        "symbol": "NPT",
+        "date": "2026-02-03",
+        "notional": 2075.2033195020754
       },
       {
         "num": 1,
@@ -1359,14 +2184,29 @@
         "score": 5.5,
         "exit_price": 2.095,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -117,
+        "pnl": -108,
         "r_mult": "-0.4R",
         "symbol": "CYN",
         "date": "2026-02-03",
-        "notional": 9144.666666666672
+        "notional": 8413.666666666672
       },
       {
         "num": 1,
+        "time": "07:32",
+        "entry": 3.93,
+        "stop": 3.85,
+        "r": 0.08,
+        "score": 10.0,
+        "exit_price": 3.885,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -162,
+        "r_mult": "-0.6R",
+        "symbol": "RKLZ",
+        "date": "2026-02-05",
+        "notional": 28345.124999999975
+      },
+      {
+        "num": 2,
         "time": "10:19",
         "entry": 4.09,
         "stop": 3.97,
@@ -1374,41 +2214,11 @@
         "score": 9.0,
         "exit_price": 3.992,
         "reason": "topping_wicky_exit_full",
-        "pnl": -259,
+        "pnl": -236,
         "r_mult": "-0.8R",
         "symbol": "RKLZ",
         "date": "2026-02-05",
-        "notional": 21642.916666666726
-      },
-      {
-        "num": 1,
-        "time": "08:48",
-        "entry": 3.84,
-        "stop": 3.64,
-        "r": 0.2,
-        "score": 9.0,
-        "exit_price": 3.84,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 0,
-        "r_mult": "+0.0R",
-        "symbol": "HIMZ",
-        "date": "2026-02-05",
-        "notional": 12192.000000000015
-      },
-      {
-        "num": 2,
-        "time": "08:53",
-        "entry": 4.03,
-        "stop": 3.8095,
-        "r": 0.2205,
-        "score": 10.5,
-        "exit_price": 4.01,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -29,
-        "r_mult": "-0.1R",
-        "symbol": "HIMZ",
-        "date": "2026-02-05",
-        "notional": 11605.668934240346
+        "notional": 19666.083333333387
       },
       {
         "num": 1,
@@ -1419,14 +2229,14 @@
         "score": 9.5,
         "exit_price": 3.18,
         "reason": "topping_wicky_exit_full",
-        "pnl": 44,
+        "pnl": 40,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 4556.651162790696
+        "notional": 4114.046511627906
       },
       {
-        "num": 1,
+        "num": 2,
         "time": "10:45",
         "entry": 15.92,
         "stop": 13.79,
@@ -1438,37 +2248,67 @@
         "r_mult": "-0.0R",
         "symbol": "SMX",
         "date": "2026-02-06",
-        "notional": 4693.784037558684
-      },
-      {
-        "num": 2,
-        "time": "10:52",
-        "entry": 17.3,
-        "stop": 15.21,
-        "r": 2.09,
-        "score": 12.5,
-        "exit_price": 16.3768,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -138,
-        "r_mult": "-0.4R",
-        "symbol": "SMX",
-        "date": "2026-02-06",
-        "notional": 5198.277511961723
+        "notional": 4237.859154929576
       },
       {
         "num": 1,
-        "time": "10:14",
-        "entry": 2.6399,
-        "stop": 2.25,
-        "r": 0.3899,
-        "score": 12.5,
-        "exit_price": 2.4,
+        "time": "08:07",
+        "entry": 3.96,
+        "stop": 3.8753,
+        "r": 0.0847,
+        "score": 11.5,
+        "exit_price": 3.95,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -192,
-        "r_mult": "-0.6R",
+        "pnl": -34,
+        "r_mult": "-0.1R",
+        "symbol": "CRWG",
+        "date": "2026-02-09",
+        "notional": 26555.84415584423
+      },
+      {
+        "num": 2,
+        "time": "09:43",
+        "entry": 4.2398,
+        "stop": 4.13,
+        "r": 0.1098,
+        "score": 12.5,
+        "exit_price": 4.13,
+        "reason": "stop_hit",
+        "pnl": -284,
+        "r_mult": "-1.0R",
+        "symbol": "CRWG",
+        "date": "2026-02-09",
+        "notional": 21932.663023679437
+      },
+      {
+        "num": 1,
+        "time": "10:05",
+        "entry": 2.32,
+        "stop": 2.01,
+        "r": 0.31,
+        "score": 8.0,
+        "exit_price": 2.2208,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -90,
+        "r_mult": "-0.3R",
         "symbol": "JZXN",
         "date": "2026-02-10",
-        "notional": 4238.46473454732
+        "notional": 4190.967741935483
+      },
+      {
+        "num": 2,
+        "time": "10:10",
+        "entry": 2.36,
+        "stop": 2.19,
+        "r": 0.17,
+        "score": 11.0,
+        "exit_price": 2.485,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 206,
+        "r_mult": "+0.7R",
+        "symbol": "JZXN",
+        "date": "2026-02-10",
+        "notional": 7774.117647058826
       },
       {
         "num": 1,
@@ -1479,41 +2319,56 @@
         "score": 9.5,
         "exit_price": 7.89,
         "reason": "stop_hit",
-        "pnl": -313,
+        "pnl": -280,
         "r_mult": "-1.0R",
         "symbol": "ASTI",
         "date": "2026-02-10",
-        "notional": 18919.11111111108
+        "notional": 16924.444444444416
       },
       {
         "num": 1,
-        "time": "10:50",
-        "entry": 8.96,
-        "stop": 8.76,
-        "r": 0.2,
-        "score": 12.0,
-        "exit_price": 9.045,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 130,
-        "r_mult": "+0.4R",
+        "time": "07:25",
+        "entry": 2.08,
+        "stop": 1.96,
+        "r": 0.12,
+        "score": 12.5,
+        "exit_price": 1.96,
+        "reason": "stop_hit",
+        "pnl": -278,
+        "r_mult": "-1.0R",
+        "symbol": "JZXN",
+        "date": "2026-02-12",
+        "notional": 9637.333333333325
+      },
+      {
+        "num": 1,
+        "time": "09:49",
+        "entry": 8.07,
+        "stop": 7.8776,
+        "r": 0.1924,
+        "score": 12.5,
+        "exit_price": 7.86,
+        "reason": "stop_hit",
+        "pnl": -303,
+        "r_mult": "-1.1R",
         "symbol": "KPTI",
         "date": "2026-02-12",
-        "notional": 27462.399999999856
+        "notional": 23320.790020790006
       },
       {
-        "num": 1,
-        "time": "10:33",
-        "entry": 12.55,
-        "stop": 12.39,
-        "r": 0.16,
-        "score": 12.0,
-        "exit_price": 12.5,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -96,
-        "r_mult": "-0.3R",
-        "symbol": "OKLL",
+        "num": 2,
+        "time": "10:13",
+        "entry": 9.03,
+        "stop": 8.8,
+        "r": 0.23,
+        "score": 11.0,
+        "exit_price": 9.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 82,
+        "r_mult": "+0.3R",
+        "symbol": "APPX",
         "date": "2026-02-13",
-        "notional": 48317.499999999956
+        "notional": 21240.13043478273
       },
       {
         "num": 1,
@@ -1524,11 +2379,11 @@
         "score": 10.5,
         "exit_price": 4.74,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -96,
+        "pnl": -85,
         "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 6259.829858215185
+        "notional": 5535.973311092582
       },
       {
         "num": 1,
@@ -1539,11 +2394,11 @@
         "score": 12.5,
         "exit_price": 4.86,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -164,
+        "pnl": -145,
         "r_mult": "-0.5R",
         "symbol": "RIME",
         "date": "2026-02-17",
-        "notional": 10274.266666666672
+        "notional": 9086.200000000004
       },
       {
         "num": 2,
@@ -1554,11 +2409,26 @@
         "score": 8.5,
         "exit_price": 4.7,
         "reason": "topping_wicky_exit_full",
-        "pnl": -246,
+        "pnl": -217,
         "r_mult": "-0.8R",
         "symbol": "RIME",
         "date": "2026-02-17",
-        "notional": 19729.86666666662
+        "notional": 17448.399999999958
+      },
+      {
+        "num": 1,
+        "time": "08:00",
+        "entry": 2.285,
+        "stop": 2.09,
+        "r": 0.195,
+        "score": 12.5,
+        "exit_price": 1.89,
+        "reason": "max_loss_hit",
+        "pnl": -539,
+        "r_mult": "-2.0R",
+        "symbol": "LRHC",
+        "date": "2026-02-18",
+        "notional": 6233.94871794871
       },
       {
         "num": 1,
@@ -1569,11 +2439,11 @@
         "score": 11.0,
         "exit_price": 3.1,
         "reason": "topping_wicky_exit_full",
-        "pnl": -71,
+        "pnl": -62,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 9015.000000000002
+        "notional": 7770.000000000001
       },
       {
         "num": 1,
@@ -1584,14 +2454,29 @@
         "score": 12.5,
         "exit_price": 3.13,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -100,
+        "pnl": -86,
         "r_mult": "-0.3R",
         "symbol": "RIME",
         "date": "2026-02-19",
-        "notional": 15876.416666666652
+        "notional": 13683.83333333332
       },
       {
         "num": 1,
+        "time": "10:17",
+        "entry": 2.96,
+        "stop": 2.789,
+        "r": 0.171,
+        "score": 12.0,
+        "exit_price": 2.95,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -15,
+        "r_mult": "-0.1R",
+        "symbol": "NAMM",
+        "date": "2026-02-19",
+        "notional": 8966.54970760235
+      },
+      {
+        "num": 2,
         "time": "11:40",
         "entry": 3.11,
         "stop": 3.02,
@@ -1599,11 +2484,11 @@
         "score": 12.0,
         "exit_price": 3.0615,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -162,
+        "pnl": -140,
         "r_mult": "-0.5R",
         "symbol": "NAMM",
         "date": "2026-02-19",
-        "notional": 20767.88888888892
+        "notional": 17899.777777777806
       },
       {
         "num": 1,
@@ -1614,11 +2499,41 @@
         "score": 6.0,
         "exit_price": 1.94,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -127,
+        "pnl": -110,
         "r_mult": "-0.4R",
         "symbol": "EVTV",
         "date": "2026-02-20",
-        "notional": 8471.428571428578
+        "notional": 7300.0000000000055
+      },
+      {
+        "num": 1,
+        "time": "10:30",
+        "entry": 2.22,
+        "stop": 2.09,
+        "r": 0.13,
+        "score": 10.5,
+        "exit_price": 2.09,
+        "reason": "stop_hit",
+        "pnl": -254,
+        "r_mult": "-1.0R",
+        "symbol": "GNPX",
+        "date": "2026-02-23",
+        "notional": 8675.076923076902
+      },
+      {
+        "num": 1,
+        "time": "09:46",
+        "entry": 4.13,
+        "stop": 4.04,
+        "r": 0.09,
+        "score": 12.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 139,
+        "r_mult": "+0.6R",
+        "symbol": "CRWG",
+        "date": "2026-02-24",
+        "notional": 23036.22222222226
       },
       {
         "num": 1,
@@ -1626,14 +2541,29 @@
         "entry": 10.465,
         "stop": 10.3125,
         "r": 0.1525,
-        "score": 10.5,
+        "score": 12.0,
         "exit_price": 10.38,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -164,
+        "pnl": -141,
         "r_mult": "-0.6R",
         "symbol": "IONX",
         "date": "2026-02-25",
-        "notional": 40487.540983606596
+        "notional": 34654.59016393446
+      },
+      {
+        "num": 1,
+        "time": "09:42",
+        "entry": 3.65,
+        "stop": 3.5,
+        "r": 0.15,
+        "score": 12.0,
+        "exit_price": 3.8499,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 336,
+        "r_mult": "+1.3R",
+        "symbol": "CDIO",
+        "date": "2026-02-25",
+        "notional": 12288.333333333341
       },
       {
         "num": 3,
@@ -1644,11 +2574,11 @@
         "score": 12.5,
         "exit_price": 14.58,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 118,
+        "pnl": 103,
         "r_mult": "+0.4R",
         "symbol": "IONX",
         "date": "2026-02-26",
-        "notional": 17945.26792934664
+        "notional": 15617.895296871648
       },
       {
         "num": 4,
@@ -1659,11 +2589,41 @@
         "score": 12.5,
         "exit_price": 14.78,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -100,
+        "pnl": -87,
         "r_mult": "-0.3R",
         "symbol": "IONX",
         "date": "2026-02-26",
-        "notional": 22992.789473684163
+        "notional": 20010.78947368417
+      },
+      {
+        "num": 1,
+        "time": "08:05",
+        "entry": 2.11,
+        "stop": 2.0039,
+        "r": 0.1061,
+        "score": 5.5,
+        "exit_price": 1.94,
+        "reason": "stop_hit",
+        "pnl": -409,
+        "r_mult": "-1.6R",
+        "symbol": "SMJF",
+        "date": "2026-02-27",
+        "notional": 10142.318567389248
+      },
+      {
+        "num": 2,
+        "time": "09:49",
+        "entry": 2.32,
+        "stop": 2.1944,
+        "r": 0.1256,
+        "score": 12.0,
+        "exit_price": 2.4,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 162,
+        "r_mult": "+0.6R",
+        "symbol": "SMJF",
+        "date": "2026-02-27",
+        "notional": 9420.3821656051
       },
       {
         "num": 1,
@@ -1674,11 +2634,11 @@
         "score": 12.5,
         "exit_price": 11.44,
         "reason": "stop_hit",
-        "pnl": -586,
+        "pnl": -504,
         "r_mult": "-1.0R",
         "symbol": "BATL",
         "date": "2026-03-02",
-        "notional": 11759.066666666673
+        "notional": 10113.600000000004
       },
       {
         "num": 1,
@@ -1689,11 +2649,71 @@
         "score": 12.5,
         "exit_price": 8.76,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -331,
+        "pnl": -285,
         "r_mult": "-0.6R",
         "symbol": "INDO",
         "date": "2026-03-02",
-        "notional": 11490.695652173936
+        "notional": 9882.782608695672
+      },
+      {
+        "num": 1,
+        "time": "07:51",
+        "entry": 5.87,
+        "stop": 5.74,
+        "r": 0.13,
+        "score": 4.0,
+        "exit_price": 5.9,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 112,
+        "r_mult": "+0.2R",
+        "symbol": "NPT",
+        "date": "2026-03-03",
+        "notional": 21899.6153846154
+      },
+      {
+        "num": 2,
+        "time": "08:13",
+        "entry": 7.69,
+        "stop": 6.88,
+        "r": 0.81,
+        "score": 12.5,
+        "exit_price": 7.18,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -305,
+        "r_mult": "-0.6R",
+        "symbol": "NPT",
+        "date": "2026-03-03",
+        "notional": 4604.506172839503
+      },
+      {
+        "num": 2,
+        "time": "08:09",
+        "entry": 11.02,
+        "stop": 9.35,
+        "r": 1.67,
+        "score": 5.5,
+        "exit_price": 11.6,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 166,
+        "r_mult": "+0.3R",
+        "symbol": "VCIG",
+        "date": "2026-03-04",
+        "notional": 3167.425149700599
+      },
+      {
+        "num": 3,
+        "time": "08:23",
+        "entry": 15.8,
+        "stop": 13.31,
+        "r": 2.49,
+        "score": 9.5,
+        "exit_price": 15.16,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -123,
+        "r_mult": "-0.3R",
+        "symbol": "VCIG",
+        "date": "2026-03-04",
+        "notional": 3045.7831325301204
       },
       {
         "num": 1,
@@ -1704,26 +2724,56 @@
         "score": 9.0,
         "exit_price": 6.035,
         "reason": "stop_hit",
-        "pnl": -563,
+        "pnl": -480,
         "r_mult": "-1.0R",
         "symbol": "RGTX",
         "date": "2026-03-04",
-        "notional": 34540.05000000012
+        "notional": 29448.000000000106
       },
       {
         "num": 1,
-        "time": "10:13",
-        "entry": 20.9,
-        "stop": 20.39,
-        "r": 0.51,
-        "score": 12.5,
-        "exit_price": 21.3301,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 463,
-        "r_mult": "+0.8R",
+        "time": "09:24",
+        "entry": 17.35,
+        "stop": 16.71,
+        "r": 0.64,
+        "score": 12.0,
+        "exit_price": 17.35,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 0,
+        "r_mult": "+0.0R",
         "symbol": "BATL",
         "date": "2026-03-05",
-        "notional": 22498.23529411773
+        "notional": 12714.296874999989
+      },
+      {
+        "num": 2,
+        "time": "09:42",
+        "entry": 19.77,
+        "stop": 18.5201,
+        "r": 1.2499,
+        "score": 12.5,
+        "exit_price": 19.57,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -75,
+        "r_mult": "-0.2R",
+        "symbol": "BATL",
+        "date": "2026-03-05",
+        "notional": 7418.297463797102
+      },
+      {
+        "num": 3,
+        "time": "10:31",
+        "entry": 22.58,
+        "stop": 21.99,
+        "r": 0.59,
+        "score": 10.5,
+        "exit_price": 22.3092,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -215,
+        "r_mult": "-0.5R",
+        "symbol": "BATL",
+        "date": "2026-03-05",
+        "notional": 17949.186440677968
       },
       {
         "num": 1,
@@ -1734,11 +2784,26 @@
         "score": 8.8,
         "exit_price": 2.14,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -140,
+        "pnl": -115,
         "r_mult": "-0.2R",
         "symbol": "TPET",
         "date": "2026-03-06",
-        "notional": 15146.999999999987
+        "notional": 12473.999999999989
+      },
+      {
+        "num": 1,
+        "time": "10:03",
+        "entry": 2.11,
+        "stop": 1.94,
+        "r": 0.17,
+        "score": 12.5,
+        "exit_price": 2.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -27,
+        "r_mult": "-0.1R",
+        "symbol": "AIFF",
+        "date": "2026-03-06",
+        "notional": 5734.23529411765
       },
       {
         "num": 1,
@@ -1749,11 +2814,11 @@
         "score": 12.0,
         "exit_price": 2.2587,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -376,
+        "pnl": -309,
         "r_mult": "-0.7R",
         "symbol": "HIMZ",
         "date": "2026-03-09",
-        "notional": 8763.466666666673
+        "notional": 7205.866666666671
       },
       {
         "num": 2,
@@ -1764,26 +2829,26 @@
         "score": 12.0,
         "exit_price": 2.33,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -222,
+        "pnl": -183,
         "r_mult": "-0.4R",
         "symbol": "HIMZ",
         "date": "2026-03-09",
-        "notional": 13161.41575274174
+        "notional": 10822.133599202363
       },
       {
         "num": 1,
-        "time": "09:39",
-        "entry": 4.04,
-        "stop": 3.955,
-        "r": 0.085,
+        "time": "08:02",
+        "entry": 3.55,
+        "stop": 3.4087,
+        "r": 0.1412,
         "score": 10.5,
-        "exit_price": 4.1302,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 591,
-        "r_mult": "+1.1R",
+        "exit_price": 3.25,
+        "reason": "max_loss_hit",
+        "pnl": -973,
+        "r_mult": "-2.1R",
         "symbol": "CRCG",
         "date": "2026-03-09",
-        "notional": 26473.88235294119
+        "notional": 11506.723283793366
       },
       {
         "num": 1,
@@ -1794,11 +2859,11 @@
         "score": 12.5,
         "exit_price": 18.8,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -371,
+        "pnl": -281,
         "r_mult": "-0.7R",
         "symbol": "INKT",
         "date": "2026-03-10",
-        "notional": 6093.519125683065
+        "notional": 4605.693989071042
       },
       {
         "num": 1,
@@ -1809,26 +2874,11 @@
         "score": 9.5,
         "exit_price": 4.56,
         "reason": "topping_wicky_exit_full",
-        "pnl": -61,
+        "pnl": -46,
         "r_mult": "-0.1R",
         "symbol": "CRCG",
         "date": "2026-03-10",
-        "notional": 27941.712403951715
-      },
-      {
-        "num": 1,
-        "time": "10:05",
-        "entry": 2.4499,
-        "stop": 2.3573,
-        "r": 0.0926,
-        "score": 11.5,
-        "exit_price": 2.52,
-        "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": 422,
-        "r_mult": "+0.8R",
-        "symbol": "TMDE",
-        "date": "2026-03-10",
-        "notional": 14736.43952483801
+        "notional": 21119.319429198695
       },
       {
         "num": 1,
@@ -1839,21 +2889,21 @@
         "score": 12.0,
         "exit_price": 2.73,
         "reason": "topping_wicky_exit_full",
-        "pnl": 43,
+        "pnl": 32,
         "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
-        "notional": 11654.153846153818
+        "notional": 8641.230769230748
       }
     ],
     "daily": [
       {
         "date": "2026-01-02",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 30000
+        "losses": 1,
+        "day_pnl": -787,
+        "equity": 29213
       },
       {
         "date": "2026-01-03",
@@ -1861,88 +2911,88 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 30000,
+        "equity": 29213,
         "note": "no candidates (total=0, passed=0)"
       },
       {
         "date": "2026-01-05",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 30000
+        "losses": 1,
+        "day_pnl": -365,
+        "equity": 28848
       },
       {
         "date": "2026-01-06",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -750,
-        "equity": 29250
+        "losses": 2,
+        "day_pnl": -833,
+        "equity": 28015
       },
       {
         "date": "2026-01-07",
-        "trades": 0,
+        "trades": 2,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 29250
+        "losses": 2,
+        "day_pnl": -892,
+        "equity": 27123
       },
       {
         "date": "2026-01-08",
-        "trades": 2,
+        "trades": 3,
         "wins": 1,
-        "losses": 1,
-        "day_pnl": -704,
-        "equity": 28546
+        "losses": 2,
+        "day_pnl": -692,
+        "equity": 26431
       },
       {
         "date": "2026-01-09",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 28546
+        "losses": 1,
+        "day_pnl": -660,
+        "equity": 25771
       },
       {
         "date": "2026-01-12",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 360,
-        "equity": 28906
-      },
-      {
-        "date": "2026-01-13",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -722,
-        "equity": 28184
-      },
-      {
-        "date": "2026-01-14",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -76,
-        "equity": 28108
-      },
-      {
-        "date": "2026-01-15",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 235,
-        "equity": 28343
+        "day_pnl": 32,
+        "equity": 25803
+      },
+      {
+        "date": "2026-01-13",
+        "trades": 4,
+        "wins": 1,
+        "losses": 3,
+        "day_pnl": -1324,
+        "equity": 24479
+      },
+      {
+        "date": "2026-01-14",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 883,
+        "equity": 25362
+      },
+      {
+        "date": "2026-01-15",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -154,
+        "equity": 25208
       },
       {
         "date": "2026-01-16",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 28343
+        "losses": 1,
+        "day_pnl": -134,
+        "equity": 25074
       },
       {
         "date": "2026-01-20",
@@ -1950,63 +3000,63 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 28343
+        "equity": 25074
       },
       {
         "date": "2026-01-21",
-        "trades": 1,
-        "wins": 0,
+        "trades": 3,
+        "wins": 2,
         "losses": 1,
-        "day_pnl": -379,
-        "equity": 27964
+        "day_pnl": 602,
+        "equity": 25676
       },
       {
         "date": "2026-01-22",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -1398,
-        "equity": 26566
+        "trades": 4,
+        "wins": 1,
+        "losses": 3,
+        "day_pnl": -1306,
+        "equity": 24370
       },
       {
         "date": "2026-01-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -364,
-        "equity": 26202
+        "day_pnl": -333,
+        "equity": 24037
       },
       {
         "date": "2026-01-26",
-        "trades": 0,
-        "wins": 0,
+        "trades": 1,
+        "wins": 1,
         "losses": 0,
-        "day_pnl": 0,
-        "equity": 26202
+        "day_pnl": 744,
+        "equity": 24781
       },
       {
         "date": "2026-01-27",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -655,
-        "equity": 25547
+        "losses": 2,
+        "day_pnl": -1276,
+        "equity": 23505
       },
       {
         "date": "2026-01-28",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -74,
-        "equity": 25473
+        "losses": 2,
+        "day_pnl": -655,
+        "equity": 22850
       },
       {
         "date": "2026-01-29",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 72,
-        "equity": 25545
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 635,
+        "equity": 23485
       },
       {
         "date": "2026-01-30",
@@ -2014,7 +3064,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25545
+        "equity": 23485
       },
       {
         "date": "2026-02-02",
@@ -2022,15 +3072,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25545
+        "equity": 23485
       },
       {
         "date": "2026-02-03",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -117,
-        "equity": 25428
+        "losses": 2,
+        "day_pnl": -401,
+        "equity": 23084
       },
       {
         "date": "2026-02-04",
@@ -2038,39 +3088,39 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25428
+        "equity": 23084
       },
       {
         "date": "2026-02-05",
-        "trades": 3,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -288,
-        "equity": 25140
-      },
-      {
-        "date": "2026-02-06",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -97,
-        "equity": 25043
-      },
-      {
-        "date": "2026-02-09",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 25043
-      },
-      {
-        "date": "2026-02-10",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -505,
-        "equity": 24538
+        "day_pnl": -398,
+        "equity": 22686
+      },
+      {
+        "date": "2026-02-06",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 37,
+        "equity": 22723
+      },
+      {
+        "date": "2026-02-09",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -318,
+        "equity": 22405
+      },
+      {
+        "date": "2026-02-10",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -164,
+        "equity": 22241
       },
       {
         "date": "2026-02-11",
@@ -2078,151 +3128,151 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 24538
+        "equity": 22241
       },
       {
         "date": "2026-02-12",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 130,
-        "equity": 24668
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -581,
+        "equity": 21660
       },
       {
         "date": "2026-02-13",
         "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -96,
-        "equity": 24572
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 82,
+        "equity": 21742
       },
       {
         "date": "2026-02-17",
         "trades": 3,
         "wins": 0,
         "losses": 3,
-        "day_pnl": -506,
-        "equity": 24066
+        "day_pnl": -447,
+        "equity": 21295
       },
       {
         "date": "2026-02-18",
-        "trades": 0,
+        "trades": 1,
         "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 24066
+        "losses": 1,
+        "day_pnl": -539,
+        "equity": 20756
       },
       {
         "date": "2026-02-19",
-        "trades": 3,
+        "trades": 4,
         "wins": 0,
-        "losses": 3,
-        "day_pnl": -333,
-        "equity": 23733
+        "losses": 4,
+        "day_pnl": -303,
+        "equity": 20453
       },
       {
         "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -127,
-        "equity": 23606
+        "day_pnl": -110,
+        "equity": 20343
       },
       {
         "date": "2026-02-23",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23606
-      },
-      {
-        "date": "2026-02-24",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23606
-      },
-      {
-        "date": "2026-02-25",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -164,
-        "equity": 23442
+        "day_pnl": -254,
+        "equity": 20089
+      },
+      {
+        "date": "2026-02-24",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 139,
+        "equity": 20228
+      },
+      {
+        "date": "2026-02-25",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 195,
+        "equity": 20423
       },
       {
         "date": "2026-02-26",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 18,
-        "equity": 23460
+        "day_pnl": 16,
+        "equity": 20439
       },
       {
         "date": "2026-02-27",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23460
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -247,
+        "equity": 20192
       },
       {
         "date": "2026-03-02",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -917,
-        "equity": 22543
+        "day_pnl": -789,
+        "equity": 19403
       },
       {
         "date": "2026-03-03",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 22543
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -193,
+        "equity": 19210
       },
       {
         "date": "2026-03-04",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -563,
-        "equity": 21980
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -437,
+        "equity": 18773
       },
       {
         "date": "2026-03-05",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 463,
-        "equity": 22443
+        "trades": 3,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -290,
+        "equity": 18483
       },
       {
         "date": "2026-03-06",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -140,
-        "equity": 22303
+        "losses": 2,
+        "day_pnl": -142,
+        "equity": 18341
       },
       {
         "date": "2026-03-09",
         "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -7,
-        "equity": 22296
+        "wins": 0,
+        "losses": 3,
+        "day_pnl": -1465,
+        "equity": 16876
       },
       {
         "date": "2026-03-10",
-        "trades": 3,
-        "wins": 1,
+        "trades": 2,
+        "wins": 0,
         "losses": 2,
-        "day_pnl": -10,
-        "equity": 22286
+        "day_pnl": -327,
+        "equity": 16549
       },
       {
         "date": "2026-03-11",
@@ -2230,27 +3280,34 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 22286
+        "equity": 16549
       },
       {
         "date": "2026-03-12",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 43,
-        "equity": 22329
+        "day_pnl": 32,
+        "equity": 16581
       }
     ],
     "max_equity": 30000,
-    "max_drawdown": 8020
+    "max_drawdown": 13451
   },
   "missed_opportunities": [],
   "selection_log": [
     {
       "date": "2026-01-02",
-      "total_candidates": 175,
-      "passed_filter": 19,
+      "total_candidates": 176,
+      "passed_filter": 118,
       "selected": [
+        {
+          "symbol": "PAVS",
+          "pm_volume": 1069778.0,
+          "gap_pct": 17.38,
+          "float_millions": 0.05,
+          "rank_score": 4.355
+        },
         {
           "symbol": "SMX",
           "pm_volume": 676738.0,
@@ -2278,13 +3335,6 @@
           "gap_pct": 6.1,
           "float_millions": 1.71,
           "rank_score": 3.889
-        },
-        {
-          "symbol": "SOPA",
-          "pm_volume": 218190.0,
-          "gap_pct": 5.92,
-          "float_millions": 5.7,
-          "rank_score": 3.821
         }
       ]
     },
@@ -2296,8 +3346,8 @@
     },
     {
       "date": "2026-01-05",
-      "total_candidates": 202,
-      "passed_filter": 21,
+      "total_candidates": 203,
+      "passed_filter": 138,
       "selected": [
         {
           "symbol": "CRWG",
@@ -2338,8 +3388,8 @@
     },
     {
       "date": "2026-01-06",
-      "total_candidates": 112,
-      "passed_filter": 18,
+      "total_candidates": 114,
+      "passed_filter": 91,
       "selected": [
         {
           "symbol": "CYCN",
@@ -2380,8 +3430,8 @@
     },
     {
       "date": "2026-01-07",
-      "total_candidates": 86,
-      "passed_filter": 11,
+      "total_candidates": 87,
+      "passed_filter": 72,
       "selected": [
         {
           "symbol": "NVVE",
@@ -2422,8 +3472,8 @@
     },
     {
       "date": "2026-01-08",
-      "total_candidates": 91,
-      "passed_filter": 23,
+      "total_candidates": 95,
+      "passed_filter": 81,
       "selected": [
         {
           "symbol": "ACON",
@@ -2464,8 +3514,8 @@
     },
     {
       "date": "2026-01-09",
-      "total_candidates": 83,
-      "passed_filter": 13,
+      "total_candidates": 86,
+      "passed_filter": 69,
       "selected": [
         {
           "symbol": "APVO",
@@ -2506,8 +3556,8 @@
     },
     {
       "date": "2026-01-12",
-      "total_candidates": 99,
-      "passed_filter": 14,
+      "total_candidates": 103,
+      "passed_filter": 84,
       "selected": [
         {
           "symbol": "BDSX",
@@ -2548,8 +3598,8 @@
     },
     {
       "date": "2026-01-13",
-      "total_candidates": 87,
-      "passed_filter": 24,
+      "total_candidates": 94,
+      "passed_filter": 77,
       "selected": [
         {
           "symbol": "XAIR",
@@ -2590,8 +3640,8 @@
     },
     {
       "date": "2026-01-14",
-      "total_candidates": 107,
-      "passed_filter": 18,
+      "total_candidates": 108,
+      "passed_filter": 79,
       "selected": [
         {
           "symbol": "ROLR",
@@ -2632,8 +3682,8 @@
     },
     {
       "date": "2026-01-15",
-      "total_candidates": 98,
-      "passed_filter": 19,
+      "total_candidates": 101,
+      "passed_filter": 76,
       "selected": [
         {
           "symbol": "CJMB",
@@ -2674,9 +3724,16 @@
     },
     {
       "date": "2026-01-16",
-      "total_candidates": 99,
-      "passed_filter": 19,
+      "total_candidates": 101,
+      "passed_filter": 73,
       "selected": [
+        {
+          "symbol": "VERO",
+          "pm_volume": 26831003.0,
+          "gap_pct": 181.47,
+          "float_millions": 1.6,
+          "rank_score": 5.492
+        },
         {
           "symbol": "ACCL",
           "pm_volume": 10272856.0,
@@ -2704,20 +3761,13 @@
           "gap_pct": 20.37,
           "float_millions": 9.41,
           "rank_score": 4.562
-        },
-        {
-          "symbol": "GWAV",
-          "pm_volume": 1537606.0,
-          "gap_pct": 26.03,
-          "float_millions": 0.8,
-          "rank_score": 4.479
         }
       ]
     },
     {
       "date": "2026-01-20",
       "total_candidates": 109,
-      "passed_filter": 26,
+      "passed_filter": 82,
       "selected": [
         {
           "symbol": "IVF",
@@ -2758,8 +3808,8 @@
     },
     {
       "date": "2026-01-21",
-      "total_candidates": 125,
-      "passed_filter": 18,
+      "total_candidates": 127,
+      "passed_filter": 96,
       "selected": [
         {
           "symbol": "GITS",
@@ -2800,8 +3850,8 @@
     },
     {
       "date": "2026-01-22",
-      "total_candidates": 168,
-      "passed_filter": 27,
+      "total_candidates": 171,
+      "passed_filter": 132,
       "selected": [
         {
           "symbol": "IOTR",
@@ -2842,8 +3892,8 @@
     },
     {
       "date": "2026-01-23",
-      "total_candidates": 97,
-      "passed_filter": 19,
+      "total_candidates": 101,
+      "passed_filter": 85,
       "selected": [
         {
           "symbol": "DRCT",
@@ -2884,8 +3934,8 @@
     },
     {
       "date": "2026-01-26",
-      "total_candidates": 115,
-      "passed_filter": 22,
+      "total_candidates": 117,
+      "passed_filter": 85,
       "selected": [
         {
           "symbol": "BATL",
@@ -2926,8 +3976,8 @@
     },
     {
       "date": "2026-01-27",
-      "total_candidates": 104,
-      "passed_filter": 18,
+      "total_candidates": 105,
+      "passed_filter": 85,
       "selected": [
         {
           "symbol": "NUWE",
@@ -2968,8 +4018,8 @@
     },
     {
       "date": "2026-01-28",
-      "total_candidates": 89,
-      "passed_filter": 21,
+      "total_candidates": 90,
+      "passed_filter": 71,
       "selected": [
         {
           "symbol": "MRNO",
@@ -3011,7 +4061,7 @@
     {
       "date": "2026-01-29",
       "total_candidates": 89,
-      "passed_filter": 25,
+      "passed_filter": 70,
       "selected": [
         {
           "symbol": "FEED",
@@ -3052,8 +4102,8 @@
     },
     {
       "date": "2026-01-30",
-      "total_candidates": 72,
-      "passed_filter": 14,
+      "total_candidates": 73,
+      "passed_filter": 58,
       "selected": [
         {
           "symbol": "VIVS",
@@ -3095,7 +4145,7 @@
     {
       "date": "2026-02-02",
       "total_candidates": 137,
-      "passed_filter": 18,
+      "passed_filter": 105,
       "selected": [
         {
           "symbol": "CISS",
@@ -3136,8 +4186,8 @@
     },
     {
       "date": "2026-02-03",
-      "total_candidates": 143,
-      "passed_filter": 19,
+      "total_candidates": 142,
+      "passed_filter": 100,
       "selected": [
         {
           "symbol": "FATN",
@@ -3161,25 +4211,25 @@
           "rank_score": 4.735
         },
         {
-          "symbol": "HCHL",
-          "pm_volume": 607384.0,
-          "gap_pct": 101.98,
-          "float_millions": 1.21,
-          "rank_score": 4.342
-        },
-        {
           "symbol": "FIEE",
           "pm_volume": 808084.0,
           "gap_pct": 18.6,
           "float_millions": 0.39,
           "rank_score": 4.27
+        },
+        {
+          "symbol": "PLTG",
+          "pm_volume": 385780.0,
+          "gap_pct": 8.63,
+          "float_millions": 0.58,
+          "rank_score": 4.025
         }
       ]
     },
     {
       "date": "2026-02-04",
       "total_candidates": 90,
-      "passed_filter": 16,
+      "passed_filter": 70,
       "selected": [
         {
           "symbol": "ELPW",
@@ -3221,7 +4271,7 @@
     {
       "date": "2026-02-05",
       "total_candidates": 74,
-      "passed_filter": 13,
+      "passed_filter": 51,
       "selected": [
         {
           "symbol": "CISS",
@@ -3262,8 +4312,8 @@
     },
     {
       "date": "2026-02-06",
-      "total_candidates": 364,
-      "passed_filter": 24,
+      "total_candidates": 361,
+      "passed_filter": 199,
       "selected": [
         {
           "symbol": "BATL",
@@ -3304,8 +4354,8 @@
     },
     {
       "date": "2026-02-09",
-      "total_candidates": 144,
-      "passed_filter": 13,
+      "total_candidates": 145,
+      "passed_filter": 105,
       "selected": [
         {
           "symbol": "UOKA",
@@ -3346,8 +4396,8 @@
     },
     {
       "date": "2026-02-10",
-      "total_candidates": 109,
-      "passed_filter": 15,
+      "total_candidates": 111,
+      "passed_filter": 74,
       "selected": [
         {
           "symbol": "JZXN",
@@ -3388,8 +4438,8 @@
     },
     {
       "date": "2026-02-11",
-      "total_candidates": 94,
-      "passed_filter": 14,
+      "total_candidates": 93,
+      "passed_filter": 73,
       "selected": [
         {
           "symbol": "BNRG",
@@ -3430,8 +4480,8 @@
     },
     {
       "date": "2026-02-12",
-      "total_candidates": 78,
-      "passed_filter": 10,
+      "total_candidates": 81,
+      "passed_filter": 66,
       "selected": [
         {
           "symbol": "JZXN",
@@ -3473,7 +4523,7 @@
     {
       "date": "2026-02-13",
       "total_candidates": 219,
-      "passed_filter": 18,
+      "passed_filter": 133,
       "selected": [
         {
           "symbol": "JDZG",
@@ -3514,8 +4564,8 @@
     },
     {
       "date": "2026-02-17",
-      "total_candidates": 96,
-      "passed_filter": 8,
+      "total_candidates": 95,
+      "passed_filter": 71,
       "selected": [
         {
           "symbol": "OBAI",
@@ -3556,8 +4606,8 @@
     },
     {
       "date": "2026-02-18",
-      "total_candidates": 170,
-      "passed_filter": 21,
+      "total_candidates": 169,
+      "passed_filter": 126,
       "selected": [
         {
           "symbol": "LRHC",
@@ -3598,8 +4648,8 @@
     },
     {
       "date": "2026-02-19",
-      "total_candidates": 91,
-      "passed_filter": 13,
+      "total_candidates": 90,
+      "passed_filter": 77,
       "selected": [
         {
           "symbol": "CISS",
@@ -3640,8 +4690,8 @@
     },
     {
       "date": "2026-02-20",
-      "total_candidates": 98,
-      "passed_filter": 14,
+      "total_candidates": 97,
+      "passed_filter": 74,
       "selected": [
         {
           "symbol": "BJDX",
@@ -3682,8 +4732,8 @@
     },
     {
       "date": "2026-02-23",
-      "total_candidates": 91,
-      "passed_filter": 17,
+      "total_candidates": 93,
+      "passed_filter": 71,
       "selected": [
         {
           "symbol": "GNPX",
@@ -3724,8 +4774,8 @@
     },
     {
       "date": "2026-02-24",
-      "total_candidates": 162,
-      "passed_filter": 21,
+      "total_candidates": 161,
+      "passed_filter": 111,
       "selected": [
         {
           "symbol": "RIME",
@@ -3766,8 +4816,8 @@
     },
     {
       "date": "2026-02-25",
-      "total_candidates": 235,
-      "passed_filter": 19,
+      "total_candidates": 234,
+      "passed_filter": 135,
       "selected": [
         {
           "symbol": "IONX",
@@ -3808,8 +4858,8 @@
     },
     {
       "date": "2026-02-26",
-      "total_candidates": 127,
-      "passed_filter": 14,
+      "total_candidates": 128,
+      "passed_filter": 83,
       "selected": [
         {
           "symbol": "CRCG",
@@ -3851,7 +4901,7 @@
     {
       "date": "2026-02-27",
       "total_candidates": 67,
-      "passed_filter": 14,
+      "passed_filter": 48,
       "selected": [
         {
           "symbol": "CDIO",
@@ -3892,8 +4942,8 @@
     },
     {
       "date": "2026-03-02",
-      "total_candidates": 169,
-      "passed_filter": 28,
+      "total_candidates": 167,
+      "passed_filter": 109,
       "selected": [
         {
           "symbol": "TMDE",
@@ -3934,8 +4984,8 @@
     },
     {
       "date": "2026-03-03",
-      "total_candidates": 92,
-      "passed_filter": 15,
+      "total_candidates": 93,
+      "passed_filter": 69,
       "selected": [
         {
           "symbol": "TMDE",
@@ -3977,7 +5027,7 @@
     {
       "date": "2026-03-04",
       "total_candidates": 255,
-      "passed_filter": 20,
+      "passed_filter": 141,
       "selected": [
         {
           "symbol": "VCIG",
@@ -4018,8 +5068,8 @@
     },
     {
       "date": "2026-03-05",
-      "total_candidates": 127,
-      "passed_filter": 21,
+      "total_candidates": 128,
+      "passed_filter": 88,
       "selected": [
         {
           "symbol": "MTEK",
@@ -4060,8 +5110,8 @@
     },
     {
       "date": "2026-03-06",
-      "total_candidates": 95,
-      "passed_filter": 18,
+      "total_candidates": 99,
+      "passed_filter": 78,
       "selected": [
         {
           "symbol": "TPET",
@@ -4103,7 +5153,7 @@
     {
       "date": "2026-03-09",
       "total_candidates": 115,
-      "passed_filter": 17,
+      "passed_filter": 88,
       "selected": [
         {
           "symbol": "HIMZ",
@@ -4145,7 +5195,7 @@
     {
       "date": "2026-03-10",
       "total_candidates": 164,
-      "passed_filter": 21,
+      "passed_filter": 120,
       "selected": [
         {
           "symbol": "VTAK",
@@ -4186,8 +5236,8 @@
     },
     {
       "date": "2026-03-11",
-      "total_candidates": 121,
-      "passed_filter": 26,
+      "total_candidates": 120,
+      "passed_filter": 91,
       "selected": [
         {
           "symbol": "HIMZ",
@@ -4228,8 +5278,8 @@
     },
     {
       "date": "2026-03-12",
-      "total_candidates": 87,
-      "passed_filter": 17,
+      "total_candidates": 89,
+      "passed_filter": 73,
       "selected": [
         {
           "symbol": "TLYS",

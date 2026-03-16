@@ -882,20 +882,6 @@
     "profile": "X"
   },
   {
-    "symbol": "LITM",
-    "prev_close": 3.17,
-    "pm_price": 3.36,
-    "gap_pct": 5.99,
-    "pm_volume": 1778.0,
-    "first_seen_et": "04:13",
-    "sim_start": "07:00",
-    "discovery_time": "04:13",
-    "discovery_method": "premarket",
-    "float_shares": 8734782,
-    "float_millions": 8.73,
-    "profile": "B"
-  },
-  {
     "symbol": "ONDG",
     "prev_close": 10.3353,
     "pm_price": 10.95,
@@ -1246,20 +1232,6 @@
     "profile": "A"
   },
   {
-    "symbol": "FRD",
-    "prev_close": 18.75,
-    "pm_price": 19.73,
-    "gap_pct": 5.23,
-    "pm_volume": 355.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "rescan",
-    "float_shares": 6666246,
-    "float_millions": 6.67,
-    "profile": "B"
-  },
-  {
     "symbol": "UPC",
     "prev_close": 4.1,
     "pm_price": 4.3144,
@@ -1272,6 +1244,20 @@
     "float_shares": 559873,
     "float_millions": 0.56,
     "profile": "A"
+  },
+  {
+    "symbol": "FRD",
+    "prev_close": 18.75,
+    "pm_price": 19.73,
+    "gap_pct": 5.23,
+    "pm_volume": 355.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 6666246,
+    "float_millions": 6.67,
+    "profile": "B"
   },
   {
     "symbol": "JYD",
@@ -1288,6 +1274,20 @@
     "profile": "A"
   },
   {
+    "symbol": "DZZ",
+    "prev_close": 3.47,
+    "pm_price": 3.65,
+    "gap_pct": 5.19,
+    "pm_volume": 7940.0,
+    "first_seen_et": "10:30",
+    "sim_start": "10:30",
+    "discovery_time": "10:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
     "symbol": "BIYA",
     "prev_close": 3.95,
     "pm_price": 4.155,
@@ -1302,18 +1302,18 @@
     "profile": "A"
   },
   {
-    "symbol": "DZZ",
-    "prev_close": 3.47,
-    "pm_price": 3.65,
-    "gap_pct": 5.19,
-    "pm_volume": 7940.0,
-    "first_seen_et": "10:30",
-    "sim_start": "10:30",
-    "discovery_time": "10:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
+    "symbol": "NXTT",
+    "prev_close": 5.99,
+    "pm_price": 6.3,
+    "gap_pct": 5.18,
+    "pm_volume": 430.0,
+    "first_seen_et": "04:23",
+    "sim_start": "07:00",
+    "discovery_time": "04:23",
+    "discovery_method": "premarket",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
   },
   {
     "symbol": "FLYT",
@@ -1370,6 +1370,20 @@
     "float_shares": 6861596,
     "float_millions": 6.86,
     "profile": "B"
+  },
+  {
+    "symbol": "SHPH",
+    "prev_close": 2.22,
+    "pm_price": 2.3325,
+    "gap_pct": 5.07,
+    "pm_volume": 30003.0,
+    "first_seen_et": "10:00",
+    "sim_start": "10:00",
+    "discovery_time": "10:00",
+    "discovery_method": "rescan",
+    "float_shares": 1600000,
+    "float_millions": 1.6,
+    "profile": "A"
   },
   {
     "symbol": "IDAI",

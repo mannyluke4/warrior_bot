@@ -826,6 +826,20 @@
     "profile": "A"
   },
   {
+    "symbol": "NXTT",
+    "prev_close": 3.4,
+    "pm_price": 3.67,
+    "gap_pct": 7.94,
+    "pm_volume": 310.0,
+    "first_seen_et": "09:00",
+    "sim_start": "09:00",
+    "discovery_time": "09:00",
+    "discovery_method": "rescan",
+    "float_shares": 1370478,
+    "float_millions": 1.37,
+    "profile": "A"
+  },
+  {
     "symbol": "COII",
     "prev_close": 9.85,
     "pm_price": 10.63,
@@ -905,20 +919,6 @@
     "sim_start": "07:00",
     "discovery_time": "04:52",
     "discovery_method": "premarket",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
-    "symbol": "BLSX",
-    "prev_close": 7.89,
-    "pm_price": 8.49,
-    "gap_pct": 7.6,
-    "pm_volume": 9099.0,
-    "first_seen_et": "09:00",
-    "sim_start": "09:00",
-    "discovery_time": "09:00",
-    "discovery_method": "rescan",
     "float_shares": null,
     "float_millions": null,
     "profile": "X"
@@ -1568,6 +1568,20 @@
     "profile": "X"
   },
   {
+    "symbol": "HOOX",
+    "prev_close": 8.16,
+    "pm_price": 8.7,
+    "gap_pct": 6.62,
+    "pm_volume": 23582.0,
+    "first_seen_et": "04:05",
+    "sim_start": "07:00",
+    "discovery_time": "04:05",
+    "discovery_method": "premarket",
+    "float_shares": 1927584,
+    "float_millions": 1.93,
+    "profile": "A"
+  },
+  {
     "symbol": "IREG",
     "prev_close": 13.59,
     "pm_price": 14.49,
@@ -1594,20 +1608,6 @@
     "float_shares": 9273965,
     "float_millions": 9.27,
     "profile": "B"
-  },
-  {
-    "symbol": "HOOX",
-    "prev_close": 8.16,
-    "pm_price": 8.7,
-    "gap_pct": 6.62,
-    "pm_volume": 23582.0,
-    "first_seen_et": "04:05",
-    "sim_start": "07:00",
-    "discovery_time": "04:05",
-    "discovery_method": "premarket",
-    "float_shares": 1927584,
-    "float_millions": 1.93,
-    "profile": "A"
   },
   {
     "symbol": "WTID",
@@ -2772,20 +2772,6 @@
     "profile": "A"
   },
   {
-    "symbol": "ASPS",
-    "prev_close": 7.11,
-    "pm_price": 7.5,
-    "gap_pct": 5.49,
-    "pm_volume": 329.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": 8636920,
-    "float_millions": 8.64,
-    "profile": "B"
-  },
-  {
     "symbol": "GSUI",
     "prev_close": 13.0243,
     "pm_price": 13.739,
@@ -2798,6 +2784,20 @@
     "float_shares": 212900,
     "float_millions": 0.21,
     "profile": "A"
+  },
+  {
+    "symbol": "ASPS",
+    "prev_close": 7.11,
+    "pm_price": 7.5,
+    "gap_pct": 5.49,
+    "pm_volume": 329.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": 8636920,
+    "float_millions": 8.64,
+    "profile": "B"
   },
   {
     "symbol": "EMAT",
@@ -2870,20 +2870,6 @@
     "profile": "X"
   },
   {
-    "symbol": "VELO",
-    "prev_close": 11.86,
-    "pm_price": 12.5,
-    "gap_pct": 5.4,
-    "pm_volume": 13188.0,
-    "first_seen_et": "08:30",
-    "sim_start": "08:30",
-    "discovery_time": "08:30",
-    "discovery_method": "rescan",
-    "float_shares": 3899702,
-    "float_millions": 3.9,
-    "profile": "A"
-  },
-  {
     "symbol": "BZQ",
     "prev_close": 11.12,
     "pm_price": 11.72,
@@ -2895,6 +2881,20 @@
     "discovery_method": "rescan",
     "float_shares": 279368,
     "float_millions": 0.28,
+    "profile": "A"
+  },
+  {
+    "symbol": "VELO",
+    "prev_close": 11.86,
+    "pm_price": 12.5,
+    "gap_pct": 5.4,
+    "pm_volume": 13188.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "rescan",
+    "float_shares": 3899702,
+    "float_millions": 3.9,
     "profile": "A"
   },
   {
@@ -3220,20 +3220,6 @@
     "profile": "A"
   },
   {
-    "symbol": "TETH",
-    "prev_close": 9.88,
-    "pm_price": 10.39,
-    "gap_pct": 5.16,
-    "pm_volume": 700.0,
-    "first_seen_et": "09:30",
-    "sim_start": "09:30",
-    "discovery_time": "09:30",
-    "discovery_method": "rescan",
-    "float_shares": null,
-    "float_millions": null,
-    "profile": "X"
-  },
-  {
     "symbol": "IONL",
     "prev_close": 18.59,
     "pm_price": 19.55,
@@ -3246,6 +3232,20 @@
     "float_shares": 379090,
     "float_millions": 0.38,
     "profile": "A"
+  },
+  {
+    "symbol": "TETH",
+    "prev_close": 9.88,
+    "pm_price": 10.39,
+    "gap_pct": 5.16,
+    "pm_volume": 700.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "rescan",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
   },
   {
     "symbol": "DFSC",

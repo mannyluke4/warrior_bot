@@ -46,10 +46,11 @@ AEMD        +7.7%    2.51    1.22M       A    08:00    1,033.0      08:00     re
 HIND        +7.7%    2.23     1.5M       A    10:30   41,019.0      10:30     rescan
 DKUP        +7.4%    7.61      N/A       X    09:30      481.0      09:30     rescan
 TOYO        +7.2%   10.00    9.07M       B    08:30    1,901.0      08:30     rescan
+CHSN        +7.2%    2.24    0.38M       A    10:30    2,863.0      10:30     rescan
 BRR         +7.1%    2.40      N/A       X    09:30      277.0      09:30     rescan
 MAXN        +7.0%    3.51    6.81M       B    07:00   52,350.0      04:01  premarket
-MTVA        +6.8%    2.03    0.98M       A    08:00    5,875.0      08:00     rescan
 AMCI        +6.8%    5.78    1.17M       A    08:00      658.0      08:00     rescan
+MTVA        +6.8%    2.03    0.98M       A    08:00    5,875.0      08:00     rescan
 ASTC        +6.7%    3.34    1.32M       A    10:00      532.0      10:00     rescan
 NUWE        +6.7%    4.15    0.88M       A    09:30    7,712.0      09:30     rescan
 NETG        +6.6%    9.56      N/A       X    07:00    1,290.0      06:24  premarket
@@ -57,8 +58,8 @@ AUST        +6.6%    2.09    7.77M       B    07:00    2,674.0      04:13  prema
 AALG        +6.6%   15.40      N/A       X    10:30      404.0      10:30     rescan
 TVRD        +6.5%    4.21    6.46M       B    09:30    3,240.0      09:30     rescan
 MUD         +6.3%    4.03      N/A       X    10:30 4,994,151.0      10:30     rescan
-ASTI        +6.2%    7.16    2.96M       A    07:00   20,728.0      04:00  premarket
 SER         +6.2%    2.93    3.58M       A    07:00   32,577.0      04:00  premarket
+ASTI        +6.2%    7.16    2.96M       A    07:00   20,728.0      04:00  premarket
 MIGI        +6.2%    3.79    0.49M       A    08:30    1,088.0      08:30     rescan
 BTCZ        +6.1%    5.54      N/A       X    10:00 1,525,295.0      10:00     rescan
 FOXX        +6.1%    5.20     1.4M       A    10:00    1,880.0      10:00     rescan
@@ -73,7 +74,6 @@ SMYY        +5.8%   12.29    0.03M       A    09:00      102.0      09:00     re
 UPSG        +5.8%   19.56    0.39M       A    10:30    1,100.0      10:30     rescan
 PCSA        +5.7%    2.58    2.04M       A    09:00      148.0      09:00     rescan
 GOVX        +5.7%    2.78    1.19M       A    10:00    9,051.0      10:00     rescan
-UONEK       +5.6%    8.46    1.81M       A    10:00      300.0      10:00     rescan
 SBU         +5.5%   18.34    0.03M       A    10:00    3,670.0      10:00     rescan
 ROLR        +5.5%    5.99     3.6M       A    08:00   37,183.0      08:00     rescan
 QCML        +5.5%   16.45      N/A       X    10:30   10,632.0      10:30     rescan
@@ -85,8 +85,8 @@ BERZ        +5.3%    2.98      N/A       X    09:00  260,164.0      09:00     re
 ULH         +5.2%   18.25    6.68M       B    10:00    2,418.0      10:00     rescan
 GRDX        +5.2%    3.62      N/A       X    08:00      141.0      08:00     rescan
 OKLS        +5.2%   13.71      N/A       X    09:30   34,393.0      09:30     rescan
-AIBD        +5.2%    8.69    0.25M       A    10:00   27,604.0      10:00     rescan
 FEAM        +5.1%    2.25    6.17M       B    10:30   80,561.0      10:30     rescan
+GMEX        +5.1%    2.46    1.41M       A    07:00    1,192.0      04:00  premarket
 REKT        +5.1%   19.54     0.1M       A    10:00    2,165.0      10:00     rescan
 VHI         +5.1%   15.38    2.39M       A    10:00    8,424.0      10:00     rescan
 XHLD        +5.1%    2.70    1.27M       A    07:00      101.0      05:44  premarket
@@ -94,5 +94,5 @@ SPHL        +5.1%    4.57    0.47M       A    09:00      314.0      09:00     re
 DJTU        +5.0%    3.34      N/A       X    08:00    2,226.0      08:00     rescan
 
 Total candidates: 90
-  Premarket (7:15 AM): 22
-  Continuous rescan:   68
+  Premarket (7:15 AM): 23
+  Continuous rescan:   67
