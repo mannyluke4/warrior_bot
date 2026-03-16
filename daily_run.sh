@@ -10,6 +10,25 @@ LOG_FILE="$LOG_DIR/${TODAY}_daily.log"
 mkdir -p "$LOG_DIR"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
+
+# Cleanup trap: push logs even if the script crashes
+cleanup() {
+    echo "=== TRAP: cleanup at $(date) ==="
+    kill "$BOT_PID" 2>/dev/null || true
+    kill "$IBC_PID" 2>/dev/null || true
+    pkill -f "bot.py" 2>/dev/null || true
+    pkill -f "java.*tws" 2>/dev/null || true
+    cd ~/warrior_bot
+    git add -f logs/ 2>/dev/null || true
+    git commit -m "auto: daily logs ${TODAY}" 2>/dev/null || true
+    git push origin v6-dynamic-sizing 2>/dev/null || true
+    echo "=== Cleanup complete: $(date) ==="
+}
+trap cleanup EXIT
+
+BOT_PID=""
+IBC_PID=""
+
 echo "=== Daily run started: $(date) ==="
 
 # 1. Pull latest code
