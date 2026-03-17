@@ -121,3 +121,11 @@ Waiting 25108s until 9:00 AM MT...
 === Shutting down at Tue Mar 17 09:00:00 MDT 2026 ===
 /Users/duffy/warrior_bot/daily_run.sh: line 71: 26461 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
 Pushing logs...
+[v6-dynamic-sizing 6d784ff] auto: daily logs 2026-03-17
+ 6 files changed, 3368 insertions(+), 2 deletions(-)
+ create mode 100644 logs/2026-03-17_daily.log
+ create mode 100644 logs/cron_2026-03-17.log
+ create mode 100644 logs/events_20260316T191643Z.jsonl
+ create mode 100644 logs/events_20260317T080134Z.jsonl
+=== Daily run complete: Tue Mar 17 09:00:07 MDT 2026 ===
+=== TRAP: cleanup at Tue Mar 17 09:00:07 MDT 2026 ===
