@@ -39,7 +39,7 @@ LACG       +10.0%   13.30      N/A       X    08:00      248.0      08:00     re
 SCO         +9.8%   16.87      N/A       X    07:00   68,761.0      04:00  premarket
 NTWK        +9.8%    3.91    9.98M       B    10:30   13,498.0      10:30     rescan
 TAIL        +9.8%   12.55    8.36M       B    08:30      100.0      08:30     rescan
-TOYO        +9.7%    8.60    9.07M       B    08:00    3,442.0      08:00     rescan
+TOYO        +9.7%    8.60    9.07M       B    07:00    4,078.0      04:00  premarket
 GOAI        +9.4%    4.29    7.53M       B    10:00  123,623.0      10:00     rescan
 NERV        +9.4%    4.44    6.32M       B    10:00   12,502.0      10:00     rescan
 DGZ         +9.1%    6.00      N/A       X    09:30      756.0      09:30     rescan
@@ -67,7 +67,6 @@ BJDX        +7.7%    3.90    0.39M       A    08:00   11,713.0      08:00     re
 PLRZ        +7.7%   12.40    0.88M       A    09:00      220.0      09:00     rescan
 NOMA        +7.7%    3.78    3.96M       A    09:30    6,617.0      09:30     rescan
 NTRP        +7.6%    3.25    6.29M       B    10:00   16,054.0      10:00     rescan
-APPX        +7.5%   17.30    2.92M       A    08:00   60,532.0      08:00     rescan
 GMEX        +7.4%    2.62    1.41M       A    08:00    1,601.0      08:00     rescan
 NTHI        +7.2%    9.94    4.05M       A    10:30    5,160.0      10:30     rescan
 AEMD        +7.2%    2.68    1.22M       A    08:00      276.0      08:00     rescan
@@ -104,9 +103,10 @@ TSLZ        +6.0%   13.27      N/A       X    09:30  217,816.0      09:30     re
 TSDD        +6.0%    8.66      N/A       X    09:30  327,596.0      09:30     rescan
 PLSM        +6.0%    6.20    2.06M       A    08:00    3,107.0      08:00     rescan
 CKX         +5.9%   11.60    1.24M       A    09:30    4,401.0      09:30     rescan
+APVO        +5.9%    7.70     0.9M       A    07:00      165.0      04:00  premarket
 SBC         +5.9%    4.85    4.01M       A    10:30   23,380.0      10:30     rescan
-SQFT        +5.9%    2.53    0.69M       A    10:00    2,709.0      10:00     rescan
 OTH         +5.9%    2.89    4.63M       A    10:00    3,121.0      10:00     rescan
+SQFT        +5.9%    2.53    0.69M       A    10:00    2,709.0      10:00     rescan
 GMEU        +5.8%   12.54      N/A       X    07:00    6,935.0      04:00  premarket
 MTVA        +5.8%    2.57    0.98M       A    07:00   45,588.0      04:00  premarket
 LVLU        +5.8%   19.69    1.17M       A    10:30    3,538.0      10:30     rescan
@@ -118,13 +118,14 @@ TOPS        +5.6%    5.40    1.01M       A    10:00      458.0      10:00     re
 PODC        +5.5%    3.05    6.28M       B    08:30   50,937.0      08:30     rescan
 OILD        +5.4%    7.19      N/A       X    07:00    1,500.0      04:00  premarket
 CGTL        +5.4%    3.31    1.58M       A    07:00    1,931.0      04:27  premarket
+APPX        +5.3%   16.95    2.92M       A    07:00   38,656.0      04:00  premarket
 AIBD        +5.3%    8.36    0.25M       A    07:00      500.0      04:10  premarket
 INBS        +5.3%    9.15    0.64M       A    09:00   20,673.0      09:00     rescan
 SHPU        +5.3%   19.61      N/A       X    10:00    8,497.0      10:00     rescan
-APVO        +5.2%    7.65     0.9M       A    08:00      116.0      08:00     rescan
 OWLT        +5.2%   12.70     9.7M       B    10:00   14,648.0      10:00     rescan
 VGAS        +5.2%    2.02    0.96M       A    09:30      121.0      09:30     rescan
 ASTI        +5.2%    5.25    2.96M       A    08:30   28,757.0      08:30     rescan
+CV          +5.2%    5.28    3.68M       A    10:30   31,811.0      10:30     rescan
 CORD        +5.2%   19.97      N/A       X    07:00   16,535.0      04:00  premarket
 MFI         +5.2%   16.50    0.53M       A    10:00    1,133.0      10:00     rescan
 RBLU        +5.2%   18.79      N/A       X    08:30    2,080.0      08:30     rescan
@@ -140,6 +141,6 @@ UUUG        +5.0%   19.48    0.71M       A    08:30   12,963.0      08:30     re
 SABS        +5.0%    4.61    7.92M       B    10:30   28,426.0      10:30     rescan
 AIMD        +5.0%    2.10    1.69M       A    08:00   10,550.0      08:00     rescan
 
-Total candidates: 137
-  Premarket (7:15 AM): 24
-  Continuous rescan:   113
+Total candidates: 138
+  Premarket (7:15 AM): 27
+  Continuous rescan:   111

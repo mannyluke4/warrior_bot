@@ -1,1654 +1,22 @@
 {
   "last_completed_date": "2026-03-12",
   "config_a": {
-    "equity": 16925,
+    "equity": 22972,
     "trades": [
-      {
-        "num": 1,
-        "time": "08:19",
-        "entry": 2.0976,
-        "stop": 1.9,
-        "r": 0.1976,
-        "score": 9.0,
-        "exit_price": 1.8903,
-        "reason": "stop_hit",
-        "pnl": -787,
-        "r_mult": "-1.0R",
-        "symbol": "PAVS",
-        "date": "2026-01-02",
-        "notional": 7961.538461538462
-      },
-      {
-        "num": 1,
-        "time": "09:51",
-        "entry": 14.81,
-        "stop": 14.59,
-        "r": 0.22,
-        "score": 10.5,
-        "exit_price": 14.7,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -365,
-        "r_mult": "-0.5R",
-        "symbol": "RGTX",
-        "date": "2026-01-05",
-        "notional": 49142.27272727258
-      },
-      {
-        "num": 1,
-        "time": "11:23",
-        "entry": 4.72,
-        "stop": 4.59,
-        "r": 0.13,
-        "score": 10.5,
-        "exit_price": 4.59,
-        "reason": "stop_hit",
-        "pnl": -721,
-        "r_mult": "-1.0R",
-        "symbol": "BNAI",
-        "date": "2026-01-06",
-        "notional": 26177.84615384617
-      },
-      {
-        "num": 1,
-        "time": "09:40",
-        "entry": 3.69,
-        "stop": 2.89,
-        "r": 0.8,
-        "score": 12.0,
-        "exit_price": 3.47,
-        "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": -193,
-        "r_mult": "-0.3R",
-        "symbol": "NVVE",
-        "date": "2026-01-07",
-        "notional": 3242.587500000001
-      },
-      {
-        "num": 2,
-        "time": "09:48",
-        "entry": 3.52,
-        "stop": 3.35,
-        "r": 0.17,
-        "score": 10.5,
-        "exit_price": 3.35,
-        "reason": "stop_hit",
-        "pnl": -703,
-        "r_mult": "-1.0R",
-        "symbol": "NVVE",
-        "date": "2026-01-07",
-        "notional": 14556.235294117652
-      },
-      {
-        "num": 1,
-        "time": "07:04",
-        "entry": 8.21,
-        "stop": 7.95,
-        "r": 0.26,
-        "score": 12.5,
-        "exit_price": 7.95,
-        "reason": "stop_hit",
-        "pnl": -680,
-        "r_mult": "-1.0R",
-        "symbol": "ACON",
-        "date": "2026-01-08",
-        "notional": 21472.307692307637
-      },
-      {
-        "num": 1,
-        "time": "09:42",
-        "entry": 2.78,
-        "stop": 2.27,
-        "r": 0.51,
-        "score": 12.5,
-        "exit_price": 2.7505,
-        "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": -39,
-        "r_mult": "-0.1R",
-        "symbol": "SXTC",
-        "date": "2026-01-08",
-        "notional": 3706.666666666668
-      },
-      {
-        "num": 2,
-        "time": "10:10",
-        "entry": 3.56,
-        "stop": 3.29,
-        "r": 0.27,
-        "score": 12.5,
-        "exit_price": 3.5701,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 25,
-        "r_mult": "+0.0R",
-        "symbol": "SXTC",
-        "date": "2026-01-08",
-        "notional": 8965.925925925925
-      },
-      {
-        "num": 1,
-        "time": "09:51",
-        "entry": 8.47,
-        "stop": 8.09,
-        "r": 0.38,
-        "score": 12.5,
-        "exit_price": 8.6621,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 335,
-        "r_mult": "+0.5R",
-        "symbol": "BDSX",
-        "date": "2026-01-12",
-        "notional": 14777.92105263155
-      },
-      {
-        "num": 1,
-        "time": "09:58",
-        "entry": 3.96,
-        "stop": 3.85,
-        "r": 0.11,
-        "score": 12.0,
-        "exit_price": 3.91,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -301,
-        "r_mult": "-0.5R",
-        "symbol": "CRWG",
-        "date": "2026-01-12",
-        "notional": 23868.00000000003
-      },
-      {
-        "num": 1,
-        "time": "08:31",
-        "entry": 1.31,
-        "stop": 1.19,
-        "r": 0.12,
-        "score": 10.0,
-        "exit_price": 1.2698,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -222,
-        "r_mult": "-0.3R",
-        "symbol": "XAIR",
-        "date": "2026-01-13",
-        "notional": 7248.666666666661
-      },
-      {
-        "num": 1,
-        "time": "10:26",
-        "entry": 3.91,
-        "stop": 3.59,
-        "r": 0.32,
-        "score": 11.0,
-        "exit_price": 3.59,
-        "reason": "stop_hit",
-        "pnl": -664,
-        "r_mult": "-1.0R",
-        "symbol": "EVTV",
-        "date": "2026-01-13",
-        "notional": 8113.249999999994
-      },
-      {
-        "num": 1,
-        "time": "07:41",
-        "entry": 8.77,
-        "stop": 8.12,
-        "r": 0.65,
-        "score": 10.5,
-        "exit_price": 8.25,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -531,
-        "r_mult": "-0.8R",
-        "symbol": "AHMA",
-        "date": "2026-01-13",
-        "notional": 8958.892307692302
-      },
-      {
-        "num": 1,
-        "time": "09:39",
-        "entry": 12.87,
-        "stop": 12.29,
-        "r": 0.58,
-        "score": 10.5,
-        "exit_price": 13.08,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 227,
-        "r_mult": "+0.4R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 13935.10344827586
-      },
-      {
-        "num": 2,
-        "time": "09:57",
-        "entry": 14.02,
-        "stop": 13.09,
-        "r": 0.93,
-        "score": 9.8,
-        "exit_price": 15.13,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 749,
-        "r_mult": "+1.2R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 9467.268817204304
-      },
-      {
-        "num": 3,
-        "time": "11:55",
-        "entry": 14.52,
-        "stop": 13.87,
-        "r": 0.65,
-        "score": 12.5,
-        "exit_price": 14.45,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -68,
-        "r_mult": "-0.1R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 14028.553846153838
-      },
-      {
-        "num": 1,
-        "time": "07:58",
-        "entry": 10.27,
-        "stop": 9.49,
-        "r": 0.78,
-        "score": 10.5,
-        "exit_price": 10.08,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -158,
-        "r_mult": "-0.2R",
-        "symbol": "SPHL",
-        "date": "2026-01-15",
-        "notional": 8571.500000000007
-      },
-      {
-        "num": 1,
-        "time": "09:46",
-        "entry": 2.1,
-        "stop": 1.9592,
-        "r": 0.1408,
-        "score": 12.5,
-        "exit_price": 2.07,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -138,
-        "r_mult": "-0.2R",
-        "symbol": "XAIR",
-        "date": "2026-01-16",
-        "notional": 9649.857954545452
-      },
-      {
-        "num": 1,
-        "time": "10:06",
-        "entry": 2.43,
-        "stop": 1.93,
-        "r": 0.5,
-        "score": 12.0,
-        "exit_price": 2.79,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 463,
-        "r_mult": "+0.7R",
-        "symbol": "GITS",
-        "date": "2026-01-21",
-        "notional": 3129.8399999999983
-      },
-      {
-        "num": 1,
-        "time": "09:28",
-        "entry": 2.22,
-        "stop": 2.13,
-        "r": 0.09,
-        "score": 10.5,
-        "exit_price": 2.29,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 501,
-        "r_mult": "+0.8R",
-        "symbol": "SEGG",
-        "date": "2026-01-21",
-        "notional": 15885.333333333281
-      },
-      {
-        "num": 2,
-        "time": "10:28",
-        "entry": 2.39,
-        "stop": 2.25,
-        "r": 0.14,
-        "score": 12.0,
-        "exit_price": 2.315,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -345,
-        "r_mult": "-0.5R",
-        "symbol": "SEGG",
-        "date": "2026-01-21",
-        "notional": 10993.999999999993
-      },
-      {
-        "num": 1,
-        "time": "07:06",
-        "entry": 8.62,
-        "stop": 8.14,
-        "r": 0.48,
-        "score": 11.0,
-        "exit_price": 8.14,
-        "reason": "stop_hit",
-        "pnl": -659,
-        "r_mult": "-1.0R",
-        "symbol": "IOTR",
-        "date": "2026-01-22",
-        "notional": 11834.541666666699
-      },
-      {
-        "num": 1,
-        "time": "09:41",
-        "entry": 7.29,
-        "stop": 6.87,
-        "r": 0.42,
-        "score": 11.0,
-        "exit_price": 6.87,
-        "reason": "stop_hit",
-        "pnl": -659,
-        "r_mult": "-1.0R",
-        "symbol": "SXTP",
-        "date": "2026-01-22",
-        "notional": 11438.357142857145
-      },
-      {
-        "num": 1,
-        "time": "09:33",
-        "entry": 2.25,
-        "stop": 2.1215,
-        "r": 0.1285,
-        "score": 12.5,
-        "exit_price": 2.165,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -436,
-        "r_mult": "-0.7R",
-        "symbol": "NAMM",
-        "date": "2026-01-22",
-        "notional": 11538.910505836591
-      },
-      {
-        "num": 1,
-        "time": "10:57",
-        "entry": 19.92,
-        "stop": 19.14,
-        "r": 0.78,
-        "score": 12.5,
-        "exit_price": 19.4928,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -337,
-        "r_mult": "-0.5R",
-        "symbol": "MOVE",
-        "date": "2026-01-23",
-        "notional": 15706.153846153824
-      },
-      {
-        "num": 1,
-        "time": "10:25",
-        "entry": 2.24,
-        "stop": 1.77,
-        "r": 0.47,
-        "score": 12.5,
-        "exit_price": 2.8227,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 752,
-        "r_mult": "+1.2R",
-        "symbol": "MBAI",
-        "date": "2026-01-26",
-        "notional": 2892.936170212765
-      },
-      {
-        "num": 1,
-        "time": "07:39",
-        "entry": 3.67,
-        "stop": 3.43,
-        "r": 0.24,
-        "score": 12.0,
-        "exit_price": 3.43,
-        "reason": "stop_hit",
-        "pnl": -626,
-        "r_mult": "-1.0R",
-        "symbol": "CYN",
-        "date": "2026-01-27",
-        "notional": 9572.583333333341
-      },
-      {
-        "num": 1,
-        "time": "09:40",
-        "entry": 4.09,
-        "stop": 3.9958,
-        "r": 0.0942,
-        "score": 10.8,
-        "exit_price": 3.99,
-        "reason": "stop_hit",
-        "pnl": -664,
-        "r_mult": "-1.1R",
-        "symbol": "GDXD",
-        "date": "2026-01-27",
-        "notional": 27179.830148620003
-      },
-      {
-        "num": 1,
-        "time": "09:44",
-        "entry": 3.44,
-        "stop": 3.04,
-        "r": 0.4,
-        "score": 9.5,
-        "exit_price": 3.04,
-        "reason": "stop_hit",
-        "pnl": -593,
-        "r_mult": "-1.0R",
-        "symbol": "SLGB",
-        "date": "2026-01-28",
-        "notional": 5099.800000000001
-      },
-      {
-        "num": 2,
-        "time": "10:18",
-        "entry": 4.19,
-        "stop": 3.76,
-        "r": 0.43,
-        "score": 12.5,
-        "exit_price": 4.14,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -69,
-        "r_mult": "-0.1R",
-        "symbol": "SLGB",
-        "date": "2026-01-28",
-        "notional": 5778.302325581388
-      },
-      {
-        "num": 1,
-        "time": "09:09",
-        "entry": 2.2582,
-        "stop": 2.15,
-        "r": 0.1082,
-        "score": 12.0,
-        "exit_price": 2.2498,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -45,
-        "r_mult": "-0.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 12042.341959334557
-      },
-      {
-        "num": 2,
-        "time": "09:44",
-        "entry": 3.44,
-        "stop": 3.0401,
-        "r": 0.3999,
-        "score": 12.0,
-        "exit_price": 3.87,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 620,
-        "r_mult": "+1.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 4963.4408602150515
-      },
-      {
-        "num": 3,
-        "time": "11:31",
-        "entry": 4.11,
-        "stop": 3.91,
-        "r": 0.2,
-        "score": 11.0,
-        "exit_price": 4.104,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -17,
-        "r_mult": "-0.0R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 11857.34999999999
-      },
-      {
-        "num": 4,
-        "time": "11:44",
-        "entry": 4.45,
-        "stop": 4.31,
-        "r": 0.14,
-        "score": 12.5,
-        "exit_price": 4.47,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 82,
-        "r_mult": "+0.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 18340.35714285707
-      },
-      {
-        "num": 1,
-        "time": "08:02",
-        "entry": 8.52,
-        "stop": 6.11,
-        "r": 2.41,
-        "score": 9.5,
-        "exit_price": 6.1,
-        "reason": "stop_hit",
-        "pnl": -298,
-        "r_mult": "-1.0R",
-        "symbol": "NPT",
-        "date": "2026-02-03",
-        "notional": 2096.4149377593367
-      },
-      {
-        "num": 1,
-        "time": "07:32",
-        "entry": 3.93,
-        "stop": 3.85,
-        "r": 0.08,
-        "score": 10.0,
-        "exit_price": 3.885,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -165,
-        "r_mult": "-0.6R",
-        "symbol": "RKLZ",
-        "date": "2026-02-05",
-        "notional": 28738.124999999975
-      },
-      {
-        "num": 2,
-        "time": "10:19",
-        "entry": 4.09,
-        "stop": 3.97,
-        "r": 0.12,
-        "score": 9.0,
-        "exit_price": 3.992,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -239,
-        "r_mult": "-0.8R",
-        "symbol": "RKLZ",
-        "date": "2026-02-05",
-        "notional": 19938.750000000055
-      },
-      {
-        "num": 1,
-        "time": "07:07",
-        "entry": 3.12,
-        "stop": 2.69,
-        "r": 0.43,
-        "score": 9.5,
-        "exit_price": 3.18,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 40,
-        "r_mult": "+0.1R",
-        "symbol": "WHLR",
-        "date": "2026-02-06",
-        "notional": 4172.093023255812
-      },
-      {
-        "num": 1,
-        "time": "10:45",
-        "entry": 15.92,
-        "stop": 13.79,
-        "r": 2.13,
-        "score": 10.5,
-        "exit_price": 15.9,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -3,
-        "r_mult": "-0.0R",
-        "symbol": "SMX",
-        "date": "2026-02-06",
-        "notional": 4297.652582159623
-      },
-      {
-        "num": 2,
-        "time": "10:52",
-        "entry": 17.3,
-        "stop": 15.21,
-        "r": 2.09,
-        "score": 12.5,
-        "exit_price": 16.3768,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -126,
-        "r_mult": "-0.4R",
-        "symbol": "SMX",
-        "date": "2026-02-06",
-        "notional": 4759.569377990431
-      },
-      {
-        "num": 1,
-        "time": "08:07",
-        "entry": 3.96,
-        "stop": 3.8753,
-        "r": 0.0847,
-        "score": 11.5,
-        "exit_price": 3.95,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -34,
-        "r_mult": "-0.1R",
-        "symbol": "CRWG",
-        "date": "2026-02-09",
-        "notional": 26789.61038961046
-      },
-      {
-        "num": 2,
-        "time": "09:43",
-        "entry": 4.2398,
-        "stop": 4.13,
-        "r": 0.1098,
-        "score": 12.5,
-        "exit_price": 4.13,
-        "reason": "stop_hit",
-        "pnl": -286,
-        "r_mult": "-1.0R",
-        "symbol": "CRWG",
-        "date": "2026-02-09",
-        "notional": 22125.732240437177
-      },
-      {
-        "num": 1,
-        "time": "10:05",
-        "entry": 2.32,
-        "stop": 2.01,
-        "r": 0.31,
-        "score": 8.0,
-        "exit_price": 2.2208,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -90,
-        "r_mult": "-0.3R",
-        "symbol": "JZXN",
-        "date": "2026-02-10",
-        "notional": 4228.387096774192
-      },
-      {
-        "num": 2,
-        "time": "10:10",
-        "entry": 2.36,
-        "stop": 2.19,
-        "r": 0.17,
-        "score": 11.0,
-        "exit_price": 2.485,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 208,
-        "r_mult": "+0.7R",
-        "symbol": "JZXN",
-        "date": "2026-02-10",
-        "notional": 7843.529411764709
-      },
-      {
-        "num": 1,
-        "time": "10:36",
-        "entry": 8.16,
-        "stop": 7.89,
-        "r": 0.27,
-        "score": 9.5,
-        "exit_price": 7.89,
-        "reason": "stop_hit",
-        "pnl": -282,
-        "r_mult": "-1.0R",
-        "symbol": "ASTI",
-        "date": "2026-02-10",
-        "notional": 17075.555555555526
-      },
-      {
-        "num": 1,
-        "time": "07:25",
-        "entry": 2.08,
-        "stop": 1.96,
-        "r": 0.12,
-        "score": 12.5,
-        "exit_price": 1.96,
-        "reason": "stop_hit",
-        "pnl": -280,
-        "r_mult": "-1.0R",
-        "symbol": "JZXN",
-        "date": "2026-02-12",
-        "notional": 9723.99999999999
-      },
-      {
-        "num": 1,
-        "time": "09:49",
-        "entry": 8.07,
-        "stop": 7.8776,
-        "r": 0.1924,
-        "score": 12.5,
-        "exit_price": 7.86,
-        "reason": "stop_hit",
-        "pnl": -306,
-        "r_mult": "-1.1R",
-        "symbol": "KPTI",
-        "date": "2026-02-12",
-        "notional": 23530.50935550934
-      },
-      {
-        "num": 2,
-        "time": "10:13",
-        "entry": 9.03,
-        "stop": 8.8,
-        "r": 0.23,
-        "score": 11.0,
-        "exit_price": 9.1,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 83,
-        "r_mult": "+0.3R",
-        "symbol": "APPX",
-        "date": "2026-02-13",
-        "notional": 21436.43478260882
-      },
-      {
-        "num": 1,
-        "time": "10:50",
-        "entry": 4.8896,
-        "stop": 4.41,
-        "r": 0.4796,
-        "score": 10.5,
-        "exit_price": 4.74,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -85,
-        "r_mult": "-0.3R",
-        "symbol": "PLYX",
-        "date": "2026-02-17",
-        "notional": 5586.94912427023
-      },
-      {
-        "num": 1,
-        "time": "07:45",
-        "entry": 5.02,
-        "stop": 4.72,
-        "r": 0.3,
-        "score": 12.5,
-        "exit_price": 4.86,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -146,
-        "r_mult": "-0.5R",
-        "symbol": "RIME",
-        "date": "2026-02-17",
-        "notional": 9169.86666666667
-      },
-      {
-        "num": 2,
-        "time": "08:50",
-        "entry": 4.82,
-        "stop": 4.67,
-        "r": 0.15,
-        "score": 8.5,
-        "exit_price": 4.7,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -219,
-        "r_mult": "-0.8R",
-        "symbol": "RIME",
-        "date": "2026-02-17",
-        "notional": 17609.066666666626
-      },
-      {
-        "num": 1,
-        "time": "08:00",
-        "entry": 2.285,
-        "stop": 2.09,
-        "r": 0.195,
-        "score": 12.5,
-        "exit_price": 1.89,
-        "reason": "max_loss_hit",
-        "pnl": -544,
-        "r_mult": "-2.0R",
-        "symbol": "LRHC",
-        "date": "2026-02-18",
-        "notional": 6292.538461538453
-      },
-      {
-        "num": 1,
-        "time": "07:13",
-        "entry": 3.15,
-        "stop": 2.94,
-        "r": 0.21,
-        "score": 11.0,
-        "exit_price": 3.1,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -62,
-        "r_mult": "-0.2R",
-        "symbol": "RUBI",
-        "date": "2026-02-19",
-        "notional": 7860.000000000002
-      },
-      {
-        "num": 1,
-        "time": "10:37",
-        "entry": 3.17,
-        "stop": 3.05,
-        "r": 0.12,
-        "score": 12.5,
-        "exit_price": 3.13,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -87,
-        "r_mult": "-0.3R",
-        "symbol": "RIME",
-        "date": "2026-02-19",
-        "notional": 13842.33333333332
-      },
-      {
-        "num": 1,
-        "time": "10:17",
-        "entry": 2.96,
-        "stop": 2.789,
-        "r": 0.171,
-        "score": 12.0,
-        "exit_price": 2.95,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -15,
-        "r_mult": "-0.1R",
-        "symbol": "NAMM",
-        "date": "2026-02-19",
-        "notional": 9070.409356725157
-      },
-      {
-        "num": 2,
-        "time": "11:40",
-        "entry": 3.11,
-        "stop": 3.02,
-        "r": 0.09,
-        "score": 12.0,
-        "exit_price": 3.0615,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -141,
-        "r_mult": "-0.5R",
-        "symbol": "NAMM",
-        "date": "2026-02-19",
-        "notional": 18107.11111111114
-      },
-      {
-        "num": 1,
-        "time": "10:30",
-        "entry": 2.22,
-        "stop": 2.09,
-        "r": 0.13,
-        "score": 10.5,
-        "exit_price": 2.09,
-        "reason": "stop_hit",
-        "pnl": -258,
-        "r_mult": "-1.0R",
-        "symbol": "GNPX",
-        "date": "2026-02-23",
-        "notional": 8811.692307692287
-      },
-      {
-        "num": 1,
-        "time": "09:46",
-        "entry": 4.13,
-        "stop": 4.04,
-        "r": 0.09,
-        "score": 12.0,
-        "exit_price": 4.18,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 141,
-        "r_mult": "+0.6R",
-        "symbol": "CRWG",
-        "date": "2026-02-24",
-        "notional": 23357.44444444448
-      },
-      {
-        "num": 1,
-        "time": "10:04",
-        "entry": 10.465,
-        "stop": 10.3125,
-        "r": 0.1525,
-        "score": 12.0,
-        "exit_price": 10.38,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -143,
-        "r_mult": "-0.6R",
-        "symbol": "IONX",
-        "date": "2026-02-25",
-        "notional": 35203.573770491836
-      },
-      {
-        "num": 1,
-        "time": "09:42",
-        "entry": 3.65,
-        "stop": 3.5,
-        "r": 0.15,
-        "score": 12.0,
-        "exit_price": 3.8499,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 342,
-        "r_mult": "+1.3R",
-        "symbol": "CDIO",
-        "date": "2026-02-25",
-        "notional": 12483.000000000005
-      },
-      {
-        "num": 3,
-        "time": "09:38",
-        "entry": 14.3899,
-        "stop": 13.92,
-        "r": 0.4699,
-        "score": 12.5,
-        "exit_price": 14.58,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 105,
-        "r_mult": "+0.4R",
-        "symbol": "IONX",
-        "date": "2026-02-26",
-        "notional": 15862.88188976375
-      },
-      {
-        "num": 4,
-        "time": "09:50",
-        "entry": 14.91,
-        "stop": 14.53,
-        "r": 0.38,
-        "score": 12.5,
-        "exit_price": 14.78,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -89,
-        "r_mult": "-0.3R",
-        "symbol": "IONX",
-        "date": "2026-02-26",
-        "notional": 20324.684210526277
-      },
-      {
-        "num": 1,
-        "time": "09:49",
-        "entry": 2.32,
-        "stop": 2.1944,
-        "r": 0.1256,
-        "score": 12.0,
-        "exit_price": 2.4,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 165,
-        "r_mult": "+0.6R",
-        "symbol": "SMJF",
-        "date": "2026-02-27",
-        "notional": 9568.152866242042
-      },
-      {
-        "num": 1,
-        "time": "07:13",
-        "entry": 12.04,
-        "stop": 11.44,
-        "r": 0.6,
-        "score": 12.5,
-        "exit_price": 11.44,
-        "reason": "stop_hit",
-        "pnl": -523,
-        "r_mult": "-1.0R",
-        "symbol": "BATL",
-        "date": "2026-03-02",
-        "notional": 10494.866666666672
-      },
-      {
-        "num": 1,
-        "time": "07:23",
-        "entry": 9.02,
-        "stop": 8.56,
-        "r": 0.46,
-        "score": 12.5,
-        "exit_price": 8.76,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -295,
-        "r_mult": "-0.6R",
-        "symbol": "INDO",
-        "date": "2026-03-02",
-        "notional": 10255.347826086978
-      },
-      {
-        "num": 1,
-        "time": "08:13",
-        "entry": 7.69,
-        "stop": 6.88,
-        "r": 0.81,
-        "score": 12.5,
-        "exit_price": 7.18,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -316,
-        "r_mult": "-0.6R",
-        "symbol": "NPT",
-        "date": "2026-03-03",
-        "notional": 4765.901234567898
-      },
-      {
-        "num": 1,
-        "time": "08:23",
-        "entry": 15.8,
-        "stop": 13.31,
-        "r": 2.49,
-        "score": 9.5,
-        "exit_price": 15.16,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -127,
-        "r_mult": "-0.3R",
-        "symbol": "VCIG",
-        "date": "2026-03-04",
-        "notional": 3134.618473895582
-      },
-      {
-        "num": 1,
-        "time": "10:34",
-        "entry": 6.135,
-        "stop": 6.035,
-        "r": 0.1,
-        "score": 9.0,
-        "exit_price": 6.035,
-        "reason": "stop_hit",
-        "pnl": -494,
-        "r_mult": "-1.0R",
-        "symbol": "RGTX",
-        "date": "2026-03-04",
-        "notional": 30306.900000000103
-      },
-      {
-        "num": 1,
-        "time": "09:24",
-        "entry": 17.35,
-        "stop": 16.71,
-        "r": 0.64,
-        "score": 12.0,
-        "exit_price": 17.35,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 0,
-        "r_mult": "+0.0R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 12985.390624999989
-      },
-      {
-        "num": 2,
-        "time": "09:42",
-        "entry": 19.77,
-        "stop": 18.5201,
-        "r": 1.2499,
-        "score": 12.5,
-        "exit_price": 19.57,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -77,
-        "r_mult": "-0.2R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 7576.470117609408
-      },
-      {
-        "num": 3,
-        "time": "10:31",
-        "entry": 22.58,
-        "stop": 21.99,
-        "r": 0.59,
-        "score": 10.5,
-        "exit_price": 22.3092,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -220,
-        "r_mult": "-0.5R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 18331.89830508475
-      },
-      {
-        "num": 1,
-        "time": "07:05",
-        "entry": 2.16,
-        "stop": 2.08,
-        "r": 0.08,
-        "score": 8.8,
-        "exit_price": 2.14,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -118,
-        "r_mult": "-0.2R",
-        "symbol": "TPET",
-        "date": "2026-03-06",
-        "notional": 12716.999999999989
-      },
-      {
-        "num": 1,
-        "time": "10:03",
-        "entry": 2.11,
-        "stop": 1.94,
-        "r": 0.17,
-        "score": 12.5,
-        "exit_price": 2.1,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -28,
-        "r_mult": "-0.1R",
-        "symbol": "AIFF",
-        "date": "2026-03-06",
-        "notional": 5845.941176470591
-      },
-      {
-        "num": 1,
-        "time": "08:31",
-        "entry": 2.36,
-        "stop": 2.21,
-        "r": 0.15,
-        "score": 12.0,
-        "exit_price": 2.2587,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -316,
-        "r_mult": "-0.7R",
-        "symbol": "HIMZ",
-        "date": "2026-03-09",
-        "notional": 7363.2000000000035
-      },
-      {
-        "num": 2,
-        "time": "08:37",
-        "entry": 2.37,
-        "stop": 2.2697,
-        "r": 0.1003,
-        "score": 12.0,
-        "exit_price": 2.33,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -187,
-        "r_mult": "-0.4R",
-        "symbol": "HIMZ",
-        "date": "2026-03-09",
-        "notional": 11058.424725822502
-      },
-      {
-        "num": 1,
-        "time": "08:02",
-        "entry": 3.55,
-        "stop": 3.4087,
-        "r": 0.1412,
-        "score": 10.5,
-        "exit_price": 3.25,
-        "reason": "max_loss_hit",
-        "pnl": -994,
-        "r_mult": "-2.1R",
-        "symbol": "CRCG",
-        "date": "2026-03-09",
-        "notional": 11757.96178343951
-      },
-      {
-        "num": 1,
-        "time": "07:06",
-        "entry": 20.02,
-        "stop": 18.19,
-        "r": 1.83,
-        "score": 12.5,
-        "exit_price": 18.8,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -285,
-        "r_mult": "-0.7R",
-        "symbol": "INKT",
-        "date": "2026-03-10",
-        "notional": 4704.1530054644845
-      },
-      {
-        "num": 1,
-        "time": "10:45",
-        "entry": 4.57,
-        "stop": 4.4789,
-        "r": 0.0911,
-        "score": 9.5,
-        "exit_price": 4.56,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -47,
-        "r_mult": "-0.1R",
-        "symbol": "CRCG",
-        "date": "2026-03-10",
-        "notional": 21570.80131723382
-      },
-      {
-        "num": 1,
-        "time": "07:03",
-        "entry": 2.72,
-        "stop": 2.59,
-        "r": 0.13,
-        "score": 12.0,
-        "exit_price": 2.73,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 32,
-        "r_mult": "+0.1R",
-        "symbol": "TLYS",
-        "date": "2026-03-12",
-        "notional": 8829.53846153844
-      }
-    ],
-    "daily": [
-      {
-        "date": "2026-01-02",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -787,
-        "equity": 29213
-      },
-      {
-        "date": "2026-01-03",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 29213,
-        "note": "no candidates (total=0, passed=0)"
-      },
-      {
-        "date": "2026-01-05",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -365,
-        "equity": 28848
-      },
-      {
-        "date": "2026-01-06",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -721,
-        "equity": 28127
-      },
-      {
-        "date": "2026-01-07",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -896,
-        "equity": 27231
-      },
-      {
-        "date": "2026-01-08",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -694,
-        "equity": 26537
-      },
-      {
-        "date": "2026-01-09",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 26537
-      },
-      {
-        "date": "2026-01-12",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 34,
-        "equity": 26571
-      },
-      {
-        "date": "2026-01-13",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "day_pnl": -1417,
-        "equity": 25154
-      },
-      {
-        "date": "2026-01-14",
-        "trades": 3,
-        "wins": 2,
-        "losses": 1,
-        "day_pnl": 908,
-        "equity": 26062
-      },
-      {
-        "date": "2026-01-15",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -158,
-        "equity": 25904
-      },
-      {
-        "date": "2026-01-16",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -138,
-        "equity": 25766
-      },
-      {
-        "date": "2026-01-20",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 25766
-      },
-      {
-        "date": "2026-01-21",
-        "trades": 3,
-        "wins": 2,
-        "losses": 1,
-        "day_pnl": 619,
-        "equity": 26385
-      },
-      {
-        "date": "2026-01-22",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "day_pnl": -1754,
-        "equity": 24631
-      },
-      {
-        "date": "2026-01-23",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -337,
-        "equity": 24294
-      },
-      {
-        "date": "2026-01-26",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 752,
-        "equity": 25046
-      },
-      {
-        "date": "2026-01-27",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -1290,
-        "equity": 23756
-      },
-      {
-        "date": "2026-01-28",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -662,
-        "equity": 23094
-      },
-      {
-        "date": "2026-01-29",
-        "trades": 4,
-        "wins": 2,
-        "losses": 2,
-        "day_pnl": 640,
-        "equity": 23734
-      },
-      {
-        "date": "2026-01-30",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23734
-      },
-      {
-        "date": "2026-02-02",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23734
-      },
-      {
-        "date": "2026-02-03",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -298,
-        "equity": 23436
-      },
-      {
-        "date": "2026-02-04",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 23436
-      },
-      {
-        "date": "2026-02-05",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -404,
-        "equity": 23032
-      },
-      {
-        "date": "2026-02-06",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -89,
-        "equity": 22943
-      },
-      {
-        "date": "2026-02-09",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -320,
-        "equity": 22623
-      },
-      {
-        "date": "2026-02-10",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -164,
-        "equity": 22459
-      },
-      {
-        "date": "2026-02-11",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 22459
-      },
-      {
-        "date": "2026-02-12",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -586,
-        "equity": 21873
-      },
-      {
-        "date": "2026-02-13",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 83,
-        "equity": 21956
-      },
-      {
-        "date": "2026-02-17",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "day_pnl": -450,
-        "equity": 21506
-      },
-      {
-        "date": "2026-02-18",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -544,
-        "equity": 20962
-      },
-      {
-        "date": "2026-02-19",
-        "trades": 4,
-        "wins": 0,
-        "losses": 4,
-        "day_pnl": -305,
-        "equity": 20657
-      },
-      {
-        "date": "2026-02-20",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 20657
-      },
-      {
-        "date": "2026-02-23",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -258,
-        "equity": 20399
-      },
-      {
-        "date": "2026-02-24",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 141,
-        "equity": 20540
-      },
-      {
-        "date": "2026-02-25",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 199,
-        "equity": 20739
-      },
-      {
-        "date": "2026-02-26",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 16,
-        "equity": 20755
-      },
-      {
-        "date": "2026-02-27",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 165,
-        "equity": 20920
-      },
-      {
-        "date": "2026-03-02",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -818,
-        "equity": 20102
-      },
-      {
-        "date": "2026-03-03",
-        "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -316,
-        "equity": 19786
-      },
-      {
-        "date": "2026-03-04",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -621,
-        "equity": 19165
-      },
-      {
-        "date": "2026-03-05",
-        "trades": 3,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -297,
-        "equity": 18868
-      },
-      {
-        "date": "2026-03-06",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -146,
-        "equity": 18722
-      },
-      {
-        "date": "2026-03-09",
-        "trades": 3,
-        "wins": 0,
-        "losses": 3,
-        "day_pnl": -1497,
-        "equity": 17225
-      },
-      {
-        "date": "2026-03-10",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -332,
-        "equity": 16893
-      },
-      {
-        "date": "2026-03-11",
-        "trades": 0,
-        "wins": 0,
-        "losses": 0,
-        "day_pnl": 0,
-        "equity": 16893
-      },
-      {
-        "date": "2026-03-12",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 32,
-        "equity": 16925
-      }
-    ],
-    "max_equity": 30000,
-    "max_drawdown": 13107
-  },
-  "config_b": {
-    "equity": 16581,
-    "trades": [
-      {
-        "num": 1,
-        "time": "08:19",
-        "entry": 2.0976,
-        "stop": 1.9,
-        "r": 0.1976,
-        "score": 9.0,
-        "exit_price": 1.8903,
-        "reason": "stop_hit",
-        "pnl": -787,
-        "r_mult": "-1.0R",
-        "symbol": "PAVS",
-        "date": "2026-01-02",
-        "notional": 7961.538461538462
-      },
-      {
-        "num": 1,
-        "time": "09:51",
-        "entry": 14.81,
-        "stop": 14.59,
-        "r": 0.22,
-        "score": 10.5,
-        "exit_price": 14.7,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -365,
-        "r_mult": "-0.5R",
-        "symbol": "RGTX",
-        "date": "2026-01-05",
-        "notional": 49142.27272727258
-      },
       {
         "num": 1,
         "time": "09:10",
         "entry": 11.75,
         "stop": 9.5,
         "r": 2.25,
-        "score": 5.5,
+        "score": 8.5,
         "exit_price": 11.3991,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -112,
+        "pnl": -117,
         "r_mult": "-0.2R",
         "symbol": "ELAB",
         "date": "2026-01-06",
-        "notional": 3765.222222222222
-      },
-      {
-        "num": 1,
-        "time": "11:23",
-        "entry": 4.72,
-        "stop": 4.59,
-        "r": 0.13,
-        "score": 10.5,
-        "exit_price": 4.59,
-        "reason": "stop_hit",
-        "pnl": -721,
-        "r_mult": "-1.0R",
-        "symbol": "BNAI",
-        "date": "2026-01-06",
-        "notional": 26177.84615384617
+        "notional": 3916.6666666666665
       },
       {
         "num": 1,
@@ -1656,14 +24,14 @@
         "entry": 3.69,
         "stop": 2.89,
         "r": 0.8,
-        "score": 12.0,
+        "score": 17.0,
         "exit_price": 3.47,
         "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": -192,
+        "pnl": -205,
         "r_mult": "-0.3R",
         "symbol": "NVVE",
         "date": "2026-01-07",
-        "notional": 3228.750000000001
+        "notional": 3445.537500000001
       },
       {
         "num": 2,
@@ -1671,14 +39,14 @@
         "entry": 3.52,
         "stop": 3.35,
         "r": 0.17,
-        "score": 10.5,
+        "score": 15.5,
         "exit_price": 3.35,
         "reason": "stop_hit",
-        "pnl": -700,
+        "pnl": -747,
         "r_mult": "-1.0R",
         "symbol": "NVVE",
         "date": "2026-01-07",
-        "notional": 14494.11764705883
+        "notional": 15467.294117647065
       },
       {
         "num": 1,
@@ -1686,14 +54,14 @@
         "entry": 8.21,
         "stop": 7.95,
         "r": 0.26,
-        "score": 12.5,
+        "score": 17.5,
         "exit_price": 7.95,
         "reason": "stop_hit",
-        "pnl": -678,
+        "pnl": -723,
         "r_mult": "-1.0R",
         "symbol": "ACON",
         "date": "2026-01-08",
-        "notional": 21409.153846153793
+        "notional": 22830.11538461533
       },
       {
         "num": 1,
@@ -1701,14 +69,14 @@
         "entry": 2.78,
         "stop": 2.27,
         "r": 0.51,
-        "score": 12.5,
+        "score": 18.5,
         "exit_price": 2.7505,
         "reason": "5m_trend_guard_exit_exit_full",
-        "pnl": -39,
+        "pnl": -42,
         "r_mult": "-0.1R",
         "symbol": "SXTC",
         "date": "2026-01-08",
-        "notional": 3695.764705882354
+        "notional": 3941.058823529413
       },
       {
         "num": 2,
@@ -1716,14 +84,14 @@
         "entry": 3.56,
         "stop": 3.29,
         "r": 0.27,
-        "score": 12.5,
+        "score": 18.5,
         "exit_price": 3.5701,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 25,
+        "pnl": 27,
         "r_mult": "+0.0R",
         "symbol": "SXTC",
         "date": "2026-01-08",
-        "notional": 8939.555555555555
+        "notional": 9532.888888888889
       },
       {
         "num": 1,
@@ -1731,14 +99,14 @@
         "entry": 9.44,
         "stop": 9.19,
         "r": 0.25,
-        "score": 5.5,
+        "score": 8.0,
         "exit_price": 9.19,
         "reason": "stop_hit",
-        "pnl": -660,
+        "pnl": -704,
         "r_mult": "-1.0R",
         "symbol": "APVO",
         "date": "2026-01-09",
-        "notional": 24921.6
+        "notional": 26583.039999999997
       },
       {
         "num": 1,
@@ -1746,59 +114,14 @@
         "entry": 8.47,
         "stop": 8.09,
         "r": 0.38,
-        "score": 12.5,
+        "score": 16.5,
         "exit_price": 8.6621,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 325,
+        "pnl": 347,
         "r_mult": "+0.5R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 14354.421052631551
-      },
-      {
-        "num": 1,
-        "time": "09:58",
-        "entry": 3.96,
-        "stop": 3.85,
-        "r": 0.11,
-        "score": 12.0,
-        "exit_price": 3.91,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -293,
-        "r_mult": "-0.5R",
-        "symbol": "CRWG",
-        "date": "2026-01-12",
-        "notional": 23184.000000000025
-      },
-      {
-        "num": 1,
-        "time": "08:31",
-        "entry": 1.31,
-        "stop": 1.19,
-        "r": 0.12,
-        "score": 10.0,
-        "exit_price": 1.2698,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -216,
-        "r_mult": "-0.3R",
-        "symbol": "XAIR",
-        "date": "2026-01-13",
-        "notional": 7041.2499999999945
-      },
-      {
-        "num": 1,
-        "time": "10:26",
-        "entry": 3.91,
-        "stop": 3.59,
-        "r": 0.32,
-        "score": 11.0,
-        "exit_price": 3.59,
-        "reason": "stop_hit",
-        "pnl": -645,
-        "r_mult": "-1.0R",
-        "symbol": "EVTV",
-        "date": "2026-01-13",
-        "notional": 7881.093749999993
+        "notional": 15312.8684210526
       },
       {
         "num": 1,
@@ -1806,14 +129,14 @@
         "entry": 7.12,
         "stop": 6.63,
         "r": 0.49,
-        "score": 7.5,
+        "score": 12.5,
         "exit_price": 7.16,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 53,
+        "pnl": 57,
         "r_mult": "+0.1R",
         "symbol": "AHMA",
         "date": "2026-01-13",
-        "notional": 9372.24489795918
+        "notional": 10098.775510204077
       },
       {
         "num": 2,
@@ -1821,59 +144,14 @@
         "entry": 8.77,
         "stop": 8.12,
         "r": 0.65,
-        "score": 10.5,
+        "score": 15.5,
         "exit_price": 8.25,
         "reason": "topping_wicky_exit_full",
-        "pnl": -516,
+        "pnl": -556,
         "r_mult": "-0.8R",
         "symbol": "AHMA",
         "date": "2026-01-13",
-        "notional": 8702.538461538457
-      },
-      {
-        "num": 1,
-        "time": "09:39",
-        "entry": 12.87,
-        "stop": 12.29,
-        "r": 0.58,
-        "score": 10.5,
-        "exit_price": 13.08,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 221,
-        "r_mult": "+0.4R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 13557.879310344824
-      },
-      {
-        "num": 2,
-        "time": "09:57",
-        "entry": 14.02,
-        "stop": 13.09,
-        "r": 0.93,
-        "score": 9.8,
-        "exit_price": 15.13,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 728,
-        "r_mult": "+1.2R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 9210.98924731183
-      },
-      {
-        "num": 3,
-        "time": "11:55",
-        "entry": 14.52,
-        "stop": 13.87,
-        "r": 0.65,
-        "score": 12.5,
-        "exit_price": 14.45,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -66,
-        "r_mult": "-0.1R",
-        "symbol": "AHMA",
-        "date": "2026-01-14",
-        "notional": 13648.799999999992
+        "notional": 9377.15384615384
       },
       {
         "num": 1,
@@ -1881,29 +159,29 @@
         "entry": 10.27,
         "stop": 9.49,
         "r": 0.78,
-        "score": 10.5,
+        "score": 16.5,
         "exit_price": 10.08,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -154,
+        "pnl": -166,
         "r_mult": "-0.2R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 8347.666666666673
+        "notional": 8992.83333333334
       },
       {
         "num": 1,
-        "time": "09:46",
-        "entry": 2.1,
-        "stop": 1.9592,
-        "r": 0.1408,
-        "score": 12.5,
-        "exit_price": 2.07,
+        "time": "07:16",
+        "entry": 8.32,
+        "stop": 8.02,
+        "r": 0.3,
+        "score": 14.5,
+        "exit_price": 8.65,
         "reason": "topping_wicky_exit_full",
-        "pnl": -134,
-        "r_mult": "-0.2R",
-        "symbol": "XAIR",
-        "date": "2026-01-16",
-        "notional": 9396.306818181816
+        "pnl": 751,
+        "r_mult": "+1.1R",
+        "symbol": "AGPU",
+        "date": "2026-01-15",
+        "notional": 18941.86666666662
       },
       {
         "num": 1,
@@ -1911,59 +189,14 @@
         "entry": 2.43,
         "stop": 1.93,
         "r": 0.5,
-        "score": 12.0,
+        "score": 17.0,
         "exit_price": 2.79,
         "reason": "topping_wicky_exit_full",
-        "pnl": 450,
+        "pnl": 502,
         "r_mult": "+0.7R",
         "symbol": "GITS",
         "date": "2026-01-21",
-        "notional": 3042.359999999999
-      },
-      {
-        "num": 1,
-        "time": "09:28",
-        "entry": 2.22,
-        "stop": 2.13,
-        "r": 0.09,
-        "score": 10.5,
-        "exit_price": 2.29,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 487,
-        "r_mult": "+0.8R",
-        "symbol": "SEGG",
-        "date": "2026-01-21",
-        "notional": 15441.333333333283
-      },
-      {
-        "num": 2,
-        "time": "10:28",
-        "entry": 2.39,
-        "stop": 2.25,
-        "r": 0.14,
-        "score": 12.0,
-        "exit_price": 2.315,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -335,
-        "r_mult": "-0.5R",
-        "symbol": "SEGG",
-        "date": "2026-01-21",
-        "notional": 10686.714285714275
-      },
-      {
-        "num": 1,
-        "time": "07:06",
-        "entry": 8.62,
-        "stop": 8.14,
-        "r": 0.48,
-        "score": 11.0,
-        "exit_price": 8.14,
-        "reason": "stop_hit",
-        "pnl": -641,
-        "r_mult": "-1.0R",
-        "symbol": "IOTR",
-        "date": "2026-01-22",
-        "notional": 11511.291666666697
+        "notional": 3392.2799999999984
       },
       {
         "num": 1,
@@ -1971,14 +204,29 @@
         "entry": 2.86,
         "stop": 2.62,
         "r": 0.24,
-        "score": 4.0,
+        "score": 10.0,
         "exit_price": 3.01,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 400,
+        "pnl": 444,
         "r_mult": "+0.6R",
         "symbol": "NXTS",
         "date": "2026-01-22",
-        "notional": 7638.58333333334
+        "notional": 8460.833333333341
+      },
+      {
+        "num": 1,
+        "time": "07:06",
+        "entry": 8.62,
+        "stop": 8.14,
+        "r": 0.48,
+        "score": 16.0,
+        "exit_price": 8.14,
+        "reason": "stop_hit",
+        "pnl": -710,
+        "r_mult": "-1.0R",
+        "symbol": "IOTR",
+        "date": "2026-01-22",
+        "notional": 12750.4166666667
       },
       {
         "num": 1,
@@ -1986,29 +234,14 @@
         "entry": 7.29,
         "stop": 6.87,
         "r": 0.42,
-        "score": 11.0,
+        "score": 16.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -641,
+        "pnl": -710,
         "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 11125.928571428572
-      },
-      {
-        "num": 1,
-        "time": "09:33",
-        "entry": 2.25,
-        "stop": 2.1215,
-        "r": 0.1285,
-        "score": 12.5,
-        "exit_price": 2.165,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -424,
-        "r_mult": "-0.7R",
-        "symbol": "NAMM",
-        "date": "2026-01-22",
-        "notional": 11223.735408560326
+        "notional": 12323.571428571431
       },
       {
         "num": 1,
@@ -2016,14 +249,29 @@
         "entry": 19.92,
         "stop": 19.14,
         "r": 0.78,
-        "score": 12.5,
+        "score": 18.5,
         "exit_price": 19.4928,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -333,
+        "pnl": -376,
         "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 15552.923076923054
+        "notional": 17519.38461538459
+      },
+      {
+        "num": 1,
+        "time": "09:47",
+        "entry": 2.37,
+        "stop": 2.1601,
+        "r": 0.2099,
+        "score": 15.0,
+        "exit_price": 2.15,
+        "reason": "stop_hit",
+        "pnl": -719,
+        "r_mult": "-1.0R",
+        "symbol": "AUST",
+        "date": "2026-01-23",
+        "notional": 7745.688423058593
       },
       {
         "num": 1,
@@ -2031,14 +279,14 @@
         "entry": 2.24,
         "stop": 1.77,
         "r": 0.47,
-        "score": 12.5,
+        "score": 17.5,
         "exit_price": 2.8227,
         "reason": "topping_wicky_exit_full",
-        "pnl": 744,
+        "pnl": 815,
         "r_mult": "+1.2R",
         "symbol": "MBAI",
         "date": "2026-01-26",
-        "notional": 2859.5744680851053
+        "notional": 3135.9999999999986
       },
       {
         "num": 1,
@@ -2046,119 +294,44 @@
         "entry": 3.67,
         "stop": 3.43,
         "r": 0.24,
-        "score": 12.0,
+        "score": 15.5,
         "exit_price": 3.43,
         "reason": "stop_hit",
-        "pnl": -619,
+        "pnl": -679,
         "r_mult": "-1.0R",
         "symbol": "CYN",
         "date": "2026-01-27",
-        "notional": 9465.541666666675
+        "notional": 10383.041666666675
       },
       {
         "num": 1,
-        "time": "09:40",
-        "entry": 4.09,
-        "stop": 3.9958,
-        "r": 0.0942,
-        "score": 10.8,
-        "exit_price": 3.99,
-        "reason": "stop_hit",
-        "pnl": -657,
-        "r_mult": "-1.1R",
-        "symbol": "GDXD",
-        "date": "2026-01-27",
-        "notional": 26875.902335456518
-      },
-      {
-        "num": 1,
-        "time": "09:44",
-        "entry": 3.44,
-        "stop": 3.04,
-        "r": 0.4,
-        "score": 9.5,
-        "exit_price": 3.04,
-        "reason": "stop_hit",
-        "pnl": -587,
-        "r_mult": "-1.0R",
-        "symbol": "SLGB",
+        "time": "09:36",
+        "entry": 6.77,
+        "stop": 6.4979,
+        "r": 0.2721,
+        "score": 12.0,
+        "exit_price": 6.645,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -304,
+        "r_mult": "-0.5R",
+        "symbol": "FIEE",
         "date": "2026-01-28",
-        "notional": 5048.200000000001
+        "notional": 16470.929805218668
       },
       {
         "num": 2,
-        "time": "10:18",
-        "entry": 4.19,
-        "stop": 3.76,
-        "r": 0.43,
-        "score": 12.5,
-        "exit_price": 4.14,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -68,
-        "r_mult": "-0.1R",
-        "symbol": "SLGB",
+        "time": "09:52",
+        "entry": 7.27,
+        "stop": 7.0,
+        "r": 0.27,
+        "score": 15.0,
+        "exit_price": 7.37,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 245,
+        "r_mult": "+0.4R",
+        "symbol": "FIEE",
         "date": "2026-01-28",
-        "notional": 5719.837209302318
-      },
-      {
-        "num": 1,
-        "time": "09:09",
-        "entry": 2.2582,
-        "stop": 2.15,
-        "r": 0.1082,
-        "score": 12.0,
-        "exit_price": 2.2498,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -44,
-        "r_mult": "-0.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 11917.118299445465
-      },
-      {
-        "num": 2,
-        "time": "09:44",
-        "entry": 3.44,
-        "stop": 3.0401,
-        "r": 0.3999,
-        "score": 12.0,
-        "exit_price": 3.87,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 614,
-        "r_mult": "+1.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 4911.827956989246
-      },
-      {
-        "num": 3,
-        "time": "11:31",
-        "entry": 4.11,
-        "stop": 3.91,
-        "r": 0.2,
-        "score": 11.0,
-        "exit_price": 4.104,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -17,
-        "r_mult": "-0.0R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 11734.04999999999
-      },
-      {
-        "num": 4,
-        "time": "11:44",
-        "entry": 4.45,
-        "stop": 4.31,
-        "r": 0.14,
-        "score": 12.5,
-        "exit_price": 4.47,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 82,
-        "r_mult": "+0.1R",
-        "symbol": "FEED",
-        "date": "2026-01-29",
-        "notional": 18149.642857142786
+        "notional": 17824.962962962993
       },
       {
         "num": 1,
@@ -2166,59 +339,14 @@
         "entry": 8.52,
         "stop": 6.11,
         "r": 2.41,
-        "score": 9.5,
+        "score": 13.5,
         "exit_price": 6.1,
         "reason": "stop_hit",
-        "pnl": -293,
+        "pnl": -329,
         "r_mult": "-1.0R",
         "symbol": "NPT",
         "date": "2026-02-03",
-        "notional": 2075.2033195020754
-      },
-      {
-        "num": 1,
-        "time": "07:15",
-        "entry": 2.15,
-        "stop": 2.0,
-        "r": 0.15,
-        "score": 5.5,
-        "exit_price": 2.095,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -108,
-        "r_mult": "-0.4R",
-        "symbol": "CYN",
-        "date": "2026-02-03",
-        "notional": 8413.666666666672
-      },
-      {
-        "num": 1,
-        "time": "07:32",
-        "entry": 3.93,
-        "stop": 3.85,
-        "r": 0.08,
-        "score": 10.0,
-        "exit_price": 3.885,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -162,
-        "r_mult": "-0.6R",
-        "symbol": "RKLZ",
-        "date": "2026-02-05",
-        "notional": 28345.124999999975
-      },
-      {
-        "num": 2,
-        "time": "10:19",
-        "entry": 4.09,
-        "stop": 3.97,
-        "r": 0.12,
-        "score": 9.0,
-        "exit_price": 3.992,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -236,
-        "r_mult": "-0.8R",
-        "symbol": "RKLZ",
-        "date": "2026-02-05",
-        "notional": 19666.083333333387
+        "notional": 2333.278008298756
       },
       {
         "num": 1,
@@ -2226,149 +354,59 @@
         "entry": 3.12,
         "stop": 2.69,
         "r": 0.43,
-        "score": 9.5,
+        "score": 14.5,
         "exit_price": 3.18,
         "reason": "topping_wicky_exit_full",
-        "pnl": 40,
+        "pnl": 45,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 4114.046511627906
-      },
-      {
-        "num": 2,
-        "time": "10:45",
-        "entry": 15.92,
-        "stop": 13.79,
-        "r": 2.13,
-        "score": 10.5,
-        "exit_price": 15.9,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -3,
-        "r_mult": "-0.0R",
-        "symbol": "SMX",
-        "date": "2026-02-06",
-        "notional": 4237.859154929576
+        "notional": 4730.790697674417
       },
       {
         "num": 1,
-        "time": "08:07",
-        "entry": 3.96,
-        "stop": 3.8753,
-        "r": 0.0847,
-        "score": 11.5,
-        "exit_price": 3.95,
+        "time": "08:55",
+        "entry": 7.65,
+        "stop": 7.55,
+        "r": 0.1,
+        "score": 13.0,
+        "exit_price": 7.62,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -34,
-        "r_mult": "-0.1R",
-        "symbol": "CRWG",
-        "date": "2026-02-09",
-        "notional": 26555.84415584423
-      },
-      {
-        "num": 2,
-        "time": "09:43",
-        "entry": 4.2398,
-        "stop": 4.13,
-        "r": 0.1098,
-        "score": 12.5,
-        "exit_price": 4.13,
-        "reason": "stop_hit",
-        "pnl": -284,
-        "r_mult": "-1.0R",
-        "symbol": "CRWG",
-        "date": "2026-02-09",
-        "notional": 21932.663023679437
-      },
-      {
-        "num": 1,
-        "time": "10:05",
-        "entry": 2.32,
-        "stop": 2.01,
-        "r": 0.31,
-        "score": 8.0,
-        "exit_price": 2.2208,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -90,
+        "pnl": -98,
         "r_mult": "-0.3R",
-        "symbol": "JZXN",
+        "symbol": "SPOG",
         "date": "2026-02-10",
-        "notional": 4190.967741935483
-      },
-      {
-        "num": 2,
-        "time": "10:10",
-        "entry": 2.36,
-        "stop": 2.19,
-        "r": 0.17,
-        "score": 11.0,
-        "exit_price": 2.485,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 206,
-        "r_mult": "+0.7R",
-        "symbol": "JZXN",
-        "date": "2026-02-10",
-        "notional": 7774.117647058826
+        "notional": 49954.49999999974
       },
       {
         "num": 1,
-        "time": "10:36",
-        "entry": 8.16,
-        "stop": 7.89,
-        "r": 0.27,
-        "score": 9.5,
-        "exit_price": 7.89,
-        "reason": "stop_hit",
-        "pnl": -280,
-        "r_mult": "-1.0R",
-        "symbol": "ASTI",
-        "date": "2026-02-10",
-        "notional": 16924.444444444416
-      },
-      {
-        "num": 1,
-        "time": "07:25",
-        "entry": 2.08,
-        "stop": 1.96,
-        "r": 0.12,
-        "score": 12.5,
-        "exit_price": 1.96,
-        "reason": "stop_hit",
-        "pnl": -278,
-        "r_mult": "-1.0R",
-        "symbol": "JZXN",
-        "date": "2026-02-12",
-        "notional": 9637.333333333325
-      },
-      {
-        "num": 1,
-        "time": "09:49",
-        "entry": 8.07,
-        "stop": 7.8776,
-        "r": 0.1924,
-        "score": 12.5,
-        "exit_price": 7.86,
-        "reason": "stop_hit",
-        "pnl": -303,
-        "r_mult": "-1.1R",
-        "symbol": "KPTI",
-        "date": "2026-02-12",
-        "notional": 23320.790020790006
-      },
-      {
-        "num": 2,
-        "time": "10:13",
-        "entry": 9.03,
-        "stop": 8.8,
-        "r": 0.23,
-        "score": 11.0,
-        "exit_price": 9.1,
+        "time": "09:36",
+        "entry": 7.74,
+        "stop": 6.95,
+        "r": 0.79,
+        "score": 8.0,
+        "exit_price": 8.12,
         "reason": "topping_wicky_exit_full",
-        "pnl": 82,
-        "r_mult": "+0.3R",
-        "symbol": "APPX",
-        "date": "2026-02-13",
-        "notional": 21240.13043478273
+        "pnl": 157,
+        "r_mult": "+0.5R",
+        "symbol": "SIF",
+        "date": "2026-02-11",
+        "notional": 6378.151898734177
+      },
+      {
+        "num": 1,
+        "time": "10:09",
+        "entry": 2.3264,
+        "stop": 2.18,
+        "r": 0.1464,
+        "score": 13.3,
+        "exit_price": 2.27,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -125,
+        "r_mult": "-0.4R",
+        "symbol": "DFSC",
+        "date": "2026-02-11",
+        "notional": 10344.852459016403
       },
       {
         "num": 1,
@@ -2376,44 +414,14 @@
         "entry": 4.8896,
         "stop": 4.41,
         "r": 0.4796,
-        "score": 10.5,
+        "score": 16.5,
         "exit_price": 4.74,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -85,
+        "pnl": -102,
         "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 5535.973311092582
-      },
-      {
-        "num": 1,
-        "time": "07:45",
-        "entry": 5.02,
-        "stop": 4.72,
-        "r": 0.3,
-        "score": 12.5,
-        "exit_price": 4.86,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -145,
-        "r_mult": "-0.5R",
-        "symbol": "RIME",
-        "date": "2026-02-17",
-        "notional": 9086.200000000004
-      },
-      {
-        "num": 2,
-        "time": "08:50",
-        "entry": 4.82,
-        "stop": 4.67,
-        "r": 0.15,
-        "score": 8.5,
-        "exit_price": 4.7,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -217,
-        "r_mult": "-0.8R",
-        "symbol": "RIME",
-        "date": "2026-02-17",
-        "notional": 17448.399999999958
+        "notional": 6647.24603836531
       },
       {
         "num": 1,
@@ -2421,14 +429,14 @@
         "entry": 2.285,
         "stop": 2.09,
         "r": 0.195,
-        "score": 12.5,
+        "score": 17.5,
         "exit_price": 1.89,
         "reason": "max_loss_hit",
-        "pnl": -539,
+        "pnl": -657,
         "r_mult": "-2.0R",
         "symbol": "LRHC",
         "date": "2026-02-18",
-        "notional": 6233.94871794871
+        "notional": 7604.948717948708
       },
       {
         "num": 1,
@@ -2436,74 +444,14 @@
         "entry": 3.15,
         "stop": 2.94,
         "r": 0.21,
-        "score": 11.0,
+        "score": 16.0,
         "exit_price": 3.1,
         "reason": "topping_wicky_exit_full",
-        "pnl": -62,
+        "pnl": -75,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 7770.000000000001
-      },
-      {
-        "num": 1,
-        "time": "10:37",
-        "entry": 3.17,
-        "stop": 3.05,
-        "r": 0.12,
-        "score": 12.5,
-        "exit_price": 3.13,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -86,
-        "r_mult": "-0.3R",
-        "symbol": "RIME",
-        "date": "2026-02-19",
-        "notional": 13683.83333333332
-      },
-      {
-        "num": 1,
-        "time": "10:17",
-        "entry": 2.96,
-        "stop": 2.789,
-        "r": 0.171,
-        "score": 12.0,
-        "exit_price": 2.95,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -15,
-        "r_mult": "-0.1R",
-        "symbol": "NAMM",
-        "date": "2026-02-19",
-        "notional": 8966.54970760235
-      },
-      {
-        "num": 2,
-        "time": "11:40",
-        "entry": 3.11,
-        "stop": 3.02,
-        "r": 0.09,
-        "score": 12.0,
-        "exit_price": 3.0615,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -140,
-        "r_mult": "-0.5R",
-        "symbol": "NAMM",
-        "date": "2026-02-19",
-        "notional": 17899.777777777806
-      },
-      {
-        "num": 1,
-        "time": "07:04",
-        "entry": 2.0,
-        "stop": 1.86,
-        "r": 0.14,
-        "score": 6.0,
-        "exit_price": 1.94,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -110,
-        "r_mult": "-0.4R",
-        "symbol": "EVTV",
-        "date": "2026-02-20",
-        "notional": 7300.0000000000055
+        "notional": 9495.000000000002
       },
       {
         "num": 1,
@@ -2511,149 +459,29 @@
         "entry": 2.22,
         "stop": 2.09,
         "r": 0.13,
-        "score": 10.5,
+        "score": 14.0,
         "exit_price": 2.09,
         "reason": "stop_hit",
-        "pnl": -254,
+        "pnl": -315,
         "r_mult": "-1.0R",
         "symbol": "GNPX",
         "date": "2026-02-23",
-        "notional": 8675.076923076902
+        "notional": 10775.538461538436
       },
       {
         "num": 1,
-        "time": "09:46",
-        "entry": 4.13,
-        "stop": 4.04,
-        "r": 0.09,
-        "score": 12.0,
-        "exit_price": 4.18,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 139,
-        "r_mult": "+0.6R",
-        "symbol": "CRWG",
-        "date": "2026-02-24",
-        "notional": 23036.22222222226
-      },
-      {
-        "num": 1,
-        "time": "10:04",
-        "entry": 10.465,
-        "stop": 10.3125,
-        "r": 0.1525,
-        "score": 12.0,
-        "exit_price": 10.38,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -141,
-        "r_mult": "-0.6R",
-        "symbol": "IONX",
-        "date": "2026-02-25",
-        "notional": 34654.59016393446
-      },
-      {
-        "num": 1,
-        "time": "09:42",
-        "entry": 3.65,
-        "stop": 3.5,
-        "r": 0.15,
-        "score": 12.0,
-        "exit_price": 3.8499,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 336,
-        "r_mult": "+1.3R",
-        "symbol": "CDIO",
-        "date": "2026-02-25",
-        "notional": 12288.333333333341
-      },
-      {
-        "num": 3,
-        "time": "09:38",
-        "entry": 14.3899,
-        "stop": 13.92,
-        "r": 0.4699,
-        "score": 12.5,
-        "exit_price": 14.58,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 103,
-        "r_mult": "+0.4R",
-        "symbol": "IONX",
-        "date": "2026-02-26",
-        "notional": 15617.895296871648
-      },
-      {
-        "num": 4,
-        "time": "09:50",
-        "entry": 14.91,
-        "stop": 14.53,
-        "r": 0.38,
-        "score": 12.5,
-        "exit_price": 14.78,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -87,
-        "r_mult": "-0.3R",
-        "symbol": "IONX",
-        "date": "2026-02-26",
-        "notional": 20010.78947368417
-      },
-      {
-        "num": 1,
-        "time": "08:05",
-        "entry": 2.11,
-        "stop": 2.0039,
-        "r": 0.1061,
-        "score": 5.5,
-        "exit_price": 1.94,
+        "time": "10:01",
+        "entry": 3.32,
+        "stop": 2.9389,
+        "r": 0.3811,
+        "score": 10.5,
+        "exit_price": 2.93,
         "reason": "stop_hit",
-        "pnl": -409,
-        "r_mult": "-1.6R",
-        "symbol": "SMJF",
-        "date": "2026-02-27",
-        "notional": 10142.318567389248
-      },
-      {
-        "num": 2,
-        "time": "09:49",
-        "entry": 2.32,
-        "stop": 2.1944,
-        "r": 0.1256,
-        "score": 12.0,
-        "exit_price": 2.4,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 162,
-        "r_mult": "+0.6R",
-        "symbol": "SMJF",
-        "date": "2026-02-27",
-        "notional": 9420.3821656051
-      },
-      {
-        "num": 1,
-        "time": "07:13",
-        "entry": 12.04,
-        "stop": 11.44,
-        "r": 0.6,
-        "score": 12.5,
-        "exit_price": 11.44,
-        "reason": "stop_hit",
-        "pnl": -504,
+        "pnl": -319,
         "r_mult": "-1.0R",
-        "symbol": "BATL",
-        "date": "2026-03-02",
-        "notional": 10113.600000000004
-      },
-      {
-        "num": 1,
-        "time": "07:23",
-        "entry": 9.02,
-        "stop": 8.56,
-        "r": 0.46,
-        "score": 12.5,
-        "exit_price": 8.76,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -285,
-        "r_mult": "-0.6R",
-        "symbol": "INDO",
-        "date": "2026-03-02",
-        "notional": 9882.782608695672
+        "symbol": "GRAN",
+        "date": "2026-02-24",
+        "notional": 5427.341905011807
       },
       {
         "num": 1,
@@ -2661,14 +489,14 @@
         "entry": 5.87,
         "stop": 5.74,
         "r": 0.13,
-        "score": 4.0,
+        "score": 8.0,
         "exit_price": 5.9,
         "reason": "topping_wicky_exit_full",
-        "pnl": 112,
+        "pnl": 142,
         "r_mult": "+0.2R",
         "symbol": "NPT",
         "date": "2026-03-03",
-        "notional": 21899.6153846154
+        "notional": 27769.61538461541
       },
       {
         "num": 2,
@@ -2676,179 +504,44 @@
         "entry": 7.69,
         "stop": 6.88,
         "r": 0.81,
-        "score": 12.5,
+        "score": 16.5,
         "exit_price": 7.18,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -305,
+        "pnl": -387,
         "r_mult": "-0.6R",
         "symbol": "NPT",
         "date": "2026-03-03",
-        "notional": 4604.506172839503
+        "notional": 5838.703703703701
+      },
+      {
+        "num": 1,
+        "time": "10:07",
+        "entry": 4.34,
+        "stop": 4.0,
+        "r": 0.34,
+        "score": 8.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -289,
+        "r_mult": "-0.5R",
+        "symbol": "NOMA",
+        "date": "2026-03-03",
+        "notional": 7850.294117647062
       },
       {
         "num": 2,
-        "time": "08:09",
-        "entry": 11.02,
-        "stop": 9.35,
-        "r": 1.67,
-        "score": 5.5,
-        "exit_price": 11.6,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": 166,
-        "r_mult": "+0.3R",
-        "symbol": "VCIG",
-        "date": "2026-03-04",
-        "notional": 3167.425149700599
-      },
-      {
-        "num": 3,
         "time": "08:23",
         "entry": 15.8,
         "stop": 13.31,
         "r": 2.49,
-        "score": 9.5,
+        "score": 14.5,
         "exit_price": 15.16,
         "reason": "topping_wicky_exit_full",
-        "pnl": -123,
+        "pnl": -154,
         "r_mult": "-0.3R",
         "symbol": "VCIG",
         "date": "2026-03-04",
-        "notional": 3045.7831325301204
-      },
-      {
-        "num": 1,
-        "time": "10:34",
-        "entry": 6.135,
-        "stop": 6.035,
-        "r": 0.1,
-        "score": 9.0,
-        "exit_price": 6.035,
-        "reason": "stop_hit",
-        "pnl": -480,
-        "r_mult": "-1.0R",
-        "symbol": "RGTX",
-        "date": "2026-03-04",
-        "notional": 29448.000000000106
-      },
-      {
-        "num": 1,
-        "time": "09:24",
-        "entry": 17.35,
-        "stop": 16.71,
-        "r": 0.64,
-        "score": 12.0,
-        "exit_price": 17.35,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 0,
-        "r_mult": "+0.0R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 12714.296874999989
-      },
-      {
-        "num": 2,
-        "time": "09:42",
-        "entry": 19.77,
-        "stop": 18.5201,
-        "r": 1.2499,
-        "score": 12.5,
-        "exit_price": 19.57,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -75,
-        "r_mult": "-0.2R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 7418.297463797102
-      },
-      {
-        "num": 3,
-        "time": "10:31",
-        "entry": 22.58,
-        "stop": 21.99,
-        "r": 0.59,
-        "score": 10.5,
-        "exit_price": 22.3092,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -215,
-        "r_mult": "-0.5R",
-        "symbol": "BATL",
-        "date": "2026-03-05",
-        "notional": 17949.186440677968
-      },
-      {
-        "num": 1,
-        "time": "07:05",
-        "entry": 2.16,
-        "stop": 2.08,
-        "r": 0.08,
-        "score": 8.8,
-        "exit_price": 2.14,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -115,
-        "r_mult": "-0.2R",
-        "symbol": "TPET",
-        "date": "2026-03-06",
-        "notional": 12473.999999999989
-      },
-      {
-        "num": 1,
-        "time": "10:03",
-        "entry": 2.11,
-        "stop": 1.94,
-        "r": 0.17,
-        "score": 12.5,
-        "exit_price": 2.1,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -27,
-        "r_mult": "-0.1R",
-        "symbol": "AIFF",
-        "date": "2026-03-06",
-        "notional": 5734.23529411765
-      },
-      {
-        "num": 1,
-        "time": "08:31",
-        "entry": 2.36,
-        "stop": 2.21,
-        "r": 0.15,
-        "score": 12.0,
-        "exit_price": 2.2587,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -309,
-        "r_mult": "-0.7R",
-        "symbol": "HIMZ",
-        "date": "2026-03-09",
-        "notional": 7205.866666666671
-      },
-      {
-        "num": 2,
-        "time": "08:37",
-        "entry": 2.37,
-        "stop": 2.2697,
-        "r": 0.1003,
-        "score": 12.0,
-        "exit_price": 2.33,
-        "reason": "bearish_engulfing_exit_full",
-        "pnl": -183,
-        "r_mult": "-0.4R",
-        "symbol": "HIMZ",
-        "date": "2026-03-09",
-        "notional": 10822.133599202363
-      },
-      {
-        "num": 1,
-        "time": "08:02",
-        "entry": 3.55,
-        "stop": 3.4087,
-        "r": 0.1412,
-        "score": 10.5,
-        "exit_price": 3.25,
-        "reason": "max_loss_hit",
-        "pnl": -973,
-        "r_mult": "-2.1R",
-        "symbol": "CRCG",
-        "date": "2026-03-09",
-        "notional": 11506.723283793366
+        "notional": 3813.574297188755
       },
       {
         "num": 1,
@@ -2856,29 +549,29 @@
         "entry": 20.02,
         "stop": 18.19,
         "r": 1.83,
-        "score": 12.5,
+        "score": 18.5,
         "exit_price": 18.8,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -281,
+        "pnl": -398,
         "r_mult": "-0.7R",
         "symbol": "INKT",
         "date": "2026-03-10",
-        "notional": 4605.693989071042
+        "notional": 6542.05464480875
       },
       {
         "num": 1,
-        "time": "10:45",
-        "entry": 4.57,
-        "stop": 4.4789,
-        "r": 0.0911,
-        "score": 9.5,
-        "exit_price": 4.56,
-        "reason": "topping_wicky_exit_full",
-        "pnl": -46,
-        "r_mult": "-0.1R",
-        "symbol": "CRCG",
+        "time": "10:02",
+        "entry": 3.58,
+        "stop": 3.31,
+        "r": 0.27,
+        "score": 14.5,
+        "exit_price": 3.31,
+        "reason": "stop_hit",
+        "pnl": -598,
+        "r_mult": "-1.0R",
+        "symbol": "PIII",
         "date": "2026-03-10",
-        "notional": 21119.319429198695
+        "notional": 7929.037037037037
       },
       {
         "num": 1,
@@ -2886,24 +579,24 @@
         "entry": 2.72,
         "stop": 2.59,
         "r": 0.13,
-        "score": 12.0,
+        "score": 15.5,
         "exit_price": 2.73,
         "reason": "topping_wicky_exit_full",
-        "pnl": 32,
+        "pnl": 44,
         "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
-        "notional": 8641.230769230748
+        "notional": 11988.923076923045
       }
     ],
     "daily": [
       {
         "date": "2026-01-02",
-        "trades": 1,
+        "trades": 0,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -787,
-        "equity": 29213
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000
       },
       {
         "date": "2026-01-03",
@@ -2911,88 +604,88 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 29213,
+        "equity": 30000,
         "note": "no candidates (total=0, passed=0)"
       },
       {
         "date": "2026-01-05",
-        "trades": 1,
+        "trades": 0,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -365,
-        "equity": 28848
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000
       },
       {
         "date": "2026-01-06",
-        "trades": 2,
+        "trades": 1,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -833,
-        "equity": 28015
+        "losses": 1,
+        "day_pnl": -117,
+        "equity": 29883
       },
       {
         "date": "2026-01-07",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -892,
-        "equity": 27123
+        "day_pnl": -952,
+        "equity": 28931
       },
       {
         "date": "2026-01-08",
         "trades": 3,
         "wins": 1,
         "losses": 2,
-        "day_pnl": -692,
-        "equity": 26431
+        "day_pnl": -738,
+        "equity": 28193
       },
       {
         "date": "2026-01-09",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -660,
-        "equity": 25771
+        "day_pnl": -704,
+        "equity": 27489
       },
       {
         "date": "2026-01-12",
-        "trades": 2,
+        "trades": 1,
         "wins": 1,
-        "losses": 1,
-        "day_pnl": 32,
-        "equity": 25803
+        "losses": 0,
+        "day_pnl": 347,
+        "equity": 27836
       },
       {
         "date": "2026-01-13",
-        "trades": 4,
+        "trades": 2,
         "wins": 1,
-        "losses": 3,
-        "day_pnl": -1324,
-        "equity": 24479
+        "losses": 1,
+        "day_pnl": -499,
+        "equity": 27337
       },
       {
         "date": "2026-01-14",
-        "trades": 3,
-        "wins": 2,
-        "losses": 1,
-        "day_pnl": 883,
-        "equity": 25362
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 27337
       },
       {
         "date": "2026-01-15",
-        "trades": 1,
-        "wins": 0,
+        "trades": 2,
+        "wins": 1,
         "losses": 1,
-        "day_pnl": -154,
-        "equity": 25208
+        "day_pnl": 585,
+        "equity": 27922
       },
       {
         "date": "2026-01-16",
-        "trades": 1,
+        "trades": 0,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -134,
-        "equity": 25074
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 27922
       },
       {
         "date": "2026-01-20",
@@ -3000,63 +693,63 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 25074
+        "equity": 27922
       },
       {
         "date": "2026-01-21",
-        "trades": 3,
-        "wins": 2,
-        "losses": 1,
-        "day_pnl": 602,
-        "equity": 25676
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 502,
+        "equity": 28424
       },
       {
         "date": "2026-01-22",
-        "trades": 4,
+        "trades": 3,
         "wins": 1,
-        "losses": 3,
-        "day_pnl": -1306,
-        "equity": 24370
+        "losses": 2,
+        "day_pnl": -976,
+        "equity": 27448
       },
       {
         "date": "2026-01-23",
-        "trades": 1,
+        "trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -333,
-        "equity": 24037
+        "losses": 2,
+        "day_pnl": -1095,
+        "equity": 26353
       },
       {
         "date": "2026-01-26",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 744,
-        "equity": 24781
+        "day_pnl": 815,
+        "equity": 27168
       },
       {
         "date": "2026-01-27",
-        "trades": 2,
+        "trades": 1,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -1276,
-        "equity": 23505
+        "losses": 1,
+        "day_pnl": -679,
+        "equity": 26489
       },
       {
         "date": "2026-01-28",
         "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -655,
-        "equity": 22850
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -59,
+        "equity": 26430
       },
       {
         "date": "2026-01-29",
-        "trades": 4,
-        "wins": 2,
-        "losses": 2,
-        "day_pnl": 635,
-        "equity": 23485
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26430
       },
       {
         "date": "2026-01-30",
@@ -3064,7 +757,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 23485
+        "equity": 26430
       },
       {
         "date": "2026-02-02",
@@ -3072,15 +765,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 23485
+        "equity": 26430
       },
       {
         "date": "2026-02-03",
-        "trades": 2,
+        "trades": 1,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -401,
-        "equity": 23084
+        "losses": 1,
+        "day_pnl": -329,
+        "equity": 26101
       },
       {
         "date": "2026-02-04",
@@ -3088,191 +781,191 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 23084
+        "equity": 26101
       },
       {
         "date": "2026-02-05",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -398,
-        "equity": 22686
-      },
-      {
-        "date": "2026-02-06",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 37,
-        "equity": 22723
-      },
-      {
-        "date": "2026-02-09",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -318,
-        "equity": 22405
-      },
-      {
-        "date": "2026-02-10",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -164,
-        "equity": 22241
-      },
-      {
-        "date": "2026-02-11",
         "trades": 0,
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 22241
+        "equity": 26101
       },
       {
-        "date": "2026-02-12",
-        "trades": 2,
-        "wins": 0,
-        "losses": 2,
-        "day_pnl": -581,
-        "equity": 21660
-      },
-      {
-        "date": "2026-02-13",
+        "date": "2026-02-06",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 82,
-        "equity": 21742
+        "day_pnl": 45,
+        "equity": 26146
+      },
+      {
+        "date": "2026-02-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26146
+      },
+      {
+        "date": "2026-02-10",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -98,
+        "equity": 26048
+      },
+      {
+        "date": "2026-02-11",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 32,
+        "equity": 26080
+      },
+      {
+        "date": "2026-02-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26080
+      },
+      {
+        "date": "2026-02-13",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26080
       },
       {
         "date": "2026-02-17",
-        "trades": 3,
+        "trades": 1,
         "wins": 0,
-        "losses": 3,
-        "day_pnl": -447,
-        "equity": 21295
+        "losses": 1,
+        "day_pnl": -102,
+        "equity": 25978
       },
       {
         "date": "2026-02-18",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -539,
-        "equity": 20756
+        "day_pnl": -657,
+        "equity": 25321
       },
       {
         "date": "2026-02-19",
-        "trades": 4,
-        "wins": 0,
-        "losses": 4,
-        "day_pnl": -303,
-        "equity": 20453
-      },
-      {
-        "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -110,
-        "equity": 20343
+        "day_pnl": -75,
+        "equity": 25246
+      },
+      {
+        "date": "2026-02-20",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 25246
       },
       {
         "date": "2026-02-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -254,
-        "equity": 20089
+        "day_pnl": -315,
+        "equity": 24931
       },
       {
         "date": "2026-02-24",
         "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 139,
-        "equity": 20228
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -319,
+        "equity": 24612
       },
       {
         "date": "2026-02-25",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 195,
-        "equity": 20423
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24612
       },
       {
         "date": "2026-02-26",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 16,
-        "equity": 20439
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24612
       },
       {
         "date": "2026-02-27",
-        "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": -247,
-        "equity": 20192
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24612
       },
       {
         "date": "2026-03-02",
-        "trades": 2,
+        "trades": 0,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -789,
-        "equity": 19403
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24612
       },
       {
         "date": "2026-03-03",
-        "trades": 2,
+        "trades": 3,
         "wins": 1,
-        "losses": 1,
-        "day_pnl": -193,
-        "equity": 19210
+        "losses": 2,
+        "day_pnl": -534,
+        "equity": 24078
       },
       {
         "date": "2026-03-04",
-        "trades": 3,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": -437,
-        "equity": 18773
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -154,
+        "equity": 23924
       },
       {
         "date": "2026-03-05",
-        "trades": 3,
+        "trades": 0,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -290,
-        "equity": 18483
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23924
       },
       {
         "date": "2026-03-06",
-        "trades": 2,
+        "trades": 0,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -142,
-        "equity": 18341
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23924
       },
       {
         "date": "2026-03-09",
-        "trades": 3,
+        "trades": 0,
         "wins": 0,
-        "losses": 3,
-        "day_pnl": -1465,
-        "equity": 16876
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23924
       },
       {
         "date": "2026-03-10",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -327,
-        "equity": 16549
+        "day_pnl": -996,
+        "equity": 22928
       },
       {
         "date": "2026-03-11",
@@ -3280,19 +973,1021 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 16549
+        "equity": 22928
       },
       {
         "date": "2026-03-12",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 32,
-        "equity": 16581
+        "day_pnl": 44,
+        "equity": 22972
       }
     ],
     "max_equity": 30000,
-    "max_drawdown": 13451
+    "max_drawdown": 7072
+  },
+  "config_b": {
+    "equity": 22678,
+    "trades": [
+      {
+        "num": 1,
+        "time": "09:10",
+        "entry": 11.75,
+        "stop": 9.5,
+        "r": 2.25,
+        "score": 8.5,
+        "exit_price": 11.3991,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -117,
+        "r_mult": "-0.2R",
+        "symbol": "ELAB",
+        "date": "2026-01-06",
+        "notional": 3916.6666666666665
+      },
+      {
+        "num": 1,
+        "time": "09:40",
+        "entry": 3.69,
+        "stop": 2.89,
+        "r": 0.8,
+        "score": 17.0,
+        "exit_price": 3.47,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -205,
+        "r_mult": "-0.3R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 3445.537500000001
+      },
+      {
+        "num": 2,
+        "time": "09:48",
+        "entry": 3.52,
+        "stop": 3.35,
+        "r": 0.17,
+        "score": 15.5,
+        "exit_price": 3.35,
+        "reason": "stop_hit",
+        "pnl": -747,
+        "r_mult": "-1.0R",
+        "symbol": "NVVE",
+        "date": "2026-01-07",
+        "notional": 15467.294117647065
+      },
+      {
+        "num": 1,
+        "time": "07:04",
+        "entry": 8.21,
+        "stop": 7.95,
+        "r": 0.26,
+        "score": 17.5,
+        "exit_price": 7.95,
+        "reason": "stop_hit",
+        "pnl": -723,
+        "r_mult": "-1.0R",
+        "symbol": "ACON",
+        "date": "2026-01-08",
+        "notional": 22830.11538461533
+      },
+      {
+        "num": 1,
+        "time": "09:42",
+        "entry": 2.78,
+        "stop": 2.27,
+        "r": 0.51,
+        "score": 18.5,
+        "exit_price": 2.7505,
+        "reason": "5m_trend_guard_exit_exit_full",
+        "pnl": -42,
+        "r_mult": "-0.1R",
+        "symbol": "SXTC",
+        "date": "2026-01-08",
+        "notional": 3941.058823529413
+      },
+      {
+        "num": 2,
+        "time": "10:10",
+        "entry": 3.56,
+        "stop": 3.29,
+        "r": 0.27,
+        "score": 18.5,
+        "exit_price": 3.5701,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 27,
+        "r_mult": "+0.0R",
+        "symbol": "SXTC",
+        "date": "2026-01-08",
+        "notional": 9532.888888888889
+      },
+      {
+        "num": 1,
+        "time": "08:05",
+        "entry": 9.44,
+        "stop": 9.19,
+        "r": 0.25,
+        "score": 8.0,
+        "exit_price": 9.19,
+        "reason": "stop_hit",
+        "pnl": -704,
+        "r_mult": "-1.0R",
+        "symbol": "APVO",
+        "date": "2026-01-09",
+        "notional": 26583.039999999997
+      },
+      {
+        "num": 1,
+        "time": "09:51",
+        "entry": 8.47,
+        "stop": 8.09,
+        "r": 0.38,
+        "score": 16.5,
+        "exit_price": 8.6621,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 347,
+        "r_mult": "+0.5R",
+        "symbol": "BDSX",
+        "date": "2026-01-12",
+        "notional": 15312.8684210526
+      },
+      {
+        "num": 1,
+        "time": "07:36",
+        "entry": 7.12,
+        "stop": 6.63,
+        "r": 0.49,
+        "score": 12.5,
+        "exit_price": 7.16,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 57,
+        "r_mult": "+0.1R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 10098.775510204077
+      },
+      {
+        "num": 2,
+        "time": "07:41",
+        "entry": 8.77,
+        "stop": 8.12,
+        "r": 0.65,
+        "score": 15.5,
+        "exit_price": 8.25,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -556,
+        "r_mult": "-0.8R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 9377.15384615384
+      },
+      {
+        "num": 1,
+        "time": "07:58",
+        "entry": 10.27,
+        "stop": 9.49,
+        "r": 0.78,
+        "score": 16.5,
+        "exit_price": 10.08,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -166,
+        "r_mult": "-0.2R",
+        "symbol": "SPHL",
+        "date": "2026-01-15",
+        "notional": 8992.83333333334
+      },
+      {
+        "num": 1,
+        "time": "07:16",
+        "entry": 8.32,
+        "stop": 8.02,
+        "r": 0.3,
+        "score": 14.5,
+        "exit_price": 8.65,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 751,
+        "r_mult": "+1.1R",
+        "symbol": "AGPU",
+        "date": "2026-01-15",
+        "notional": 18941.86666666662
+      },
+      {
+        "num": 1,
+        "time": "10:06",
+        "entry": 2.43,
+        "stop": 1.93,
+        "r": 0.5,
+        "score": 17.0,
+        "exit_price": 2.79,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 502,
+        "r_mult": "+0.7R",
+        "symbol": "GITS",
+        "date": "2026-01-21",
+        "notional": 3392.2799999999984
+      },
+      {
+        "num": 1,
+        "time": "07:42",
+        "entry": 2.86,
+        "stop": 2.62,
+        "r": 0.24,
+        "score": 10.0,
+        "exit_price": 3.01,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 444,
+        "r_mult": "+0.6R",
+        "symbol": "NXTS",
+        "date": "2026-01-22",
+        "notional": 8460.833333333341
+      },
+      {
+        "num": 1,
+        "time": "07:06",
+        "entry": 8.62,
+        "stop": 8.14,
+        "r": 0.48,
+        "score": 16.0,
+        "exit_price": 8.14,
+        "reason": "stop_hit",
+        "pnl": -710,
+        "r_mult": "-1.0R",
+        "symbol": "IOTR",
+        "date": "2026-01-22",
+        "notional": 12750.4166666667
+      },
+      {
+        "num": 1,
+        "time": "09:41",
+        "entry": 7.29,
+        "stop": 6.87,
+        "r": 0.42,
+        "score": 16.0,
+        "exit_price": 6.87,
+        "reason": "stop_hit",
+        "pnl": -710,
+        "r_mult": "-1.0R",
+        "symbol": "SXTP",
+        "date": "2026-01-22",
+        "notional": 12323.571428571431
+      },
+      {
+        "num": 1,
+        "time": "10:57",
+        "entry": 19.92,
+        "stop": 19.14,
+        "r": 0.78,
+        "score": 18.5,
+        "exit_price": 19.4928,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -376,
+        "r_mult": "-0.5R",
+        "symbol": "MOVE",
+        "date": "2026-01-23",
+        "notional": 17519.38461538459
+      },
+      {
+        "num": 1,
+        "time": "09:47",
+        "entry": 2.37,
+        "stop": 2.1601,
+        "r": 0.2099,
+        "score": 15.0,
+        "exit_price": 2.15,
+        "reason": "stop_hit",
+        "pnl": -719,
+        "r_mult": "-1.0R",
+        "symbol": "AUST",
+        "date": "2026-01-23",
+        "notional": 7745.688423058593
+      },
+      {
+        "num": 1,
+        "time": "10:25",
+        "entry": 2.24,
+        "stop": 1.77,
+        "r": 0.47,
+        "score": 17.5,
+        "exit_price": 2.8227,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 815,
+        "r_mult": "+1.2R",
+        "symbol": "MBAI",
+        "date": "2026-01-26",
+        "notional": 3135.9999999999986
+      },
+      {
+        "num": 1,
+        "time": "07:39",
+        "entry": 3.67,
+        "stop": 3.43,
+        "r": 0.24,
+        "score": 15.5,
+        "exit_price": 3.43,
+        "reason": "stop_hit",
+        "pnl": -679,
+        "r_mult": "-1.0R",
+        "symbol": "CYN",
+        "date": "2026-01-27",
+        "notional": 10383.041666666675
+      },
+      {
+        "num": 1,
+        "time": "09:36",
+        "entry": 6.77,
+        "stop": 6.4979,
+        "r": 0.2721,
+        "score": 12.0,
+        "exit_price": 6.645,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -304,
+        "r_mult": "-0.5R",
+        "symbol": "FIEE",
+        "date": "2026-01-28",
+        "notional": 16470.929805218668
+      },
+      {
+        "num": 2,
+        "time": "09:52",
+        "entry": 7.27,
+        "stop": 7.0,
+        "r": 0.27,
+        "score": 15.0,
+        "exit_price": 7.37,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 245,
+        "r_mult": "+0.4R",
+        "symbol": "FIEE",
+        "date": "2026-01-28",
+        "notional": 17824.962962962993
+      },
+      {
+        "num": 1,
+        "time": "08:02",
+        "entry": 8.52,
+        "stop": 6.11,
+        "r": 2.41,
+        "score": 13.5,
+        "exit_price": 6.1,
+        "reason": "stop_hit",
+        "pnl": -329,
+        "r_mult": "-1.0R",
+        "symbol": "NPT",
+        "date": "2026-02-03",
+        "notional": 2333.278008298756
+      },
+      {
+        "num": 1,
+        "time": "09:54",
+        "entry": 12.16,
+        "stop": 11.69,
+        "r": 0.47,
+        "score": 6.0,
+        "exit_price": 11.68,
+        "reason": "stop_hit",
+        "pnl": -333,
+        "r_mult": "-1.0R",
+        "symbol": "LBTYB",
+        "date": "2026-02-05",
+        "notional": 16868.765957446783
+      },
+      {
+        "num": 1,
+        "time": "07:07",
+        "entry": 3.12,
+        "stop": 2.69,
+        "r": 0.43,
+        "score": 14.5,
+        "exit_price": 3.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 45,
+        "r_mult": "+0.1R",
+        "symbol": "WHLR",
+        "date": "2026-02-06",
+        "notional": 4672.74418604651
+      },
+      {
+        "num": 1,
+        "time": "08:55",
+        "entry": 7.65,
+        "stop": 7.55,
+        "r": 0.1,
+        "score": 13.0,
+        "exit_price": 7.62,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -97,
+        "r_mult": "-0.3R",
+        "symbol": "SPOG",
+        "date": "2026-02-10",
+        "notional": 49342.49999999974
+      },
+      {
+        "num": 1,
+        "time": "09:36",
+        "entry": 7.74,
+        "stop": 6.95,
+        "r": 0.79,
+        "score": 8.0,
+        "exit_price": 8.12,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 154,
+        "r_mult": "+0.5R",
+        "symbol": "SIF",
+        "date": "2026-02-11",
+        "notional": 6289.974683544304
+      },
+      {
+        "num": 1,
+        "time": "10:09",
+        "entry": 2.3264,
+        "stop": 2.18,
+        "r": 0.1464,
+        "score": 13.3,
+        "exit_price": 2.27,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -124,
+        "r_mult": "-0.4R",
+        "symbol": "DFSC",
+        "date": "2026-02-11",
+        "notional": 10201.836065573782
+      },
+      {
+        "num": 1,
+        "time": "10:50",
+        "entry": 4.8896,
+        "stop": 4.41,
+        "r": 0.4796,
+        "score": 16.5,
+        "exit_price": 4.74,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -100,
+        "r_mult": "-0.3R",
+        "symbol": "PLYX",
+        "date": "2026-02-17",
+        "notional": 6555.489574645543
+      },
+      {
+        "num": 1,
+        "time": "08:00",
+        "entry": 2.285,
+        "stop": 2.09,
+        "r": 0.195,
+        "score": 17.5,
+        "exit_price": 1.89,
+        "reason": "max_loss_hit",
+        "pnl": -649,
+        "r_mult": "-2.0R",
+        "symbol": "LRHC",
+        "date": "2026-02-18",
+        "notional": 7511.205128205118
+      },
+      {
+        "num": 1,
+        "time": "07:13",
+        "entry": 3.15,
+        "stop": 2.94,
+        "r": 0.21,
+        "score": 16.0,
+        "exit_price": 3.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -74,
+        "r_mult": "-0.2R",
+        "symbol": "RUBI",
+        "date": "2026-02-19",
+        "notional": 9360.000000000002
+      },
+      {
+        "num": 1,
+        "time": "10:30",
+        "entry": 2.22,
+        "stop": 2.09,
+        "r": 0.13,
+        "score": 14.0,
+        "exit_price": 2.09,
+        "reason": "stop_hit",
+        "pnl": -311,
+        "r_mult": "-1.0R",
+        "symbol": "GNPX",
+        "date": "2026-02-23",
+        "notional": 10638.923076923049
+      },
+      {
+        "num": 1,
+        "time": "10:01",
+        "entry": 3.32,
+        "stop": 2.9389,
+        "r": 0.3811,
+        "score": 10.5,
+        "exit_price": 2.93,
+        "reason": "stop_hit",
+        "pnl": -314,
+        "r_mult": "-1.0R",
+        "symbol": "GRAN",
+        "date": "2026-02-24",
+        "notional": 5357.648911046969
+      },
+      {
+        "num": 1,
+        "time": "07:51",
+        "entry": 5.87,
+        "stop": 5.74,
+        "r": 0.13,
+        "score": 8.0,
+        "exit_price": 5.9,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 140,
+        "r_mult": "+0.2R",
+        "symbol": "NPT",
+        "date": "2026-03-03",
+        "notional": 27408.38461538464
+      },
+      {
+        "num": 2,
+        "time": "08:13",
+        "entry": 7.69,
+        "stop": 6.88,
+        "r": 0.81,
+        "score": 16.5,
+        "exit_price": 7.18,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -382,
+        "r_mult": "-0.6R",
+        "symbol": "NPT",
+        "date": "2026-03-03",
+        "notional": 5762.75308641975
+      },
+      {
+        "num": 1,
+        "time": "10:07",
+        "entry": 4.34,
+        "stop": 4.0,
+        "r": 0.34,
+        "score": 8.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -286,
+        "r_mult": "-0.5R",
+        "symbol": "NOMA",
+        "date": "2026-03-03",
+        "notional": 7748.176470588238
+      },
+      {
+        "num": 2,
+        "time": "08:23",
+        "entry": 15.8,
+        "stop": 13.31,
+        "r": 2.49,
+        "score": 14.5,
+        "exit_price": 15.16,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -152,
+        "r_mult": "-0.3R",
+        "symbol": "VCIG",
+        "date": "2026-03-04",
+        "notional": 3769.1566265060237
+      },
+      {
+        "num": 1,
+        "time": "07:06",
+        "entry": 20.02,
+        "stop": 18.19,
+        "r": 1.83,
+        "score": 18.5,
+        "exit_price": 18.8,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -393,
+        "r_mult": "-0.7R",
+        "symbol": "INKT",
+        "date": "2026-03-10",
+        "notional": 6454.535519125689
+      },
+      {
+        "num": 1,
+        "time": "10:02",
+        "entry": 3.58,
+        "stop": 3.31,
+        "r": 0.27,
+        "score": 14.5,
+        "exit_price": 3.31,
+        "reason": "stop_hit",
+        "pnl": -590,
+        "r_mult": "-1.0R",
+        "symbol": "PIII",
+        "date": "2026-03-10",
+        "notional": 7822.9629629629635
+      },
+      {
+        "num": 1,
+        "time": "07:03",
+        "entry": 2.72,
+        "stop": 2.59,
+        "r": 0.13,
+        "score": 15.5,
+        "exit_price": 2.73,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 43,
+        "r_mult": "+0.1R",
+        "symbol": "TLYS",
+        "date": "2026-03-12",
+        "notional": 11821.538461538432
+      }
+    ],
+    "daily": [
+      {
+        "date": "2026-01-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000
+      },
+      {
+        "date": "2026-01-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-05",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000
+      },
+      {
+        "date": "2026-01-06",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -117,
+        "equity": 29883
+      },
+      {
+        "date": "2026-01-07",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -952,
+        "equity": 28931
+      },
+      {
+        "date": "2026-01-08",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -738,
+        "equity": 28193
+      },
+      {
+        "date": "2026-01-09",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -704,
+        "equity": 27489
+      },
+      {
+        "date": "2026-01-12",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 347,
+        "equity": 27836
+      },
+      {
+        "date": "2026-01-13",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -499,
+        "equity": 27337
+      },
+      {
+        "date": "2026-01-14",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 27337
+      },
+      {
+        "date": "2026-01-15",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 585,
+        "equity": 27922
+      },
+      {
+        "date": "2026-01-16",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 27922
+      },
+      {
+        "date": "2026-01-20",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 27922
+      },
+      {
+        "date": "2026-01-21",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 502,
+        "equity": 28424
+      },
+      {
+        "date": "2026-01-22",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -976,
+        "equity": 27448
+      },
+      {
+        "date": "2026-01-23",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -1095,
+        "equity": 26353
+      },
+      {
+        "date": "2026-01-26",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 815,
+        "equity": 27168
+      },
+      {
+        "date": "2026-01-27",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -679,
+        "equity": 26489
+      },
+      {
+        "date": "2026-01-28",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -59,
+        "equity": 26430
+      },
+      {
+        "date": "2026-01-29",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26430
+      },
+      {
+        "date": "2026-01-30",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26430
+      },
+      {
+        "date": "2026-02-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26430
+      },
+      {
+        "date": "2026-02-03",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -329,
+        "equity": 26101
+      },
+      {
+        "date": "2026-02-04",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 26101
+      },
+      {
+        "date": "2026-02-05",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -333,
+        "equity": 25768
+      },
+      {
+        "date": "2026-02-06",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 45,
+        "equity": 25813
+      },
+      {
+        "date": "2026-02-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 25813
+      },
+      {
+        "date": "2026-02-10",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -97,
+        "equity": 25716
+      },
+      {
+        "date": "2026-02-11",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 30,
+        "equity": 25746
+      },
+      {
+        "date": "2026-02-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 25746
+      },
+      {
+        "date": "2026-02-13",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 25746
+      },
+      {
+        "date": "2026-02-17",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -100,
+        "equity": 25646
+      },
+      {
+        "date": "2026-02-18",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -649,
+        "equity": 24997
+      },
+      {
+        "date": "2026-02-19",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -74,
+        "equity": 24923
+      },
+      {
+        "date": "2026-02-20",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24923
+      },
+      {
+        "date": "2026-02-23",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -311,
+        "equity": 24612
+      },
+      {
+        "date": "2026-02-24",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -314,
+        "equity": 24298
+      },
+      {
+        "date": "2026-02-25",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24298
+      },
+      {
+        "date": "2026-02-26",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24298
+      },
+      {
+        "date": "2026-02-27",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24298
+      },
+      {
+        "date": "2026-03-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 24298
+      },
+      {
+        "date": "2026-03-03",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -528,
+        "equity": 23770
+      },
+      {
+        "date": "2026-03-04",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -152,
+        "equity": 23618
+      },
+      {
+        "date": "2026-03-05",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23618
+      },
+      {
+        "date": "2026-03-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23618
+      },
+      {
+        "date": "2026-03-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 23618
+      },
+      {
+        "date": "2026-03-10",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -983,
+        "equity": 22635
+      },
+      {
+        "date": "2026-03-11",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 22635
+      },
+      {
+        "date": "2026-03-12",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 43,
+        "equity": 22678
+      }
+    ],
+    "max_equity": 30000,
+    "max_drawdown": 7365
   },
   "missed_opportunities": [],
   "selection_log": [
@@ -3302,39 +1997,39 @@
       "passed_filter": 118,
       "selected": [
         {
-          "symbol": "PAVS",
-          "pm_volume": 1069778.0,
-          "gap_pct": 17.38,
-          "float_millions": 0.05,
-          "rank_score": 4.355
+          "symbol": "SNSE",
+          "pm_volume": 170677.0,
+          "gap_pct": 19.87,
+          "float_millions": 0.7,
+          "rank_score": 0.51
         },
         {
           "symbol": "SMX",
           "pm_volume": 676738.0,
           "gap_pct": 19.2,
           "float_millions": 0.03,
-          "rank_score": 4.22
+          "rank_score": 0.426
+        },
+        {
+          "symbol": "PAVS",
+          "pm_volume": 1069778.0,
+          "gap_pct": 17.38,
+          "float_millions": 0.05,
+          "rank_score": 0.37
+        },
+        {
+          "symbol": "TBMC",
+          "pm_volume": 41239.0,
+          "gap_pct": 5.09,
+          "float_millions": 2.14,
+          "rank_score": 0.347
         },
         {
           "symbol": "SOLT",
           "pm_volume": 421526.0,
           "gap_pct": 6.58,
           "float_millions": 0.4,
-          "rank_score": 4.049
-        },
-        {
-          "symbol": "CRWG",
-          "pm_volume": 310693.0,
-          "gap_pct": 5.17,
-          "float_millions": 5.2,
-          "rank_score": 3.929
-        },
-        {
-          "symbol": "ANGH",
-          "pm_volume": 255873.0,
-          "gap_pct": 6.1,
-          "float_millions": 1.71,
-          "rank_score": 3.889
+          "rank_score": 0.33
         }
       ]
     },
@@ -3350,39 +2045,39 @@
       "passed_filter": 138,
       "selected": [
         {
-          "symbol": "CRWG",
-          "pm_volume": 932961.0,
-          "gap_pct": 7.4,
-          "float_millions": 5.2,
-          "rank_score": 4.268
+          "symbol": "CVV",
+          "pm_volume": 47635.0,
+          "gap_pct": 13.66,
+          "float_millions": 5.29,
+          "rank_score": 0.377
         },
         {
           "symbol": "RGTX",
           "pm_volume": 821243.0,
           "gap_pct": 7.26,
           "float_millions": 2.55,
-          "rank_score": 4.242
+          "rank_score": 0.336
+        },
+        {
+          "symbol": "SOUX",
+          "pm_volume": 116316.0,
+          "gap_pct": 5.78,
+          "float_millions": 0.63,
+          "rank_score": 0.336
         },
         {
           "symbol": "SOLT",
           "pm_volume": 377020.0,
           "gap_pct": 7.03,
           "float_millions": 0.4,
-          "rank_score": 4.016
+          "rank_score": 0.329
         },
         {
-          "symbol": "CRCG",
-          "pm_volume": 233997.0,
-          "gap_pct": 5.26,
-          "float_millions": 4.32,
-          "rank_score": 3.847
-        },
-        {
-          "symbol": "BMNG",
-          "pm_volume": 211990.0,
-          "gap_pct": 9.02,
-          "float_millions": 1.98,
-          "rank_score": 3.837
+          "symbol": "RKLZ",
+          "pm_volume": 193276.0,
+          "gap_pct": 6.6,
+          "float_millions": 0.16,
+          "rank_score": 0.32
         }
       ]
     },
@@ -3392,39 +2087,39 @@
       "passed_filter": 91,
       "selected": [
         {
+          "symbol": "NOMA",
+          "pm_volume": 2704087.0,
+          "gap_pct": 17.07,
+          "float_millions": 3.96,
+          "rank_score": 0.722
+        },
+        {
           "symbol": "CYCN",
           "pm_volume": 8666636.0,
           "gap_pct": 55.8,
           "float_millions": 2.71,
-          "rank_score": 5.055
+          "rank_score": 0.657
         },
         {
           "symbol": "ELAB",
           "pm_volume": 1758309.0,
           "gap_pct": 425.47,
           "float_millions": 2.1,
-          "rank_score": 4.661
+          "rank_score": 0.641
         },
         {
-          "symbol": "NOMA",
-          "pm_volume": 2704087.0,
-          "gap_pct": 17.07,
-          "float_millions": 3.96,
-          "rank_score": 4.617
+          "symbol": "LGCB",
+          "pm_volume": 50770.0,
+          "gap_pct": 13.15,
+          "float_millions": 1.7,
+          "rank_score": 0.407
         },
         {
-          "symbol": "BNAI",
-          "pm_volume": 2214351.0,
-          "gap_pct": 16.02,
-          "float_millions": 3.3,
-          "rank_score": 4.557
-        },
-        {
-          "symbol": "SOPA",
-          "pm_volume": 2133477.0,
-          "gap_pct": 14.62,
-          "float_millions": 5.7,
-          "rank_score": 4.531
+          "symbol": "PASG",
+          "pm_volume": 131103.0,
+          "gap_pct": 11.73,
+          "float_millions": 2.89,
+          "rank_score": 0.391
         }
       ]
     },
@@ -3434,39 +2129,39 @@
       "passed_filter": 72,
       "selected": [
         {
-          "symbol": "NVVE",
-          "pm_volume": 15642799.0,
-          "gap_pct": 47.2,
-          "float_millions": 0.2,
-          "rank_score": 5.229
-        },
-        {
           "symbol": "CDIO",
           "pm_volume": 6536915.0,
           "gap_pct": 37.73,
           "float_millions": 1.7,
-          "rank_score": 4.938
+          "rank_score": 0.951
         },
         {
-          "symbol": "MNTS",
-          "pm_volume": 1226841.0,
-          "gap_pct": 27.67,
-          "float_millions": 1.3,
-          "rank_score": 4.411
+          "symbol": "NVVE",
+          "pm_volume": 15642799.0,
+          "gap_pct": 47.2,
+          "float_millions": 0.2,
+          "rank_score": 0.917
         },
         {
-          "symbol": "RKLZ",
-          "pm_volume": 380299.0,
-          "gap_pct": 6.29,
-          "float_millions": 0.16,
-          "rank_score": 4.018
+          "symbol": "CCEL",
+          "pm_volume": 30692.0,
+          "gap_pct": 11.3,
+          "float_millions": 4.2,
+          "rank_score": 0.399
         },
         {
           "symbol": "GNPX",
           "pm_volume": 376825.0,
           "gap_pct": 5.82,
           "float_millions": 0.67,
-          "rank_score": 4.012
+          "rank_score": 0.386
+        },
+        {
+          "symbol": "MNTS",
+          "pm_volume": 1226841.0,
+          "gap_pct": 27.67,
+          "float_millions": 1.3,
+          "rank_score": 0.384
         }
       ]
     },
@@ -3480,35 +2175,35 @@
           "pm_volume": 4695008.0,
           "gap_pct": 47.48,
           "float_millions": 0.7,
-          "rank_score": 4.862
+          "rank_score": 0.885
         },
         {
           "symbol": "SXTC",
           "pm_volume": 2345330.0,
           "gap_pct": 55.0,
           "float_millions": 0.85,
-          "rank_score": 4.665
+          "rank_score": 0.749
         },
         {
-          "symbol": "QBTZ",
-          "pm_volume": 1380187.0,
-          "gap_pct": 5.51,
-          "float_millions": 0.53,
-          "rank_score": 4.406
+          "symbol": "IPW",
+          "pm_volume": 220907.0,
+          "gap_pct": 10.29,
+          "float_millions": 0.45,
+          "rank_score": 0.507
         },
         {
-          "symbol": "WOK",
-          "pm_volume": 1239718.0,
-          "gap_pct": 11.4,
-          "float_millions": 1.22,
-          "rank_score": 4.382
+          "symbol": "KUST",
+          "pm_volume": 1659.0,
+          "gap_pct": 198.23,
+          "float_millions": 0.19,
+          "rank_score": 0.429
         },
         {
           "symbol": "ELAB",
           "pm_volume": 1093179.0,
           "gap_pct": 13.6,
           "float_millions": 2.1,
-          "rank_score": 4.344
+          "rank_score": 0.406
         }
       ]
     },
@@ -3518,39 +2213,39 @@
       "passed_filter": 69,
       "selected": [
         {
-          "symbol": "APVO",
-          "pm_volume": 3993762.0,
-          "gap_pct": 20.33,
-          "float_millions": 0.9,
-          "rank_score": 4.757
+          "symbol": "KUST",
+          "pm_volume": 2700325.0,
+          "gap_pct": 14.08,
+          "float_millions": 0.19,
+          "rank_score": 0.612
         },
         {
           "symbol": "ICON",
           "pm_volume": 3622622.0,
           "gap_pct": 21.74,
           "float_millions": 0.69,
-          "rank_score": 4.731
+          "rank_score": 0.595
         },
         {
-          "symbol": "KUST",
-          "pm_volume": 2700325.0,
-          "gap_pct": 14.08,
-          "float_millions": 0.19,
-          "rank_score": 4.629
-        },
-        {
-          "symbol": "CETX",
-          "pm_volume": 2092132.0,
-          "gap_pct": 33.1,
-          "float_millions": 0.75,
-          "rank_score": 4.587
+          "symbol": "APVO",
+          "pm_volume": 3993762.0,
+          "gap_pct": 20.33,
+          "float_millions": 0.9,
+          "rank_score": 0.496
         },
         {
           "symbol": "WHLR",
           "pm_volume": 705328.0,
           "gap_pct": 16.39,
           "float_millions": 0.19,
-          "rank_score": 4.226
+          "rank_score": 0.484
+        },
+        {
+          "symbol": "ACCS",
+          "pm_volume": 39666.0,
+          "gap_pct": 14.58,
+          "float_millions": 2.03,
+          "rank_score": 0.479
         }
       ]
     },
@@ -3564,35 +2259,35 @@
           "pm_volume": 5401463.0,
           "gap_pct": 26.19,
           "float_millions": 3.7,
-          "rank_score": 4.847
-        },
-        {
-          "symbol": "CRWG",
-          "pm_volume": 5562025.0,
-          "gap_pct": 16.67,
-          "float_millions": 5.2,
-          "rank_score": 4.829
+          "rank_score": 0.83
         },
         {
           "symbol": "NCEL",
           "pm_volume": 571640.0,
           "gap_pct": 5.02,
           "float_millions": 2.06,
-          "rank_score": 4.13
+          "rank_score": 0.486
         },
         {
-          "symbol": "INDO",
-          "pm_volume": 460787.0,
-          "gap_pct": 7.69,
-          "float_millions": 9.52,
-          "rank_score": 4.032
+          "symbol": "AKAN",
+          "pm_volume": 23906.0,
+          "gap_pct": 433.31,
+          "float_millions": 0.14,
+          "rank_score": 0.472
         },
         {
-          "symbol": "SOLT",
-          "pm_volume": 281263.0,
-          "gap_pct": 6.22,
-          "float_millions": 0.4,
-          "rank_score": 3.925
+          "symbol": "CLRB",
+          "pm_volume": 176591.0,
+          "gap_pct": 7.79,
+          "float_millions": 3.01,
+          "rank_score": 0.416
+        },
+        {
+          "symbol": "CRWG",
+          "pm_volume": 5562025.0,
+          "gap_pct": 16.67,
+          "float_millions": 5.2,
+          "rank_score": 0.359
         }
       ]
     },
@@ -3602,39 +2297,39 @@
       "passed_filter": 77,
       "selected": [
         {
+          "symbol": "IOTR",
+          "pm_volume": 11884420.0,
+          "gap_pct": 36.02,
+          "float_millions": 0.73,
+          "rank_score": 1.148
+        },
+        {
           "symbol": "XAIR",
           "pm_volume": 71249379.0,
           "gap_pct": 171.53,
           "float_millions": 9.41,
-          "rank_score": 5.75
-        },
-        {
-          "symbol": "ATON",
-          "pm_volume": 15497753.0,
-          "gap_pct": 128.57,
-          "float_millions": 0.83,
-          "rank_score": 5.329
-        },
-        {
-          "symbol": "EVTV",
-          "pm_volume": 20644267.0,
-          "gap_pct": 32.07,
-          "float_millions": 2.95,
-          "rank_score": 5.27
+          "rank_score": 1.12
         },
         {
           "symbol": "AHMA",
           "pm_volume": 10117699.0,
           "gap_pct": 86.17,
           "float_millions": 2.02,
-          "rank_score": 5.166
+          "rank_score": 0.985
+        },
+        {
+          "symbol": "PMAX",
+          "pm_volume": 10271808.0,
+          "gap_pct": 16.11,
+          "float_millions": 0.38,
+          "rank_score": 0.952
         },
         {
           "symbol": "SPRC",
           "pm_volume": 11816128.0,
           "gap_pct": 52.41,
           "float_millions": 0.4,
-          "rank_score": 5.154
+          "rank_score": 0.858
         }
       ]
     },
@@ -3648,35 +2343,35 @@
           "pm_volume": 10669416.0,
           "gap_pct": 288.64,
           "float_millions": 3.6,
-          "rank_score": 5.202
-        },
-        {
-          "symbol": "CRWG",
-          "pm_volume": 1035853.0,
-          "gap_pct": 9.67,
-          "float_millions": 5.2,
-          "rank_score": 4.304
-        },
-        {
-          "symbol": "AHMA",
-          "pm_volume": 719372.0,
-          "gap_pct": 26.09,
-          "float_millions": 2.02,
-          "rank_score": 4.242
-        },
-        {
-          "symbol": "QBTZ",
-          "pm_volume": 782256.0,
-          "gap_pct": 7.33,
-          "float_millions": 0.53,
-          "rank_score": 4.237
+          "rank_score": 0.892
         },
         {
           "symbol": "CMND",
           "pm_volume": 460213.0,
           "gap_pct": 13.11,
           "float_millions": 0.12,
-          "rank_score": 4.09
+          "rank_score": 0.529
+        },
+        {
+          "symbol": "AHMA",
+          "pm_volume": 719372.0,
+          "gap_pct": 26.09,
+          "float_millions": 2.02,
+          "rank_score": 0.367
+        },
+        {
+          "symbol": "IQST",
+          "pm_volume": 103455.0,
+          "gap_pct": 13.53,
+          "float_millions": 4.07,
+          "rank_score": 0.349
+        },
+        {
+          "symbol": "QBTZ",
+          "pm_volume": 782256.0,
+          "gap_pct": 7.33,
+          "float_millions": 0.53,
+          "rank_score": 0.344
         }
       ]
     },
@@ -3690,35 +2385,35 @@
           "pm_volume": 16555670.0,
           "gap_pct": 126.77,
           "float_millions": 1.39,
-          "rank_score": 5.346
+          "rank_score": 1.09
         },
         {
           "symbol": "SPHL",
           "pm_volume": 5016154.0,
           "gap_pct": 91.11,
           "float_millions": 0.47,
-          "rank_score": 4.97
+          "rank_score": 1.072
         },
         {
-          "symbol": "EVTV",
-          "pm_volume": 7819294.0,
-          "gap_pct": 15.65,
-          "float_millions": 2.95,
-          "rank_score": 4.942
-        },
-        {
-          "symbol": "CGTL",
-          "pm_volume": 1639092.0,
-          "gap_pct": 22.4,
-          "float_millions": 1.58,
-          "rank_score": 4.487
+          "symbol": "AGPU",
+          "pm_volume": 237778.0,
+          "gap_pct": 17.35,
+          "float_millions": 1.82,
+          "rank_score": 0.527
         },
         {
           "symbol": "CEPT",
           "pm_volume": 1496203.0,
           "gap_pct": 5.76,
           "float_millions": 4.23,
-          "rank_score": 4.413
+          "rank_score": 0.5
+        },
+        {
+          "symbol": "NUWE",
+          "pm_volume": 62102.0,
+          "gap_pct": 21.05,
+          "float_millions": 0.88,
+          "rank_score": 0.435
         }
       ]
     },
@@ -3728,39 +2423,39 @@
       "passed_filter": 73,
       "selected": [
         {
-          "symbol": "VERO",
-          "pm_volume": 26831003.0,
-          "gap_pct": 181.47,
-          "float_millions": 1.6,
-          "rank_score": 5.492
-        },
-        {
-          "symbol": "ACCL",
-          "pm_volume": 10272856.0,
-          "gap_pct": 28.09,
-          "float_millions": 2.93,
-          "rank_score": 5.05
-        },
-        {
           "symbol": "BIYA",
           "pm_volume": 7050459.0,
           "gap_pct": 41.91,
           "float_millions": 0.1,
-          "rank_score": 4.977
+          "rank_score": 0.945
         },
         {
           "symbol": "TNMG",
           "pm_volume": 5424692.0,
           "gap_pct": 33.05,
           "float_millions": 1.15,
-          "rank_score": 4.874
+          "rank_score": 0.872
         },
         {
-          "symbol": "XAIR",
-          "pm_volume": 2416808.0,
-          "gap_pct": 20.37,
-          "float_millions": 9.41,
-          "rank_score": 4.562
+          "symbol": "VERO",
+          "pm_volume": 26831003.0,
+          "gap_pct": 181.47,
+          "float_millions": 1.6,
+          "rank_score": 0.839
+        },
+        {
+          "symbol": "ACCL",
+          "pm_volume": 10272856.0,
+          "gap_pct": 28.09,
+          "float_millions": 2.93,
+          "rank_score": 0.811
+        },
+        {
+          "symbol": "LCFY",
+          "pm_volume": 143179.0,
+          "gap_pct": 131.63,
+          "float_millions": 1.4,
+          "rank_score": 0.772
         }
       ]
     },
@@ -3770,39 +2465,39 @@
       "passed_filter": 82,
       "selected": [
         {
-          "symbol": "IVF",
-          "pm_volume": 43686384.0,
-          "gap_pct": 345.59,
-          "float_millions": 1.73,
-          "rank_score": 5.64
-        },
-        {
           "symbol": "BTTC",
           "pm_volume": 29798487.0,
           "gap_pct": 84.71,
           "float_millions": 1.27,
-          "rank_score": 5.495
+          "rank_score": 1.087
         },
         {
           "symbol": "TWG",
           "pm_volume": 9478348.0,
           "gap_pct": 122.7,
           "float_millions": 0.44,
-          "rank_score": 5.182
+          "rank_score": 1.042
         },
         {
-          "symbol": "ICON",
-          "pm_volume": 12463348.0,
-          "gap_pct": 47.42,
-          "float_millions": 0.69,
-          "rank_score": 5.158
+          "symbol": "IVF",
+          "pm_volume": 43686384.0,
+          "gap_pct": 345.59,
+          "float_millions": 1.73,
+          "rank_score": 0.78
         },
         {
           "symbol": "SDST",
           "pm_volume": 7850312.0,
           "gap_pct": 6.61,
           "float_millions": 6.67,
-          "rank_score": 4.906
+          "rank_score": 0.755
+        },
+        {
+          "symbol": "ICON",
+          "pm_volume": 12463348.0,
+          "gap_pct": 47.42,
+          "float_millions": 0.69,
+          "rank_score": 0.661
         }
       ]
     },
@@ -3816,35 +2511,35 @@
           "pm_volume": 25657515.0,
           "gap_pct": 172.5,
           "float_millions": 2.46,
-          "rank_score": 5.474
+          "rank_score": 1.237
         },
         {
           "symbol": "SLGB",
           "pm_volume": 15293392.0,
           "gap_pct": 134.15,
           "float_millions": 0.98,
-          "rank_score": 5.324
+          "rank_score": 0.919
+        },
+        {
+          "symbol": "LSTA",
+          "pm_volume": 1890202.0,
+          "gap_pct": 82.87,
+          "float_millions": 7.06,
+          "rank_score": 0.815
         },
         {
           "symbol": "BOXL",
           "pm_volume": 13705568.0,
           "gap_pct": 92.0,
           "float_millions": 0.66,
-          "rank_score": 5.277
+          "rank_score": 0.762
         },
         {
           "symbol": "BNAI",
           "pm_volume": 11526265.0,
           "gap_pct": 66.83,
           "float_millions": 3.3,
-          "rank_score": 5.16
-        },
-        {
-          "symbol": "SEGG",
-          "pm_volume": 2861700.0,
-          "gap_pct": 21.88,
-          "float_millions": 3.54,
-          "rank_score": 4.646
+          "rank_score": 0.56
         }
       ]
     },
@@ -3854,39 +2549,39 @@
       "passed_filter": 132,
       "selected": [
         {
-          "symbol": "IOTR",
-          "pm_volume": 22198275.0,
-          "gap_pct": 203.07,
-          "float_millions": 0.73,
-          "rank_score": 5.439
-        },
-        {
           "symbol": "NXTS",
           "pm_volume": 21390097.0,
           "gap_pct": 53.94,
           "float_millions": 1.12,
-          "rank_score": 5.333
+          "rank_score": 0.937
+        },
+        {
+          "symbol": "IOTR",
+          "pm_volume": 22198275.0,
+          "gap_pct": 203.07,
+          "float_millions": 0.73,
+          "rank_score": 0.801
         },
         {
           "symbol": "SXTP",
           "pm_volume": 13877243.0,
           "gap_pct": 43.0,
           "float_millions": 0.9,
-          "rank_score": 5.181
+          "rank_score": 0.743
         },
         {
           "symbol": "RAYA",
           "pm_volume": 7955230.0,
           "gap_pct": 30.83,
           "float_millions": 0.6,
-          "rank_score": 4.989
+          "rank_score": 0.681
         },
         {
-          "symbol": "NAMM",
-          "pm_volume": 6699518.0,
-          "gap_pct": 17.66,
-          "float_millions": 6.81,
-          "rank_score": 4.88
+          "symbol": "OGCP",
+          "pm_volume": 10321.0,
+          "gap_pct": 5.37,
+          "float_millions": 4.24,
+          "rank_score": 0.426
         }
       ]
     },
@@ -3896,39 +2591,39 @@
       "passed_filter": 85,
       "selected": [
         {
-          "symbol": "DRCT",
-          "pm_volume": 30258671.0,
-          "gap_pct": 145.45,
-          "float_millions": 0.56,
-          "rank_score": 5.534
-        },
-        {
           "symbol": "MOVE",
           "pm_volume": 7698221.0,
           "gap_pct": 156.96,
           "float_millions": 0.6,
-          "rank_score": 5.117
+          "rank_score": 0.805
         },
         {
           "symbol": "RVYL",
           "pm_volume": 5400826.0,
           "gap_pct": 55.53,
           "float_millions": 0.31,
-          "rank_score": 4.922
+          "rank_score": 0.762
+        },
+        {
+          "symbol": "DRCT",
+          "pm_volume": 30258671.0,
+          "gap_pct": 145.45,
+          "float_millions": 0.56,
+          "rank_score": 0.744
+        },
+        {
+          "symbol": "AUST",
+          "pm_volume": 2868732.0,
+          "gap_pct": 22.56,
+          "float_millions": 7.77,
+          "rank_score": 0.597
         },
         {
           "symbol": "SOPA",
           "pm_volume": 6631154.0,
           "gap_pct": 11.02,
           "float_millions": 5.7,
-          "rank_score": 4.869
-        },
-        {
-          "symbol": "RAYA",
-          "pm_volume": 3987249.0,
-          "gap_pct": 23.08,
-          "float_millions": 0.6,
-          "rank_score": 4.764
+          "rank_score": 0.501
         }
       ]
     },
@@ -3938,39 +2633,39 @@
       "passed_filter": 85,
       "selected": [
         {
+          "symbol": "MBAI",
+          "pm_volume": 3302918.0,
+          "gap_pct": 63.09,
+          "float_millions": 4.68,
+          "rank_score": 0.969
+        },
+        {
           "symbol": "BATL",
           "pm_volume": 69454863.0,
           "gap_pct": 390.62,
           "float_millions": 7.23,
-          "rank_score": 5.753
-        },
-        {
-          "symbol": "EVTV",
-          "pm_volume": 14135691.0,
-          "gap_pct": 34.54,
-          "float_millions": 2.95,
-          "rank_score": 5.16
+          "rank_score": 0.904
         },
         {
           "symbol": "ARAI",
           "pm_volume": 6451557.0,
           "gap_pct": 11.97,
           "float_millions": 6.23,
-          "rank_score": 4.86
+          "rank_score": 0.595
         },
         {
-          "symbol": "MBAI",
-          "pm_volume": 3302918.0,
-          "gap_pct": 63.09,
-          "float_millions": 4.68,
-          "rank_score": 4.766
+          "symbol": "SLGB",
+          "pm_volume": 1166265.0,
+          "gap_pct": 113.11,
+          "float_millions": 0.98,
+          "rank_score": 0.53
         },
         {
-          "symbol": "OCG",
-          "pm_volume": 2236615.0,
-          "gap_pct": 28.0,
-          "float_millions": 0.09,
-          "rank_score": 4.6
+          "symbol": "NVVE",
+          "pm_volume": 154196.0,
+          "gap_pct": 82.93,
+          "float_millions": 0.2,
+          "rank_score": 0.479
         }
       ]
     },
@@ -3984,35 +2679,35 @@
           "pm_volume": 44961800.0,
           "gap_pct": 151.63,
           "float_millions": 0.88,
-          "rank_score": 5.653
+          "rank_score": 0.981
         },
         {
           "symbol": "XHLD",
           "pm_volume": 7858738.0,
           "gap_pct": 61.42,
           "float_millions": 1.27,
-          "rank_score": 5.043
-        },
-        {
-          "symbol": "PHGE",
-          "pm_volume": 3841638.0,
-          "gap_pct": 67.07,
-          "float_millions": 1.24,
-          "rank_score": 4.837
+          "rank_score": 0.921
         },
         {
           "symbol": "CYN",
           "pm_volume": 4255770.0,
           "gap_pct": 25.48,
           "float_millions": 7.97,
-          "rank_score": 4.751
+          "rank_score": 0.624
         },
         {
-          "symbol": "GDXD",
-          "pm_volume": 2604622.0,
-          "gap_pct": 6.22,
-          "float_millions": 5.6,
-          "rank_score": 4.575
+          "symbol": "PHGE",
+          "pm_volume": 3841638.0,
+          "gap_pct": 67.07,
+          "float_millions": 1.24,
+          "rank_score": 0.585
+        },
+        {
+          "symbol": "ASPC",
+          "pm_volume": 94761.0,
+          "gap_pct": 18.41,
+          "float_millions": 2.05,
+          "rank_score": 0.374
         }
       ]
     },
@@ -4022,81 +2717,81 @@
       "passed_filter": 71,
       "selected": [
         {
-          "symbol": "MRNO",
-          "pm_volume": 24078277.0,
-          "gap_pct": 143.38,
-          "float_millions": 1.35,
-          "rank_score": 5.46
-        },
-        {
           "symbol": "AIMD",
           "pm_volume": 14577647.0,
           "gap_pct": 32.56,
           "float_millions": 1.69,
-          "rank_score": 5.171
+          "rank_score": 0.907
         },
         {
-          "symbol": "SLGB",
-          "pm_volume": 10150532.0,
-          "gap_pct": 60.58,
-          "float_millions": 0.98,
-          "rank_score": 5.121
+          "symbol": "MRNO",
+          "pm_volume": 24078277.0,
+          "gap_pct": 143.38,
+          "float_millions": 1.35,
+          "rank_score": 0.742
         },
         {
           "symbol": "GRI",
           "pm_volume": 6728516.0,
           "gap_pct": 21.24,
           "float_millions": 1.45,
-          "rank_score": 4.915
+          "rank_score": 0.536
         },
         {
-          "symbol": "KUST",
-          "pm_volume": 4000884.0,
-          "gap_pct": 27.01,
-          "float_millions": 0.19,
-          "rank_score": 4.775
+          "symbol": "SLGB",
+          "pm_volume": 10150532.0,
+          "gap_pct": 60.58,
+          "float_millions": 0.98,
+          "rank_score": 0.532
+        },
+        {
+          "symbol": "FIEE",
+          "pm_volume": 75118.0,
+          "gap_pct": 23.56,
+          "float_millions": 0.39,
+          "rank_score": 0.438
         }
       ]
     },
     {
       "date": "2026-01-29",
-      "total_candidates": 89,
-      "passed_filter": 70,
+      "total_candidates": 90,
+      "passed_filter": 71,
       "selected": [
-        {
-          "symbol": "FEED",
-          "pm_volume": 40631634.0,
-          "gap_pct": 69.57,
-          "float_millions": 0.85,
-          "rank_score": 5.561
-        },
         {
           "symbol": "SER",
           "pm_volume": 26039627.0,
           "gap_pct": 61.76,
           "float_millions": 3.58,
-          "rank_score": 5.397
-        },
-        {
-          "symbol": "GLL",
-          "pm_volume": 16059468.0,
-          "gap_pct": 5.6,
-          "float_millions": 4.64,
-          "rank_score": 5.132
+          "rank_score": 0.824
         },
         {
           "symbol": "GCTK",
           "pm_volume": 10534265.0,
           "gap_pct": 5.28,
           "float_millions": 0.77,
-          "rank_score": 5.023
+          "rank_score": 0.73
         },
         {
-          "symbol": "GDXD",
-          "pm_volume": 5789596.0,
-          "gap_pct": 15.9,
-          "float_millions": 5.6,
-          "rank_score": 4.838
+          "symbol": "FEED",
+          "pm_volume": 40631634.0,
+          "gap_pct": 69.57,
+          "float_millions": 0.85,
+          "rank_score": 0.602
+        },
+        {
+          "symbol": "GLL",
+          "pm_volume": 16059468.0,
+          "gap_pct": 5.6,
+          "float_millions": 4.64,
+          "rank_score": 0.465
+        },
+        {
+          "symbol": "ZSTK",
+          "pm_volume": 409368.0,
+          "gap_pct": 30.61,
+          "float_millions": 2.32,
+          "rank_score": 0.453
         }
       ]
     },
@@ -4106,165 +2801,165 @@
       "passed_filter": 58,
       "selected": [
         {
+          "symbol": "PMN",
+          "pm_volume": 1484456.0,
+          "gap_pct": 40.65,
+          "float_millions": 1.27,
+          "rank_score": 0.816
+        },
+        {
           "symbol": "VIVS",
           "pm_volume": 10777851.0,
           "gap_pct": 76.47,
           "float_millions": 2.58,
-          "rank_score": 5.163
-        },
-        {
-          "symbol": "CISS",
-          "pm_volume": 6082995.0,
-          "gap_pct": 41.67,
-          "float_millions": 0.05,
-          "rank_score": 4.932
+          "rank_score": 0.673
         },
         {
           "symbol": "LRHC",
           "pm_volume": 4088644.0,
           "gap_pct": 40.8,
           "float_millions": 0.13,
-          "rank_score": 4.809
+          "rank_score": 0.532
         },
         {
-          "symbol": "RKLZ",
-          "pm_volume": 4103680.0,
-          "gap_pct": 9.09,
-          "float_millions": 0.16,
-          "rank_score": 4.747
+          "symbol": "CISS",
+          "pm_volume": 6082995.0,
+          "gap_pct": 41.67,
+          "float_millions": 0.05,
+          "rank_score": 0.505
         },
         {
-          "symbol": "GLL",
-          "pm_volume": 3345144.0,
-          "gap_pct": 10.13,
-          "float_millions": 4.64,
-          "rank_score": 4.664
+          "symbol": "IBG",
+          "pm_volume": 200.0,
+          "gap_pct": 375.76,
+          "float_millions": 0.2,
+          "rank_score": 0.394
         }
       ]
     },
     {
       "date": "2026-02-02",
-      "total_candidates": 137,
-      "passed_filter": 105,
+      "total_candidates": 138,
+      "passed_filter": 106,
       "selected": [
-        {
-          "symbol": "CISS",
-          "pm_volume": 19182335.0,
-          "gap_pct": 66.67,
-          "float_millions": 0.05,
-          "rank_score": 5.331
-        },
-        {
-          "symbol": "RKLZ",
-          "pm_volume": 3926393.0,
-          "gap_pct": 11.15,
-          "float_millions": 0.16,
-          "rank_score": 4.737
-        },
         {
           "symbol": "SWVL",
           "pm_volume": 3874975.0,
           "gap_pct": 20.44,
           "float_millions": 5.46,
-          "rank_score": 4.725
+          "rank_score": 0.745
         },
         {
           "symbol": "IPW",
           "pm_volume": 3241138.0,
           "gap_pct": 18.89,
           "float_millions": 0.45,
-          "rank_score": 4.693
+          "rank_score": 0.64
+        },
+        {
+          "symbol": "CISS",
+          "pm_volume": 19182335.0,
+          "gap_pct": 66.67,
+          "float_millions": 0.05,
+          "rank_score": 0.623
         },
         {
           "symbol": "DOGZ",
           "pm_volume": 1320433.0,
           "gap_pct": 112.38,
           "float_millions": 2.58,
-          "rank_score": 4.572
+          "rank_score": 0.545
+        },
+        {
+          "symbol": "CIGL",
+          "pm_volume": 68043.0,
+          "gap_pct": 16.14,
+          "float_millions": 1.24,
+          "rank_score": 0.472
         }
       ]
     },
     {
       "date": "2026-02-03",
-      "total_candidates": 142,
-      "passed_filter": 100,
+      "total_candidates": 145,
+      "passed_filter": 103,
       "selected": [
-        {
-          "symbol": "FATN",
-          "pm_volume": 19689792.0,
-          "gap_pct": 93.48,
-          "float_millions": 6.23,
-          "rank_score": 5.362
-        },
         {
           "symbol": "NPT",
           "pm_volume": 3557700.0,
           "gap_pct": 37.13,
           "float_millions": 3.51,
-          "rank_score": 4.743
+          "rank_score": 0.843
         },
         {
-          "symbol": "CYN",
-          "pm_volume": 4151101.0,
-          "gap_pct": 20.96,
-          "float_millions": 7.97,
-          "rank_score": 4.735
+          "symbol": "FATN",
+          "pm_volume": 19689792.0,
+          "gap_pct": 93.48,
+          "float_millions": 6.23,
+          "rank_score": 0.758
+        },
+        {
+          "symbol": "HCHL",
+          "pm_volume": 607384.0,
+          "gap_pct": 101.98,
+          "float_millions": 1.21,
+          "rank_score": 0.527
         },
         {
           "symbol": "FIEE",
           "pm_volume": 808084.0,
           "gap_pct": 18.6,
           "float_millions": 0.39,
-          "rank_score": 4.27
+          "rank_score": 0.465
         },
         {
-          "symbol": "PLTG",
-          "pm_volume": 385780.0,
-          "gap_pct": 8.63,
-          "float_millions": 0.58,
-          "rank_score": 4.025
+          "symbol": "UPC",
+          "pm_volume": 33785.0,
+          "gap_pct": 6.58,
+          "float_millions": 0.56,
+          "rank_score": 0.42
         }
       ]
     },
     {
       "date": "2026-02-04",
-      "total_candidates": 90,
-      "passed_filter": 70,
+      "total_candidates": 92,
+      "passed_filter": 72,
       "selected": [
         {
           "symbol": "ELPW",
           "pm_volume": 31138608.0,
           "gap_pct": 128.31,
           "float_millions": 0.45,
-          "rank_score": 5.543
-        },
-        {
-          "symbol": "BOXL",
-          "pm_volume": 23869470.0,
-          "gap_pct": 57.36,
-          "float_millions": 0.66,
-          "rank_score": 5.376
+          "rank_score": 0.739
         },
         {
           "symbol": "CIGL",
           "pm_volume": 5720243.0,
           "gap_pct": 49.26,
           "float_millions": 1.24,
-          "rank_score": 4.923
+          "rank_score": 0.705
+        },
+        {
+          "symbol": "BOXL",
+          "pm_volume": 23869470.0,
+          "gap_pct": 57.36,
+          "float_millions": 0.66,
+          "rank_score": 0.597
         },
         {
           "symbol": "EVTV",
           "pm_volume": 6821397.0,
           "gap_pct": 12.48,
           "float_millions": 2.95,
-          "rank_score": 4.894
+          "rank_score": 0.401
         },
         {
           "symbol": "RKLZ",
           "pm_volume": 3008315.0,
           "gap_pct": 13.42,
           "float_millions": 0.16,
-          "rank_score": 4.661
+          "rank_score": 0.383
         }
       ]
     },
@@ -4274,39 +2969,39 @@
       "passed_filter": 51,
       "selected": [
         {
-          "symbol": "CISS",
-          "pm_volume": 8570203.0,
-          "gap_pct": 34.21,
-          "float_millions": 0.05,
-          "rank_score": 5.021
-        },
-        {
           "symbol": "RNAZ",
           "pm_volume": 2728563.0,
           "gap_pct": 55.24,
           "float_millions": 0.83,
-          "rank_score": 4.711
+          "rank_score": 0.939
+        },
+        {
+          "symbol": "CISS",
+          "pm_volume": 8570203.0,
+          "gap_pct": 34.21,
+          "float_millions": 0.05,
+          "rank_score": 0.484
+        },
+        {
+          "symbol": "ELIS",
+          "pm_volume": 39318.0,
+          "gap_pct": 6.38,
+          "float_millions": 0.17,
+          "rank_score": 0.424
+        },
+        {
+          "symbol": "LBTYB",
+          "pm_volume": 3846.0,
+          "gap_pct": 11.24,
+          "float_millions": 6.94,
+          "rank_score": 0.423
         },
         {
           "symbol": "RKLZ",
           "pm_volume": 2129496.0,
           "gap_pct": 8.38,
           "float_millions": 0.16,
-          "rank_score": 4.546
-        },
-        {
-          "symbol": "GDXD",
-          "pm_volume": 503686.0,
-          "gap_pct": 8.47,
-          "float_millions": 5.6,
-          "rank_score": 4.08
-        },
-        {
-          "symbol": "HIMZ",
-          "pm_volume": 427171.0,
-          "gap_pct": 14.66,
-          "float_millions": 6.0,
-          "rank_score": 4.041
+          "rank_score": 0.364
         }
       ]
     },
@@ -4316,39 +3011,39 @@
       "passed_filter": 199,
       "selected": [
         {
-          "symbol": "BATL",
-          "pm_volume": 12746104.0,
-          "gap_pct": 21.25,
-          "float_millions": 7.23,
-          "rank_score": 5.08
-        },
-        {
           "symbol": "WHLR",
           "pm_volume": 4175931.0,
           "gap_pct": 44.75,
           "float_millions": 0.19,
-          "rank_score": 4.823
+          "rank_score": 0.727
         },
         {
           "symbol": "SMX",
           "pm_volume": 1414662.0,
           "gap_pct": 29.1,
           "float_millions": 0.03,
-          "rank_score": 4.464
+          "rank_score": 0.491
         },
         {
-          "symbol": "IONX",
-          "pm_volume": 1132995.0,
-          "gap_pct": 10.58,
-          "float_millions": 1.31,
-          "rank_score": 4.353
+          "symbol": "SDP",
+          "pm_volume": 14175.0,
+          "gap_pct": 8.08,
+          "float_millions": 0.38,
+          "rank_score": 0.397
         },
         {
-          "symbol": "RGTX",
-          "pm_volume": 966072.0,
-          "gap_pct": 8.37,
-          "float_millions": 2.55,
-          "rank_score": 4.293
+          "symbol": "PRFX",
+          "pm_volume": 187.0,
+          "gap_pct": 432.76,
+          "float_millions": 0.38,
+          "rank_score": 0.391
+        },
+        {
+          "symbol": "BATL",
+          "pm_volume": 12746104.0,
+          "gap_pct": 21.25,
+          "float_millions": 7.23,
+          "rank_score": 0.374
         }
       ]
     },
@@ -4362,35 +3057,35 @@
           "pm_volume": 22276513.0,
           "gap_pct": 84.03,
           "float_millions": 1.06,
-          "rank_score": 5.406
-        },
-        {
-          "symbol": "CRWG",
-          "pm_volume": 3763051.0,
-          "gap_pct": 13.22,
-          "float_millions": 5.2,
-          "rank_score": 4.703
-        },
-        {
-          "symbol": "OKLL",
-          "pm_volume": 830933.0,
-          "gap_pct": 8.84,
-          "float_millions": 1.36,
-          "rank_score": 4.255
+          "rank_score": 0.862
         },
         {
           "symbol": "ELTK",
           "pm_volume": 423304.0,
           "gap_pct": 15.5,
           "float_millions": 2.8,
-          "rank_score": 4.056
+          "rank_score": 0.789
         },
         {
           "symbol": "MNTS",
           "pm_volume": 319338.0,
           "gap_pct": 45.5,
           "float_millions": 1.3,
-          "rank_score": 4.037
+          "rank_score": 0.437
+        },
+        {
+          "symbol": "NBIG",
+          "pm_volume": 257553.0,
+          "gap_pct": 10.79,
+          "float_millions": 0.85,
+          "rank_score": 0.346
+        },
+        {
+          "symbol": "OKLL",
+          "pm_volume": 830933.0,
+          "gap_pct": 8.84,
+          "float_millions": 1.36,
+          "rank_score": 0.34
         }
       ]
     },
@@ -4404,35 +3099,35 @@
           "pm_volume": 2422672.0,
           "gap_pct": 80.72,
           "float_millions": 1.32,
-          "rank_score": 4.724
+          "rank_score": 0.55
         },
         {
-          "symbol": "VELO",
-          "pm_volume": 1242742.0,
-          "gap_pct": 8.39,
-          "float_millions": 3.9,
-          "rank_score": 4.363
+          "symbol": "SPOG",
+          "pm_volume": 205695.0,
+          "gap_pct": 19.21,
+          "float_millions": 0.03,
+          "rank_score": 0.517
         },
         {
           "symbol": "ASTI",
           "pm_volume": 720079.0,
           "gap_pct": 16.46,
           "float_millions": 2.96,
-          "rank_score": 4.218
+          "rank_score": 0.349
         },
         {
-          "symbol": "RKLZ",
-          "pm_volume": 339970.0,
-          "gap_pct": 5.43,
-          "float_millions": 0.16,
-          "rank_score": 3.982
+          "symbol": "VELO",
+          "pm_volume": 1242742.0,
+          "gap_pct": 8.39,
+          "float_millions": 3.9,
+          "rank_score": 0.347
         },
         {
-          "symbol": "IPW",
-          "pm_volume": 236363.0,
-          "gap_pct": 5.63,
-          "float_millions": 0.45,
-          "rank_score": 3.871
+          "symbol": "CYCU",
+          "pm_volume": 113246.0,
+          "gap_pct": 9.54,
+          "float_millions": 2.21,
+          "rank_score": 0.346
         }
       ]
     },
@@ -4446,35 +3141,35 @@
           "pm_volume": 7093915.0,
           "gap_pct": 17.79,
           "float_millions": 0.38,
-          "rank_score": 4.929
-        },
-        {
-          "symbol": "ELAB",
-          "pm_volume": 3242923.0,
-          "gap_pct": 30.99,
-          "float_millions": 2.1,
-          "rank_score": 4.709
-        },
-        {
-          "symbol": "RKLZ",
-          "pm_volume": 2355742.0,
-          "gap_pct": 5.22,
-          "float_millions": 0.16,
-          "rank_score": 4.57
-        },
-        {
-          "symbol": "SUNE",
-          "pm_volume": 1643462.0,
-          "gap_pct": 36.88,
-          "float_millions": 3.41,
-          "rank_score": 4.508
+          "rank_score": 0.83
         },
         {
           "symbol": "PRFX",
           "pm_volume": 392846.0,
           "gap_pct": 79.66,
           "float_millions": 0.38,
-          "rank_score": 4.173
+          "rank_score": 0.568
+        },
+        {
+          "symbol": "SIF",
+          "pm_volume": 89139.0,
+          "gap_pct": 24.69,
+          "float_millions": 4.51,
+          "rank_score": 0.534
+        },
+        {
+          "symbol": "ELAB",
+          "pm_volume": 3242923.0,
+          "gap_pct": 30.99,
+          "float_millions": 2.1,
+          "rank_score": 0.504
+        },
+        {
+          "symbol": "DFSC",
+          "pm_volume": 148573.0,
+          "gap_pct": 10.29,
+          "float_millions": 1.24,
+          "rank_score": 0.462
         }
       ]
     },
@@ -4484,39 +3179,39 @@
       "passed_filter": 66,
       "selected": [
         {
+          "symbol": "VTAK",
+          "pm_volume": 84170.0,
+          "gap_pct": 25.79,
+          "float_millions": 1.28,
+          "rank_score": 0.496
+        },
+        {
           "symbol": "JZXN",
           "pm_volume": 1020130.0,
           "gap_pct": 45.82,
           "float_millions": 1.32,
-          "rank_score": 4.391
+          "rank_score": 0.413
         },
         {
-          "symbol": "FEED",
-          "pm_volume": 432931.0,
-          "gap_pct": 8.12,
-          "float_millions": 0.85,
-          "rank_score": 4.057
+          "symbol": "PLYX",
+          "pm_volume": 123556.0,
+          "gap_pct": 14.36,
+          "float_millions": 1.34,
+          "rank_score": 0.377
         },
         {
           "symbol": "QBTZ",
           "pm_volume": 395601.0,
           "gap_pct": 8.21,
           "float_millions": 0.53,
-          "rank_score": 4.032
+          "rank_score": 0.333
         },
         {
-          "symbol": "KPTI",
-          "pm_volume": 298762.0,
-          "gap_pct": 15.88,
-          "float_millions": 7.97,
-          "rank_score": 3.925
-        },
-        {
-          "symbol": "SOLT",
-          "pm_volume": 215808.0,
-          "gap_pct": 6.47,
-          "float_millions": 0.4,
-          "rank_score": 3.845
+          "symbol": "FEED",
+          "pm_volume": 432931.0,
+          "gap_pct": 8.12,
+          "float_millions": 0.85,
+          "rank_score": 0.329
         }
       ]
     },
@@ -4530,35 +3225,35 @@
           "pm_volume": 8588420.0,
           "gap_pct": 43.79,
           "float_millions": 2.81,
-          "rank_score": 5.027
+          "rank_score": 0.502
         },
         {
-          "symbol": "CRWG",
-          "pm_volume": 2171917.0,
-          "gap_pct": 6.52,
-          "float_millions": 5.2,
-          "rank_score": 4.523
+          "symbol": "FGNX",
+          "pm_volume": 995.0,
+          "gap_pct": 387.72,
+          "float_millions": 5.98,
+          "rank_score": 0.362
         },
         {
-          "symbol": "APPX",
-          "pm_volume": 1340612.0,
-          "gap_pct": 5.08,
-          "float_millions": 2.92,
-          "rank_score": 4.385
+          "symbol": "UONE",
+          "pm_volume": 34069.0,
+          "gap_pct": 12.04,
+          "float_millions": 1.81,
+          "rank_score": 0.338
         },
         {
           "symbol": "SUNE",
           "pm_volume": 1009640.0,
           "gap_pct": 17.83,
           "float_millions": 3.41,
-          "rank_score": 4.322
+          "rank_score": 0.336
         },
         {
           "symbol": "OKLL",
           "pm_volume": 549750.0,
           "gap_pct": 11.72,
           "float_millions": 1.36,
-          "rank_score": 4.135
+          "rank_score": 0.336
         }
       ]
     },
@@ -4572,35 +3267,35 @@
           "pm_volume": 9878007.0,
           "gap_pct": 94.25,
           "float_millions": 3.17,
-          "rank_score": 5.169
+          "rank_score": 0.937
         },
         {
           "symbol": "PLYX",
           "pm_volume": 5456965.0,
           "gap_pct": 72.2,
           "float_millions": 1.34,
-          "rank_score": 4.954
+          "rank_score": 0.84
+        },
+        {
+          "symbol": "WTO",
+          "pm_volume": 1410.0,
+          "gap_pct": 434.79,
+          "float_millions": 0.58,
+          "rank_score": 0.422
         },
         {
           "symbol": "RIME",
           "pm_volume": 6504001.0,
           "gap_pct": 21.7,
           "float_millions": 2.53,
-          "rank_score": 4.9
-        },
-        {
-          "symbol": "AMDD",
-          "pm_volume": 1509549.0,
-          "gap_pct": 5.12,
-          "float_millions": 0.48,
-          "rank_score": 4.433
+          "rank_score": 0.4
         },
         {
           "symbol": "CGTL",
           "pm_volume": 284874.0,
           "gap_pct": 22.87,
           "float_millions": 1.58,
-          "rank_score": 3.956
+          "rank_score": 0.364
         }
       ]
     },
@@ -4614,77 +3309,77 @@
           "pm_volume": 8844996.0,
           "gap_pct": 49.66,
           "float_millions": 0.13,
-          "rank_score": 5.061
+          "rank_score": 0.743
         },
         {
           "symbol": "BENF",
           "pm_volume": 5824265.0,
           "gap_pct": 46.34,
           "float_millions": 1.18,
-          "rank_score": 4.922
+          "rank_score": 0.667
         },
         {
-          "symbol": "RIME",
-          "pm_volume": 5697100.0,
-          "gap_pct": 9.66,
-          "float_millions": 2.53,
-          "rank_score": 4.836
+          "symbol": "HTOO",
+          "pm_volume": 91318.0,
+          "gap_pct": 7.13,
+          "float_millions": 0.58,
+          "rank_score": 0.507
         },
         {
-          "symbol": "CRWG",
-          "pm_volume": 1877603.0,
-          "gap_pct": 5.51,
-          "float_millions": 5.2,
-          "rank_score": 4.477
+          "symbol": "PSIG",
+          "pm_volume": 196572.0,
+          "gap_pct": 5.94,
+          "float_millions": 0.57,
+          "rank_score": 0.466
         },
         {
-          "symbol": "OBAI",
-          "pm_volume": 1267373.0,
-          "gap_pct": 8.55,
-          "float_millions": 3.17,
-          "rank_score": 4.373
+          "symbol": "MLEC",
+          "pm_volume": 679248.0,
+          "gap_pct": 48.54,
+          "float_millions": 0.7,
+          "rank_score": 0.421
         }
       ]
     },
     {
       "date": "2026-02-19",
-      "total_candidates": 90,
-      "passed_filter": 77,
+      "total_candidates": 91,
+      "passed_filter": 78,
       "selected": [
-        {
-          "symbol": "CISS",
-          "pm_volume": 9560675.0,
-          "gap_pct": 28.74,
-          "float_millions": 0.05,
-          "rank_score": 5.044
-        },
         {
           "symbol": "RUBI",
           "pm_volume": 8486662.0,
           "gap_pct": 39.73,
           "float_millions": 0.01,
-          "rank_score": 5.03
+          "rank_score": 0.834
+        },
+        {
+          "symbol": "CISS",
+          "pm_volume": 9560675.0,
+          "gap_pct": 28.74,
+          "float_millions": 0.05,
+          "rank_score": 0.5
         },
         {
           "symbol": "RIME",
           "pm_volume": 2236956.0,
           "gap_pct": 12.87,
           "float_millions": 2.53,
-          "rank_score": 4.558
+          "rank_score": 0.348
         },
         {
-          "symbol": "NAMM",
-          "pm_volume": 563997.0,
-          "gap_pct": 15.52,
-          "float_millions": 6.81,
-          "rank_score": 4.123
+          "symbol": "ENVB",
+          "pm_volume": 17032.0,
+          "gap_pct": 25.0,
+          "float_millions": 0.5,
+          "rank_score": 0.332
         },
         {
-          "symbol": "CDIO",
-          "pm_volume": 374626.0,
-          "gap_pct": 7.04,
-          "float_millions": 1.7,
-          "rank_score": 4.007
+          "symbol": "FIGG",
+          "pm_volume": 180636.0,
+          "gap_pct": 22.7,
+          "float_millions": 2.26,
+          "rank_score": 0.331
         }
       ]
     },
@@ -4694,39 +3389,39 @@
       "passed_filter": 74,
       "selected": [
         {
+          "symbol": "ANPA",
+          "pm_volume": 1545342.0,
+          "gap_pct": 25.11,
+          "float_millions": 0.7,
+          "rank_score": 0.62
+        },
+        {
           "symbol": "BJDX",
           "pm_volume": 2812762.0,
           "gap_pct": 10.05,
           "float_millions": 0.39,
-          "rank_score": 4.633
+          "rank_score": 0.603
+        },
+        {
+          "symbol": "ABTS",
+          "pm_volume": 12454.0,
+          "gap_pct": 53.99,
+          "float_millions": 1.7,
+          "rank_score": 0.483
         },
         {
           "symbol": "EVTV",
           "pm_volume": 2011738.0,
           "gap_pct": 21.39,
           "float_millions": 2.95,
-          "rank_score": 4.541
+          "rank_score": 0.461
         },
         {
           "symbol": "FIGG",
           "pm_volume": 2032943.0,
           "gap_pct": 8.67,
           "float_millions": 2.26,
-          "rank_score": 4.522
-        },
-        {
-          "symbol": "ANPA",
-          "pm_volume": 1545342.0,
-          "gap_pct": 25.11,
-          "float_millions": 0.7,
-          "rank_score": 4.479
-        },
-        {
-          "symbol": "NAMM",
-          "pm_volume": 738183.0,
-          "gap_pct": 16.02,
-          "float_millions": 6.81,
-          "rank_score": 4.206
+          "rank_score": 0.39
         }
       ]
     },
@@ -4740,35 +3435,35 @@
           "pm_volume": 1627057.0,
           "gap_pct": 21.88,
           "float_millions": 0.67,
-          "rank_score": 4.488
+          "rank_score": 0.591
         },
         {
           "symbol": "PBM",
           "pm_volume": 1129050.0,
           "gap_pct": 8.8,
           "float_millions": 0.29,
-          "rank_score": 4.353
+          "rank_score": 0.541
         },
         {
-          "symbol": "BATL",
-          "pm_volume": 1017865.0,
-          "gap_pct": 7.54,
-          "float_millions": 7.23,
-          "rank_score": 4.284
+          "symbol": "GITS",
+          "pm_volume": 185840.0,
+          "gap_pct": 14.93,
+          "float_millions": 2.46,
+          "rank_score": 0.434
         },
         {
-          "symbol": "RKLZ",
-          "pm_volume": 416947.0,
+          "symbol": "MSGM",
+          "pm_volume": 34824.0,
+          "gap_pct": 8.7,
+          "float_millions": 2.51,
+          "rank_score": 0.337
+        },
+        {
+          "symbol": "LUNL",
+          "pm_volume": 100977.0,
           "gap_pct": 5.67,
-          "float_millions": 0.16,
-          "rank_score": 4.045
-        },
-        {
-          "symbol": "AIDX",
-          "pm_volume": 296568.0,
-          "gap_pct": 27.53,
-          "float_millions": 4.25,
-          "rank_score": 3.964
+          "float_millions": 0.17,
+          "rank_score": 0.334
         }
       ]
     },
@@ -4778,39 +3473,39 @@
       "passed_filter": 111,
       "selected": [
         {
+          "symbol": "GRAN",
+          "pm_volume": 193626.0,
+          "gap_pct": 65.72,
+          "float_millions": 4.71,
+          "rank_score": 0.733
+        },
+        {
+          "symbol": "HSPT",
+          "pm_volume": 21053.0,
+          "gap_pct": 6.78,
+          "float_millions": 6.26,
+          "rank_score": 0.4
+        },
+        {
           "symbol": "RIME",
           "pm_volume": 6865920.0,
           "gap_pct": 21.47,
           "float_millions": 2.53,
-          "rank_score": 4.916
+          "rank_score": 0.393
         },
         {
-          "symbol": "CRWG",
-          "pm_volume": 3229581.0,
-          "gap_pct": 7.6,
-          "float_millions": 5.2,
-          "rank_score": 4.646
-        },
-        {
-          "symbol": "CDIO",
-          "pm_volume": 1717325.0,
-          "gap_pct": 16.28,
-          "float_millions": 1.7,
-          "rank_score": 4.488
+          "symbol": "CRMX",
+          "pm_volume": 359846.0,
+          "gap_pct": 13.38,
+          "float_millions": 0.6,
+          "rank_score": 0.385
         },
         {
           "symbol": "FIGG",
           "pm_volume": 1734584.0,
           "gap_pct": 15.17,
           "float_millions": 2.26,
-          "rank_score": 4.486
-        },
-        {
-          "symbol": "RGTX",
-          "pm_volume": 970974.0,
-          "gap_pct": 7.75,
-          "float_millions": 2.55,
-          "rank_score": 4.294
+          "rank_score": 0.382
         }
       ]
     },
@@ -4824,35 +3519,35 @@
           "pm_volume": 1305731.0,
           "gap_pct": 11.77,
           "float_millions": 1.31,
-          "rank_score": 4.398
+          "rank_score": 0.369
         },
         {
           "symbol": "CDIO",
           "pm_volume": 1260466.0,
           "gap_pct": 17.22,
           "float_millions": 1.7,
-          "rank_score": 4.396
+          "rank_score": 0.356
+        },
+        {
+          "symbol": "IONL",
+          "pm_volume": 159835.0,
+          "gap_pct": 12.61,
+          "float_millions": 0.38,
+          "rank_score": 0.349
+        },
+        {
+          "symbol": "RDTL",
+          "pm_volume": 252243.0,
+          "gap_pct": 8.16,
+          "float_millions": 0.71,
+          "rank_score": 0.345
         },
         {
           "symbol": "RGTX",
           "pm_volume": 1189974.0,
           "gap_pct": 9.91,
           "float_millions": 2.55,
-          "rank_score": 4.36
-        },
-        {
-          "symbol": "APPX",
-          "pm_volume": 815625.0,
-          "gap_pct": 12.35,
-          "float_millions": 2.92,
-          "rank_score": 4.248
-        },
-        {
-          "symbol": "OKLL",
-          "pm_volume": 710471.0,
-          "gap_pct": 5.44,
-          "float_millions": 1.36,
-          "rank_score": 4.2
+          "rank_score": 0.345
         }
       ]
     },
@@ -4862,39 +3557,39 @@
       "passed_filter": 83,
       "selected": [
         {
-          "symbol": "CRCG",
-          "pm_volume": 14168245.0,
-          "gap_pct": 10.88,
-          "float_millions": 4.32,
-          "rank_score": 5.106
-        },
-        {
           "symbol": "HCTI",
           "pm_volume": 3215960.0,
           "gap_pct": 65.92,
           "float_millions": 0.12,
-          "rank_score": 4.786
+          "rank_score": 0.658
         },
         {
           "symbol": "SMJF",
           "pm_volume": 2871906.0,
           "gap_pct": 37.58,
           "float_millions": 8.18,
-          "rank_score": 4.655
+          "rank_score": 0.461
+        },
+        {
+          "symbol": "CRCG",
+          "pm_volume": 14168245.0,
+          "gap_pct": 10.88,
+          "float_millions": 4.32,
+          "rank_score": 0.431
         },
         {
           "symbol": "CRMG",
           "pm_volume": 1415271.0,
           "gap_pct": 6.28,
           "float_millions": 1.17,
-          "rank_score": 4.412
+          "rank_score": 0.408
         },
         {
-          "symbol": "IONX",
-          "pm_volume": 1181194.0,
-          "gap_pct": 25.31,
-          "float_millions": 1.31,
-          "rank_score": 4.395
+          "symbol": "GURE",
+          "pm_volume": 23641.0,
+          "gap_pct": 26.94,
+          "float_millions": 1.01,
+          "rank_score": 0.404
         }
       ]
     },
@@ -4904,39 +3599,39 @@
       "passed_filter": 48,
       "selected": [
         {
+          "symbol": "SFHG",
+          "pm_volume": 3776.0,
+          "gap_pct": 410.94,
+          "float_millions": 0.18,
+          "rank_score": 0.442
+        },
+        {
+          "symbol": "XYZG",
+          "pm_volume": 23295.0,
+          "gap_pct": 38.04,
+          "float_millions": 0.14,
+          "rank_score": 0.398
+        },
+        {
           "symbol": "CDIO",
           "pm_volume": 1293670.0,
           "gap_pct": 22.99,
           "float_millions": 1.7,
-          "rank_score": 4.416
-        },
-        {
-          "symbol": "RKLZ",
-          "pm_volume": 295975.0,
-          "gap_pct": 10.44,
-          "float_millions": 0.16,
-          "rank_score": 3.95
-        },
-        {
-          "symbol": "SMJF",
-          "pm_volume": 279199.0,
-          "gap_pct": 17.5,
-          "float_millions": 8.18,
-          "rank_score": 3.906
+          "rank_score": 0.368
         },
         {
           "symbol": "MRAL",
           "pm_volume": 162917.0,
           "gap_pct": 30.15,
           "float_millions": 2.96,
-          "rank_score": 3.794
+          "rank_score": 0.341
         },
         {
-          "symbol": "SOUX",
-          "pm_volume": 155633.0,
-          "gap_pct": 5.03,
-          "float_millions": 0.63,
-          "rank_score": 3.741
+          "symbol": "SLE",
+          "pm_volume": 16171.0,
+          "gap_pct": 12.78,
+          "float_millions": 0.06,
+          "rank_score": 0.337
         }
       ]
     },
@@ -4950,35 +3645,35 @@
           "pm_volume": 47462115.0,
           "gap_pct": 235.07,
           "float_millions": 3.56,
-          "rank_score": 5.656
+          "rank_score": 0.896
+        },
+        {
+          "symbol": "RLYB",
+          "pm_volume": 824538.0,
+          "gap_pct": 19.36,
+          "float_millions": 2.7,
+          "rank_score": 0.564
         },
         {
           "symbol": "BATL",
           "pm_volume": 11513703.0,
           "gap_pct": 110.87,
           "float_millions": 7.23,
-          "rank_score": 5.207
-        },
-        {
-          "symbol": "CRCG",
-          "pm_volume": 10924670.0,
-          "gap_pct": 20.37,
-          "float_millions": 4.32,
-          "rank_score": 5.046
+          "rank_score": 0.558
         },
         {
           "symbol": "RBNE",
           "pm_volume": 4938148.0,
           "gap_pct": 14.07,
           "float_millions": 2.68,
-          "rank_score": 4.8
+          "rank_score": 0.544
         },
         {
           "symbol": "INDO",
           "pm_volume": 3027663.0,
           "gap_pct": 41.67,
           "float_millions": 9.52,
-          "rank_score": 4.673
+          "rank_score": 0.429
         }
       ]
     },
@@ -4988,39 +3683,39 @@
       "passed_filter": 69,
       "selected": [
         {
-          "symbol": "TMDE",
-          "pm_volume": 12365521.0,
-          "gap_pct": 19.93,
-          "float_millions": 3.56,
-          "rank_score": 5.087
-        },
-        {
           "symbol": "NPT",
           "pm_volume": 3862933.0,
           "gap_pct": 46.11,
           "float_millions": 3.51,
-          "rank_score": 4.786
+          "rank_score": 0.94
         },
         {
-          "symbol": "GLL",
-          "pm_volume": 1434319.0,
-          "gap_pct": 5.87,
-          "float_millions": 4.64,
-          "rank_score": 4.398
+          "symbol": "NOMA",
+          "pm_volume": 28318.0,
+          "gap_pct": 16.62,
+          "float_millions": 3.96,
+          "rank_score": 0.496
         },
         {
-          "symbol": "RBNE",
-          "pm_volume": 1220317.0,
-          "gap_pct": 15.36,
-          "float_millions": 2.68,
-          "rank_score": 4.378
+          "symbol": "TMDE",
+          "pm_volume": 12365521.0,
+          "gap_pct": 19.93,
+          "float_millions": 3.56,
+          "rank_score": 0.429
         },
         {
           "symbol": "CISS",
           "pm_volume": 941164.0,
           "gap_pct": 33.12,
           "float_millions": 0.05,
-          "rank_score": 4.348
+          "rank_score": 0.408
+        },
+        {
+          "symbol": "SIJ",
+          "pm_volume": 29168.0,
+          "gap_pct": 5.18,
+          "float_millions": 0.11,
+          "rank_score": 0.378
         }
       ]
     },
@@ -5030,39 +3725,39 @@
       "passed_filter": 141,
       "selected": [
         {
-          "symbol": "VCIG",
-          "pm_volume": 4955408.0,
-          "gap_pct": 92.4,
-          "float_millions": 0.11,
-          "rank_score": 4.971
-        },
-        {
           "symbol": "DFSC",
           "pm_volume": 2355167.0,
           "gap_pct": 5.15,
           "float_millions": 1.24,
-          "rank_score": 4.565
+          "rank_score": 0.797
+        },
+        {
+          "symbol": "VCIG",
+          "pm_volume": 4955408.0,
+          "gap_pct": 92.4,
+          "float_millions": 0.11,
+          "rank_score": 0.725
+        },
+        {
+          "symbol": "GEMG",
+          "pm_volume": 31992.0,
+          "gap_pct": 35.54,
+          "float_millions": 0.06,
+          "rank_score": 0.374
+        },
+        {
+          "symbol": "MSTP",
+          "pm_volume": 75563.0,
+          "gap_pct": 17.7,
+          "float_millions": 0.04,
+          "rank_score": 0.328
         },
         {
           "symbol": "CRCG",
           "pm_volume": 1944393.0,
           "gap_pct": 7.81,
           "float_millions": 4.32,
-          "rank_score": 4.496
-        },
-        {
-          "symbol": "CRWG",
-          "pm_volume": 1226816.0,
-          "gap_pct": 7.54,
-          "float_millions": 5.2,
-          "rank_score": 4.351
-        },
-        {
-          "symbol": "RGTX",
-          "pm_volume": 535294.0,
-          "gap_pct": 5.72,
-          "float_millions": 2.55,
-          "rank_score": 4.109
+          "rank_score": 0.318
         }
       ]
     },
@@ -5072,39 +3767,39 @@
       "passed_filter": 88,
       "selected": [
         {
-          "symbol": "MTEK",
-          "pm_volume": 16314662.0,
-          "gap_pct": 51.93,
-          "float_millions": 4.58,
-          "rank_score": 5.23
-        },
-        {
           "symbol": "HTOO",
           "pm_volume": 4026558.0,
           "gap_pct": 16.31,
           "float_millions": 0.58,
-          "rank_score": 4.753
+          "rank_score": 0.969
         },
         {
-          "symbol": "BATL",
-          "pm_volume": 4741664.0,
-          "gap_pct": 6.25,
-          "float_millions": 7.23,
-          "rank_score": 4.75
+          "symbol": "MTEK",
+          "pm_volume": 16314662.0,
+          "gap_pct": 51.93,
+          "float_millions": 4.58,
+          "rank_score": 0.942
         },
         {
-          "symbol": "TMDE",
-          "pm_volume": 2112626.0,
-          "gap_pct": 12.67,
-          "float_millions": 3.56,
-          "rank_score": 4.535
+          "symbol": "GEMG",
+          "pm_volume": 86687.0,
+          "gap_pct": 17.6,
+          "float_millions": 0.06,
+          "rank_score": 0.387
         },
         {
-          "symbol": "RKLZ",
-          "pm_volume": 1673660.0,
-          "gap_pct": 5.05,
-          "float_millions": 0.16,
-          "rank_score": 4.466
+          "symbol": "MSGM",
+          "pm_volume": 108060.0,
+          "gap_pct": 10.62,
+          "float_millions": 2.51,
+          "rank_score": 0.381
+        },
+        {
+          "symbol": "BAIG",
+          "pm_volume": 208700.0,
+          "gap_pct": 9.83,
+          "float_millions": 0.84,
+          "rank_score": 0.353
         }
       ]
     },
@@ -5114,39 +3809,39 @@
       "passed_filter": 78,
       "selected": [
         {
-          "symbol": "TPET",
-          "pm_volume": 39111323.0,
-          "gap_pct": 33.33,
-          "float_millions": 7.59,
-          "rank_score": 5.443
-        },
-        {
           "symbol": "CRE",
           "pm_volume": 8851611.0,
           "gap_pct": 58.78,
           "float_millions": 1.03,
-          "rank_score": 5.075
-        },
-        {
-          "symbol": "AIFF",
-          "pm_volume": 9965062.0,
-          "gap_pct": 45.77,
-          "float_millions": 6.28,
-          "rank_score": 5.059
+          "rank_score": 0.942
         },
         {
           "symbol": "IBG",
           "pm_volume": 7190524.0,
           "gap_pct": 39.77,
           "float_millions": 0.2,
-          "rank_score": 4.978
+          "rank_score": 0.845
         },
         {
           "symbol": "QCLS",
           "pm_volume": 1772571.0,
           "gap_pct": 14.66,
           "float_millions": 1.65,
-          "rank_score": 4.495
+          "rank_score": 0.538
+        },
+        {
+          "symbol": "FEED",
+          "pm_volume": 844227.0,
+          "gap_pct": 19.76,
+          "float_millions": 0.85,
+          "rank_score": 0.477
+        },
+        {
+          "symbol": "AIFF",
+          "pm_volume": 9965062.0,
+          "gap_pct": 45.77,
+          "float_millions": 6.28,
+          "rank_score": 0.418
         }
       ]
     },
@@ -5156,39 +3851,39 @@
       "passed_filter": 88,
       "selected": [
         {
-          "symbol": "HIMZ",
-          "pm_volume": 16565425.0,
-          "gap_pct": 88.39,
-          "float_millions": 6.0,
-          "rank_score": 5.3
-        },
-        {
-          "symbol": "TPET",
-          "pm_volume": 20313467.0,
-          "gap_pct": 20.21,
-          "float_millions": 7.59,
-          "rank_score": 5.218
-        },
-        {
           "symbol": "AGH",
           "pm_volume": 8225206.0,
           "gap_pct": 46.52,
           "float_millions": 4.6,
-          "rank_score": 5.011
+          "rank_score": 0.956
+        },
+        {
+          "symbol": "HIMZ",
+          "pm_volume": 16565425.0,
+          "gap_pct": 88.39,
+          "float_millions": 6.0,
+          "rank_score": 0.521
         },
         {
           "symbol": "OPTX",
           "pm_volume": 1294570.0,
           "gap_pct": 10.8,
           "float_millions": 5.98,
-          "rank_score": 4.37
+          "rank_score": 0.431
         },
         {
-          "symbol": "CRCG",
-          "pm_volume": 860012.0,
-          "gap_pct": 16.43,
-          "float_millions": 4.32,
-          "rank_score": 4.265
+          "symbol": "CKX",
+          "pm_volume": 4939.0,
+          "gap_pct": 8.99,
+          "float_millions": 1.24,
+          "rank_score": 0.403
+        },
+        {
+          "symbol": "KRRO",
+          "pm_volume": 209259.0,
+          "gap_pct": 17.62,
+          "float_millions": 6.01,
+          "rank_score": 0.378
         }
       ]
     },
@@ -5202,35 +3897,35 @@
           "pm_volume": 20624502.0,
           "gap_pct": 62.77,
           "float_millions": 1.28,
-          "rank_score": 5.339
+          "rank_score": 1.201
         },
         {
           "symbol": "INKT",
           "pm_volume": 4446474.0,
           "gap_pct": 71.29,
           "float_millions": 1.68,
-          "rank_score": 4.888
+          "rank_score": 1.164
         },
         {
-          "symbol": "CRCG",
-          "pm_volume": 5912456.0,
-          "gap_pct": 5.3,
-          "float_millions": 4.32,
-          "rank_score": 4.829
+          "symbol": "CRMX",
+          "pm_volume": 2672.0,
+          "gap_pct": 210.53,
+          "float_millions": 0.6,
+          "rank_score": 0.432
         },
         {
-          "symbol": "HIMZ",
-          "pm_volume": 2802204.0,
-          "gap_pct": 8.37,
-          "float_millions": 6.0,
-          "rank_score": 4.6
+          "symbol": "PIII",
+          "pm_volume": 76664.0,
+          "gap_pct": 16.47,
+          "float_millions": 1.4,
+          "rank_score": 0.428
         },
         {
-          "symbol": "TMDE",
-          "pm_volume": 290889.0,
-          "gap_pct": 8.37,
-          "float_millions": 3.56,
-          "rank_score": 3.924
+          "symbol": "BYAH",
+          "pm_volume": 203814.0,
+          "gap_pct": 34.0,
+          "float_millions": 0.54,
+          "rank_score": 0.421
         }
       ]
     },
@@ -5240,39 +3935,39 @@
       "passed_filter": 91,
       "selected": [
         {
-          "symbol": "HIMZ",
-          "pm_volume": 13859962.0,
-          "gap_pct": 12.33,
-          "float_millions": 6.0,
-          "rank_score": 5.094
-        },
-        {
           "symbol": "SXTP",
           "pm_volume": 4552651.0,
           "gap_pct": 13.83,
           "float_millions": 0.9,
-          "rank_score": 4.784
-        },
-        {
-          "symbol": "ACXP",
-          "pm_volume": 2229703.0,
-          "gap_pct": 13.79,
-          "float_millions": 1.98,
-          "rank_score": 4.561
-        },
-        {
-          "symbol": "TMDE",
-          "pm_volume": 1841643.0,
-          "gap_pct": 20.4,
-          "float_millions": 3.56,
-          "rank_score": 4.509
+          "rank_score": 0.838
         },
         {
           "symbol": "CODX",
           "pm_volume": 1012394.0,
           "gap_pct": 117.37,
           "float_millions": 1.04,
-          "rank_score": 4.499
+          "rank_score": 0.524
+        },
+        {
+          "symbol": "CYN",
+          "pm_volume": 1629601.0,
+          "gap_pct": 25.62,
+          "float_millions": 7.97,
+          "rank_score": 0.49
+        },
+        {
+          "symbol": "WLDS",
+          "pm_volume": 2195.0,
+          "gap_pct": 260.94,
+          "float_millions": 0.84,
+          "rank_score": 0.427
+        },
+        {
+          "symbol": "ACXP",
+          "pm_volume": 2229703.0,
+          "gap_pct": 13.79,
+          "float_millions": 1.98,
+          "rank_score": 0.389
         }
       ]
     },
@@ -5286,35 +3981,35 @@
           "pm_volume": 9533749.0,
           "gap_pct": 62.58,
           "float_millions": 9.29,
-          "rank_score": 5.064
+          "rank_score": 0.602
+        },
+        {
+          "symbol": "XPEG",
+          "pm_volume": 43071.0,
+          "gap_pct": 8.34,
+          "float_millions": 0.05,
+          "rank_score": 0.461
+        },
+        {
+          "symbol": "RKDA",
+          "pm_volume": 83472.0,
+          "gap_pct": 6.4,
+          "float_millions": 1.36,
+          "rank_score": 0.412
         },
         {
           "symbol": "RBNE",
           "pm_volume": 2854546.0,
           "gap_pct": 14.86,
           "float_millions": 2.68,
-          "rank_score": 4.635
-        },
-        {
-          "symbol": "HIMZ",
-          "pm_volume": 2348246.0,
-          "gap_pct": 11.03,
-          "float_millions": 6.0,
-          "rank_score": 4.552
-        },
-        {
-          "symbol": "TMDE",
-          "pm_volume": 942206.0,
-          "gap_pct": 13.97,
-          "float_millions": 3.56,
-          "rank_score": 4.292
+          "rank_score": 0.392
         },
         {
           "symbol": "DTCK",
           "pm_volume": 514799.0,
           "gap_pct": 23.52,
           "float_millions": 0.4,
-          "rank_score": 4.143
+          "rank_score": 0.367
         }
       ]
     }
