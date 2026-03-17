@@ -407,6 +407,32 @@ class PaperTradeManager:
 
         return True, ""
 
+    def _check_pillar_gates(self, symbol: str, entry_price: float) -> tuple:
+        """Ross Pillar entry-time gates. Must match simulate.py pillar logic exactly.
+        Returns (blocked: bool, reason: str)."""
+        min_gap = float(os.getenv("WB_PILLAR_MIN_GAP_PCT", "10"))
+        min_rvol = float(os.getenv("WB_PILLAR_MIN_RVOL", "2.0"))
+        min_price = float(os.getenv("WB_PILLAR_MIN_PRICE", "2.0"))
+        max_price = float(os.getenv("WB_PILLAR_MAX_PRICE", "20.0"))
+
+        info = self._stock_info_cache.get(symbol)
+
+        # Gap gate
+        if info and hasattr(info, 'gap_pct') and info.gap_pct > 0:
+            if info.gap_pct < min_gap:
+                return True, f"gap {info.gap_pct:.1f}% < {min_gap}%"
+
+        # RVOL gate
+        if info and hasattr(info, 'rel_volume') and info.rel_volume > 0:
+            if info.rel_volume < min_rvol:
+                return True, f"RVOL {info.rel_volume:.1f}x < {min_rvol}x"
+
+        # Price gate
+        if entry_price < min_price or entry_price > max_price:
+            return True, f"price ${entry_price:.2f} outside ${min_price}-${max_price}"
+
+        return False, ""
+
     # -----------------------------
     # Funds helpers
     # -----------------------------
@@ -933,7 +959,40 @@ class PaperTradeManager:
                 print(f"QUALITY GATE {symbol}: {gate_reason}", flush=True)
                 return
 
+            # Ross Pillar entry-time gates (must match simulate.py pillar gates)
+            if os.getenv("WB_PILLAR_GATES_ENABLED", "1") == "1":
+                pillar_blocked, pillar_reason = self._check_pillar_gates(symbol, plan.entry)
+                if pillar_blocked:
+                    log_event("skip_entry_pillar_gate", symbol, reason=pillar_reason)
+                    print(f"  PILLAR_BLOCK {symbol}: {pillar_reason}", flush=True)
+                    return
+
+            # V6.1: Toxic entry filters (must match simulate.py toxic filter logic)
+            info = self._stock_info_cache.get(symbol)
+            _gap_pct = info.gap_pct if info and hasattr(info, 'gap_pct') else 0
+            _pm_volume = info.volume if info and hasattr(info, 'volume') else 0
+            _candidates_count = len(self._stock_info_cache)
+            _month = datetime.now(timezone.utc).month
+            _toxic = check_toxic_filters(
+                entry_price=plan.entry,
+                stop_price=plan.stop,
+                gap_pct=_gap_pct,
+                pm_volume=_pm_volume,
+                candidates_count=_candidates_count,
+                month=_month,
+            )
+            if _toxic['action'] == 'BLOCK':
+                log_event("skip_entry_toxic_block", symbol, reason=_toxic['reason'])
+                print(f"  TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
+                return
+
             qty_total = self.size_qty(plan.entry, plan.r)
+            # Apply toxic HALF_RISK multiplier if applicable
+            if _toxic['action'] == 'HALF_RISK':
+                _toxic_mult = _toxic.get('multiplier', 0.5)
+                qty_total = max(1, int(qty_total * _toxic_mult))
+                log_event("toxic_half_risk", symbol, multiplier=_toxic_mult, reason=_toxic['reason'])
+                print(f"  TOXIC_HALF_RISK {symbol}: {_toxic['reason']} (size *{_toxic_mult:.0%})", flush=True)
             if qty_total <= 0:
                 log_event("skip_entry_bad_qty", symbol, entry=plan.entry, r=plan.r)
                 return

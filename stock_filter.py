@@ -41,15 +41,16 @@ class StockFilter:
         self.hist_client = StockHistoricalDataClient(api_key, api_secret)
 
         # Filter thresholds (from Ross's PDF)
-        self.min_gap_pct = float(os.getenv("WB_MIN_GAP_PCT", "5"))  # 5% minimum
+        # Defaults tightened to match backtest pillar gates (2026-03-17)
+        self.min_gap_pct = float(os.getenv("WB_MIN_GAP_PCT", "10"))  # 10% minimum (Ross Pillar 1)
         self.preferred_gap_pct = float(os.getenv("WB_PREFERRED_GAP_PCT", "20"))  # 20% preferred
         self.min_float = float(os.getenv("WB_MIN_FLOAT", "0.5"))  # 0.5M min (blocks micro-float)
-        self.max_float = float(os.getenv("WB_MAX_FLOAT", "50"))  # 50M shares max
+        self.max_float = float(os.getenv("WB_MAX_FLOAT", "10"))  # 10M shares max (Ross Pillar 5)
         self.preferred_max_float = float(os.getenv("WB_PREFERRED_MAX_FLOAT", "10"))  # 10M preferred
-        self.min_rel_volume = float(os.getenv("WB_MIN_REL_VOLUME", "1.5"))  # 1.5x average
+        self.min_rel_volume = float(os.getenv("WB_MIN_REL_VOLUME", "2.0"))  # 2x average (Ross Pillar 2)
         self.require_ema_alignment = os.getenv("WB_REQUIRE_EMA_ALIGNMENT", "0") == "1"
-        self.min_price = float(os.getenv("WB_MIN_PRICE", "1.00"))  # $1 minimum (avoid penny stocks)
-        self.max_price = float(os.getenv("WB_MAX_PRICE", "20.00"))  # $20 maximum (small account focus)
+        self.min_price = float(os.getenv("WB_MIN_PRICE", "2.00"))  # $2 minimum (Ross Pillar 4)
+        self.max_price = float(os.getenv("WB_MAX_PRICE", "20.00"))  # $20 maximum (Ross Pillar 4)
 
         # Float cache (avoid repeated yfinance calls for same symbol)
         self._float_cache: Dict[str, Optional[float]] = {}
@@ -244,47 +245,22 @@ class StockFilter:
 
     def rank_stock(self, info: StockInfo) -> float:
         """
-        Rank stock quality (higher = better).
-        Used to prioritize which stocks to trade.
+        Composite ranking: 40% RVOL + 30% abs volume + 20% gap + 10% float bonus.
+        Must match run_ytd_v2_backtest.py rank_score() exactly.
         """
-        score = 0.0
+        import math
+        rvol = info.rel_volume if info.rel_volume else 0
+        vol = info.volume if info.volume else 0
+        gap = info.gap_pct if info.gap_pct else 0
+        float_m = info.float_shares if info.float_shares else 10
 
-        # Gap % (higher is better, up to 50%)
-        gap_score = min(info.gap_pct / 50.0 * 30, 30)
-        score += gap_score
+        rvol_score = math.log10(max(rvol, 0.1) + 1) / math.log10(51)
+        vol_score = math.log10(max(vol, 1)) / 8
+        gap_score = min(gap, 100) / 100
+        float_penalty = min(float_m, 10) / 10
 
-        # Relative volume (higher is better, cap at 5x)
-        vol_score = min(info.rel_volume / 5.0 * 20, 20)
-        score += vol_score
-
-        # Float (lower is better)
-        if info.float_shares is not None:
-            if info.float_shares <= self.preferred_max_float:
-                score += 20  # Excellent float
-            elif info.float_shares <= self.max_float:
-                score += 10  # Acceptable float
-            else:
-                score -= 10  # Too high
-
-        # EMA alignment bonus
-        ema_aligned = True
-        if info.ema20 and info.price < info.ema20:
-            ema_aligned = False
-        if info.ema50 and info.price < info.ema50:
-            ema_aligned = False
-        if info.ema200 and info.price < info.ema200:
-            ema_aligned = False
-
-        if ema_aligned:
-            score += 15
-
-        # Price range preference ($1.50 - $10)
-        if 1.50 <= info.price <= 10.00:
-            score += 10
-        elif self.min_price <= info.price <= self.max_price:
-            score += 5
-
-        return score
+        # Scale to 0-100 for readability (backtest uses 0-1 range)
+        return 100 * ((0.4 * rvol_score) + (0.3 * vol_score) + (0.2 * gap_score) + (0.1 * (1 - float_penalty)))
 
     def filter_watchlist(self, symbols: Set[str]) -> Dict[str, StockInfo]:
         """

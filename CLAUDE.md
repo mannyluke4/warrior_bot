@@ -65,7 +65,7 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 det = MicroPullbackDetector()  # NO symbol argument
 ```
 
-## Current Live Config (as of 2026-03-02)
+## Current Live Config (as of 2026-03-17)
 ```
 WB_CLASSIFIER_ENABLED=1
 WB_CLASSIFIER_SUPPRESS_ENABLED=0
@@ -75,6 +75,10 @@ WB_CLASSIFIER_SMOOTH_VWAP_MIN=10
 WB_CLASSIFIER_RECLASS_ENABLED=1
 WB_WARMUP_BARS=5
 WB_EXHAUSTION_ENABLED=1   # KEEP ON — dynamic scaling handles cascading stocks correctly
+WB_CONTINUATION_HOLD_ENABLED=1
+WB_CONT_HOLD_5M_TREND_GUARD=1
+WB_MAX_NOTIONAL=50000      # Aligned to batch runner ENV_BASE
+WB_PILLAR_GATES_ENABLED=1  # Ross Pillar entry-time gates in live bot
 ```
 
 ### Exhaustion Filter + Dynamic Scaling (CRITICAL INSIGHT)
@@ -84,11 +88,12 @@ The exhaustion filter is enabled by default and works CORRECTLY for cascading st
 - **DO NOT implement a classifier-aware bypass** — it would break VERO regression ($6,890→$3,452)
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
-### Regression Targets (as of 2026-03-02)
-All three regressions PASS with current defaults (exhaustion ON, classifier ON):
-- VERO 2026-01-16: +$6,890 ✅
-- GWAV 2026-01-16: +$6,735 ✅
-- ANPA 2026-01-09: +$2,088 ✅
+### Regression Targets (as of 2026-03-17)
+Primary standalone regression (deterministic, tick mode):
+- VERO 2026-01-16: +$9,166 ✅ (1 trade, 9.2R)
+Note: GWAV and ANPA no longer produce trades in standalone mode due to detector
+evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
+(run_ytd_v2_backtest.py) with tick cache produces +$5,543 across 49 days.
 
 ## Current Study Status (as of 2026-02-27)
 
