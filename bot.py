@@ -596,6 +596,93 @@ def on_quote(symbol: str, bid, ask, ts: datetime):
         return
 
 # -----------------------------
+# Re-scan thread (periodic scanner, matches backtest checkpoints)
+# -----------------------------
+# Checkpoints in ET hours — scanner re-runs at each to catch emerging movers
+RESCAN_CHECKPOINTS_ET = [
+    (7, 30), (8, 0), (8, 30), (9, 0), (9, 30), (10, 0), (10, 30),
+]
+
+# Shared set that watchlist_thread reads — new symbols appear here after re-scans
+rescan_symbols: set = set()
+rescan_lock = threading.Lock()
+
+def rescan_thread():
+    """
+    Periodically re-run the MarketScanner + StockFilter to catch stocks that
+    start gapping after the initial 4 AM scan. Mirrors the backtest's 30-minute
+    checkpoint approach from scanner_sim.py.
+
+    New symbols are added to rescan_symbols; watchlist_thread picks them up
+    automatically on its next poll cycle.
+    """
+    enable_dynamic = os.getenv("WB_ENABLE_DYNAMIC_SCANNER", "0") == "1"
+    if not enable_dynamic:
+        return
+
+    fired = set()  # checkpoints already fired
+
+    while not stop_flag.is_set():
+        try:
+            now_et = datetime.now(ET)
+            h, m = now_et.hour, now_et.minute
+
+            # Find the next checkpoint that should fire
+            for cp_h, cp_m in RESCAN_CHECKPOINTS_ET:
+                cp_key = (cp_h, cp_m)
+                if cp_key in fired:
+                    continue
+                if h > cp_h or (h == cp_h and m >= cp_m):
+                    fired.add(cp_key)
+                    print(f"\n🔄 RESCAN [{cp_h}:{cp_m:02d} ET] Running market scanner...", flush=True)
+                    log_event("rescan_start", None, checkpoint=f"{cp_h}:{cp_m:02d}")
+
+                    try:
+                        scanner = MarketScanner(API_KEY, API_SECRET)
+                        raw = scanner.scan_market()
+                        if not raw:
+                            print(f"   Rescan returned 0 symbols", flush=True)
+                            continue
+
+                        filtered_result = filter_watchlist(raw)
+
+                        if isinstance(filtered_result, dict):
+                            new_syms = set(filtered_result.keys())
+                            # Update stock_info_cache for new symbols
+                            with state_lock:
+                                _stock_info_cache.update(filtered_result)
+                                if trade_manager:
+                                    trade_manager.set_stock_info_cache(_stock_info_cache)
+                        else:
+                            new_syms = filtered_result if isinstance(filtered_result, set) else set()
+
+                        with rescan_lock:
+                            added = new_syms - rescan_symbols
+                            rescan_symbols.update(new_syms)
+
+                        if added:
+                            print(f"   🆕 Rescan found {len(added)} new symbols: {sorted(added)}", flush=True)
+                            log_event("rescan_new_symbols", None, count=len(added), symbols=sorted(added))
+                        else:
+                            print(f"   Rescan: no new symbols (total tracked: {len(rescan_symbols)})", flush=True)
+
+                    except Exception as e:
+                        print(f"⚠️ Rescan failed: {e}", flush=True)
+                        log_event("exception", None, where="rescan_thread", error=str(e))
+
+            # Past last checkpoint — thread can exit
+            last_cp = RESCAN_CHECKPOINTS_ET[-1]
+            if h > last_cp[0] or (h == last_cp[0] and m >= last_cp[1]):
+                print("🔄 Rescan thread done (past last checkpoint)", flush=True)
+                return
+
+        except Exception:
+            log_event("exception", None, where="rescan_thread_outer", error=traceback.format_exc())
+
+        time.sleep(30)  # Check every 30 seconds
+
+
+# -----------------------------
 # Watchlist thread
 # -----------------------------
 def watchlist_thread(feed: DataFeed, initial_filtered: set):
@@ -607,8 +694,10 @@ def watchlist_thread(feed: DataFeed, initial_filtered: set):
     watched = set()
     while not stop_flag.is_set():
         # Re-read the file every iteration so manual edits take effect immediately.
-        # Union with initial_filtered to keep any scanner-discovered symbols.
-        symbols = load_watchlist() | initial_filtered
+        # Union with initial_filtered + rescan_symbols to keep all discovered symbols.
+        with rescan_lock:
+            rescan_copy = set(rescan_symbols)
+        symbols = load_watchlist() | initial_filtered | rescan_copy
 
         new_syms = symbols - watched
         removed_syms = watched - symbols
@@ -766,6 +855,10 @@ def main():
 
     t = threading.Thread(target=watchlist_thread, args=(feed, filtered_watchlist), daemon=True)
     t.start()
+
+    # Periodic re-scan thread (catches emerging movers after initial scan)
+    rst = threading.Thread(target=rescan_thread, daemon=True)
+    rst.start()
 
     feed_name = os.getenv("WB_DATA_FEED", "alpaca").lower()
     print(f"Connecting to {feed_name} data feed... (Ctrl+C to stop)", flush=True)

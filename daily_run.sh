@@ -18,6 +18,7 @@ cleanup() {
     kill "$IBC_PID" 2>/dev/null || true
     pkill -f "bot.py" 2>/dev/null || true
     pkill -f "java.*tws" 2>/dev/null || true
+    kill "$CAFFEINE_PID" 2>/dev/null || true
     cd ~/warrior_bot
     git add -f logs/ 2>/dev/null || true
     git commit -m "auto: daily logs ${TODAY}" 2>/dev/null || true
@@ -28,6 +29,11 @@ trap cleanup EXIT
 
 BOT_PID=""
 IBC_PID=""
+
+# Keep Mac awake for the entire trading session
+caffeinate -dims -w $$ &
+CAFFEINE_PID=$!
+echo "caffeinate started (PID: $CAFFEINE_PID)"
 
 echo "=== Daily run started: $(date) ==="
 

@@ -1,0 +1,507 @@
+{"ts_utc": "2026-03-17T08:01:34.365791+00:00", "event": "market_scan_symbols_found", "symbol": null, "run_id": "20260317T080134Z", "count": 10103}
+{"ts_utc": "2026-03-17T08:01:42.865806+00:00", "event": "market_scan_prefiltered", "symbol": null, "run_id": "20260317T080134Z", "count": 3241}
+{"ts_utc": "2026-03-17T08:01:45.625327+00:00", "event": "stock_filtered_out", "symbol": "AAL", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 650.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:46.015629+00:00", "event": "stock_filtered_out", "symbol": "ACET", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:46.380366+00:00", "event": "stock_filtered_out", "symbol": "ACH", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.05x < 1.50x", "float 60.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:46.784855+00:00", "event": "stock_filtered_out", "symbol": "ACHV", "run_id": "20260317T080134Z", "reasons": ["gap 1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:47.162591+00:00", "event": "stock_filtered_out", "symbol": "ACIC", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:47.539993+00:00", "event": "stock_filtered_out", "symbol": "ACP", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 125.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:47.966877+00:00", "event": "stock_filtered_out", "symbol": "ACR", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:48.326017+00:00", "event": "stock_filtered_out", "symbol": "ACXP", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:48.710293+00:00", "event": "stock_filtered_out", "symbol": "ADACU", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:49.105939+00:00", "event": "stock_filtered_out", "symbol": "ADAG", "run_id": "20260317T080134Z", "reasons": ["gap -1.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:49.494878+00:00", "event": "stock_filtered_out", "symbol": "AIOT", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 125.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:49.856274+00:00", "event": "stock_filtered_out", "symbol": "AIYY", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:50.253607+00:00", "event": "stock_filtered_out", "symbol": "ALBG", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:50.632313+00:00", "event": "stock_filtered_out", "symbol": "ALEC", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 86.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:50.995116+00:00", "event": "stock_filtered_out", "symbol": "ALT", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 129.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:51.351835+00:00", "event": "stock_filtered_out", "symbol": "ALUB", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:51.711053+00:00", "event": "stock_filtered_out", "symbol": "ALZN", "run_id": "20260317T080134Z", "reasons": ["gap 3.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:52.072728+00:00", "event": "stock_filtered_out", "symbol": "AMCX", "run_id": "20260317T080134Z", "reasons": ["gap -4.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:52.432791+00:00", "event": "stock_filtered_out", "symbol": "AMDD", "run_id": "20260317T080134Z", "reasons": ["gap -1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:52.797082+00:00", "event": "stock_filtered_out", "symbol": "AMPG", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:53.183654+00:00", "event": "stock_filtered_out", "symbol": "AMPH", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:53.571445+00:00", "event": "stock_filtered_out", "symbol": "AMPL", "run_id": "20260317T080134Z", "reasons": ["gap -1.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 97.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:53.931321+00:00", "event": "stock_filtered_out", "symbol": "ANEL", "run_id": "20260317T080134Z", "reasons": ["gap 2.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:54.325168+00:00", "event": "stock_filtered_out", "symbol": "ANGH", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:54.690650+00:00", "event": "stock_filtered_out", "symbol": "ANGO", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:55.059634+00:00", "event": "stock_filtered_out", "symbol": "API", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.01x < 1.50x", "float 259.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:55.416934+00:00", "event": "stock_filtered_out", "symbol": "ARMP", "run_id": "20260317T080134Z", "reasons": ["gap -8.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:55.555295+00:00", "event": "stock_filtered_out", "symbol": "ARTC", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:55.920892+00:00", "event": "stock_filtered_out", "symbol": "ARTW", "run_id": "20260317T080134Z", "reasons": ["gap -1.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:56.275580+00:00", "event": "stock_filtered_out", "symbol": "ASG", "run_id": "20260317T080134Z", "reasons": ["gap 2.3% < 5.0%", "rel_vol 0.01x < 1.50x", "float 62.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:56.628783+00:00", "event": "stock_filtered_out", "symbol": "ASPS", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:56.985325+00:00", "event": "stock_filtered_out", "symbol": "ASST", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:57.343074+00:00", "event": "stock_filtered_out", "symbol": "ASUR", "run_id": "20260317T080134Z", "reasons": ["gap -2.5% < 5.0%", "rel_vol 0.06x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:57.740112+00:00", "event": "stock_filtered_out", "symbol": "ATCX", "run_id": "20260317T080134Z", "reasons": ["gap -5.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:58.103089+00:00", "event": "stock_filtered_out", "symbol": "ATIIU", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.06x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:58.470227+00:00", "event": "stock_filtered_out", "symbol": "AUR", "run_id": "20260317T080134Z", "reasons": ["gap 3.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 1247.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:01:58.844847+00:00", "event": "stock_filtered_out", "symbol": "AVD", "run_id": "20260317T080134Z", "reasons": ["gap -1.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:59.228043+00:00", "event": "stock_filtered_out", "symbol": "AVNS", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.15x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:59.641991+00:00", "event": "stock_filtered_out", "symbol": "AWX", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:01:59.838892+00:00", "event": "stock_filtered_out", "symbol": "AXPG", "run_id": "20260317T080134Z", "reasons": ["gap -1.6% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:00.257376+00:00", "event": "stock_filtered_out", "symbol": "BABU", "run_id": "20260317T080134Z", "reasons": ["gap 2.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:00.698723+00:00", "event": "stock_filtered_out", "symbol": "BACC", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:01.065357+00:00", "event": "stock_filtered_out", "symbol": "BANC", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.13x < 1.50x", "float 133.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:01.435252+00:00", "event": "stock_filtered_out", "symbol": "BANX", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:01.837555+00:00", "event": "stock_filtered_out", "symbol": "BBBY", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 69.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:02.203655+00:00", "event": "stock_filtered_out", "symbol": "BCAL", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:02.558783+00:00", "event": "stock_filtered_out", "symbol": "BCAT", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x", "float 104.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:02.966818+00:00", "event": "stock_filtered_out", "symbol": "BDCI", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:03.385721+00:00", "event": "stock_filtered_out", "symbol": "BDCX", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:03.780135+00:00", "event": "stock_filtered_out", "symbol": "BDCZ", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.14x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:04.159177+00:00", "event": "stock_filtered_out", "symbol": "BDVG", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:04.566288+00:00", "event": "stock_filtered_out", "symbol": "BEKE", "run_id": "20260317T080134Z", "reasons": ["gap 2.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 1973.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:04.968763+00:00", "event": "stock_filtered_out", "symbol": "BFOC", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:05.380131+00:00", "event": "stock_filtered_out", "symbol": "BGSF", "run_id": "20260317T080134Z", "reasons": ["gap 2.8% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:05.795831+00:00", "event": "stock_filtered_out", "symbol": "BGY", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 90.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:06.189576+00:00", "event": "stock_filtered_out", "symbol": "BHFAM", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x", "float 56.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:06.606469+00:00", "event": "stock_filtered_out", "symbol": "BHFAO", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 56.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:07.022190+00:00", "event": "stock_filtered_out", "symbol": "BIDG", "run_id": "20260317T080134Z", "reasons": ["gap -4.2% < 5.0%", "rel_vol 0.15x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:07.479303+00:00", "event": "stock_filtered_out", "symbol": "BIT", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 57.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:07.898341+00:00", "event": "stock_filtered_out", "symbol": "BKHA", "run_id": "20260317T080134Z", "reasons": ["gap -1.5% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:08.266062+00:00", "event": "stock_filtered_out", "symbol": "BLMN", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 75.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:08.652216+00:00", "event": "stock_filtered_out", "symbol": "BLRKU", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:09.052742+00:00", "event": "stock_filtered_out", "symbol": "BNL", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.15x < 1.50x", "float 189.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:09.425319+00:00", "event": "stock_filtered_out", "symbol": "BODI", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:09.790795+00:00", "event": "stock_filtered_out", "symbol": "BRFH", "run_id": "20260317T080134Z", "reasons": ["gap -6.5% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:10.174068+00:00", "event": "stock_filtered_out", "symbol": "BSCR", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:10.532734+00:00", "event": "stock_filtered_out", "symbol": "BSCV", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:10.911944+00:00", "event": "stock_filtered_out", "symbol": "BTX", "run_id": "20260317T080134Z", "reasons": ["gap 2.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 116.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:11.306586+00:00", "event": "stock_filtered_out", "symbol": "BV", "run_id": "20260317T080134Z", "reasons": ["gap 2.4% < 5.0%", "rel_vol 0.13x < 1.50x", "float 69.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:11.706089+00:00", "event": "stock_filtered_out", "symbol": "BZQ", "run_id": "20260317T080134Z", "reasons": ["gap -6.1% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:12.093733+00:00", "event": "stock_filtered_out", "symbol": "BZUN", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.01x < 1.50x", "float 125.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:12.486989+00:00", "event": "stock_filtered_out", "symbol": "CAEP", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:12.861972+00:00", "event": "stock_filtered_out", "symbol": "CAG", "run_id": "20260317T080134Z", "reasons": ["gap -1.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 475.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:13.249726+00:00", "event": "stock_filtered_out", "symbol": "CAQUU", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:13.607415+00:00", "event": "stock_filtered_out", "symbol": "CATX", "run_id": "20260317T080134Z", "reasons": ["gap 4.4% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:13.972456+00:00", "event": "stock_filtered_out", "symbol": "CC", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.13x < 1.50x", "float 149.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:14.374068+00:00", "event": "stock_filtered_out", "symbol": "CCIF", "run_id": "20260317T080134Z", "reasons": ["gap -2.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:14.763476+00:00", "event": "stock_filtered_out", "symbol": "CCIIU", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:15.158897+00:00", "event": "stock_filtered_out", "symbol": "CCIXU", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:02:15.540672+00:00", "event": "stock_filtered_out", "symbol": "CCRN", "run_id": "20260317T080134Z", "reasons": ["gap -3.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:15.952189+00:00", "event": "stock_filtered_out", "symbol": "CCRP", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:16.340981+00:00", "event": "stock_filtered_out", "symbol": "CCU", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.07x < 1.50x", "float 120.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:16.700199+00:00", "event": "stock_filtered_out", "symbol": "CDNA", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:17.111565+00:00", "event": "stock_filtered_out", "symbol": "CGBD", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.03x < 1.50x", "float 70.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:17.479428+00:00", "event": "stock_filtered_out", "symbol": "CGNT", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:17.851576+00:00", "event": "stock_filtered_out", "symbol": "CGV", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:18.226101+00:00", "event": "stock_filtered_out", "symbol": "CHA", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:18.590983+00:00", "event": "stock_filtered_out", "symbol": "CHAR", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:18.976008+00:00", "event": "stock_filtered_out", "symbol": "CHNR", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:19.345983+00:00", "event": "stock_filtered_out", "symbol": "CHW", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 63.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:19.750181+00:00", "event": "stock_filtered_out", "symbol": "CIFR", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 330.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:20.143126+00:00", "event": "stock_filtered_out", "symbol": "CLB", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.11x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:20.515490+00:00", "event": "stock_filtered_out", "symbol": "CLNE", "run_id": "20260317T080134Z", "reasons": ["gap -1.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 172.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:20.906016+00:00", "event": "stock_filtered_out", "symbol": "CLST", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:21.283206+00:00", "event": "stock_filtered_out", "symbol": "CLW", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:21.663656+00:00", "event": "stock_filtered_out", "symbol": "CMDB", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.15x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:22.085643+00:00", "event": "stock_filtered_out", "symbol": "CMPX", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 118.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:22.469874+00:00", "event": "stock_filtered_out", "symbol": "CNH", "run_id": "20260317T080134Z", "reasons": ["gap -1.2% < 5.0%", "rel_vol 0.08x < 1.50x", "float 1233.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:22.857758+00:00", "event": "stock_filtered_out", "symbol": "CORN", "run_id": "20260317T080134Z", "reasons": ["gap -1.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:23.242966+00:00", "event": "stock_filtered_out", "symbol": "CORZW", "run_id": "20260317T080134Z", "reasons": ["gap 3.9% < 5.0%", "rel_vol 0.00x < 1.50x", "float 217.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:23.607885+00:00", "event": "stock_filtered_out", "symbol": "COTG", "run_id": "20260317T080134Z", "reasons": ["gap -1.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:23.972353+00:00", "event": "stock_passed_filter", "symbol": "CRAQU", "run_id": "20260317T080134Z", "price": 11.5, "gap_pct": 10.47070124879923, "rel_volume": 1.8099547511312217, "rank": 33.52223975380443, "ema20": 10.83015141139676, "ema50": null, "ema200": null}
+{"ts_utc": "2026-03-17T08:02:24.362297+00:00", "event": "stock_filtered_out", "symbol": "CRMU", "run_id": "20260317T080134Z", "reasons": ["gap 4.0% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:24.830773+00:00", "event": "stock_filtered_out", "symbol": "CRTO", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:25.213924+00:00", "event": "stock_filtered_out", "symbol": "CRWS", "run_id": "20260317T080134Z", "reasons": ["gap -2.5% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:25.588362+00:00", "event": "stock_filtered_out", "symbol": "CRXP", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:25.974170+00:00", "event": "stock_filtered_out", "symbol": "CTEV", "run_id": "20260317T080134Z", "reasons": ["gap 4.2% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:26.355435+00:00", "event": "stock_filtered_out", "symbol": "CTMX", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 123.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:26.778245+00:00", "event": "stock_filtered_out", "symbol": "CVV", "run_id": "20260317T080134Z", "reasons": ["gap -3.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:27.154266+00:00", "event": "stock_filtered_out", "symbol": "CXW", "run_id": "20260317T080134Z", "reasons": ["gap 4.3% < 5.0%", "rel_vol 0.17x < 1.50x", "float 88.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:27.533842+00:00", "event": "stock_filtered_out", "symbol": "CZWI", "run_id": "20260317T080134Z", "reasons": ["gap 2.5% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:27.920596+00:00", "event": "stock_filtered_out", "symbol": "DDFD", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:28.080251+00:00", "event": "stock_filtered_out", "symbol": "DDFM", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:28.504248+00:00", "event": "stock_filtered_out", "symbol": "DEI", "run_id": "20260317T080134Z", "reasons": ["gap -1.3% < 5.0%", "rel_vol 0.16x < 1.50x", "float 162.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:28.873192+00:00", "event": "stock_filtered_out", "symbol": "DHF", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.00x < 1.50x", "float 72.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:29.266339+00:00", "event": "stock_filtered_out", "symbol": "DHT", "run_id": "20260317T080134Z", "reasons": ["gap 3.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 143.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:29.646419+00:00", "event": "stock_filtered_out", "symbol": "DIME", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:30.026923+00:00", "event": "stock_filtered_out", "symbol": "DMAAU", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:02:30.395593+00:00", "event": "stock_filtered_out", "symbol": "DNUT", "run_id": "20260317T080134Z", "reasons": ["gap 4.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 89.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:30.765144+00:00", "event": "stock_filtered_out", "symbol": "DOC", "run_id": "20260317T080134Z", "reasons": ["gap 2.2% < 5.0%", "rel_vol 0.13x < 1.50x", "float 692.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:31.136821+00:00", "event": "stock_filtered_out", "symbol": "DSX", "run_id": "20260317T080134Z", "reasons": ["gap 2.2% < 5.0%", "rel_vol 0.02x < 1.50x", "float 57.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:31.574433+00:00", "event": "stock_filtered_out", "symbol": "DTIL", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.06x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:32.161785+00:00", "event": "stock_filtered_out", "symbol": "DTST", "run_id": "20260317T080134Z", "reasons": ["gap -2.7% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:32.548591+00:00", "event": "stock_filtered_out", "symbol": "DUOT", "run_id": "20260317T080134Z", "reasons": ["gap 2.5% < 5.0%", "rel_vol 0.98x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:33.002546+00:00", "event": "stock_filtered_out", "symbol": "DYORU", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:33.426481+00:00", "event": "stock_filtered_out", "symbol": "ECF", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:33.795922+00:00", "event": "stock_filtered_out", "symbol": "EDIT", "run_id": "20260317T080134Z", "reasons": ["gap 3.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 97.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:34.174409+00:00", "event": "stock_filtered_out", "symbol": "EFR", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:34.580003+00:00", "event": "stock_filtered_out", "symbol": "EH", "run_id": "20260317T080134Z", "reasons": ["gap 1.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 106.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:34.975929+00:00", "event": "stock_filtered_out", "symbol": "EHLD", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:35.346758+00:00", "event": "stock_filtered_out", "symbol": "ELME", "run_id": "20260317T080134Z", "reasons": ["gap 1.5% < 5.0%", "rel_vol 0.06x < 1.50x", "float 76.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:35.718743+00:00", "event": "stock_filtered_out", "symbol": "ENGNW", "run_id": "20260317T080134Z", "reasons": ["gap -19.5% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:36.094166+00:00", "event": "stock_filtered_out", "symbol": "EPRX", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:36.495992+00:00", "event": "stock_filtered_out", "symbol": "ERIC", "run_id": "20260317T080134Z", "reasons": ["gap 3.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 2908.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:36.921873+00:00", "event": "stock_filtered_out", "symbol": "ETB", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:37.316350+00:00", "event": "stock_filtered_out", "symbol": "ETHW", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:37.696863+00:00", "event": "stock_filtered_out", "symbol": "ETTY", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:38.068705+00:00", "event": "stock_filtered_out", "symbol": "ETU", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:38.477513+00:00", "event": "stock_filtered_out", "symbol": "ETW", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 108.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:38.840784+00:00", "event": "stock_filtered_out", "symbol": "EVG", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:39.198593+00:00", "event": "stock_filtered_out", "symbol": "EXOD", "run_id": "20260317T080134Z", "reasons": ["gap 3.9% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:39.557516+00:00", "event": "stock_filtered_out", "symbol": "FACT", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:39.920673+00:00", "event": "stock_filtered_out", "symbol": "FACTU", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:40.282508+00:00", "event": "stock_filtered_out", "symbol": "FBIOP", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:40.662299+00:00", "event": "stock_filtered_out", "symbol": "FBLA", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:41.074725+00:00", "event": "stock_filtered_out", "symbol": "FCO", "run_id": "20260317T080134Z", "reasons": ["gap 2.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:41.453442+00:00", "event": "stock_filtered_out", "symbol": "FCRS", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:41.812431+00:00", "event": "stock_filtered_out", "symbol": "FERA", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:42.171397+00:00", "event": "stock_filtered_out", "symbol": "FFIC", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:42.529459+00:00", "event": "stock_filtered_out", "symbol": "FGSI", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.09x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:42.909443+00:00", "event": "stock_filtered_out", "symbol": "FIEE", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 0.13M < 0.5M (micro-float)"]}
+{"ts_utc": "2026-03-17T08:02:43.284120+00:00", "event": "stock_filtered_out", "symbol": "FJET", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:43.647716+00:00", "event": "stock_filtered_out", "symbol": "FLC", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:44.033244+00:00", "event": "stock_filtered_out", "symbol": "FLGT", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.13x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:44.416482+00:00", "event": "stock_filtered_out", "symbol": "FMY", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:44.786980+00:00", "event": "stock_filtered_out", "symbol": "FNKO", "run_id": "20260317T080134Z", "reasons": ["gap -8.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:45.175750+00:00", "event": "stock_filtered_out", "symbol": "FRA", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:45.556747+00:00", "event": "stock_filtered_out", "symbol": "FRD", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.09x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:45.918825+00:00", "event": "stock_filtered_out", "symbol": "FRST", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:46.299860+00:00", "event": "stock_filtered_out", "symbol": "FSHP", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:46.689100+00:00", "event": "stock_filtered_out", "symbol": "FTMN", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:47.168786+00:00", "event": "stock_filtered_out", "symbol": "FTOH", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:47.551606+00:00", "event": "stock_filtered_out", "symbol": "FTPA", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:47.917754+00:00", "event": "stock_filtered_out", "symbol": "FULC", "run_id": "20260317T080134Z", "reasons": ["gap -0.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:48.325395+00:00", "event": "stock_filtered_out", "symbol": "FUTG", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:48.705002+00:00", "event": "stock_filtered_out", "symbol": "FWRG", "run_id": "20260317T080134Z", "reasons": ["gap 3.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 60.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:49.068474+00:00", "event": "stock_filtered_out", "symbol": "GBTG", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.11x < 1.50x", "float 196.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:49.498866+00:00", "event": "stock_filtered_out", "symbol": "GDYN", "run_id": "20260317T080134Z", "reasons": ["gap -1.9% < 5.0%", "rel_vol 0.00x < 1.50x", "float 66.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:49.870257+00:00", "event": "stock_filtered_out", "symbol": "GEG", "run_id": "20260317T080134Z", "reasons": ["gap 2.9% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:50.259513+00:00", "event": "stock_filtered_out", "symbol": "GGN", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 156.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:50.655309+00:00", "event": "stock_filtered_out", "symbol": "GGT", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:51.047148+00:00", "event": "stock_filtered_out", "symbol": "GILT", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 64.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:51.428893+00:00", "event": "stock_filtered_out", "symbol": "GLDY", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:51.800340+00:00", "event": "stock_filtered_out", "symbol": "GLRE", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:52.191972+00:00", "event": "stock_filtered_out", "symbol": "GNL", "run_id": "20260317T080134Z", "reasons": ["gap 2.4% < 5.0%", "rel_vol 0.12x < 1.50x", "float 212.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:52.610295+00:00", "event": "stock_filtered_out", "symbol": "GNPX", "run_id": "20260317T080134Z", "reasons": ["gap 5.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:52.984417+00:00", "event": "stock_filtered_out", "symbol": "GO", "run_id": "20260317T080134Z", "reasons": ["gap -5.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 93.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:53.375657+00:00", "event": "stock_filtered_out", "symbol": "GOGO", "run_id": "20260317T080134Z", "reasons": ["gap 2.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 98.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:53.753110+00:00", "event": "stock_filtered_out", "symbol": "GRAB", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 2689.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:54.121681+00:00", "event": "stock_filtered_out", "symbol": "GRO", "run_id": "20260317T080134Z", "reasons": ["gap -5.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:54.494273+00:00", "event": "stock_filtered_out", "symbol": "GROW", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.15x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:54.865577+00:00", "event": "stock_filtered_out", "symbol": "GSBD", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.04x < 1.50x", "float 112.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:55.020245+00:00", "event": "stock_filtered_out", "symbol": "GSUI", "run_id": "20260317T080134Z", "reasons": ["rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:55.385696+00:00", "event": "stock_filtered_out", "symbol": "GTERA", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:55.799130+00:00", "event": "stock_filtered_out", "symbol": "HAFN", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:56.186559+00:00", "event": "stock_filtered_out", "symbol": "HAVAU", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:56.558086+00:00", "event": "stock_filtered_out", "symbol": "HBNB", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:56.937417+00:00", "event": "stock_filtered_out", "symbol": "HCKT", "run_id": "20260317T080134Z", "reasons": ["gap -1.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:57.302189+00:00", "event": "stock_filtered_out", "symbol": "HDSN", "run_id": "20260317T080134Z", "reasons": ["gap 2.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:57.671472+00:00", "event": "stock_filtered_out", "symbol": "HERZ", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:58.044327+00:00", "event": "stock_filtered_out", "symbol": "HLN", "run_id": "20260317T080134Z", "reasons": ["gap 3.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 8857.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:58.429385+00:00", "event": "stock_filtered_out", "symbol": "HLX", "run_id": "20260317T080134Z", "reasons": ["gap 2.5% < 5.0%", "rel_vol 0.08x < 1.50x", "float 137.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:58.798085+00:00", "event": "stock_filtered_out", "symbol": "HLXC", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:59.187393+00:00", "event": "stock_filtered_out", "symbol": "HMYY", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:02:59.558017+00:00", "event": "stock_filtered_out", "symbol": "HNST", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 102.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:02:59.956085+00:00", "event": "stock_filtered_out", "symbol": "HODU", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:00.316788+00:00", "event": "stock_filtered_out", "symbol": "HOOX", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:00.690211+00:00", "event": "stock_filtered_out", "symbol": "HPF", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:01.069971+00:00", "event": "stock_filtered_out", "symbol": "HSPT", "run_id": "20260317T080134Z", "reasons": ["gap -4.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:01.458831+00:00", "event": "stock_filtered_out", "symbol": "HST", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 641.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:01.827861+00:00", "event": "stock_filtered_out", "symbol": "HURA", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:02.198130+00:00", "event": "stock_filtered_out", "symbol": "HVIIU", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.19x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:02.582985+00:00", "event": "stock_filtered_out", "symbol": "HVMC", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:02.955824+00:00", "event": "stock_filtered_out", "symbol": "HYAC", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:03.350413+00:00", "event": "stock_filtered_out", "symbol": "HYNE", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:03.753465+00:00", "event": "stock_filtered_out", "symbol": "HYPD", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:04.151007+00:00", "event": "stock_filtered_out", "symbol": "HYSA", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:04.562796+00:00", "event": "stock_filtered_out", "symbol": "HYTI", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:04.951032+00:00", "event": "stock_filtered_out", "symbol": "IBAC", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:05.350214+00:00", "event": "stock_filtered_out", "symbol": "ICCC", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:05.525385+00:00", "event": "stock_filtered_out", "symbol": "IEAG", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:05.902710+00:00", "event": "stock_filtered_out", "symbol": "IEP", "run_id": "20260317T080134Z", "reasons": ["gap 2.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 87.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:06.278077+00:00", "event": "stock_filtered_out", "symbol": "IGAC", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:06.653166+00:00", "event": "stock_filtered_out", "symbol": "IHRT", "run_id": "20260317T080134Z", "reasons": ["gap 2.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 141.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:07.117954+00:00", "event": "stock_filtered_out", "symbol": "III", "run_id": "20260317T080134Z", "reasons": ["gap -1.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:07.500934+00:00", "event": "stock_filtered_out", "symbol": "IMA", "run_id": "20260317T080134Z", "reasons": ["gap 4.9% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:07.875724+00:00", "event": "stock_filtered_out", "symbol": "INKT", "run_id": "20260317T080134Z", "reasons": ["gap -3.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:08.260778+00:00", "event": "stock_filtered_out", "symbol": "INMD", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 55.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:08.664513+00:00", "event": "stock_filtered_out", "symbol": "INSG", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:09.060328+00:00", "event": "stock_filtered_out", "symbol": "INTR", "run_id": "20260317T080134Z", "reasons": ["gap 4.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 210.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:09.445875+00:00", "event": "stock_filtered_out", "symbol": "INVE", "run_id": "20260317T080134Z", "reasons": ["gap -2.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:09.821529+00:00", "event": "stock_filtered_out", "symbol": "IONR", "run_id": "20260317T080134Z", "reasons": ["gap 4.7% < 5.0%", "rel_vol 0.01x < 1.50x", "float 2137.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:10.226713+00:00", "event": "stock_filtered_out", "symbol": "IOR", "run_id": "20260317T080134Z", "reasons": ["gap -5.8% < 5.0%", "rel_vol 0.03x < 1.50x", "float 0.36M < 0.5M (micro-float)"]}
+{"ts_utc": "2026-03-17T08:03:10.602954+00:00", "event": "stock_filtered_out", "symbol": "IOTR", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:10.970400+00:00", "event": "stock_filtered_out", "symbol": "IPOD", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:11.343148+00:00", "event": "stock_filtered_out", "symbol": "IPWR", "run_id": "20260317T080134Z", "reasons": ["gap 1.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:11.709304+00:00", "event": "stock_filtered_out", "symbol": "IRE", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:12.092374+00:00", "event": "stock_filtered_out", "symbol": "ITUB", "run_id": "20260317T080134Z", "reasons": ["gap 2.8% < 5.0%", "rel_vol 0.02x < 1.50x", "float 5918.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:12.468928+00:00", "event": "stock_filtered_out", "symbol": "JAKK", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:12.855266+00:00", "event": "stock_filtered_out", "symbol": "JANX", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:13.225227+00:00", "event": "stock_filtered_out", "symbol": "JMM", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:13.600222+00:00", "event": "stock_filtered_out", "symbol": "JOBY", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 660.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:13.979482+00:00", "event": "stock_filtered_out", "symbol": "KBAB", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:14.360591+00:00", "event": "stock_filtered_out", "symbol": "KCCA", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:14.762717+00:00", "event": "stock_filtered_out", "symbol": "KOOL", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:15.152827+00:00", "event": "stock_filtered_out", "symbol": "KOS", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 466.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:15.531626+00:00", "event": "stock_filtered_out", "symbol": "KPLT", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:15.942971+00:00", "event": "stock_filtered_out", "symbol": "KRKR", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.17x < 1.50x", "float 824.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:16.100000+00:00", "event": "stock_filtered_out", "symbol": "KTWO", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:16.479461+00:00", "event": "stock_filtered_out", "symbol": "KVAC", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:16.863370+00:00", "event": "stock_filtered_out", "symbol": "LADR", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.20x < 1.50x", "float 111.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:17.241524+00:00", "event": "stock_filtered_out", "symbol": "LCCC", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:17.645505+00:00", "event": "stock_filtered_out", "symbol": "LEG", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.11x < 1.50x", "float 132.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:18.034882+00:00", "event": "stock_filtered_out", "symbol": "LEVI", "run_id": "20260317T080134Z", "reasons": ["gap 3.4% < 5.0%", "rel_vol 0.12x < 1.50x", "float 91.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:18.413216+00:00", "event": "stock_filtered_out", "symbol": "LFCR", "run_id": "20260317T080134Z", "reasons": ["gap -33.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:18.792975+00:00", "event": "stock_filtered_out", "symbol": "LFWD", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:19.167494+00:00", "event": "stock_filtered_out", "symbol": "LGHT", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:19.568256+00:00", "event": "stock_filtered_out", "symbol": "LIEN", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:19.944711+00:00", "event": "stock_filtered_out", "symbol": "LILA", "run_id": "20260317T080134Z", "reasons": ["gap 2.4% < 5.0%", "rel_vol 0.01x < 1.50x", "float 164.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:20.339398+00:00", "event": "stock_filtered_out", "symbol": "LINK", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:20.712043+00:00", "event": "stock_filtered_out", "symbol": "LITB", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.01x < 1.50x", "float 64.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:21.113268+00:00", "event": "stock_filtered_out", "symbol": "LKSPU", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.80x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:21.497319+00:00", "event": "stock_filtered_out", "symbol": "LNSR", "run_id": "20260317T080134Z", "reasons": ["gap -20.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:21.868032+00:00", "event": "stock_filtered_out", "symbol": "LODE", "run_id": "20260317T080134Z", "reasons": ["gap -3.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:22.245410+00:00", "event": "stock_filtered_out", "symbol": "LPAA", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:22.621602+00:00", "event": "stock_filtered_out", "symbol": "LPBB", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:23.029913+00:00", "event": "stock_filtered_out", "symbol": "LPCN", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:23.414634+00:00", "event": "stock_filtered_out", "symbol": "LRMR", "run_id": "20260317T080134Z", "reasons": ["gap -3.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 51.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:23.786339+00:00", "event": "stock_filtered_out", "symbol": "LTCC", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:24.161785+00:00", "event": "stock_filtered_out", "symbol": "LUXE", "run_id": "20260317T080134Z", "reasons": ["gap 2.6% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:24.566051+00:00", "event": "stock_filtered_out", "symbol": "LWLG", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 131.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:24.948813+00:00", "event": "stock_filtered_out", "symbol": "MAGH", "run_id": "20260317T080134Z", "reasons": ["rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:25.354417+00:00", "event": "stock_filtered_out", "symbol": "MARA", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 371.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:25.753242+00:00", "event": "stock_filtered_out", "symbol": "MBAVU", "run_id": "20260317T080134Z", "reasons": ["gap 4.3% < 5.0%", "rel_vol 1.48x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:26.154973+00:00", "event": "stock_filtered_out", "symbol": "MCHB", "run_id": "20260317T080134Z", "reasons": ["gap 1.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:26.540766+00:00", "event": "stock_filtered_out", "symbol": "MCI", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:26.917202+00:00", "event": "stock_filtered_out", "symbol": "MCOW", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.11x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:27.287386+00:00", "event": "stock_filtered_out", "symbol": "MCS", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:27.655665+00:00", "event": "stock_filtered_out", "symbol": "MCW", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 85.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:28.053274+00:00", "event": "stock_filtered_out", "symbol": "MEC", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.28x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:28.425973+00:00", "event": "stock_filtered_out", "symbol": "MFIN", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:28.798986+00:00", "event": "stock_filtered_out", "symbol": "MGN", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:29.189507+00:00", "event": "stock_filtered_out", "symbol": "MGNI", "run_id": "20260317T080134Z", "reasons": ["gap 2.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 142.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:29.651408+00:00", "event": "stock_filtered_out", "symbol": "MH", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:30.033298+00:00", "event": "stock_filtered_out", "symbol": "MICC", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.03x < 1.50x", "float 488.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:30.402776+00:00", "event": "stock_filtered_out", "symbol": "MIR", "run_id": "20260317T080134Z", "reasons": ["gap -1.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 226.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:30.568064+00:00", "event": "stock_filtered_out", "symbol": "MMED", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:30.951652+00:00", "event": "stock_filtered_out", "symbol": "MMU", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 54.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:31.345488+00:00", "event": "stock_filtered_out", "symbol": "MNKD", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 302.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:31.771068+00:00", "event": "stock_filtered_out", "symbol": "MNR", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.01x < 1.50x", "float 60.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:32.145155+00:00", "event": "stock_filtered_out", "symbol": "MOB", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:32.526726+00:00", "event": "stock_filtered_out", "symbol": "MQ", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.00x < 1.50x", "float 371.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:32.912352+00:00", "event": "stock_filtered_out", "symbol": "MRAL", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:33.288773+00:00", "event": "stock_filtered_out", "symbol": "MRAM", "run_id": "20260317T080134Z", "reasons": ["gap 1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:33.665822+00:00", "event": "stock_filtered_out", "symbol": "MRBK", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:34.121357+00:00", "event": "stock_filtered_out", "symbol": "MRTN", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 57.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:34.498437+00:00", "event": "stock_filtered_out", "symbol": "MSOO", "run_id": "20260317T080134Z", "reasons": ["gap 4.2% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:34.874317+00:00", "event": "stock_filtered_out", "symbol": "MTRX", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:35.280670+00:00", "event": "stock_filtered_out", "symbol": "MUZEU", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:35.673467+00:00", "event": "stock_filtered_out", "symbol": "MVO", "run_id": "20260317T080134Z", "reasons": ["gap -5.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:36.064601+00:00", "event": "stock_filtered_out", "symbol": "NAGE", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 52.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:36.471410+00:00", "event": "stock_filtered_out", "symbol": "NCA", "run_id": "20260317T080134Z", "reasons": ["gap 1.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:36.849463+00:00", "event": "stock_filtered_out", "symbol": "NCDL", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:37.247669+00:00", "event": "stock_filtered_out", "symbol": "NCI", "run_id": "20260317T080134Z", "reasons": ["gap -25.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:37.621654+00:00", "event": "stock_filtered_out", "symbol": "NEXM", "run_id": "20260317T080134Z", "reasons": ["gap -2.0% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:37.988885+00:00", "event": "stock_filtered_out", "symbol": "NIKL", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:38.358563+00:00", "event": "stock_filtered_out", "symbol": "NIVF", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 0.04M < 0.5M (micro-float)"]}
+{"ts_utc": "2026-03-17T08:03:38.735150+00:00", "event": "stock_filtered_out", "symbol": "NL", "run_id": "20260317T080134Z", "reasons": ["gap -2.5% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:39.108452+00:00", "event": "stock_filtered_out", "symbol": "NLOP", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:39.486692+00:00", "event": "stock_filtered_out", "symbol": "NMAI", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:39.859881+00:00", "event": "stock_filtered_out", "symbol": "NMAX", "run_id": "20260317T080134Z", "reasons": ["gap -1.0% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:40.225221+00:00", "event": "stock_filtered_out", "symbol": "NNAVW", "run_id": "20260317T080134Z", "reasons": ["gap -5.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 96.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:40.593112+00:00", "event": "stock_filtered_out", "symbol": "NNY", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:40.971465+00:00", "event": "stock_filtered_out", "symbol": "NODK", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.09x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:41.354164+00:00", "event": "stock_filtered_out", "symbol": "NOEM", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:41.723443+00:00", "event": "stock_filtered_out", "symbol": "NSTS", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:42.097776+00:00", "event": "stock_filtered_out", "symbol": "NTLA", "run_id": "20260317T080134Z", "reasons": ["gap 3.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 111.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:42.470216+00:00", "event": "stock_filtered_out", "symbol": "NTSK", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 89.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:42.862219+00:00", "event": "stock_filtered_out", "symbol": "NTZ", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:43.230730+00:00", "event": "stock_filtered_out", "symbol": "NU", "run_id": "20260317T080134Z", "reasons": ["gap 2.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 3670.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:43.603242+00:00", "event": "stock_filtered_out", "symbol": "NUW", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:43.977030+00:00", "event": "stock_filtered_out", "symbol": "NVDQ", "run_id": "20260317T080134Z", "reasons": ["gap -3.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:44.356375+00:00", "event": "stock_filtered_out", "symbol": "NVOX", "run_id": "20260317T080134Z", "reasons": ["gap 3.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:44.723942+00:00", "event": "stock_filtered_out", "symbol": "NVTS", "run_id": "20260317T080134Z", "reasons": ["gap 2.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 220.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:45.095247+00:00", "event": "stock_filtered_out", "symbol": "NWAX", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:45.480698+00:00", "event": "stock_filtered_out", "symbol": "NWG", "run_id": "20260317T080134Z", "reasons": ["gap 3.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 7961.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:45.853473+00:00", "event": "stock_filtered_out", "symbol": "OACCU", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:46.271469+00:00", "event": "stock_filtered_out", "symbol": "OBIO", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:46.623113+00:00", "event": "stock_filtered_out", "symbol": "OCSAW", "run_id": "20260317T080134Z", "reasons": ["gap -7.3% < 5.0%", "rel_vol 0.11x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:46.983384+00:00", "event": "stock_filtered_out", "symbol": "OESX", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:47.350858+00:00", "event": "stock_filtered_out", "symbol": "OIA", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:47.749251+00:00", "event": "stock_filtered_out", "symbol": "OOQB", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.17x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:48.123222+00:00", "event": "stock_filtered_out", "symbol": "OPEG", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:48.485748+00:00", "event": "stock_filtered_out", "symbol": "OPRT", "run_id": "20260317T080134Z", "reasons": ["gap 1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:48.855944+00:00", "event": "stock_filtered_out", "symbol": "ORLA", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.02x < 1.50x", "float 261.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:49.236039+00:00", "event": "stock_filtered_out", "symbol": "ORLG", "run_id": "20260317T080134Z", "reasons": ["gap -2.3% < 5.0%", "rel_vol 0.18x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:49.622028+00:00", "event": "stock_filtered_out", "symbol": "ORN", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:49.976208+00:00", "event": "stock_filtered_out", "symbol": "ORO", "run_id": "20260317T080134Z", "reasons": ["gap 2.7% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:03:50.351767+00:00", "event": "stock_filtered_out", "symbol": "OSUR", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.10x < 1.50x", "float 60.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:50.712117+00:00", "event": "stock_filtered_out", "symbol": "OTGL", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:51.096147+00:00", "event": "stock_filtered_out", "symbol": "OWL", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 631.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:51.473510+00:00", "event": "stock_filtered_out", "symbol": "OWLS", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:51.834286+00:00", "event": "stock_filtered_out", "symbol": "OYSE", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:52.215398+00:00", "event": "stock_filtered_out", "symbol": "PCAPU", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:52.603595+00:00", "event": "stock_filtered_out", "symbol": "PCF", "run_id": "20260317T080134Z", "reasons": ["gap -1.1% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:52.968361+00:00", "event": "stock_filtered_out", "symbol": "PCG", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.17x < 1.50x", "float 2191.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:53.329297+00:00", "event": "stock_filtered_out", "symbol": "PCLA", "run_id": "20260317T080134Z", "reasons": ["gap 2.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:53.707180+00:00", "event": "stock_filtered_out", "symbol": "PCSA", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:54.067177+00:00", "event": "stock_filtered_out", "symbol": "PCTTU", "run_id": "20260317T080134Z", "reasons": ["gap -28.8% < 5.0%", "rel_vol 0.04x < 1.50x", "float 141.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:54.462891+00:00", "event": "stock_filtered_out", "symbol": "PCYO", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.14x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:54.850819+00:00", "event": "stock_filtered_out", "symbol": "PD", "run_id": "20260317T080134Z", "reasons": ["gap -1.8% < 5.0%", "rel_vol 0.00x < 1.50x", "float 80.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:55.210477+00:00", "event": "stock_filtered_out", "symbol": "PDO", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 137.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:55.580915+00:00", "event": "stock_filtered_out", "symbol": "PGF", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:55.947630+00:00", "event": "stock_filtered_out", "symbol": "PGNY", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 75.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:03:56.351118+00:00", "event": "stock_filtered_out", "symbol": "PHGE", "run_id": "20260317T080134Z", "reasons": ["gap -11.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:56.717181+00:00", "event": "stock_filtered_out", "symbol": "PIII", "run_id": "20260317T080134Z", "reasons": ["gap -3.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:57.074432+00:00", "event": "stock_filtered_out", "symbol": "PIM", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:57.431858+00:00", "event": "stock_filtered_out", "symbol": "PLAG", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:57.800601+00:00", "event": "stock_filtered_out", "symbol": "PLAY", "run_id": "20260317T080134Z", "reasons": ["gap -2.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:58.180417+00:00", "event": "stock_filtered_out", "symbol": "PLOO", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:58.557129+00:00", "event": "stock_filtered_out", "symbol": "PLRZ", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:58.923987+00:00", "event": "stock_filtered_out", "symbol": "PLUR", "run_id": "20260317T080134Z", "reasons": ["gap -4.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:59.299197+00:00", "event": "stock_filtered_out", "symbol": "PMTS", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:03:59.699586+00:00", "event": "stock_filtered_out", "symbol": "PODC", "run_id": "20260317T080134Z", "reasons": ["gap 2.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:00.102458+00:00", "event": "stock_filtered_out", "symbol": "PQDI", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:00.483225+00:00", "event": "stock_filtered_out", "symbol": "PSHG", "run_id": "20260317T080134Z", "reasons": ["gap -5.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:00.842635+00:00", "event": "stock_filtered_out", "symbol": "PSIL", "run_id": "20260317T080134Z", "reasons": ["gap 1.6% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:01.230142+00:00", "event": "stock_filtered_out", "symbol": "PSTL", "run_id": "20260317T080134Z", "reasons": ["gap 2.2% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:01.606698+00:00", "event": "stock_filtered_out", "symbol": "PTA", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.01x < 1.50x", "float 55.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:01.978489+00:00", "event": "stock_filtered_out", "symbol": "PTLO", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x", "float 70.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:02.397292+00:00", "event": "stock_filtered_out", "symbol": "PYPD", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:02.774014+00:00", "event": "stock_filtered_out", "symbol": "QETAU", "run_id": "20260317T080134Z", "reasons": ["gap 1.9% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:04:03.141922+00:00", "event": "stock_filtered_out", "symbol": "QFIN", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 200.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:03.513112+00:00", "event": "stock_filtered_out", "symbol": "QPUX", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:03.866288+00:00", "event": "stock_filtered_out", "symbol": "QSU", "run_id": "20260317T080134Z", "reasons": ["gap 4.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:04.228647+00:00", "event": "stock_filtered_out", "symbol": "QUBT", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 199.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:04.652838+00:00", "event": "stock_filtered_out", "symbol": "QYLD", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:05.031818+00:00", "event": "stock_filtered_out", "symbol": "RANGU", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:05.412695+00:00", "event": "stock_filtered_out", "symbol": "RDW", "run_id": "20260317T080134Z", "reasons": ["gap -0.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 143.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:05.801498+00:00", "event": "stock_filtered_out", "symbol": "REAL", "run_id": "20260317T080134Z", "reasons": ["gap 4.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 108.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:06.167767+00:00", "event": "stock_filtered_out", "symbol": "RERE", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.02x < 1.50x", "float 93.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:06.530839+00:00", "event": "stock_filtered_out", "symbol": "RFAIU", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:06.672100+00:00", "event": "stock_filtered_out", "symbol": "RFAM", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:07.053458+00:00", "event": "stock_filtered_out", "symbol": "RIET", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:07.423815+00:00", "event": "stock_filtered_out", "symbol": "RILA", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:07.791143+00:00", "event": "stock_filtered_out", "symbol": "RIOT", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 348.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:08.156260+00:00", "event": "stock_filtered_out", "symbol": "RITM", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 553.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:08.521401+00:00", "event": "stock_filtered_out", "symbol": "RMAX", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:08.889454+00:00", "event": "stock_filtered_out", "symbol": "RMMZ", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:09.263968+00:00", "event": "stock_filtered_out", "symbol": "RMNI", "run_id": "20260317T080134Z", "reasons": ["gap -0.9% < 5.0%", "rel_vol 0.08x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:09.689186+00:00", "event": "stock_filtered_out", "symbol": "RPD", "run_id": "20260317T080134Z", "reasons": ["gap -8.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 57.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:10.084588+00:00", "event": "stock_filtered_out", "symbol": "RPT", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:10.490852+00:00", "event": "stock_filtered_out", "symbol": "RRGB", "run_id": "20260317T080134Z", "reasons": ["gap 4.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:10.847558+00:00", "event": "stock_filtered_out", "symbol": "RSBY", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:11.231554+00:00", "event": "stock_filtered_out", "symbol": "RUN", "run_id": "20260317T080134Z", "reasons": ["gap 4.9% < 5.0%", "rel_vol 0.00x < 1.50x", "float 226.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:11.596459+00:00", "event": "stock_filtered_out", "symbol": "RVSB", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:11.962006+00:00", "event": "stock_filtered_out", "symbol": "RVYL", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:12.332998+00:00", "event": "stock_filtered_out", "symbol": "SAAQU", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:12.694051+00:00", "event": "stock_filtered_out", "symbol": "SAC", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:13.070688+00:00", "event": "stock_filtered_out", "symbol": "SAN", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 14468.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:13.442589+00:00", "event": "stock_filtered_out", "symbol": "SANA", "run_id": "20260317T080134Z", "reasons": ["gap -2.1% < 5.0%", "rel_vol 0.00x < 1.50x", "float 177.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:13.819383+00:00", "event": "stock_filtered_out", "symbol": "SATL", "run_id": "20260317T080134Z", "reasons": ["gap -1.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 79.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:14.222918+00:00", "event": "stock_filtered_out", "symbol": "SCOR", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:14.662163+00:00", "event": "stock_filtered_out", "symbol": "SCOW", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:15.061200+00:00", "event": "stock_filtered_out", "symbol": "SCVL", "run_id": "20260317T080134Z", "reasons": ["gap -3.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:15.445250+00:00", "event": "stock_filtered_out", "symbol": "SCWO", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:15.823133+00:00", "event": "stock_filtered_out", "symbol": "SCZM", "run_id": "20260317T080134Z", "reasons": ["gap -3.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 84.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:16.193142+00:00", "event": "stock_filtered_out", "symbol": "SDD", "run_id": "20260317T080134Z", "reasons": ["gap -1.7% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:16.554361+00:00", "event": "stock_filtered_out", "symbol": "SDHY", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:16.944872+00:00", "event": "stock_filtered_out", "symbol": "SEA", "run_id": "20260317T080134Z", "reasons": ["gap 2.9% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:17.328441+00:00", "event": "stock_filtered_out", "symbol": "SEM", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.06x < 1.50x", "float 103.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:17.714436+00:00", "event": "stock_filtered_out", "symbol": "SGML", "run_id": "20260317T080134Z", "reasons": ["gap -1.2% < 5.0%", "rel_vol 0.00x < 1.50x", "float 58.6M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:18.088062+00:00", "event": "stock_filtered_out", "symbol": "SGU", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.17x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:18.450681+00:00", "event": "stock_filtered_out", "symbol": "SHC", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x", "float 191.5M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:18.830632+00:00", "event": "stock_filtered_out", "symbol": "SHNY", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:19.226496+00:00", "event": "stock_filtered_out", "symbol": "SIEB", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:19.592300+00:00", "event": "stock_filtered_out", "symbol": "SIF", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:19.972597+00:00", "event": "stock_filtered_out", "symbol": "SLSR", "run_id": "20260317T080134Z", "reasons": ["gap 3.7% < 5.0%", "rel_vol 0.01x < 1.50x", "float 88.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:20.329806+00:00", "event": "stock_filtered_out", "symbol": "SMB", "run_id": "20260317T080134Z", "reasons": ["gap -0.0% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:20.691913+00:00", "event": "stock_filtered_out", "symbol": "SMHI", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.07x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:21.049620+00:00", "event": "stock_filtered_out", "symbol": "SMTI", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:21.438950+00:00", "event": "stock_filtered_out", "symbol": "SNBR", "run_id": "20260317T080134Z", "reasons": ["gap -6.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:21.819725+00:00", "event": "stock_filtered_out", "symbol": "SOCA", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:22.177547+00:00", "event": "stock_filtered_out", "symbol": "SOFX", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:22.542748+00:00", "event": "stock_filtered_out", "symbol": "SOHOB", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:22.918739+00:00", "event": "stock_filtered_out", "symbol": "SPEG", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:23.307200+00:00", "event": "stock_filtered_out", "symbol": "SRI", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%", "rel_vol 0.10x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:23.663465+00:00", "event": "stock_filtered_out", "symbol": "SRPT", "run_id": "20260317T080134Z", "reasons": ["gap 2.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 91.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:24.017144+00:00", "event": "stock_filtered_out", "symbol": "SSACU", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:24.394570+00:00", "event": "stock_filtered_out", "symbol": "SSEAU", "run_id": "20260317T080134Z", "reasons": ["gap -0.7% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:04:24.777460+00:00", "event": "stock_filtered_out", "symbol": "SSTI", "run_id": "20260317T080134Z", "reasons": ["gap 2.4% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:25.184378+00:00", "event": "stock_filtered_out", "symbol": "SSTK", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:25.546190+00:00", "event": "stock_filtered_out", "symbol": "STHO", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:25.909037+00:00", "event": "stock_filtered_out", "symbol": "STSS", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:26.268382+00:00", "event": "stock_filtered_out", "symbol": "STTK", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:26.626700+00:00", "event": "stock_filtered_out", "symbol": "STWD", "run_id": "20260317T080134Z", "reasons": ["gap -0.2% < 5.0%", "rel_vol 0.00x < 1.50x", "float 352.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:26.763379+00:00", "event": "stock_filtered_out", "symbol": "SUMAU", "run_id": "20260317T080134Z", "reasons": ["gap 0.4% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:27.125058+00:00", "event": "stock_filtered_out", "symbol": "SUZ", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.02x < 1.50x", "float 672.3M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:27.531818+00:00", "event": "stock_filtered_out", "symbol": "SVM", "run_id": "20260317T080134Z", "reasons": ["gap 2.8% < 5.0%", "rel_vol 0.01x < 1.50x", "float 212.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:27.908405+00:00", "event": "stock_filtered_out", "symbol": "SWBI", "run_id": "20260317T080134Z", "reasons": ["gap 0.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:28.302045+00:00", "event": "stock_filtered_out", "symbol": "SXC", "run_id": "20260317T080134Z", "reasons": ["gap -3.3% < 5.0%", "rel_vol 0.24x < 1.50x", "float 83.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:28.677561+00:00", "event": "stock_filtered_out", "symbol": "SYPR", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:29.037736+00:00", "event": "stock_filtered_out", "symbol": "SZK", "run_id": "20260317T080134Z", "reasons": ["gap -0.4% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:29.407669+00:00", "event": "stock_filtered_out", "symbol": "SZZLU", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%"]}
+{"ts_utc": "2026-03-17T08:04:29.765113+00:00", "event": "stock_filtered_out", "symbol": "TACOU", "run_id": "20260317T080134Z", "reasons": ["gap 0.0% < 5.0%", "rel_vol 0.11x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:30.146153+00:00", "event": "stock_filtered_out", "symbol": "TAIL", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:30.531869+00:00", "event": "stock_filtered_out", "symbol": "TARA", "run_id": "20260317T080134Z", "reasons": ["gap 4.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:30.903487+00:00", "event": "stock_filtered_out", "symbol": "TASK", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:31.262712+00:00", "event": "stock_filtered_out", "symbol": "TBRG", "run_id": "20260317T080134Z", "reasons": ["gap -6.4% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:31.622401+00:00", "event": "stock_filtered_out", "symbol": "TDUP", "run_id": "20260317T080134Z", "reasons": ["gap 3.5% < 5.0%", "rel_vol 0.00x < 1.50x", "float 100.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:32.004857+00:00", "event": "stock_filtered_out", "symbol": "TG", "run_id": "20260317T080134Z", "reasons": ["gap 4.2% < 5.0%", "rel_vol 0.12x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:32.360882+00:00", "event": "stock_filtered_out", "symbol": "THCH", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.08x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:32.730365+00:00", "event": "stock_filtered_out", "symbol": "THM", "run_id": "20260317T080134Z", "reasons": ["gap -1.6% < 5.0%", "rel_vol 0.00x < 1.50x", "float 99.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:33.095890+00:00", "event": "stock_filtered_out", "symbol": "TK", "run_id": "20260317T080134Z", "reasons": ["gap 3.5% < 5.0%", "rel_vol 0.12x < 1.50x", "float 54.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:33.483836+00:00", "event": "stock_filtered_out", "symbol": "TKC", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.04x < 1.50x", "float 728.4M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:33.840054+00:00", "event": "stock_filtered_out", "symbol": "TKNO", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:34.203458+00:00", "event": "stock_filtered_out", "symbol": "TLNC", "run_id": "20260317T080134Z", "reasons": ["gap -0.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:34.580283+00:00", "event": "stock_filtered_out", "symbol": "TLSI", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.00x < 1.50x", "float 51.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:34.945843+00:00", "event": "stock_filtered_out", "symbol": "TNGX", "run_id": "20260317T080134Z", "reasons": ["gap 3.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 67.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:35.313386+00:00", "event": "stock_filtered_out", "symbol": "TRT", "run_id": "20260317T080134Z", "reasons": ["gap -2.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:35.699458+00:00", "event": "stock_filtered_out", "symbol": "TRVI", "run_id": "20260317T080134Z", "reasons": ["gap 3.4% < 5.0%", "rel_vol 0.00x < 1.50x", "float 103.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:36.070494+00:00", "event": "stock_filtered_out", "symbol": "TSLG", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:36.448572+00:00", "event": "stock_filtered_out", "symbol": "TTRX", "run_id": "20260317T080134Z", "reasons": ["gap 1.1% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:36.814134+00:00", "event": "stock_filtered_out", "symbol": "TTXU", "run_id": "20260317T080134Z", "reasons": ["gap 2.3% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:37.184881+00:00", "event": "stock_filtered_out", "symbol": "TUSK", "run_id": "20260317T080134Z", "reasons": ["gap -0.9% < 5.0%", "rel_vol 0.03x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:37.556443+00:00", "event": "stock_filtered_out", "symbol": "TWG", "run_id": "20260317T080134Z", "reasons": ["gap -1.6% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:37.932169+00:00", "event": "stock_filtered_out", "symbol": "TXBC", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.08x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:38.304084+00:00", "event": "stock_filtered_out", "symbol": "UBFO", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.13x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:38.689544+00:00", "event": "stock_filtered_out", "symbol": "UDMY", "run_id": "20260317T080134Z", "reasons": ["gap 0.2% < 5.0%", "rel_vol 0.00x < 1.50x", "float 101.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:39.066156+00:00", "event": "stock_filtered_out", "symbol": "UIS", "run_id": "20260317T080134Z", "reasons": ["gap 1.3% < 5.0%", "rel_vol 0.05x < 1.50x", "float 62.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:39.435195+00:00", "event": "stock_filtered_out", "symbol": "ULTI", "run_id": "20260317T080134Z", "reasons": ["gap 1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:39.815347+00:00", "event": "stock_filtered_out", "symbol": "UMH", "run_id": "20260317T080134Z", "reasons": ["gap 0.5% < 5.0%", "rel_vol 0.12x < 1.50x", "float 79.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:40.177586+00:00", "event": "stock_filtered_out", "symbol": "UNHG", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:40.527897+00:00", "event": "stock_filtered_out", "symbol": "UONEK", "run_id": "20260317T080134Z", "reasons": ["gap -6.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:40.890437+00:00", "event": "stock_filtered_out", "symbol": "UPSG", "run_id": "20260317T080134Z", "reasons": ["gap 0.6% < 5.0%", "rel_vol 0.05x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:41.243199+00:00", "event": "stock_filtered_out", "symbol": "UPSX", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:41.636810+00:00", "event": "stock_filtered_out", "symbol": "USCB", "run_id": "20260317T080134Z", "reasons": ["gap 1.5% < 5.0%", "rel_vol 0.12x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:42.000430+00:00", "event": "stock_filtered_out", "symbol": "UWMC", "run_id": "20260317T080134Z", "reasons": ["gap 0.3% < 5.0%", "rel_vol 0.00x < 1.50x", "float 251.9M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:42.378881+00:00", "event": "stock_filtered_out", "symbol": "VERU", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:42.763721+00:00", "event": "stock_filtered_out", "symbol": "VGM", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 0.00x < 1.50x", "float 54.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:43.139720+00:00", "event": "stock_filtered_out", "symbol": "VIV", "run_id": "20260317T080134Z", "reasons": ["gap 1.8% < 5.0%", "rel_vol 0.05x < 1.50x", "float 705.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:43.538494+00:00", "event": "stock_filtered_out", "symbol": "VNMEU", "run_id": "20260317T080134Z", "reasons": ["gap 3.0% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:43.909456+00:00", "event": "stock_filtered_out", "symbol": "VRE", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.03x < 1.50x", "float 81.2M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:44.275500+00:00", "event": "stock_filtered_out", "symbol": "VREX", "run_id": "20260317T080134Z", "reasons": ["gap 3.1% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:44.657731+00:00", "event": "stock_filtered_out", "symbol": "VTIX", "run_id": "20260317T080134Z", "reasons": ["gap 2.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:45.018500+00:00", "event": "stock_filtered_out", "symbol": "VTS", "run_id": "20260317T080134Z", "reasons": ["gap -2.5% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:45.379716+00:00", "event": "stock_filtered_out", "symbol": "VYGR", "run_id": "20260317T080134Z", "reasons": ["gap -3.3% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:45.744847+00:00", "event": "stock_filtered_out", "symbol": "WATT", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:46.113816+00:00", "event": "stock_filtered_out", "symbol": "WAVE", "run_id": "20260317T080134Z", "reasons": ["gap 1.7% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:46.487814+00:00", "event": "stock_filtered_out", "symbol": "WDNA", "run_id": "20260317T080134Z", "reasons": ["gap 1.0% < 5.0%", "rel_vol 0.17x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:46.893142+00:00", "event": "stock_filtered_out", "symbol": "WEED", "run_id": "20260317T080134Z", "reasons": ["gap -0.8% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:47.293719+00:00", "event": "stock_filtered_out", "symbol": "WFCF", "run_id": "20260317T080134Z", "reasons": ["gap -3.9% < 5.0%", "rel_vol 0.04x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:47.657795+00:00", "event": "stock_filtered_out", "symbol": "WLACW", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:48.048763+00:00", "event": "stock_filtered_out", "symbol": "WLTH", "run_id": "20260317T080134Z", "reasons": ["gap 2.7% < 5.0%", "rel_vol 0.00x < 1.50x", "float 81.8M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:48.418501+00:00", "event": "stock_filtered_out", "symbol": "WNC", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.08x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:48.786403+00:00", "event": "stock_filtered_out", "symbol": "WRN", "run_id": "20260317T080134Z", "reasons": ["gap 1.4% < 5.0%", "rel_vol 0.01x < 1.50x", "float 176.0M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:49.155143+00:00", "event": "stock_filtered_out", "symbol": "WT", "run_id": "20260317T080134Z", "reasons": ["gap -2.8% < 5.0%", "rel_vol 0.11x < 1.50x", "float 123.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:49.521604+00:00", "event": "stock_filtered_out", "symbol": "WTF", "run_id": "20260317T080134Z", "reasons": ["gap 0.7% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:49.879734+00:00", "event": "stock_filtered_out", "symbol": "WVVIP", "run_id": "20260317T080134Z", "reasons": ["gap -1.9% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:50.250545+00:00", "event": "stock_filtered_out", "symbol": "XFOR", "run_id": "20260317T080134Z", "reasons": ["gap -3.5% < 5.0%", "rel_vol 0.02x < 1.50x", "float 61.1M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:50.642210+00:00", "event": "stock_filtered_out", "symbol": "XOMZ", "run_id": "20260317T080134Z", "reasons": ["gap -0.5% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:51.015225+00:00", "event": "stock_filtered_out", "symbol": "XOVR", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:51.372234+00:00", "event": "stock_filtered_out", "symbol": "XPER", "run_id": "20260317T080134Z", "reasons": ["gap 1.2% < 5.0%", "rel_vol 0.06x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:51.730210+00:00", "event": "stock_filtered_out", "symbol": "XRPZ", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:52.084894+00:00", "event": "stock_filtered_out", "symbol": "XXRP", "run_id": "20260317T080134Z", "reasons": ["rel_vol 0.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:52.448657+00:00", "event": "stock_filtered_out", "symbol": "YEXT", "run_id": "20260317T080134Z", "reasons": ["gap 4.4% < 5.0%", "rel_vol 0.10x < 1.50x", "float 89.7M > 50.0M"]}
+{"ts_utc": "2026-03-17T08:04:52.800867+00:00", "event": "stock_filtered_out", "symbol": "YHNAU", "run_id": "20260317T080134Z", "reasons": ["gap -0.3% < 5.0%", "rel_vol 1.00x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:53.164298+00:00", "event": "stock_filtered_out", "symbol": "YRD", "run_id": "20260317T080134Z", "reasons": ["gap 0.8% < 5.0%", "rel_vol 0.02x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:53.522389+00:00", "event": "stock_filtered_out", "symbol": "ZGN", "run_id": "20260317T080134Z", "reasons": ["gap 2.1% < 5.0%", "rel_vol 0.13x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:53.884898+00:00", "event": "stock_filtered_out", "symbol": "ZKP", "run_id": "20260317T080134Z", "reasons": ["gap 0.1% < 5.0%", "rel_vol 0.01x < 1.50x"]}
+{"ts_utc": "2026-03-17T08:04:53.887234+00:00", "event": "session_symbols_saved", "symbol": null, "run_id": "20260317T080134Z", "count": 1, "file": "last_session_symbols.txt"}
+{"ts_utc": "2026-03-17T08:04:54.102149+00:00", "event": "paper_connected", "symbol": null, "run_id": "20260317T080134Z", "status": "AccountStatus.ACTIVE", "buying_power": 125676.16, "equity": 31419.04, "mode": "PAPER", "armed": true}
+{"ts_utc": "2026-03-17T08:04:54.102758+00:00", "event": "paper_manager_initialized", "symbol": null, "run_id": "20260317T080134Z", "stock_info_cached": 1}
+{"ts_utc": "2026-03-17T08:04:54.283859+00:00", "event": "watchlist_subscribe", "symbol": "CRAQU", "run_id": "20260317T080134Z"}
+{"ts_utc": "2026-03-17T08:04:54.355524+00:00", "event": "session_symbols_saved", "symbol": null, "run_id": "20260317T080134Z", "count": 1, "file": "last_session_symbols.txt"}

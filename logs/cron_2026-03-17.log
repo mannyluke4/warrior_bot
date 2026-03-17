@@ -1,0 +1,123 @@
+=== Daily run started: Tue Mar 17 02:00:00 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v6-dynamic-sizing -> FETCH_HEAD
+   b84b5fe..6683129  v6-dynamic-sizing -> origin/v6-dynamic-sizing
+Updating b84b5fe..6683129
+Fast-forward
+ ALPACA_API_RELIABILITY_REPORT_20260316.md |  195 ++
+ PERPLEXITY_HANDOFF_20260316.md            |  179 ++
+ V2_PILLAR_BACKTEST_REPORT_20260316.md     |  188 ++
+ YTD_V2_BACKTEST_RESULTS.md                |  498 ++--
+ micro_pullback.py                         |   35 +
+ run_ytd_v2_backtest.py                    |   41 +-
+ scanner_results/2026-01-02.json           |  522 +++-
+ scanner_results/2026-01-02.txt            |   17 +-
+ scanner_results/2026-01-05.json           |  652 ++++-
+ scanner_results/2026-01-05.txt            |   25 +-
+ scanner_results/2026-01-06.json           |  280 +-
+ scanner_results/2026-01-06.txt            |    8 +-
+ scanner_results/2026-01-07.json           |  216 +-
+ scanner_results/2026-01-07.txt            |    7 +-
+ scanner_results/2026-01-08.json           |  274 +-
+ scanner_results/2026-01-08.txt            |   12 +-
+ scanner_results/2026-01-09.json           |  242 +-
+ scanner_results/2026-01-09.txt            |   11 +-
+ scanner_results/2026-01-12.json           |  338 ++-
+ scanner_results/2026-01-12.txt            |   14 +-
+ scanner_results/2026-01-13.json           |  306 ++-
+ scanner_results/2026-01-13.txt            |   15 +-
+ scanner_results/2026-01-14.json           |  282 +-
+ scanner_results/2026-01-14.txt            |    9 +-
+ scanner_results/2026-01-15.json           |  272 +-
+ scanner_results/2026-01-15.txt            |    9 +-
+ scanner_results/2026-01-16.json           |  258 +-
+ scanner_results/2026-01-16.txt            |   10 +-
+ scanner_results/2026-01-20.json           |  246 +-
+ scanner_results/2026-01-20.txt            |    2 +-
+ scanner_results/2026-01-21.json           |  306 ++-
+ scanner_results/2026-01-21.txt            |   10 +-
+ scanner_results/2026-01-22.json           |  492 +++-
+ scanner_results/2026-01-22.txt            |   17 +-
+ scanner_results/2026-01-23.json           |  314 ++-
+ scanner_results/2026-01-23.txt            |   14 +-
+ scanner_results/2026-01-26.json           |  290 +-
+ scanner_results/2026-01-26.txt            |    8 +-
+ scanner_results/2026-01-27.json           |  304 ++-
+ scanner_results/2026-01-27.txt            |   11 +-
+ scanner_results/2026-01-28.json           |  222 +-
+ scanner_results/2026-01-28.txt            |    7 +-
+ scanner_results/2026-01-29.json           |  218 +-
+ scanner_results/2026-01-29.txt            |    7 +-
+ scanner_results/2026-01-30.json           |  188 +-
+ scanner_results/2026-01-30.txt            |    7 +-
+ scanner_results/2026-02-02.json           |  396 ++-
+ scanner_results/2026-02-02.txt            |   13 +-
+ scanner_results/2026-02-03.json           |  398 ++-
+ scanner_results/2026-02-03.txt            |   12 +-
+ scanner_results/2026-02-04.json           |  236 +-
+ scanner_results/2026-02-04.txt            |   10 +-
+ scanner_results/2026-02-05.json           |  148 +
+ scanner_results/2026-02-06.json           |  860 +++++-
+ scanner_results/2026-02-06.txt            |   15 +-
+ scanner_results/2026-02-09.json           |  360 ++-
+ scanner_results/2026-02-09.txt            |    9 +-
+ scanner_results/2026-02-10.json           |  250 ++
+ scanner_results/2026-02-10.txt            |    6 +-
+ scanner_results/2026-02-11.json           |  228 +-
+ scanner_results/2026-02-11.txt            |    7 +-
+ scanner_results/2026-02-12.json           |  260 +-
+ scanner_results/2026-02-12.txt            |   15 +-
+ scanner_results/2026-02-13.json           |  546 +++-
+ scanner_results/2026-02-13.txt            |    8 +-
+ scanner_results/2026-02-17.json           |  204 +-
+ scanner_results/2026-02-17.txt            |    5 +-
+ scanner_results/2026-02-18.json           |  484 +++-
+ scanner_results/2026-02-18.txt            |   17 +-
+ scanner_results/2026-02-19.json           |  238 +-
+ scanner_results/2026-02-19.txt            |    8 +-
+ scanner_results/2026-02-20.json           |  208 +-
+ scanner_results/2026-02-20.txt            |    5 +-
+ scanner_results/2026-02-23.json           |  270 +-
+ scanner_results/2026-02-23.txt            |   10 +-
+ scanner_results/2026-02-24.json           |  392 ++-
+ scanner_results/2026-02-24.txt            |    9 +-
+ scanner_results/2026-02-25.json           |  680 ++++-
+ scanner_results/2026-02-25.txt            |   21 +-
+ scanner_results/2026-02-26.json           |  350 ++-
+ scanner_results/2026-02-26.txt            |   13 +-
+ scanner_results/2026-02-27.json           |  134 +
+ scanner_results/2026-03-02.json           |  462 +++-
+ scanner_results/2026-03-02.txt            |   14 +-
+ scanner_results/2026-03-03.json           |  228 +-
+ scanner_results/2026-03-03.txt            |    7 +-
+ scanner_results/2026-03-04.json           |  642 ++++-
+ scanner_results/2026-03-04.txt            |   10 +-
+ scanner_results/2026-03-05.json           |  322 ++-
+ scanner_results/2026-03-05.txt            |    9 +-
+ scanner_results/2026-03-06.json           |  310 ++-
+ scanner_results/2026-03-06.txt            |   12 +-
+ scanner_results/2026-03-09.json           |  258 +-
+ scanner_results/2026-03-09.txt            |    2 +-
+ scanner_results/2026-03-10.json           |  380 ++-
+ scanner_results/2026-03-10.txt            |    8 +-
+ scanner_results/2026-03-11.json           |  306 ++-
+ scanner_results/2026-03-11.txt            |    9 +-
+ scanner_results/2026-03-12.json           |  234 +-
+ scanner_results/2026-03-12.txt            |    8 +-
+ scanner_results/float_cache.json          |   19 +-
+ scanner_sim.py                            |   65 +-
+ simulate.py                               |   41 +-
+ ytd_v2_backtest_state.json                | 4237 ++++++++++++++---------------
+ 104 files changed, 17663 insertions(+), 4323 deletions(-)
+ create mode 100644 ALPACA_API_RELIABILITY_REPORT_20260316.md
+ create mode 100644 PERPLEXITY_HANDOFF_20260316.md
+ create mode 100644 V2_PILLAR_BACKTEST_REPORT_20260316.md
+Starting TWS via IBC...
+TWS started (IBC PID: 26435)
+Starting bot...
+Bot started (PID: 26461)
+Waiting 25108s until 9:00 AM MT...
+18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
+=== Shutting down at Tue Mar 17 09:00:00 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 71: 26461 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
+Pushing logs...
