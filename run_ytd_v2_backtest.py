@@ -139,8 +139,14 @@ TRADE_PAT = re.compile(
 )
 
 
+TICK_DIAG_PAT = re.compile(r'Tick replay:\s+([\d,]+)\s+trades')
+ARMED_DIAG_PAT = re.compile(r'Armed:\s+(\d+)\s+\|\s+Signals:\s+(\d+)')
+
+TICK_CACHE_DIR = os.path.join(WORKDIR, "tick_cache")
+
+
 def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
-            candidate: dict = None) -> list:
+            candidate: dict = None, use_tick_cache: bool = True) -> list:
     """Run simulate.py and parse trade results."""
     env = {**os.environ, **ENV_BASE}
     env["WB_MIN_ENTRY_SCORE"] = str(min_score)
@@ -152,9 +158,12 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
 
     cmd = [
         "python", "simulate.py", symbol, date, sim_start, "12:00",
-        "--ticks",  # Alpaca feed (default) — strategy tuned on Alpaca data; retry logic handles 500s
+        "--ticks",
         "--risk", str(risk), "--no-fundamentals",
     ]
+    # Use tick cache if directory exists
+    if use_tick_cache and os.path.isdir(TICK_CACHE_DIR):
+        cmd.extend(["--tick-cache", TICK_CACHE_DIR])
     try:
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=300, env=env,
@@ -172,16 +181,22 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
         print(f"    ERROR: {symbol} {date}: {e}", flush=True)
         return []
 
+    # Diagnostic logging: extract tick count, armed count, signal count
+    tick_match = TICK_DIAG_PAT.search(output)
+    armed_match = ARMED_DIAG_PAT.search(output)
+    tick_count = int(tick_match.group(1).replace(",", "")) if tick_match else -1
+    armed_count = int(armed_match.group(1)) if armed_match else -1
+    signal_count = int(armed_match.group(2)) if armed_match else -1
+
     trades = []
     for m in TRADE_PAT.finditer(output):
         entry_price = float(m.group(3))
         stop_price = float(m.group(4))
         r_val = float(m.group(5))
-        # Approximate notional: shares * entry_price
-        # shares ≈ risk / R (distance from entry to stop)
-        r_distance = abs(entry_price - stop_price)
-        if r_distance > 0:
-            shares = risk / r_distance
+        # Notional: shares * entry_price, where shares = risk / R
+        # Use r_val (actual R from detector), NOT entry-stop distance
+        if r_val > 0:
+            shares = risk / r_val
         else:
             shares = risk  # fallback
         notional = shares * entry_price
@@ -201,6 +216,9 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             "date": date,
             "notional": notional,
         })
+
+    trade_pnl = sum(t["pnl"] for t in trades)
+    print(f"    {symbol}: ticks={tick_count:,} armed={armed_count} signals={signal_count} trades={len(trades)} pnl={trade_pnl:+d}", flush=True)
 
     return trades
 

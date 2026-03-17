@@ -984,6 +984,7 @@ def run_simulation(
     candidates_count: int = 0,
     gap_pct: float = 0.0,
     pm_volume: float = 0.0,
+    tick_cache: str = None,
 ):
     # Parse times
     date = datetime.strptime(date_str, "%Y-%m-%d")
@@ -1631,7 +1632,27 @@ def run_simulation(
             bb_5m.seed_bar_close(symbol, o, h, l, c, v, ts)
 
         # Fetch actual trades for the sim window
-        if feed == "databento":
+        _cache_file = None
+        if tick_cache:
+            import gzip as _gzip
+            _cache_file = os.path.join(tick_cache, date_str, f"{symbol}.json.gz")
+            if os.path.exists(_cache_file):
+                print(f"  Loading ticks from cache: {_cache_file}", flush=True)
+                from collections import namedtuple
+                _CachedTick = namedtuple("_CachedTick", ["price", "size", "timestamp"])
+                with _gzip.open(_cache_file, "rt") as _cf:
+                    _cached = json.load(_cf)
+                tick_trades = [
+                    _CachedTick(
+                        t["p"], t["s"],
+                        datetime.fromisoformat(t["t"])
+                    )
+                    for t in _cached
+                ]
+            else:
+                print(f"  WARNING: No cache file {_cache_file} — falling back to API", flush=True)
+                tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
+        elif feed == "databento":
             print(f"  Fetching tick data from Databento...", flush=True)
             from databento_feed import fetch_trades_historical
             _db_trades_raw = fetch_trades_historical(
@@ -2127,6 +2148,8 @@ def main():
     parser.add_argument("--ticks", action="store_true", help="Use tick-level data for bar construction (matches live bot behavior)")
     parser.add_argument("--feed", choices=["alpaca", "databento"], default="alpaca",
                         help="Data source for tick data (default: alpaca). Use 'databento' for high-fidelity trade data.")
+    parser.add_argument("--tick-cache", type=str, default=None,
+                        help="Path to tick cache directory. Loads ticks from local files instead of API.")
     parser.add_argument("--export-json", action="store_true", help="Export behavioral study JSON to study_data/")
     parser.add_argument("--candidates", type=int, default=0, help="Total scanner candidates for this day (toxic filter 1)")
     parser.add_argument("--gap", type=float, default=0.0, help="Pre-market gap %% (toxic filter 2)")
@@ -2197,6 +2220,7 @@ def main():
             candidates_count=args.candidates,
             gap_pct=args.gap,
             pm_volume=args.pmvol,
+            tick_cache=args.tick_cache,
         )
         all_trades.extend(trades)
 
