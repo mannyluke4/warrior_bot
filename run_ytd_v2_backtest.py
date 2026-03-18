@@ -66,7 +66,7 @@ DATES = [
 
 STATE_FILE = "ytd_v2_backtest_state.json"
 SCANNER_DIR = "scanner_results"
-WORKDIR = "/Users/mannyluke/warrior_bot"
+WORKDIR = os.getenv("WB_WORKDIR", os.path.dirname(os.path.abspath(__file__)))
 
 
 # ── Candidate ranking ─────────────────────────────────────────────────
