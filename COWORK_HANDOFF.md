@@ -17,6 +17,33 @@
 All three share the same GitHub repo (`mannyluke4/warrior_bot`, branch `v6-dynamic-sizing`).
 The `.env` file is **gitignored** (contains API keys) — each machine has its own copy that must be synced manually via directives.
 
+### Roles & Boundaries (IMPORTANT — prevents conflicts)
+
+**Cowork (you) — Strategist / Coordinator**
+- READ any file in the repo (`/Users/mannyluke/warrior_bot/`)
+- WRITE directive `.md` files and save to `~/Downloads/`
+- ANALYZE reports, trade logs, backtest results, .env config
+- PLAN next optimizations, identify bugs, prioritize work
+- DO NOT edit `.py` files, `.env`, or any code — that's CC's job
+- DO NOT run backtests or simulations — that's CC's job
+- DO NOT commit or push to git — that's CC's job
+
+**MacBook Pro CC (VS Code) — Developer**
+- EXECUTE directives from Cowork (code changes, backtests, analysis)
+- EDIT all `.py` files, `.env`, config files
+- RUN backtests, simulations, regressions
+- COMMIT and PUSH code changes to the repo
+- PRODUCE reports (backtest results, analysis) and commit them
+- DO NOT write strategy directives — that's Cowork's job
+
+**Mac Mini CC (terminal) — Production Operator**
+- RUN the live bot daily via cron
+- PUSH daily reports (`DAILY_REPORT_*.md`), weekly reports, trade logs
+- EXECUTE Mac Mini-targeted directives (.env sync, bot config, production fixes)
+- DO NOT run backtests or make strategy decisions
+
+**Why this matters**: Cowork and MacBook Pro CC share the same filesystem. If both edit files at the same time, changes will collide. The rule is simple: **Cowork reads, CC writes.** Cowork's output is always a directive `.md` file, never a code edit.
+
 ### Communication Flow
 ```
                     ┌─────────────┐
@@ -60,15 +87,12 @@ Each CC instance reports status by committing files to the repo:
 **You should read these files to stay informed.** Pull the latest before writing new directives.
 
 ### Your Workflow
-1. `git pull` to get latest from both machines
-2. Read reports, logs, trade data in the repo
-3. Analyze and identify next optimization / fix
-4. Write a directive `.md` file with clear TARGET label
-5. Either:
-   - **Push to repo** as `DIRECTIVE_*.md` — CC instances will be told to read it
-   - **Save to `~/Downloads/`** — Manny will tell the target CC to check Downloads
-6. After CC executes, read the resulting report from the repo
-7. Iterate
+1. Read reports, logs, trade data in the repo at `/Users/mannyluke/warrior_bot/`
+2. Analyze and identify next optimization / fix
+3. Write a directive `.md` file with clear TARGET label
+4. Save to `~/Downloads/` — Manny will tell the target CC to check Downloads
+5. After CC executes, read the resulting report from the repo
+6. Iterate
 
 ---
 
@@ -354,7 +378,7 @@ Quick reference:
 5. CC executes, produces a report, commits + pushes
 6. You read the report from the repo for the next iteration
 
-**You have full read/write access to the GitHub repo** (`mannyluke4/warrior_bot`, branch `v6-dynamic-sizing`). Use `git pull`, `git push`, read any file. The more context you pull from the actual data, the better your directives will be.
+**You have full read access to the repo** at `/Users/mannyluke/warrior_bot/` (same machine). Read any file directly — no need to clone or pull. Do NOT edit code files or commit/push; that's CC's job. Your output is always a directive `.md` file saved to `~/Downloads/`.
 
 ---
 
