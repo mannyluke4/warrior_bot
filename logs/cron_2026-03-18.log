@@ -1,0 +1,33 @@
+caffeinate started (PID: 39408)
+=== Daily run started: Wed Mar 18 02:00:00 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v6-dynamic-sizing -> FETCH_HEAD
+   4a8b94d..11dc3f6  v6-dynamic-sizing -> origin/v6-dynamic-sizing
+Updating 4a8b94d..11dc3f6
+Fast-forward
+ .gitignore                         |    1 +
+ CACHED_BACKTEST_REPORT_20260317.md |  210 +++++
+ CLAUDE.md                          |   17 +-
+ PROFILE_RETEST_REPORT.md           |  213 +++++
+ YTD_V2_BACKTEST_RESULTS.md         |  298 ++++---
+ cache_tick_data.py                 |  384 +++++++++
+ run_ytd_v2_backtest.py             |   32 +-
+ run_ytd_v2_profile_backtest.py     |  765 ++++++++++++++++++
+ simulate.py                        |   26 +-
+ stock_filter.py                    |   66 +-
+ trade_manager.py                   |   59 ++
+ ytd_v2_backtest_state.json         | 1574 ++++++++++++++----------------------
+ 12 files changed, 2458 insertions(+), 1187 deletions(-)
+ create mode 100644 CACHED_BACKTEST_REPORT_20260317.md
+ create mode 100644 PROFILE_RETEST_REPORT.md
+ create mode 100644 cache_tick_data.py
+ create mode 100644 run_ytd_v2_profile_backtest.py
+Starting TWS via IBC...
+TWS started (IBC PID: 39424)
+Starting bot...
+Bot started (PID: 39448)
+Waiting 25108s until 9:00 AM MT...
+18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
+=== Shutting down at Wed Mar 18 09:00:00 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 77: 39448 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
+Pushing logs...
