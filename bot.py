@@ -125,8 +125,8 @@ def filter_watchlist(symbols):
         filtered_stocks = stock_filter.filter_watchlist(symbols)
 
         if not filtered_stocks:
-            print("⚠️ No stocks passed filters! Using full watchlist as fallback.", flush=True)
-            return symbols
+            print("⚠️ No stocks passed filters. Returning empty set (will retry on next rescan).", flush=True)
+            return set()
 
         # Sort by rank (best first)
         ranked = sorted(
@@ -421,6 +421,14 @@ def on_bar_close_1m(bar):
     # Block ARM signals for symbols that failed session-start filter
     if msg and msg.startswith("ARMED") and symbol in _session_filtered_out:
         msg = None
+
+    # Time gate: no ARMs before 7:00 AM ET (premarket too thin for reliable entries)
+    arm_earliest_et = int(os.getenv("WB_ARM_EARLIEST_HOUR_ET", "7"))
+    if msg and msg.startswith("ARMED"):
+        now_et = datetime.now(ET)
+        if now_et.hour < arm_earliest_et:
+            print(f"  ⏰ ARM blocked (before {arm_earliest_et}:00 ET): {symbol}", flush=True)
+            msg = None
 
     # Count ARMED events
     if msg and msg.startswith("ARMED"):
