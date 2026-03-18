@@ -43,6 +43,7 @@ ENV_BASE = {
     "WB_CONT_HOLD_CUTOFF_HOUR": "10",
     "WB_CONT_HOLD_CUTOFF_MIN": "30",
     "WB_MAX_NOTIONAL": "50000",
+    "WB_MAX_LOSS_R": "0.75",
 }
 
 DATES = [
@@ -157,7 +158,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
         env["WB_SCANNER_FLOAT_M"] = str(candidate.get("float_millions", 20) or 20)
 
     cmd = [
-        "python", "simulate.py", symbol, date, sim_start, "12:00",
+        sys.executable, "simulate.py", symbol, date, sim_start, "12:00",
         "--ticks",
         "--risk", str(risk), "--no-fundamentals",
     ]
@@ -306,9 +307,9 @@ def run_backtest():
             print(f"    #{top5.index(c)+1} {c['symbol']}: vol={c.get('pm_volume',0):,.0f}, gap={c.get('gap_pct',0):.0f}%, float={c.get('float_millions',0):.1f}M", flush=True)
 
         # Run Config A
-        day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=8.0)
+        day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=8.0, max_consec_losses=2)
         # Run Config B
-        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=0)
+        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=0, max_consec_losses=2)
 
         eq_a += day_pnl_a
         eq_b += day_pnl_b
@@ -350,27 +351,37 @@ def run_backtest():
     }
 
 
-def _run_config_day(top5, date, risk, min_score):
-    """Run one config for one day with trade cap + daily loss limit + notional tracking."""
+def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
+    """Run one config for one day with trade cap + daily loss limit + notional tracking.
+    max_consec_losses: stop trading after N consecutive losses (0 = disabled).
+    """
     day_trades = []
     day_pnl = 0
     day_notional = 0
+    consec_losses = 0
 
     for c in top5:
         if len(day_trades) >= MAX_TRADES_PER_DAY:
             break
         if day_pnl <= DAILY_LOSS_LIMIT:
             break
+        if max_consec_losses > 0 and consec_losses >= max_consec_losses:
+            break
 
         sym = c["symbol"]
+        # Mid-float risk cap: float > 5M → cap risk at $250
+        float_m = c.get("float_millions", 0) or 0
+        stock_risk = min(risk, 250) if float_m > 5.0 else risk
         sim_start = "07:00"  # Always sim from market prep — not discovery time
-        all_trades = run_sim(sym, date, sim_start, risk, min_score, candidate=c)
+        all_trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
         time.sleep(1)  # Rate limit: 1 second between API calls
 
         for t in all_trades:
             if len(day_trades) >= MAX_TRADES_PER_DAY:
                 break
             if day_pnl <= DAILY_LOSS_LIMIT:
+                break
+            if max_consec_losses > 0 and consec_losses >= max_consec_losses:
                 break
             # Notional check
             if day_notional + t["notional"] > MAX_NOTIONAL:
@@ -379,6 +390,12 @@ def _run_config_day(top5, date, risk, min_score):
             day_trades.append(t)
             day_pnl += t["pnl"]
             day_notional += t["notional"]
+
+            # Track consecutive losses
+            if t["pnl"] < 0:
+                consec_losses += 1
+            else:
+                consec_losses = 0
 
     return day_trades, day_pnl
 

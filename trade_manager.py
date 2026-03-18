@@ -986,7 +986,18 @@ class PaperTradeManager:
                 print(f"  TOXIC_BLOCK {symbol}: {_toxic['reason']}", flush=True)
                 return
 
+            # Mid-float risk cap: float > 5M → cap effective risk at $250
+            _float_m = info.float_shares if info and hasattr(info, 'float_shares') and info.float_shares else 0
+            _mid_float_cap = _float_m > 5.0
+
             qty_total = self.size_qty(plan.entry, plan.r)
+
+            if _mid_float_cap and plan.r > 0:
+                max_qty_for_cap = int(math.floor(250 / plan.r))
+                if qty_total > max_qty_for_cap:
+                    print(f"  MID_FLOAT_CAP {symbol}: float={_float_m:.1f}M → qty {qty_total}→{max_qty_for_cap} (risk capped at $250)", flush=True)
+                    qty_total = max_qty_for_cap
+
             # Apply toxic HALF_RISK multiplier if applicable
             if _toxic['action'] == 'HALF_RISK':
                 _toxic_mult = _toxic.get('multiplier', 0.5)
