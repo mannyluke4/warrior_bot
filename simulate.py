@@ -1441,15 +1441,15 @@ def run_simulation(
             # Topping wicky exit on 10s bars (with grace period after entry)
             if ("TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
-                # Profit gate: suppress TW only in small positive profit (< min R)
-                # Skip in signal mode — exits are part of the cascading strategy
+                # Profit gate: suppress TW on confirmed runners (profit >= min R)
                 _tw_profit_ok = True
-                if _exit_mode != "signal" and _tw_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+                if _tw_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
                     _tw_unreal = bar.close - sim_mgr.open_trade.entry
-                    if 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                    _tw_r_thresh = _tw_min_profit_r * sim_mgr.open_trade.r
+                    if sim_mgr.open_trade.r > 0 and _tw_unreal >= _tw_r_thresh:
                         _tw_profit_ok = False
                         if verbose:
-                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} >= {_tw_min_profit_r}R=${_tw_r_thresh:.2f}) @ {bar.close:.4f}", flush=True)
                 if _tw_profit_ok:
                     suppress, suppress_reason = _should_suppress_pattern_exit()
                     if suppress:
@@ -1566,15 +1566,15 @@ def run_simulation(
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace(time_str)):
-                # Profit gate: suppress TW only in small positive profit (< min R)
-                # Skip in signal mode — exits are part of the cascading strategy
+                # Profit gate: suppress TW on confirmed runners (profit >= min R)
                 _tw_profit_ok = True
-                if _exit_mode != "signal":
+                if _tw_min_profit_r > 0 and sim_mgr.open_trade.r > 0:
                     _tw_unreal = bar.close - sim_mgr.open_trade.entry
-                    if _tw_min_profit_r > 0 and 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                    _tw_r_thresh = _tw_min_profit_r * sim_mgr.open_trade.r
+                    if _tw_unreal >= _tw_r_thresh:
                         _tw_profit_ok = False
                         if verbose:
-                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {bar.close:.4f}", flush=True)
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} >= {_tw_min_profit_r}R=${_tw_r_thresh:.2f}) @ {bar.close:.4f}", flush=True)
                 if _tw_profit_ok:
                     sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
                     if verbose:
@@ -1906,15 +1906,15 @@ def run_simulation(
                 and not sim_mgr.open_trade.closed
                 and "TOPPING_WICKY" in (det.last_patterns or [])
                 and not _in_tw_grace_bar(time_str)):
-                # Profit gate: suppress TW only in small positive profit (< min R)
-                # Skip in signal mode — exits are part of the cascading strategy
+                # Profit gate: suppress TW on confirmed runners (profit >= min R)
                 _tw_profit_ok = True
-                if _exit_mode != "signal":
+                if _tw_min_profit_r > 0 and sim_mgr.open_trade.r > 0:
                     _tw_unreal = c - sim_mgr.open_trade.entry
-                    if _tw_min_profit_r > 0 and 0 < _tw_unreal < _tw_min_profit_r * sim_mgr.open_trade.r:
+                    _tw_r_thresh = _tw_min_profit_r * sim_mgr.open_trade.r
+                    if _tw_unreal >= _tw_r_thresh:
                         _tw_profit_ok = False
                         if verbose:
-                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * sim_mgr.open_trade.r:.2f}) @ {c:.4f}", flush=True)
+                            print(f"  [{time_str}] TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} >= {_tw_min_profit_r}R=${_tw_r_thresh:.2f}) @ {c:.4f}", flush=True)
                 if _tw_profit_ok:
                     sim_mgr.on_exit_signal("topping_wicky", c, time_str)
                     if verbose:

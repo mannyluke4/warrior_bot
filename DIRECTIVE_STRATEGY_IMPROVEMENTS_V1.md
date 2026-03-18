@@ -338,6 +338,11 @@ All four fixes in one commit. Each gated by an env var (OFF by default).
    - Code already exists in `trade_manager.py` (Quality Gate 5)
    - No code changes needed — just enable the existing flag
 
+5. **Fix 5 — TW profit gate in signal mode**
+   - File: `simulate.py` (~line 1446-1452) — remove the `_exit_mode != "signal"` bypass
+   - File: `trade_manager.py` — same change in the live bot TW exit path
+   - Gate: `WB_TW_MIN_PROFIT_R=1.5` (set in .env)
+
 Push to repo. Add `.env` change notes for Mac Mini.
 
 ### Phase 2: Mac Mini CC — Testing
@@ -370,13 +375,101 @@ Note: Fix 3 and Fix 4 overlap on TRT — Fix 3 would have blocked TRT #2 via coo
 
 **Deduplicated estimate: ~+$2,820** (weekly -$1,411 → roughly +$1,409).
 
+## Fix 5: TW Profit Gate — Suppress TW on Confirmed Runners
+
+**Impact**: +$12,619 on 49-day data (VERO +$9,417, ROLR +$3,202); +$206 on weekly (BMNZ)
+**Confidence**: HIGH — data is unambiguous across all TW exits
+
+### Problem
+
+TW (topping wicky) has a net impact of **-$9,694** across all datasets. It saved $3,131 on 4 trades but cost $12,825 on 3 trades. The two biggest winners in the entire strategy — VERO and ROLR — are both cut short by TW.
+
+### Root Cause: TW is a 3-Minute Timer, Not a Pattern Detector
+
+From `TW_CHARACTERISTICS_REPORT.md`:
+- **6 of 7 TW exits fired at exactly minute 3** — the instant the grace period (`WB_TOPPING_WICKY_GRACE_MIN=3`) expires
+- The TW pattern detection (upper_wick ≥ 45%, body ≤ 35%, near recent high) is so sensitive on 10-second bars that it triggers on any stock almost immediately
+- The one exception (LUNL at 36 minutes) was the most valuable TW save (+$1,750) — a genuine topping pattern
+
+### The Key Discriminator: R-Multiple at Exit
+
+The characteristics analysis found ONE clear factor that separates correct TW exits from premature ones:
+
+| Group | Avg R-Mult at TW Exit | Outcome |
+|-------|----------------------|---------|
+| **TW Hurt** (cost $12,825) | **+4.2R** (VERO +9.2R, ROLR +3.2R, BMNZ +0.2R) | Stocks were running — TW cut them short |
+| **TW Helped** (saved $3,131) | **+0.4R** (AGPU +1.1R, TLYS +0.1R, BIAF -0.1R, LUNL +0.5R) | Stocks were struggling — TW correctly exited |
+
+No other characteristic (float, gap, score, price, volume) showed a meaningful difference between the groups. R-multiple at exit is the only signal.
+
+### Proposed Fix
+
+Enable the existing `WB_TW_MIN_PROFIT_R` gate in signal mode. This gate already exists in the codebase (simulate.py line 1447) but is intentionally skipped when `exit_mode == "signal"` with the comment "exits are part of the cascading strategy."
+
+The data shows this was wrong — letting TW cut VERO at +9.2R is not enabling cascading re-entry, it's leaving $9,417 on the table.
+
+**Rule**: Suppress TW exit when unrealized profit > 1.5R. Let BE handle the exit on confirmed runners.
+
+- Below 1.5R: TW fires normally (catches TLYS +0.1R, BIAF -0.1R, LUNL +0.5R, AGPU +1.1R) ✅
+- Above 1.5R: TW suppressed, BE catches the exit (VERO at +18.6R via BE, ROLR at +6.4R via BE) ✅
+
+**Implementation:**
+
+In `simulate.py` (~line 1446-1452), remove the signal mode bypass:
+
+```python
+# BEFORE (TW profit gate skipped in signal mode):
+if _exit_mode != "signal" and _tw_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+
+# AFTER (TW profit gate applies in ALL modes):
+if _tw_min_profit_r > 0 and sim_mgr.open_trade and not sim_mgr.open_trade.closed:
+```
+
+Same change in `trade_manager.py` for the live bot — wherever TW profit gate is checked.
+
+**Gate**: `WB_TW_MIN_PROFIT_R=1.5` (set via .env, applies in all exit modes)
+
+### Winner Safety Check
+
+All TW exits where TW helped were below 1.5R:
+- AGPU: +1.1R → below 1.5R → TW still fires ✅
+- TLYS: +0.1R → below 1.5R → TW still fires ✅
+- BIAF: -0.1R → below 1.5R → TW still fires ✅
+- LUNL: +0.5R → below 1.5R → TW still fires ✅
+
+All TW exits where TW hurt were above 1.5R (except BMNZ at +0.2R):
+- VERO: +9.2R → above 1.5R → TW suppressed, BE catches at +18.6R ✅
+- ROLR: +3.2R → above 1.5R → TW suppressed, BE catches at +6.4R ✅
+- BMNZ: +0.2R → below 1.5R → TW still fires (costs $206 but protects AGPU/TLYS/BIAF/LUNL saves of $3,131)
+
+**BMNZ is the one tradeoff**: TW still fires at +0.2R and costs $206 (would have been +$324 via BE). But blocking TW below 1.5R would also block the $3,131 in saves. The math is clear: $3,131 saved vs $206 cost.
+
+### Expected Impact
+
+| Trade | Current P&L | With Profit Gate | Delta |
+|-------|------------|-----------------|-------|
+| VERO | +$9,166 | +$18,583 | **+$9,417** |
+| ROLR | +$3,242 | +$6,444 | **+$3,202** |
+| BMNZ | +$118 | +$118 (no change, below gate) | $0 |
+| AGPU | +$1,100 | +$1,100 (no change, below gate) | $0 |
+| TLYS | +$77 | +$77 (no change, below gate) | $0 |
+| BIAF | -$85 | -$85 (no change, below gate) | $0 |
+| LUNL | +$464 | +$464 (no change, below gate) | $0 |
+| **Total** | | | **+$12,619** |
+
+### VERO Regression Note
+
+**CRITICAL**: VERO's regression target will CHANGE with this fix. Current: +$9,166. Expected new: **+$18,583**. This is correct — the fix unlocks VERO's full potential. The new regression target must be updated after validation.
+
+---
+
 ## Critical Rules
 
 - **DO NOT** remove the max loss cap entirely — it's a net positive overall, just needs to be smarter
 - **DO NOT** set any cap below 0.75R — kills ROLR (+$2,578)
 - **DO NOT** disable the exhaustion filter as part of these changes
 - **Gate all changes** with env vars OFF by default
-- **Run VERO regression** before and after — must be +$9,166
+- **Run VERO regression** — with Fix 5 (TW profit gate), VERO target changes from +$9,166 to ~+$18,583
 - All changes must be tested individually AND combined before declaring them ready
 - Include `.env` change report for Mac Mini CC (see below)
 
@@ -393,18 +486,19 @@ Note: Fix 3 and Fix 4 overlap on TRT — Fix 3 would have blocked TRT #2 via coo
 ### For Mac Mini CC:
 1. `git pull` after MacBook Pro CC pushes
 2. Update `.env` per the change report from MacBook Pro CC
-3. Enable all four fixes:
+3. Enable all five fixes:
    - `WB_CONT_HOLD_DIRECTION_CHECK=1`
    - `WB_MAX_LOSS_R_TIERED=1`
    - `WB_MAX_LOSS_R_ULTRA_LOW_FLOAT=0`
    - `WB_MAX_LOSS_R_LOW_FLOAT=0.85`
    - `WB_MAX_LOSS_TRIGGERS_COOLDOWN=1`
    - `WB_NO_REENTRY_ENABLED=1`
+   - `WB_TW_MIN_PROFIT_R=1.5`
 4. Run tests in parallel:
    - 49-day backtest (all fixes ON) → compare to +$7,580 baseline
    - Weekly backtest Mar 9-18 (all fixes ON) → compare to -$1,411
-   - VERO standalone regression → must be +$9,166
-   - ROLR standalone → must survive 0.85R cap
+   - VERO standalone regression → expected NEW target ~+$18,583 (TW no longer cuts runner)
+   - ROLR standalone → expected ~+$6,444 (TW no longer cuts runner)
    - Each fix in isolation + all combined
 5. Push results report to repo
 

@@ -24,6 +24,9 @@ WB_MAX_LOSS_TRIGGERS_COOLDOWN=0  # 1=max_loss_hit triggers same cooldown as stop
 
 # --- Fix 4: No re-entry after loss (already existed, now enabled) ---
 WB_NO_REENTRY_ENABLED=1         # Block re-entry on same symbol after a loss
+
+# --- Fix 5: TW profit gate (suppress TW on confirmed runners) ---
+WB_TW_MIN_PROFIT_R=1.5          # Suppress TW exit when unrealized profit >= 1.5R (let BE handle runners)
 ```
 
 ## Changed Env Vars
@@ -39,12 +42,13 @@ WB_MAX_LOSS_R_ULTRA_LOW_FLOAT=0
 WB_MAX_LOSS_R_LOW_FLOAT=0.85
 WB_MAX_LOSS_TRIGGERS_COOLDOWN=1
 WB_NO_REENTRY_ENABLED=1
+WB_TW_MIN_PROFIT_R=1.5
 ```
 
 ## Testing Required Before Enabling
 
 1. **49-day backtest** with all fixes ON → compare to +$7,580 baseline
 2. **Weekly backtest** (Mar 9-18) with all fixes ON → compare to -$1,411
-3. **VERO standalone regression** → must be +$9,166 ✅ (already verified on MacBook Pro)
-4. **ROLR verification** → must survive 0.85R cap (min unrealized was -0.60R)
+3. **VERO standalone regression** → NEW target **+$18,583** ✅ (verified on MacBook Pro — TW suppressed at 9.2R, BE exits at 18.6R)
+4. **ROLR verification** → must survive 0.85R cap (min unrealized was -0.60R), expect ~+$6,444 with TW suppressed
 5. Each fix in isolation + all combined

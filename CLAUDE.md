@@ -88,9 +88,9 @@ The exhaustion filter is enabled by default and works CORRECTLY for cascading st
 - **DO NOT implement a classifier-aware bypass** — it would break VERO regression ($6,890→$3,452)
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
-### Regression Targets (as of 2026-03-17)
+### Regression Targets (as of 2026-03-18)
 Primary standalone regression (deterministic, tick mode):
-- VERO 2026-01-16: +$9,166 ✅ (1 trade, 9.2R)
+- VERO 2026-01-16: +$18,583 ✅ (1 trade, 18.6R — TW suppressed at 9.2R, BE exits at 18.6R)
 Note: GWAV and ANPA no longer produce trades in standalone mode due to detector
 evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
 (run_ytd_v2_backtest.py) with tick cache produces +$5,543 across 49 days.

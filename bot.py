@@ -394,12 +394,11 @@ def on_bar_close_10s(bar):
         t = trade_manager.open[symbol]
         age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds() if t.created_at_utc else 999
         if age_sec >= _tw_grace_sec:
-            # Profit gate: suppress TW only in small positive profit (< min R)
-            # Skip in signal mode — exits are part of the cascading strategy
+            # Profit gate: suppress TW on confirmed runners (profit >= min R)
             _tw_unreal = bar.close - t.entry
-            _exit_mode = getattr(trade_manager, 'exit_mode', 'signal')
-            if _exit_mode != "signal" and _tw_min_profit_r > 0 and t.r > 0 and 0 < _tw_unreal < _tw_min_profit_r * t.r:
-                print(f"  TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} < {_tw_min_profit_r}R=${_tw_min_profit_r * t.r:.2f}) {symbol} @ {bar.close:.4f}", flush=True)
+            _tw_r_thresh = _tw_min_profit_r * t.r
+            if _tw_min_profit_r > 0 and t.r > 0 and _tw_unreal >= _tw_r_thresh:
+                print(f"  TW_SUPPRESSED (profit_gate: ${_tw_unreal:.2f} >= {_tw_min_profit_r}R=${_tw_r_thresh:.2f}) {symbol} @ {bar.close:.4f}", flush=True)
             else:
                 trade_manager.on_exit_signal(symbol, "topping_wicky")
 
