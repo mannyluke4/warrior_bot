@@ -147,6 +147,8 @@ class OpenTrade:
     qty_t2: int = 0
     take_profit_t2: float = 0.0
     t2_hit: bool = False
+    # Float data (millions) — stored at entry for tiered max loss cap
+    float_m: float = 0.0
     # Exit fill tracking for realized P&L
     exit_filled_qty: int = 0
     exit_filled_cost: float = 0.0  # cumulative (price * qty) for weighted avg
@@ -239,6 +241,12 @@ class PaperTradeManager:
         self.be_trigger_r = float(os.getenv("WB_BE_TRIGGER_R", "1.0"))
         self.signal_trail_pct = float(os.getenv("WB_SIGNAL_TRAIL_PCT", "0.05"))
         self.max_loss_r = float(os.getenv("WB_MAX_LOSS_R", "2.0"))
+        self._max_loss_r_tiered = os.getenv("WB_MAX_LOSS_R_TIERED", "0") == "1"
+        self._max_loss_r_ultra_low = float(os.getenv("WB_MAX_LOSS_R_ULTRA_LOW_FLOAT", "0"))  # 0 = OFF for <1M
+        self._max_loss_r_low = float(os.getenv("WB_MAX_LOSS_R_LOW_FLOAT", "0.85"))  # 1-5M
+        self._max_loss_r_float_thresh_low = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_LOW", "1.0"))
+        self._max_loss_r_float_thresh_high = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_HIGH", "5.0"))
+        self._max_loss_triggers_cooldown = os.getenv("WB_MAX_LOSS_TRIGGERS_COOLDOWN", "0") == "1"
         self.last_bar: Dict[str, dict] = {}
 
         # BE parabolic grace — suppress BE exits during genuine ramps
@@ -254,6 +262,7 @@ class PaperTradeManager:
         self._parabolic_detectors: Dict[str, object] = {}  # symbol -> ParabolicRegimeDetector
 
         # Continuation hold — suppress TW/BE exits on high-conviction setups
+        self._cont_hold_direction_check = os.getenv("WB_CONT_HOLD_DIRECTION_CHECK", "0") == "1"
         self._continuation_hold_enabled = os.getenv("WB_CONTINUATION_HOLD_ENABLED", "0") == "1"
         self._cont_hold_min_vol_dom = float(os.getenv("WB_CONT_HOLD_MIN_VOL_DOM", "2.0"))
         self._cont_hold_min_score = float(os.getenv("WB_CONT_HOLD_MIN_SCORE", "8.0"))
@@ -660,6 +669,7 @@ class PaperTradeManager:
                 runner_stop=stop,
                 score=float(getattr(p, 'score', 0.0)) if p else 0.0,
                 created_at_utc=datetime.now(timezone.utc),
+                float_m=getattr(p, '_float_m', 0.0) if p else 0.0,
             )
             # Seeded 5m guard activation on new trade
             new_t = self.open[symbol]
@@ -1197,6 +1207,9 @@ class PaperTradeManager:
                 filled_applied=0,
             )
 
+            # Store float on pending entry for tiered max loss cap
+            self.pending[symbol]._float_m = _float_m
+
             t2_str = f" t2={qty_t2}" if qty_t2 > 0 else ""
             print(
                 f"🟨 ENTRY PENDING {symbol} id={order_id} target={qty_total} core={qty_core}{t2_str} runner={qty_runner} stop={plan.stop:.4f}",
@@ -1307,6 +1320,7 @@ class PaperTradeManager:
                             created_at_utc=datetime.now(timezone.utc),
                             qty_t2=qty_t2,
                             take_profit_t2=getattr(p, 'take_profit_t2', 0.0),
+                            float_m=getattr(p, '_float_m', 0.0),
                         )
                         # Seeded 5m guard activation on new trade
                         new_t2 = self.open[symbol]
@@ -1590,8 +1604,9 @@ class PaperTradeManager:
             if qty <= 0:
                 return
 
-            # Set re-entry cooldown on stop_hit
-            if reason == "stop_hit" and self._reentry_cooldown_sec > 0:
+            # Set re-entry cooldown on stop_hit or max_loss_hit
+            _loss_reasons = ("stop_hit", "max_loss_hit") if self._max_loss_triggers_cooldown else ("stop_hit",)
+            if reason in _loss_reasons and self._reentry_cooldown_sec > 0:
                 self._stop_hit_cooldown_until[symbol] = datetime.now(timezone.utc) + timedelta(seconds=self._reentry_cooldown_sec)
 
             if not self.armed:
@@ -2189,6 +2204,14 @@ class PaperTradeManager:
         if unrealized_r < -self._cont_hold_max_loss_r:
             return False, ""
 
+        # Direction check: don't suppress exits when underwater AND sellers dominate
+        if self._cont_hold_direction_check and det and hasattr(det, 'bars_1m') and len(det.bars_1m) >= 5:
+            if unrealized_r < 0:
+                last_5 = list(det.bars_1m)[-5:]
+                red_count = sum(1 for b in last_5 if b["c"] < b["o"])
+                if red_count >= 3:
+                    return False, f"direction_check(underwater={unrealized_r:.1f}R,red={red_count}/5)"
+
         # Time of day cutoff
         try:
             import pytz
@@ -2540,16 +2563,27 @@ class PaperTradeManager:
         t.peak = max(t.peak, float(bid))
 
         # --- MAX LOSS CAP (hard safety net) ---
-        if self.max_loss_r > 0 and t.r > 0:
+        # Determine effective cap: flat or float-tiered
+        _eff_max_loss_r = self.max_loss_r
+        if self._max_loss_r_tiered and t.float_m > 0:
+            if t.float_m < self._max_loss_r_float_thresh_low:
+                _eff_max_loss_r = self._max_loss_r_ultra_low  # 0 = OFF for ultra-low float
+            elif t.float_m <= self._max_loss_r_float_thresh_high:
+                _eff_max_loss_r = self._max_loss_r_low  # e.g. 0.85 for 1-5M float
+            # else: use self.max_loss_r (5M+ default)
+
+        if _eff_max_loss_r > 0 and t.r > 0:
             loss_per_share = t.entry - float(bid)
-            if loss_per_share >= self.max_loss_r * t.r:
+            if loss_per_share >= _eff_max_loss_r * t.r:
                 if symbol not in self.pending_exits:
                     log_event("max_loss_cap_triggered", symbol,
                               entry=t.entry, bid=float(bid),
                               loss_r=round(loss_per_share / t.r, 1),
-                              max_loss_r=self.max_loss_r)
+                              max_loss_r=_eff_max_loss_r,
+                              float_m=t.float_m,
+                              tiered=self._max_loss_r_tiered)
                     print(
-                        f"MAX LOSS CAP {symbol}: {loss_per_share/t.r:.1f}R loss > {self.max_loss_r:.1f}R cap "
+                        f"MAX LOSS CAP {symbol}: {loss_per_share/t.r:.1f}R loss > {_eff_max_loss_r:.2f}R cap "
                         f"-- FORCED EXIT qty={t.qty_total}",
                         flush=True,
                     )

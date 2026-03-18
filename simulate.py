@@ -151,6 +151,13 @@ class SimTradeManager:
         self.reentry_cooldown_bars = reentry_cooldown_bars
         self.stock_info = stock_info
         self.quality_min_float = quality_min_float
+        # Float-tiered max loss cap
+        self._max_loss_r_tiered = os.getenv("WB_MAX_LOSS_R_TIERED", "0") == "1"
+        self._max_loss_r_ultra_low = float(os.getenv("WB_MAX_LOSS_R_ULTRA_LOW_FLOAT", "0"))
+        self._max_loss_r_low = float(os.getenv("WB_MAX_LOSS_R_LOW_FLOAT", "0.85"))
+        self._max_loss_r_thresh_low = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_LOW", "1.0"))
+        self._max_loss_r_thresh_high = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_HIGH", "5.0"))
+        self._max_loss_triggers_cooldown = os.getenv("WB_MAX_LOSS_TRIGGERS_COOLDOWN", "0") == "1"
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = three_tranche_enabled
@@ -291,9 +298,19 @@ class SimTradeManager:
             t.peak_time = time_str
 
         # --- MAX LOSS CAP (hard safety net) ---
-        if self.max_loss_r > 0 and t.r > 0:
+        # Determine effective cap: flat or float-tiered
+        _eff_mlr = self.max_loss_r
+        if self._max_loss_r_tiered and self.stock_info and hasattr(self.stock_info, 'float_shares') and self.stock_info.float_shares:
+            _fm = self.stock_info.float_shares
+            if _fm < self._max_loss_r_thresh_low:
+                _eff_mlr = self._max_loss_r_ultra_low  # 0 = OFF for ultra-low float
+            elif _fm <= self._max_loss_r_thresh_high:
+                _eff_mlr = self._max_loss_r_low  # e.g. 0.85 for 1-5M float
+            # else: use self.max_loss_r (5M+ default)
+
+        if _eff_mlr > 0 and t.r > 0:
             loss_per_share = t.entry - price
-            if loss_per_share >= self.max_loss_r * t.r:
+            if loss_per_share >= _eff_mlr * t.r:
                 t.core_exit_price = price
                 t.core_exit_time = time_str
                 t.core_exit_reason = "max_loss_hit"
@@ -468,8 +485,9 @@ class SimTradeManager:
             self.open_notional -= t.qty_total * t.entry  # release original notional
             self.open_notional = max(0.0, self.open_notional)  # safety clamp
             self.current_equity += t.pnl()  # adjust equity by P&L
-        # If closed by stop_hit, start re-entry cooldown
-        if self.reentry_cooldown_bars > 0 and t.core_exit_reason in ("stop_hit",):
+        # If closed by stop_hit or max_loss_hit, start re-entry cooldown
+        _loss_reasons = ("stop_hit", "max_loss_hit") if self._max_loss_triggers_cooldown else ("stop_hit",)
+        if self.reentry_cooldown_bars > 0 and t.core_exit_reason in _loss_reasons:
             self._stop_hit_cooldown[t.symbol] = self.reentry_cooldown_bars
         self.open_trade = None
         # Notify quality gate of trade result
@@ -1026,6 +1044,11 @@ def run_simulation(
     _max_entries = int(os.getenv("WB_MAX_ENTRIES_PER_SYMBOL", "2"))
     _cooldown_min = int(os.getenv("WB_SYMBOL_COOLDOWN_MIN", "10"))
     _max_loss_r = float(os.getenv("WB_MAX_LOSS_R", "2.0"))
+    _max_loss_r_tiered = os.getenv("WB_MAX_LOSS_R_TIERED", "0") == "1"
+    _max_loss_r_ultra_low = float(os.getenv("WB_MAX_LOSS_R_ULTRA_LOW_FLOAT", "0"))
+    _max_loss_r_low = float(os.getenv("WB_MAX_LOSS_R_LOW_FLOAT", "0.85"))
+    _max_loss_r_thresh_low = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_LOW", "1.0"))
+    _max_loss_r_thresh_high = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_HIGH", "5.0"))
     _tw_grace_min = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3"))
     _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
     _be_min_profit_r = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
@@ -1051,6 +1074,8 @@ def run_simulation(
     _cont_hold_5m_guard = os.getenv("WB_CONT_HOLD_5M_TREND_GUARD", "0") == "1"
     _cont_hold_5m_vol_mult = float(os.getenv("WB_CONT_HOLD_5M_VOL_EXIT_MULT", "2.0"))
     _cont_hold_5m_min_bars = int(os.getenv("WB_CONT_HOLD_5M_MIN_BARS", "2"))
+    _cont_hold_direction_check = os.getenv("WB_CONT_HOLD_DIRECTION_CHECK", "0") == "1"
+    _max_loss_triggers_cooldown = os.getenv("WB_MAX_LOSS_TRIGGERS_COOLDOWN", "0") == "1"
     _min_entry_score = float(os.getenv("WB_MIN_ENTRY_SCORE", "0"))
 
     # Ross Pillar Gates (entry-time checks)
@@ -1298,6 +1323,14 @@ def run_simulation(
             unrealized_r = (bar.close - t.entry) / t.r if t.r > 0 else 0
             if unrealized_r < -_cont_hold_max_loss_r:
                 return False, ""
+
+            # Check 3b: Direction check — don't suppress exits when underwater + sellers dominate
+            if _cont_hold_direction_check and len(det.bars_1m) >= 5:
+                if unrealized_r < 0:
+                    last_5 = list(det.bars_1m)[-5:]
+                    red_count = sum(1 for b in last_5 if b["c"] < b["o"])
+                    if red_count >= 3:
+                        return False, f"direction_check(underwater={unrealized_r:.1f}R,red={red_count}/5)"
 
             # Check 4: Time of day cutoff
             try:

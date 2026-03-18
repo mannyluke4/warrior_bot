@@ -44,6 +44,7 @@ ENV_BASE = {
     "WB_CONT_HOLD_CUTOFF_MIN": "30",
     "WB_MAX_NOTIONAL": "50000",
     "WB_MAX_LOSS_R": "0.75",
+    "WB_NO_REENTRY_ENABLED": "1",
 }
 
 DATES = [
