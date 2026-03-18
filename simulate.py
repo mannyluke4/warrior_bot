@@ -158,6 +158,8 @@ class SimTradeManager:
         self._max_loss_r_thresh_low = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_LOW", "1.0"))
         self._max_loss_r_thresh_high = float(os.getenv("WB_MAX_LOSS_R_FLOAT_THRESHOLD_HIGH", "5.0"))
         self._max_loss_triggers_cooldown = os.getenv("WB_MAX_LOSS_TRIGGERS_COOLDOWN", "0") == "1"
+        # Fallback float from scanner env var (batch runner passes WB_SCANNER_FLOAT_M)
+        self._scanner_float_m = float(os.getenv("WB_SCANNER_FLOAT_M", "0"))
 
         # 3-tranche exit scaling
         self.three_tranche_enabled = three_tranche_enabled
@@ -300,13 +302,19 @@ class SimTradeManager:
         # --- MAX LOSS CAP (hard safety net) ---
         # Determine effective cap: flat or float-tiered
         _eff_mlr = self.max_loss_r
-        if self._max_loss_r_tiered and self.stock_info and hasattr(self.stock_info, 'float_shares') and self.stock_info.float_shares:
-            _fm = self.stock_info.float_shares
-            if _fm < self._max_loss_r_thresh_low:
-                _eff_mlr = self._max_loss_r_ultra_low  # 0 = OFF for ultra-low float
-            elif _fm <= self._max_loss_r_thresh_high:
-                _eff_mlr = self._max_loss_r_low  # e.g. 0.85 for 1-5M float
-            # else: use self.max_loss_r (5M+ default)
+        if self._max_loss_r_tiered:
+            # Try stock_info first, then fall back to scanner env var
+            _fm = None
+            if self.stock_info and hasattr(self.stock_info, 'float_shares') and self.stock_info.float_shares:
+                _fm = self.stock_info.float_shares
+            elif self._scanner_float_m > 0:
+                _fm = self._scanner_float_m
+            if _fm is not None:
+                if _fm < self._max_loss_r_thresh_low:
+                    _eff_mlr = self._max_loss_r_ultra_low  # 0 = OFF for ultra-low float
+                elif _fm <= self._max_loss_r_thresh_high:
+                    _eff_mlr = self._max_loss_r_low  # e.g. 0.85 for 1-5M float
+                # else: use self.max_loss_r (5M+ default)
 
         if _eff_mlr > 0 and t.r > 0:
             loss_per_share = t.entry - price
