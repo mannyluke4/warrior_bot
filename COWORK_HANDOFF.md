@@ -1,7 +1,74 @@
 # Claude Cowork Handoff — Warrior Bot Project
 ## Updated: 2026-03-18
 
-**Your role**: Replace Perplexity as the strategy analyst / directive writer. You read the repo, analyze data, and produce `.md` directive files that Claude Code executes. **Do NOT modify code directly** — write directives to `~/Downloads/` and let Claude Code implement them.
+**Your role**: Replace Perplexity as the strategy analyst and directive writer for a multi-machine trading bot project. You have **full read/write access to the GitHub repo** — use it to read data, push directives, and coordinate work across machines.
+
+---
+
+## 0. Multi-Machine Architecture & Workflow
+
+### The Setup
+| Machine | Role | Claude Instance | What It Does |
+|---------|------|----------------|-------------|
+| **MacBook Pro** | Development | Claude Code (VS Code) | Backtesting, code changes, analysis |
+| **Mac Mini** | Production | Claude Code (terminal) | Runs live bot daily, pushes logs/reports |
+| **MacBook Pro** | Strategy | Claude Cowork (you) | Reads repo, writes directives, coordinates |
+
+All three share the same GitHub repo (`mannyluke4/warrior_bot`, branch `v6-dynamic-sizing`).
+The `.env` file is **gitignored** (contains API keys) — each machine has its own copy that must be synced manually via directives.
+
+### Communication Flow
+```
+                    ┌─────────────┐
+                    │   Cowork    │
+                    │  (you)      │
+                    │  strategist │
+                    └──────┬──────┘
+                           │
+                    reads repo / writes directives
+                           │
+              ┌────────────┼────────────┐
+              ▼                         ▼
+     ┌────────────────┐       ┌────────────────┐
+     │  MacBook Pro   │       │   Mac Mini     │
+     │  CC (dev)      │       │  CC (prod)     │
+     │  backtests     │       │  live bot      │
+     └────────────────┘       └────────────────┘
+              │                         │
+              └────── GitHub repo ──────┘
+                   (shared state)
+```
+
+### Directive Targeting
+Every directive you write MUST specify its target at the top:
+
+```markdown
+**TARGET**: 🖥️ MacBook Pro CC | 🖥️ Mac Mini CC | 🖥️ Both
+```
+
+Use these labels:
+- **🖥️ MacBook Pro CC** — backtesting, code analysis, strategy experiments
+- **🖥️ Mac Mini CC** — .env changes, live bot config, production fixes
+- **🖥️ Both** — code changes that need to be on HEAD (committed + pushed)
+
+### Status Updates via Repo
+Each CC instance reports status by committing files to the repo:
+- **Daily reports**: `DAILY_REPORT_YYYYMMDD.md` (Mac Mini pushes after each session)
+- **Backtest reports**: `*_REPORT*.md` (MacBook Pro pushes after experiments)
+- **Weekly reports**: `WEEKLY_BACKTEST_REPORT_*.md` (Mac Mini runs weekly backtests)
+
+**You should read these files to stay informed.** Pull the latest before writing new directives.
+
+### Your Workflow
+1. `git pull` to get latest from both machines
+2. Read reports, logs, trade data in the repo
+3. Analyze and identify next optimization / fix
+4. Write a directive `.md` file with clear TARGET label
+5. Either:
+   - **Push to repo** as `DIRECTIVE_*.md` — CC instances will be told to read it
+   - **Save to `~/Downloads/`** — Manny will tell the target CC to check Downloads
+6. After CC executes, read the resulting report from the repo
+7. Iterate
 
 ---
 
@@ -72,13 +139,6 @@ WB_MIN_GAP_PCT=10               # Tightened scanner (was 5%)
 WB_MAX_FLOAT=10                 # Tightened (was 50M)
 WB_MIN_REL_VOLUME=2.0           # Tightened (was 1.5x)
 ```
-
-### Uncommitted Changes (on MacBook Pro)
-These are from the Exit Optimization work done 2026-03-17, not yet committed:
-- `run_ytd_v2_backtest.py` — Mid-float risk cap + WB_MAX_LOSS_R=0.75 + consecutive loss stop
-- `trade_manager.py` — Mid-float risk cap in live bot (qty capped for float >5M stocks)
-- `EXIT_OPTIMIZATION_REPORT.md` — Full analysis report
-- `YTD_V2_BACKTEST_RESULTS.md` — Updated with combined optimization results
 
 ---
 
@@ -155,22 +215,24 @@ Report: `EXIT_OPTIMIZATION_REPORT.md`
 
 ## 6. Live Trading Performance (Paper)
 
+### March 18, 2026 — First Live Trade
+- **NUAI**: -$542 loss at 4:22 AM ET (way too early — before 7:00 gate)
+- Stock filter broke → unfiltered fallback let NUAI through
+- R=$0.06 (too tight), huge position → big loss on small move
+- Daily loss limit correctly stopped further trading
+- **Mac Mini CC fixed**: filter fallback now returns empty set (no more unfiltered trades), added `WB_ARM_EARLIEST_HOUR_ET=7` time gate
+- Report: `DAILY_REPORT_20260318.md`
+
 ### March 17, 2026
 - Scanner found only 1 symbol: CRAQU ($11.50, gap=+10.5%, vol=1.8x)
 - CRAQU had no seed bars (no premarket data) — zero trades
 - Bot ran from 4:04 AM ET, heartbeat only, no activity
-- This was the first run AFTER the Phase 2 alignment changes
 
 ### Known Live Issues
-- Scanner is too restrictive with tightened filters — only 1 stock passed on Mar 17
+- **Mac Mini .env is OUT OF SYNC** — missing many settings from MacBook Pro (see Section 13)
+- Scanner may still be too restrictive with tightened filters
 - CRAQU is likely a unit (stock + warrant combo, hence "QU" suffix) — shouldn't be traded
 - The bot runs on Mac Mini via cron (`daily_run.sh`) — pulls latest code, starts TWS/IBC, runs bot
-
-### Historical Live Sessions (Feb-Mar 2026)
-- Many sessions with bot crashes, restarts, configuration issues
-- Feb 11-12 had large event logs (36MB-368MB) suggesting heavy trading or data issues
-- Most recent clean sessions: Feb 24-27, Mar 2-5
-- No session logs after Mar 5 until the Mar 17 automated run
 
 ---
 
@@ -199,12 +261,12 @@ Report: `EXIT_OPTIMIZATION_REPORT.md`
 ## 8. What Needs Work Next
 
 ### Immediate (High Priority)
-1. **Commit + push exit optimization changes** — mid-float cap, 0.75R loss cap, consecutive loss stop are implemented but uncommitted on MacBook Pro
-2. **Analyze today's live session** (Mar 18) — Manny mentioned having live test data from this morning
-3. **Scanner too restrictive** — Mar 17 only found 1 stock (CRAQU). May need to relax filters or fix the scanner to exclude units/warrants
+1. **Sync Mac Mini .env** — Mac Mini is missing classifier, continuation hold, pillar gates, 0.75R loss cap, scanner tightening, mid-float cap, bail timer, giveback, warmup, and consecutive loss settings. See Section 13 for the full canonical .env.
+2. **Verify Mac Mini has latest code** — Exit optimization changes (commit `95c8799`) + filter fallback fix (commit `d5a0765`) need to be on Mac Mini HEAD
+3. **Scanner too restrictive** — Mar 17 only found 1 stock (CRAQU). May need to relax filters or exclude units/warrants
 
 ### Medium Priority
-4. **L2 data integration** — Profile B stocks ran WITHOUT L2 in backtest. L2 could improve mid-float stock results. Need to build L2 caching infrastructure.
+4. **L2 data integration** — Profile B stocks ran WITHOUT L2 in backtest. L2 could improve mid-float stock results. Need to build L2 caching infrastructure. **Strong hunch this is a significant edge** — see EXIT_OPTIMIZATION_REPORT.md for details.
 5. **Profile system decision** — Profile retest showed +$843 improvement. Combined with exit opts, profiles + exit opts would likely produce ~$8,400+. Decision needed: bring back profiles or keep flat system with mid-float cap?
 6. **CLAUDE.md is stale** — Regression targets section still references old numbers. Current live config section needs update with new settings.
 
@@ -268,30 +330,136 @@ Key principles:
 ## 11. Git History (Recent)
 
 ```
+2ec9841 Merge branch 'v6-dynamic-sizing' (sync MacBook Pro + Mac Mini)
+95c8799 Exit optimization: mid-float cap + 0.75R loss cap + consec loss stop
+7b040a4 Add weekly backtest report Mar 9-17: 12 trades, +$279 net
+d5a0765 Fix filter fallback + add pre-market time gate
+87af565 Add daily report for 2026-03-18: first live trade (NUAI -$542)
 11dc3f6 Profile system retest: +$7,310 (+24.4%) vs current +$6,467 (+21.6%)
 bf3e04c Phase 2: Align live bot to backtest — pillar gates, toxic filter, ranking formula
 717093f Tick cache + notional fix: backtest now profitable (+$5,543, +18.5%)
-4a8b94d Add daily report for 2026-03-17 first automated run
-6683129 V2 Pillar backtest results + RVOL scanner data for all 49 dates
-c4d8acd Revert to Alpaca feed — Databento produces different bar data
-b409618 Ross Pillar gates + Databento feed + API retry logic
-3703532 CRITICAL: Alpaca API 500 errors silently dropping winners from backtests
 ```
 
 ---
 
 ## 12. Workflow with Claude Code
 
-1. You (Cowork) analyze data, identify optimizations, write a directive `.md` file
-2. Save it to `~/Downloads/`
-3. Tell Manny it's ready
-4. Manny tells Claude Code: "check downloads for [directive name]"
-5. Claude Code reads the directive and executes it
-6. Claude Code produces a report, commits, pushes
-7. You can read the report from the repo for the next iteration
+See **Section 0** for the full multi-machine architecture and communication flow.
 
-**You have full read access to the repo. Use it.** Read trade logs, backtest results, scanner data, and the full .env to inform your analysis. The more context you pull from the actual data, the better your directives will be.
+Quick reference:
+1. You (Cowork) analyze data from the repo, identify optimizations
+2. Write a directive `.md` file with **TARGET** label at the top
+3. Either push to repo as `DIRECTIVE_*.md` or save to `~/Downloads/`
+4. Tell Manny which CC instance should execute it
+5. CC executes, produces a report, commits + pushes
+6. You read the report from the repo for the next iteration
+
+**You have full read/write access to the GitHub repo** (`mannyluke4/warrior_bot`, branch `v6-dynamic-sizing`). Use `git pull`, `git push`, read any file. The more context you pull from the actual data, the better your directives will be.
 
 ---
 
-*Handoff created: 2026-03-18 | From: Claude Code | To: Claude Cowork*
+## 13. Mac Mini .env Sync Task (URGENT)
+
+The Mac Mini's `.env` is **significantly out of date**. It's missing many settings that were added/changed on the MacBook Pro during Phase 2 alignment and exit optimization work.
+
+**TARGET**: 🖥️ Mac Mini CC
+
+### Settings the Mac Mini MUST have (non-secret, copy verbatim):
+
+```env
+# --- Mode ---
+WB_MODE=PAPER
+WB_ARM_TRADING=1
+WB_ENTRY_MODE=pullback
+WB_EXIT_MODE=signal
+
+# --- Exit Signals ---
+WB_BE_TRIGGER_R=3.0
+WB_SIGNAL_TRAIL_PCT=0.99
+WB_EXIT_ON_BEAR_ENGULF=1
+WB_EXIT_ON_TOPPING_WICKY=1
+
+# --- Max Loss Cap (Exit Optimization) ---
+WB_MAX_LOSS_R=0.75
+
+# --- Risk ---
+WB_RISK_DOLLARS=1000
+WB_MAX_NOTIONAL=50000
+WB_MIN_R=0.06
+
+# --- Scanner (Tightened to Ross Pillar standards) ---
+WB_ENABLE_STOCK_FILTERING=1
+WB_MIN_GAP_PCT=10
+WB_MAX_GAP_PCT=500
+WB_MAX_FLOAT=10
+WB_PREFERRED_MAX_FLOAT=10
+WB_MIN_REL_VOLUME=2.0
+WB_MIN_PRICE=2.00
+WB_MAX_PRICE=20.00
+
+# --- Classifier ---
+WB_CLASSIFIER_ENABLED=1
+WB_CLASSIFIER_RECLASS_ENABLED=1
+WB_CLASSIFIER_SUPPRESS_ENABLED=0
+WB_CLASSIFIER_VWAP_GATE=7
+WB_CLASSIFIER_CASC_VWAP_MIN=8
+WB_CLASSIFIER_SMOOTH_VWAP_MIN=10
+
+# --- Exhaustion Filter ---
+WB_EXHAUSTION_ENABLED=1
+WB_EXHAUSTION_VWAP_PCT=10
+WB_EXHAUSTION_MOVE_PCT=50
+WB_EXHAUSTION_VOL_RATIO=0.4
+WB_TREND_STRONG_RANGE_PCT=5
+WB_EXHAUSTION_VWAP_RANGE_MULT=0.5
+WB_EXHAUSTION_MOVE_RANGE_MULT=1.5
+
+# --- Continuation Hold ---
+WB_CONTINUATION_HOLD_ENABLED=1
+WB_CONT_HOLD_5M_TREND_GUARD=1
+WB_CONT_HOLD_5M_VOL_EXIT_MULT=2.0
+WB_CONT_HOLD_5M_MIN_BARS=2
+WB_CONT_HOLD_MIN_VOL_DOM=2.0
+WB_CONT_HOLD_MIN_SCORE=8.0
+WB_CONT_HOLD_MAX_LOSS_R=0.5
+WB_CONT_HOLD_CUTOFF_HOUR=10
+WB_CONT_HOLD_CUTOFF_MIN=30
+
+# --- Pillar Gates (Ross 5 Pillar entry-time gates) ---
+WB_PILLAR_GATES_ENABLED=1
+
+# --- Bail Timer ---
+WB_BAIL_TIMER_ENABLED=1
+WB_BAIL_TIMER_MINUTES=5
+
+# --- Daily Risk Management ---
+WB_DAILY_GOAL=500
+WB_MAX_DAILY_LOSS=500
+WB_GIVEBACK_HARD_PCT=50
+WB_GIVEBACK_WARN_PCT=20
+WB_MAX_CONSECUTIVE_LOSSES=3
+
+# --- Warmup Sizing ---
+WB_WARMUP_SIZE_PCT=25
+WB_WARMUP_SIZE_THRESHOLD=500
+
+# --- Stale Stock Filter ---
+WB_STALE_STOCK_FILTER=1
+WB_STALE_MAX_BARS_NO_HOD=30
+WB_STALE_SESSION_HOD_BARS=120
+
+# --- Warmup Bars ---
+WB_WARMUP_BARS=5
+
+# --- Time Gate (added after NUAI incident) ---
+WB_ARM_EARLIEST_HOUR_ET=7
+
+# --- Data Feed ---
+WB_DATA_FEED=alpaca
+```
+
+**Instructions for Mac Mini CC**: Compare your current `.env` with these values. Add any missing keys. Update any that differ. **DO NOT touch API keys** (APCA_API_KEY_ID, APCA_API_SECRET_KEY, DATABENTO_API_KEY, FMP_API_KEY) — keep whatever is already on the Mac Mini.
+
+---
+
+*Handoff created: 2026-03-18 | Updated: 2026-03-18 | From: Claude Code | To: Claude Cowork*
