@@ -46,6 +46,28 @@ ENV_BASE = {
     "WB_MAX_NOTIONAL": "50000",
     "WB_MAX_LOSS_R": "0.75",
     "WB_NO_REENTRY_ENABLED": "1",
+    # Strategy 2: Squeeze V2
+    "WB_SQUEEZE_ENABLED": "1",
+    "WB_SQ_VOL_MULT": "3.0",
+    "WB_SQ_MIN_BAR_VOL": "50000",
+    "WB_SQ_MIN_BODY_PCT": "1.5",
+    "WB_SQ_PRIME_BARS": "3",
+    "WB_SQ_MAX_R": "0.80",
+    "WB_SQ_LEVEL_PRIORITY": "pm_high,whole_dollar,pdh",
+    "WB_SQ_PROBE_SIZE_MULT": "0.5",
+    "WB_SQ_MAX_ATTEMPTS": "3",
+    "WB_SQ_PARA_ENABLED": "1",
+    "WB_SQ_PARA_STOP_OFFSET": "0.10",
+    "WB_SQ_PARA_TRAIL_R": "1.0",
+    "WB_SQ_NEW_HOD_REQUIRED": "1",
+    "WB_SQ_MAX_LOSS_DOLLARS": "500",
+    "WB_SQ_TARGET_R": "2.0",
+    "WB_SQ_CORE_PCT": "75",
+    "WB_SQ_RUNNER_TRAIL_R": "2.5",
+    "WB_SQ_TRAIL_R": "1.5",
+    "WB_SQ_STALL_BARS": "5",
+    "WB_SQ_VWAP_EXIT": "1",
+    "WB_SQ_PM_CONFIDENCE": "1",
 }
 
 DATES = [
@@ -222,7 +244,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             "symbol": symbol,
             "date": date,
             "notional": notional,
-            "setup_type": "micro_pullback",
+            "setup_type": "squeeze" if m.group(8).startswith("sq_") else "micro_pullback",
         })
 
     trade_pnl = sum(t["pnl"] for t in trades)
@@ -610,6 +632,29 @@ def generate_report(results):
         L.append(f"- Top 3 winners: ${top3:+,}")
         L.append(f"- Longest consecutive losing streak (days): {max_streak}")
         L.append(f"- Win/loss count (excl breakeven): {len(wins)}W / {len(losses_list)}L")
+        L.append("")
+
+    # Section 10: Strategy Breakdown (MP vs Squeeze)
+    L.append("\n---\n")
+    L.append("## Section 10: Strategy Breakdown (MP vs Squeeze)\n")
+    for label, trades in [("Config A", ca["trades"]), ("Config B", cb["trades"])]:
+        mp_trades = [t for t in trades if t.get("setup_type", "micro_pullback") == "micro_pullback"]
+        sq_trades = [t for t in trades if t.get("setup_type") == "squeeze"]
+        mp_wins = [t for t in mp_trades if t["pnl"] > 0]
+        mp_losses = [t for t in mp_trades if t["pnl"] < 0]
+        sq_wins = [t for t in sq_trades if t["pnl"] > 0]
+        sq_losses = [t for t in sq_trades if t["pnl"] < 0]
+        mp_pnl = sum(t["pnl"] for t in mp_trades)
+        sq_pnl = sum(t["pnl"] for t in sq_trades)
+        L.append(f"### {label}")
+        L.append(f"| Strategy | Trades | Wins | Losses | Win Rate | Total P&L | Avg P&L |")
+        L.append(f"|----------|--------|------|--------|----------|-----------|---------|")
+        mp_wr = f"{len(mp_wins)/len(mp_trades)*100:.0f}%" if mp_trades else "N/A"
+        sq_wr = f"{len(sq_wins)/len(sq_trades)*100:.0f}%" if sq_trades else "N/A"
+        mp_avg = f"${mp_pnl/len(mp_trades):+,.0f}" if mp_trades else "N/A"
+        sq_avg = f"${sq_pnl/len(sq_trades):+,.0f}" if sq_trades else "N/A"
+        L.append(f"| Micro Pullback | {len(mp_trades)} | {len(mp_wins)} | {len(mp_losses)} | {mp_wr} | ${mp_pnl:+,} | {mp_avg} |")
+        L.append(f"| Squeeze | {len(sq_trades)} | {len(sq_wins)} | {len(sq_losses)} | {sq_wr} | ${sq_pnl:+,} | {sq_avg} |")
         L.append("")
 
     L.append("---\n")
