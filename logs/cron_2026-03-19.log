@@ -1,0 +1,14 @@
+caffeinate started (PID: 54143)
+=== Daily run started: Thu Mar 19 02:00:01 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v6-dynamic-sizing -> FETCH_HEAD
+Already up to date.
+Starting TWS via IBC...
+TWS started (IBC PID: 54155)
+Starting bot...
+Bot started (PID: 54185)
+Waiting 25108s until 9:00 AM MT...
+18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
+=== Shutting down at Thu Mar 19 09:00:00 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 77: 54185 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
+Pushing logs...
