@@ -180,6 +180,7 @@ class SimTradeManager:
         self.sq_core_pct = int(os.getenv("WB_SQ_CORE_PCT", "75"))
         self.sq_runner_trail_r = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
         self.sq_vwap_exit = os.getenv("WB_SQ_VWAP_EXIT", "1") == "1"
+        self.sq_para_trail_r = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
         self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
         self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
 
@@ -496,17 +497,20 @@ class SimTradeManager:
 
         # --- Pre-target phase (full position) ---
         if not t.tp_hit:
-            # 3) Trailing stop (pre-target)
+            # 3) Trailing stop (pre-target) — tighter for parabolic entries
             if t.r > 0:
-                trail_price = t.peak - (self.sq_trail_r * t.r)
+                is_parabolic = "[PARABOLIC]" in (t.score_detail or "")
+                trail_r = self.sq_para_trail_r if is_parabolic else self.sq_trail_r
+                trail_price = t.peak - (trail_r * t.r)
                 if price <= trail_price:
+                    reason = "sq_para_trail_exit" if is_parabolic else "sq_trail_exit"
                     t.core_exit_price = price
                     t.core_exit_time = time_str
-                    t.core_exit_reason = "sq_trail_exit"
+                    t.core_exit_reason = reason
                     if t.qty_runner > 0:
                         t.runner_exit_price = price
                         t.runner_exit_time = time_str
-                        t.runner_exit_reason = "sq_trail_exit"
+                        t.runner_exit_reason = reason
                     self._close(t)
                     return
 

@@ -34,6 +34,11 @@ class SqueezeDetector:
         self.max_attempts = int(os.getenv("WB_SQ_MAX_ATTEMPTS", "3"))
         self.probe_size_mult = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
 
+        # --- Parabolic mode ---
+        self.para_enabled = os.getenv("WB_SQ_PARA_ENABLED", "1") == "1"
+        self.para_stop_offset = float(os.getenv("WB_SQ_PARA_STOP_OFFSET", "0.10"))
+        self.para_trail_r = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
+
         # --- State ---
         self.symbol: str = ""
         self.armed: Optional[ArmedTrade] = None
@@ -281,10 +286,54 @@ class SqueezeDetector:
         max_r_pct = entry_price * 0.05
         effective_max_r = min(self.max_r, max_r_pct)
         if r > effective_max_r:
-            self._reset("max_r_exceeded")
+            if not self.para_enabled:
+                self._reset("max_r_exceeded")
+                return (
+                    f"SQ_NO_ARM: max_r_exceeded R={r:.4f} > max={effective_max_r:.4f} "
+                    f"(entry={entry_price:.4f} stop={stop_low:.4f})"
+                )
+
+            # --- Parabolic mode: level-based stop ---
+            para_stop = level_price - self.para_stop_offset
+            breakout_bar_low = bar["l"]
+            para_stop = max(para_stop, breakout_bar_low)  # use tighter of the two
+            para_r = entry_price - para_stop
+
+            if para_r <= 0:
+                self._reset("para_invalid_r")
+                return f"SQ_NO_ARM: para_invalid_r (entry={entry_price:.4f} stop={para_stop:.4f})"
+
+            # Even parabolic mode has a sanity cap
+            if para_r > self.max_r:
+                self._reset("para_max_r_exceeded")
+                return (
+                    f"SQ_NO_ARM: para_max_r_exceeded R={para_r:.4f} > max={self.max_r:.4f} "
+                    f"(entry={entry_price:.4f} stop={para_stop:.4f})"
+                )
+
+            # Score with parabolic tag
+            score, detail = self._score_setup(bar, vwap, level_name)
+            detail += ";[PARABOLIC]"
+
+            # Parabolic ALWAYS uses probe sizing
+            size_mult = self.probe_size_mult
+
+            self.armed = ArmedTrade(
+                trigger_high=entry_price,
+                stop_low=para_stop,
+                entry_price=entry_price,
+                r=para_r,
+                score=score,
+                score_detail=detail,
+                setup_type="squeeze",
+                size_mult=size_mult,
+            )
+            self._state = "ARMED"
+
             return (
-                f"SQ_NO_ARM: max_r_exceeded R={r:.4f} > max={effective_max_r:.4f} "
-                f"(entry={entry_price:.4f} stop={stop_low:.4f})"
+                f"ARMED entry={entry_price:.4f} stop={para_stop:.4f} R={para_r:.4f} "
+                f"score={score:.1f} level={level_name} setup_type=squeeze "
+                f"[PARABOLIC] [PROBE={size_mult:.0%}] why={detail}"
             )
 
         # Score
