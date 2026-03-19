@@ -173,6 +173,16 @@ class SimTradeManager:
         if self.three_tranche_enabled and self.exit_mode == "signal":
             self.exit_mode = "classic"
 
+        # --- Squeeze exit parameters ---
+        self.sq_trail_r = float(os.getenv("WB_SQ_TRAIL_R", "1.5"))
+        self.sq_stall_bars = int(os.getenv("WB_SQ_STALL_BARS", "5"))
+        self.sq_target_r = float(os.getenv("WB_SQ_TARGET_R", "2.0"))
+        self.sq_core_pct = int(os.getenv("WB_SQ_CORE_PCT", "75"))
+        self.sq_runner_trail_r = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
+        self.sq_vwap_exit = os.getenv("WB_SQ_VWAP_EXIT", "1") == "1"
+        self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
+        self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
+
         # Account tracking for realistic backtesting
         self.account_equity = float(os.getenv("WB_SIM_ACCOUNT_EQUITY", "0"))  # 0 = disabled
         self.current_equity = self.account_equity  # tracks running balance
@@ -195,7 +205,8 @@ class SimTradeManager:
         return int(parts[0]) * 60 + int(parts[1])
 
     def on_signal(self, symbol: str, entry: float, stop: float, r: float,
-                  score: float, detail: str, time_str: str) -> Optional[SimTrade]:
+                  score: float, detail: str, time_str: str,
+                  setup_type: str = "micro_pullback", size_mult: float = 1.0) -> Optional[SimTrade]:
         self.signals_received += 1
 
         if self.open_trade is not None:
@@ -234,6 +245,10 @@ class SimTradeManager:
         qty_notional = int(math.floor(self.max_notional / max(fill_price, 0.01)))
         qty = min(qty_risk, qty_notional, self.max_shares)
 
+        # Apply size_mult (e.g. squeeze probe = 0.5x)
+        if size_mult < 1.0:
+            qty = max(1, int(math.floor(qty * size_mult)))
+
         # Buying power constraint (4x margin for PDT accounts)
         if self.account_equity > 0:
             available_bp = (self.current_equity * 4) - self.open_notional
@@ -245,7 +260,12 @@ class SimTradeManager:
         if qty <= 0:
             return None
 
-        if self.three_tranche_enabled:
+        if setup_type == "squeeze":
+            # Squeeze: core + runner split for partial exits
+            qty_core = max(1, int(math.floor(qty * self.sq_core_pct / 100)))
+            qty_t2 = 0
+            qty_runner = max(0, qty - qty_core)
+        elif self.three_tranche_enabled:
             # 3-tranche split: T1 (core) + T2 + T3 (runner)
             qty_core = max(1, int(math.floor(qty * self.scale_t1)))
             qty_t2 = max(0, int(math.floor(qty * self.scale_t2)))
@@ -273,6 +293,7 @@ class SimTradeManager:
             qty_runner=qty_runner,
             score=score,
             score_detail=detail,
+            setup_type=setup_type,
             entry_time=time_str,
             peak=fill_price,
             runner_stop=stop,
@@ -299,6 +320,14 @@ class SimTradeManager:
         if price > t.peak:
             t.peak = price
             t.peak_time = time_str
+            # Reset stall counter for squeeze
+            if t.setup_type == "squeeze":
+                self._sq_bars_no_new_high = 0
+
+        # --- Route squeeze exits ---
+        if t.setup_type == "squeeze":
+            self._squeeze_tick_exits(t, price, time_str)
+            return
 
         # --- MAX LOSS CAP (hard safety net) ---
         # Determine effective cap: flat or float-tiered
@@ -420,6 +449,145 @@ class SimTradeManager:
                     t.t2_exit_time = time_str
                     t.t2_exit_reason = "runner_stop_hit"
                 self._close(t)
+
+    # ------------------------------------------------------------------
+    # Squeeze exit logic
+    # ------------------------------------------------------------------
+    def _squeeze_tick_exits(self, t: SimTrade, price: float, time_str: str):
+        """Tick-level exits for squeeze trades."""
+        # 1) Hard stop (always)
+        if price <= t.stop:
+            reason = "sq_stop_hit"
+            t.core_exit_price = price
+            t.core_exit_time = time_str
+            t.core_exit_reason = reason
+            if t.qty_runner > 0:
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = reason
+            self._close(t)
+            return
+
+        # 2) Max loss cap (same as MP)
+        _eff_mlr = self.max_loss_r
+        if self._max_loss_r_tiered:
+            _fm = None
+            if self.stock_info and hasattr(self.stock_info, 'float_shares') and self.stock_info.float_shares:
+                _fm = self.stock_info.float_shares
+            elif self._scanner_float_m > 0:
+                _fm = self._scanner_float_m
+            if _fm is not None:
+                if _fm < self._max_loss_r_thresh_low:
+                    _eff_mlr = self._max_loss_r_ultra_low
+                elif _fm <= self._max_loss_r_thresh_high:
+                    _eff_mlr = self._max_loss_r_low
+        if _eff_mlr > 0 and t.r > 0:
+            loss_per_share = t.entry - price
+            if loss_per_share >= _eff_mlr * t.r:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = "sq_max_loss_hit"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "sq_max_loss_hit"
+                self._close(t)
+                return
+
+        # --- Pre-target phase (full position) ---
+        if not t.tp_hit:
+            # 3) Trailing stop (pre-target)
+            if t.r > 0:
+                trail_price = t.peak - (self.sq_trail_r * t.r)
+                if price <= trail_price:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = "sq_trail_exit"
+                    if t.qty_runner > 0:
+                        t.runner_exit_price = price
+                        t.runner_exit_time = time_str
+                        t.runner_exit_reason = "sq_trail_exit"
+                    self._close(t)
+                    return
+
+            # 4) Target hit — exit core, keep runner
+            if t.r > 0 and price >= t.entry + (self.sq_target_r * t.r):
+                t.tp_hit = True
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = "sq_target_hit"
+                # Move runner stop to breakeven
+                t.runner_stop = max(t.stop, t.entry + 0.01)
+                return
+
+        # --- Post-target phase (runner only) ---
+        if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0:
+            # Runner trailing stop
+            if t.r > 0:
+                runner_trail = t.peak - (self.sq_runner_trail_r * t.r)
+                t.runner_stop = max(t.runner_stop, runner_trail)
+
+            if price <= t.runner_stop:
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "sq_runner_trail"
+                self._close(t)
+                return
+
+    def on_1m_bar_close_squeeze(self, t: SimTrade, o: float, h: float, l: float,
+                                c: float, v: float, vwap: Optional[float],
+                                time_str: str):
+        """1m bar-level exits for squeeze trades (stall + VWAP loss)."""
+        if t is None or t.closed or t.setup_type != "squeeze":
+            return
+
+        self._sq_last_vwap = vwap
+
+        # Stall counter: increment if no new high on this bar
+        if h <= t.peak:
+            self._sq_bars_no_new_high += 1
+        else:
+            self._sq_bars_no_new_high = 0
+
+        # Time stop: no new high in N bars
+        if self._sq_bars_no_new_high >= self.sq_stall_bars:
+            if not t.tp_hit:
+                # Exit full position
+                t.core_exit_price = c
+                t.core_exit_time = time_str
+                t.core_exit_reason = f"sq_time_exit({self._sq_bars_no_new_high}bars)"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = c
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = f"sq_time_exit({self._sq_bars_no_new_high}bars)"
+                self._close(t)
+                return
+            elif t.qty_runner > 0 and t.runner_exit_price == 0:
+                # Exit runner only
+                t.runner_exit_price = c
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = f"sq_runner_time_exit({self._sq_bars_no_new_high}bars)"
+                self._close(t)
+                return
+
+        # VWAP loss exit
+        if self.sq_vwap_exit and vwap is not None and c < vwap:
+            if not t.tp_hit:
+                t.core_exit_price = c
+                t.core_exit_time = time_str
+                t.core_exit_reason = "sq_vwap_exit"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = c
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "sq_vwap_exit"
+                self._close(t)
+                return
+            elif t.qty_runner > 0 and t.runner_exit_price == 0:
+                t.runner_exit_price = c
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "sq_runner_vwap_exit"
+                self._close(t)
+                return
 
     def force_close(self, price: float, time_str: str):
         t = self.open_trade
@@ -1147,9 +1315,17 @@ def run_simulation(
     det = MicroPullbackDetector()
     det.symbol = symbol
 
+    # Squeeze detector (Strategy 2)
+    from squeeze_detector import SqueezeDetector
+    sq_det = SqueezeDetector()
+    sq_det.symbol = symbol
+    sq_enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
+
     # Pass gap_pct for conviction floor gate
     if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
         det.gap_pct = _sim_stock_info.gap_pct
+        if sq_enabled:
+            sq_det.gap_pct = _sim_stock_info.gap_pct
 
     # LevelMap resistance tracking (entry gate)
     _level_map_enabled = os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1"
@@ -1197,7 +1373,11 @@ def run_simulation(
     )
 
     # Wire up quality gate trade-close callback
-    sim_mgr.on_trade_close = lambda t: det.record_trade_result(t.pnl())
+    def _on_sim_trade_close(t):
+        det.record_trade_result(t.pnl())
+        if sq_enabled and t.setup_type == "squeeze":
+            sq_det.notify_trade_closed(symbol, t.pnl())
+    sim_mgr.on_trade_close = _on_sim_trade_close
 
     # ── Behavior metrics (for --export-json study) ──
     _bm = BehaviorMetrics(start_et_str) if export_json else None
@@ -1210,6 +1390,8 @@ def run_simulation(
         c = float(b.close)
         v = float(b.volume)
         det.seed_bar_close(o, h, l, c, v)
+        if sq_enabled:
+            sq_det.seed_bar_close(o, h, l, c, v)
         bar_builder.seed_bar_close(symbol, o, h, l, c, v, ts)
 
     ema_after_seed = det.ema
@@ -1429,6 +1611,12 @@ def run_simulation(
 
                 return False, ""
 
+            # Skip ALL pattern exit detection on 10s bars for squeeze trades
+            # (squeeze has its own exit logic — TW/BE are too sensitive for squeeze candles)
+            if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                if sim_mgr.open_trade.setup_type == "squeeze":
+                    return
+
             # If in 5m guard or 1m exit mode, skip ALL pattern exit detection on 10s bars
             # Hard stops (stop_hit, max_loss_hit) are handled separately and always fire
             if _continuation_hold_enabled:
@@ -1510,6 +1698,36 @@ def run_simulation(
 
             msg = det.on_bar_close_1m(bar, vwap=vwap)
 
+            # --- Squeeze detection (only if not already in a trade) ---
+            sq_msg = None
+            if sq_enabled and sim_mgr.open_trade is None:
+                sq_det.update_premarket_levels(pm_high, pm_bf_high)
+                sq_msg = sq_det.on_bar_close_1m(bar, vwap=vwap)
+                if sq_msg and verbose:
+                    print(f"  [{time_str}] {sq_msg}", flush=True)
+                if sq_msg and "ARMED" in sq_msg:
+                    tick_sim_state["armed_count"] += 1
+
+            # --- Squeeze 1m bar exits ---
+            if sq_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                if sim_mgr.open_trade.setup_type == "squeeze":
+                    sim_mgr.on_1m_bar_close_squeeze(
+                        sim_mgr.open_trade,
+                        bar.open, bar.high, bar.low, bar.close, bar.volume,
+                        vwap, time_str,
+                    )
+                    if sim_mgr.open_trade is None or sim_mgr.open_trade.closed:
+                        # Squeeze trade closed — notify detector
+                        closed_t = sim_mgr.closed_trades[-1] if sim_mgr.closed_trades else None
+                        if closed_t:
+                            sq_det.notify_trade_closed(symbol, closed_t.pnl())
+                            if verbose:
+                                print(
+                                    f"  [{time_str}] SQ_EXIT: {closed_t.core_exit_reason} "
+                                    f"P&L=${closed_t.pnl():+,.0f}",
+                                    flush=True,
+                                )
+
             # Feed behavior metrics
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
@@ -1561,8 +1779,10 @@ def run_simulation(
 
             # Topping wicky exit after 1m bar close (with grace period after entry)
             # Skip when in 1m exit mode (handled by cont hold block above)
+            # Skip for squeeze trades (squeeze has its own exit logic)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
+                and sim_mgr.open_trade.setup_type != "squeeze"
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
@@ -1733,6 +1953,33 @@ def run_simulation(
 
                 # Trigger check on every tick (like live bot's on_trade)
                 is_premarket = bb_1m.is_premarket(ts)
+
+                # --- Squeeze trigger (priority over MP) ---
+                _sq_armed_before = sq_det.armed if sq_enabled else None
+                if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:
+                    sq_trigger = sq_det.on_trade_price(price, is_premarket=is_premarket)
+                    if sq_trigger and "ENTRY SIGNAL" in sq_trigger:
+                        trade = sim_mgr.on_signal(
+                            symbol=symbol,
+                            entry=_sq_armed_before.trigger_high,
+                            stop=_sq_armed_before.stop_low,
+                            r=_sq_armed_before.r,
+                            score=_sq_armed_before.score,
+                            detail=_sq_armed_before.score_detail,
+                            time_str=time_str,
+                            setup_type="squeeze",
+                            size_mult=_sq_armed_before.size_mult,
+                        )
+                        if trade:
+                            sq_det.notify_trade_opened()
+                            if verbose:
+                                print(
+                                    f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                    f"setup_type=squeeze",
+                                    flush=True,
+                                )
+
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(price, is_premarket=is_premarket)
                 if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
