@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import time
 from datetime import datetime, timedelta
@@ -226,9 +227,9 @@ def fetch_prev_close(symbols: list[str], date_str: str) -> dict[str, float]:
 
 
 def fetch_avg_daily_volume(symbols: list[str], date_str: str) -> dict[str, float]:
-    """Fetch 10-day average daily volume for each symbol (for relative volume calculation)."""
+    """Fetch 20-day average daily volume for each symbol (for relative volume calculation)."""
     date = datetime.strptime(date_str, "%Y-%m-%d")
-    start = date - timedelta(days=21)  # ~21 calendar days ≈ 15 trading days, take last 10
+    start = date - timedelta(days=35)  # ~35 calendar days ≈ 25 trading days, take last 20
 
     avg_vol = {}
     chunk_size = 1000
@@ -246,8 +247,8 @@ def fetch_avg_daily_volume(symbols: list[str], date_str: str) -> dict[str, float
                 target_date = date.date()
                 prev_bars = [b for b in bar_list if b.timestamp.astimezone(ET).date() < target_date]
                 if len(prev_bars) >= 3:  # Need at least 3 days to be meaningful
-                    last_10 = prev_bars[-10:]  # Take up to last 10 trading days
-                    avg_vol[sym] = sum(b.volume for b in last_10) / len(last_10)
+                    last_20 = prev_bars[-20:]  # Take up to last 20 trading days
+                    avg_vol[sym] = sum(b.volume for b in last_20) / len(last_20)
         except Exception as e:
             print(f"  [avg_vol chunk {i}] Error: {e}")
 
@@ -282,7 +283,7 @@ def fetch_premarket_bars(symbols: list[str], date_str: str) -> dict[str, list]:
 
 
 def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
-    """Find stocks gapping up >= 5% with price $2-$20."""
+    """Find stocks gapping up >= 10% with price $2-$20."""
     candidates = []
     for sym, bars in pm_bars.items():
         if sym not in prev_close:
@@ -295,7 +296,7 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
         pm_price = bars[-1].close
         gap_pct = (pm_price - pc) / pc * 100
 
-        if gap_pct < 5:
+        if gap_pct < 10:
             continue
         if pm_price < 2.0 or pm_price > 20.0:
             continue
@@ -331,9 +332,22 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
             "sim_start": sim_start,
         })
 
-    # Sort by gap% descending
-    candidates.sort(key=lambda x: x["gap_pct"], reverse=True)
+    # Sort by composite rank score descending
+    candidates.sort(key=lambda x: rank_score(x), reverse=True)
     return candidates
+
+
+def rank_score(c):
+    """Unified composite ranking: RVOL 40%, PM volume 30%, gap% 20%, float 10%."""
+    rvol = c.get("relative_volume", 0) or 0
+    pm_vol = c.get("pm_volume", 0) or 0
+    gap = c.get("gap_pct", 0) or 0
+    float_m = c.get("float_millions", 10) or 10
+    rvol_score = math.log10(min(rvol, 50) + 1) / math.log10(51)
+    vol_score = math.log10(max(pm_vol, 1)) / 8
+    gap_score = min(gap, 100) / 100
+    float_score = 1 - (min(float_m, 10) / 10)
+    return (0.40 * rvol_score) + (0.30 * vol_score) + (0.20 * gap_score) + (0.10 * float_score)
 
 
 def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> list[dict]:
@@ -368,7 +382,7 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
                     continue
                 open_price = bar_list[0].open
                 gap_pct = (open_price - pc) / pc * 100
-                if gap_pct < 5 or open_price < 2.0 or open_price > 20.0:
+                if gap_pct < 10 or open_price < 2.0 or open_price > 20.0:
                     continue
                 late_movers.append({
                     "symbol": sym,
@@ -382,7 +396,7 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
         except Exception as e:
             print(f"  [late_movers chunk {i}] Error: {e}")
 
-    late_movers.sort(key=lambda x: x["gap_pct"], reverse=True)
+    late_movers.sort(key=lambda x: rank_score(x), reverse=True)
     return late_movers
 
 
@@ -463,7 +477,7 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     latest_price = bar_list[-1].close
                     gap_pct = (latest_price - pc) / pc * 100
 
-                    if gap_pct < 5:
+                    if gap_pct < 10:
                         continue
                     if latest_price < 2.0 or latest_price > 20.0:
                         continue
@@ -486,7 +500,7 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                 print(f"  [rescan {label} chunk {i}] Error: {e}")
 
         if checkpoint_new:
-            checkpoint_new.sort(key=lambda x: x["gap_pct"], reverse=True)
+            checkpoint_new.sort(key=lambda x: rank_score(x), reverse=True)
             for c in checkpoint_new:
                 print(f"         RESCAN [{label}]: {c['symbol']} gap={c['gap_pct']:+.1f}% ${c['pm_price']:.2f}")
             all_new.extend(checkpoint_new)
@@ -508,7 +522,7 @@ def run_scanner(date_str: str):
     print("  [2/6] Fetching previous-day close...")
     prev_close = fetch_prev_close(all_symbols, date_str)
     print(f"         {len(prev_close)} symbols with prev close")
-    print("  [2b/6] Fetching 10-day average daily volume...")
+    print("  [2b/6] Fetching 20-day average daily volume...")
     avg_daily_vol = fetch_avg_daily_volume(all_symbols, date_str)
     print(f"         {len(avg_daily_vol)} symbols with avg volume data")
 
@@ -518,7 +532,7 @@ def run_scanner(date_str: str):
     print(f"         {len(pm_bars)} symbols with PM activity")
 
     # Step 4: Compute gap candidates
-    print("  [4/6] Computing gap candidates (>=5%, $2-$20)...")
+    print("  [4/6] Computing gap candidates (>=10%, $2-$20)...")
     candidates = compute_gap_candidates(prev_close, pm_bars)
     print(f"         {len(candidates)} raw candidates")
 
@@ -532,6 +546,13 @@ def run_scanner(date_str: str):
         pm_vol = c.get("pm_volume", 0) or 0
         c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
 
+    # Apply RVOL and PM volume gates
+    pre_gate_count = len(candidates)
+    candidates = [c for c in candidates
+                  if (c.get("relative_volume") or 0) >= 2.0
+                  and (c.get("pm_volume") or 0) >= 50_000]
+    print(f"         {pre_gate_count - len(candidates)} filtered by RVOL<2.0 or PM vol<50k → {len(candidates)} remain")
+
     # Step 4b: Continuous re-scan (8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET)
     print(f"  [4b/6] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
     emerging = find_emerging_movers(prev_close, candidates, date_str)
@@ -543,9 +564,13 @@ def run_scanner(date_str: str):
         c["avg_daily_volume"] = round(adv, 0) if adv else None
         pm_vol = c.get("pm_volume", 0) or 0
         c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
+    # Apply RVOL and PM volume gates to emerging movers
+    emerging = [c for c in emerging
+                if (c.get("relative_volume") or 0) >= 2.0
+                and (c.get("pm_volume") or 0) >= 50_000]
     candidates.extend(emerging)
-    # Re-sort all candidates by gap% descending
-    candidates.sort(key=lambda x: x["gap_pct"], reverse=True)
+    # Re-sort all candidates by composite rank score descending
+    candidates.sort(key=lambda x: rank_score(x), reverse=True)
 
     # Step 5: Look up float and classify
     print("  [5/6] Looking up float (known → cache → FMP → yfinance)...")
