@@ -181,6 +181,7 @@ class SimTradeManager:
         self.sq_runner_trail_r = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
         self.sq_vwap_exit = os.getenv("WB_SQ_VWAP_EXIT", "1") == "1"
         self.sq_para_trail_r = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
+        self.sq_max_loss_dollars = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
         self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
         self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
 
@@ -306,10 +307,12 @@ class SimTradeManager:
             self.open_notional += qty * fill_price
 
         # Track re-entry count and start cooldown when cap is reached
-        entry_count = self._symbol_entry_count.get(symbol, 0) + 1
-        self._symbol_entry_count[symbol] = entry_count
-        if entry_count >= self.max_entries_per_symbol:
-            self._symbol_cooldown_until[symbol] = now_min + self.symbol_cooldown_min
+        # Squeeze trades use their own counter (detector._attempts), don't count against MP
+        if setup_type != "squeeze":
+            entry_count = self._symbol_entry_count.get(symbol, 0) + 1
+            self._symbol_entry_count[symbol] = entry_count
+            if entry_count >= self.max_entries_per_symbol:
+                self._symbol_cooldown_until[symbol] = now_min + self.symbol_cooldown_min
 
         return t
 
@@ -456,6 +459,21 @@ class SimTradeManager:
     # ------------------------------------------------------------------
     def _squeeze_tick_exits(self, t: SimTrade, price: float, time_str: str):
         """Tick-level exits for squeeze trades."""
+        # 0) Absolute dollar loss cap (catches gap-throughs)
+        if self.sq_max_loss_dollars > 0:
+            unrealized_loss = (t.entry - price) * t.qty_total
+            if unrealized_loss >= self.sq_max_loss_dollars:
+                reason = f"sq_dollar_loss_cap (${unrealized_loss:,.0f} >= ${self.sq_max_loss_dollars:,.0f})"
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = reason
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = reason
+                self._close(t)
+                return
+
         # 1) Hard stop (always)
         if price <= t.stop:
             reason = "sq_stop_hit"
@@ -1378,7 +1396,9 @@ def run_simulation(
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
-        det.record_trade_result(t.pnl())
+        # Only count MP trades against MP quality gate (squeeze has its own tracking)
+        if t.setup_type != "squeeze":
+            det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
     sim_mgr.on_trade_close = _on_sim_trade_close

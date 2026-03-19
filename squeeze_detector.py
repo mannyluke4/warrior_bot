@@ -39,6 +39,9 @@ class SqueezeDetector:
         self.para_stop_offset = float(os.getenv("WB_SQ_PARA_STOP_OFFSET", "0.10"))
         self.para_trail_r = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
 
+        # --- HOD gate ---
+        self.new_hod_required = os.getenv("WB_SQ_NEW_HOD_REQUIRED", "1") == "1"
+
         # --- State ---
         self.symbol: str = ""
         self.armed: Optional[ArmedTrade] = None
@@ -48,6 +51,7 @@ class SqueezeDetector:
         self._state = "IDLE"  # IDLE, PRIMED, ARMED
         self._primed_bars_left = 0
         self._primed_bar: Optional[dict] = None  # the bar that caused PRIMED
+        self._session_hod: float = 0.0
 
         # --- Bar history ---
         self.bars_1m: Deque[dict] = deque(maxlen=50)
@@ -70,6 +74,8 @@ class SqueezeDetector:
     # ------------------------------------------------------------------
     def seed_bar_close(self, o: float, h: float, l: float, c: float, v: float):
         self.ema = ema_next(self.ema, c, self._ema_len)
+        if h > self._session_hod:
+            self._session_hod = h
         info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
         self.bars_1m.append(info)
 
@@ -82,8 +88,10 @@ class SqueezeDetector:
 
         o, h, l, c, v = bar.open, bar.high, bar.low, bar.close, bar.volume
 
-        # Update EMA
+        # Update EMA and HOD
         self.ema = ema_next(self.ema, c, self._ema_len)
+        if h > self._session_hod:
+            self._session_hod = h
 
         info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
         self.bars_1m.append(info)
@@ -148,6 +156,13 @@ class SqueezeDetector:
         # Max attempts check
         if self._attempts >= self.max_attempts:
             return f"SQ_NO_ARM: max_attempts ({self._attempts}/{self.max_attempts})"
+
+        # HOD gate: bar must be at or making new session highs (blocks bounces)
+        if self.new_hod_required and self._session_hod > 0:
+            if h < self._session_hod:
+                return (
+                    f"SQ_REJECT: not_new_hod (bar_high=${h:.4f} < HOD=${self._session_hod:.4f})"
+                )
 
         # --- Transition to PRIMED ---
         self._state = "PRIMED"
@@ -220,6 +235,7 @@ class SqueezeDetector:
         self._attempts = 0
         self._has_winner = False
         self._in_trade = False
+        self._session_hod = 0.0
 
     # ------------------------------------------------------------------
     # Internal helpers
