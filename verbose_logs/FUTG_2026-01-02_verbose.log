@@ -1,0 +1,56 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FUTG  |  Date: 2026-01-02  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching FUTG bars for 2026-01-02...
+  Total bars: 38  |  Seed: 3  |  Sim: 35
+  Fundamentals: float=N/A gap=-8.3%
+  Seed complete: EMA9=15.0100
+  WARNING: No cache file tick_cache/2026-01-02/FUTG.json.gz — falling back to API
+  Tick replay: 312 trades for sim window
+  [07:04] 1M IMPULSE detected
+  [07:07] 1M PULLBACK 1/3
+  [08:00] 1M RESET (lost VWAP)
+  [08:26] 1M IMPULSE detected
+  [08:32] 1M PULLBACK 1/3
+  [08:54] 1M RESET (extended: 6 green candles)
+  [08:59] 1M RESET (extended: 7 green candles)
+  [09:02] 1M RESET (extended: 8 green candles)
+  [09:28] 1M RESET (extended: 9 green candles)
+  [09:30] 1M RESET (extended: 10 green candles)
+  [09:31] 1M RESET (extended: 11 green candles)
+  [09:32] 1M RESET (extended: 12 green candles)
+  [09:33] 1M RESET (extended: 13 green candles)
+  [09:35] 1M IMPULSE detected
+  [09:36] 1M PULLBACK 1/3
+  [09:37] 1M PULLBACK 2/3
+  QUALITY_GATE symbol=FUTG gate=no_reentry result=PASS losses=0/1 trades=0/2
+  [09:38] ARMED entry=16.5600 stop=16.2700 R=0.2900 score=6.0 macd_score=5.0 tags=[RED_TO_GREEN, TOPPING_WICKY, WHOLE_DOLLAR_NEARBY] why=macd=5.0*0.6;r2g=+1.5;whole=+0.5;R>=0.08=+1
+  [09:39] ENTRY: 16.5800 stop=16.2700 R=0.3100 qty=3015 score=6.0
+  [09:40] 1M IMPULSE detected
+  [09:41] 1M RESET (lost VWAP)
+  [09:43] 1M IMPULSE detected
+  [09:44] 1M RESET (lost VWAP)
+
+======================================================================
+  BACKTEST REPORT: FUTG -- 2026-01-02 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 312 sim + 3 seed  |  EMA9=15.9888  VWAP=16.2234
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   09:39  16.5800  16.2700  0.3100    6.0  16.0700  max_loss_hit             -1538    -1.6R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 0  |  Losses: 1  |  Win Rate: 0.0%
+  Gross P&L: $-1,538  |  Avg R-Multiple: -1.5R
+  Largest Win: $+0  |  Largest Loss: $-1,538
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+

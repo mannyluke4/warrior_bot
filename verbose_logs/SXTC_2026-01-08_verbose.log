@@ -1,0 +1,60 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: SXTC  |  Date: 2026-01-08  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching SXTC bars for 2026-01-08...
+  Total bars: 158  |  Seed: 3  |  Sim: 155
+  Fundamentals: float=0.5M gap=-12.4%
+  Seed complete: EMA9=2.0080
+  Loading ticks from cache: tick_cache/2026-01-08/SXTC.json.gz
+  Tick replay: 219858 trades for sim window
+  [10:00] 1M IMPULSE detected
+  [10:01] 1M PULLBACK 1/3
+  QUALITY_GATE symbol=SXTC gate=no_reentry result=PASS losses=0/1 trades=0/2
+  [10:02] ARMED entry=3.1900 stop=3.0300 R=0.1600 score=5.5 macd_score=7.5 tags=[] why=macd=7.5*0.6;R>=0.08=+1
+  [10:03] ENTRY: 3.2100 stop=3.0300 R=0.1800 qty=5555 score=5.5
+  [10:03] 1M IMPULSE detected
+  [10:04] 1M PULLBACK 1/3
+  [10:05] 1M RESET (weak trigger candle)
+  [10:06] 1M IMPULSE detected
+  [10:07] BEARISH_ENGULFING_EXIT @ 3.4600
+  [10:07] 1M PULLBACK 1/3
+  [10:08] 1M PULLBACK 2/3
+  QUALITY_GATE symbol=SXTC gate=no_reentry result=PASS losses=0/1 trades=1/2
+  [10:09] ARMED entry=3.5400 stop=3.2900 R=0.2500 score=4.0 macd_score=5.0 tags=[] why=macd=5.0*0.6;R>=0.08=+1
+  [10:10] ENTRY: 3.5600 stop=3.2900 R=0.2700 qty=3703 score=4.0
+  [10:12] 1M IMPULSE detected
+  [10:13] BEARISH_ENGULFING_EXIT @ 3.7827
+  [10:13] 1M PULLBACK 1/3
+  [10:14] 1M PULLBACK 2/3
+  [10:15] 1M PULLBACK 3/3
+  [10:16] 1M RESET (MACD bearish cross)
+  [10:18] 1M RESET (bearish engulfing)
+  [10:45] 1M IMPULSE detected
+  [10:46] 1M RESET (topping wicky)
+  [10:47] 1M RESET (topping wicky)
+  [11:29] 1M RESET (bearish engulfing)
+
+======================================================================
+  BACKTEST REPORT: SXTC -- 2026-01-08 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 219858 sim + 3 seed  |  EMA9=3.7004  VWAP=4.2944
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   10:03   3.2100   3.0300  0.1800    5.5   3.4600  bearish_engulfing_exit_full     +1389    +1.4R
+    2   10:10   3.5600   3.2900  0.2700    4.0   3.7827  bearish_engulfing_exit_full      +825    +0.8R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 2  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+2,213  |  Avg R-Multiple: +1.1R
+  Largest Win: $+1,389  |  Largest Loss: $+0
+  Armed: 2  |  Signals: 2  |  Entered: 2
+======================================================================
+
