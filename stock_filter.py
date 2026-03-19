@@ -76,7 +76,13 @@ class StockFilter:
 
             price = float(latest_trade.price)
             prev_close = float(snap.previous_daily_bar.close) if snap.previous_daily_bar else price
-            volume = int(snap.latest_trade.size) if snap.latest_trade else 0
+            # Use today's cumulative daily bar volume, not a single trade's lot size
+            if snap.daily_bar and snap.daily_bar.volume:
+                volume = int(snap.daily_bar.volume)
+            elif snap.minute_bar and snap.minute_bar.volume:
+                volume = int(snap.minute_bar.volume)
+            else:
+                volume = int(snap.latest_trade.size) if snap.latest_trade else 0
 
             # Calculate gap %
             gap_pct = ((price - prev_close) / prev_close * 100) if prev_close > 0 else 0
