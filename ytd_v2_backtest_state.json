@@ -1,7 +1,7 @@
 {
   "last_completed_date": "2026-03-12",
   "config_a": {
-    "equity": 35543,
+    "equity": 47816,
     "trades": [
       {
         "num": 1,
@@ -100,10 +100,10 @@
         "stop": 9.34,
         "r": 1.1003,
         "score": 15.5,
-        "exit_price": 12.9,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 2510,
-        "r_mult": "+3.2R",
+        "exit_price": 16.4271,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 4989,
+        "r_mult": "+6.5R",
         "symbol": "ROLR",
         "date": "2026-01-14",
         "notional": 6563.137326183767
@@ -117,11 +117,11 @@
         "score": 16.5,
         "exit_price": 10.08,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -204,
+        "pnl": -219,
         "r_mult": "-0.2R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 11020.5
+        "notional": 11836.833333333332
       },
       {
         "num": 1,
@@ -132,11 +132,11 @@
         "score": 14.5,
         "exit_price": 8.65,
         "reason": "topping_wicky_exit_full",
-        "pnl": 920,
+        "pnl": 989,
         "r_mult": "+1.1R",
         "symbol": "AGPU",
         "date": "2026-01-15",
-        "notional": 23212.8
+        "notional": 24932.26666666667
       },
       {
         "num": 1,
@@ -145,13 +145,13 @@
         "stop": 3.59,
         "r": 0.12,
         "score": 15.6,
-        "exit_price": 4.68,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 7837,
-        "r_mult": "+9.2R",
+        "exit_price": 5.81,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 17059,
+        "r_mult": "+18.6R",
         "symbol": "VERO",
         "date": "2026-01-16",
-        "notional": 25507.5
+        "notional": 27387.0
       },
       {
         "num": 1,
@@ -162,11 +162,11 @@
         "score": 12.0,
         "exit_price": 2.3984,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -439,
+        "pnl": -562,
         "r_mult": "-0.4R",
         "symbol": "GITS",
         "date": "2026-01-21",
-        "notional": 13352.868852459016
+        "notional": 17088.11475409836
       },
       {
         "num": 1,
@@ -175,13 +175,13 @@
         "stop": 8.14,
         "r": 0.48,
         "score": 16.0,
-        "exit_price": 8.14,
-        "reason": "stop_hit",
-        "pnl": -1040,
-        "r_mult": "-1.0R",
+        "exit_price": 8.45,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -471,
+        "r_mult": "-0.4R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 18676.666666666668
+        "notional": 23902.541666666668
       },
       {
         "num": 1,
@@ -192,11 +192,11 @@
         "score": 16.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -1040,
+        "pnl": -1331,
         "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 18051.428571428572
+        "notional": 23102.357142857145
       },
       {
         "num": 1,
@@ -207,11 +207,11 @@
         "score": 18.5,
         "exit_price": 19.4928,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -541,
+        "pnl": -704,
         "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 25232.0
+        "notional": 32842.46153846154
       },
       {
         "num": 1,
@@ -222,11 +222,11 @@
         "score": 15.0,
         "exit_price": 2.345,
         "reason": "topping_wicky_exit_full",
-        "pnl": -247,
+        "pnl": -62,
         "r_mult": "-0.2R",
         "symbol": "AUST",
         "date": "2026-01-23",
-        "notional": 23415.600000000002
+        "notional": 5925.0
       },
       {
         "num": 1,
@@ -237,11 +237,11 @@
         "score": 18.0,
         "exit_price": 2.3694,
         "reason": "topping_wicky_exit_full",
-        "pnl": -426,
+        "pnl": -558,
         "r_mult": "-0.4R",
         "symbol": "XHLD",
         "date": "2026-01-27",
-        "notional": 6020.487804878048
+        "notional": 7880.121951219512
       },
       {
         "num": 1,
@@ -250,13 +250,13 @@
         "stop": 3.43,
         "r": 0.24,
         "score": 15.5,
-        "exit_price": 3.43,
-        "reason": "stop_hit",
-        "pnl": -968,
-        "r_mult": "-1.0R",
+        "exit_price": 3.48,
+        "reason": "max_loss_hit",
+        "pnl": -198,
+        "r_mult": "-0.8R",
         "symbol": "CYN",
         "date": "2026-01-27",
-        "notional": 14802.333333333334
+        "notional": 3822.916666666667
       },
       {
         "num": 1,
@@ -267,11 +267,11 @@
         "score": 10.5,
         "exit_price": 20.27,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 339,
+        "pnl": 453,
         "r_mult": "+0.4R",
         "symbol": "PMN",
         "date": "2026-01-30",
-        "notional": 9070.059701492537
+        "notional": 12132.298507462689
       },
       {
         "num": 1,
@@ -282,11 +282,11 @@
         "score": 14.5,
         "exit_price": 3.18,
         "reason": "topping_wicky_exit_full",
-        "pnl": 66,
+        "pnl": 88,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 6834.976744186046
+        "notional": 9135.06976744186
       },
       {
         "num": 1,
@@ -297,11 +297,11 @@
         "score": 16.5,
         "exit_price": 4.74,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -147,
+        "pnl": -197,
         "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 9624.233527939949
+        "notional": 12856.100083402835
       },
       {
         "num": 1,
@@ -312,11 +312,11 @@
         "score": 16.0,
         "exit_price": 3.1,
         "reason": "topping_wicky_exit_full",
-        "pnl": -112,
+        "pnl": -149,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 14100.0
+        "notional": 18840.0
       },
       {
         "num": 1,
@@ -327,11 +327,11 @@
         "score": 8.0,
         "exit_price": 4.31,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -156,
+        "pnl": -209,
         "r_mult": "-0.3R",
         "symbol": "ABTS",
         "date": "2026-02-20",
-        "notional": 13773.900000000001
+        "notional": 18419.100000000002
       },
       {
         "num": 1,
@@ -342,11 +342,11 @@
         "score": 13.0,
         "exit_price": 2.1891,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -212,
+        "pnl": -283,
         "r_mult": "-0.5R",
         "symbol": "GNPX",
         "date": "2026-02-23",
-        "notional": 23117.666666666668
+        "notional": 30897.88888888889
       },
       {
         "num": 1,
@@ -357,11 +357,11 @@
         "score": 15.5,
         "exit_price": 4.5799,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -565,
+        "pnl": -756,
         "r_mult": "-0.6R",
         "symbol": "QCLS",
         "date": "2026-03-06",
-        "notional": 19052.457590256632
+        "notional": 25458.025228360155
       },
       {
         "num": 1,
@@ -372,11 +372,11 @@
         "score": 10.0,
         "exit_price": 2.26,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -487,
+        "pnl": -651,
         "r_mult": "-0.5R",
         "symbol": "VTAK",
         "date": "2026-03-10",
-        "notional": 14258.400000000001
+        "notional": 19047.6
       },
       {
         "num": 1,
@@ -385,13 +385,13 @@
         "stop": 18.19,
         "r": 1.83,
         "score": 18.5,
-        "exit_price": 18.8,
+        "exit_price": 19.38,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -609,
-        "r_mult": "-0.7R",
+        "pnl": -427,
+        "r_mult": "-0.3R",
         "symbol": "INKT",
         "date": "2026-03-10",
-        "notional": 9999.060109289618
+        "notional": 13357.606557377048
       },
       {
         "num": 1,
@@ -402,11 +402,11 @@
         "score": 15.5,
         "exit_price": 2.73,
         "reason": "topping_wicky_exit_full",
-        "pnl": 68,
+        "pnl": 19,
         "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
-        "notional": 18537.846153846156
+        "notional": 5230.769230769231
       }
     ],
     "daily": [
@@ -488,24 +488,24 @@
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 2510,
-        "equity": 33506
+        "day_pnl": 4989,
+        "equity": 35985
       },
       {
         "date": "2026-01-15",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 716,
-        "equity": 34222
+        "day_pnl": 770,
+        "equity": 36755
       },
       {
         "date": "2026-01-16",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 7837,
-        "equity": 42059
+        "day_pnl": 17059,
+        "equity": 53814
       },
       {
         "date": "2026-01-20",
@@ -513,31 +513,31 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 42059
+        "equity": 53814
       },
       {
         "date": "2026-01-21",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -439,
-        "equity": 41620
+        "day_pnl": -562,
+        "equity": 53252
       },
       {
         "date": "2026-01-22",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -2080,
-        "equity": 39540
+        "day_pnl": -1802,
+        "equity": 51450
       },
       {
         "date": "2026-01-23",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -788,
-        "equity": 38752
+        "day_pnl": -766,
+        "equity": 50684
       },
       {
         "date": "2026-01-26",
@@ -545,15 +545,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38752
+        "equity": 50684
       },
       {
         "date": "2026-01-27",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -1394,
-        "equity": 37358
+        "day_pnl": -756,
+        "equity": 49928
       },
       {
         "date": "2026-01-28",
@@ -561,7 +561,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37358
+        "equity": 49928
       },
       {
         "date": "2026-01-29",
@@ -569,15 +569,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37358
+        "equity": 49928
       },
       {
         "date": "2026-01-30",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 339,
-        "equity": 37697
+        "day_pnl": 453,
+        "equity": 50381
       },
       {
         "date": "2026-02-02",
@@ -585,7 +585,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37697
+        "equity": 50381
       },
       {
         "date": "2026-02-03",
@@ -593,7 +593,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37697
+        "equity": 50381
       },
       {
         "date": "2026-02-04",
@@ -601,7 +601,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37697
+        "equity": 50381
       },
       {
         "date": "2026-02-05",
@@ -609,15 +609,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37697
+        "equity": 50381
       },
       {
         "date": "2026-02-06",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 66,
-        "equity": 37763
+        "day_pnl": 88,
+        "equity": 50469
       },
       {
         "date": "2026-02-09",
@@ -625,7 +625,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37763
+        "equity": 50469
       },
       {
         "date": "2026-02-10",
@@ -633,7 +633,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37763
+        "equity": 50469
       },
       {
         "date": "2026-02-11",
@@ -641,7 +641,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37763
+        "equity": 50469
       },
       {
         "date": "2026-02-12",
@@ -649,7 +649,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37763
+        "equity": 50469
       },
       {
         "date": "2026-02-13",
@@ -657,15 +657,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37763
+        "equity": 50469
       },
       {
         "date": "2026-02-17",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -147,
-        "equity": 37616
+        "day_pnl": -197,
+        "equity": 50272
       },
       {
         "date": "2026-02-18",
@@ -673,31 +673,31 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37616
+        "equity": 50272
       },
       {
         "date": "2026-02-19",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -112,
-        "equity": 37504
+        "day_pnl": -149,
+        "equity": 50123
       },
       {
         "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -156,
-        "equity": 37348
+        "day_pnl": -209,
+        "equity": 49914
       },
       {
         "date": "2026-02-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -212,
-        "equity": 37136
+        "day_pnl": -283,
+        "equity": 49631
       },
       {
         "date": "2026-02-24",
@@ -705,7 +705,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-02-25",
@@ -713,7 +713,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-02-26",
@@ -721,7 +721,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-02-27",
@@ -729,7 +729,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-03-02",
@@ -737,7 +737,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-03-03",
@@ -745,7 +745,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-03-04",
@@ -753,7 +753,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-03-05",
@@ -761,15 +761,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37136
+        "equity": 49631
       },
       {
         "date": "2026-03-06",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -565,
-        "equity": 36571
+        "day_pnl": -756,
+        "equity": 48875
       },
       {
         "date": "2026-03-09",
@@ -777,15 +777,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 36571
+        "equity": 48875
       },
       {
         "date": "2026-03-10",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -1096,
-        "equity": 35475
+        "day_pnl": -1078,
+        "equity": 47797
       },
       {
         "date": "2026-03-11",
@@ -793,22 +793,22 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 35475
+        "equity": 47797
       },
       {
         "date": "2026-03-12",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 68,
-        "equity": 35543
+        "day_pnl": 19,
+        "equity": 47816
       }
     ],
-    "max_equity": 42059,
-    "max_drawdown": 6584
+    "max_equity": 53814,
+    "max_drawdown": 6017
   },
   "config_b": {
-    "equity": 36467,
+    "equity": 49072,
     "trades": [
       {
         "num": 1,
@@ -922,10 +922,10 @@
         "stop": 9.34,
         "r": 1.1003,
         "score": 15.5,
-        "exit_price": 12.9,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 2578,
-        "r_mult": "+3.2R",
+        "exit_price": 16.4271,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 5124,
+        "r_mult": "+6.5R",
         "symbol": "ROLR",
         "date": "2026-01-14",
         "notional": 6741.206943560846
@@ -939,11 +939,11 @@
         "score": 16.5,
         "exit_price": 10.08,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -209,
+        "pnl": -225,
         "r_mult": "-0.2R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 11310.166666666666
+        "notional": 12152.833333333332
       },
       {
         "num": 1,
@@ -954,11 +954,11 @@
         "score": 14.5,
         "exit_price": 8.65,
         "reason": "topping_wicky_exit_full",
-        "pnl": 945,
+        "pnl": 1015,
         "r_mult": "+1.1R",
         "symbol": "AGPU",
         "date": "2026-01-15",
-        "notional": 23822.933333333334
+        "notional": 25597.86666666667
       },
       {
         "num": 1,
@@ -967,13 +967,13 @@
         "stop": 3.59,
         "r": 0.12,
         "score": 15.6,
-        "exit_price": 4.68,
-        "reason": "topping_wicky_exit_full",
-        "pnl": 8039,
-        "r_mult": "+9.2R",
+        "exit_price": 5.81,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 17505,
+        "r_mult": "+18.6R",
         "symbol": "VERO",
         "date": "2026-01-16",
-        "notional": 26163.833333333336
+        "notional": 28103.0
       },
       {
         "num": 1,
@@ -984,11 +984,11 @@
         "score": 12.0,
         "exit_price": 2.3984,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -451,
+        "pnl": -577,
         "r_mult": "-0.4R",
         "symbol": "GITS",
         "date": "2026-01-21",
-        "notional": 13695.901639344262
+        "notional": 17532.7868852459
       },
       {
         "num": 1,
@@ -997,13 +997,13 @@
         "stop": 8.14,
         "r": 0.48,
         "score": 16.0,
-        "exit_price": 8.14,
-        "reason": "stop_hit",
-        "pnl": -1067,
-        "r_mult": "-1.0R",
+        "exit_price": 8.45,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -484,
+        "r_mult": "-0.4R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 19161.541666666668
+        "notional": 24531.083333333332
       },
       {
         "num": 1,
@@ -1014,11 +1014,11 @@
         "score": 16.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -1067,
+        "pnl": -1366,
         "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 18520.071428571428
+        "notional": 23709.85714285714
       },
       {
         "num": 1,
@@ -1029,11 +1029,11 @@
         "score": 18.5,
         "exit_price": 19.4928,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -555,
+        "pnl": -722,
         "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 25896.000000000004
+        "notional": 33685.230769230766
       },
       {
         "num": 1,
@@ -1044,11 +1044,11 @@
         "score": 15.0,
         "exit_price": 2.345,
         "reason": "topping_wicky_exit_full",
-        "pnl": -253,
+        "pnl": -62,
         "r_mult": "-0.2R",
         "symbol": "AUST",
         "date": "2026-01-23",
-        "notional": 24031.8
+        "notional": 5925.0
       },
       {
         "num": 1,
@@ -1059,11 +1059,11 @@
         "score": 18.0,
         "exit_price": 2.3694,
         "reason": "topping_wicky_exit_full",
-        "pnl": -438,
+        "pnl": -573,
         "r_mult": "-0.4R",
         "symbol": "XHLD",
         "date": "2026-01-27",
-        "notional": 6182.195121951219
+        "notional": 8085.365853658536
       },
       {
         "num": 1,
@@ -1072,13 +1072,13 @@
         "stop": 3.43,
         "r": 0.24,
         "score": 15.5,
-        "exit_price": 3.43,
-        "reason": "stop_hit",
-        "pnl": -994,
-        "r_mult": "-1.0R",
+        "exit_price": 3.48,
+        "reason": "max_loss_hit",
+        "pnl": -198,
+        "r_mult": "-0.8R",
         "symbol": "CYN",
         "date": "2026-01-27",
-        "notional": 15199.916666666668
+        "notional": 3822.916666666667
       },
       {
         "num": 1,
@@ -1089,11 +1089,11 @@
         "score": 10.5,
         "exit_price": 20.27,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": 347,
+        "pnl": 465,
         "r_mult": "+0.4R",
         "symbol": "PMN",
         "date": "2026-01-30",
-        "notional": 9313.094527363184
+        "notional": 12453.104477611942
       },
       {
         "num": 1,
@@ -1104,11 +1104,11 @@
         "score": 14.5,
         "exit_price": 3.18,
         "reason": "topping_wicky_exit_full",
-        "pnl": 67,
+        "pnl": 90,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 7009.116279069767
+        "notional": 9374.511627906977
       },
       {
         "num": 1,
@@ -1119,11 +1119,11 @@
         "score": 16.5,
         "exit_price": 4.74,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -151,
+        "pnl": -202,
         "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 9868.91743119266
+        "notional": 13192.540450375313
       },
       {
         "num": 1,
@@ -1134,11 +1134,11 @@
         "score": 16.0,
         "exit_price": 3.1,
         "reason": "topping_wicky_exit_full",
-        "pnl": -115,
+        "pnl": -153,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 14460.0
+        "notional": 19335.0
       },
       {
         "num": 1,
@@ -1149,11 +1149,11 @@
         "score": 8.0,
         "exit_price": 4.31,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -160,
+        "pnl": -214,
         "r_mult": "-0.3R",
         "symbol": "ABTS",
         "date": "2026-02-20",
-        "notional": 14141.400000000001
+        "notional": 18904.2
       },
       {
         "num": 1,
@@ -1164,11 +1164,11 @@
         "score": 13.0,
         "exit_price": 2.1891,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -218,
+        "pnl": -291,
         "r_mult": "-0.5R",
         "symbol": "GNPX",
         "date": "2026-02-23",
-        "notional": 23737.111111111113
+        "notional": 31715.555555555555
       },
       {
         "num": 1,
@@ -1179,11 +1179,11 @@
         "score": 15.5,
         "exit_price": 4.5799,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -580,
+        "pnl": -776,
         "r_mult": "-0.6R",
         "symbol": "QCLS",
         "date": "2026-03-06",
-        "notional": 19545.193562418444
+        "notional": 26135.537190082643
       },
       {
         "num": 1,
@@ -1194,11 +1194,11 @@
         "score": 10.0,
         "exit_price": 2.26,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -500,
+        "pnl": -669,
         "r_mult": "-0.5R",
         "symbol": "VTAK",
         "date": "2026-03-10",
-        "notional": 14632.800000000001
+        "notional": 19562.399999999998
       },
       {
         "num": 1,
@@ -1207,13 +1207,13 @@
         "stop": 18.19,
         "r": 1.83,
         "score": 18.5,
-        "exit_price": 18.8,
+        "exit_price": 19.38,
         "reason": "bearish_engulfing_exit_full",
-        "pnl": -625,
-        "r_mult": "-0.7R",
+        "pnl": -438,
+        "r_mult": "-0.3R",
         "symbol": "INKT",
         "date": "2026-03-10",
-        "notional": 10261.617486338797
+        "notional": 13718.62295081967
       },
       {
         "num": 1,
@@ -1224,11 +1224,11 @@
         "score": 15.5,
         "exit_price": 2.73,
         "reason": "topping_wicky_exit_full",
-        "pnl": 70,
+        "pnl": 19,
         "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
-        "notional": 19019.076923076926
+        "notional": 5230.769230769231
       }
     ],
     "daily": [
@@ -1310,24 +1310,24 @@
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 2578,
-        "equity": 34382
+        "day_pnl": 5124,
+        "equity": 36928
       },
       {
         "date": "2026-01-15",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 736,
-        "equity": 35118
+        "day_pnl": 790,
+        "equity": 37718
       },
       {
         "date": "2026-01-16",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 8039,
-        "equity": 43157
+        "day_pnl": 17505,
+        "equity": 55223
       },
       {
         "date": "2026-01-20",
@@ -1335,31 +1335,31 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 43157
+        "equity": 55223
       },
       {
         "date": "2026-01-21",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -451,
-        "equity": 42706
+        "day_pnl": -577,
+        "equity": 54646
       },
       {
         "date": "2026-01-22",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -2134,
-        "equity": 40572
+        "day_pnl": -1850,
+        "equity": 52796
       },
       {
         "date": "2026-01-23",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -808,
-        "equity": 39764
+        "day_pnl": -784,
+        "equity": 52012
       },
       {
         "date": "2026-01-26",
@@ -1367,15 +1367,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 39764
+        "equity": 52012
       },
       {
         "date": "2026-01-27",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -1432,
-        "equity": 38332
+        "day_pnl": -771,
+        "equity": 51241
       },
       {
         "date": "2026-01-28",
@@ -1383,7 +1383,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38332
+        "equity": 51241
       },
       {
         "date": "2026-01-29",
@@ -1391,15 +1391,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38332
+        "equity": 51241
       },
       {
         "date": "2026-01-30",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 347,
-        "equity": 38679
+        "day_pnl": 465,
+        "equity": 51706
       },
       {
         "date": "2026-02-02",
@@ -1407,7 +1407,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38679
+        "equity": 51706
       },
       {
         "date": "2026-02-03",
@@ -1415,7 +1415,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38679
+        "equity": 51706
       },
       {
         "date": "2026-02-04",
@@ -1423,7 +1423,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38679
+        "equity": 51706
       },
       {
         "date": "2026-02-05",
@@ -1431,15 +1431,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38679
+        "equity": 51706
       },
       {
         "date": "2026-02-06",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 67,
-        "equity": 38746
+        "day_pnl": 90,
+        "equity": 51796
       },
       {
         "date": "2026-02-09",
@@ -1447,7 +1447,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38746
+        "equity": 51796
       },
       {
         "date": "2026-02-10",
@@ -1455,7 +1455,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38746
+        "equity": 51796
       },
       {
         "date": "2026-02-11",
@@ -1463,7 +1463,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38746
+        "equity": 51796
       },
       {
         "date": "2026-02-12",
@@ -1471,7 +1471,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38746
+        "equity": 51796
       },
       {
         "date": "2026-02-13",
@@ -1479,15 +1479,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38746
+        "equity": 51796
       },
       {
         "date": "2026-02-17",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -151,
-        "equity": 38595
+        "day_pnl": -202,
+        "equity": 51594
       },
       {
         "date": "2026-02-18",
@@ -1495,31 +1495,31 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38595
+        "equity": 51594
       },
       {
         "date": "2026-02-19",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -115,
-        "equity": 38480
+        "day_pnl": -153,
+        "equity": 51441
       },
       {
         "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -160,
-        "equity": 38320
+        "day_pnl": -214,
+        "equity": 51227
       },
       {
         "date": "2026-02-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -218,
-        "equity": 38102
+        "day_pnl": -291,
+        "equity": 50936
       },
       {
         "date": "2026-02-24",
@@ -1527,7 +1527,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-02-25",
@@ -1535,7 +1535,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-02-26",
@@ -1543,7 +1543,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-02-27",
@@ -1551,7 +1551,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-03-02",
@@ -1559,7 +1559,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-03-03",
@@ -1567,7 +1567,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-03-04",
@@ -1575,7 +1575,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-03-05",
@@ -1583,15 +1583,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 38102
+        "equity": 50936
       },
       {
         "date": "2026-03-06",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -580,
-        "equity": 37522
+        "day_pnl": -776,
+        "equity": 50160
       },
       {
         "date": "2026-03-09",
@@ -1599,15 +1599,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 37522
+        "equity": 50160
       },
       {
         "date": "2026-03-10",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -1125,
-        "equity": 36397
+        "day_pnl": -1107,
+        "equity": 49053
       },
       {
         "date": "2026-03-11",
@@ -1615,19 +1615,19 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 36397
+        "equity": 49053
       },
       {
         "date": "2026-03-12",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 70,
-        "equity": 36467
+        "day_pnl": 19,
+        "equity": 49072
       }
     ],
-    "max_equity": 43157,
-    "max_drawdown": 6760
+    "max_equity": 55223,
+    "max_drawdown": 6170
   },
   "missed_opportunities": [],
   "selection_log": [

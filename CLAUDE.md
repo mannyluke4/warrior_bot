@@ -30,9 +30,12 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 - Ignore Homebrew stderr noise about macOS 26.1
 
 ### Git
+- **Always `git pull` at the start of every directive** — Manny works from MBP too
+- **Always `git push` at the end of every directive** — keeps all machines in sync
 - Push to `origin main` after regression passes
 - Commit messages should reference what changed and why
 - Include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
+- Cowork (Opus) updates docs (MASTER_TODO, COWORK_HANDOFF, CLAUDE.md, etc.) and commits locally — CC pushes on next run
 
 ## Key Architecture
 

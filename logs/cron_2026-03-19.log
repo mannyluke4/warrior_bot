@@ -20,3 +20,7 @@ Pushing logs...
 WARN: git push failed
 === Daily run complete: Thu Mar 19 09:00:06 MDT 2026 ===
 === TRAP: cleanup at Thu Mar 19 09:00:06 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 15: 54143 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v6-dynamic-sizing c9f18c5] auto: daily logs 2026-03-19
+ 2 files changed, 16 insertions(+)
+=== Cleanup complete: Thu Mar 19 09:00:08 MDT 2026 ===
