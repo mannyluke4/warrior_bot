@@ -23,10 +23,11 @@ MAX_NOTIONAL = 50_000
 TOP_N = 5  # Watchlist size
 
 # Scanner filters
-MIN_PM_VOLUME = 0  # No hard filter — let composite ranking handle it
-MIN_GAP_PCT = 5
+MIN_PM_VOLUME = 50_000
+MIN_GAP_PCT = 10
 MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
+MIN_RVOL = 2.0
 
 ENV_BASE = {
     "WB_CLASSIFIER_ENABLED": "1",
@@ -114,6 +115,9 @@ def load_and_rank(date_str: str) -> tuple:
         if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
             continue
         if profile == "X":
+            continue
+        rvol = c.get("relative_volume", 0) or 0
+        if rvol < MIN_RVOL:
             continue
         filtered.append(c)
 

@@ -3,8 +3,8 @@
 live_scanner.py — Real-time pre-market gap-up scanner using Databento EQUS.MINI.
 
 Streams all US equity pre-market quotes from 4:00 AM ET, identifies stocks that
-are gapping 5%+ with price $2-$20 and float under 50M, and writes qualifying
-candidates to watchlist.txt continuously from 7:00 AM to 11:00 AM ET.
+are gapping 10%+ with price $2-$20, float under 10M, RVOL >= 2x, and PM volume
+>= 50K. Ranks by composite score and writes to watchlist.txt from 7:00-11:00 AM ET.
 
 Usage:
     python live_scanner.py             # Normal run
@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import math
 import os
 import sys
 import time
@@ -49,7 +50,7 @@ os.makedirs(SCANNER_DIR, exist_ok=True)
 FMP_API_KEY = os.getenv("FMP_API_KEY")
 
 # Filter thresholds (Phase 1 simplification: widened to match Ross Cameron criteria)
-MIN_GAP_PCT = 5.0           # Ross trades 5%+ gaps
+MIN_GAP_PCT = 10.0           # 10%+ gaps only
 MAX_GAP_PCT_A = 999.0       # No gap ceiling (Ross traded 500%+ gaps)
 MAX_GAP_PCT_B = 999.0       # Same — no gap ceiling
 MIN_PRICE = 2.0             # Ross trades $2+
@@ -59,7 +60,9 @@ WINDOW_START_MINUTE = 0
 WINDOW_END_HOUR = 11         # Extended to 11:00 AM ET
 WINDOW_END_MINUTE = 0
 MIN_FLOAT = 100_000          # 100K (sane floor)
-MAX_FLOAT = 50_000_000       # 50M (single unified ceiling)
+MAX_FLOAT = 10_000_000       # 10M float ceiling
+MIN_PM_VOLUME = 50_000       # Minimum pre-market volume
+MIN_RVOL = 2.0               # Minimum relative volume (vs 20-day avg)
 MAX_SCANNER_SYMBOLS = 8      # Cap total symbols across all writes
 
 # Known floats (highest reliability — no API needed)
@@ -175,6 +178,7 @@ class LiveScanner:
 
         # State
         self.prev_close: dict[str, float] = {}       # symbol -> prev close price
+        self.avg_daily_volume: dict[str, float] = {}  # symbol -> 20-day avg daily volume
         self.symbol_dir: dict[int, str] = {}          # instrument_id -> ticker
         self.candidates: dict[str, dict] = {}         # symbol -> candidate info
         self._processing: set[str] = set()            # symbols with in-flight float lookup
@@ -191,20 +195,20 @@ class LiveScanner:
     # -----------------------------------------------------------------------
 
     def load_prev_close(self):
-        """Fetch previous trading day OHLCV for all symbols via Databento Historical."""
-        self.log.info("[1/2] Fetching previous-day close (Databento EQUS.SUMMARY ohlcv-1d)...")
+        """Fetch 21 business days of OHLCV for prev close + avg daily volume."""
+        self.log.info("[1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...")
         try:
             client = db.Historical()
             today_ts = pd.Timestamp.now(tz="US/Eastern").normalize()
-            prev_day = (today_ts - pd.offsets.BusinessDay(1)).date()
+            start_day = (today_ts - pd.offsets.BusinessDay(21)).date()
             end_day = today_ts.date()
 
-            self.log.info(f"      Requesting prev close for {prev_day}...")
+            self.log.info(f"      Requesting OHLCV from {start_day} to {end_day}...")
             data = client.timeseries.get_range(
                 dataset="EQUS.SUMMARY",
                 schema="ohlcv-1d",
                 symbols="ALL_SYMBOLS",
-                start=prev_day,
+                start=start_day,
                 end=end_day,
             )
 
@@ -217,11 +221,19 @@ class LiveScanner:
                 self.log.warning("      'symbol' column missing from df — check symbology insertion")
                 return
 
-            # De-duplicate: keep the most recent row per symbol
-            if "ts_event" in df.columns:
-                df = df.sort_values("ts_event").drop_duplicates("symbol", keep="last")
+            # Compute average daily volume from the full 20-day window
+            if "volume" in df.columns:
+                avg_vol = df.groupby("symbol")["volume"].mean().to_dict()
+                self.avg_daily_volume = {k: float(v) for k, v in avg_vol.items()}
+                self.log.info(f"      {len(self.avg_daily_volume):,} symbols with avg daily volume")
 
-            self.prev_close = df.set_index("symbol")["close"].to_dict()
+            # For prev_close: keep only the most recent row per symbol
+            if "ts_event" in df.columns:
+                df_latest = df.sort_values("ts_event").drop_duplicates("symbol", keep="last")
+            else:
+                df_latest = df.drop_duplicates("symbol", keep="last")
+
+            self.prev_close = df_latest.set_index("symbol")["close"].to_dict()
             self.log.info(f"      {len(self.prev_close):,} symbols with prev close loaded")
 
         except Exception as e:
@@ -336,18 +348,57 @@ class LiveScanner:
         )
 
     # -----------------------------------------------------------------------
+    # Volume + RVOL helpers
+    # -----------------------------------------------------------------------
+
+    def _get_candidate_volumes(self) -> dict[str, int]:
+        """Fetch current session volume for all candidates via Alpaca snapshot."""
+        symbols = list(self.candidates.keys())
+        if not symbols:
+            return {}
+        key = os.getenv("APCA_API_KEY_ID", "")
+        secret = os.getenv("APCA_API_SECRET_KEY", "")
+        if not key:
+            self.log.warning("  [scanner] APCA_API_KEY_ID not set — skipping volume snapshot")
+            return {}
+        url = "https://data.alpaca.markets/v2/stocks/snapshots"
+        params = {"symbols": ",".join(symbols), "feed": "sip"}
+        headers = {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret}
+        try:
+            resp = requests.get(url, params=params, headers=headers, timeout=10)
+            resp.raise_for_status()
+            data = resp.json()
+            return {sym: data[sym]["dailyBar"]["v"] for sym in data if sym in data}
+        except Exception as e:
+            self.log.warning(f"  [scanner] Volume snapshot failed: {e}")
+            return {}
+
+    def _rank_score(self, candidate: dict, volume: int, rvol: float) -> float:
+        """Composite ranking score: RVOL 40%, volume 30%, gap 20%, float 10%."""
+        gap_pct = candidate.get("gap_pct", 0)
+        float_m = candidate.get("float_millions", 10) or 10
+        rvol_score = math.log10(min(rvol, 50) + 1) / math.log10(51)
+        vol_score = math.log10(max(volume, 1)) / 8
+        gap_score = min(gap_pct, 100) / 100
+        float_score = 1 - (min(float_m, 10) / 10)
+        return (0.40 * rvol_score) + (0.30 * vol_score) + (0.20 * gap_score) + (0.10 * float_score)
+
+    # -----------------------------------------------------------------------
     # Watchlist output
     # -----------------------------------------------------------------------
 
     def write_watchlist(self, label: str = "final"):
         """Write qualified candidates to watchlist.txt (and save JSON snapshot).
-        Append-only: existing symbols in watchlist are preserved."""
+        Filters by RVOL/volume, ranks by composite score, append-only."""
         with self.lock:
             candidates_copy = dict(self.candidates)
 
         if not candidates_copy:
             self.log.info(f"[{label.upper()}] No candidates to write.")
             return
+
+        # Fetch current session volumes for all candidates via Alpaca
+        vol_snapshot = self._get_candidate_volumes()
 
         # Read existing watchlist symbols to preserve (append-only)
         existing_symbols = set()
@@ -364,16 +415,42 @@ class LiveScanner:
             except Exception:
                 pass
 
-        # Sort all candidates by gap% descending
-        all_candidates = sorted(
-            candidates_copy.values(),
-            key=lambda x: x["gap_pct"], reverse=True
-        )
+        # Filter candidates by RVOL and pre-market volume, compute scores
+        scored_candidates = []
+        for c in candidates_copy.values():
+            sym = c["symbol"]
+            pm_volume = vol_snapshot.get(sym, 0)
+            avg_vol = self.avg_daily_volume.get(sym, 0)
+            rvol = (pm_volume / avg_vol) if avg_vol > 0 else 0.0
+
+            # Attach volume metadata to candidate
+            c["pm_volume"] = pm_volume
+            c["rvol"] = round(rvol, 2)
+
+            # Existing watchlist symbols bypass volume filter (already approved)
+            if sym not in existing_symbols:
+                if pm_volume < MIN_PM_VOLUME:
+                    self.log.info(
+                        f"  SKIP {sym}: pm_volume={pm_volume:,} < {MIN_PM_VOLUME:,}"
+                    )
+                    continue
+                if rvol < MIN_RVOL:
+                    self.log.info(
+                        f"  SKIP {sym}: rvol={rvol:.2f} < {MIN_RVOL}"
+                    )
+                    continue
+
+            score = self._rank_score(c, pm_volume, rvol)
+            c["rank_score"] = round(score, 4)
+            scored_candidates.append(c)
+
+        # Sort by composite rank score descending
+        scored_candidates.sort(key=lambda x: x["rank_score"], reverse=True)
 
         # Apply MAX_SCANNER_SYMBOLS cap (existing symbols count toward the cap)
         all_final = []
         total_count = len(existing_symbols)
-        for c in all_candidates:
+        for c in scored_candidates:
             if c["symbol"] in existing_symbols:
                 all_final.append(c)  # already in watchlist, always include
                 continue
@@ -391,7 +468,8 @@ class LiveScanner:
             self.log.info(
                 f"  {c['symbol']:<6}  "
                 f"gap={c['gap_pct']:+.1f}%  ${c['price']:.2f}  float={float_str}  "
-                f"first={c['first_seen_et']}"
+                f"rvol={c.get('rvol', 0):.1f}x  vol={c.get('pm_volume', 0):,}  "
+                f"score={c.get('rank_score', 0):.3f}  first={c['first_seen_et']}"
             )
         self.log.info(f"{'='*60}\n")
 
@@ -400,25 +478,30 @@ class LiveScanner:
             return
 
         # Write watchlist.txt (append-only: preserve existing entries)
+        # Format: SYMBOL:gap_pct:rvol:float_m:pm_volume
         new_symbols = {c["symbol"] for c in all_final}
         with open(WATCHLIST_FILE, "w") as f:
             f.write(f"# Live scanner output — {self.today} {label}\n")
+            f.write(f"# Format: SYMBOL:gap_pct:rvol:float_m:pm_volume\n")
             f.write(f"# Generated at {datetime.now(ET).strftime('%H:%M:%S')} ET\n")
             # Preserve existing entries not in current candidates
             for line in existing_lines:
                 sym = line.split(":")[0].upper()
                 if sym not in new_symbols:
                     f.write(f"{line}\n")
-            # Write current candidates
+            # Write current candidates with metadata
             for c in all_final:
-                f.write(f"{c['symbol']}\n")
+                float_m = c.get("float_millions", 0) or 0
+                rvol = c.get("rvol", 0)
+                pm_vol = c.get("pm_volume", 0)
+                f.write(f"{c['symbol']}:{c['gap_pct']}:{rvol}:{float_m}:{pm_vol}\n")
 
         self.log.info(f"  Wrote {len(all_final)} symbols to {WATCHLIST_FILE}")
 
         # Save JSON snapshot
         json_path = os.path.join(SCANNER_DIR, f"live_{self.today}_{label}.json")
         with open(json_path, "w") as f:
-            json.dump(all_final, f, indent=2)
+            json.dump(all_final, f, indent=2, default=str)
         self.log.info(f"  Snapshot: {json_path}")
 
     # -----------------------------------------------------------------------
