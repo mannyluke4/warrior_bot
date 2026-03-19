@@ -1,0 +1,52 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: CHNR  |  Date: 2026-03-19  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching CHNR bars for 2026-03-19...
+  Total bars: 286  |  Seed: 0  |  Sim: 286
+  Fundamentals: float=0.5M gap=+32.4%
+  Seed complete: EMA9=None
+  Fetching tick data from Alpaca...
+  Tick replay: 573004 trades for sim window
+  [07:16] 1M IMPULSE detected
+  [07:17] SQ_PRIMED: vol=3.9x avg, bar_vol=613,409, price=$5.1900 above VWAP ($5.0674)
+  ARMED entry=5.0200 stop=4.9000 R=0.1200 score=7.9 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+0.9;gap_20pct=+1.0;vwap_dist=+1.0(2%);[PARABOLIC]
+  [07:18] SQ_ENTRY: 5.0400 stop=4.9000 R=0.1400 qty=3571 score=7.9 setup_type=squeeze
+  [07:18] 1M RESET (lost VWAP)
+  [07:22] 1M IMPULSE detected
+  [07:24] 1M RESET (extended: 6 green candles)
+  [07:25] 1M RESET (bearish engulfing)
+  [07:27] 1M RESET (extended: 7 green candles)
+  [07:44] SQ_REJECT: not_new_hod (bar_high=$5.5700 < HOD=$6.0000)
+  [07:47] SQ_PRIMED: vol=3.7x avg, bar_vol=1,047,519, price=$6.1700 above VWAP ($5.1929)
+  ARMED entry=6.0200 stop=5.9000 R=0.1200 score=6.7 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+0.7;gap_20pct=+1.0;[PARABOLIC]
+  [07:48] SQ_ENTRY: 6.0400 stop=5.9000 R=0.1400 qty=3571 score=6.7 setup_type=squeeze
+  [08:00] SQ_REJECT: not_new_hod (bar_high=$6.5800 < HOD=$6.6100)
+  [08:02] SQ_REJECT: not_new_hod (bar_high=$6.5003 < HOD=$6.6100)
+  [09:36] SQ_REJECT: not_new_hod (bar_high=$5.5199 < HOD=$6.6100)
+  [09:37] SQ_REJECT: not_new_hod (bar_high=$5.8000 < HOD=$6.6100)
+  [09:44] 1M RESET (extended: 8 green candles)
+
+======================================================================
+  BACKTEST REPORT: CHNR -- 2026-03-19 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 573004 sim + 0 seed  |  EMA9=4.1884  VWAP=5.2072
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:18   5.0400   4.9000  0.1400    7.9   5.0400  sq_para_trail_exit          +0    +0.0R
+    2   07:48   6.0400   5.9000  0.1400    6.7   6.1600  sq_para_trail_exit        +429    +0.9R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 2  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+429  |  Avg R-Multiple: +0.2R
+  Largest Win: $+429  |  Largest Loss: $+0
+  Armed: 2  |  Signals: 2  |  Entered: 2
+======================================================================
+
