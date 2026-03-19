@@ -1,5 +1,5 @@
 # Claude Cowork Handoff — Warrior Bot Project
-## Updated: 2026-03-19
+## Updated: 2026-03-19 (evening)
 
 **Your role**: Strategy analyst and coordinator for a multi-machine trading bot project. You have **full read access to the GitHub repo** — use it to read data, analyze reports, and write directives. The master task list is in `MASTER_TODO.md`. Read it first.
 
@@ -73,14 +73,15 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 | File | Purpose |
 |------|---------|
 | `bot.py` | Live bot (Alpaca websocket, runs on Mac Mini) |
-| `simulate.py` | Backtesting engine (tick + bar mode) |
+| `simulate.py` | Backtesting engine (tick + bar mode) — includes squeeze exit/wiring |
 | `micro_pullback.py` | Core 1-minute detector state machine |
+| `squeeze_detector.py` | Strategy 2: Squeeze/breakout detector (IDLE → PRIMED → ARMED) |
 | `trade_manager.py` | Order execution + exit management + filters |
 | `bars.py` | TradeBarBuilder (VWAP/HOD/PM tracking) |
 | `live_scanner.py` | Databento real-time scanner (writes watchlist.txt) |
 | `scanner_sim.py` | Backtest scanner (generates scanner_results/*.json) |
 | `stock_filter.py` | Legacy live scanner (Alpaca snapshots — BROKEN, being replaced) |
-| `run_ytd_v2_backtest.py` | 49-day YTD batch backtest runner |
+| `run_ytd_v2_backtest.py` | 55-day YTD batch backtest runner |
 | `.env` | ALL config knobs (env vars control everything) |
 
 ### Exit Strategy
@@ -105,18 +106,26 @@ Five data-backed fixes were implemented and validated:
 | 4 | No re-entry after loss on same symbol | +$1,315 | `WB_NO_REENTRY_ENABLED=1` |
 | 5 | TW profit gate — suppress TW above 1.5R | +$12,619 | `WB_TW_MIN_PROFIT_R=1.5` |
 
+### Strategy 2: Squeeze / Breakout (2026-03-19, V2 COMPLETE)
+New strategy module captures first-leg momentum moves. Three iterations in one day:
+- **V1**: Basic squeeze detector. R-cap blocked all parabolic first legs.
+- **Parabolic mode**: Level-based stop fallback when consolidation R exceeds cap. ARTL went from 0 entries to +$6,963.
+- **V2 fixes**: HOD gate (blocks bounce entries), separate entry counters (squeeze doesn't block MP), dollar loss cap (catches gap-throughs).
+- **Result**: 4-stock total went from $28,162 (MP-only) to $44,605 (+58%).
+- **Next**: Full 55-day YTD backtest with squeeze enabled. See `DIRECTIVE_SQUEEZE_YTD_OVERNIGHT.md`.
+
 ### Scanner Alignment (2026-03-19, IN PROGRESS)
 The live scanner was completely broken (0 stocks found in 3 days). Root cause: Alpaca snapshot API returns stale/null data for small caps. Solution: switch to Databento-powered `live_scanner.py` (already built).
 
 Both scanners (live and backtest) are being aligned to use identical Ross Pillar criteria. See `DIRECTIVE_SCANNER_ALIGNMENT.md`.
 
 ### Last Validated Backtest
-- **49-day (Jan 2 - Mar 12)**: +$19,072 (+63.6%), profit factor 3.38, 28 trades
-- **VERO regression**: +$18,583 (1 trade, 18.6R — TW suppressed, BE exit)
-- **ROLR regression**: +$6,444 (1 trade, 6.4R — TW suppressed, BE exit)
-- ⚠️ **These numbers may change** after scanner alignment re-run — we may be testing against wrong stocks
+- **49-day MP-only (Jan 2 - Mar 12)**: +$19,072 (+63.6%), profit factor 3.38, 28 trades
+- **4-stock squeeze V2 validation**: +$44,605 total across ARTL, VERO, ROLR, SXTC (+58% vs MP-only)
+- **VERO regression (squeeze OFF)**: +$18,583 (1 trade, 18.6R — unchanged)
+- **ROLR regression (squeeze OFF)**: +$6,444 (1 trade, 6.4R — unchanged)
 
-### Live Config (.env, all fixes enabled)
+### Live Config (.env, all fixes enabled — squeeze NOT yet live)
 ```
 WB_MODE=PAPER
 WB_EXIT_MODE=signal
@@ -134,6 +143,11 @@ WB_MAX_LOSS_R_LOW_FLOAT=0.85
 WB_MAX_LOSS_TRIGGERS_COOLDOWN=1
 WB_NO_REENTRY_ENABLED=1
 WB_TW_MIN_PROFIT_R=1.5
+# Squeeze V2 (not yet in .env — backtest validation pending)
+# WB_SQUEEZE_ENABLED=1
+# WB_SQ_PARA_ENABLED=1
+# WB_SQ_NEW_HOD_REQUIRED=1
+# WB_SQ_MAX_LOSS_DOLLARS=500
 ```
 
 ---
@@ -202,6 +216,8 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 | `WINNER_EXIT_ANALYSIS_REPORT.md` | Money left on table analysis |
 | `VOLUME_PRESSURE_REPORT.md` | Buy/sell ratio at entry time |
 | `ARTL_METHODOLOGY_GAP_ANALYSIS.md` | Bot vs Ross: 90% gap, 5 methodology gaps |
+| `STRATEGY_2_SQUEEZE_DESIGN.md` | Squeeze strategy full design spec — all 5 decisions locked |
+| `DIRECTIVE_SQUEEZE_FIXES_V2.md` | V2 conflict fixes (HOD gate, counters, dollar cap) |
 | `SCANNER_DATA_QUALITY_REPORT.md` | Why live scanner finds 0 stocks |
 | `YTD_V2_BACKTEST_RESULTS.md` | Latest 49-day backtest results |
 | `ALL_FIXES_BACKTEST_RESULTS.md` | Validation of all 5 fixes |
@@ -219,4 +235,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-19 | Primary workspace moving to Mac Mini*
+*Handoff updated: 2026-03-19 evening | Primary workspace moving to Mac Mini*

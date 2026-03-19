@@ -48,26 +48,63 @@ The live scanner has found ZERO usable stocks across 3 trading days. The live an
 
 ---
 
-## 🟢 Strategy 2: Squeeze / Breakout Entry (V1 IMPLEMENTED — Tuning Phase)
+## 🟢 Strategy 2: Squeeze / Breakout Entry (V2 IMPLEMENTED — Validation Phase)
 
-Squeeze/breakout detector captures first-leg momentum moves that MP misses. V1 implemented 2026-03-19.
+Squeeze/breakout detector captures first-leg momentum moves that MP misses. V1 implemented 2026-03-19, parabolic mode added same day, V2 conflict fixes (HOD gate, separate counters, dollar cap) landed same day.
 
-**Files**: `squeeze_detector.py` (355 lines), `simulate.py` (+253 lines exit/wiring)
+**Files**: `squeeze_detector.py` (~420 lines), `simulate.py` (+340 lines exit/wiring)
 **Design Doc**: `STRATEGY_2_SQUEEZE_DESIGN.md` — All 5 decisions locked
+**Directives**: `DIRECTIVE_SQUEEZE_V1.md`, `DIRECTIVE_SQUEEZE_PARABOLIC.md`, `DIRECTIVE_SQUEEZE_FIXES_V2.md`
 
+### V2 Results (4-stock validation, squeeze + parabolic + all fixes)
+| Stock | MP-Only | Squeeze V2 | Delta | Trades |
+|-------|---------|-----------|-------|--------|
+| ARTL | +$922 | +$5,275 | +$4,353 | 2 squeeze (1W 1L) |
+| VERO | +$18,583 | +$20,922 | +$2,339 | 1 MP + 3 squeeze (4W 0L) |
+| ROLR | +$6,444 | +$16,195 | +$9,751 | 2 squeeze + 1 MP (3W 0L) |
+| SXTC | +$2,213 | +$2,213 | $0 | No squeeze activity |
+| **Total** | **$28,162** | **$44,605** | **+$16,443 (+58%)** | |
+
+### Task Status
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define squeeze entry criteria | **✅ DONE** | — | Volume explosion (3x avg) + VWAP + key level break. `squeeze_detector.py` |
+| Define squeeze entry criteria | **✅ DONE** | — | Volume explosion (3x avg) + VWAP + green bar + body % + key level break |
 | Design squeeze detector module | **✅ DONE** | — | IDLE → PRIMED → ARMED state machine, same interface as MP |
 | Define squeeze exit rules | **✅ DONE** | — | Trail (1.5R), time stop (5 bars), VWAP loss, core+runner partial (75/25 at 2R) |
 | Implement squeeze_detector.py | **✅ DONE** | — | All env vars gated, probe sizing, max attempts, PM confidence scoring |
 | Wire into simulate.py | **✅ DONE** | — | Dual detector feed, squeeze priority, conflict resolution, TW/BE skip |
+| Parabolic mode | **✅ DONE** | — | Level-based stop when consolidation R > cap. ARTL went from 0 entries to +$6,963 first trade |
+| V2 Fix 1: HOD gate | **✅ DONE** | — | `WB_SQ_NEW_HOD_REQUIRED=1` — bar must make new session high. Blocks VERO bounce entry |
+| V2 Fix 2: Separate entry counters | **✅ DONE** | — | Squeeze trades don't consume MP's max_entries slots. ROLR gets both strategies |
+| V2 Fix 3: Dollar loss cap | **✅ DONE** | — | `WB_SQ_MAX_LOSS_DOLLARS=500` — catches gap-throughs on tight parabolic stops |
 | Backtest regression | **✅ PASS** | — | VERO +$18,583, ROLR +$6,444 (squeeze OFF = unchanged) |
-| Backtest VERO squeeze ON | **✅ PASS** | — | MP +$18,583 + squeeze +$1,259 = **+$19,842** (additive) |
-| Backtest ARTL squeeze ON | **⚠️ R-CAP BLOCKED** | MEDIUM | 6 PRIMEs but all blocked by R-cap on parabolic first leg. Squeeze better on 2nd-leg breakouts currently. |
-| Run full 55-day YTD with squeeze ON | **NOT STARTED** | HIGH | Need data on how many squeeze opportunities exist across the full dataset |
-| Tune R-cap for first-leg entries | **NOT STARTED** | MEDIUM | Options: widen to $1.20, increase 5% cap to 8%, or add parabolic mode. Data-driven after full YTD. |
-| Port squeeze exits to trade_manager.py | **NOT STARTED** | LOW | For live bot. SimTradeManager has the logic — port after backtest validation. |
+| **Add squeeze env vars to YTD runner** | **NOT STARTED** | **HIGH** | `run_ytd_v2_backtest.py` needs squeeze V2 env vars in ENV_BASE + setup_type parsing |
+| **Run full 55-day YTD with squeeze ON** | **NOT STARTED** | **HIGH** | The definitive test — how many squeeze opportunities across full dataset |
+| Port squeeze exits to trade_manager.py | **NOT STARTED** | LOW | For live bot. SimTradeManager has the logic — port after backtest validation |
+
+### Squeeze V2 Env Vars (all gated, defaults = OFF or conservative)
+```
+WB_SQUEEZE_ENABLED=1           # Master gate (OFF by default)
+WB_SQ_VOL_MULT=3.0             # Min volume multiple to trigger PRIMED
+WB_SQ_MIN_BAR_VOL=50000        # Absolute min bar volume
+WB_SQ_MIN_BODY_PCT=1.5         # Min candle body % for squeeze bar
+WB_SQ_PRIME_BARS=3             # Bars to wait for level break after PRIMED
+WB_SQ_MAX_R=0.80               # Max R for consolidation-based stop
+WB_SQ_LEVEL_PRIORITY=pm_high,whole_dollar,pdh
+WB_SQ_PROBE_SIZE_MULT=0.5      # Half size on first attempt
+WB_SQ_MAX_ATTEMPTS=3           # Per-symbol squeeze attempt limit
+WB_SQ_PARA_ENABLED=1           # Parabolic mode (level-based stop fallback)
+WB_SQ_PARA_STOP_OFFSET=0.10    # Stop = breakout_level - offset
+WB_SQ_PARA_TRAIL_R=1.0         # Tighter trail for parabolic (vs 1.5R normal)
+WB_SQ_NEW_HOD_REQUIRED=1       # Bar must be at/making new session HOD
+WB_SQ_MAX_LOSS_DOLLARS=500     # Absolute dollar cap on squeeze losses
+WB_SQ_TARGET_R=2.0             # Core exit target
+WB_SQ_CORE_PCT=75              # Core vs runner split
+WB_SQ_RUNNER_TRAIL_R=2.5       # Runner trail distance
+WB_SQ_STALL_BARS=5             # Time stop (bars without progress)
+WB_SQ_VWAP_EXIT=1              # Exit on VWAP loss
+WB_SQ_PM_CONFIDENCE=1          # PM bull flag adds to score
+```
 
 ---
 
