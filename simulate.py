@@ -61,6 +61,7 @@ class SimTrade:
     qty_runner: int     # T3 in 3-tranche mode
     score: float = 0.0
     score_detail: str = ""
+    setup_type: str = "micro_pullback"
     entry_time: str = ""
     # Core/T1 exit
     core_exit_price: float = 0.0

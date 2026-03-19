@@ -222,6 +222,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             "symbol": symbol,
             "date": date,
             "notional": notional,
+            "setup_type": "micro_pullback",
         })
 
     trade_pnl = sum(t["pnl"] for t in trades)

@@ -133,6 +133,9 @@ class MicroPullbackDetector:
         self._bar_ranges_1m: deque = deque(maxlen=14)
         self._halt_active_bars: int = 0
 
+        # --- Minimum session volume gate (block ARM on illiquid stocks) ---
+        self.min_session_volume = int(os.getenv("WB_MIN_SESSION_VOLUME", "0"))  # 0 = off
+
         # --- Warmup gate (block ARMs until N bars of history accumulated) ---
         self.warmup_bars = int(os.getenv("WB_WARMUP_BARS", "5"))
 
@@ -280,6 +283,10 @@ class MicroPullbackDetector:
         if not self.last_patterns:
             return "[]"
         return "[" + ", ".join(sorted(self.last_patterns)) + "]"
+
+    def _session_volume(self) -> int:
+        """Total volume across all 1m bars seen so far."""
+        return sum(b["v"] for b in self.bars_1m)
 
     def _session_range_pct(self) -> float:
         """Session range (high - low) / low * 100, from bars_1m."""
@@ -540,6 +547,13 @@ class MicroPullbackDetector:
                 self._full_reset()
                 return f"RESET (R too small: {r:.4f})"
 
+            # Minimum session volume gate
+            if self.min_session_volume > 0:
+                sv = self._session_volume()
+                if sv < self.min_session_volume:
+                    self._full_reset()
+                    return f"NO_ARM low_session_volume: {sv} < {self.min_session_volume}"
+
             # Score for logging only (no gate — score has never been validated as predictive)
             score, detail = self._score_setup(entry=entry, stop_low=stop_low, macd_score=macd_score)
 
@@ -620,6 +634,12 @@ class MicroPullbackDetector:
         stale, stale_reason = self._is_stale_stock()
         if stale:
             return f"1M NO_ARM stale_stock: {stale_reason}"
+
+        # --- Minimum session volume gate ---
+        if self.min_session_volume > 0:
+            sv = self._session_volume()
+            if sv < self.min_session_volume:
+                return f"1M NO_ARM low_session_volume: {sv} < {self.min_session_volume}"
 
         # --- LevelMap resistance gate ---
         if self.level_map is not None:
@@ -1022,6 +1042,13 @@ class MicroPullbackDetector:
             if stale:
                 self._full_reset_1m()
                 return f"1M NO_ARM stale_stock: {stale_reason}"
+
+            # Minimum session volume gate
+            if self.min_session_volume > 0:
+                sv = self._session_volume()
+                if sv < self.min_session_volume:
+                    self._full_reset_1m()
+                    return f"1M NO_ARM low_session_volume: {sv} < {self.min_session_volume}"
 
             # LevelMap resistance gate
             if self.level_map is not None:

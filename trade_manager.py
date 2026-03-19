@@ -142,6 +142,7 @@ class OpenTrade:
     runner_stop: float = 0.0
     highest_r: float = 0.0       # Peak R-multiple seen (for WB_TRAILING_STOP)
     score: float = 0.0           # Setup quality score from ArmedTrade
+    setup_type: str = "micro_pullback"  # Strategy that produced this trade
     created_at_utc: datetime = None
     # T2 (3-tranche only; qty_t2=0 when disabled)
     qty_t2: int = 0
@@ -173,6 +174,7 @@ class PendingEntry:
     qty_t2: int = 0
     take_profit_t2: float = 0.0
     score: float = 0.0
+    setup_type: str = "micro_pullback"
 
     # ✅ entry fill accounting (filled_qty is cumulative)
     filled_applied: int = 0
@@ -668,6 +670,7 @@ class PaperTradeManager:
                 peak=entry,
                 runner_stop=stop,
                 score=float(getattr(p, 'score', 0.0)) if p else 0.0,
+                setup_type=getattr(p, 'setup_type', 'micro_pullback') if p else 'micro_pullback',
                 created_at_utc=datetime.now(timezone.utc),
                 float_m=getattr(p, '_float_m', 0.0) if p else 0.0,
             )
@@ -1317,6 +1320,7 @@ class PaperTradeManager:
                             peak=p.entry,
                             runner_stop=p.stop,
                             score=getattr(p, 'score', 0.0),
+                            setup_type=getattr(p, 'setup_type', 'micro_pullback'),
                             created_at_utc=datetime.now(timezone.utc),
                             qty_t2=qty_t2,
                             take_profit_t2=getattr(p, 'take_profit_t2', 0.0),
@@ -1882,10 +1886,12 @@ class PaperTradeManager:
                         pnl_str = f" | P&L=${realized_pnl:+,.0f} (entry={t.entry:.4f} exit_avg={avg_exit:.4f} qty={exit_qty})"
                         log_event("position_closed", symbol, reason=p.reason,
                                   entry=t.entry, exit_avg=round(avg_exit, 4),
-                                  qty=exit_qty, realized_pnl=round(realized_pnl, 2))
+                                  qty=exit_qty, realized_pnl=round(realized_pnl, 2),
+                                  setup_type=t.setup_type)
                     else:
                         log_event("position_closed", symbol, reason=p.reason,
-                                  entry=t.entry, exit_avg=None, qty=exit_qty)
+                                  entry=t.entry, exit_avg=None, qty=exit_qty,
+                                  setup_type=t.setup_type)
                 else:
                     log_event("position_closed", symbol, reason=p.reason)
 
