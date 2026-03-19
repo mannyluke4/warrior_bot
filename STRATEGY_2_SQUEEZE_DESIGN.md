@@ -115,24 +115,46 @@ TRIGGERED → ENTRY via trade_manager.on_signal()
 
 ---
 
-## 5. Stop Placement
+## 5. Stop Placement (Two Modes)
 
-Squeeze stops need to be different from MP stops:
+The squeeze detector auto-selects between two stop modes based on the situation:
 
-**Option A: Below breakout bar low**
-- stop = low of the 1m bar that triggered the ARM
-- Pro: Tight, defines risk clearly
-- Con: Parabolic moves often wick below before continuing
+### 5.1 Standard Mode (default — works on range breakouts)
 
-**Option B: Below consolidation zone**
-- stop = lowest low of the last N 1m bars before breakout (default: 3)
-- Pro: Gives more room for volatile squeeze action
-- Con: Wider stop = smaller position size
-
-**Recommendation: Option B with a cap.**
 - `stop = min(low of last 3 bars before breakout)`
-- But cap max R at `WB_SQ_MAX_R` (default: $0.80 or 5% of price, whichever is smaller)
-- If R exceeds cap, skip the trade (too risky for the account size)
+- Cap: max R at `WB_SQ_MAX_R` (default $0.80) or 5% of price
+- If R exceeds cap → **fall through to parabolic mode** (not skip)
+
+### 5.2 Parabolic Mode (DECISION: Added 2026-03-19 — captures first-leg moves)
+
+When standard stop produces R > cap, the stock is in a parabolic first leg (every bar is a massive green candle, no consolidation to anchor a stop). Instead of skipping, switch to level-based stop:
+
+- `stop = breakout_level - WB_SQ_PARA_STOP_OFFSET` (default $0.10)
+- Or `stop = low of the breakout bar` — whichever is HIGHER (tighter)
+- This says: "I'm buying the break of $5.00, my stop is $4.90"
+- R is small (~$0.10-0.15), allowing entry within the R-cap
+
+**Parabolic mode constraints:**
+- **Always probe size** (`WB_SQ_PROBE_SIZE_MULT`, default 0.5x) — never full size
+- **Tighter trailing stop** (`WB_SQ_PARA_TRAIL_R`, default 1.0R vs 1.5R standard)
+- **Score tag**: `[PARABOLIC]` added to score_detail so we can track performance separately
+- Flagged on ArmedTrade: `parabolic_mode = True`
+
+**Why this works (Ross's own logic):**
+- Ross places stops "just below the support level he's basing the trade on"
+- On a parabolic move, that support = the breakout level, not a distant consolidation
+- "Trade small and add to winners" + "expect multiple small stopouts"
+- Probe sizing limits max loss to ~$250 per attempt ($0.10 × 2,500 shares on a $5 stock)
+- With 3 max attempts, worst case is ~$750 before catching a runner
+
+**ARTL example with parabolic mode:**
+- Volume explosion at 07:00, price breaks $5.00 whole-dollar
+- Entry: $5.02, Stop: $4.92 (just below level), R = $0.10
+- Position: 2,500 shares (probe = half of $1000/$0.10)
+- If stopped: -$250 loss. Probe #2 at next level ($6.00).
+- If it runs: 2R target at $5.22 → core exits (+$375), runner trails
+- Runner rides $5.02→$8.00 = $2.98/share × 625 shares = **+$1,862**
+- Total: ~$2,237 from a half-size probe vs $0 from current R-cap block
 
 ---
 
@@ -303,10 +325,15 @@ WB_SQ_CORE_PCT=75                # % of shares that are "core" (exit at target)
 WB_SQ_TARGET_R=2.0               # Core profit target in R-multiples
 WB_SQ_RUNNER_TRAIL_R=2.5         # Runner trailing stop in R-multiples below peak
 
-# Exits
+# Exits (standard mode)
 WB_SQ_TRAIL_R=1.5                # Trailing stop distance for full position (pre-target)
 WB_SQ_STALL_BARS=5               # Time stop: exit if no new high in N 1m bars
 WB_SQ_VWAP_EXIT=1                # Exit on 1m close below VWAP
+
+# Parabolic mode (auto-selected when standard R > cap)
+WB_SQ_PARA_ENABLED=1             # 1=allow parabolic fallback, 0=skip like before
+WB_SQ_PARA_STOP_OFFSET=0.10      # Stop = level - this offset (just below breakout)
+WB_SQ_PARA_TRAIL_R=1.0           # Tighter trail for parabolic entries (vs 1.5 standard)
 
 # Confidence / Classifier
 WB_SQ_PM_CONFIDENCE=1            # Use PM behavior to boost score (bull flag, vol trend)
