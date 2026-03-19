@@ -39,8 +39,10 @@ The live scanner has found ZERO usable stocks across 3 trading days. The live an
 
 | Task | Status | Priority | Est. Impact | Notes |
 |------|--------|----------|-------------|-------|
-| **Missed re-entries after winning exits** | **NOT STARTED** | HIGH | +$2-5K est. | GITS, OKLL, TLYS, LUNL, BMNZ all had re-entry opportunities the bot missed. Need to understand why detector doesn't ARM again. Possible causes: exhaustion filter, stale filter, MAX_SYMBOL_TRADES=2 cap, MACD flip, VWAP loss. Requires simulation log analysis. |
-| **Feb-Mar bleed / loser avoidance** | **NOT STARTED** | HIGH | Reduce -$6K drawdown | 18 losses vs 10 wins. Losses are small individually but add up. 16 zero-trade days in Feb followed by string of losers. Need to identify patterns (gap%, float, time of day, score) that predict losers. |
+| **Missed re-entries after winning exits** | **ANALYZED — NOT A MP FIX** | LOW (for MP) | Belongs to Strategies 2-5 | Verbose sim analysis (2026-03-19): VERO goes silent 07:37-09:47 after exit, ROLR silent 08:44-10:50. Cause: MACD bearish + trend_down range check. These post-exit continuations are curl/extension patterns (Strategy 5), not micro pullbacks. The MP detector is correct to not re-arm. |
+| **Feb-Mar bleed / loser avoidance** | **LIKELY RESOLVED BY SCANNER** | MEDIUM | Pending full YTD scan | Scanner alignment reduced candidates from 94-108/day to 0-2/day. Key dates backtest: 9 trades, 56% win rate, PF 7.66. Full YTD scan (55 days) running overnight will confirm if bleed is eliminated. |
+| **Thin stock / min liquidity filter** | **DIRECTIVE SENT** | HIGH | Saves ~$1,800 | FUTG (312 ticks, -$1,538) and INKT (312 ticks, -$349) were both illiquid. `WB_MIN_SESSION_VOLUME` gate at ARM time. See `DIRECTIVE_MP_REFINEMENTS_V1.md`. |
+| **Trade setup type tagging** | **DIRECTIVE SENT** | HIGH | Prep for multi-strategy | `setup_type` field on OpenTrade for filtering backtests per strategy. See `DIRECTIVE_MP_REFINEMENTS_V1.md`. |
 | **Post-windfall position sizing** | **NOT STARTED** | MEDIUM | Reduce drawdown | After VERO (+$17.5K), account jumps to $55K and 2.5% risk = $1,375/trade. Subsequent losses are amplified. Consider: risk cap, slower ramp, or fixed risk for N days after big win. |
 | **Dynamic sizing in batch runner** | **NOTED** | LOW | Better backtest accuracy | Batch runner uses 2.5% of equity (compounding). Live bot uses flat $1,000 (`WB_RISK_DOLLARS`). These will diverge. Need to decide: does live bot also scale with equity? |
 
