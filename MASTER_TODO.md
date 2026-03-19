@@ -21,6 +21,8 @@ The live scanner has found ZERO usable stocks across 3 trading days. The live an
 | Connect `live_scanner.py` to `daily_run.sh` | **NOT STARTED** | CC MM | After Phase 5 validates. Start alongside `bot.py`, disable `WB_ENABLE_DYNAMIC_SCANNER` |
 | Verify Databento streaming costs | **NOT STARTED** | Manny | Usage-based pricing — need to confirm acceptable |
 | Test: would ARTL have been found? | **IN DIRECTIVE** | CC MM | Part of Phase 5 validation. Generate scanner data for Mar 18 |
+| **Faster rescan for news-driven movers** | **NOT STARTED** | **HIGH** | CHNR 2026-03-19: news at 7:15, Ross alerted at 7:16, our scanner found it at 8:00 (44 min late). Need faster rescan cycle or streaming mode for intra-premarket moves. See `CHNR_2026-03-19_METHODOLOGY_GAP_ANALYSIS.md`. |
+| Cache CHNR 2026-03-19 tick data | **NOT STARTED** | MEDIUM | Need tick data to backtest CHNR with squeeze V2 + future strategies |
 
 ---
 
@@ -121,27 +123,35 @@ Ross bought ARTL's dip from $8.20 to $5.63 at $6.73 and rode the bounce to $7.60
 
 ---
 
-## 🟡 Strategy 4: VWAP Reclaim (NEW — Not Yet Built)
+## 🟡 Strategy 4: VWAP Reclaim (NEW — Not Yet Built) ⬆️ PRIORITY UPGRADED
 
-Ross trades "the first 1-minute candle to make a new high" after price crosses back above VWAP. This is a specific entry signal the bot doesn't have.
+Ross trades "the first 1-minute candle to make a new high" after price crosses back above VWAP. This is a specific entry signal the bot doesn't have. **CHNR analysis (2026-03-19) shows this was Ross's bread-and-butter pattern — 2 of his 3 actual trade sequences were VWAP reclaim setups.**
+
+**Evidence across two live-day analyses:**
+- **CHNR 2026-03-19**: VWAP curl trade (scratched -$67) + VWAP break into $6.00 (+$2k). Ross's primary setup.
+- **ARTL 2026-03-18**: VWAP reclaim was part of Ross's re-entry sequence after the initial squeeze.
 
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define VWAP reclaim criteria | **NOT STARTED** | MEDIUM | Manny to provide breakdown. Key: price crosses above VWAP from below, first candle to make new high, volume confirmation |
-| Design VWAP reclaim module | **NOT STARTED** | MEDIUM | May be simpler than squeeze/dip-buy — specific trigger condition |
+| Define VWAP reclaim criteria | **NOT STARTED** | **HIGH** | Key: price crosses above VWAP from below, first candle makes new high, volume confirmation. MACD filter (Ross skipped CHNR longs when MACD negative). |
+| Design VWAP reclaim module | **NOT STARTED** | **HIGH** | May be simpler than squeeze — specific trigger condition. Entry on VWAP reclaim, exit at prior resistance/whole dollar. |
 | Define exit rules | **NOT STARTED** | MEDIUM | |
 | Implement and backtest | **NOT STARTED** | — | After design approved |
 
 ---
 
-## 🟡 Strategy 5: Curl / Extension (NEW — Not Yet Built)
+## 🟡 Strategy 5: Curl / Extension (NEW — Not Yet Built) ⬆️ PRIORITY UPGRADED
 
-Rounded bottom approach toward prior HOD. Ross uses this for continuation trades later in the session.
+Rounded bottom approach toward prior HOD. Ross uses this for continuation trades later in the session. **CHNR analysis (2026-03-19) confirms this is Ross's biggest winner pattern — his +$2,000 curl from $5.00 support was the day's best trade.**
+
+**Evidence across two live-day analyses:**
+- **CHNR 2026-03-19**: Curl from $5.00 support after deep pullback → squeeze to $6.00 (+$2k). His best actual trade.
+- **ARTL 2026-03-18**: Ross's best ARTL trade was also a curl pattern (gradual recovery into prior HOD).
 
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define curl entry criteria | **NOT STARTED** | LOW | Lower priority — session trade, less common |
-| Design and implement | **NOT STARTED** | LOW | |
+| Define curl entry criteria | **NOT STARTED** | **HIGH** | Key elements: gradual rounded-bottom recovery after pullback, approaching prior support/resistance zone. Needs concept of "support" (VWAP, whole dollar, prior consolidation) |
+| Design and implement | **NOT STARTED** | **HIGH** | More complex than VWAP reclaim — needs multi-bar pattern recognition for rounded bottom shape |
 
 ---
 
