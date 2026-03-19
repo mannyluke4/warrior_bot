@@ -33,6 +33,27 @@ git pull origin v6-dynamic-sizing
 
 ---
 
+## Phase 0: Quick CHNR Verification (5 min)
+
+CC's standalone backtest used sim_start="08:00" (from scanner's sim_start). The first leg
+(7:15-8:00) was completely missed. Re-run from 07:00 with squeeze V2 to see if the detector
+catches the 7:16 volume explosion:
+
+```bash
+WB_SQUEEZE_ENABLED=1 WB_SQ_PARA_ENABLED=1 WB_SQ_NEW_HOD_REQUIRED=1 WB_SQ_MAX_LOSS_DOLLARS=500 \
+python simulate.py CHNR 2026-03-19 07:00 12:00 --ticks --tick-cache tick_cache/ --verbose 2>&1 \
+| tee verbose_logs/CHNR_2026-03-19_squeeze_v2.log
+```
+
+If tick cache doesn't have CHNR data yet, fetch it first. This test tells us whether our
+squeeze V2 would have caught Ross's stock today.
+
+**Note**: The YTD batch runner already uses sim_start="07:00" for all stocks (line 382 in
+run_ytd_v2_backtest.py), so the overnight run is NOT affected by the scanner's sim_start.
+This Phase 0 test is specifically to validate standalone sim behavior.
+
+---
+
 ## Phase 1: Add Squeeze V2 Env Vars to YTD Runner
 
 In `run_ytd_v2_backtest.py`, add squeeze V2 env vars to `ENV_BASE`:
@@ -199,10 +220,71 @@ git push origin v6-dynamic-sizing
 
 ## Notes for CC
 
+- **Phase 0 first** — quick CHNR test from 07:00 (not 08:00) validates squeeze on today's stock
 - Phase 1 is the critical code change — add env vars to ENV_BASE
 - Phase 2 is important for analysis — we need to know which trades are squeeze
 - The overnight run will take ~2-4 hours depending on tick cache hits
-- If a fresh date backtest is still running, let it finish first
 - Save BOTH state files (MP-only and squeeze V2) — we need them for the summary
 - The `WB_SQUEEZE_ENABLED=1` in ENV_BASE means ALL 55 days will have squeeze active
+- **The YTD runner already uses sim_start="07:00"** — scanner timing does NOT affect the batch run
 - This is the big one — the data from this run drives all next decisions
+
+---
+
+## Appendix: Scanner Timing Fix (MEDIUM priority — non-blocking)
+
+The scanner_sim.py premarket window ends at 7:15 AM. Stocks that start moving between 7:15-8:00
+(like CHNR, news at 7:15) aren't caught until the first rescan at 8:00. This affects standalone
+sim.py runs but NOT the YTD runner (which uses sim_start="07:00").
+
+### Problem
+```
+PM scan window:    4:00-7:15 AM  ← CHNR news at 7:15 falls outside
+First rescan:      8:00 AM       ← 44 min blind spot (7:15-8:00)
+```
+
+### Current `_CHECKPOINT_WINDOWS` (line 414-422)
+```python
+("08:00", 7, 15, 8, 0),    # 45-min window (7:15-8:00) — TOO WIDE
+("08:30", 8, 0, 8, 30),    # 30 min
+...
+```
+
+### Proposed Fix
+1. **Extend PM scan window** from 4:00-7:15 → 4:00-7:30 (line 262: change `hour=7, minute=15` → `minute=30`)
+2. **Add earlier rescan checkpoints** at 7:30 and 7:45:
+```python
+_CHECKPOINT_WINDOWS = [
+    ("07:30", 7, 15, 7, 30),   # NEW: catch 7:15-7:30 movers
+    ("07:45", 7, 30, 7, 45),   # NEW: catch 7:30-7:45 movers
+    ("08:00", 7, 45, 8, 0),    # Narrowed from 45min to 15min
+    ("08:30", 8, 0, 8, 30),
+    ("09:00", 8, 30, 9, 0),
+    ("09:30", 9, 0, 9, 30),
+    ("10:00", 9, 30, 10, 0),
+    ("10:30", 10, 0, 10, 30),
+]
+
+SCAN_CHECKPOINTS = [
+    ("07:30", 7, 30),
+    ("07:45", 7, 45),
+    ("08:00", 8, 0),
+    ("08:30", 8, 30),
+    ("09:00", 9, 0),
+    ("09:30", 9, 30),
+    ("10:00", 10, 0),
+    ("10:30", 10, 30),
+]
+```
+3. **Update sim_start logic** in `compute_gap_candidates` (line 315-320): extend the 7:30 cutoff
+   to accept first_time up to 8:00 (since we're expanding the PM window and adding checkpoints).
+
+### Impact
+- 10-30 stocks per date are currently discovered at 08:00 (checked all 55 dates)
+- Many would get earlier discovery (07:30 or 07:45) with sim_start matching actual first activity
+- Affects standalone sim.py accuracy and scanner JSON documentation quality
+- Does NOT affect YTD runner (already uses 07:00) or live scanner (already streaming)
+
+### When to Do This
+After the overnight run completes. It requires re-running scanner_sim.py for all 55 dates,
+which takes ~30 min. Non-blocking for the YTD backtest.
