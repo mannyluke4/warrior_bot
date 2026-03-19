@@ -48,23 +48,26 @@ The live scanner has found ZERO usable stocks across 3 trading days. The live an
 
 ---
 
-## 🟡 Strategy 2: Squeeze / Breakout Entry (DESIGN COMPLETE — Awaiting Review)
+## 🟢 Strategy 2: Squeeze / Breakout Entry (V1 IMPLEMENTED — Tuning Phase)
 
-Ross's primary edge on ARTL. Enters on the first leg of a news-driven momentum move, not the pullback. Would have captured ~$2.00/share (2.5-3.0R) on ARTL's $4.59→$8.19 initial squeeze vs MP's $0.30/share (0.9R) on the later continuation.
+Squeeze/breakout detector captures first-leg momentum moves that MP misses. V1 implemented 2026-03-19.
 
-**Design Doc**: `STRATEGY_2_SQUEEZE_DESIGN.md` — READY FOR REVIEW
+**Files**: `squeeze_detector.py` (355 lines), `simulate.py` (+253 lines exit/wiring)
+**Design Doc**: `STRATEGY_2_SQUEEZE_DESIGN.md` — All 5 decisions locked
 
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define squeeze entry criteria | **✅ DESIGNED** | HIGH | Volume explosion (3x avg) + price above VWAP + break of key level (PM high, whole dollar, PDH). Perplexity research + ARTL analysis. |
-| Design squeeze detector module | **✅ DESIGNED** | HIGH | 3-state machine: IDLE → PRIMED → ARMED. Same interface as MP detector (on_bar_close_1m, on_trade_price, ArmedTrade). New file: squeeze_detector.py |
-| Define squeeze exit rules | **✅ DESIGNED** | HIGH | Trailing stop (1.5R), time stop (5 bars no new high), VWAP loss exit, R-target (3.0R). NO topping wicky or bearish engulfing — too sensitive for squeeze candles. |
-| Define multi-strategy conflict rules | **✅ DESIGNED** | HIGH | First to trigger wins. Squeeze blocks MP while in trade. After squeeze exit, MP can ARM for continuation. Natural handoff: S2 catches leg 1, S1 catches leg 2+. |
-| **Manny review open questions** | **AWAITING REVIEW** | HIGH | 5 open questions in design doc Section 12: partial profits, PM high priority, re-entry rules, time window, classifier interaction |
-| Implement squeeze_detector.py | **NOT STARTED** | — | After design approved |
-| Add exit routing to trade_manager.py | **NOT STARTED** | — | Route exits by setup_type. First use of strategy profile concept. |
-| Wire into bot.py + simulate.py | **NOT STARTED** | — | Both detectors consume same feed, conflict resolution layer |
-| Backtest ARTL + key dates | **NOT STARTED** | — | Verify squeeze additive to MP, regression still passes |
+| Define squeeze entry criteria | **✅ DONE** | — | Volume explosion (3x avg) + VWAP + key level break. `squeeze_detector.py` |
+| Design squeeze detector module | **✅ DONE** | — | IDLE → PRIMED → ARMED state machine, same interface as MP |
+| Define squeeze exit rules | **✅ DONE** | — | Trail (1.5R), time stop (5 bars), VWAP loss, core+runner partial (75/25 at 2R) |
+| Implement squeeze_detector.py | **✅ DONE** | — | All env vars gated, probe sizing, max attempts, PM confidence scoring |
+| Wire into simulate.py | **✅ DONE** | — | Dual detector feed, squeeze priority, conflict resolution, TW/BE skip |
+| Backtest regression | **✅ PASS** | — | VERO +$18,583, ROLR +$6,444 (squeeze OFF = unchanged) |
+| Backtest VERO squeeze ON | **✅ PASS** | — | MP +$18,583 + squeeze +$1,259 = **+$19,842** (additive) |
+| Backtest ARTL squeeze ON | **⚠️ R-CAP BLOCKED** | MEDIUM | 6 PRIMEs but all blocked by R-cap on parabolic first leg. Squeeze better on 2nd-leg breakouts currently. |
+| Run full 55-day YTD with squeeze ON | **NOT STARTED** | HIGH | Need data on how many squeeze opportunities exist across the full dataset |
+| Tune R-cap for first-leg entries | **NOT STARTED** | MEDIUM | Options: widen to $1.20, increase 5% cap to 8%, or add parabolic mode. Data-driven after full YTD. |
+| Port squeeze exits to trade_manager.py | **NOT STARTED** | LOW | For live bot. SimTradeManager has the logic — port after backtest validation. |
 
 ---
 
