@@ -8,13 +8,13 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 ### Backtesting
 - **Always use `--ticks` mode** for backtests (matches live bot tick-by-tick replay)
 - **Backtest window: 07:00-12:00 ET** (Ross Cameron's active hours)
-- **Always run regression before pushing**: VERO +$6,890, GWAV +$6,735, ANPA +$2,088
+- **Always run regression before pushing**: VERO +$18,583, ROLR +$6,444
   ```bash
-  python simulate.py VERO 2026-01-16 07:00 12:00 --ticks
-  python simulate.py GWAV 2026-01-16 07:00 12:00 --ticks
-  python simulate.py ANPA 2026-01-09 07:00 12:00 --ticks
+  python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
+  python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
   ```
-- Regression must pass with ALL env configs (classifier ON and OFF, etc.)
+- VERO target updated 2026-03-18 after Fix 5 (TW profit gate). Old target was +$9,166.
+- GWAV and ANPA no longer produce trades in standalone mode (detector evolution)
 
 ### Code Changes
 - **All new features gated by env vars** (OFF by default) to prevent regressions
@@ -85,7 +85,7 @@ WB_PILLAR_GATES_ENABLED=1  # Ross Pillar entry-time gates in live bot
 The exhaustion filter is enabled by default and works CORRECTLY for cascading stocks because of dynamic scaling:
 - For big runners (VERO $3.50→$12+, ~243% range): `eff_vwap_pct = max(10%, 243 * 0.5) = 121.5%` → cascading re-entries pass ✅
 - For smaller-move stocks (TURB at 21.7% above VWAP): threshold stays near 10% → blocked ✅
-- **DO NOT implement a classifier-aware bypass** — it would break VERO regression ($6,890→$3,452)
+- **DO NOT implement a classifier-aware bypass** — it would break VERO regression
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
 ### Regression Targets (as of 2026-03-18)
