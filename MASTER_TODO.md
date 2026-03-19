@@ -48,16 +48,23 @@ The live scanner has found ZERO usable stocks across 3 trading days. The live an
 
 ---
 
-## 🟡 Strategy 2: Squeeze / Breakout Entry (NEW — Not Yet Built)
+## 🟡 Strategy 2: Squeeze / Breakout Entry (DESIGN COMPLETE — Awaiting Review)
 
-Ross's primary edge on ARTL. Enters on the first leg of a news-driven momentum move, not the pullback. Would have captured $1,500 on ARTL's $4.59→$8.19 initial squeeze.
+Ross's primary edge on ARTL. Enters on the first leg of a news-driven momentum move, not the pullback. Would have captured ~$2.00/share (2.5-3.0R) on ARTL's $4.59→$8.19 initial squeeze vs MP's $0.30/share (0.9R) on the later continuation.
+
+**Design Doc**: `STRATEGY_2_SQUEEZE_DESIGN.md` — READY FOR REVIEW
 
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define squeeze entry criteria | **NOT STARTED** | HIGH | Manny to provide detailed breakdown of the setup. Key elements: news catalyst, volume explosion, whole-dollar break, above VWAP |
-| Design squeeze detector module | **NOT STARTED** | HIGH | Independent state machine, coexists with pullback detector |
-| Define squeeze exit rules | **NOT STARTED** | HIGH | May differ from pullback exits — squeezes are faster, more volatile |
-| Implement and backtest | **NOT STARTED** | — | After design approved |
+| Define squeeze entry criteria | **✅ DESIGNED** | HIGH | Volume explosion (3x avg) + price above VWAP + break of key level (PM high, whole dollar, PDH). Perplexity research + ARTL analysis. |
+| Design squeeze detector module | **✅ DESIGNED** | HIGH | 3-state machine: IDLE → PRIMED → ARMED. Same interface as MP detector (on_bar_close_1m, on_trade_price, ArmedTrade). New file: squeeze_detector.py |
+| Define squeeze exit rules | **✅ DESIGNED** | HIGH | Trailing stop (1.5R), time stop (5 bars no new high), VWAP loss exit, R-target (3.0R). NO topping wicky or bearish engulfing — too sensitive for squeeze candles. |
+| Define multi-strategy conflict rules | **✅ DESIGNED** | HIGH | First to trigger wins. Squeeze blocks MP while in trade. After squeeze exit, MP can ARM for continuation. Natural handoff: S2 catches leg 1, S1 catches leg 2+. |
+| **Manny review open questions** | **AWAITING REVIEW** | HIGH | 5 open questions in design doc Section 12: partial profits, PM high priority, re-entry rules, time window, classifier interaction |
+| Implement squeeze_detector.py | **NOT STARTED** | — | After design approved |
+| Add exit routing to trade_manager.py | **NOT STARTED** | — | Route exits by setup_type. First use of strategy profile concept. |
+| Wire into bot.py + simulate.py | **NOT STARTED** | — | Both detectors consume same feed, conflict resolution layer |
+| Backtest ARTL + key dates | **NOT STARTED** | — | Verify squeeze additive to MP, regression still passes |
 
 ---
 
