@@ -1,0 +1,50 @@
+[
+  {
+    "symbol": "HOUR",
+    "prev_close": 1.89,
+    "pm_price": 2.97,
+    "gap_pct": 57.14,
+    "pm_volume": 26140886.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "avg_daily_volume": 481085.0,
+    "relative_volume": 54.34,
+    "float_shares": 1741580,
+    "float_millions": 1.74,
+    "profile": "A"
+  },
+  {
+    "symbol": "VEEE",
+    "prev_close": 1.94,
+    "pm_price": 3.06,
+    "gap_pct": 57.73,
+    "pm_volume": 14332327.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "04:00",
+    "discovery_method": "premarket",
+    "avg_daily_volume": 306685.0,
+    "relative_volume": 46.73,
+    "float_shares": 8221869,
+    "float_millions": 8.22,
+    "profile": "B"
+  },
+  {
+    "symbol": "CERO",
+    "prev_close": 6.93,
+    "pm_price": 8.67,
+    "gap_pct": 25.11,
+    "pm_volume": 69194.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "rescan",
+    "avg_daily_volume": 24944.0,
+    "relative_volume": 2.77,
+    "float_shares": 1179992,
+    "float_millions": 1.18,
+    "profile": "A"
+  }
+]
