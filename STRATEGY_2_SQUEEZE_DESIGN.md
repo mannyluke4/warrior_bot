@@ -1,7 +1,7 @@
 # Strategy 2: Squeeze / Breakout Entry — Design Document
 
 ## Created: 2026-03-19
-## Status: DESIGN — Awaiting Manny Review Before Implementation
+## Status: APPROVED — Ready for Implementation
 
 ---
 
@@ -175,21 +175,32 @@ def on_bar_close(self, symbol, o, h, l, c, v):
 
 ---
 
-## 7. Position Sizing
+## 7. Position Sizing & Partial Profits
 
-Squeeze trades may warrant different sizing than MP trades:
+### 7.1 Sizing
 
-**Option A: Same sizing as MP**
-- Use `WB_RISK_DOLLARS` / R to calculate shares
-- Pro: Simple, consistent risk
-- Con: Wider stops mean fewer shares, which limits upside
+Start with same sizing as MP (`WB_RISK_DOLLARS / R`). The max_loss_cap and notional_cap protect against outsized losses. If backtesting shows squeeze trades need different sizing, add `WB_SQ_SIZE_MULT` later.
 
-**Option B: Reduced sizing for squeeze**
-- Apply a `WB_SQ_SIZE_MULT` (default: 0.75) to squeeze position sizes
-- Pro: Accounts for higher volatility and wider stops
-- Con: Limits gains on the big winners
+**Re-entry sizing (DECISION: Manny approved smaller initial size for probe entries):**
+- First squeeze attempt on a stock: `WB_SQ_PROBE_SIZE_MULT` (default: 0.5 = half size)
+- After first attempt proves the level is real: full size on re-entry
+- This lets us "test the water" on unpredictable squeezes without full risk exposure
 
-**Recommendation: Start with Option A.** Let the backtest tell us if squeeze trades need different sizing. The max_loss_cap and notional_cap already protect against outsized losses.
+### 7.2 Partial Profit-Taking (DECISION: Lock profit, leave room for runners)
+
+Squeeze trades use a **core + runner split**:
+- On entry: split position into core (75%) and runner (25%)
+- `WB_SQ_CORE_PCT=75` — percentage of shares that are "core"
+- Core exits at first profit target (`WB_SQ_TARGET_R`, default 2.0R)
+- Runner trails with wider trailing stop (`WB_SQ_RUNNER_TRAIL_R`, default 2.5R below peak)
+- Runner also exits on VWAP loss or time stop
+
+This is the first implementation of partial exits in the bot. It introduces a new concept where the trade manager tracks two sub-positions within one `OpenTrade`. The `setup_type == "squeeze"` routing will handle this split.
+
+**Why this matters for squeezes specifically:**
+- Squeezes are unpredictable — locking 75% at 2R protects against sudden reversals
+- The 25% runner catches the tail when a squeeze goes parabolic (ARTL $5.50→$8.19)
+- Worst case: core locks +2R, runner gets stopped at breakeven = net positive
 
 ---
 
@@ -202,11 +213,17 @@ Yes, but only one should enter. Rules:
 1. If squeeze triggers first (as it typically would), take the squeeze trade
 2. Once in a squeeze trade, MP detector should NOT arm (no double-dipping)
 3. After squeeze exit, MP detector CAN arm for continuation (this is the handoff — squeeze catches leg 1, MP catches leg 2+)
-4. `WB_NO_REENTRY_ENABLED` still applies — if squeeze trade was a loss, no MP re-entry
+4. **Squeeze has its OWN re-entry rules** (DECISION: separate from MP's `WB_NO_REENTRY_ENABLED`):
+   - Squeeze allows `WB_SQ_MAX_ATTEMPTS` re-entries per stock per day (default: 3)
+   - First attempt uses probe size (`WB_SQ_PROBE_SIZE_MULT=0.5`)
+   - After a winning squeeze, subsequent squeezes use full size
+   - After `WB_SQ_MAX_ATTEMPTS` squeeze losses on a stock, block both squeeze AND MP on that stock
+5. Cross-strategy loss rule: A squeeze loss does NOT block MP re-entry (different setup thesis). But a squeeze loss DOES count toward daily max loss.
 
 This creates a natural multi-strategy flow on strong stocks:
 ```
-Squeeze entry (07:05) → squeeze exit (07:25) → MP pullback entry (07:35) → cascading...
+Squeeze probe (07:05, half size) → stopped out → Squeeze re-entry (07:12, half size) →
+winner! → squeeze exit (07:25) → MP pullback entry (07:35, full size) → cascading...
 ```
 
 ---
@@ -274,31 +291,40 @@ WB_SQ_VOL_MULT=3.0               # Bar volume must be Nx average to qualify
 WB_SQ_MIN_BAR_VOL=50000          # Minimum absolute bar volume
 WB_SQ_MIN_BODY_PCT=1.5           # Minimum bar body as % of price
 WB_SQ_PRIME_BARS=3               # Max bars in PRIMED state before reset
+WB_SQ_LEVEL_PRIORITY=pm_high,whole_dollar,pdh  # Order to check breakout levels
 
-# Risk
+# Risk & Sizing
 WB_SQ_MAX_R=0.80                 # Max R (risk per share) allowed
-WB_SQ_SIZE_MULT=1.0              # Position size multiplier (1.0 = same as MP)
+WB_SQ_PROBE_SIZE_MULT=0.5        # First attempt = half size (probe entry)
+WB_SQ_MAX_ATTEMPTS=3             # Max squeeze attempts per stock per day
+
+# Partial Profits (core + runner)
+WB_SQ_CORE_PCT=75                # % of shares that are "core" (exit at target)
+WB_SQ_TARGET_R=2.0               # Core profit target in R-multiples
+WB_SQ_RUNNER_TRAIL_R=2.5         # Runner trailing stop in R-multiples below peak
 
 # Exits
-WB_SQ_TRAIL_R=1.5                # Trailing stop distance in R-multiples
+WB_SQ_TRAIL_R=1.5                # Trailing stop distance for full position (pre-target)
 WB_SQ_STALL_BARS=5               # Time stop: exit if no new high in N 1m bars
-WB_SQ_TARGET_R=3.0               # Profit target in R-multiples
 WB_SQ_VWAP_EXIT=1                # Exit on 1m close below VWAP
+
+# Confidence / Classifier
+WB_SQ_PM_CONFIDENCE=1            # Use PM behavior to boost score (bull flag, vol trend)
 ```
 
 ---
 
-## 12. Open Questions for Manny
+## 12. Decisions (Locked — Manny Approved 2026-03-19)
 
-1. **Partial profits**: Ross scales out at first target, holds runners. Do we want partial exits on squeeze trades, or all-or-nothing like MP currently does? (The bot is all-or-nothing today.)
+1. **Partial profits: YES — core + runner split.** Lock 75% at first target (2R), trail 25% as runner with wider stop. First implementation of partial exits in the bot. See Section 7.2.
 
-2. **Pre-market high as primary level**: The research heavily emphasizes PM high as the key breakout level. On ARTL, PM high would have been around $4.59 (the open). Should we prioritize PM high over whole-dollar levels, or treat them equally?
+2. **PM high vs whole-dollar priority: BUILD FLEXIBLE, TEST BOTH.** Implement a `WB_SQ_LEVEL_PRIORITY` env var (default: `"pm_high,whole_dollar,pdh"`) that controls the order levels are checked. Backtesting will reveal which level type produces the best entries. Both are valid breakout levels per the research.
 
-3. **Maximum number of squeeze attempts per stock per day**: If the first squeeze trade stops out, should we allow a re-entry on the same stock? Ross says "expect multiple small stopouts before catching the big one" — but our no_reentry_after_loss rule would block this. Should squeeze trades have different re-entry rules?
+3. **Re-entry rules: SEPARATE FROM MP.** Squeeze gets its own re-entry logic with `WB_SQ_MAX_ATTEMPTS=3` and probe sizing (half size) on first attempts. A squeeze loss does NOT block MP re-entry on the same stock. See Section 8.
 
-4. **Time window**: Squeezes are typically 07:00-07:30 (first 30 min after market open). Should we restrict squeeze detection to a specific time window, or let it run all session?
+4. **Time window: ALL SESSION.** No time restriction initially. If data shows 07:00-07:30 dominates winners and later windows bleed, we add `WB_SQ_TIME_START` / `WB_SQ_TIME_END` gates. Build the tracking to log squeeze entry times so we can analyze this after backtesting.
 
-5. **Interaction with classifier**: The classifier categorizes stocks by behavior type. Should squeeze detection bypass the classifier entirely (since it's entering before the stock has established a behavior pattern), or should PM behavior inform squeeze confidence?
+5. **Classifier: BYPASS, but PM behavior informs confidence.** Squeeze detector does NOT wait for classifier categorization (it fires too early). However, if PM data suggests high confidence (strong premarket volume trend, multiple PM high touches = bull flag), the squeeze detector can bump score. Implemented as `WB_SQ_PM_CONFIDENCE=1` (default on). Classifier suppression does NOT apply to squeeze entries.
 
 ---
 
@@ -318,4 +344,4 @@ WB_SQ_VWAP_EXIT=1                # Exit on 1m close below VWAP
 
 ---
 
-*This document is the design spec for Strategy 2. Implementation begins after Manny reviews and approves the design, particularly the open questions in Section 12.*
+*Design approved by Manny 2026-03-19. All 5 open questions resolved (Section 12). Ready for implementation directive.*
