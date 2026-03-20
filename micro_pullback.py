@@ -1270,6 +1270,9 @@ class MicroPullbackDetector:
         self.premarket_bull_flag_high = premarket_bull_flag_high
 
     def on_trade_price(self, price: float, is_premarket: bool = False) -> Optional[str]:
+        # MP suppress gate: detector still runs (EMA/state) but entries are blocked
+        if os.getenv("WB_MP_SUPPRESS_ENTRIES", "0") == "1":
+            return None
         # Check armed trade trigger (micro pullback only — gap-and-go removed)
         if self.armed and price >= self.armed.trigger_high:
             ms = self.macd_state.strength_score(price)
