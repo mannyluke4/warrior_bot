@@ -1,5 +1,5 @@
 # Claude Cowork Handoff — Warrior Bot Project
-## Updated: 2026-03-19 (evening)
+## Updated: 2026-03-20 (afternoon)
 
 **Your role**: Strategy analyst and coordinator for a multi-machine trading bot project. You have **full read access to the GitHub repo** — use it to read data, analyze reports, and write directives. The master task list is in `MASTER_TODO.md`. Read it first.
 
@@ -76,6 +76,7 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 | `simulate.py` | Backtesting engine (tick + bar mode) — includes squeeze exit/wiring |
 | `micro_pullback.py` | Core 1-minute detector state machine |
 | `squeeze_detector.py` | Strategy 2: Squeeze/breakout detector (IDLE → PRIMED → ARMED) |
+| `vwap_reclaim_detector.py` | Strategy 4: VWAP Reclaim detector (IDLE → BELOW_VWAP → RECLAIMED → ARMED) |
 | `trade_manager.py` | Order execution + exit management + filters |
 | `bars.py` | TradeBarBuilder (VWAP/HOD/PM tracking) |
 | `live_scanner.py` | Databento real-time scanner (writes watchlist.txt) |
@@ -114,6 +115,19 @@ New strategy module captures first-leg momentum moves. Three iterations in one d
 - **Result**: 4-stock total went from $28,162 (MP-only) to $44,605 (+58%).
 - **Next**: Full 55-day YTD backtest with squeeze enabled. See `DIRECTIVE_SQUEEZE_YTD_OVERNIGHT.md`.
 
+### Strategy 4: VWAP Reclaim (2026-03-20, V3 TUNING IN PROGRESS)
+New strategy module detects Ross's "first 1-min candle to make new high after VWAP reclaim" pattern. Written by Cowork (Opus) directly — both `vwap_reclaim_detector.py` and `simulate.py` wiring are committed.
+- **State machine**: IDLE → BELOW_VWAP → RECLAIMED → ARMED → TRIGGERED
+- **Gate**: `WB_VR_ENABLED=0` (OFF by default)
+- **Entry priority**: Squeeze > VWAP Reclaim > Micro Pullback
+- **V1 (0 trades)**: CHNR/ARTL — wrong stock type (first-leg momentum, not reclaim)
+- **V2 (0 trades)**: 9 stocks — GRI blocked by R-cap ($0.87 > $0.80), others collapsed via `severe_vwap_loss` at 5%
+- **V3 (pending)**: Code fix (severe_loss → 20% env var), R-cap → $1.00, 7 new + cached test stocks
+- **Active directive**: `DIRECTIVE_VR_TUNING_V3.md`
+- **Design doc**: `DESIGN_VWAP_RECLAIM_DETECTOR.md`
+- NOT wired into bot.py yet (backtest-only, same approach as squeeze)
+- **Key risk**: VR pattern may be rare in micro-cap momentum. If V3 also 0 trades, pivot to Strategy 5.
+
 ### Scanner Alignment (2026-03-19, IN PROGRESS)
 The live scanner was completely broken (0 stocks found in 3 days). Root cause: Alpaca snapshot API returns stale/null data for small caps. Solution: switch to Databento-powered `live_scanner.py` (already built).
 
@@ -125,7 +139,7 @@ Both scanners (live and backtest) are being aligned to use identical Ross Pillar
 - **VERO regression (squeeze OFF)**: +$18,583 (1 trade, 18.6R — unchanged)
 - **ROLR regression (squeeze OFF)**: +$6,444 (1 trade, 6.4R — unchanged)
 
-### Live Config (.env, all fixes enabled — squeeze NOT yet live)
+### Live Config (.env, all fixes enabled, squeeze LIVE in paper)
 ```
 WB_MODE=PAPER
 WB_EXIT_MODE=signal
@@ -143,11 +157,12 @@ WB_MAX_LOSS_R_LOW_FLOAT=0.85
 WB_MAX_LOSS_TRIGGERS_COOLDOWN=1
 WB_NO_REENTRY_ENABLED=1
 WB_TW_MIN_PROFIT_R=1.5
-# Squeeze V2 (not yet in .env — backtest validation pending)
-# WB_SQUEEZE_ENABLED=1
-# WB_SQ_PARA_ENABLED=1
-# WB_SQ_NEW_HOD_REQUIRED=1
-# WB_SQ_MAX_LOSS_DOLLARS=500
+WB_SQUEEZE_ENABLED=1          # LIVE in paper (2026-03-19)
+WB_SQ_PARA_ENABLED=1
+WB_SQ_NEW_HOD_REQUIRED=1
+WB_SQ_MAX_LOSS_DOLLARS=500
+# VR (backtest validation pending — NOT live yet)
+# WB_VR_ENABLED=1
 ```
 
 ---
@@ -191,12 +206,12 @@ WB_TW_MIN_PROFIT_R=1.5
 
 The bot currently has ONE strategy: micro-pullback (IMPULSE → PULLBACK → ARM → breakout). Ross Cameron uses 5-6 different setups on any stock. ARTL analysis (Mar 18) showed the bot captured $922 while Ross made $9,653 — a 90% gap because the bot only has the pullback setup.
 
-**Planned strategy modules** (each independent, coexisting):
-1. **Micro Pullback** — current, being refined
-2. **Squeeze / Breakout** — enter on first leg of news-driven momentum
-3. **Dip-Buy** — countertrend buy into support after squeeze
-4. **VWAP Reclaim** — first candle new high after crossing above VWAP
-5. **Curl / Extension** — rounded bottom approach to prior HOD
+**Strategy modules** (each independent, coexisting):
+1. **Micro Pullback** — LIVE in paper, being refined
+2. **Squeeze / Breakout** — LIVE in paper (V2, 2026-03-19)
+3. **Dip-Buy** — planned (not started)
+4. **VWAP Reclaim** — IMPLEMENTED, needs CC validation backtest (2026-03-20)
+5. **Curl / Extension** — planned (not started)
 
 Each module will have its own state machine, entry/exit rules, and reset logic. A TW reset in the pullback module won't affect the squeeze module.
 
@@ -218,6 +233,11 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 | `ARTL_METHODOLOGY_GAP_ANALYSIS.md` | Bot vs Ross: 90% gap, 5 methodology gaps |
 | `STRATEGY_2_SQUEEZE_DESIGN.md` | Squeeze strategy full design spec — all 5 decisions locked |
 | `DIRECTIVE_SQUEEZE_FIXES_V2.md` | V2 conflict fixes (HOD gate, counters, dollar cap) |
+| `DESIGN_VWAP_RECLAIM_DETECTOR.md` | Strategy 4 full design spec |
+| `DIRECTIVE_VWAP_RECLAIM_VALIDATION.md` | VR V1 validation directive (0 trades) |
+| `DIRECTIVE_VR_TUNING_V2.md` | VR V2 wider thresholds (0 trades) |
+| `DIRECTIVE_VR_TUNING_V3.md` | VR V3 code fix + R-cap $1.00 + 20% severe_loss |
+| `CHNR_2026-03-19_METHODOLOGY_GAP_ANALYSIS.md` | CHNR gap analysis — 2/3 trades were VR |
 | `SCANNER_DATA_QUALITY_REPORT.md` | Why live scanner finds 0 stocks |
 | `YTD_V2_BACKTEST_RESULTS.md` | Latest 49-day backtest results |
 | `ALL_FIXES_BACKTEST_RESULTS.md` | Validation of all 5 fixes |
@@ -235,4 +255,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-19 evening | Primary workspace moving to Mac Mini*
+*Handoff updated: 2026-03-20 evening | VR V3 directive written — code fix + wider thresholds, pending CC execution*
