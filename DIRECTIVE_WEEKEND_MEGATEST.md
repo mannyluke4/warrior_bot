@@ -2,7 +2,7 @@
 
 ## Priority: HIGH (run overnight / over the weekend)
 ## Created: 2026-03-20 by Cowork (Opus)
-## Depends on: VR V3 code fix (DIRECTIVE_VR_TUNING_V3.md Phase 1) must be applied first
+## Depends on: VR V3 code fix applied (confirmed — see cowork_reports/2026-03-20_vr_tuning_v3.md)
 ## Depends on: Scanner re-scan should be complete (297 dates, Jan 2025 - Mar 2026)
 
 ---
@@ -11,7 +11,9 @@
 
 Run every meaningful strategy combination across the full 297-day dataset (Jan 2025 - today). This gives us the definitive answer on which strategy combos work, how they interact, and where VR stands even at this early stage.
 
-**7 strategy combos × 297 days × ~5 stocks/day = ~10,000+ simulations**
+**4 strategy combos × 297 days × ~5 stocks/day = ~6,000 simulations**
+
+(Reduced from 7 combos — VR shelved after V3 confirmed 0 trades across 27 test runs.)
 
 This will take many hours. Run sequentially (one combo at a time) to avoid overloading the machine.
 
@@ -25,13 +27,10 @@ cd ~/warrior_bot && git pull origin main
 source venv/bin/activate
 ```
 
-### 0b. Apply VR V3 Code Fix (if not already done)
-The `severe_vwap_loss` fix from `DIRECTIVE_VR_TUNING_V3.md` Phase 1 must be applied first:
-- Add `WB_VR_SEVERE_VWAP_LOSS_PCT` env var to `vwap_reclaim_detector.py` `__init__`
-- Replace hardcoded `5.0` on line ~168 with `self.severe_vwap_loss_pct`
-- Default: 20.0
+### 0b. VR V3 Code Fix — ALREADY APPLIED
+Confirmed in `cowork_reports/2026-03-20_vr_tuning_v3.md`: severe_vwap_loss parameterized, regression passed.
 
-### 0c. Regression Check
+### 0c. Regression Check (verify after git pull)
 ```bash
 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
 # TARGET: +$18,583
@@ -61,15 +60,16 @@ Create `run_megatest.py` — a wrapper around the existing batch backtest that:
 
 ### Strategy Combos
 
+**VR SHELVED**: V3 tuning confirmed 0 VR trades across 27 test runs (V1/V2/V3). The VWAP reclaim pattern is genuinely rare in micro-cap gap-up stocks. VR-only, MP+VR, and SQ+VR combos are dropped from the megatest. All three would produce identical results to their non-VR counterparts.
+
+We keep `all_three` as a sanity check — it should equal `mp_sq` since VR produces 0 trades.
+
 | Combo ID | MP | SQ | VR | State File | Description |
 |----------|----|----|-----|------------|-------------|
 | `mp_only` | ON | OFF | OFF | `megatest_state_mp_only.json` | Baseline — micro pullback alone |
 | `sq_only` | OFF* | ON | OFF | `megatest_state_sq_only.json` | Squeeze alone (no MP entries) |
-| `vr_only` | OFF* | OFF | ON | `megatest_state_vr_only.json` | VR alone (data gathering) |
 | `mp_sq` | ON | ON | OFF | `megatest_state_mp_sq.json` | Current live config |
-| `mp_vr` | ON | OFF | ON | `megatest_state_mp_vr.json` | MP + VR (no squeeze) |
-| `sq_vr` | OFF* | ON | ON | `megatest_state_sq_vr.json` | SQ + VR (no MP) |
-| `all_three` | ON | ON | ON | `megatest_state_all_three.json` | Everything on |
+| `all_three` | ON | ON | ON | `megatest_state_all_three.json` | Sanity check — should equal mp_sq |
 
 *Note on "OFF" for MP: The micro pullback detector is always active (no env var gate). To truly disable MP entries, add a gate: `WB_MP_SUPPRESS_ENTRIES=1`. When this is set, the detector still runs (needed for EMA/state) but `on_trade_price` returns None before checking triggers. This is a small code change — see implementation notes below.
 
@@ -107,41 +107,9 @@ COMBO_OVERRIDES = {
         "WB_VR_ENABLED": "0",
         "WB_MP_SUPPRESS_ENTRIES": "1",  # Option A only
     },
-    "vr_only": {
-        "WB_SQUEEZE_ENABLED": "0",
-        "WB_VR_ENABLED": "1",
-        "WB_MP_SUPPRESS_ENTRIES": "1",  # Option A only
-        "WB_VR_MAX_R": "1.00",
-        "WB_VR_MAX_R_PCT": "5.0",
-        "WB_VR_RECLAIM_WINDOW": "5",
-        "WB_VR_MAX_BELOW_BARS": "20",
-        "WB_VR_MAX_ATTEMPTS": "3",
-        "WB_VR_SEVERE_VWAP_LOSS_PCT": "20.0",
-    },
     "mp_sq": {
         "WB_SQUEEZE_ENABLED": "1",
         "WB_VR_ENABLED": "0",
-    },
-    "mp_vr": {
-        "WB_SQUEEZE_ENABLED": "0",
-        "WB_VR_ENABLED": "1",
-        "WB_VR_MAX_R": "1.00",
-        "WB_VR_MAX_R_PCT": "5.0",
-        "WB_VR_RECLAIM_WINDOW": "5",
-        "WB_VR_MAX_BELOW_BARS": "20",
-        "WB_VR_MAX_ATTEMPTS": "3",
-        "WB_VR_SEVERE_VWAP_LOSS_PCT": "20.0",
-    },
-    "sq_vr": {
-        "WB_SQUEEZE_ENABLED": "1",
-        "WB_VR_ENABLED": "1",
-        "WB_MP_SUPPRESS_ENTRIES": "1",  # Option A only
-        "WB_VR_MAX_R": "1.00",
-        "WB_VR_MAX_R_PCT": "5.0",
-        "WB_VR_RECLAIM_WINDOW": "5",
-        "WB_VR_MAX_BELOW_BARS": "20",
-        "WB_VR_MAX_ATTEMPTS": "3",
-        "WB_VR_SEVERE_VWAP_LOSS_PCT": "20.0",
     },
     "all_three": {
         "WB_SQUEEZE_ENABLED": "1",
@@ -205,20 +173,11 @@ python run_megatest.py mp_only
 # 2. MP + SQ — current live config, need full-scale validation
 python run_megatest.py mp_sq
 
-# 3. All three — the "everything on" config we're building toward
-python run_megatest.py all_three
-
-# 4. SQ only — isolate squeeze's contribution
+# 3. SQ only — isolate squeeze's contribution (need MP suppress gate)
 python run_megatest.py sq_only
 
-# 5. MP + VR — see if VR adds anything to MP alone
-python run_megatest.py mp_vr
-
-# 6. VR only — raw VR data (may be 0 or near-0 trades, that's fine)
-python run_megatest.py vr_only
-
-# 7. SQ + VR — probably lowest priority
-python run_megatest.py sq_vr
+# 4. All three — sanity check, should equal mp_sq (VR produces 0 trades)
+python run_megatest.py all_three
 ```
 
 Each run will auto-fetch tick data from Alpaca for any stock/date not in the cache. This means the tick cache will grow significantly. **That's fine and expected** — the cached data will be useful for all future backtests.
@@ -235,19 +194,18 @@ Write report to `megatest_results/MEGATEST_SUMMARY.md` with:
 |-------|-----------|----------|----------|---------------|--------|--------|----------|-----------|
 | MP only | ? | ? | ? | ? | ? | ? | ? | ? |
 | SQ only | ? | ? | ? | ? | ? | ? | ? | ? |
-| VR only | ? | ? | ? | ? | ? | ? | ? | ? |
 | MP + SQ | ? | ? | ? | ? | ? | ? | ? | ? |
-| MP + VR | ? | ? | ? | ? | ? | ? | ? | ? |
-| SQ + VR | ? | ? | ? | ? | ? | ? | ? | ? |
 | All three | ? | ? | ? | ? | ? | ? | ? | ? |
 
 ### 3b. Interaction Analysis
 
-For each strategy pair, calculate the **interaction effect**:
+Calculate the **interaction effect** for MP + SQ:
 - `interaction(MP,SQ) = P&L(MP+SQ) - P&L(MP) - P&L(SQ)`
   - Positive = synergy (strategies complement each other)
   - Negative = interference (strategies hurt each other)
   - Zero = independent (strategies don't interact)
+
+Also verify: `P&L(all_three) ≈ P&L(mp_sq)` — confirms VR adds nothing (expected).
 
 ### 3c. Per-Strategy Trade Breakdown
 
@@ -257,13 +215,12 @@ Using `setup_type` tags from the trade output:
 - Win rate by strategy type
 - Which stocks/dates did each strategy uniquely capture (trades the other strategies missed)?
 
-### 3d. VR-Specific Analysis
+### 3d. VR Sanity Check
 
-Since VR is in early tuning:
-- Total VR trades across all VR-enabled combos
-- If VR trades > 0: list every VR trade with stock, date, entry, exit, P&L
-- Which stocks triggered VR? Are they the expected VR-pattern stocks?
-- If VR trades == 0: note this clearly — VR may need fundamental rethinking
+The `all_three` combo includes VR ON. Confirm:
+- Total VR trades = 0 (expected based on V1/V2/V3 tuning results)
+- If VR trades > 0: list every VR trade — this would be a surprise and worth investigating
+- `all_three` P&L should match `mp_sq` P&L (confirming VR adds no interference)
 
 ### 3e. Equity Curves
 
@@ -278,6 +235,10 @@ Split results into two periods to check for overfitting:
 
 | Combo | IS P&L | IS Win% | OOS P&L | OOS Win% | OOS/IS Ratio |
 |-------|--------|---------|---------|----------|-------------|
+| MP only | ? | ? | ? | ? | ? |
+| SQ only | ? | ? | ? | ? | ? |
+| MP + SQ | ? | ? | ? | ? | ? |
+| All three | ? | ? | ? | ? | ? |
 
 OOS/IS ratio > 0.5 = good generalization. < 0.3 = likely overfit.
 
@@ -311,15 +272,14 @@ git push origin v6-dynamic-sizing
 
 Rough estimate based on existing batch runner performance:
 - ~297 dates × ~5 stocks/day × ~30 sec/sim = ~12.4 hours per combo
-- 7 combos = ~87 hours total
-- With caching speedup (ticks already cached for many dates): maybe ~50-60 hours
-- Should finish by Monday morning if started Friday evening
+- 4 combos = ~50 hours total
+- With caching speedup (ticks already cached for many dates): maybe ~30-35 hours
+- Should finish by Sunday if started Friday evening
 
 **If running out of time**, priorities are:
-1. `mp_only` (baseline)
-2. `mp_sq` (current live config)
-3. `all_three` (target config)
-4. Everything else is bonus
+1. `mp_only` (baseline — everything else is measured against this)
+2. `mp_sq` (current live config — validates what's actually running)
+3. `sq_only` and `all_three` are bonus
 
 ---
 
