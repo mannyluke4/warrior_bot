@@ -409,7 +409,7 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         # Mid-float risk cap: float > 5M → cap risk at $250
         float_m = c.get("float_millions", 0) or 0
         stock_risk = min(risk, 250) if float_m > 5.0 else risk
-        sim_start = "07:00"  # Always sim from market prep — not discovery time
+        sim_start = c.get("sim_start", "07:00")  # Respect scanner discovery time
         all_trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
         time.sleep(1)  # Rate limit: 1 second between API calls
 
