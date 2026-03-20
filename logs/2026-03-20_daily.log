@@ -15,3 +15,9 @@ ModuleNotFoundError: No module named 'market_scanner'
 18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
 === Shutting down at Fri Mar 20 09:00:00 MDT 2026 ===
 Pushing logs...
+[v6-dynamic-sizing 594af4b] auto: daily logs 2026-03-20
+ 2 files changed, 30 insertions(+)
+ create mode 100644 logs/2026-03-20_daily.log
+ create mode 100644 logs/cron_2026-03-20.log
+=== Daily run complete: Fri Mar 20 09:00:06 MDT 2026 ===
+=== TRAP: cleanup at Fri Mar 20 09:00:06 MDT 2026 ===
