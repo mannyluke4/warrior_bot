@@ -2,11 +2,10 @@ Scanner Results — 2026-03-19
 ================================================================================
 Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
 ──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-CHNR       +70.5%    5.63    0.52M       A    08:00 16,578,027.0      08:00     rescan
-SER        +75.8%    2.25    3.58M       A    09:30 16,357,200.0      09:30     rescan
-SUNE       +47.6%    2.12    3.41M       A    09:30 6,611,877.0      09:30     rescan
-DLTH       +14.8%    2.49    9.83M       B    07:00  874,194.0      06:25  premarket
+CHNR       +70.5%    5.63    0.52M       A    07:16 16,578,027.0      07:16    precise
+SER        +75.8%    2.25    3.58M       A    08:17 16,357,200.0      08:17    precise
+SUNE       +47.6%    2.12    3.41M       A    08:02 6,611,877.0      08:02    precise
 
-Total candidates: 4
-  Premarket (7:15 AM): 1
-  Continuous rescan:   3
+Total candidates: 3
+  Premarket (7:15 AM): 0
+  Continuous rescan:   0

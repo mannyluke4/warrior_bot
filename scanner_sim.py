@@ -508,6 +508,81 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
     return all_new
 
 
+def resolve_precise_discovery(candidates: list, prev_close: dict,
+                               avg_daily_vol: dict, date_str: str) -> list:
+    """
+    For each candidate, fetch 1-min bars from 4AM and find the exact minute
+    when scanner criteria were first met. Updates sim_start in-place.
+
+    Live scanner criteria (all must be true simultaneously):
+    - gap_pct >= 10% (bar close vs prev_close)
+    - cumulative volume >= 50,000
+    - price between $2.00 and $20.00
+    """
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    scan_start = ET.localize(datetime.combine(date.date(),
+                             datetime.min.time().replace(hour=4, minute=0)))
+    scan_end = ET.localize(datetime.combine(date.date(),
+                           datetime.min.time().replace(hour=10, minute=30)))
+
+    for c in candidates:
+        sym = c["symbol"]
+        pc = prev_close.get(sym)
+        if not pc or pc <= 0:
+            continue
+
+        try:
+            request = StockBarsRequest(
+                symbol_or_symbols=[sym],
+                timeframe=TimeFrame.Minute,
+                start=scan_start.astimezone(pytz.utc),
+                end=scan_end.astimezone(pytz.utc),
+            )
+            bars = hist_client.get_stock_bars(request)
+            bar_list = bars.data.get(sym, [])
+        except Exception as e:
+            print(f"  [precise_discovery] {sym}: fetch error: {e}")
+            continue
+
+        if not bar_list:
+            continue
+
+        # Walk bars chronologically, tracking cumulative volume
+        cum_vol = 0
+        discovery_minute = None
+
+        for bar in bar_list:
+            cum_vol += bar.volume if bar.volume else 0
+            bar_time = bar.timestamp.astimezone(ET)
+            price = float(bar.close)
+            gap = (price - pc) / pc * 100
+
+            if (gap >= 10.0 and
+                cum_vol >= 50_000 and
+                price >= 2.0 and price <= 20.0):
+                discovery_minute = bar_time
+                break
+
+        if discovery_minute:
+            precise_start = f"{discovery_minute.hour:02d}:{discovery_minute.minute:02d}"
+            old_start = c.get("sim_start", "?")
+
+            # Only update if earlier than current sim_start
+            if precise_start < old_start or old_start == "?":
+                c["precise_discovery"] = precise_start
+                c["sim_start"] = precise_start
+                c["discovery_time"] = precise_start
+                c["discovery_method"] = "precise"
+                print(f"  [precise] {sym}: {old_start} → {precise_start} "
+                      f"(gap={gap:+.1f}%, vol={cum_vol:,})")
+            else:
+                c["precise_discovery"] = precise_start
+        else:
+            c["precise_discovery"] = None
+
+    return candidates
+
+
 def run_scanner(date_str: str):
     print(f"\n{'=' * 60}")
     print(f"  SCANNER SIMULATOR — {date_str}")
@@ -571,6 +646,12 @@ def run_scanner(date_str: str):
     candidates.extend(emerging)
     # Re-sort all candidates by composite rank score descending
     candidates.sort(key=lambda x: rank_score(x), reverse=True)
+
+    # Step 4c: Resolve precise discovery times
+    print(f"  [4c/6] Resolving precise discovery times...")
+    candidates = resolve_precise_discovery(candidates, prev_close, avg_daily_vol, date_str)
+    precise_count = sum(1 for c in candidates if c.get("discovery_method") == "precise")
+    print(f"         {precise_count}/{len(candidates)} candidates got precise timestamps")
 
     # Step 5: Look up float and classify
     print("  [5/6] Looking up float (known → cache → FMP → yfinance)...")
