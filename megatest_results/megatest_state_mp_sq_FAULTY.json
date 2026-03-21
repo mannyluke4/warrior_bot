@@ -1,0 +1,5826 @@
+{
+  "last_completed_date": "2025-03-28",
+  "config_a": {
+    "equity": 52260,
+    "trades": [
+      {
+        "num": 1,
+        "time": "07:13",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.92,
+        "reason": "sq_para_trail_exit",
+        "pnl": -321,
+        "r_mult": "-0.9R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 16285.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:24",
+        "entry": 3.04,
+        "stop": 2.91,
+        "r": 0.13,
+        "score": 7.9,
+        "exit_price": 3.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 115,
+        "r_mult": "+0.3R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 17538.461538461535,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "08:42",
+        "entry": 2.8,
+        "stop": 2.66,
+        "r": 0.14,
+        "score": 14.5,
+        "exit_price": 2.78,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -107,
+        "r_mult": "-0.1R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 14999.999999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "10:23",
+        "entry": 2.2,
+        "stop": 2.075,
+        "r": 0.125,
+        "score": 13.5,
+        "exit_price": 2.07,
+        "reason": "stop_hit",
+        "pnl": -772,
+        "r_mult": "-1.0R",
+        "symbol": "DHAI",
+        "date": "2025-01-06",
+        "notional": 13059.2,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:04",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 6.7,
+        "exit_price": 2.92,
+        "reason": "sq_max_loss_hit",
+        "pnl": -309,
+        "r_mult": "-0.9R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 15677.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:26",
+        "entry": 3.19,
+        "stop": 3.05,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.21,
+        "reason": "sq_para_trail_exit",
+        "pnl": 52,
+        "r_mult": "+0.1R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 16451.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:28",
+        "entry": 3.19,
+        "stop": 3.05,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.26,
+        "reason": "sq_para_trail_exit",
+        "pnl": 180,
+        "r_mult": "+0.5R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 16451.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:30",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.05,
+        "reason": "sq_para_trail_exit",
+        "pnl": 9,
+        "r_mult": "+0.1R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "08:32",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.11,
+        "reason": "sq_para_trail_exit",
+        "pnl": 62,
+        "r_mult": "+0.5R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:33",
+        "entry": 2.47,
+        "stop": 2.33,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.54,
+        "reason": "sq_para_trail_exit",
+        "pnl": 62,
+        "r_mult": "+0.5R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 4410.714285714285,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:45",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.68,
+        "reason": "sq_target_hit",
+        "pnl": 1613,
+        "r_mult": "+4.5R",
+        "symbol": "NCEL",
+        "date": "2025-01-08",
+        "notional": 15634.285714285712,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:51",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -206,
+        "r_mult": "-0.6R",
+        "symbol": "NCEL",
+        "date": "2025-01-08",
+        "notional": 20777.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:17",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.33,
+        "reason": "sq_target_hit",
+        "pnl": 799,
+        "r_mult": "+2.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 11059.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:40",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 5.9,
+        "exit_price": 3.03,
+        "reason": "sq_para_trail_exit",
+        "pnl": -27,
+        "r_mult": "-0.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 16481.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:55",
+        "entry": 3.74,
+        "stop": 3.6,
+        "r": 0.14,
+        "score": 6.5,
+        "exit_price": 3.76,
+        "reason": "sq_para_trail_exit",
+        "pnl": 54,
+        "r_mult": "+0.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 20276.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:05",
+        "entry": 2.69,
+        "stop": 2.25,
+        "r": 0.44,
+        "score": 18.0,
+        "exit_price": 2.68,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -18,
+        "r_mult": "-0.0R",
+        "symbol": "ATPC",
+        "date": "2025-01-13",
+        "notional": 4768.636363636364,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:49",
+        "entry": 2.41,
+        "stop": 2.13,
+        "r": 0.28,
+        "score": 17.0,
+        "exit_price": 2.2,
+        "reason": "max_loss_hit",
+        "pnl": -187,
+        "r_mult": "-0.8R",
+        "symbol": "KAPA",
+        "date": "2025-01-13",
+        "notional": 2151.785714285714,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:46",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.655,
+        "reason": "sq_target_hit",
+        "pnl": 724,
+        "r_mult": "+5.8R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:07",
+        "entry": 4.21,
+        "stop": 3.7698,
+        "r": 0.4402,
+        "score": 17.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -17,
+        "r_mult": "-0.1R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 2390.958655156747,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "09:31",
+        "entry": 4.61,
+        "stop": 4.48,
+        "r": 0.13,
+        "score": 11.0,
+        "exit_price": 5.0791,
+        "reason": "sq_target_hit",
+        "pnl": 520,
+        "r_mult": "+4.2R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 8865.384615384615,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "09:32",
+        "entry": 4.61,
+        "stop": 4.4,
+        "r": 0.21,
+        "score": 11.0,
+        "exit_price": 5.3601,
+        "reason": "sq_target_hit",
+        "pnl": 921,
+        "r_mult": "+3.7R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 5488.095238095239,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:15",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.54,
+        "reason": "sq_target_hit",
+        "pnl": 1299,
+        "r_mult": "+3.4R",
+        "symbol": "OST",
+        "date": "2025-01-14",
+        "notional": 16806.85714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:08",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.33,
+        "reason": "sq_target_hit",
+        "pnl": 212,
+        "r_mult": "+1.7R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:21",
+        "entry": 2.64,
+        "stop": 2.5,
+        "r": 0.14,
+        "score": 6.0,
+        "exit_price": 2.53,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 4714.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:58",
+        "entry": 3.24,
+        "stop": 2.93,
+        "r": 0.31,
+        "score": 15.0,
+        "exit_price": 3.2299,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -8,
+        "r_mult": "-0.0R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 2612.9032258064517,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:18",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.05,
+        "reason": "sq_para_trail_exit",
+        "pnl": 31,
+        "r_mult": "+0.1R",
+        "symbol": "WHLR",
+        "date": "2025-01-16",
+        "notional": 24903.714285714283,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 6.0,
+        "exit_price": 2.92,
+        "reason": "sq_max_loss_hit",
+        "pnl": -370,
+        "r_mult": "-0.9R",
+        "symbol": "VS",
+        "date": "2025-01-17",
+        "notional": 18761.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:09",
+        "entry": 3.16,
+        "stop": 2.89,
+        "r": 0.27,
+        "score": 11.5,
+        "exit_price": 3.2,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 128,
+        "r_mult": "+0.1R",
+        "symbol": "VS",
+        "date": "2025-01-17",
+        "notional": 10112.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:36",
+        "entry": 4.26,
+        "stop": 4.14,
+        "r": 0.12,
+        "score": 16.0,
+        "exit_price": 4.19,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -146,
+        "r_mult": "-0.6R",
+        "symbol": "ISPC",
+        "date": "2025-01-17",
+        "notional": 8875.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:26",
+        "entry": 6.04,
+        "stop": 5.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 7.0699,
+        "reason": "sq_target_hit",
+        "pnl": 847,
+        "r_mult": "+6.8R",
+        "symbol": "BTCT",
+        "date": "2025-01-17",
+        "notional": 10785.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:33",
+        "entry": 7.04,
+        "stop": 6.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 7.83,
+        "reason": "sq_target_hit",
+        "pnl": 2455,
+        "r_mult": "+5.6R",
+        "symbol": "INM",
+        "date": "2025-01-21",
+        "notional": 44050.28571428571,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:43",
+        "entry": 2.9,
+        "stop": 2.39,
+        "r": 0.51,
+        "score": 18.5,
+        "exit_price": 3.35,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 773,
+        "r_mult": "+0.9R",
+        "symbol": "PTHS",
+        "date": "2025-01-21",
+        "notional": 4981.176470588235,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:38",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 9.5,
+        "exit_price": 4.06,
+        "reason": "sq_para_trail_exit",
+        "pnl": 68,
+        "r_mult": "+0.1R",
+        "symbol": "VNCE",
+        "date": "2025-01-23",
+        "notional": 27587.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "08:42",
+        "entry": 4.2101,
+        "stop": 4.03,
+        "r": 0.1801,
+        "score": 17.5,
+        "exit_price": 4.205,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -27,
+        "r_mult": "-0.0R",
+        "symbol": "VNCE",
+        "date": "2025-01-23",
+        "notional": 22347.893392559683,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:16",
+        "entry": 7.04,
+        "stop": 6.9,
+        "r": 0.14,
+        "score": 6.1,
+        "exit_price": 7.59,
+        "reason": "sq_target_hit",
+        "pnl": 549,
+        "r_mult": "+4.4R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 12571.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:01",
+        "entry": 8.04,
+        "stop": 7.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 8.4,
+        "reason": "sq_target_hit",
+        "pnl": 506,
+        "r_mult": "+4.1R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 14357.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:07",
+        "entry": 10.04,
+        "stop": 9.9,
+        "r": 0.14,
+        "score": 7.4,
+        "exit_price": 10.03,
+        "reason": "sq_para_trail_exit",
+        "pnl": -9,
+        "r_mult": "-0.1R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 17928.571428571424,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 2.14,
+        "stop": 2.03,
+        "r": 0.11,
+        "score": 9.5,
+        "exit_price": 2.14,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "TVGN",
+        "date": "2025-01-27",
+        "notional": 19123.818181818184,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:17",
+        "entry": 2.28,
+        "stop": 2.12,
+        "r": 0.16,
+        "score": 9.5,
+        "exit_price": 2.245,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -215,
+        "r_mult": "-0.2R",
+        "symbol": "TVGN",
+        "date": "2025-01-27",
+        "notional": 14007.749999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:11",
+        "entry": 3.57,
+        "stop": 3.47,
+        "r": 0.1,
+        "score": 8.5,
+        "exit_price": 3.48,
+        "reason": "max_loss_hit",
+        "pnl": -225,
+        "r_mult": "-0.9R",
+        "symbol": "YIBO",
+        "date": "2025-01-28",
+        "notional": 8925.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:16",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 4.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -71,
+        "r_mult": "-0.6R",
+        "symbol": "YIBO",
+        "date": "2025-01-28",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:21",
+        "entry": 2.04,
+        "stop": 1.93,
+        "r": 0.11,
+        "score": 11.0,
+        "exit_price": 2.12,
+        "reason": "sq_para_trail_exit",
+        "pnl": 353,
+        "r_mult": "+0.7R",
+        "symbol": "SLXN",
+        "date": "2025-01-29",
+        "notional": 18007.636363636364,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:37",
+        "entry": 2.3,
+        "stop": 2.09,
+        "r": 0.21,
+        "score": 14.0,
+        "exit_price": 2.22,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -370,
+        "r_mult": "-0.4R",
+        "symbol": "SLXN",
+        "date": "2025-01-29",
+        "notional": 10634.761904761905,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:32",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 139,
+        "r_mult": "+0.3R",
+        "symbol": "STAI",
+        "date": "2025-01-30",
+        "notional": 14134.285714285712,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:00",
+        "entry": 2.11,
+        "stop": 2.0,
+        "r": 0.11,
+        "score": 13.5,
+        "exit_price": 2.01,
+        "reason": "max_loss_hit",
+        "pnl": -882,
+        "r_mult": "-0.9R",
+        "symbol": "STAI",
+        "date": "2025-01-30",
+        "notional": 18606.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:42",
+        "entry": 4.03,
+        "stop": 3.89,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 3.91,
+        "reason": "sq_max_loss_hit",
+        "pnl": -408,
+        "r_mult": "-0.9R",
+        "symbol": "CYCN",
+        "date": "2025-01-31",
+        "notional": 27403.999999999996,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:32",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.07,
+        "reason": "sq_para_trail_exit",
+        "pnl": 102,
+        "r_mult": "+0.2R",
+        "symbol": "NCEL",
+        "date": "2025-01-31",
+        "notional": 20671.999999999996,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 8.6,
+        "exit_price": 4.67,
+        "reason": "sq_target_hit",
+        "pnl": 1888,
+        "r_mult": "+4.0R",
+        "symbol": "REBN",
+        "date": "2025-02-03",
+        "notional": 27241.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:14",
+        "entry": 2.04,
+        "stop": 1.94,
+        "r": 0.1,
+        "score": 8.0,
+        "exit_price": 2.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 50,
+        "r_mult": "+0.4R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 5100.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:16",
+        "entry": 2.19,
+        "stop": 2.04,
+        "r": 0.15,
+        "score": 14.0,
+        "exit_price": 2.11,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -67,
+        "r_mult": "-0.5R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 3650.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "09:31",
+        "entry": 2.43,
+        "stop": 2.29,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.321,
+        "reason": "sq_max_loss_hit",
+        "pnl": -97,
+        "r_mult": "-0.8R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 4339.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:05",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 5.95,
+        "reason": "sq_target_hit",
+        "pnl": 3837,
+        "r_mult": "+7.8R",
+        "symbol": "QNTM",
+        "date": "2025-02-04",
+        "notional": 35568.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:16",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.63,
+        "reason": "sq_target_hit",
+        "pnl": 479,
+        "r_mult": "+3.8R",
+        "symbol": "CPIX",
+        "date": "2025-02-05",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:44",
+        "entry": 4.62,
+        "stop": 4.63,
+        "r": 0.17,
+        "score": 16.5,
+        "exit_price": 4.92,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 221,
+        "r_mult": "+1.8R",
+        "symbol": "CPIX",
+        "date": "2025-02-05",
+        "notional": 6794.117647058823,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "06:11",
+        "entry": 4.02,
+        "stop": 3.64,
+        "r": 0.38,
+        "score": 9.0,
+        "exit_price": 3.85,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -246,
+        "r_mult": "-0.4R",
+        "symbol": "LIPO",
+        "date": "2025-02-06",
+        "notional": 11657.999999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:49",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 900,
+        "r_mult": "+1.6R",
+        "symbol": "LIPO",
+        "date": "2025-02-11",
+        "notional": 31627.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "05:52",
+        "entry": 4.29,
+        "stop": 3.9,
+        "r": 0.39,
+        "score": 8.5,
+        "exit_price": 4.2,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -126,
+        "r_mult": "-0.2R",
+        "symbol": "LIPO",
+        "date": "2025-02-11",
+        "notional": 12056.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:45",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.1,
+        "reason": "sq_para_trail_exit",
+        "pnl": 239,
+        "r_mult": "+0.4R",
+        "symbol": "EDSA",
+        "date": "2025-02-13",
+        "notional": 24211.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:45",
+        "entry": 3.73,
+        "stop": 3.36,
+        "r": 0.37,
+        "score": 14.0,
+        "exit_price": 3.4001,
+        "reason": "max_loss_hit",
+        "pnl": -497,
+        "r_mult": "-0.9R",
+        "symbol": "EDSA",
+        "date": "2025-02-13",
+        "notional": 11240.405405405407,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:04",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 7.1,
+        "exit_price": 5.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "JTAI",
+        "date": "2025-02-14",
+        "notional": 39923.99999999999,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:05",
+        "entry": 2.56,
+        "stop": 2.32,
+        "r": 0.24,
+        "score": 10.5,
+        "exit_price": 2.39,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -393,
+        "r_mult": "-0.7R",
+        "symbol": "EFOI",
+        "date": "2025-02-18",
+        "notional": 11829.333333333336,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:50",
+        "entry": 3.09,
+        "stop": 2.559,
+        "r": 0.531,
+        "score": 16.5,
+        "exit_price": 3.31,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 230,
+        "r_mult": "+0.4R",
+        "symbol": "STAI",
+        "date": "2025-02-18",
+        "notional": 6453.502824858756,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:23",
+        "entry": 5.62,
+        "stop": 5.4,
+        "r": 0.22,
+        "score": 17.5,
+        "exit_price": 5.43,
+        "reason": "max_loss_hit",
+        "pnl": -477,
+        "r_mult": "-0.9R",
+        "symbol": "SINT",
+        "date": "2025-02-19",
+        "notional": 28202.181818181816,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:42",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "TRNR",
+        "date": "2025-02-19",
+        "notional": 16086.857142857143,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "05:26",
+        "entry": 7.64,
+        "stop": 6.2057,
+        "r": 1.4343,
+        "score": 16.0,
+        "exit_price": 7.87,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 20,
+        "r_mult": "+0.2R",
+        "symbol": "OSRH",
+        "date": "2025-02-19",
+        "notional": 1331.660043226661,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:22",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.12,
+        "reason": "sq_para_trail_exit",
+        "pnl": 312,
+        "r_mult": "+0.6R",
+        "symbol": "WOK",
+        "date": "2025-02-20",
+        "notional": 31540.857142857138,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:48",
+        "entry": 5.55,
+        "stop": 4.99,
+        "r": 0.56,
+        "score": 16.0,
+        "exit_price": 5.5201,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -7,
+        "r_mult": "-0.1R",
+        "symbol": "XOS",
+        "date": "2025-02-20",
+        "notional": 2477.678571428571,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "09:54",
+        "entry": 5.77,
+        "stop": 5.63,
+        "r": 0.14,
+        "score": 9.4,
+        "exit_price": 5.62,
+        "reason": "sq_stop_hit",
+        "pnl": -134,
+        "r_mult": "-1.1R",
+        "symbol": "XOS",
+        "date": "2025-02-20",
+        "notional": 10303.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:50",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 1.92,
+        "reason": "sq_para_trail_exit",
+        "pnl": -470,
+        "r_mult": "-0.9R",
+        "symbol": "ORIS",
+        "date": "2025-02-24",
+        "notional": 15984.857142857143,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:52",
+        "entry": 2.04,
+        "stop": 1.92,
+        "r": 0.12,
+        "score": 10.0,
+        "exit_price": 2.32,
+        "reason": "sq_target_hit",
+        "pnl": 1062,
+        "r_mult": "+1.9R",
+        "symbol": "ORIS",
+        "date": "2025-02-24",
+        "notional": 18649.000000000004,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "10:49",
+        "entry": 2.87,
+        "stop": 2.73,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.76,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "ISPC",
+        "date": "2025-02-24",
+        "notional": 5125.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:17",
+        "entry": 3.64,
+        "stop": 3.08,
+        "r": 0.56,
+        "score": 11.5,
+        "exit_price": 3.51,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -129,
+        "r_mult": "-0.2R",
+        "symbol": "WAFU",
+        "date": "2025-02-25",
+        "notional": 7214.999999999999,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:24",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 6.5,
+        "exit_price": 4.0,
+        "reason": "sq_para_trail_exit",
+        "pnl": -159,
+        "r_mult": "-0.3R",
+        "symbol": "WAFU",
+        "date": "2025-02-25",
+        "notional": 32031.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:26",
+        "entry": 2.83,
+        "stop": 2.73,
+        "r": 0.1,
+        "score": 17.5,
+        "exit_price": 2.79,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -220,
+        "r_mult": "-0.4R",
+        "symbol": "ENVB",
+        "date": "2025-02-26",
+        "notional": 31186.600000000002,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "05:02",
+        "entry": 16.1,
+        "stop": 14.82,
+        "r": 1.28,
+        "score": 15.5,
+        "exit_price": 15.3,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -78,
+        "r_mult": "-0.6R",
+        "symbol": "QVCGB",
+        "date": "2025-02-26",
+        "notional": 3144.5312500000005,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:30",
+        "entry": 3.01,
+        "stop": 2.86,
+        "r": 0.15,
+        "score": 12.5,
+        "exit_price": 2.8662,
+        "reason": "max_loss_hit",
+        "pnl": -525,
+        "r_mult": "-1.0R",
+        "symbol": "AMST",
+        "date": "2025-02-27",
+        "notional": 21973.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:28",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.55,
+        "reason": "sq_target_hit",
+        "pnl": 381,
+        "r_mult": "+3.1R",
+        "symbol": "ZOOZ",
+        "date": "2025-02-28",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:36",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.04,
+        "reason": "sq_target_hit",
+        "pnl": 3922,
+        "r_mult": "+7.2R",
+        "symbol": "NVVE",
+        "date": "2025-02-28",
+        "notional": 23494.85714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:03",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 5.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "ACON",
+        "date": "2025-03-03",
+        "notional": 42803.99999999999,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:01",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.72,
+        "reason": "sq_target_hit",
+        "pnl": 549,
+        "r_mult": "+4.4R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:03",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 7.1,
+        "exit_price": 4.44,
+        "reason": "sq_target_hit",
+        "pnl": 323,
+        "r_mult": "+2.6R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:03",
+        "entry": 4.82,
+        "stop": 3.27,
+        "r": 1.55,
+        "score": 8.0,
+        "exit_price": 5.14,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 52,
+        "r_mult": "+0.2R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 777.4193548387096,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 4,
+        "time": "09:05",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 6.4,
+        "exit_price": 5.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 36,
+        "r_mult": "+0.3R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:35",
+        "entry": 2.39,
+        "stop": 2.25,
+        "r": 0.14,
+        "score": 10.8,
+        "exit_price": 2.68,
+        "reason": "sq_target_hit",
+        "pnl": 1159,
+        "r_mult": "+1.9R",
+        "symbol": "GV",
+        "date": "2025-03-05",
+        "notional": 20707.64285714286,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:40",
+        "entry": 2.72,
+        "stop": 2.51,
+        "r": 0.21,
+        "score": 15.5,
+        "exit_price": 2.54,
+        "reason": "max_loss_hit",
+        "pnl": -1040,
+        "r_mult": "-0.9R",
+        "symbol": "GV",
+        "date": "2025-03-05",
+        "notional": 15711.238095238095,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "10:18",
+        "entry": 6.16,
+        "stop": 5.52,
+        "r": 0.64,
+        "score": 10.5,
+        "exit_price": 5.61,
+        "reason": "max_loss_hit",
+        "pnl": -1045,
+        "r_mult": "-0.9R",
+        "symbol": "DWTX",
+        "date": "2025-03-07",
+        "notional": 11704.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:38",
+        "entry": 2.89,
+        "stop": 2.75,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.79,
+        "reason": "sq_para_trail_exit",
+        "pnl": -425,
+        "r_mult": "-0.7R",
+        "symbol": "SNOA",
+        "date": "2025-03-10",
+        "notional": 24565.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:17",
+        "entry": 3.22,
+        "stop": 3.03,
+        "r": 0.19,
+        "score": 15.5,
+        "exit_price": 3.05,
+        "reason": "max_loss_hit",
+        "pnl": -1065,
+        "r_mult": "-0.9R",
+        "symbol": "SNOA",
+        "date": "2025-03-10",
+        "notional": 20167.36842105263,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "06:53",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 1184,
+        "r_mult": "+2.1R",
+        "symbol": "SNOA",
+        "date": "2025-03-11",
+        "notional": 33272.28571428571,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:52",
+        "entry": 2.76,
+        "stop": 2.54,
+        "r": 0.22,
+        "score": 15.5,
+        "exit_price": 2.7,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -68,
+        "r_mult": "-0.3R",
+        "symbol": "CRVO",
+        "date": "2025-03-12",
+        "notional": 3136.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:09",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.33,
+        "reason": "sq_target_hit",
+        "pnl": 928,
+        "r_mult": "+1.6R",
+        "symbol": "SNES",
+        "date": "2025-03-13",
+        "notional": 25644.571428571424,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:30",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.49,
+        "reason": "sq_target_hit",
+        "pnl": 921,
+        "r_mult": "+7.4R",
+        "symbol": "BON",
+        "date": "2025-03-14",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "06:31",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 7.7,
+        "exit_price": 6.23,
+        "reason": "sq_target_hit",
+        "pnl": 2805,
+        "r_mult": "+22.5R",
+        "symbol": "BON",
+        "date": "2025-03-14",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:54",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 7.7,
+        "exit_price": 4.02,
+        "reason": "sq_para_trail_exit",
+        "pnl": -93,
+        "r_mult": "-0.1R",
+        "symbol": "FEED",
+        "date": "2025-03-17",
+        "notional": 37427.71428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:32",
+        "entry": 2.44,
+        "stop": 2.3,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.7297,
+        "reason": "sq_target_hit",
+        "pnl": 332,
+        "r_mult": "+2.7R",
+        "symbol": "GLMD",
+        "date": "2025-03-17",
+        "notional": 4357.142857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:25",
+        "entry": 16.04,
+        "stop": 15.58,
+        "r": 0.46,
+        "score": 7.3,
+        "exit_price": 16.01,
+        "reason": "sq_trail_exit",
+        "pnl": -85,
+        "r_mult": "-0.1R",
+        "symbol": "LSE",
+        "date": "2025-03-19",
+        "notional": 45435.04347826087,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "09:49",
+        "entry": 3.26,
+        "stop": 2.97,
+        "r": 0.29,
+        "score": 12.0,
+        "exit_price": 3.04,
+        "reason": "max_loss_hit",
+        "pnl": -190,
+        "r_mult": "-0.8R",
+        "symbol": "ATER",
+        "date": "2025-03-19",
+        "notional": 2810.344827586207,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:53",
+        "entry": 3.0891,
+        "stop": 2.95,
+        "r": 0.1391,
+        "score": 13.0,
+        "exit_price": 3.11,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 195,
+        "r_mult": "+0.2R",
+        "symbol": "APVO",
+        "date": "2025-03-20",
+        "notional": 28781.262401150252,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:01",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 10.9,
+        "exit_price": 3.99,
+        "reason": "sq_para_trail_exit",
+        "pnl": -45,
+        "r_mult": "-0.4R",
+        "symbol": "ALUR",
+        "date": "2025-03-21",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:02",
+        "entry": 4.04,
+        "stop": 3.91,
+        "r": 0.13,
+        "score": 8.1,
+        "exit_price": 3.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -77,
+        "r_mult": "-0.6R",
+        "symbol": "ALUR",
+        "date": "2025-03-21",
+        "notional": 7769.2307692307695,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:20",
+        "entry": 3.6,
+        "stop": 3.41,
+        "r": 0.19,
+        "score": 11.0,
+        "exit_price": 3.43,
+        "reason": "max_loss_hit",
+        "pnl": -1161,
+        "r_mult": "-0.9R",
+        "symbol": "UCAR",
+        "date": "2025-03-24",
+        "notional": 24593.684210526317,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:55",
+        "entry": 2.83,
+        "stop": 2.28,
+        "r": 0.55,
+        "score": 18.5,
+        "exit_price": 2.43,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -923,
+        "r_mult": "-0.7R",
+        "symbol": "AGPU",
+        "date": "2025-03-25",
+        "notional": 6529.581818181818,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:51",
+        "entry": 2.04,
+        "stop": 1.93,
+        "r": 0.11,
+        "score": 5.1,
+        "exit_price": 2.16,
+        "reason": "sq_time_exit(5bars)",
+        "pnl": 136,
+        "r_mult": "+1.1R",
+        "symbol": "TNON",
+        "date": "2025-03-25",
+        "notional": 4636.363636363636,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "06:53",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 7.4,
+        "exit_price": 2.94,
+        "reason": "sq_para_trail_exit",
+        "pnl": -89,
+        "r_mult": "-0.7R",
+        "symbol": "TNON",
+        "date": "2025-03-25",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:52",
+        "entry": 2.92,
+        "stop": 2.52,
+        "r": 0.4,
+        "score": 9.5,
+        "exit_price": 2.57,
+        "reason": "max_loss_hit",
+        "pnl": -1110,
+        "r_mult": "-0.9R",
+        "symbol": "MYSE",
+        "date": "2025-03-25",
+        "notional": 9263.699999999999,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:22",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 9.0,
+        "exit_price": 3.1,
+        "reason": "sq_para_trail_exit",
+        "pnl": 54,
+        "r_mult": "+0.4R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:23",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 5.8,
+        "exit_price": 3.4,
+        "reason": "sq_target_hit",
+        "pnl": 413,
+        "r_mult": "+3.3R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:25",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 6.9,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 212,
+        "r_mult": "+1.7R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "07:34",
+        "entry": 4.08,
+        "stop": 3.86,
+        "r": 0.22,
+        "score": 9.0,
+        "exit_price": 3.91,
+        "reason": "max_loss_hit",
+        "pnl": -193,
+        "r_mult": "-0.8R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 4636.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:31",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.52,
+        "reason": "sq_target_hit",
+        "pnl": 1815,
+        "r_mult": "+2.9R",
+        "symbol": "DRMA",
+        "date": "2025-03-27",
+        "notional": 17952.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:01",
+        "entry": 12.04,
+        "stop": 11.56,
+        "r": 0.48,
+        "score": 10.0,
+        "exit_price": 13.0,
+        "reason": "sq_target_hit",
+        "pnl": 1157,
+        "r_mult": "+1.8R",
+        "symbol": "ATON",
+        "date": "2025-03-28",
+        "notional": 32031.416666666668,
+        "setup_type": "squeeze"
+      }
+    ],
+    "daily": [
+      {
+        "date": "2025-01-02",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -313,
+        "equity": 29687
+      },
+      {
+        "date": "2025-01-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 29687
+      },
+      {
+        "date": "2025-01-06",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -772,
+        "equity": 28915
+      },
+      {
+        "date": "2025-01-07",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": -77,
+        "equity": 28838
+      },
+      {
+        "date": "2025-01-08",
+        "trades": 5,
+        "wins": 4,
+        "losses": 1,
+        "day_pnl": 1540,
+        "equity": 30378
+      },
+      {
+        "date": "2025-01-10",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 826,
+        "equity": 31204
+      },
+      {
+        "date": "2025-01-13",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -205,
+        "equity": 30999
+      },
+      {
+        "date": "2025-01-14",
+        "trades": 5,
+        "wins": 4,
+        "losses": 1,
+        "day_pnl": 3447,
+        "equity": 34446
+      },
+      {
+        "date": "2025-01-15",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 106,
+        "equity": 34552
+      },
+      {
+        "date": "2025-01-16",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 31,
+        "equity": 34583
+      },
+      {
+        "date": "2025-01-17",
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 459,
+        "equity": 35042
+      },
+      {
+        "date": "2025-01-21",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 3228,
+        "equity": 38270
+      },
+      {
+        "date": "2025-01-22",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 38270
+      },
+      {
+        "date": "2025-01-23",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 41,
+        "equity": 38311
+      },
+      {
+        "date": "2025-01-24",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 1046,
+        "equity": 39357
+      },
+      {
+        "date": "2025-01-27",
+        "trades": 2,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -215,
+        "equity": 39142
+      },
+      {
+        "date": "2025-01-28",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -296,
+        "equity": 38846
+      },
+      {
+        "date": "2025-01-29",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -17,
+        "equity": 38829
+      },
+      {
+        "date": "2025-01-30",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -743,
+        "equity": 38086
+      },
+      {
+        "date": "2025-01-31",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -306,
+        "equity": 37780
+      },
+      {
+        "date": "2025-02-03",
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 1774,
+        "equity": 39554
+      },
+      {
+        "date": "2025-02-04",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 3837,
+        "equity": 43391
+      },
+      {
+        "date": "2025-02-05",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 700,
+        "equity": 44091
+      },
+      {
+        "date": "2025-02-06",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -246,
+        "equity": 43845
+      },
+      {
+        "date": "2025-02-07",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43845,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-02-10",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43845
+      },
+      {
+        "date": "2025-02-11",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 774,
+        "equity": 44619
+      },
+      {
+        "date": "2025-02-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 44619
+      },
+      {
+        "date": "2025-02-13",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -258,
+        "equity": 44361
+      },
+      {
+        "date": "2025-02-14",
+        "trades": 1,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 44361
+      },
+      {
+        "date": "2025-02-18",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -163,
+        "equity": 44198
+      },
+      {
+        "date": "2025-02-19",
+        "trades": 3,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -457,
+        "equity": 43741
+      },
+      {
+        "date": "2025-02-20",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 171,
+        "equity": 43912
+      },
+      {
+        "date": "2025-02-21",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43912,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-02-24",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 494,
+        "equity": 44406
+      },
+      {
+        "date": "2025-02-25",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -288,
+        "equity": 44118
+      },
+      {
+        "date": "2025-02-26",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -298,
+        "equity": 43820
+      },
+      {
+        "date": "2025-02-27",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -525,
+        "equity": 43295
+      },
+      {
+        "date": "2025-02-28",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 4303,
+        "equity": 47598
+      },
+      {
+        "date": "2025-03-03",
+        "trades": 1,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 47598
+      },
+      {
+        "date": "2025-03-04",
+        "trades": 4,
+        "wins": 4,
+        "losses": 0,
+        "day_pnl": 960,
+        "equity": 48558
+      },
+      {
+        "date": "2025-03-05",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 119,
+        "equity": 48677
+      },
+      {
+        "date": "2025-03-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 48677,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-03-07",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -1045,
+        "equity": 47632
+      },
+      {
+        "date": "2025-03-10",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -1490,
+        "equity": 46142
+      },
+      {
+        "date": "2025-03-11",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1184,
+        "equity": 47326
+      },
+      {
+        "date": "2025-03-12",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -68,
+        "equity": 47258
+      },
+      {
+        "date": "2025-03-13",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 928,
+        "equity": 48186
+      },
+      {
+        "date": "2025-03-14",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 3726,
+        "equity": 51912
+      },
+      {
+        "date": "2025-03-17",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 239,
+        "equity": 52151
+      },
+      {
+        "date": "2025-03-18",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 52151,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-03-19",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -275,
+        "equity": 51876
+      },
+      {
+        "date": "2025-03-20",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 195,
+        "equity": 52071
+      },
+      {
+        "date": "2025-03-21",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -122,
+        "equity": 51949
+      },
+      {
+        "date": "2025-03-24",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -1161,
+        "equity": 50788
+      },
+      {
+        "date": "2025-03-25",
+        "trades": 4,
+        "wins": 1,
+        "losses": 3,
+        "day_pnl": -1986,
+        "equity": 48802
+      },
+      {
+        "date": "2025-03-26",
+        "trades": 4,
+        "wins": 3,
+        "losses": 1,
+        "day_pnl": 486,
+        "equity": 49288
+      },
+      {
+        "date": "2025-03-27",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1815,
+        "equity": 51103
+      },
+      {
+        "date": "2025-03-28",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1157,
+        "equity": 52260
+      }
+    ],
+    "max_equity": 52260,
+    "max_drawdown": 3349
+  },
+  "config_b": {
+    "equity": 52260,
+    "trades": [
+      {
+        "num": 1,
+        "time": "07:13",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.92,
+        "reason": "sq_para_trail_exit",
+        "pnl": -321,
+        "r_mult": "-0.9R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 16285.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:24",
+        "entry": 3.04,
+        "stop": 2.91,
+        "r": 0.13,
+        "score": 7.9,
+        "exit_price": 3.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 115,
+        "r_mult": "+0.3R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 17538.461538461535,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "08:42",
+        "entry": 2.8,
+        "stop": 2.66,
+        "r": 0.14,
+        "score": 14.5,
+        "exit_price": 2.78,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -107,
+        "r_mult": "-0.1R",
+        "symbol": "ORIS",
+        "date": "2025-01-02",
+        "notional": 14999.999999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "10:23",
+        "entry": 2.2,
+        "stop": 2.075,
+        "r": 0.125,
+        "score": 13.5,
+        "exit_price": 2.07,
+        "reason": "stop_hit",
+        "pnl": -772,
+        "r_mult": "-1.0R",
+        "symbol": "DHAI",
+        "date": "2025-01-06",
+        "notional": 13059.2,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:04",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 6.7,
+        "exit_price": 2.92,
+        "reason": "sq_max_loss_hit",
+        "pnl": -309,
+        "r_mult": "-0.9R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 15677.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:26",
+        "entry": 3.19,
+        "stop": 3.05,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.21,
+        "reason": "sq_para_trail_exit",
+        "pnl": 52,
+        "r_mult": "+0.1R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 16451.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:28",
+        "entry": 3.19,
+        "stop": 3.05,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.26,
+        "reason": "sq_para_trail_exit",
+        "pnl": 180,
+        "r_mult": "+0.5R",
+        "symbol": "MYSE",
+        "date": "2025-01-07",
+        "notional": 16451.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:30",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.05,
+        "reason": "sq_para_trail_exit",
+        "pnl": 9,
+        "r_mult": "+0.1R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "08:32",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.11,
+        "reason": "sq_para_trail_exit",
+        "pnl": 62,
+        "r_mult": "+0.5R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:33",
+        "entry": 2.47,
+        "stop": 2.33,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.54,
+        "reason": "sq_para_trail_exit",
+        "pnl": 62,
+        "r_mult": "+0.5R",
+        "symbol": "SILO",
+        "date": "2025-01-08",
+        "notional": 4410.714285714285,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:45",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.68,
+        "reason": "sq_target_hit",
+        "pnl": 1613,
+        "r_mult": "+4.5R",
+        "symbol": "NCEL",
+        "date": "2025-01-08",
+        "notional": 15634.285714285712,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:51",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -206,
+        "r_mult": "-0.6R",
+        "symbol": "NCEL",
+        "date": "2025-01-08",
+        "notional": 20777.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:17",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.33,
+        "reason": "sq_target_hit",
+        "pnl": 799,
+        "r_mult": "+2.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 11059.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:40",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 5.9,
+        "exit_price": 3.03,
+        "reason": "sq_para_trail_exit",
+        "pnl": -27,
+        "r_mult": "-0.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 16481.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:55",
+        "entry": 3.74,
+        "stop": 3.6,
+        "r": 0.14,
+        "score": 6.5,
+        "exit_price": 3.76,
+        "reason": "sq_para_trail_exit",
+        "pnl": 54,
+        "r_mult": "+0.1R",
+        "symbol": "VMAR",
+        "date": "2025-01-10",
+        "notional": 20276.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:05",
+        "entry": 2.69,
+        "stop": 2.25,
+        "r": 0.44,
+        "score": 18.0,
+        "exit_price": 2.68,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -18,
+        "r_mult": "-0.0R",
+        "symbol": "ATPC",
+        "date": "2025-01-13",
+        "notional": 4768.636363636364,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:49",
+        "entry": 2.41,
+        "stop": 2.13,
+        "r": 0.28,
+        "score": 17.0,
+        "exit_price": 2.2,
+        "reason": "max_loss_hit",
+        "pnl": -187,
+        "r_mult": "-0.8R",
+        "symbol": "KAPA",
+        "date": "2025-01-13",
+        "notional": 2151.785714285714,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:46",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.655,
+        "reason": "sq_target_hit",
+        "pnl": 724,
+        "r_mult": "+5.8R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:07",
+        "entry": 4.21,
+        "stop": 3.7698,
+        "r": 0.4402,
+        "score": 17.0,
+        "exit_price": 4.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -17,
+        "r_mult": "-0.1R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 2390.958655156747,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "09:31",
+        "entry": 4.61,
+        "stop": 4.48,
+        "r": 0.13,
+        "score": 11.0,
+        "exit_price": 5.0791,
+        "reason": "sq_target_hit",
+        "pnl": 520,
+        "r_mult": "+4.2R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 8865.384615384615,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "09:32",
+        "entry": 4.61,
+        "stop": 4.4,
+        "r": 0.21,
+        "score": 11.0,
+        "exit_price": 5.3601,
+        "reason": "sq_target_hit",
+        "pnl": 921,
+        "r_mult": "+3.7R",
+        "symbol": "AIFF",
+        "date": "2025-01-14",
+        "notional": 5488.095238095239,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:15",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.54,
+        "reason": "sq_target_hit",
+        "pnl": 1299,
+        "r_mult": "+3.4R",
+        "symbol": "OST",
+        "date": "2025-01-14",
+        "notional": 16806.85714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:08",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.33,
+        "reason": "sq_target_hit",
+        "pnl": 212,
+        "r_mult": "+1.7R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:21",
+        "entry": 2.64,
+        "stop": 2.5,
+        "r": 0.14,
+        "score": 6.0,
+        "exit_price": 2.53,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 4714.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:58",
+        "entry": 3.24,
+        "stop": 2.93,
+        "r": 0.31,
+        "score": 15.0,
+        "exit_price": 3.2299,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -8,
+        "r_mult": "-0.0R",
+        "symbol": "BKYI",
+        "date": "2025-01-15",
+        "notional": 2612.9032258064517,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:18",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.05,
+        "reason": "sq_para_trail_exit",
+        "pnl": 31,
+        "r_mult": "+0.1R",
+        "symbol": "WHLR",
+        "date": "2025-01-16",
+        "notional": 24903.714285714283,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 6.0,
+        "exit_price": 2.92,
+        "reason": "sq_max_loss_hit",
+        "pnl": -370,
+        "r_mult": "-0.9R",
+        "symbol": "VS",
+        "date": "2025-01-17",
+        "notional": 18761.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:09",
+        "entry": 3.16,
+        "stop": 2.89,
+        "r": 0.27,
+        "score": 11.5,
+        "exit_price": 3.2,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 128,
+        "r_mult": "+0.1R",
+        "symbol": "VS",
+        "date": "2025-01-17",
+        "notional": 10112.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:36",
+        "entry": 4.26,
+        "stop": 4.14,
+        "r": 0.12,
+        "score": 16.0,
+        "exit_price": 4.19,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -146,
+        "r_mult": "-0.6R",
+        "symbol": "ISPC",
+        "date": "2025-01-17",
+        "notional": 8875.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:26",
+        "entry": 6.04,
+        "stop": 5.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 7.0699,
+        "reason": "sq_target_hit",
+        "pnl": 847,
+        "r_mult": "+6.8R",
+        "symbol": "BTCT",
+        "date": "2025-01-17",
+        "notional": 10785.714285714284,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:33",
+        "entry": 7.04,
+        "stop": 6.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 7.83,
+        "reason": "sq_target_hit",
+        "pnl": 2455,
+        "r_mult": "+5.6R",
+        "symbol": "INM",
+        "date": "2025-01-21",
+        "notional": 44050.28571428571,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:43",
+        "entry": 2.9,
+        "stop": 2.39,
+        "r": 0.51,
+        "score": 18.5,
+        "exit_price": 3.35,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 773,
+        "r_mult": "+0.9R",
+        "symbol": "PTHS",
+        "date": "2025-01-21",
+        "notional": 4981.176470588235,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:38",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 9.5,
+        "exit_price": 4.06,
+        "reason": "sq_para_trail_exit",
+        "pnl": 68,
+        "r_mult": "+0.1R",
+        "symbol": "VNCE",
+        "date": "2025-01-23",
+        "notional": 27587.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "08:42",
+        "entry": 4.2101,
+        "stop": 4.03,
+        "r": 0.1801,
+        "score": 17.5,
+        "exit_price": 4.205,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -27,
+        "r_mult": "-0.0R",
+        "symbol": "VNCE",
+        "date": "2025-01-23",
+        "notional": 22347.893392559683,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:16",
+        "entry": 7.04,
+        "stop": 6.9,
+        "r": 0.14,
+        "score": 6.1,
+        "exit_price": 7.59,
+        "reason": "sq_target_hit",
+        "pnl": 549,
+        "r_mult": "+4.4R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 12571.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:01",
+        "entry": 8.04,
+        "stop": 7.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 8.4,
+        "reason": "sq_target_hit",
+        "pnl": 506,
+        "r_mult": "+4.1R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 14357.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:07",
+        "entry": 10.04,
+        "stop": 9.9,
+        "r": 0.14,
+        "score": 7.4,
+        "exit_price": 10.03,
+        "reason": "sq_para_trail_exit",
+        "pnl": -9,
+        "r_mult": "-0.1R",
+        "symbol": "ALUR",
+        "date": "2025-01-24",
+        "notional": 17928.571428571424,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 2.14,
+        "stop": 2.03,
+        "r": 0.11,
+        "score": 9.5,
+        "exit_price": 2.14,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "TVGN",
+        "date": "2025-01-27",
+        "notional": 19123.818181818184,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:17",
+        "entry": 2.28,
+        "stop": 2.12,
+        "r": 0.16,
+        "score": 9.5,
+        "exit_price": 2.245,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -215,
+        "r_mult": "-0.2R",
+        "symbol": "TVGN",
+        "date": "2025-01-27",
+        "notional": 14007.749999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "04:11",
+        "entry": 3.57,
+        "stop": 3.47,
+        "r": 0.1,
+        "score": 8.5,
+        "exit_price": 3.48,
+        "reason": "max_loss_hit",
+        "pnl": -225,
+        "r_mult": "-0.9R",
+        "symbol": "YIBO",
+        "date": "2025-01-28",
+        "notional": 8925.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:16",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 4.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -71,
+        "r_mult": "-0.6R",
+        "symbol": "YIBO",
+        "date": "2025-01-28",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:21",
+        "entry": 2.04,
+        "stop": 1.93,
+        "r": 0.11,
+        "score": 11.0,
+        "exit_price": 2.12,
+        "reason": "sq_para_trail_exit",
+        "pnl": 353,
+        "r_mult": "+0.7R",
+        "symbol": "SLXN",
+        "date": "2025-01-29",
+        "notional": 18007.636363636364,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:37",
+        "entry": 2.3,
+        "stop": 2.09,
+        "r": 0.21,
+        "score": 14.0,
+        "exit_price": 2.22,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -370,
+        "r_mult": "-0.4R",
+        "symbol": "SLXN",
+        "date": "2025-01-29",
+        "notional": 10634.761904761905,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:32",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 139,
+        "r_mult": "+0.3R",
+        "symbol": "STAI",
+        "date": "2025-01-30",
+        "notional": 14134.285714285712,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:00",
+        "entry": 2.11,
+        "stop": 2.0,
+        "r": 0.11,
+        "score": 13.5,
+        "exit_price": 2.01,
+        "reason": "max_loss_hit",
+        "pnl": -882,
+        "r_mult": "-0.9R",
+        "symbol": "STAI",
+        "date": "2025-01-30",
+        "notional": 18606.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:42",
+        "entry": 4.03,
+        "stop": 3.89,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 3.91,
+        "reason": "sq_max_loss_hit",
+        "pnl": -408,
+        "r_mult": "-0.9R",
+        "symbol": "CYCN",
+        "date": "2025-01-31",
+        "notional": 27403.999999999996,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:32",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.07,
+        "reason": "sq_para_trail_exit",
+        "pnl": 102,
+        "r_mult": "+0.2R",
+        "symbol": "NCEL",
+        "date": "2025-01-31",
+        "notional": 20671.999999999996,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:07",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 8.6,
+        "exit_price": 4.67,
+        "reason": "sq_target_hit",
+        "pnl": 1888,
+        "r_mult": "+4.0R",
+        "symbol": "REBN",
+        "date": "2025-02-03",
+        "notional": 27241.142857142855,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:14",
+        "entry": 2.04,
+        "stop": 1.94,
+        "r": 0.1,
+        "score": 8.0,
+        "exit_price": 2.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 50,
+        "r_mult": "+0.4R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 5100.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:16",
+        "entry": 2.19,
+        "stop": 2.04,
+        "r": 0.15,
+        "score": 14.0,
+        "exit_price": 2.11,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -67,
+        "r_mult": "-0.5R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 3650.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "09:31",
+        "entry": 2.43,
+        "stop": 2.29,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.321,
+        "reason": "sq_max_loss_hit",
+        "pnl": -97,
+        "r_mult": "-0.8R",
+        "symbol": "SOPA",
+        "date": "2025-02-03",
+        "notional": 4339.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:05",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 5.95,
+        "reason": "sq_target_hit",
+        "pnl": 3837,
+        "r_mult": "+7.8R",
+        "symbol": "QNTM",
+        "date": "2025-02-04",
+        "notional": 35568.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:16",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.63,
+        "reason": "sq_target_hit",
+        "pnl": 479,
+        "r_mult": "+3.8R",
+        "symbol": "CPIX",
+        "date": "2025-02-05",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:44",
+        "entry": 4.62,
+        "stop": 4.63,
+        "r": 0.17,
+        "score": 16.5,
+        "exit_price": 4.92,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 221,
+        "r_mult": "+1.8R",
+        "symbol": "CPIX",
+        "date": "2025-02-05",
+        "notional": 6794.117647058823,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "06:11",
+        "entry": 4.02,
+        "stop": 3.64,
+        "r": 0.38,
+        "score": 9.0,
+        "exit_price": 3.85,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -246,
+        "r_mult": "-0.4R",
+        "symbol": "LIPO",
+        "date": "2025-02-06",
+        "notional": 11657.999999999998,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:49",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 900,
+        "r_mult": "+1.6R",
+        "symbol": "LIPO",
+        "date": "2025-02-11",
+        "notional": 31627.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "05:52",
+        "entry": 4.29,
+        "stop": 3.9,
+        "r": 0.39,
+        "score": 8.5,
+        "exit_price": 4.2,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -126,
+        "r_mult": "-0.2R",
+        "symbol": "LIPO",
+        "date": "2025-02-11",
+        "notional": 12056.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:45",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.1,
+        "reason": "sq_para_trail_exit",
+        "pnl": 239,
+        "r_mult": "+0.4R",
+        "symbol": "EDSA",
+        "date": "2025-02-13",
+        "notional": 24211.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:45",
+        "entry": 3.73,
+        "stop": 3.36,
+        "r": 0.37,
+        "score": 14.0,
+        "exit_price": 3.4001,
+        "reason": "max_loss_hit",
+        "pnl": -497,
+        "r_mult": "-0.9R",
+        "symbol": "EDSA",
+        "date": "2025-02-13",
+        "notional": 11240.405405405407,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:04",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 7.1,
+        "exit_price": 5.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "JTAI",
+        "date": "2025-02-14",
+        "notional": 39923.99999999999,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:05",
+        "entry": 2.56,
+        "stop": 2.32,
+        "r": 0.24,
+        "score": 10.5,
+        "exit_price": 2.39,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -393,
+        "r_mult": "-0.7R",
+        "symbol": "EFOI",
+        "date": "2025-02-18",
+        "notional": 11829.333333333336,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:50",
+        "entry": 3.09,
+        "stop": 2.559,
+        "r": 0.531,
+        "score": 16.5,
+        "exit_price": 3.31,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 230,
+        "r_mult": "+0.4R",
+        "symbol": "STAI",
+        "date": "2025-02-18",
+        "notional": 6453.502824858756,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:23",
+        "entry": 5.62,
+        "stop": 5.4,
+        "r": 0.22,
+        "score": 17.5,
+        "exit_price": 5.43,
+        "reason": "max_loss_hit",
+        "pnl": -477,
+        "r_mult": "-0.9R",
+        "symbol": "SINT",
+        "date": "2025-02-19",
+        "notional": 28202.181818181816,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:42",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "TRNR",
+        "date": "2025-02-19",
+        "notional": 16086.857142857143,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "05:26",
+        "entry": 7.64,
+        "stop": 6.2057,
+        "r": 1.4343,
+        "score": 16.0,
+        "exit_price": 7.87,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 20,
+        "r_mult": "+0.2R",
+        "symbol": "OSRH",
+        "date": "2025-02-19",
+        "notional": 1331.660043226661,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:22",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.12,
+        "reason": "sq_para_trail_exit",
+        "pnl": 312,
+        "r_mult": "+0.6R",
+        "symbol": "WOK",
+        "date": "2025-02-20",
+        "notional": 31540.857142857138,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:48",
+        "entry": 5.55,
+        "stop": 4.99,
+        "r": 0.56,
+        "score": 16.0,
+        "exit_price": 5.5201,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -7,
+        "r_mult": "-0.1R",
+        "symbol": "XOS",
+        "date": "2025-02-20",
+        "notional": 2477.678571428571,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "09:54",
+        "entry": 5.77,
+        "stop": 5.63,
+        "r": 0.14,
+        "score": 9.4,
+        "exit_price": 5.62,
+        "reason": "sq_stop_hit",
+        "pnl": -134,
+        "r_mult": "-1.1R",
+        "symbol": "XOS",
+        "date": "2025-02-20",
+        "notional": 10303.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:50",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 1.92,
+        "reason": "sq_para_trail_exit",
+        "pnl": -470,
+        "r_mult": "-0.9R",
+        "symbol": "ORIS",
+        "date": "2025-02-24",
+        "notional": 15984.857142857143,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "04:52",
+        "entry": 2.04,
+        "stop": 1.92,
+        "r": 0.12,
+        "score": 10.0,
+        "exit_price": 2.32,
+        "reason": "sq_target_hit",
+        "pnl": 1062,
+        "r_mult": "+1.9R",
+        "symbol": "ORIS",
+        "date": "2025-02-24",
+        "notional": 18649.000000000004,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "10:49",
+        "entry": 2.87,
+        "stop": 2.73,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.76,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "ISPC",
+        "date": "2025-02-24",
+        "notional": 5125.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "04:17",
+        "entry": 3.64,
+        "stop": 3.08,
+        "r": 0.56,
+        "score": 11.5,
+        "exit_price": 3.51,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -129,
+        "r_mult": "-0.2R",
+        "symbol": "WAFU",
+        "date": "2025-02-25",
+        "notional": 7214.999999999999,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "04:24",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 6.5,
+        "exit_price": 4.0,
+        "reason": "sq_para_trail_exit",
+        "pnl": -159,
+        "r_mult": "-0.3R",
+        "symbol": "WAFU",
+        "date": "2025-02-25",
+        "notional": 32031.42857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:26",
+        "entry": 2.83,
+        "stop": 2.73,
+        "r": 0.1,
+        "score": 17.5,
+        "exit_price": 2.79,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -220,
+        "r_mult": "-0.4R",
+        "symbol": "ENVB",
+        "date": "2025-02-26",
+        "notional": 31186.600000000002,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "05:02",
+        "entry": 16.1,
+        "stop": 14.82,
+        "r": 1.28,
+        "score": 15.5,
+        "exit_price": 15.3,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -78,
+        "r_mult": "-0.6R",
+        "symbol": "QVCGB",
+        "date": "2025-02-26",
+        "notional": 3144.5312500000005,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:30",
+        "entry": 3.01,
+        "stop": 2.86,
+        "r": 0.15,
+        "score": 12.5,
+        "exit_price": 2.8662,
+        "reason": "max_loss_hit",
+        "pnl": -525,
+        "r_mult": "-1.0R",
+        "symbol": "AMST",
+        "date": "2025-02-27",
+        "notional": 21973.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:28",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 3.55,
+        "reason": "sq_target_hit",
+        "pnl": 381,
+        "r_mult": "+3.1R",
+        "symbol": "ZOOZ",
+        "date": "2025-02-28",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:36",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.04,
+        "reason": "sq_target_hit",
+        "pnl": 3922,
+        "r_mult": "+7.2R",
+        "symbol": "NVVE",
+        "date": "2025-02-28",
+        "notional": 23494.85714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:03",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 5.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "ACON",
+        "date": "2025-03-03",
+        "notional": 42803.99999999999,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:01",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.72,
+        "reason": "sq_target_hit",
+        "pnl": 549,
+        "r_mult": "+4.4R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:03",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 7.1,
+        "exit_price": 4.44,
+        "reason": "sq_target_hit",
+        "pnl": 323,
+        "r_mult": "+2.6R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "09:03",
+        "entry": 4.82,
+        "stop": 3.27,
+        "r": 1.55,
+        "score": 8.0,
+        "exit_price": 5.14,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 52,
+        "r_mult": "+0.2R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 777.4193548387096,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 4,
+        "time": "09:05",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 6.4,
+        "exit_price": 5.08,
+        "reason": "sq_para_trail_exit",
+        "pnl": 36,
+        "r_mult": "+0.3R",
+        "symbol": "RDGT",
+        "date": "2025-03-04",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:35",
+        "entry": 2.39,
+        "stop": 2.25,
+        "r": 0.14,
+        "score": 10.8,
+        "exit_price": 2.68,
+        "reason": "sq_target_hit",
+        "pnl": 1159,
+        "r_mult": "+1.9R",
+        "symbol": "GV",
+        "date": "2025-03-05",
+        "notional": 20707.64285714286,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "09:40",
+        "entry": 2.72,
+        "stop": 2.51,
+        "r": 0.21,
+        "score": 15.5,
+        "exit_price": 2.54,
+        "reason": "max_loss_hit",
+        "pnl": -1040,
+        "r_mult": "-0.9R",
+        "symbol": "GV",
+        "date": "2025-03-05",
+        "notional": 15711.238095238095,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 2,
+        "time": "10:18",
+        "entry": 6.16,
+        "stop": 5.52,
+        "r": 0.64,
+        "score": 10.5,
+        "exit_price": 5.61,
+        "reason": "max_loss_hit",
+        "pnl": -1045,
+        "r_mult": "-0.9R",
+        "symbol": "DWTX",
+        "date": "2025-03-07",
+        "notional": 11704.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:38",
+        "entry": 2.89,
+        "stop": 2.75,
+        "r": 0.14,
+        "score": 12.0,
+        "exit_price": 2.79,
+        "reason": "sq_para_trail_exit",
+        "pnl": -425,
+        "r_mult": "-0.7R",
+        "symbol": "SNOA",
+        "date": "2025-03-10",
+        "notional": 24565.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "10:17",
+        "entry": 3.22,
+        "stop": 3.03,
+        "r": 0.19,
+        "score": 15.5,
+        "exit_price": 3.05,
+        "reason": "max_loss_hit",
+        "pnl": -1065,
+        "r_mult": "-0.9R",
+        "symbol": "SNOA",
+        "date": "2025-03-10",
+        "notional": 20167.36842105263,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "06:53",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 1184,
+        "r_mult": "+2.1R",
+        "symbol": "SNOA",
+        "date": "2025-03-11",
+        "notional": 33272.28571428571,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:52",
+        "entry": 2.76,
+        "stop": 2.54,
+        "r": 0.22,
+        "score": 15.5,
+        "exit_price": 2.7,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -68,
+        "r_mult": "-0.3R",
+        "symbol": "CRVO",
+        "date": "2025-03-12",
+        "notional": 3136.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:09",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 3.33,
+        "reason": "sq_target_hit",
+        "pnl": 928,
+        "r_mult": "+1.6R",
+        "symbol": "SNES",
+        "date": "2025-03-13",
+        "notional": 25644.571428571424,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "06:30",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 2.49,
+        "reason": "sq_target_hit",
+        "pnl": 921,
+        "r_mult": "+7.4R",
+        "symbol": "BON",
+        "date": "2025-03-14",
+        "notional": 3642.8571428571427,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "06:31",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 7.7,
+        "exit_price": 6.23,
+        "reason": "sq_target_hit",
+        "pnl": 2805,
+        "r_mult": "+22.5R",
+        "symbol": "BON",
+        "date": "2025-03-14",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:54",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 7.7,
+        "exit_price": 4.02,
+        "reason": "sq_para_trail_exit",
+        "pnl": -93,
+        "r_mult": "-0.1R",
+        "symbol": "FEED",
+        "date": "2025-03-17",
+        "notional": 37427.71428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "09:32",
+        "entry": 2.44,
+        "stop": 2.3,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.7297,
+        "reason": "sq_target_hit",
+        "pnl": 332,
+        "r_mult": "+2.7R",
+        "symbol": "GLMD",
+        "date": "2025-03-17",
+        "notional": 4357.142857142857,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:25",
+        "entry": 16.04,
+        "stop": 15.58,
+        "r": 0.46,
+        "score": 7.3,
+        "exit_price": 16.01,
+        "reason": "sq_trail_exit",
+        "pnl": -85,
+        "r_mult": "-0.1R",
+        "symbol": "LSE",
+        "date": "2025-03-19",
+        "notional": 45435.04347826087,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "09:49",
+        "entry": 3.26,
+        "stop": 2.97,
+        "r": 0.29,
+        "score": 12.0,
+        "exit_price": 3.04,
+        "reason": "max_loss_hit",
+        "pnl": -190,
+        "r_mult": "-0.8R",
+        "symbol": "ATER",
+        "date": "2025-03-19",
+        "notional": 2810.344827586207,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "09:53",
+        "entry": 3.0891,
+        "stop": 2.95,
+        "r": 0.1391,
+        "score": 13.0,
+        "exit_price": 3.11,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 195,
+        "r_mult": "+0.2R",
+        "symbol": "APVO",
+        "date": "2025-03-20",
+        "notional": 28781.262401150252,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:01",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 10.9,
+        "exit_price": 3.99,
+        "reason": "sq_para_trail_exit",
+        "pnl": -45,
+        "r_mult": "-0.4R",
+        "symbol": "ALUR",
+        "date": "2025-03-21",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:02",
+        "entry": 4.04,
+        "stop": 3.91,
+        "r": 0.13,
+        "score": 8.1,
+        "exit_price": 3.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -77,
+        "r_mult": "-0.6R",
+        "symbol": "ALUR",
+        "date": "2025-03-21",
+        "notional": 7769.2307692307695,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:20",
+        "entry": 3.6,
+        "stop": 3.41,
+        "r": 0.19,
+        "score": 11.0,
+        "exit_price": 3.43,
+        "reason": "max_loss_hit",
+        "pnl": -1161,
+        "r_mult": "-0.9R",
+        "symbol": "UCAR",
+        "date": "2025-03-24",
+        "notional": 24593.684210526317,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:55",
+        "entry": 2.83,
+        "stop": 2.28,
+        "r": 0.55,
+        "score": 18.5,
+        "exit_price": 2.43,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -923,
+        "r_mult": "-0.7R",
+        "symbol": "AGPU",
+        "date": "2025-03-25",
+        "notional": 6529.581818181818,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "05:51",
+        "entry": 2.04,
+        "stop": 1.93,
+        "r": 0.11,
+        "score": 5.1,
+        "exit_price": 2.16,
+        "reason": "sq_time_exit(5bars)",
+        "pnl": 136,
+        "r_mult": "+1.1R",
+        "symbol": "TNON",
+        "date": "2025-03-25",
+        "notional": 4636.363636363636,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "06:53",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 7.4,
+        "exit_price": 2.94,
+        "reason": "sq_para_trail_exit",
+        "pnl": -89,
+        "r_mult": "-0.7R",
+        "symbol": "TNON",
+        "date": "2025-03-25",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "08:52",
+        "entry": 2.92,
+        "stop": 2.52,
+        "r": 0.4,
+        "score": 9.5,
+        "exit_price": 2.57,
+        "reason": "max_loss_hit",
+        "pnl": -1110,
+        "r_mult": "-0.9R",
+        "symbol": "MYSE",
+        "date": "2025-03-25",
+        "notional": 9263.699999999999,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:22",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 9.0,
+        "exit_price": 3.1,
+        "reason": "sq_para_trail_exit",
+        "pnl": 54,
+        "r_mult": "+0.4R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:23",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 5.8,
+        "exit_price": 3.4,
+        "reason": "sq_target_hit",
+        "pnl": 413,
+        "r_mult": "+3.3R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 5428.571428571428,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:25",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 6.9,
+        "exit_price": 4.32,
+        "reason": "sq_target_hit",
+        "pnl": 212,
+        "r_mult": "+1.7R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 7214.285714285714,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 4,
+        "time": "07:34",
+        "entry": 4.08,
+        "stop": 3.86,
+        "r": 0.22,
+        "score": 9.0,
+        "exit_price": 3.91,
+        "reason": "max_loss_hit",
+        "pnl": -193,
+        "r_mult": "-0.8R",
+        "symbol": "OSRH",
+        "date": "2025-03-26",
+        "notional": 4636.363636363636,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:31",
+        "entry": 2.04,
+        "stop": 1.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 2.52,
+        "reason": "sq_target_hit",
+        "pnl": 1815,
+        "r_mult": "+2.9R",
+        "symbol": "DRMA",
+        "date": "2025-03-27",
+        "notional": 17952.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 1,
+        "time": "07:01",
+        "entry": 12.04,
+        "stop": 11.56,
+        "r": 0.48,
+        "score": 10.0,
+        "exit_price": 13.0,
+        "reason": "sq_target_hit",
+        "pnl": 1157,
+        "r_mult": "+1.8R",
+        "symbol": "ATON",
+        "date": "2025-03-28",
+        "notional": 32031.416666666668,
+        "setup_type": "squeeze"
+      }
+    ],
+    "daily": [
+      {
+        "date": "2025-01-02",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": -313,
+        "equity": 29687
+      },
+      {
+        "date": "2025-01-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 29687
+      },
+      {
+        "date": "2025-01-06",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -772,
+        "equity": 28915
+      },
+      {
+        "date": "2025-01-07",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": -77,
+        "equity": 28838
+      },
+      {
+        "date": "2025-01-08",
+        "trades": 5,
+        "wins": 4,
+        "losses": 1,
+        "day_pnl": 1540,
+        "equity": 30378
+      },
+      {
+        "date": "2025-01-10",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 826,
+        "equity": 31204
+      },
+      {
+        "date": "2025-01-13",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -205,
+        "equity": 30999
+      },
+      {
+        "date": "2025-01-14",
+        "trades": 5,
+        "wins": 4,
+        "losses": 1,
+        "day_pnl": 3447,
+        "equity": 34446
+      },
+      {
+        "date": "2025-01-15",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 106,
+        "equity": 34552
+      },
+      {
+        "date": "2025-01-16",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 31,
+        "equity": 34583
+      },
+      {
+        "date": "2025-01-17",
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 459,
+        "equity": 35042
+      },
+      {
+        "date": "2025-01-21",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 3228,
+        "equity": 38270
+      },
+      {
+        "date": "2025-01-22",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 38270
+      },
+      {
+        "date": "2025-01-23",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 41,
+        "equity": 38311
+      },
+      {
+        "date": "2025-01-24",
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 1046,
+        "equity": 39357
+      },
+      {
+        "date": "2025-01-27",
+        "trades": 2,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -215,
+        "equity": 39142
+      },
+      {
+        "date": "2025-01-28",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -296,
+        "equity": 38846
+      },
+      {
+        "date": "2025-01-29",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -17,
+        "equity": 38829
+      },
+      {
+        "date": "2025-01-30",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -743,
+        "equity": 38086
+      },
+      {
+        "date": "2025-01-31",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -306,
+        "equity": 37780
+      },
+      {
+        "date": "2025-02-03",
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "day_pnl": 1774,
+        "equity": 39554
+      },
+      {
+        "date": "2025-02-04",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 3837,
+        "equity": 43391
+      },
+      {
+        "date": "2025-02-05",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 700,
+        "equity": 44091
+      },
+      {
+        "date": "2025-02-06",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -246,
+        "equity": 43845
+      },
+      {
+        "date": "2025-02-07",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43845,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-02-10",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43845
+      },
+      {
+        "date": "2025-02-11",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 774,
+        "equity": 44619
+      },
+      {
+        "date": "2025-02-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 44619
+      },
+      {
+        "date": "2025-02-13",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -258,
+        "equity": 44361
+      },
+      {
+        "date": "2025-02-14",
+        "trades": 1,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 44361
+      },
+      {
+        "date": "2025-02-18",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -163,
+        "equity": 44198
+      },
+      {
+        "date": "2025-02-19",
+        "trades": 3,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": -457,
+        "equity": 43741
+      },
+      {
+        "date": "2025-02-20",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 171,
+        "equity": 43912
+      },
+      {
+        "date": "2025-02-21",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 43912,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-02-24",
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "day_pnl": 494,
+        "equity": 44406
+      },
+      {
+        "date": "2025-02-25",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -288,
+        "equity": 44118
+      },
+      {
+        "date": "2025-02-26",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -298,
+        "equity": 43820
+      },
+      {
+        "date": "2025-02-27",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -525,
+        "equity": 43295
+      },
+      {
+        "date": "2025-02-28",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 4303,
+        "equity": 47598
+      },
+      {
+        "date": "2025-03-03",
+        "trades": 1,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 47598
+      },
+      {
+        "date": "2025-03-04",
+        "trades": 4,
+        "wins": 4,
+        "losses": 0,
+        "day_pnl": 960,
+        "equity": 48558
+      },
+      {
+        "date": "2025-03-05",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 119,
+        "equity": 48677
+      },
+      {
+        "date": "2025-03-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 48677,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-03-07",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -1045,
+        "equity": 47632
+      },
+      {
+        "date": "2025-03-10",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -1490,
+        "equity": 46142
+      },
+      {
+        "date": "2025-03-11",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1184,
+        "equity": 47326
+      },
+      {
+        "date": "2025-03-12",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -68,
+        "equity": 47258
+      },
+      {
+        "date": "2025-03-13",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 928,
+        "equity": 48186
+      },
+      {
+        "date": "2025-03-14",
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 3726,
+        "equity": 51912
+      },
+      {
+        "date": "2025-03-17",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 239,
+        "equity": 52151
+      },
+      {
+        "date": "2025-03-18",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 52151,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2025-03-19",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -275,
+        "equity": 51876
+      },
+      {
+        "date": "2025-03-20",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 195,
+        "equity": 52071
+      },
+      {
+        "date": "2025-03-21",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -122,
+        "equity": 51949
+      },
+      {
+        "date": "2025-03-24",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -1161,
+        "equity": 50788
+      },
+      {
+        "date": "2025-03-25",
+        "trades": 4,
+        "wins": 1,
+        "losses": 3,
+        "day_pnl": -1986,
+        "equity": 48802
+      },
+      {
+        "date": "2025-03-26",
+        "trades": 4,
+        "wins": 3,
+        "losses": 1,
+        "day_pnl": 486,
+        "equity": 49288
+      },
+      {
+        "date": "2025-03-27",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1815,
+        "equity": 51103
+      },
+      {
+        "date": "2025-03-28",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 1157,
+        "equity": 52260
+      }
+    ],
+    "max_equity": 52260,
+    "max_drawdown": 3349
+  },
+  "missed_opportunities": [],
+  "selection_log": [
+    {
+      "date": "2025-01-02",
+      "total_candidates": 4,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "AEI",
+          "pm_volume": 14948497.0,
+          "gap_pct": 114.71,
+          "float_millions": 3.86,
+          "rank_score": 0.96
+        },
+        {
+          "symbol": "VSME",
+          "pm_volume": 1585675.0,
+          "gap_pct": 53.85,
+          "float_millions": 2.43,
+          "rank_score": 0.655
+        },
+        {
+          "symbol": "ORIS",
+          "pm_volume": 7132367.0,
+          "gap_pct": 76.47,
+          "float_millions": 0.2,
+          "rank_score": 0.64
+        },
+        {
+          "symbol": "KALA",
+          "pm_volume": 63615.0,
+          "gap_pct": 12.69,
+          "float_millions": 7.66,
+          "rank_score": 0.351
+        }
+      ]
+    },
+    {
+      "date": "2025-01-03",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "SYNX",
+          "pm_volume": 164706.0,
+          "gap_pct": 65.66,
+          "float_millions": 2.54,
+          "rank_score": 0.555
+        }
+      ]
+    },
+    {
+      "date": "2025-01-06",
+      "total_candidates": 5,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "DHAI",
+          "pm_volume": 332471.0,
+          "gap_pct": 32.74,
+          "float_millions": 0.94,
+          "rank_score": 0.525
+        },
+        {
+          "symbol": "LUCY",
+          "pm_volume": 105634.0,
+          "gap_pct": 18.23,
+          "float_millions": 5.05,
+          "rank_score": 0.403
+        },
+        {
+          "symbol": "DTSS",
+          "pm_volume": 164041.0,
+          "gap_pct": 11.15,
+          "float_millions": 5.99,
+          "rank_score": 0.388
+        }
+      ]
+    },
+    {
+      "date": "2025-01-07",
+      "total_candidates": 6,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "MYSE",
+          "pm_volume": 3512978.0,
+          "gap_pct": 29.08,
+          "float_millions": 3.97,
+          "rank_score": 0.59
+        },
+        {
+          "symbol": "STAI",
+          "pm_volume": 1250227.0,
+          "gap_pct": 20.34,
+          "float_millions": 1.0,
+          "rank_score": 0.54
+        },
+        {
+          "symbol": "CING",
+          "pm_volume": 790022.0,
+          "gap_pct": 10.06,
+          "float_millions": 5.6,
+          "rank_score": 0.51
+        }
+      ]
+    },
+    {
+      "date": "2025-01-08",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "SILO",
+          "pm_volume": 15098678.0,
+          "gap_pct": 97.25,
+          "float_millions": 7.6,
+          "rank_score": 0.935
+        },
+        {
+          "symbol": "NCEL",
+          "pm_volume": 9434895.0,
+          "gap_pct": 78.64,
+          "float_millions": 2.06,
+          "rank_score": 0.703
+        },
+        {
+          "symbol": "TPET",
+          "pm_volume": 26088563.0,
+          "gap_pct": 58.27,
+          "float_millions": 7.59,
+          "rank_score": 0.582
+        }
+      ]
+    },
+    {
+      "date": "2025-01-10",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "VMAR",
+          "pm_volume": 21749861.0,
+          "gap_pct": 84.87,
+          "float_millions": 0.87,
+          "rank_score": 0.891
+        },
+        {
+          "symbol": "STAI",
+          "pm_volume": 3891900.0,
+          "gap_pct": 33.03,
+          "float_millions": 1.0,
+          "rank_score": 0.605
+        }
+      ]
+    },
+    {
+      "date": "2025-01-13",
+      "total_candidates": 4,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "ATPC",
+          "pm_volume": 25184921.0,
+          "gap_pct": 96.03,
+          "float_millions": 0.43,
+          "rank_score": 1.026
+        },
+        {
+          "symbol": "KAPA",
+          "pm_volume": 19375729.0,
+          "gap_pct": 126.29,
+          "float_millions": 8.69,
+          "rank_score": 1.014
+        },
+        {
+          "symbol": "SLXN",
+          "pm_volume": 4750975.0,
+          "gap_pct": 20.06,
+          "float_millions": 3.0,
+          "rank_score": 0.553
+        }
+      ]
+    },
+    {
+      "date": "2025-01-14",
+      "total_candidates": 3,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "AIFF",
+          "pm_volume": 8940920.0,
+          "gap_pct": 63.42,
+          "float_millions": 6.28,
+          "rank_score": 0.766
+        },
+        {
+          "symbol": "OST",
+          "pm_volume": 5999148.0,
+          "gap_pct": 43.79,
+          "float_millions": 4.9,
+          "rank_score": 0.545
+        }
+      ]
+    },
+    {
+      "date": "2025-01-15",
+      "total_candidates": 3,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "BKYI",
+          "pm_volume": 27756550.0,
+          "gap_pct": 65.73,
+          "float_millions": 9.6,
+          "rank_score": 0.763
+        },
+        {
+          "symbol": "MGIH",
+          "pm_volume": 9973993.0,
+          "gap_pct": 39.66,
+          "float_millions": 1.25,
+          "rank_score": 0.555
+        }
+      ]
+    },
+    {
+      "date": "2025-01-16",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "PMAX",
+          "pm_volume": 10402944.0,
+          "gap_pct": 79.59,
+          "float_millions": 0.38,
+          "rank_score": 0.884
+        },
+        {
+          "symbol": "WHLR",
+          "pm_volume": 11857948.0,
+          "gap_pct": 53.62,
+          "float_millions": 0.19,
+          "rank_score": 0.782
+        },
+        {
+          "symbol": "AMBO",
+          "pm_volume": 1093605.0,
+          "gap_pct": 16.67,
+          "float_millions": 0.07,
+          "rank_score": 0.489
+        }
+      ]
+    },
+    {
+      "date": "2025-01-17",
+      "total_candidates": 4,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "VS",
+          "pm_volume": 20780336.0,
+          "gap_pct": 70.83,
+          "float_millions": 1.76,
+          "rank_score": 0.952
+        },
+        {
+          "symbol": "ISPC",
+          "pm_volume": 8056286.0,
+          "gap_pct": 28.07,
+          "float_millions": 9.77,
+          "rank_score": 0.613
+        },
+        {
+          "symbol": "BTCT",
+          "pm_volume": 1359397.0,
+          "gap_pct": 26.68,
+          "float_millions": 7.18,
+          "rank_score": 0.443
+        }
+      ]
+    },
+    {
+      "date": "2025-01-21",
+      "total_candidates": 5,
+      "passed_filter": 5,
+      "selected": [
+        {
+          "symbol": "INM",
+          "pm_volume": 6623848.0,
+          "gap_pct": 63.84,
+          "float_millions": 1.8,
+          "rank_score": 1.027
+        },
+        {
+          "symbol": "DWTX",
+          "pm_volume": 5758473.0,
+          "gap_pct": 40.59,
+          "float_millions": 1.35,
+          "rank_score": 0.964
+        },
+        {
+          "symbol": "PTHS",
+          "pm_volume": 10704104.0,
+          "gap_pct": 55.79,
+          "float_millions": 1.23,
+          "rank_score": 0.728
+        },
+        {
+          "symbol": "LEDS",
+          "pm_volume": 1548083.0,
+          "gap_pct": 27.9,
+          "float_millions": 3.43,
+          "rank_score": 0.677
+        },
+        {
+          "symbol": "VATE",
+          "pm_volume": 799228.0,
+          "gap_pct": 23.29,
+          "float_millions": 4.2,
+          "rank_score": 0.597
+        }
+      ]
+    },
+    {
+      "date": "2025-01-22",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "GELS",
+          "pm_volume": 3720839.0,
+          "gap_pct": 27.62,
+          "float_millions": 5.46,
+          "rank_score": 0.737
+        }
+      ]
+    },
+    {
+      "date": "2025-01-23",
+      "total_candidates": 4,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "VNCE",
+          "pm_volume": 6453109.0,
+          "gap_pct": 56.6,
+          "float_millions": 2.61,
+          "rank_score": 0.69
+        },
+        {
+          "symbol": "LSH",
+          "pm_volume": 1743876.0,
+          "gap_pct": 18.23,
+          "float_millions": 2.25,
+          "rank_score": 0.667
+        },
+        {
+          "symbol": "HKPD",
+          "pm_volume": 1516830.0,
+          "gap_pct": 34.64,
+          "float_millions": 3.21,
+          "rank_score": 0.51
+        },
+        {
+          "symbol": "NTRB",
+          "pm_volume": 550781.0,
+          "gap_pct": 19.07,
+          "float_millions": 4.91,
+          "rank_score": 0.424
+        }
+      ]
+    },
+    {
+      "date": "2025-01-24",
+      "total_candidates": 5,
+      "passed_filter": 5,
+      "selected": [
+        {
+          "symbol": "ALUR",
+          "pm_volume": 12817492.0,
+          "gap_pct": 181.08,
+          "float_millions": 6.73,
+          "rank_score": 0.809
+        },
+        {
+          "symbol": "ATXI",
+          "pm_volume": 1438581.0,
+          "gap_pct": 11.96,
+          "float_millions": 2.75,
+          "rank_score": 0.637
+        },
+        {
+          "symbol": "NVNI",
+          "pm_volume": 6914406.0,
+          "gap_pct": 59.05,
+          "float_millions": 7.03,
+          "rank_score": 0.619
+        },
+        {
+          "symbol": "OST",
+          "pm_volume": 4617240.0,
+          "gap_pct": 57.02,
+          "float_millions": 4.9,
+          "rank_score": 0.535
+        },
+        {
+          "symbol": "PRFX",
+          "pm_volume": 553942.0,
+          "gap_pct": 12.23,
+          "float_millions": 0.38,
+          "rank_score": 0.457
+        }
+      ]
+    },
+    {
+      "date": "2025-01-27",
+      "total_candidates": 4,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "TVGN",
+          "pm_volume": 5654493.0,
+          "gap_pct": 52.54,
+          "float_millions": 0.88,
+          "rank_score": 0.59
+        },
+        {
+          "symbol": "ICCT",
+          "pm_volume": 3399541.0,
+          "gap_pct": 19.76,
+          "float_millions": 4.45,
+          "rank_score": 0.573
+        },
+        {
+          "symbol": "GMHS",
+          "pm_volume": 220280.0,
+          "gap_pct": 19.93,
+          "float_millions": 3.89,
+          "rank_score": 0.447
+        },
+        {
+          "symbol": "BCDA",
+          "pm_volume": 124911.0,
+          "gap_pct": 16.89,
+          "float_millions": 7.2,
+          "rank_score": 0.389
+        }
+      ]
+    },
+    {
+      "date": "2025-01-28",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "YIBO",
+          "pm_volume": 15138280.0,
+          "gap_pct": 92.21,
+          "float_millions": 7.13,
+          "rank_score": 0.712
+        },
+        {
+          "symbol": "SNTG",
+          "pm_volume": 155766.0,
+          "gap_pct": 14.74,
+          "float_millions": 1.06,
+          "rank_score": 0.436
+        }
+      ]
+    },
+    {
+      "date": "2025-01-29",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "SLXN",
+          "pm_volume": 30920560.0,
+          "gap_pct": 57.78,
+          "float_millions": 3.0,
+          "rank_score": 0.587
+        }
+      ]
+    },
+    {
+      "date": "2025-01-30",
+      "total_candidates": 3,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "BNZI",
+          "pm_volume": 8990790.0,
+          "gap_pct": 41.97,
+          "float_millions": 2.34,
+          "rank_score": 0.583
+        },
+        {
+          "symbol": "STAI",
+          "pm_volume": 8633731.0,
+          "gap_pct": 34.0,
+          "float_millions": 1.0,
+          "rank_score": 0.535
+        }
+      ]
+    },
+    {
+      "date": "2025-01-31",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "CYCN",
+          "pm_volume": 2334876.0,
+          "gap_pct": 18.9,
+          "float_millions": 2.71,
+          "rank_score": 0.691
+        },
+        {
+          "symbol": "NCEL",
+          "pm_volume": 13863079.0,
+          "gap_pct": 36.36,
+          "float_millions": 2.06,
+          "rank_score": 0.665
+        },
+        {
+          "symbol": "IMDX",
+          "pm_volume": 105058.0,
+          "gap_pct": 13.68,
+          "float_millions": 7.78,
+          "rank_score": 0.38
+        }
+      ]
+    },
+    {
+      "date": "2025-02-03",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "REBN",
+          "pm_volume": 12359675.0,
+          "gap_pct": 108.48,
+          "float_millions": 2.71,
+          "rank_score": 0.704
+        },
+        {
+          "symbol": "SOPA",
+          "pm_volume": 3900637.0,
+          "gap_pct": 42.76,
+          "float_millions": 5.7,
+          "rank_score": 0.534
+        },
+        {
+          "symbol": "ICU",
+          "pm_volume": 1595733.0,
+          "gap_pct": 19.19,
+          "float_millions": 3.56,
+          "rank_score": 0.474
+        }
+      ]
+    },
+    {
+      "date": "2025-02-04",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "QNTM",
+          "pm_volume": 3399903.0,
+          "gap_pct": 111.32,
+          "float_millions": 3.58,
+          "rank_score": 0.927
+        },
+        {
+          "symbol": "CPIX",
+          "pm_volume": 5877736.0,
+          "gap_pct": 27.23,
+          "float_millions": 8.64,
+          "rank_score": 0.593
+        }
+      ]
+    },
+    {
+      "date": "2025-02-05",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "KTTA",
+          "pm_volume": 4427816.0,
+          "gap_pct": 82.21,
+          "float_millions": 4.8,
+          "rank_score": 0.958
+        },
+        {
+          "symbol": "CPIX",
+          "pm_volume": 20258878.0,
+          "gap_pct": 60.11,
+          "float_millions": 8.64,
+          "rank_score": 0.689
+        }
+      ]
+    },
+    {
+      "date": "2025-02-06",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "LIPO",
+          "pm_volume": 15558395.0,
+          "gap_pct": 136.43,
+          "float_millions": 4.33,
+          "rank_score": 1.109
+        }
+      ]
+    },
+    {
+      "date": "2025-02-07",
+      "total_candidates": 0,
+      "passed_filter": 0,
+      "selected": []
+    },
+    {
+      "date": "2025-02-10",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "NCEL",
+          "pm_volume": 12476922.0,
+          "gap_pct": 51.87,
+          "float_millions": 2.06,
+          "rank_score": 0.602
+        }
+      ]
+    },
+    {
+      "date": "2025-02-11",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "LIXT",
+          "pm_volume": 646953.0,
+          "gap_pct": 13.16,
+          "float_millions": 5.7,
+          "rank_score": 0.568
+        },
+        {
+          "symbol": "LIPO",
+          "pm_volume": 11250300.0,
+          "gap_pct": 51.8,
+          "float_millions": 4.33,
+          "rank_score": 0.552
+        }
+      ]
+    },
+    {
+      "date": "2025-02-12",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "BNC",
+          "pm_volume": 53527.0,
+          "gap_pct": 11.99,
+          "float_millions": 0.8,
+          "rank_score": 0.599
+        }
+      ]
+    },
+    {
+      "date": "2025-02-13",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "EDSA",
+          "pm_volume": 11119561.0,
+          "gap_pct": 60.75,
+          "float_millions": 4.86,
+          "rank_score": 1.038
+        },
+        {
+          "symbol": "MBRX",
+          "pm_volume": 10541712.0,
+          "gap_pct": 440.48,
+          "float_millions": 2.02,
+          "rank_score": 0.895
+        }
+      ]
+    },
+    {
+      "date": "2025-02-14",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "STAI",
+          "pm_volume": 11544744.0,
+          "gap_pct": 42.86,
+          "float_millions": 1.0,
+          "rank_score": 0.567
+        },
+        {
+          "symbol": "JTAI",
+          "pm_volume": 279564.0,
+          "gap_pct": 55.81,
+          "float_millions": 3.47,
+          "rank_score": 0.494
+        },
+        {
+          "symbol": "SMX",
+          "pm_volume": 1127387.0,
+          "gap_pct": 11.75,
+          "float_millions": 0.03,
+          "rank_score": 0.468
+        }
+      ]
+    },
+    {
+      "date": "2025-02-18",
+      "total_candidates": 6,
+      "passed_filter": 5,
+      "selected": [
+        {
+          "symbol": "EFOI",
+          "pm_volume": 14822878.0,
+          "gap_pct": 64.34,
+          "float_millions": 2.35,
+          "rank_score": 1.206
+        },
+        {
+          "symbol": "CETX",
+          "pm_volume": 1729435.0,
+          "gap_pct": 16.29,
+          "float_millions": 0.75,
+          "rank_score": 0.702
+        },
+        {
+          "symbol": "STAI",
+          "pm_volume": 22079046.0,
+          "gap_pct": 63.9,
+          "float_millions": 1.0,
+          "rank_score": 0.64
+        },
+        {
+          "symbol": "CCTG",
+          "pm_volume": 844263.0,
+          "gap_pct": 10.38,
+          "float_millions": 0.23,
+          "rank_score": 0.605
+        },
+        {
+          "symbol": "PULM",
+          "pm_volume": 78247.0,
+          "gap_pct": 29.37,
+          "float_millions": 3.63,
+          "rank_score": 0.458
+        }
+      ]
+    },
+    {
+      "date": "2025-02-19",
+      "total_candidates": 4,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "SINT",
+          "pm_volume": 11883188.0,
+          "gap_pct": 74.82,
+          "float_millions": 2.99,
+          "rank_score": 1.145
+        },
+        {
+          "symbol": "TRNR",
+          "pm_volume": 11983683.0,
+          "gap_pct": 74.55,
+          "float_millions": 0.24,
+          "rank_score": 0.906
+        },
+        {
+          "symbol": "OSRH",
+          "pm_volume": 3743193.0,
+          "gap_pct": 42.77,
+          "float_millions": 7.85,
+          "rank_score": 0.763
+        }
+      ]
+    },
+    {
+      "date": "2025-02-20",
+      "total_candidates": 3,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "WOK",
+          "pm_volume": 11195103.0,
+          "gap_pct": 88.35,
+          "float_millions": 1.22,
+          "rank_score": 0.99
+        },
+        {
+          "symbol": "XOS",
+          "pm_volume": 2367645.0,
+          "gap_pct": 34.82,
+          "float_millions": 7.43,
+          "rank_score": 0.645
+        },
+        {
+          "symbol": "VS",
+          "pm_volume": 341871.0,
+          "gap_pct": 18.91,
+          "float_millions": 1.76,
+          "rank_score": 0.488
+        }
+      ]
+    },
+    {
+      "date": "2025-02-21",
+      "total_candidates": 0,
+      "passed_filter": 0,
+      "selected": []
+    },
+    {
+      "date": "2025-02-24",
+      "total_candidates": 5,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "ORIS",
+          "pm_volume": 12189775.0,
+          "gap_pct": 92.86,
+          "float_millions": 0.2,
+          "rank_score": 0.922
+        },
+        {
+          "symbol": "ISPC",
+          "pm_volume": 4620649.0,
+          "gap_pct": 36.78,
+          "float_millions": 9.77,
+          "rank_score": 0.699
+        },
+        {
+          "symbol": "GSUN",
+          "pm_volume": 127393.0,
+          "gap_pct": 21.13,
+          "float_millions": 1.18,
+          "rank_score": 0.47
+        },
+        {
+          "symbol": "MEGL",
+          "pm_volume": 495329.0,
+          "gap_pct": 16.04,
+          "float_millions": 4.02,
+          "rank_score": 0.432
+        }
+      ]
+    },
+    {
+      "date": "2025-02-25",
+      "total_candidates": 4,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "WAFU",
+          "pm_volume": 16597259.0,
+          "gap_pct": 96.09,
+          "float_millions": 1.27,
+          "rank_score": 0.901
+        },
+        {
+          "symbol": "AMBO",
+          "pm_volume": 96925.0,
+          "gap_pct": 32.18,
+          "float_millions": 0.07,
+          "rank_score": 0.522
+        },
+        {
+          "symbol": "ALBT",
+          "pm_volume": 70209.0,
+          "gap_pct": 17.37,
+          "float_millions": 3.62,
+          "rank_score": 0.402
+        }
+      ]
+    },
+    {
+      "date": "2025-02-26",
+      "total_candidates": 4,
+      "passed_filter": 3,
+      "selected": [
+        {
+          "symbol": "ENVB",
+          "pm_volume": 30161050.0,
+          "gap_pct": 184.75,
+          "float_millions": 0.5,
+          "rank_score": 0.932
+        },
+        {
+          "symbol": "TRNR",
+          "pm_volume": 55483563.0,
+          "gap_pct": 156.92,
+          "float_millions": 0.24,
+          "rank_score": 0.865
+        },
+        {
+          "symbol": "QVCGB",
+          "pm_volume": 2112881.0,
+          "gap_pct": 131.5,
+          "float_millions": 6.67,
+          "rank_score": 0.729
+        }
+      ]
+    },
+    {
+      "date": "2025-02-27",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "AMST",
+          "pm_volume": 112500.0,
+          "gap_pct": 23.85,
+          "float_millions": 3.04,
+          "rank_score": 0.422
+        }
+      ]
+    },
+    {
+      "date": "2025-02-28",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "ZOOZ",
+          "pm_volume": 1317386.0,
+          "gap_pct": 67.53,
+          "float_millions": 8.03,
+          "rank_score": 0.915
+        },
+        {
+          "symbol": "NVVE",
+          "pm_volume": 13019200.0,
+          "gap_pct": 66.25,
+          "float_millions": 0.2,
+          "rank_score": 0.777
+        }
+      ]
+    },
+    {
+      "date": "2025-03-03",
+      "total_candidates": 4,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "ACON",
+          "pm_volume": 8813924.0,
+          "gap_pct": 104.78,
+          "float_millions": 0.7,
+          "rank_score": 0.757
+        },
+        {
+          "symbol": "POLA",
+          "pm_volume": 400084.0,
+          "gap_pct": 14.75,
+          "float_millions": 1.85,
+          "rank_score": 0.694
+        },
+        {
+          "symbol": "BTCT",
+          "pm_volume": 4053060.0,
+          "gap_pct": 27.25,
+          "float_millions": 7.18,
+          "rank_score": 0.579
+        },
+        {
+          "symbol": "TRAW",
+          "pm_volume": 191124.0,
+          "gap_pct": 12.99,
+          "float_millions": 3.95,
+          "rank_score": 0.449
+        }
+      ]
+    },
+    {
+      "date": "2025-03-04",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "RDGT",
+          "pm_volume": 103467.0,
+          "gap_pct": 143.42,
+          "float_millions": 5.14,
+          "rank_score": 0.586
+        }
+      ]
+    },
+    {
+      "date": "2025-03-05",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "GV",
+          "pm_volume": 15748552.0,
+          "gap_pct": 77.52,
+          "float_millions": 3.96,
+          "rank_score": 0.905
+        }
+      ]
+    },
+    {
+      "date": "2025-03-06",
+      "total_candidates": 0,
+      "passed_filter": 0,
+      "selected": []
+    },
+    {
+      "date": "2025-03-07",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "DWTX",
+          "pm_volume": 2929006.0,
+          "gap_pct": 47.63,
+          "float_millions": 1.35,
+          "rank_score": 0.758
+        }
+      ]
+    },
+    {
+      "date": "2025-03-10",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "SNOA",
+          "pm_volume": 599130.0,
+          "gap_pct": 19.1,
+          "float_millions": 1.71,
+          "rank_score": 0.671
+        },
+        {
+          "symbol": "DWTX",
+          "pm_volume": 3414724.0,
+          "gap_pct": 38.87,
+          "float_millions": 1.35,
+          "rank_score": 0.535
+        }
+      ]
+    },
+    {
+      "date": "2025-03-11",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "SNOA",
+          "pm_volume": 13733723.0,
+          "gap_pct": 53.41,
+          "float_millions": 1.71,
+          "rank_score": 0.671
+        }
+      ]
+    },
+    {
+      "date": "2025-03-12",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "CRVO",
+          "pm_volume": 2014631.0,
+          "gap_pct": 45.76,
+          "float_millions": 5.49,
+          "rank_score": 0.658
+        }
+      ]
+    },
+    {
+      "date": "2025-03-13",
+      "total_candidates": 2,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "SNES",
+          "pm_volume": 1116348.0,
+          "gap_pct": 11.3,
+          "float_millions": 4.3,
+          "rank_score": 0.56
+        }
+      ]
+    },
+    {
+      "date": "2025-03-14",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "BON",
+          "pm_volume": 10358716.0,
+          "gap_pct": 222.14,
+          "float_millions": 5.99,
+          "rank_score": 0.717
+        }
+      ]
+    },
+    {
+      "date": "2025-03-17",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "FEED",
+          "pm_volume": 8163311.0,
+          "gap_pct": 69.55,
+          "float_millions": 0.85,
+          "rank_score": 0.707
+        },
+        {
+          "symbol": "GLMD",
+          "pm_volume": 277591.0,
+          "gap_pct": 37.24,
+          "float_millions": 5.42,
+          "rank_score": 0.564
+        }
+      ]
+    },
+    {
+      "date": "2025-03-18",
+      "total_candidates": 0,
+      "passed_filter": 0,
+      "selected": []
+    },
+    {
+      "date": "2025-03-19",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "LSE",
+          "pm_volume": 2130473.0,
+          "gap_pct": 82.63,
+          "float_millions": 1.52,
+          "rank_score": 0.897
+        },
+        {
+          "symbol": "ATER",
+          "pm_volume": 425926.0,
+          "gap_pct": 19.91,
+          "float_millions": 5.12,
+          "rank_score": 0.446
+        }
+      ]
+    },
+    {
+      "date": "2025-03-20",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "APVO",
+          "pm_volume": 77119.0,
+          "gap_pct": 16.72,
+          "float_millions": 0.9,
+          "rank_score": 0.421
+        }
+      ]
+    },
+    {
+      "date": "2025-03-21",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "ALUR",
+          "pm_volume": 9654743.0,
+          "gap_pct": 73.25,
+          "float_millions": 6.73,
+          "rank_score": 0.809
+        },
+        {
+          "symbol": "ELAB",
+          "pm_volume": 2312262.0,
+          "gap_pct": 12.81,
+          "float_millions": 2.1,
+          "rank_score": 0.555
+        }
+      ]
+    },
+    {
+      "date": "2025-03-24",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "UCAR",
+          "pm_volume": 235654.0,
+          "gap_pct": 25.18,
+          "float_millions": 4.44,
+          "rank_score": 0.553
+        }
+      ]
+    },
+    {
+      "date": "2025-03-25",
+      "total_candidates": 4,
+      "passed_filter": 4,
+      "selected": [
+        {
+          "symbol": "AGPU",
+          "pm_volume": 26370426.0,
+          "gap_pct": 109.87,
+          "float_millions": 1.82,
+          "rank_score": 1.099
+        },
+        {
+          "symbol": "TNON",
+          "pm_volume": 63192821.0,
+          "gap_pct": 264.99,
+          "float_millions": 7.72,
+          "rank_score": 0.816
+        },
+        {
+          "symbol": "MYSE",
+          "pm_volume": 5189831.0,
+          "gap_pct": 36.11,
+          "float_millions": 3.97,
+          "rank_score": 0.766
+        },
+        {
+          "symbol": "ZYBT",
+          "pm_volume": 217253.0,
+          "gap_pct": 10.0,
+          "float_millions": 4.42,
+          "rank_score": 0.407
+        }
+      ]
+    },
+    {
+      "date": "2025-03-26",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "OSRH",
+          "pm_volume": 20101698.0,
+          "gap_pct": 138.12,
+          "float_millions": 7.85,
+          "rank_score": 1.02
+        },
+        {
+          "symbol": "HCAI",
+          "pm_volume": 253767.0,
+          "gap_pct": 34.56,
+          "float_millions": 4.9,
+          "rank_score": 0.448
+        }
+      ]
+    },
+    {
+      "date": "2025-03-27",
+      "total_candidates": 1,
+      "passed_filter": 1,
+      "selected": [
+        {
+          "symbol": "DRMA",
+          "pm_volume": 1474818.0,
+          "gap_pct": 86.69,
+          "float_millions": 0.5,
+          "rank_score": 0.738
+        }
+      ]
+    },
+    {
+      "date": "2025-03-28",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "ATON",
+          "pm_volume": 5170750.0,
+          "gap_pct": 167.52,
+          "float_millions": 0.83,
+          "rank_score": 0.917
+        },
+        {
+          "symbol": "OCG",
+          "pm_volume": 490533.0,
+          "gap_pct": 21.61,
+          "float_millions": 0.09,
+          "rank_score": 0.546
+        }
+      ]
+    }
+  ]
+}

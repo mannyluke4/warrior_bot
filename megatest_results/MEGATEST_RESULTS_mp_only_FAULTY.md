@@ -1,3 +1,15 @@
+# ⚠️ FAULTY — DO NOT USE — sim_start bug invalidates all results
+
+> **These results are INVALID.** The `resolve_precise_discovery()` function in `scanner_sim.py`
+> set `sim_start` to the raw minute stocks first met filter criteria (often 04:00 AM) instead
+> of the scanner checkpoint time. 46% of candidates (405/873) had incorrect sim_start values.
+> VERO (Jan 16, 2026) produced $0 here vs +$18,583 with correct timing.
+> See `DIRECTIVE_FIX_SIM_START_BUG.md` for details.
+>
+> **Corrected results will be in files labeled `_CORRECTED` or `_v2`.**
+
+---
+
 # YTD V2 Backtest Results: Top-5 Ranked + Trade Cap
 ## Generated 2026-03-21
 
