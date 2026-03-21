@@ -94,7 +94,23 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 
 ---
 
-## 3. Current State (as of 2026-03-19)
+## 3. Current State (as of 2026-03-21)
+
+### ⚠️ P0: sim_start Bug — ALL Megatest Results Invalid
+A critical bug in `resolve_precise_discovery()` (commit `efa9b3f`) set `sim_start` to raw premarket times (e.g., 04:00 AM) instead of scanner checkpoint times. 46% of candidates affected (405/873). VERO produces $0 instead of +$18,583 with wrong timing. **All megatest results are faulty and must be re-run.**
+- **Directive**: `DIRECTIVE_FIX_SIM_START_BUG.md` (P0, committed)
+- **Pipeline audit**: `cowork_reports/pipeline_audit_preliminary.md` (13 potential bugs, 5 critical)
+- **Live bot audit**: `cowork_reports/live_bot_audit.md` (19 bugs, 4 must-fix before Monday)
+- **VR shelving decision**: V1/V2/V3 standalone results (0 trades) are still valid, but megatest VR=0 needs re-verification with corrected data
+- **Next**: CC fixes sim_start + live bot bugs → verification tests → corrected v2 megatest
+
+### Megatest V1 Results (FAULTY — do not use)
+| Combo | P&L (FAULTY) | Trades | Status |
+|-------|-------------|--------|--------|
+| MP only | -$14,339 | 250 | ⚠️ Invalid — 46% wrong sim_start |
+| SQ only | +$118,369 | 183 | ⚠️ Invalid |
+| MP + SQ | +$130,621 | 298 | ⚠️ Invalid |
+| All three | +$124,793 | 329 | ⚠️ Invalid |
 
 ### Strategy Fixes Implemented (2026-03-18)
 Five data-backed fixes were implemented and validated:
@@ -115,18 +131,13 @@ New strategy module captures first-leg momentum moves. Three iterations in one d
 - **Result**: 4-stock total went from $28,162 (MP-only) to $44,605 (+58%).
 - **Next**: Full 55-day YTD backtest with squeeze enabled. See `DIRECTIVE_SQUEEZE_YTD_OVERNIGHT.md`.
 
-### Strategy 4: VWAP Reclaim (2026-03-20, V3 TUNING IN PROGRESS)
-New strategy module detects Ross's "first 1-min candle to make new high after VWAP reclaim" pattern. Written by Cowork (Opus) directly — both `vwap_reclaim_detector.py` and `simulate.py` wiring are committed.
-- **State machine**: IDLE → BELOW_VWAP → RECLAIMED → ARMED → TRIGGERED
+### Strategy 4: VWAP Reclaim (2026-03-20, SHELVED — pending re-verification)
+New strategy module detects Ross's "first 1-min candle to make new high after VWAP reclaim" pattern.
+- **V1/V2/V3 standalone tuning**: 27 test runs, 0 VR trades (VALID — used hardcoded sim_start)
+- **Megatest all_three**: 0 VR trades (INVALID — sim_start bug may have caused false negatives)
+- **Status**: Shelved for now. Will re-verify with corrected v2 megatest data. If still 0 trades at scale, confirm shelving.
 - **Gate**: `WB_VR_ENABLED=0` (OFF by default)
-- **Entry priority**: Squeeze > VWAP Reclaim > Micro Pullback
-- **V1 (0 trades)**: CHNR/ARTL — wrong stock type (first-leg momentum, not reclaim)
-- **V2 (0 trades)**: 9 stocks — GRI blocked by R-cap ($0.87 > $0.80), others collapsed via `severe_vwap_loss` at 5%
-- **V3 (pending)**: Code fix (severe_loss → 20% env var), R-cap → $1.00, 7 new + cached test stocks
-- **Active directive**: `DIRECTIVE_VR_TUNING_V3.md`
 - **Design doc**: `DESIGN_VWAP_RECLAIM_DETECTOR.md`
-- NOT wired into bot.py yet (backtest-only, same approach as squeeze)
-- **Key risk**: VR pattern may be rare in micro-cap momentum. If V3 also 0 trades, pivot to Strategy 5.
 
 ### Scanner Alignment (2026-03-19, IN PROGRESS)
 The live scanner was completely broken (0 stocks found in 3 days). Root cause: Alpaca snapshot API returns stale/null data for small caps. Solution: switch to Databento-powered `live_scanner.py` (already built).
@@ -255,4 +266,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-20 evening | VR V3 directive written — code fix + wider thresholds, pending CC execution*
+*Handoff updated: 2026-03-21 | P0 sim_start bug found, megatest results invalid, directive + audits committed for CC*
