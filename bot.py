@@ -810,6 +810,11 @@ def main():
     print(f"   {sorted(filtered_watchlist)}", flush=True)
     print(f"\nNow (ET): {datetime.now(ET)}", flush=True)
 
+    if not filtered_watchlist:
+        print("WARNING: Zero symbols passed filters — bot will run but trade nothing today.", flush=True)
+        print("Check scanner pre-filter and stock_filter output above for details.", flush=True)
+        log_event("zero_watchlist", None, reason="no symbols passed all filters")
+
     # Save the session's active symbols so a mid-session restart can restore them quickly.
     # This file is NEVER auto-loaded — it's just a human reference.
     # To restore after a restart: copy last_session_symbols.txt → watchlist.txt

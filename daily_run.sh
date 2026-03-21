@@ -44,6 +44,14 @@ git pull origin v6-dynamic-sizing 2>&1 || echo "WARN: git pull failed"
 # 2. Activate venv
 source ~/warrior_bot/venv/bin/activate
 
+# 2b. Pre-flight smoke test: verify critical imports work before committing to a full run.
+# Catches ModuleNotFoundError (like the Friday 3/20 crash) in 3 lines.
+echo "Pre-flight: checking Python imports..."
+python3 -c "from market_scanner import MarketScanner; from trade_manager import PaperTradeManager; print('Imports OK')" || {
+    echo "FATAL: Pre-flight import check failed. Aborting before TWS launch."
+    exit 1
+}
+
 # 3. Start TWS via IBC (auto-login, wait for it to be ready)
 echo "Starting TWS via IBC..."
 ~/ibc/twsstartmacos.sh &
@@ -58,18 +66,34 @@ python3 bot.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 
-# 5. Wait until 9:00 AM MT (11:00 AM ET) — this is when trading window closes
-# Calculate seconds until 9:00 AM MT using macOS (BSD) date
+# 4b. Post-launch health check: verify bot is still alive 10 seconds after launch.
+# Catches immediate startup crashes (e.g., Friday 3/20 ModuleNotFoundError).
+sleep 10
+if ! kill -0 "$BOT_PID" 2>/dev/null; then
+    echo "FATAL: bot.py crashed within 10s of launch. Check $LOG_FILE for details."
+    exit 1
+fi
+echo "Bot health check passed (still running after 10s, PID: $BOT_PID)"
+
+# 5. Watchdog loop: wait until 9:00 AM MT, checking bot health every 60s.
+# This replaces the single long sleep so we detect mid-session crashes promptly.
 TARGET_HOUR=9
 TARGET_MIN=0
-NOW_EPOCH=$(date +%s)
 TARGET_EPOCH=$(date -j -v${TARGET_HOUR}H -v${TARGET_MIN}M -v0S +%s)
 
-if [ "$TARGET_EPOCH" -gt "$NOW_EPOCH" ]; then
-    WAIT_SECS=$((TARGET_EPOCH - NOW_EPOCH))
-    echo "Waiting ${WAIT_SECS}s until 9:00 AM MT..."
-    sleep "$WAIT_SECS"
-fi
+echo "Watchdog: monitoring bot until 9:00 AM MT ($(date -r $TARGET_EPOCH))..."
+while true; do
+    NOW_EPOCH=$(date +%s)
+    if [ "$NOW_EPOCH" -ge "$TARGET_EPOCH" ]; then
+        echo "Trading window closed. Proceeding to shutdown."
+        break
+    fi
+    if ! kill -0 "$BOT_PID" 2>/dev/null; then
+        echo "ALERT: bot.py died at $(date)! Session ended early. Check $LOG_FILE."
+        break
+    fi
+    sleep 60 || true
+done
 
 # 6. Shut down
 echo "=== Shutting down at $(date) ==="

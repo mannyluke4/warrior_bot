@@ -95,7 +95,7 @@ class MarketScanner:
 
         print(f"\n🎯 Pre-filtering {len(symbols)} symbols by price range (${self.min_price:.2f}-${self.max_price:.2f})...", flush=True)
 
-        passing_symbols = set()
+        passing_symbols_with_vol = []  # list of (symbol, day_vol) for volume-ranked truncation
         batch_size = 100  # Alpaca allows multi-symbol snapshots
         symbol_list = list(symbols)
 
@@ -113,29 +113,37 @@ class MarketScanner:
                         continue
 
                     price = float(snap.latest_trade.price)
-                    volume = int(snap.latest_trade.size) if snap.latest_trade else 0
 
-                    # Quick filters
-                    if self.min_price <= price <= self.max_price:
-                        # Basic volume check (must have some activity)
-                        if volume > 0:
-                            passing_symbols.add(symbol)
+                    # Get day volume for ranking: daily_bar is most accurate,
+                    # fall back to minute_bar or the size of the last trade.
+                    day_vol = 0
+                    if snap.daily_bar and snap.daily_bar.volume:
+                        day_vol = int(snap.daily_bar.volume)
+                    elif snap.minute_bar and snap.minute_bar.volume:
+                        day_vol = int(snap.minute_bar.volume)
+                    elif snap.latest_trade:
+                        day_vol = int(snap.latest_trade.size)
+
+                    # Quick filters: price range + must have some volume
+                    if self.min_price <= price <= self.max_price and day_vol > 0:
+                        passing_symbols_with_vol.append((symbol, day_vol))
 
             except Exception as e:
                 # Log but continue with other batches
                 log_event("exception", None, where="prefilter_batch", error=str(e), batch_size=len(batch))
                 continue
 
-        print(f"   ✅ {len(passing_symbols)} symbols passed price pre-filter", flush=True)
-        log_event("market_scan_prefiltered", None, count=len(passing_symbols))
+        print(f"   ✅ {len(passing_symbols_with_vol)} symbols passed price pre-filter", flush=True)
+        log_event("market_scan_prefiltered", None, count=len(passing_symbols_with_vol))
 
-        # Limit to max symbols to scan (prioritize by volume or random sampling)
-        if len(passing_symbols) > self.max_symbols_to_scan:
-            print(f"   📊 Limiting to top {self.max_symbols_to_scan} symbols", flush=True)
-            # For now, just take first N (could be enhanced with volume sorting)
-            passing_symbols = set(list(passing_symbols)[:self.max_symbols_to_scan])
+        # Sort by day volume descending before truncating so stock_filter sees the
+        # most active stocks, not an arbitrary/random slice of $2-$20 names.
+        if len(passing_symbols_with_vol) > self.max_symbols_to_scan:
+            print(f"   📊 Sorting by volume — top {self.max_symbols_to_scan} of {len(passing_symbols_with_vol)}", flush=True)
+            passing_symbols_with_vol.sort(key=lambda x: x[1], reverse=True)
+            passing_symbols_with_vol = passing_symbols_with_vol[:self.max_symbols_to_scan]
 
-        return passing_symbols
+        return set(s for s, _ in passing_symbols_with_vol)
 
     def scan_market(self) -> Set[str]:
         """
