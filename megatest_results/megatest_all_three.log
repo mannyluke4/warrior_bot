@@ -10,3 +10,2750 @@ Strategy overrides: {'WB_SQUEEZE_ENABLED': '1', 'WB_VR_ENABLED': '1', 'WB_VR_MAX
     #2 VSME: vol=1,585,675, gap=54%, float=2.4M
     #3 ORIS: vol=7,132,367, gap=76%, float=0.2M
     #4 KALA: vol=63,615, gap=13%, float=7.7M
+    AEI: ticks=203,044 armed=0 signals=0 trades=0 pnl=+0
+    VSME: ticks=54,235 armed=0 signals=0 trades=0 pnl=+0
+    ORIS: ticks=162,827 armed=3 signals=3 trades=3 pnl=-313
+    KALA: ticks=470 armed=1 signals=0 trades=0 pnl=+0
+    AEI: ticks=203,044 armed=0 signals=0 trades=0 pnl=+0
+    VSME: ticks=54,235 armed=0 signals=0 trades=0 pnl=+0
+    ORIS: ticks=162,827 armed=3 signals=3 trades=3 pnl=-313
+    KALA: ticks=470 armed=1 signals=0 trades=0 pnl=+0
+  A: 3 trades, $-313, eq=$29,687 | B: 3 trades, $-313, eq=$29,687
+[2/297] 2025-01-03: 1 scanned → 1 passed → top 1 selected (risk A=$742, B=$742)
+    #1 SYNX: vol=164,706, gap=66%, float=2.5M
+    SYNX: ticks=5,164 armed=0 signals=0 trades=0 pnl=+0
+    SYNX: ticks=5,164 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$29,687 | B: 0 trades, $+0, eq=$29,687
+[3/297] 2025-01-06: 5 scanned → 3 passed → top 3 selected (risk A=$742, B=$742)
+    #1 DHAI: vol=332,471, gap=33%, float=0.9M
+    #2 LUCY: vol=105,634, gap=18%, float=5.0M
+    #3 DTSS: vol=164,041, gap=11%, float=6.0M
+    DHAI: ticks=8,792 armed=1 signals=1 trades=1 pnl=-772
+    LUCY: ticks=1,104 armed=0 signals=0 trades=0 pnl=+0
+    DTSS: ticks=1,122 armed=1 signals=1 trades=0 pnl=+0
+    DHAI: ticks=8,792 armed=1 signals=1 trades=1 pnl=-772
+    LUCY: ticks=1,104 armed=0 signals=0 trades=0 pnl=+0
+    DTSS: ticks=1,122 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $-772, eq=$28,915 | B: 1 trades, $-772, eq=$28,915
+[4/297] 2025-01-07: 6 scanned → 3 passed → top 3 selected (risk A=$722, B=$722)
+    #1 MYSE: vol=3,512,978, gap=29%, float=4.0M
+    #2 STAI: vol=1,250,227, gap=20%, float=1.0M
+    #3 CING: vol=790,022, gap=10%, float=5.6M
+    MYSE: ticks=194,211 armed=3 signals=3 trades=3 pnl=-77
+    STAI: ticks=7,472 armed=1 signals=1 trades=1 pnl=-656
+    CING: ticks=11,003 armed=0 signals=0 trades=0 pnl=+0
+    MYSE: ticks=194,211 armed=3 signals=3 trades=3 pnl=-77
+    STAI: ticks=7,472 armed=1 signals=1 trades=1 pnl=-656
+    CING: ticks=11,003 armed=0 signals=0 trades=0 pnl=+0
+  A: 3 trades, $-77, eq=$28,838 | B: 3 trades, $-77, eq=$28,838
+[5/297] 2025-01-08: 3 scanned → 3 passed → top 3 selected (risk A=$720, B=$720)
+    #1 SILO: vol=15,098,678, gap=97%, float=7.6M
+    #2 NCEL: vol=9,434,895, gap=79%, float=2.1M
+    #3 TPET: vol=26,088,563, gap=58%, float=7.6M
+    SILO: ticks=563,016 armed=4 signals=3 trades=3 pnl=+133
+    NCEL: ticks=123,796 armed=4 signals=3 trades=3 pnl=+1985
+    SILO: ticks=563,016 armed=4 signals=3 trades=3 pnl=+133
+    NCEL: ticks=123,796 armed=4 signals=3 trades=3 pnl=+1985
+  A: 5 trades, $+1,540, eq=$30,378 | B: 5 trades, $+1,540, eq=$30,378
+[6/297] 2025-01-10: 2 scanned → 2 passed → top 2 selected (risk A=$759, B=$759)
+    #1 VMAR: vol=21,749,861, gap=85%, float=0.9M
+    #2 STAI: vol=3,891,900, gap=33%, float=1.0M
+    VMAR: ticks=773,515 armed=3 signals=3 trades=3 pnl=+826
+    STAI: ticks=62,141 armed=1 signals=1 trades=1 pnl=-163
+    VMAR: ticks=773,515 armed=3 signals=3 trades=3 pnl=+826
+    STAI: ticks=62,141 armed=1 signals=1 trades=1 pnl=-163
+  A: 3 trades, $+826, eq=$31,204 | B: 3 trades, $+826, eq=$31,204
+[7/297] 2025-01-13: 4 scanned → 3 passed → top 3 selected (risk A=$780, B=$780)
+    #1 ATPC: vol=25,184,921, gap=96%, float=0.4M
+    #2 KAPA: vol=19,375,729, gap=126%, float=8.7M
+    #3 SLXN: vol=4,750,975, gap=20%, float=3.0M
+    ATPC: ticks=407,934 armed=1 signals=1 trades=1 pnl=-18
+    KAPA: ticks=220,494 armed=4 signals=4 trades=1 pnl=-187
+    ATPC: ticks=407,934 armed=1 signals=1 trades=1 pnl=-18
+    KAPA: ticks=220,494 armed=4 signals=4 trades=1 pnl=-187
+  A: 2 trades, $-205, eq=$30,999 | B: 2 trades, $-205, eq=$30,999
+[8/297] 2025-01-14: 3 scanned → 2 passed → top 2 selected (risk A=$774, B=$774)
+    #1 AIFF: vol=8,940,920, gap=63%, float=6.3M
+    #2 OST: vol=5,999,148, gap=44%, float=4.9M
+    AIFF: ticks=626,507 armed=4 signals=4 trades=4 pnl=+2148
+    OST: ticks=84,451 armed=2 signals=2 trades=1 pnl=+1299
+    AIFF: ticks=626,507 armed=4 signals=4 trades=4 pnl=+2148
+    OST: ticks=84,451 armed=2 signals=2 trades=1 pnl=+1299
+  A: 5 trades, $+3,447, eq=$34,446 | B: 5 trades, $+3,447, eq=$34,446
+[9/297] 2025-01-15: 3 scanned → 2 passed → top 2 selected (risk A=$861, B=$861)
+    #1 BKYI: vol=27,756,550, gap=66%, float=9.6M
+    #2 MGIH: vol=9,973,993, gap=40%, float=1.2M
+    BKYI: ticks=620,425 armed=4 signals=3 trades=3 pnl=+106
+    BKYI: ticks=620,425 armed=4 signals=3 trades=3 pnl=+106
+  A: 3 trades, $+106, eq=$34,552 | B: 3 trades, $+106, eq=$34,552
+[10/297] 2025-01-16: 3 scanned → 3 passed → top 3 selected (risk A=$863, B=$863)
+    #1 PMAX: vol=10,402,944, gap=80%, float=0.4M
+    #2 WHLR: vol=11,857,948, gap=54%, float=0.2M
+    #3 AMBO: vol=1,093,605, gap=17%, float=0.1M
+    PMAX: ticks=209,362 armed=0 signals=0 trades=0 pnl=+0
+    WHLR: ticks=580,939 armed=2 signals=2 trades=1 pnl=+31
+    AMBO: ticks=13,973 armed=0 signals=0 trades=0 pnl=+0
+    PMAX: ticks=209,362 armed=0 signals=0 trades=0 pnl=+0
+    WHLR: ticks=580,939 armed=2 signals=2 trades=1 pnl=+31
+    AMBO: ticks=13,973 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+31, eq=$34,583 | B: 1 trades, $+31, eq=$34,583
+[11/297] 2025-01-17: 4 scanned → 3 passed → top 3 selected (risk A=$864, B=$864)
+    #1 VS: vol=20,780,336, gap=71%, float=1.8M
+    #2 ISPC: vol=8,056,286, gap=28%, float=9.8M
+    #3 BTCT: vol=1,359,397, gap=27%, float=7.2M
+    VS: ticks=443,104 armed=3 signals=3 trades=3 pnl=-260
+    ISPC: ticks=134,696 armed=3 signals=3 trades=2 pnl=-125
+    BTCT: ticks=87,952 armed=1 signals=1 trades=1 pnl=+847
+    VS: ticks=443,104 armed=3 signals=3 trades=3 pnl=-260
+    ISPC: ticks=134,696 armed=3 signals=3 trades=2 pnl=-125
+    BTCT: ticks=87,952 armed=1 signals=1 trades=1 pnl=+847
+  A: 3 trades, $-260, eq=$34,323 | B: 3 trades, $-260, eq=$34,323
+[12/297] 2025-01-21: 5 scanned → 5 passed → top 5 selected (risk A=$858, B=$858)
+    #1 INM: vol=6,623,848, gap=64%, float=1.8M
+    #2 DWTX: vol=5,758,473, gap=41%, float=1.4M
+    #3 PTHS: vol=10,704,104, gap=56%, float=1.2M
+    #4 LEDS: vol=1,548,083, gap=28%, float=3.4M
+    #5 VATE: vol=799,228, gap=23%, float=4.2M
+    INM: ticks=229,569 armed=2 signals=2 trades=2 pnl=+2037
+    DWTX: ticks=87,930 armed=1 signals=1 trades=1 pnl=+61
+    PTHS: ticks=127,979 armed=4 signals=4 trades=2 pnl=+13
+    LEDS: ticks=42,946 armed=3 signals=3 trades=2 pnl=-551
+    VATE: ticks=112,050 armed=2 signals=2 trades=1 pnl=+351
+    INM: ticks=229,569 armed=2 signals=2 trades=2 pnl=+2037
+    DWTX: ticks=87,930 armed=1 signals=1 trades=1 pnl=+61
+    PTHS: ticks=127,979 armed=4 signals=4 trades=2 pnl=+13
+    LEDS: ticks=42,946 armed=3 signals=3 trades=2 pnl=-551
+    VATE: ticks=112,050 armed=2 signals=2 trades=1 pnl=+351
+  A: 2 trades, $+3,162, eq=$37,485 | B: 2 trades, $+3,162, eq=$37,485
+[13/297] 2025-01-22: 1 scanned → 1 passed → top 1 selected (risk A=$937, B=$937)
+    #1 GELS: vol=3,720,839, gap=28%, float=5.5M
+    GELS: ticks=50,476 armed=0 signals=0 trades=0 pnl=+0
+    GELS: ticks=50,476 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$37,485 | B: 0 trades, $+0, eq=$37,485
+[14/297] 2025-01-23: 4 scanned → 4 passed → top 4 selected (risk A=$937, B=$937)
+    #1 VNCE: vol=6,453,109, gap=57%, float=2.6M
+    #2 LSH: vol=1,743,876, gap=18%, float=2.2M
+    #3 HKPD: vol=1,516,830, gap=35%, float=3.2M
+    #4 NTRB: vol=550,781, gap=19%, float=4.9M
+    VNCE: ticks=528,147 armed=8 signals=8 trades=6 pnl=+1758
+    LSH: ticks=20,389 armed=0 signals=0 trades=0 pnl=+0
+    HKPD: ticks=42,951 armed=3 signals=2 trades=2 pnl=-669
+    NTRB: ticks=9,674 armed=1 signals=1 trades=1 pnl=-896
+    VNCE: ticks=528,147 armed=8 signals=8 trades=6 pnl=+1758
+    LSH: ticks=20,389 armed=0 signals=0 trades=0 pnl=+0
+    HKPD: ticks=42,951 armed=3 signals=2 trades=2 pnl=-669
+    NTRB: ticks=9,674 armed=1 signals=1 trades=1 pnl=-896
+  A: 3 trades, $+199, eq=$37,684 | B: 3 trades, $+199, eq=$37,684
+[15/297] 2025-01-24: 5 scanned → 5 passed → top 5 selected (risk A=$942, B=$942)
+    #1 ALUR: vol=12,817,492, gap=181%, float=6.7M
+    #2 ATXI: vol=1,438,581, gap=12%, float=2.8M
+    #3 NVNI: vol=6,914,406, gap=59%, float=7.0M
+    #4 OST: vol=4,617,240, gap=57%, float=4.9M
+    #5 PRFX: vol=553,942, gap=12%, float=0.4M
+    ALUR: ticks=727,223 armed=4 signals=4 trades=3 pnl=+1046
+    ATXI: ticks=149,747 armed=0 signals=0 trades=0 pnl=+0
+    NVNI: ticks=628,025 armed=3 signals=3 trades=3 pnl=+575
+    OST: ticks=89,268 armed=0 signals=0 trades=0 pnl=+0
+    PRFX: ticks=22,546 armed=1 signals=1 trades=1 pnl=+243
+    ALUR: ticks=727,223 armed=4 signals=4 trades=3 pnl=+1046
+    ATXI: ticks=149,747 armed=0 signals=0 trades=0 pnl=+0
+    NVNI: ticks=628,025 armed=3 signals=3 trades=3 pnl=+575
+    OST: ticks=89,268 armed=0 signals=0 trades=0 pnl=+0
+    PRFX: ticks=22,546 armed=1 signals=1 trades=1 pnl=+243
+  A: 3 trades, $+1,046, eq=$38,730 | B: 3 trades, $+1,046, eq=$38,730
+[16/297] 2025-01-27: 4 scanned → 4 passed → top 4 selected (risk A=$968, B=$968)
+    #1 TVGN: vol=5,654,493, gap=53%, float=0.9M
+    #2 ICCT: vol=3,399,541, gap=20%, float=4.5M
+    #3 GMHS: vol=220,280, gap=20%, float=3.9M
+    #4 BCDA: vol=124,911, gap=17%, float=7.2M
+    TVGN: ticks=194,852 armed=2 signals=2 trades=2 pnl=-212
+    ICCT: ticks=49,849 armed=1 signals=1 trades=1 pnl=+69
+    GMHS: ticks=11,231 armed=0 signals=0 trades=0 pnl=+0
+    BCDA: ticks=1,192 armed=0 signals=0 trades=0 pnl=+0
+    TVGN: ticks=194,852 armed=2 signals=2 trades=2 pnl=-212
+    ICCT: ticks=49,849 armed=1 signals=1 trades=1 pnl=+69
+    GMHS: ticks=11,231 armed=0 signals=0 trades=0 pnl=+0
+    BCDA: ticks=1,192 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $-212, eq=$38,518 | B: 2 trades, $-212, eq=$38,518
+[17/297] 2025-01-28: 2 scanned → 2 passed → top 2 selected (risk A=$962, B=$962)
+    #1 YIBO: vol=15,138,280, gap=92%, float=7.1M
+    #2 SNTG: vol=155,766, gap=15%, float=1.1M
+    YIBO: ticks=477,717 armed=5 signals=5 trades=4 pnl=+108
+    YIBO: ticks=477,717 armed=5 signals=5 trades=4 pnl=+108
+  A: 2 trades, $-296, eq=$38,222 | B: 2 trades, $-296, eq=$38,222
+[18/297] 2025-01-29: 1 scanned → 1 passed → top 1 selected (risk A=$955, B=$955)
+    #1 SLXN: vol=30,920,560, gap=58%, float=3.0M
+    SLXN: ticks=680,251 armed=3 signals=3 trades=3 pnl=+243
+    SLXN: ticks=680,251 armed=3 signals=3 trades=3 pnl=+243
+  A: 3 trades, $+243, eq=$38,465 | B: 3 trades, $+243, eq=$38,465
+[19/297] 2025-01-30: 3 scanned → 2 passed → top 2 selected (risk A=$961, B=$961)
+    #1 BNZI: vol=8,990,790, gap=42%, float=2.3M
+    #2 STAI: vol=8,633,731, gap=34%, float=1.0M
+    BNZI: ticks=181,293 armed=0 signals=0 trades=0 pnl=+0
+    STAI: ticks=102,925 armed=2 signals=2 trades=2 pnl=-737
+    BNZI: ticks=181,293 armed=0 signals=0 trades=0 pnl=+0
+    STAI: ticks=102,925 armed=2 signals=2 trades=2 pnl=-737
+  A: 2 trades, $-737, eq=$37,728 | B: 2 trades, $-737, eq=$37,728
+[20/297] 2025-01-31: 3 scanned → 3 passed → top 3 selected (risk A=$943, B=$943)
+    #1 CYCN: vol=2,334,876, gap=19%, float=2.7M
+    #2 NCEL: vol=13,863,079, gap=36%, float=2.1M
+    #3 IMDX: vol=105,058, gap=14%, float=7.8M
+    CYCN: ticks=324,537 armed=4 signals=4 trades=4 pnl=+29
+    NCEL: ticks=375,805 armed=2 signals=2 trades=2 pnl=-503
+    IMDX: ticks=608 armed=0 signals=0 trades=0 pnl=+0
+    CYCN: ticks=324,537 armed=4 signals=4 trades=4 pnl=+29
+    NCEL: ticks=375,805 armed=2 signals=2 trades=2 pnl=-503
+    IMDX: ticks=608 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $+366, eq=$38,094 | B: 2 trades, $+366, eq=$38,094
+[21/297] 2025-02-03: 3 scanned → 3 passed → top 3 selected (risk A=$952, B=$952)
+    #1 REBN: vol=12,359,675, gap=108%, float=2.7M
+    #2 SOPA: vol=3,900,637, gap=43%, float=5.7M
+    #3 ICU: vol=1,595,733, gap=19%, float=3.6M
+    REBN: ticks=462,301 armed=4 signals=4 trades=3 pnl=+2176
+    SOPA: ticks=306,832 armed=5 signals=5 trades=5 pnl=+0
+    REBN: ticks=462,301 armed=4 signals=4 trades=3 pnl=+2176
+    SOPA: ticks=306,832 armed=5 signals=5 trades=5 pnl=+0
+  A: 4 trades, $+1,783, eq=$39,877 | B: 4 trades, $+1,783, eq=$39,877
+[22/297] 2025-02-04: 2 scanned → 2 passed → top 2 selected (risk A=$996, B=$996)
+    #1 QNTM: vol=3,399,903, gap=111%, float=3.6M
+    #2 CPIX: vol=5,877,736, gap=27%, float=8.6M
+    QNTM: ticks=371,618 armed=4 signals=3 trades=3 pnl=+6945
+    CPIX: ticks=65,059 armed=0 signals=0 trades=0 pnl=+0
+    QNTM: ticks=371,618 armed=4 signals=3 trades=3 pnl=+6945
+    CPIX: ticks=65,059 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+3,869, eq=$43,746 | B: 1 trades, $+3,869, eq=$43,746
+[23/297] 2025-02-05: 2 scanned → 2 passed → top 2 selected (risk A=$1093, B=$1093)
+    #1 KTTA: vol=4,427,816, gap=82%, float=4.8M
+    #2 CPIX: vol=20,258,878, gap=60%, float=8.6M
+    KTTA: ticks=408,518 armed=0 signals=0 trades=0 pnl=+0
+    CPIX: ticks=249,041 armed=3 signals=3 trades=2 pnl=+700
+    KTTA: ticks=408,518 armed=0 signals=0 trades=0 pnl=+0
+    CPIX: ticks=249,041 armed=3 signals=3 trades=2 pnl=+700
+  A: 2 trades, $+700, eq=$44,446 | B: 2 trades, $+700, eq=$44,446
+[24/297] 2025-02-06: 1 scanned → 1 passed → top 1 selected (risk A=$1111, B=$1111)
+    #1 LIPO: vol=15,558,395, gap=136%, float=4.3M
+    LIPO: ticks=654,726 armed=3 signals=3 trades=3 pnl=+355
+    LIPO: ticks=654,726 armed=3 signals=3 trades=3 pnl=+355
+  A: 1 trades, $-248, eq=$44,198 | B: 1 trades, $-248, eq=$44,198
+[25/297] 2025-02-07: 0 scanned, 0 passed filter, 0 selected
+[26/297] 2025-02-10: 1 scanned → 1 passed → top 1 selected (risk A=$1104, B=$1104)
+    #1 NCEL: vol=12,476,922, gap=52%, float=2.1M
+    NCEL: ticks=275,794 armed=0 signals=0 trades=0 pnl=+0
+    NCEL: ticks=275,794 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$44,198 | B: 0 trades, $+0, eq=$44,198
+[27/297] 2025-02-11: 2 scanned → 2 passed → top 2 selected (risk A=$1104, B=$1104)
+    #1 LIXT: vol=646,953, gap=13%, float=5.7M
+    #2 LIPO: vol=11,250,300, gap=52%, float=4.3M
+    LIXT: ticks=13,035 armed=0 signals=0 trades=0 pnl=+0
+    LIPO: ticks=280,534 armed=3 signals=3 trades=3 pnl=+1174
+    LIXT: ticks=13,035 armed=0 signals=0 trades=0 pnl=+0
+    LIPO: ticks=280,534 armed=3 signals=3 trades=3 pnl=+1174
+  A: 2 trades, $+780, eq=$44,978 | B: 2 trades, $+780, eq=$44,978
+[28/297] 2025-02-12: 1 scanned → 1 passed → top 1 selected (risk A=$1124, B=$1124)
+    #1 BNC: vol=53,527, gap=12%, float=0.8M
+    BNC: ticks=436 armed=1 signals=1 trades=1 pnl=-16
+    BNC: ticks=436 armed=1 signals=1 trades=1 pnl=-16
+  A: 1 trades, $-16, eq=$44,962 | B: 1 trades, $-16, eq=$44,962
+[29/297] 2025-02-13: 2 scanned → 2 passed → top 2 selected (risk A=$1124, B=$1124)
+    #1 EDSA: vol=11,119,561, gap=61%, float=4.9M
+    #2 MBRX: vol=10,541,712, gap=440%, float=2.0M
+    EDSA: ticks=558,740 armed=3 signals=3 trades=3 pnl=+302
+    MBRX: ticks=59,119 armed=0 signals=0 trades=0 pnl=+0
+    EDSA: ticks=558,740 armed=3 signals=3 trades=3 pnl=+302
+    MBRX: ticks=59,119 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $-260, eq=$44,702 | B: 2 trades, $-260, eq=$44,702
+[30/297] 2025-02-14: 3 scanned → 3 passed → top 3 selected (risk A=$1117, B=$1117)
+    #1 STAI: vol=11,544,744, gap=43%, float=1.0M
+    #2 JTAI: vol=279,564, gap=56%, float=3.5M
+    #3 SMX: vol=1,127,387, gap=12%, float=0.0M
+    STAI: ticks=182,755 armed=0 signals=0 trades=0 pnl=+0
+    JTAI: ticks=470,282 armed=4 signals=4 trades=3 pnl=+877
+    SMX: ticks=17,241 armed=1 signals=1 trades=0 pnl=+0
+    STAI: ticks=182,755 armed=0 signals=0 trades=0 pnl=+0
+    JTAI: ticks=470,282 armed=4 signals=4 trades=3 pnl=+877
+    SMX: ticks=17,241 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $+0, eq=$44,702 | B: 1 trades, $+0, eq=$44,702
+[31/297] 2025-02-18: 6 scanned → 5 passed → top 5 selected (risk A=$1117, B=$1117)
+    #1 EFOI: vol=14,822,878, gap=64%, float=2.4M
+    #2 CETX: vol=1,729,435, gap=16%, float=0.8M
+    #3 STAI: vol=22,079,046, gap=64%, float=1.0M
+    #4 CCTG: vol=844,263, gap=10%, float=0.2M
+    #5 PULM: vol=78,247, gap=29%, float=3.6M
+    EFOI: ticks=216,531 armed=1 signals=1 trades=1 pnl=-396
+    CETX: ticks=19,157 armed=1 signals=0 trades=0 pnl=+0
+    STAI: ticks=243,314 armed=4 signals=4 trades=2 pnl=+383
+    CCTG: ticks=8,551 armed=0 signals=0 trades=0 pnl=+0
+    PULM: ticks=1,299 armed=2 signals=1 trades=0 pnl=+0
+    EFOI: ticks=216,531 armed=1 signals=1 trades=1 pnl=-396
+    CETX: ticks=19,157 armed=1 signals=0 trades=0 pnl=+0
+    STAI: ticks=243,314 armed=4 signals=4 trades=2 pnl=+383
+    CCTG: ticks=8,551 armed=0 signals=0 trades=0 pnl=+0
+    PULM: ticks=1,299 armed=2 signals=1 trades=0 pnl=+0
+  A: 2 trades, $-165, eq=$44,537 | B: 2 trades, $-165, eq=$44,537
+[32/297] 2025-02-19: 4 scanned → 3 passed → top 3 selected (risk A=$1113, B=$1113)
+    #1 SINT: vol=11,883,188, gap=75%, float=3.0M
+    #2 TRNR: vol=11,983,683, gap=75%, float=0.2M
+    #3 OSRH: vol=3,743,193, gap=43%, float=7.8M
+    SINT: ticks=545,303 armed=6 signals=4 trades=3 pnl=-958
+    TRNR: ticks=231,042 armed=1 signals=1 trades=1 pnl=+0
+    OSRH: ticks=324,625 armed=4 signals=4 trades=4 pnl=+620
+    SINT: ticks=545,303 armed=6 signals=4 trades=3 pnl=-958
+    TRNR: ticks=231,042 armed=1 signals=1 trades=1 pnl=+0
+    OSRH: ticks=324,625 armed=4 signals=4 trades=4 pnl=+620
+  A: 3 trades, $-461, eq=$44,076 | B: 3 trades, $-461, eq=$44,076
+[33/297] 2025-02-20: 3 scanned → 3 passed → top 3 selected (risk A=$1101, B=$1101)
+    #1 WOK: vol=11,195,103, gap=88%, float=1.2M
+    #2 XOS: vol=2,367,645, gap=35%, float=7.4M
+    #3 VS: vol=341,871, gap=19%, float=1.8M
+    WOK: ticks=572,540 armed=3 signals=3 trades=3 pnl=+1504
+    XOS: ticks=479,037 armed=4 signals=3 trades=3 pnl=+414
+    WOK: ticks=572,540 armed=3 signals=3 trades=3 pnl=+1504
+    XOS: ticks=479,037 armed=4 signals=3 trades=3 pnl=+414
+  A: 3 trades, $+174, eq=$44,250 | B: 3 trades, $+174, eq=$44,250
+[34/297] 2025-02-21: 0 scanned, 0 passed filter, 0 selected
+[35/297] 2025-02-24: 5 scanned → 4 passed → top 4 selected (risk A=$1106, B=$1106)
+    #1 ORIS: vol=12,189,775, gap=93%, float=0.2M
+    #2 ISPC: vol=4,620,649, gap=37%, float=9.8M
+    #3 GSUN: vol=127,393, gap=21%, float=1.2M
+    #4 MEGL: vol=495,329, gap=16%, float=4.0M
+    ORIS: ticks=223,656 armed=3 signals=3 trades=2 pnl=+597
+    ISPC: ticks=121,220 armed=3 signals=3 trades=2 pnl=-76
+    GSUN: ticks=19,216 armed=1 signals=1 trades=1 pnl=+1442
+    MEGL: ticks=4,847 armed=0 signals=0 trades=0 pnl=+0
+    ORIS: ticks=223,656 armed=3 signals=3 trades=2 pnl=+597
+    ISPC: ticks=121,220 armed=3 signals=3 trades=2 pnl=-76
+    GSUN: ticks=19,216 armed=1 signals=1 trades=1 pnl=+1442
+    MEGL: ticks=4,847 armed=0 signals=0 trades=0 pnl=+0
+  A: 4 trades, $+521, eq=$44,771 | B: 4 trades, $+521, eq=$44,771
+[36/297] 2025-02-25: 4 scanned → 3 passed → top 3 selected (risk A=$1119, B=$1119)
+    #1 WAFU: vol=16,597,259, gap=96%, float=1.3M
+    #2 AMBO: vol=96,925, gap=32%, float=0.1M
+    #3 ALBT: vol=70,209, gap=17%, float=3.6M
+    WAFU: ticks=612,405 armed=4 signals=4 trades=4 pnl=+2819
+    WAFU: ticks=612,405 armed=4 signals=4 trades=4 pnl=+2819
+  A: 2 trades, $-290, eq=$44,481 | B: 2 trades, $-290, eq=$44,481
+[37/297] 2025-02-26: 4 scanned → 3 passed → top 3 selected (risk A=$1112, B=$1112)
+    #1 ENVB: vol=30,161,050, gap=185%, float=0.5M
+    #2 TRNR: vol=55,483,563, gap=157%, float=0.2M
+    #3 QVCGB: vol=2,112,881, gap=132%, float=6.7M
+    ENVB: ticks=586,393 armed=4 signals=4 trades=3 pnl=+1150
+    TRNR: ticks=273,179 armed=0 signals=0 trades=0 pnl=+0
+    QVCGB: ticks=114,884 armed=2 signals=2 trades=2 pnl=-114
+    ENVB: ticks=586,393 armed=4 signals=4 trades=3 pnl=+1150
+    TRNR: ticks=273,179 armed=0 signals=0 trades=0 pnl=+0
+    QVCGB: ticks=114,884 armed=2 signals=2 trades=2 pnl=-114
+  A: 2 trades, $-300, eq=$44,181 | B: 2 trades, $-300, eq=$44,181
+[38/297] 2025-02-27: 1 scanned → 1 passed → top 1 selected (risk A=$1104, B=$1104)
+    #1 AMST: vol=112,500, gap=24%, float=3.0M
+    AMST: ticks=206,930 armed=7 signals=7 trades=3 pnl=+7517
+    AMST: ticks=206,930 armed=7 signals=7 trades=3 pnl=+7517
+  A: 2 trades, $+6,175, eq=$50,356 | B: 2 trades, $+6,175, eq=$50,356
+[39/297] 2025-02-28: 2 scanned → 2 passed → top 2 selected (risk A=$1258, B=$1258)
+    #1 ZOOZ: vol=1,317,386, gap=68%, float=8.0M
+    #2 NVVE: vol=13,019,200, gap=66%, float=0.2M
+    ZOOZ: ticks=22,273 armed=1 signals=1 trades=1 pnl=+381
+    NVVE: ticks=360,525 armed=2 signals=2 trades=1 pnl=+4559
+    ZOOZ: ticks=22,273 armed=1 signals=1 trades=1 pnl=+381
+    NVVE: ticks=360,525 armed=2 signals=2 trades=1 pnl=+4559
+  A: 2 trades, $+4,940, eq=$55,296 | B: 2 trades, $+4,940, eq=$55,296
+[40/297] 2025-03-03: 4 scanned → 4 passed → top 4 selected (risk A=$1382, B=$1382)
+    #1 ACON: vol=8,813,924, gap=105%, float=0.7M
+    #2 POLA: vol=400,084, gap=15%, float=1.9M
+    #3 BTCT: vol=4,053,060, gap=27%, float=7.2M
+    #4 TRAW: vol=191,124, gap=13%, float=4.0M
+    ACON: ticks=426,726 armed=5 signals=5 trades=4 pnl=+1977
+    POLA: ticks=8,189 armed=0 signals=0 trades=0 pnl=+0
+    BTCT: ticks=105,584 armed=2 signals=2 trades=2 pnl=-29
+    TRAW: ticks=7,203 armed=0 signals=0 trades=0 pnl=+0
+    ACON: ticks=426,726 armed=5 signals=5 trades=4 pnl=+1977
+    POLA: ticks=8,189 armed=0 signals=0 trades=0 pnl=+0
+    BTCT: ticks=105,584 armed=2 signals=2 trades=2 pnl=-29
+    TRAW: ticks=7,203 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+0, eq=$55,296 | B: 1 trades, $+0, eq=$55,296
+[41/297] 2025-03-04: 1 scanned → 1 passed → top 1 selected (risk A=$1382, B=$1382)
+    #1 RDGT: vol=103,467, gap=143%, float=5.1M
+    RDGT: ticks=143,575 armed=4 signals=4 trades=4 pnl=+960
+    RDGT: ticks=143,575 armed=4 signals=4 trades=4 pnl=+960
+  A: 4 trades, $+960, eq=$56,256 | B: 4 trades, $+960, eq=$56,256
+[42/297] 2025-03-05: 1 scanned → 1 passed → top 1 selected (risk A=$1406, B=$1406)
+    #1 GV: vol=15,748,552, gap=78%, float=4.0M
+    GV: ticks=429,378 armed=2 signals=2 trades=2 pnl=+138
+    GV: ticks=429,378 armed=2 signals=2 trades=2 pnl=+138
+  A: 2 trades, $+138, eq=$56,394 | B: 2 trades, $+138, eq=$56,394
+[43/297] 2025-03-06: 0 scanned, 0 passed filter, 0 selected
+[44/297] 2025-03-07: 1 scanned → 1 passed → top 1 selected (risk A=$1409, B=$1409)
+    #1 DWTX: vol=2,929,006, gap=48%, float=1.4M
+    DWTX: ticks=96,058 armed=3 signals=3 trades=2 pnl=+4928
+    DWTX: ticks=96,058 armed=3 signals=3 trades=2 pnl=+4928
+  A: 1 trades, $-1,211, eq=$55,183 | B: 1 trades, $-1,211, eq=$55,183
+[45/297] 2025-03-10: 2 scanned → 2 passed → top 2 selected (risk A=$1379, B=$1379)
+    #1 SNOA: vol=599,130, gap=19%, float=1.7M
+    #2 DWTX: vol=3,414,724, gap=39%, float=1.4M
+    SNOA: ticks=148,555 armed=3 signals=3 trades=3 pnl=-1355
+    DWTX: ticks=49,918 armed=4 signals=3 trades=3 pnl=+4556
+    SNOA: ticks=148,555 armed=3 signals=3 trades=3 pnl=-1355
+    DWTX: ticks=49,918 armed=4 signals=3 trades=3 pnl=+4556
+  A: 2 trades, $-1,664, eq=$53,519 | B: 2 trades, $-1,664, eq=$53,519
+[46/297] 2025-03-11: 1 scanned → 1 passed → top 1 selected (risk A=$1337, B=$1337)
+    #1 SNOA: vol=13,733,723, gap=53%, float=1.7M
+    SNOA: ticks=358,192 armed=4 signals=4 trades=1 pnl=+1373
+    SNOA: ticks=358,192 armed=4 signals=4 trades=1 pnl=+1373
+  A: 1 trades, $+1,373, eq=$54,892 | B: 1 trades, $+1,373, eq=$54,892
+[47/297] 2025-03-12: 1 scanned → 1 passed → top 1 selected (risk A=$1372, B=$1372)
+    #1 CRVO: vol=2,014,631, gap=46%, float=5.5M
+    CRVO: ticks=494,202 armed=1 signals=1 trades=1 pnl=-68
+    CRVO: ticks=494,202 armed=1 signals=1 trades=1 pnl=-68
+  A: 1 trades, $-68, eq=$54,824 | B: 1 trades, $-68, eq=$54,824
+[48/297] 2025-03-13: 2 scanned → 1 passed → top 1 selected (risk A=$1370, B=$1370)
+    #1 SNES: vol=1,116,348, gap=11%, float=4.3M
+    SNES: ticks=21,849 armed=1 signals=1 trades=1 pnl=+1076
+    SNES: ticks=21,849 armed=1 signals=1 trades=1 pnl=+1076
+  A: 1 trades, $+1,076, eq=$55,900 | B: 1 trades, $+1,076, eq=$55,900
+[49/297] 2025-03-14: 1 scanned → 1 passed → top 1 selected (risk A=$1397, B=$1397)
+    #1 BON: vol=10,358,716, gap=222%, float=6.0M
+    BON: ticks=271,638 armed=2 signals=2 trades=2 pnl=+3726
+    BON: ticks=271,638 armed=2 signals=2 trades=2 pnl=+3726
+  A: 2 trades, $+3,726, eq=$59,626 | B: 2 trades, $+3,726, eq=$59,626
+[50/297] 2025-03-17: 2 scanned → 2 passed → top 2 selected (risk A=$1490, B=$1490)
+    #1 FEED: vol=8,163,311, gap=70%, float=0.8M
+    #2 GLMD: vol=277,591, gap=37%, float=5.4M
+    FEED: ticks=315,552 armed=1 signals=1 trades=1 pnl=-106
+    GLMD: ticks=210,997 armed=1 signals=1 trades=1 pnl=+332
+    FEED: ticks=315,552 armed=1 signals=1 trades=1 pnl=-106
+    GLMD: ticks=210,997 armed=1 signals=1 trades=1 pnl=+332
+  A: 2 trades, $+226, eq=$59,852 | B: 2 trades, $+226, eq=$59,852
+[51/297] 2025-03-18: 0 scanned, 0 passed filter, 0 selected
+[52/297] 2025-03-19: 2 scanned → 2 passed → top 2 selected (risk A=$1496, B=$1496)
+    #1 LSE: vol=2,130,473, gap=83%, float=1.5M
+    #2 ATER: vol=425,926, gap=20%, float=5.1M
+    LSE: ticks=236,563 armed=4 signals=4 trades=4 pnl=+1588
+    ATER: ticks=212,137 armed=5 signals=5 trades=5 pnl=+137
+    LSE: ticks=236,563 armed=4 signals=4 trades=4 pnl=+1588
+    ATER: ticks=212,137 armed=5 signals=5 trades=5 pnl=+137
+  A: 2 trades, $-215, eq=$59,637 | B: 2 trades, $-215, eq=$59,637
+[53/297] 2025-03-20: 1 scanned → 1 passed → top 1 selected (risk A=$1490, B=$1490)
+    #1 APVO: vol=77,119, gap=17%, float=0.9M
+    APVO: ticks=1,390 armed=2 signals=2 trades=1 pnl=+224
+    APVO: ticks=1,390 armed=2 signals=2 trades=1 pnl=+224
+  A: 1 trades, $+224, eq=$59,861 | B: 1 trades, $+224, eq=$59,861
+[54/297] 2025-03-21: 2 scanned → 2 passed → top 2 selected (risk A=$1496, B=$1496)
+    #1 ALUR: vol=9,654,743, gap=73%, float=6.7M
+    #2 ELAB: vol=2,312,262, gap=13%, float=2.1M
+    ALUR: ticks=393,652 armed=7 signals=7 trades=7 pnl=-395
+    ALUR: ticks=393,652 armed=7 signals=7 trades=7 pnl=-395
+  A: 3 trades, $+59, eq=$59,920 | B: 3 trades, $+59, eq=$59,920
+[55/297] 2025-03-24: 1 scanned → 1 passed → top 1 selected (risk A=$1498, B=$1498)
+    #1 UCAR: vol=235,654, gap=25%, float=4.4M
+    UCAR: ticks=24,919 armed=1 signals=1 trades=1 pnl=-1340
+    UCAR: ticks=24,919 armed=1 signals=1 trades=1 pnl=-1340
+  A: 1 trades, $-1,340, eq=$58,580 | B: 1 trades, $-1,340, eq=$58,580
+[56/297] 2025-03-25: 4 scanned → 4 passed → top 4 selected (risk A=$1464, B=$1464)
+    #1 AGPU: vol=26,370,426, gap=110%, float=1.8M
+    #2 TNON: vol=63,192,821, gap=265%, float=7.7M
+    #3 MYSE: vol=5,189,831, gap=36%, float=4.0M
+    #4 ZYBT: vol=217,253, gap=10%, float=4.4M
+    AGPU: ticks=467,014 armed=1 signals=1 trades=1 pnl=-1064
+    TNON: ticks=1,060,669 armed=4 signals=3 trades=2 pnl=+47
+    MYSE: ticks=600,492 armed=4 signals=4 trades=3 pnl=-811
+    AGPU: ticks=467,014 armed=1 signals=1 trades=1 pnl=-1064
+    TNON: ticks=1,060,669 armed=4 signals=3 trades=2 pnl=+47
+    MYSE: ticks=600,492 armed=4 signals=4 trades=3 pnl=-811
+  A: 4 trades, $-2,298, eq=$56,282 | B: 4 trades, $-2,298, eq=$56,282
+[57/297] 2025-03-26: 2 scanned → 2 passed → top 2 selected (risk A=$1407, B=$1407)
+    #1 OSRH: vol=20,101,698, gap=138%, float=7.8M
+    #2 HCAI: vol=253,767, gap=35%, float=4.9M
+    OSRH: ticks=442,088 armed=4 signals=4 trades=4 pnl=+486
+    HCAI: ticks=2,900 armed=0 signals=0 trades=0 pnl=+0
+    OSRH: ticks=442,088 armed=4 signals=4 trades=4 pnl=+486
+    HCAI: ticks=2,900 armed=0 signals=0 trades=0 pnl=+0
+  A: 4 trades, $+486, eq=$56,768 | B: 4 trades, $+486, eq=$56,768
+[58/297] 2025-03-27: 1 scanned → 1 passed → top 1 selected (risk A=$1419, B=$1419)
+    #1 DRMA: vol=1,474,818, gap=87%, float=0.5M
+    DRMA: ticks=265,422 armed=1 signals=1 trades=1 pnl=+2090
+    DRMA: ticks=265,422 armed=1 signals=1 trades=1 pnl=+2090
+  A: 1 trades, $+2,090, eq=$58,858 | B: 1 trades, $+2,090, eq=$58,858
+[59/297] 2025-03-28: 2 scanned → 2 passed → top 2 selected (risk A=$1471, B=$1471)
+    #1 ATON: vol=5,170,750, gap=168%, float=0.8M
+    #2 OCG: vol=490,533, gap=22%, float=0.1M
+    ATON: ticks=349,117 armed=5 signals=5 trades=3 pnl=+1334
+    OCG: ticks=3,974 armed=0 signals=0 trades=0 pnl=+0
+    ATON: ticks=349,117 armed=5 signals=5 trades=3 pnl=+1334
+    OCG: ticks=3,974 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+1,333, eq=$60,191 | B: 1 trades, $+1,333, eq=$60,191
+[60/297] 2025-03-31: 1 scanned → 1 passed → top 1 selected (risk A=$1504, B=$1504)
+    #1 DOMH: vol=1,159,874, gap=15%, float=7.5M
+    DOMH: ticks=71,140 armed=1 signals=1 trades=1 pnl=-27
+    DOMH: ticks=71,140 armed=1 signals=1 trades=1 pnl=-27
+  A: 1 trades, $-27, eq=$60,164 | B: 1 trades, $-27, eq=$60,164
+[61/297] 2025-04-01: 0 scanned, 0 passed filter, 0 selected
+[62/297] 2025-04-02: 2 scanned → 2 passed → top 2 selected (risk A=$1504, B=$1504)
+    #1 SBFM: vol=12,670,519, gap=57%, float=4.9M
+    #2 TCRT: vol=1,232,995, gap=15%, float=1.9M
+    SBFM: ticks=324,616 armed=1 signals=0 trades=0 pnl=+0
+    TCRT: ticks=45,950 armed=1 signals=1 trades=0 pnl=+0
+    SBFM: ticks=324,616 armed=1 signals=0 trades=0 pnl=+0
+    TCRT: ticks=45,950 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$60,164 | B: 0 trades, $+0, eq=$60,164
+[63/297] 2025-04-03: 3 scanned → 3 passed → top 3 selected (risk A=$1504, B=$1504)
+    #1 ATPC: vol=10,334,133, gap=59%, float=0.4M
+    #2 APVO: vol=17,697,839, gap=131%, float=0.9M
+    #3 TIVC: vol=2,886,338, gap=36%, float=1.5M
+    ATPC: ticks=104,469 armed=1 signals=1 trades=1 pnl=-58
+    APVO: ticks=408,006 armed=2 signals=1 trades=1 pnl=+12850
+    TIVC: ticks=285,373 armed=0 signals=0 trades=0 pnl=+0
+    ATPC: ticks=104,469 armed=1 signals=1 trades=1 pnl=-58
+    APVO: ticks=408,006 armed=2 signals=1 trades=1 pnl=+12850
+    TIVC: ticks=285,373 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-58, eq=$60,106 | B: 1 trades, $-58, eq=$60,106
+[64/297] 2025-04-04: 0 scanned, 0 passed filter, 0 selected
+[65/297] 2025-04-07: 1 scanned → 1 passed → top 1 selected (risk A=$1502, B=$1502)
+    #1 BJDX: vol=14,505,206, gap=186%, float=0.4M
+    BJDX: ticks=511,689 armed=7 signals=6 trades=2 pnl=+2419
+    BJDX: ticks=511,689 armed=7 signals=6 trades=2 pnl=+2419
+  A: 0 trades, $+0, eq=$60,106 | B: 0 trades, $+0, eq=$60,106
+[66/297] 2025-04-08: 3 scanned → 3 passed → top 3 selected (risk A=$1502, B=$1502)
+    #1 FEED: vol=10,642,504, gap=187%, float=0.8M
+    #2 SXTP: vol=178,287, gap=23%, float=0.9M
+    #3 JZXN: vol=136,003, gap=36%, float=1.3M
+    FEED: ticks=814,389 armed=3 signals=3 trades=3 pnl=+6023
+    SXTP: ticks=334,198 armed=3 signals=3 trades=2 pnl=-3150
+    JZXN: ticks=5,543 armed=0 signals=0 trades=0 pnl=+0
+    FEED: ticks=814,389 armed=3 signals=3 trades=3 pnl=+6023
+    SXTP: ticks=334,198 armed=3 signals=3 trades=2 pnl=-3150
+    JZXN: ticks=5,543 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+0, eq=$60,106 | B: 1 trades, $+0, eq=$60,106
+[67/297] 2025-04-09: 1 scanned → 1 passed → top 1 selected (risk A=$1502, B=$1502)
+    #1 VERO: vol=9,094,560, gap=296%, float=1.6M
+    VERO: ticks=493,698 armed=4 signals=3 trades=3 pnl=+5858
+    VERO: ticks=493,698 armed=4 signals=3 trades=3 pnl=+5858
+  A: 1 trades, $+2,315, eq=$62,421 | B: 1 trades, $+2,315, eq=$62,421
+[68/297] 2025-04-10: 3 scanned → 3 passed → top 3 selected (risk A=$1560, B=$1560)
+    #1 KTTA: vol=10,906,637, gap=86%, float=4.8M
+    #2 WHLR: vol=16,005,272, gap=129%, float=0.2M
+    #3 HYFM: vol=6,610,682, gap=29%, float=3.5M
+    KTTA: ticks=323,358 armed=2 signals=2 trades=0 pnl=+0
+    WHLR: ticks=397,884 armed=4 signals=4 trades=3 pnl=+775
+    HYFM: ticks=84,208 armed=1 signals=1 trades=0 pnl=+0
+    KTTA: ticks=323,358 armed=2 signals=2 trades=0 pnl=+0
+    WHLR: ticks=397,884 armed=4 signals=4 trades=3 pnl=+775
+    HYFM: ticks=84,208 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $+34, eq=$62,455 | B: 1 trades, $+34, eq=$62,455
+[69/297] 2025-04-11: 1 scanned → 1 passed → top 1 selected (risk A=$1561, B=$1561)
+    #1 BGLC: vol=11,673,132, gap=44%, float=1.3M
+    BGLC: ticks=213,774 armed=0 signals=0 trades=0 pnl=+0
+    BGLC: ticks=213,774 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$62,455 | B: 0 trades, $+0, eq=$62,455
+[70/297] 2025-04-14: 1 scanned → 1 passed → top 1 selected (risk A=$1561, B=$1561)
+    #1 KIDZ: vol=9,232,430, gap=28%, float=0.4M
+    KIDZ: ticks=164,056 armed=0 signals=0 trades=0 pnl=+0
+    KIDZ: ticks=164,056 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$62,455 | B: 0 trades, $+0, eq=$62,455
+[71/297] 2025-04-15: 3 scanned → 3 passed → top 3 selected (risk A=$1561, B=$1561)
+    #1 SNYR: vol=25,108,627, gap=150%, float=4.9M
+    #2 SBEV: vol=14,849,155, gap=75%, float=2.4M
+    #3 MTVA: vol=4,043,041, gap=30%, float=1.0M
+    SNYR: ticks=508,373 armed=3 signals=3 trades=2 pnl=+1320
+    SBEV: ticks=252,884 armed=0 signals=0 trades=0 pnl=+0
+    MTVA: ticks=119,598 armed=0 signals=0 trades=0 pnl=+0
+    SNYR: ticks=508,373 armed=3 signals=3 trades=2 pnl=+1320
+    SBEV: ticks=252,884 armed=0 signals=0 trades=0 pnl=+0
+    MTVA: ticks=119,598 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+1,171, eq=$63,626 | B: 1 trades, $+1,171, eq=$63,626
+[72/297] 2025-04-16: 4 scanned → 3 passed → top 3 selected (risk A=$1590, B=$1590)
+    #1 BCTX: vol=4,799,758, gap=25%, float=1.7M
+    #2 SBEV: vol=7,454,334, gap=57%, float=2.4M
+    #3 ALBT: vol=203,431, gap=18%, float=3.6M
+    BCTX: ticks=159,309 armed=1 signals=1 trades=1 pnl=+1649
+    SBEV: ticks=249,550 armed=1 signals=1 trades=1 pnl=+2186
+    ALBT: ticks=2,108 armed=2 signals=2 trades=2 pnl=-1272
+    BCTX: ticks=159,309 armed=1 signals=1 trades=1 pnl=+1649
+    SBEV: ticks=249,550 armed=1 signals=1 trades=1 pnl=+2186
+    ALBT: ticks=2,108 armed=2 signals=2 trades=2 pnl=-1272
+  A: 1 trades, $+2,186, eq=$65,812 | B: 1 trades, $+2,186, eq=$65,812
+[73/297] 2025-04-17: 2 scanned → 2 passed → top 2 selected (risk A=$1645, B=$1645)
+    #1 PTHS: vol=12,331,156, gap=85%, float=1.2M
+    #2 SMX: vol=18,022,764, gap=58%, float=0.0M
+    PTHS: ticks=210,134 armed=1 signals=1 trades=1 pnl=+1645
+    SMX: ticks=190,734 armed=1 signals=1 trades=0 pnl=+0
+    PTHS: ticks=210,134 armed=1 signals=1 trades=1 pnl=+1645
+    SMX: ticks=190,734 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $+1,645, eq=$67,457 | B: 1 trades, $+1,645, eq=$67,457
+[74/297] 2025-04-21: 2 scanned → 2 passed → top 2 selected (risk A=$1686, B=$1686)
+    #1 SHFS: vol=9,399,173, gap=101%, float=1.3M
+    #2 IPM: vol=73,884, gap=22%, float=5.7M
+    SHFS: ticks=300,175 armed=3 signals=3 trades=2 pnl=-390
+    IPM: ticks=4,157 armed=0 signals=0 trades=0 pnl=+0
+    SHFS: ticks=300,175 armed=3 signals=3 trades=2 pnl=-390
+    IPM: ticks=4,157 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-192, eq=$67,265 | B: 1 trades, $-192, eq=$67,265
+[75/297] 2025-04-22: 2 scanned → 1 passed → top 1 selected (risk A=$1681, B=$1681)
+    #1 GELS: vol=29,790,973, gap=449%, float=5.5M
+    GELS: ticks=724,676 armed=4 signals=4 trades=4 pnl=+223
+    GELS: ticks=724,676 armed=4 signals=4 trades=4 pnl=+223
+  A: 4 trades, $+223, eq=$67,488 | B: 4 trades, $+223, eq=$67,488
+[76/297] 2025-04-23: 5 scanned → 4 passed → top 4 selected (risk A=$1687, B=$1687)
+    #1 ENSC: vol=20,989,616, gap=150%, float=3.1M
+    #2 AVX: vol=13,537,496, gap=57%, float=2.0M
+    #3 SNOA: vol=25,466,775, gap=107%, float=1.7M
+    #4 NDRA: vol=714,011, gap=18%, float=1.1M
+    ENSC: ticks=587,607 armed=4 signals=4 trades=3 pnl=+3509
+    AVX: ticks=224,652 armed=0 signals=0 trades=0 pnl=+0
+    SNOA: ticks=403,662 armed=4 signals=3 trades=2 pnl=+871
+    NDRA: ticks=15,304 armed=0 signals=0 trades=0 pnl=+0
+    ENSC: ticks=587,607 armed=4 signals=4 trades=3 pnl=+3509
+    AVX: ticks=224,652 armed=0 signals=0 trades=0 pnl=+0
+    SNOA: ticks=403,662 armed=4 signals=3 trades=2 pnl=+871
+    NDRA: ticks=15,304 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+2,349, eq=$69,837 | B: 1 trades, $+2,349, eq=$69,837
+[77/297] 2025-04-24: 4 scanned → 4 passed → top 4 selected (risk A=$1745, B=$1745)
+    #1 LGCB: vol=9,626,505, gap=28%, float=1.7M
+    #2 BCTX: vol=6,873,460, gap=87%, float=1.7M
+    #3 VIVS: vol=1,664,733, gap=60%, float=2.6M
+    #4 ZENA: vol=2,547,303, gap=25%, float=8.4M
+    LGCB: ticks=126,028 armed=0 signals=0 trades=0 pnl=+0
+    BCTX: ticks=333,216 armed=3 signals=3 trades=3 pnl=+14916
+    VIVS: ticks=30,409 armed=1 signals=1 trades=1 pnl=+5017
+    ZENA: ticks=230,654 armed=2 signals=2 trades=2 pnl=-178
+    LGCB: ticks=126,028 armed=0 signals=0 trades=0 pnl=+0
+    BCTX: ticks=333,216 armed=3 signals=3 trades=3 pnl=+14916
+    VIVS: ticks=30,409 armed=1 signals=1 trades=1 pnl=+5017
+    ZENA: ticks=230,654 armed=2 signals=2 trades=2 pnl=-178
+  A: 3 trades, $+4,839, eq=$74,676 | B: 3 trades, $+4,839, eq=$74,676
+[78/297] 2025-04-25: 1 scanned → 1 passed → top 1 selected (risk A=$1866, B=$1866)
+    #1 RETO: vol=2,748,181, gap=53%, float=0.8M
+    RETO: ticks=63,711 armed=0 signals=0 trades=0 pnl=+0
+    RETO: ticks=63,711 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$74,676 | B: 0 trades, $+0, eq=$74,676
+[79/297] 2025-04-28: 2 scanned → 2 passed → top 2 selected (risk A=$1866, B=$1866)
+    #1 GLMD: vol=17,911,065, gap=89%, float=5.4M
+    #2 SNTI: vol=1,337,159, gap=11%, float=9.7M
+    GLMD: ticks=302,349 armed=1 signals=1 trades=1 pnl=-187
+    SNTI: ticks=39,215 armed=1 signals=1 trades=1 pnl=-80
+    GLMD: ticks=302,349 armed=1 signals=1 trades=1 pnl=-187
+    SNTI: ticks=39,215 armed=1 signals=1 trades=1 pnl=-80
+  A: 2 trades, $-267, eq=$74,409 | B: 2 trades, $-267, eq=$74,409
+[80/297] 2025-04-29: 3 scanned → 2 passed → top 2 selected (risk A=$1860, B=$1860)
+    #1 WLDS: vol=14,453,740, gap=79%, float=0.8M
+    #2 LCFY: vol=72,432, gap=13%, float=1.4M
+    WLDS: ticks=225,661 armed=1 signals=1 trades=1 pnl=+2391
+    LCFY: ticks=343 armed=0 signals=0 trades=0 pnl=+0
+    WLDS: ticks=225,661 armed=1 signals=1 trades=1 pnl=+2391
+    LCFY: ticks=343 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+2,391, eq=$76,800 | B: 1 trades, $+2,391, eq=$76,800
+[81/297] 2025-04-30: 0 scanned, 0 passed filter, 0 selected
+[82/297] 2025-05-01: 2 scanned → 2 passed → top 2 selected (risk A=$1920, B=$1920)
+    #1 ZCAR: vol=4,061,057, gap=96%, float=4.9M
+    #2 KIDZ: vol=12,411,521, gap=93%, float=0.4M
+    ZCAR: ticks=466,870 armed=5 signals=3 trades=3 pnl=+7122
+    KIDZ: ticks=657,600 armed=2 signals=2 trades=2 pnl=-179
+    ZCAR: ticks=466,870 armed=5 signals=3 trades=3 pnl=+7122
+    KIDZ: ticks=657,600 armed=2 signals=2 trades=2 pnl=-179
+  A: 1 trades, $+823, eq=$77,623 | B: 1 trades, $+823, eq=$77,623
+[83/297] 2025-05-02: 1 scanned → 1 passed → top 1 selected (risk A=$1940, B=$1940)
+    #1 FRGT: vol=38,899,279, gap=219%, float=0.5M
+    FRGT: ticks=655,598 armed=3 signals=2 trades=2 pnl=+4780
+    FRGT: ticks=655,598 armed=3 signals=2 trades=2 pnl=+4780
+  A: 1 trades, $+2,373, eq=$79,996 | B: 1 trades, $+2,373, eq=$79,996
+[84/297] 2025-05-05: 3 scanned → 2 passed → top 2 selected (risk A=$1999, B=$1999)
+    #1 DFSC: vol=3,270,773, gap=11%, float=1.2M
+    #2 AIFF: vol=1,089,651, gap=13%, float=6.3M
+    DFSC: ticks=81,863 armed=2 signals=2 trades=2 pnl=+1122
+    AIFF: ticks=199,506 armed=2 signals=1 trades=1 pnl=-98
+    DFSC: ticks=81,863 armed=2 signals=2 trades=2 pnl=+1122
+    AIFF: ticks=199,506 armed=2 signals=1 trades=1 pnl=-98
+  A: 1 trades, $-98, eq=$79,898 | B: 1 trades, $-98, eq=$79,898
+[85/297] 2025-05-06: 1 scanned → 1 passed → top 1 selected (risk A=$1997, B=$1997)
+    #1 KTTA: vol=23,191,766, gap=92%, float=4.8M
+    KTTA: ticks=947,943 armed=4 signals=4 trades=3 pnl=+584
+    KTTA: ticks=947,943 armed=4 signals=4 trades=3 pnl=+584
+  A: 1 trades, $-272, eq=$79,626 | B: 1 trades, $-272, eq=$79,626
+[86/297] 2025-05-07: 2 scanned → 2 passed → top 2 selected (risk A=$1990, B=$1990)
+    #1 NCEW: vol=7,322,179, gap=98%, float=0.9M
+    #2 NSYS: vol=70,033, gap=21%, float=0.9M
+    NCEW: ticks=344,519 armed=3 signals=2 trades=2 pnl=+11092
+    NSYS: ticks=2,764 armed=2 signals=2 trades=0 pnl=+0
+    NCEW: ticks=344,519 armed=3 signals=2 trades=2 pnl=+11092
+    NSYS: ticks=2,764 armed=2 signals=2 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$79,626 | B: 0 trades, $+0, eq=$79,626
+[87/297] 2025-05-08: 2 scanned → 2 passed → top 2 selected (risk A=$1990, B=$1990)
+    #1 STAI: vol=937,367, gap=36%, float=1.0M
+    #2 VEEE: vol=240,806, gap=34%, float=8.2M
+    STAI: ticks=7,581 armed=0 signals=0 trades=0 pnl=+0
+    VEEE: ticks=319,386 armed=3 signals=3 trades=3 pnl=+1863
+    STAI: ticks=7,581 armed=0 signals=0 trades=0 pnl=+0
+    VEEE: ticks=319,386 armed=3 signals=3 trades=3 pnl=+1863
+  A: 3 trades, $+1,863, eq=$81,489 | B: 3 trades, $+1,863, eq=$81,489
+[88/297] 2025-05-09: 1 scanned → 1 passed → top 1 selected (risk A=$2037, B=$2037)
+    #1 NVVE: vol=56,412,986, gap=112%, float=0.2M
+    NVVE: ticks=587,906 armed=1 signals=1 trades=1 pnl=+1746
+    NVVE: ticks=587,906 armed=1 signals=1 trades=1 pnl=+1746
+  A: 1 trades, $+1,746, eq=$83,235 | B: 1 trades, $+1,746, eq=$83,235
+[89/297] 2025-05-12: 3 scanned → 3 passed → top 3 selected (risk A=$2080, B=$2080)
+    #1 BAOS: vol=730,292, gap=17%, float=0.9M
+    #2 NXTT: vol=37,200,746, gap=44%, float=1.4M
+    #3 NHTC: vol=52,180, gap=14%, float=4.0M
+    BAOS: ticks=12,536 armed=0 signals=0 trades=0 pnl=+0
+    NXTT: ticks=667,750 armed=2 signals=2 trades=2 pnl=+1329
+    NHTC: ticks=726 armed=0 signals=0 trades=0 pnl=+0
+    BAOS: ticks=12,536 armed=0 signals=0 trades=0 pnl=+0
+    NXTT: ticks=667,750 armed=2 signals=2 trades=2 pnl=+1329
+    NHTC: ticks=726 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+1,288, eq=$84,523 | B: 1 trades, $+1,288, eq=$84,523
+[90/297] 2025-05-13: 7 scanned → 7 passed → top 5 selected (risk A=$2113, B=$2113)
+    #1 LOBO: vol=34,799,786, gap=176%, float=7.7M
+    #2 CNSP: vol=10,339,539, gap=157%, float=0.5M
+    #3 LICN: vol=5,549,847, gap=87%, float=0.8M
+    #4 ICCT: vol=22,773,042, gap=155%, float=4.5M
+    #5 ALZN: vol=3,243,323, gap=32%, float=3.8M
+    LOBO: ticks=423,454 armed=3 signals=2 trades=2 pnl=+695
+    CNSP: ticks=496,848 armed=2 signals=2 trades=2 pnl=+453
+    LICN: ticks=150,990 armed=0 signals=0 trades=0 pnl=+0
+    ICCT: ticks=363,966 armed=2 signals=2 trades=0 pnl=+0
+    ALZN: ticks=69,537 armed=3 signals=3 trades=3 pnl=+9869
+    LOBO: ticks=423,454 armed=3 signals=2 trades=2 pnl=+695
+    CNSP: ticks=496,848 armed=2 signals=2 trades=2 pnl=+453
+    LICN: ticks=150,990 armed=0 signals=0 trades=0 pnl=+0
+    ICCT: ticks=363,966 armed=2 signals=2 trades=0 pnl=+0
+    ALZN: ticks=69,537 armed=3 signals=3 trades=3 pnl=+9869
+  A: 3 trades, $+1,374, eq=$85,897 | B: 3 trades, $+1,374, eq=$85,897
+[91/297] 2025-05-14: 3 scanned → 3 passed → top 3 selected (risk A=$2147, B=$2147)
+    #1 LUCY: vol=8,019,478, gap=37%, float=5.0M
+    #2 ALUR: vol=1,310,441, gap=24%, float=6.7M
+    #3 INM: vol=112,450, gap=14%, float=1.8M
+    LUCY: ticks=249,088 armed=1 signals=1 trades=1 pnl=-96
+    ALUR: ticks=24,327 armed=0 signals=0 trades=0 pnl=+0
+    INM: ticks=12,074 armed=3 signals=1 trades=1 pnl=+550
+    LUCY: ticks=249,088 armed=1 signals=1 trades=1 pnl=-96
+    ALUR: ticks=24,327 armed=0 signals=0 trades=0 pnl=+0
+    INM: ticks=12,074 armed=3 signals=2 trades=1 pnl=+550
+  A: 2 trades, $+454, eq=$86,351 | B: 2 trades, $+454, eq=$86,351
+[92/297] 2025-05-15: 3 scanned → 3 passed → top 3 selected (risk A=$2158, B=$2158)
+    #1 BTM: vol=5,487,049, gap=23%, float=4.6M
+    #2 LEDS: vol=366,619, gap=23%, float=3.4M
+    #3 AYTU: vol=1,884,470, gap=50%, float=7.6M
+    BTM: ticks=32,078 armed=2 signals=2 trades=2 pnl=-112
+    LEDS: ticks=1,970 armed=1 signals=1 trades=1 pnl=-497
+    AYTU: ticks=164,424 armed=3 signals=3 trades=3 pnl=-36
+    BTM: ticks=32,078 armed=2 signals=2 trades=2 pnl=-112
+    LEDS: ticks=1,970 armed=1 signals=1 trades=1 pnl=-497
+    AYTU: ticks=164,424 armed=3 signals=3 trades=3 pnl=-36
+  A: 2 trades, $+45, eq=$86,396 | B: 2 trades, $+45, eq=$86,396
+[93/297] 2025-05-16: 5 scanned → 5 passed → top 5 selected (risk A=$2159, B=$2159)
+    #1 AMST: vol=15,758,673, gap=97%, float=3.0M
+    #2 CAPS: vol=5,291,832, gap=80%, float=5.1M
+    #3 TGL: vol=9,991,508, gap=35%, float=3.5M
+    #4 SORA: vol=1,766,596, gap=54%, float=4.9M
+    #5 DTSS: vol=219,761, gap=16%, float=6.0M
+    AMST: ticks=467,402 armed=2 signals=2 trades=2 pnl=+4981
+    CAPS: ticks=137,261 armed=1 signals=1 trades=1 pnl=+2192
+    TGL: ticks=165,821 armed=0 signals=0 trades=0 pnl=+0
+    SORA: ticks=144,293 armed=4 signals=3 trades=2 pnl=+2399
+    DTSS: ticks=692 armed=0 signals=0 trades=0 pnl=+0
+    AMST: ticks=467,402 armed=2 signals=2 trades=2 pnl=+4981
+    CAPS: ticks=137,261 armed=1 signals=1 trades=1 pnl=+2192
+    TGL: ticks=165,821 armed=0 signals=0 trades=0 pnl=+0
+    SORA: ticks=144,293 armed=4 signals=3 trades=2 pnl=+2399
+    DTSS: ticks=692 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+2,660, eq=$89,056 | B: 1 trades, $+2,660, eq=$89,056
+[94/297] 2025-05-19: 3 scanned → 3 passed → top 3 selected (risk A=$2226, B=$2226)
+    #1 BCLI: vol=9,491,960, gap=82%, float=7.2M
+    #2 PTIX: vol=4,316,718, gap=72%, float=1.8M
+    #3 DTSS: vol=563,319, gap=15%, float=6.0M
+    BCLI: ticks=269,950 armed=0 signals=0 trades=0 pnl=+0
+    PTIX: ticks=640,530 armed=4 signals=4 trades=4 pnl=+9298
+    DTSS: ticks=20,200 armed=2 signals=2 trades=2 pnl=-36
+    BCLI: ticks=269,950 armed=0 signals=0 trades=0 pnl=+0
+    PTIX: ticks=640,530 armed=4 signals=4 trades=4 pnl=+9298
+    DTSS: ticks=20,200 armed=2 signals=2 trades=2 pnl=-36
+  A: 3 trades, $+441, eq=$89,497 | B: 3 trades, $+441, eq=$89,497
+[95/297] 2025-05-20: 1 scanned → 1 passed → top 1 selected (risk A=$2237, B=$2237)
+    #1 EDBL: vol=7,076,375, gap=42%, float=0.4M
+    EDBL: ticks=377,676 armed=3 signals=3 trades=2 pnl=+1412
+    EDBL: ticks=377,676 armed=3 signals=3 trades=2 pnl=+1412
+  A: 1 trades, $+1,790, eq=$91,287 | B: 1 trades, $+1,790, eq=$91,287
+[96/297] 2025-05-21: 2 scanned → 1 passed → top 1 selected (risk A=$2282, B=$2282)
+    #1 EDBL: vol=13,439,812, gap=62%, float=0.4M
+    EDBL: ticks=678,381 armed=5 signals=5 trades=4 pnl=+5465
+    EDBL: ticks=678,381 armed=5 signals=5 trades=4 pnl=+5465
+  A: 0 trades, $+0, eq=$91,287 | B: 0 trades, $+0, eq=$91,287
+[97/297] 2025-05-22: 3 scanned → 3 passed → top 3 selected (risk A=$2282, B=$2282)
+    #1 XAGE: vol=10,680,720, gap=70%, float=0.9M
+    #2 SINT: vol=2,175,519, gap=11%, float=3.0M
+    #3 CREX: vol=126,027, gap=18%, float=8.7M
+    XAGE: ticks=236,582 armed=4 signals=4 trades=2 pnl=+3317
+    SINT: ticks=51,105 armed=0 signals=0 trades=0 pnl=+0
+    CREX: ticks=915 armed=0 signals=0 trades=0 pnl=+0
+    XAGE: ticks=236,582 armed=4 signals=4 trades=2 pnl=+3317
+    SINT: ticks=51,105 armed=0 signals=0 trades=0 pnl=+0
+    CREX: ticks=915 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+856, eq=$92,143 | B: 1 trades, $+856, eq=$92,143
+[98/297] 2025-05-23: 2 scanned → 2 passed → top 2 selected (risk A=$2303, B=$2303)
+    #1 VCIG: vol=2,389,038, gap=14%, float=0.1M
+    #2 CREX: vol=275,537, gap=13%, float=8.7M
+    VCIG: ticks=53,434 armed=2 signals=1 trades=1 pnl=+62
+    CREX: ticks=1,369 armed=0 signals=0 trades=0 pnl=+0
+    VCIG: ticks=53,434 armed=2 signals=1 trades=1 pnl=+62
+    CREX: ticks=1,369 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$92,143 | B: 0 trades, $+0, eq=$92,143
+[99/297] 2025-05-27: 2 scanned → 2 passed → top 2 selected (risk A=$2303, B=$2303)
+    #1 CETX: vol=7,994,907, gap=21%, float=0.8M
+    #2 ZENA: vol=873,045, gap=10%, float=8.4M
+    CETX: ticks=50,973 armed=2 signals=2 trades=1 pnl=+3838
+    ZENA: ticks=108,645 armed=6 signals=5 trades=2 pnl=+738
+    CETX: ticks=50,973 armed=2 signals=2 trades=1 pnl=+3838
+    ZENA: ticks=108,645 armed=6 signals=5 trades=2 pnl=+738
+  A: 3 trades, $+4,576, eq=$96,719 | B: 3 trades, $+4,576, eq=$96,719
+[100/297] 2025-05-28: 3 scanned → 1 passed → top 1 selected (risk A=$2417, B=$2417)
+    #1 ARAI: vol=463,117, gap=47%, float=6.2M
+    ARAI: ticks=10,542 armed=0 signals=0 trades=0 pnl=+0
+    ARAI: ticks=10,542 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$96,719 | B: 0 trades, $+0, eq=$96,719
+[101/297] 2025-05-29: 4 scanned → 3 passed → top 3 selected (risk A=$2417, B=$2417)
+    #1 WETO: vol=4,197,164, gap=102%, float=5.7M
+    #2 VCIG: vol=9,891,299, gap=64%, float=0.1M
+    #3 BOSC: vol=152,201, gap=13%, float=5.5M
+    WETO: ticks=129,526 armed=1 signals=1 trades=1 pnl=-192
+    VCIG: ticks=164,290 armed=2 signals=2 trades=2 pnl=+7094
+    BOSC: ticks=54,963 armed=2 signals=2 trades=2 pnl=+1515
+    WETO: ticks=129,526 armed=1 signals=1 trades=1 pnl=-192
+    VCIG: ticks=164,290 armed=2 signals=2 trades=2 pnl=+7094
+    BOSC: ticks=54,963 armed=2 signals=2 trades=2 pnl=+1515
+  A: 3 trades, $+1,323, eq=$98,042 | B: 3 trades, $+1,323, eq=$98,042
+[102/297] 2025-05-30: 2 scanned → 2 passed → top 2 selected (risk A=$2451, B=$2451)
+    #1 GITS: vol=11,374,979, gap=276%, float=2.5M
+    #2 BSLK: vol=12,812,181, gap=93%, float=1.4M
+    GITS: ticks=309,641 armed=4 signals=4 trades=2 pnl=+3586
+    BSLK: ticks=235,320 armed=3 signals=3 trades=2 pnl=+2292
+    GITS: ticks=309,641 armed=4 signals=4 trades=2 pnl=+3586
+    BSLK: ticks=235,320 armed=3 signals=3 trades=2 pnl=+2292
+  A: 2 trades, $+3,586, eq=$101,628 | B: 2 trades, $+3,586, eq=$101,628
+[103/297] 2025-06-02: 1 scanned → 1 passed → top 1 selected (risk A=$2540, B=$2540)
+    #1 INM: vol=5,322,360, gap=77%, float=1.8M
+    INM: ticks=596,597 armed=5 signals=5 trades=2 pnl=+8090
+    INM: ticks=596,597 armed=5 signals=5 trades=2 pnl=+8090
+  A: 0 trades, $+0, eq=$101,628 | B: 0 trades, $+0, eq=$101,628
+[104/297] 2025-06-03: 7 scanned → 7 passed → top 5 selected (risk A=$2540, B=$2540)
+    #1 SOAR: vol=8,336,374, gap=82%, float=7.0M
+    #2 TRAW: vol=9,596,097, gap=126%, float=4.0M
+    #3 NIVF: vol=33,504,538, gap=178%, float=0.1M
+    #4 HIND: vol=9,113,438, gap=94%, float=1.5M
+    #5 KPRX: vol=880,093, gap=12%, float=3.6M
+    SOAR: ticks=170,468 armed=1 signals=1 trades=1 pnl=+9
+    TRAW: ticks=363,293 armed=0 signals=0 trades=0 pnl=+0
+    NIVF: ticks=780,501 armed=7 signals=5 trades=1 pnl=+1414
+    HIND: ticks=277,792 armed=3 signals=3 trades=2 pnl=+1458
+    KPRX: ticks=230,205 armed=1 signals=1 trades=1 pnl=+3663
+    SOAR: ticks=170,468 armed=1 signals=1 trades=1 pnl=+9
+    TRAW: ticks=363,293 armed=0 signals=0 trades=0 pnl=+0
+    NIVF: ticks=780,501 armed=7 signals=5 trades=1 pnl=+1414
+    HIND: ticks=277,792 armed=3 signals=3 trades=2 pnl=+1458
+    KPRX: ticks=230,205 armed=1 signals=1 trades=1 pnl=+3663
+  A: 2 trades, $+1,483, eq=$103,111 | B: 2 trades, $+1,483, eq=$103,111
+[105/297] 2025-06-04: 4 scanned → 4 passed → top 4 selected (risk A=$2577, B=$2577)
+    #1 BAOS: vol=19,094,352, gap=124%, float=0.9M
+    #2 TGL: vol=12,042,362, gap=37%, float=3.5M
+    #3 VCIG: vol=9,566,310, gap=25%, float=0.1M
+    #4 SXTP: vol=353,196, gap=10%, float=0.9M
+    BAOS: ticks=386,936 armed=3 signals=3 trades=2 pnl=-680
+    TGL: ticks=122,259 armed=2 signals=1 trades=1 pnl=+92
+    VCIG: ticks=187,233 armed=2 signals=2 trades=1 pnl=-491
+    SXTP: ticks=28,242 armed=0 signals=0 trades=0 pnl=+0
+    BAOS: ticks=386,936 armed=3 signals=3 trades=2 pnl=-680
+    TGL: ticks=122,259 armed=2 signals=1 trades=1 pnl=+92
+    VCIG: ticks=187,233 armed=2 signals=2 trades=1 pnl=-491
+    SXTP: ticks=28,242 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-779, eq=$102,332 | B: 1 trades, $-779, eq=$102,332
+[106/297] 2025-06-05: 2 scanned → 2 passed → top 2 selected (risk A=$2558, B=$2558)
+    #1 CTNT: vol=14,410,579, gap=41%, float=2.6M
+    #2 RETO: vol=62,278, gap=21%, float=0.8M
+    CTNT: ticks=164,615 armed=1 signals=1 trades=0 pnl=+0
+    RETO: ticks=3,618 armed=0 signals=0 trades=0 pnl=+0
+    CTNT: ticks=164,615 armed=1 signals=1 trades=0 pnl=+0
+    RETO: ticks=3,618 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$102,332 | B: 0 trades, $+0, eq=$102,332
+[107/297] 2025-06-06: 4 scanned → 4 passed → top 4 selected (risk A=$2558, B=$2558)
+    #1 VERO: vol=12,616,596, gap=67%, float=1.6M
+    #2 BJDX: vol=16,251,008, gap=63%, float=0.4M
+    #3 TWAV: vol=619,098, gap=22%, float=2.9M
+    #4 TGE: vol=575,251, gap=48%, float=7.5M
+    VERO: ticks=414,464 armed=1 signals=1 trades=1 pnl=-553
+    BJDX: ticks=232,674 armed=2 signals=1 trades=0 pnl=+0
+    TWAV: ticks=14,947 armed=0 signals=0 trades=0 pnl=+0
+    TGE: ticks=34,731 armed=1 signals=1 trades=1 pnl=+881
+    VERO: ticks=414,464 armed=1 signals=1 trades=1 pnl=-553
+    BJDX: ticks=232,674 armed=2 signals=1 trades=0 pnl=+0
+    TWAV: ticks=14,947 armed=0 signals=0 trades=0 pnl=+0
+    TGE: ticks=34,731 armed=1 signals=1 trades=1 pnl=+881
+  A: 1 trades, $-553, eq=$101,779 | B: 1 trades, $-553, eq=$101,779
+[108/297] 2025-06-09: 5 scanned → 5 passed → top 5 selected (risk A=$2544, B=$2544)
+    #1 COOK: vol=2,697,897, gap=38%, float=1.3M
+    #2 TPST: vol=269,346, gap=31%, float=2.8M
+    #3 TAOX: vol=126,320, gap=42%, float=7.0M
+    #4 MNTS: vol=510,665, gap=24%, float=1.3M
+    #5 LPCN: vol=343,732, gap=17%, float=4.9M
+    COOK: ticks=21,590 armed=0 signals=0 trades=0 pnl=+0
+    TPST: ticks=20,827 armed=1 signals=1 trades=0 pnl=+0
+    TAOX: ticks=250,667 armed=2 signals=1 trades=1 pnl=-17
+    MNTS: ticks=15,965 armed=0 signals=0 trades=0 pnl=+0
+    LPCN: ticks=5,222 armed=1 signals=1 trades=0 pnl=+0
+    COOK: ticks=21,590 armed=0 signals=0 trades=0 pnl=+0
+    TPST: ticks=20,827 armed=1 signals=1 trades=0 pnl=+0
+    TAOX: ticks=250,667 armed=2 signals=1 trades=1 pnl=-17
+    MNTS: ticks=15,965 armed=0 signals=0 trades=0 pnl=+0
+    LPCN: ticks=5,222 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $-17, eq=$101,762 | B: 1 trades, $-17, eq=$101,762
+[109/297] 2025-06-10: 3 scanned → 3 passed → top 3 selected (risk A=$2544, B=$2544)
+    #1 MEGL: vol=27,194,023, gap=144%, float=4.0M
+    #2 EVGN: vol=10,951,585, gap=162%, float=8.6M
+    #3 GELS: vol=16,489,157, gap=82%, float=5.5M
+    MEGL: ticks=329,512 armed=3 signals=3 trades=2 pnl=+11899
+    EVGN: ticks=418,718 armed=2 signals=2 trades=2 pnl=-173
+    MEGL: ticks=329,512 armed=3 signals=3 trades=2 pnl=+11899
+    EVGN: ticks=418,718 armed=2 signals=2 trades=2 pnl=-173
+  A: 2 trades, $-173, eq=$101,589 | B: 2 trades, $-173, eq=$101,589
+[110/297] 2025-06-11: 1 scanned, 0 passed filter, 0 selected
+[111/297] 2025-06-12: 0 scanned, 0 passed filter, 0 selected
+[112/297] 2025-06-13: 4 scanned → 4 passed → top 4 selected (risk A=$2539, B=$2539)
+    #1 RBNE: vol=11,110,266, gap=213%, float=2.7M
+    #2 ICON: vol=469,141, gap=37%, float=0.7M
+    #3 INDO: vol=5,665,372, gap=44%, float=9.5M
+    #4 AGIG: vol=2,296,035, gap=67%, float=8.7M
+    RBNE: ticks=969,892 armed=4 signals=3 trades=3 pnl=+2444
+    ICON: ticks=361,161 armed=2 signals=2 trades=1 pnl=+2714
+    INDO: ticks=154,033 armed=1 signals=1 trades=1 pnl=-26
+    AGIG: ticks=273,116 armed=5 signals=4 trades=4 pnl=+2823
+    RBNE: ticks=969,892 armed=4 signals=3 trades=3 pnl=+2444
+    ICON: ticks=361,161 armed=2 signals=2 trades=1 pnl=+2714
+    INDO: ticks=154,033 armed=1 signals=1 trades=1 pnl=-26
+    AGIG: ticks=273,116 armed=5 signals=4 trades=4 pnl=+2823
+  A: 4 trades, $+2,141, eq=$103,730 | B: 4 trades, $+2,141, eq=$103,730
+[113/297] 2025-06-16: 8 scanned → 7 passed → top 5 selected (risk A=$2593, B=$2593)
+    #1 LSE: vol=2,196,198, gap=50%, float=1.5M
+    #2 BATL: vol=16,890,871, gap=126%, float=7.2M
+    #3 SVRN: vol=35,407,302, gap=117%, float=0.2M
+    #4 STAK: vol=2,607,379, gap=196%, float=6.9M
+    #5 TMDE: vol=31,263,689, gap=115%, float=3.6M
+    LSE: ticks=126,635 armed=3 signals=3 trades=3 pnl=+13146
+    BATL: ticks=309,661 armed=0 signals=0 trades=0 pnl=+0
+    SVRN: ticks=431,855 armed=5 signals=4 trades=4 pnl=+5263
+    STAK: ticks=231,774 armed=3 signals=3 trades=3 pnl=+2301
+    TMDE: ticks=373,087 armed=3 signals=3 trades=1 pnl=+740
+    LSE: ticks=126,635 armed=3 signals=3 trades=3 pnl=+13146
+    BATL: ticks=309,661 armed=0 signals=0 trades=0 pnl=+0
+    SVRN: ticks=431,855 armed=5 signals=4 trades=4 pnl=+5263
+    STAK: ticks=231,774 armed=3 signals=3 trades=3 pnl=+2301
+    TMDE: ticks=373,087 armed=3 signals=3 trades=1 pnl=+740
+  A: 3 trades, $+5,259, eq=$108,989 | B: 3 trades, $+5,259, eq=$108,989
+[114/297] 2025-06-17: 2 scanned → 2 passed → top 2 selected (risk A=$2724, B=$2724)
+    #1 FIEE: vol=7,263,307, gap=19%, float=0.4M
+    #2 CERO: vol=4,052,888, gap=63%, float=1.2M
+    FIEE: ticks=100,207 armed=2 signals=2 trades=2 pnl=+2042
+    CERO: ticks=518,449 armed=3 signals=3 trades=3 pnl=+12560
+    FIEE: ticks=100,207 armed=2 signals=2 trades=2 pnl=+2042
+    CERO: ticks=518,449 armed=3 signals=3 trades=3 pnl=+12560
+  A: 1 trades, $+743, eq=$109,732 | B: 1 trades, $+743, eq=$109,732
+[115/297] 2025-06-18: 7 scanned → 6 passed → top 5 selected (risk A=$2743, B=$2743)
+    #1 DFSC: vol=3,156,068, gap=94%, float=1.2M
+    #2 LSE: vol=5,870,017, gap=73%, float=1.5M
+    #3 MTR: vol=506,156, gap=22%, float=1.6M
+    #4 SNTI: vol=1,867,838, gap=20%, float=9.7M
+    #5 EKSO: vol=1,917,162, gap=17%, float=1.8M
+    DFSC: ticks=316,689 armed=4 signals=4 trades=4 pnl=+6898
+    LSE: ticks=250,846 armed=4 signals=4 trades=3 pnl=+3515
+    MTR: ticks=31,030 armed=1 signals=1 trades=1 pnl=+2147
+    SNTI: ticks=20,498 armed=1 signals=1 trades=1 pnl=+50
+    EKSO: ticks=24,832 armed=0 signals=0 trades=0 pnl=+0
+    DFSC: ticks=316,689 armed=4 signals=4 trades=4 pnl=+6898
+    LSE: ticks=250,846 armed=4 signals=4 trades=3 pnl=+3515
+    MTR: ticks=31,030 armed=1 signals=1 trades=1 pnl=+2147
+    SNTI: ticks=20,498 armed=1 signals=1 trades=1 pnl=+50
+    EKSO: ticks=24,832 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $+795, eq=$110,527 | B: 2 trades, $+795, eq=$110,527
+[116/297] 2025-06-20: 3 scanned → 2 passed → top 2 selected (risk A=$2763, B=$2763)
+    #1 WHLR: vol=6,688,494, gap=117%, float=0.2M
+    #2 AIFF: vol=6,321,055, gap=19%, float=6.3M
+    WHLR: ticks=548,556 armed=2 signals=2 trades=2 pnl=-720
+    AIFF: ticks=145,606 armed=2 signals=2 trades=2 pnl=-202
+    WHLR: ticks=548,556 armed=2 signals=2 trades=2 pnl=-720
+    AIFF: ticks=145,606 armed=2 signals=2 trades=2 pnl=-202
+  A: 2 trades, $-1,533, eq=$108,994 | B: 2 trades, $-1,533, eq=$108,994
+[117/297] 2025-06-23: 4 scanned → 4 passed → top 4 selected (risk A=$2724, B=$2724)
+    #1 VSEE: vol=3,496,188, gap=93%, float=7.2M
+    #2 WFF: vol=222,906, gap=44%, float=8.0M
+    #3 LGL: vol=114,147, gap=18%, float=3.8M
+    #4 MIND: vol=711,478, gap=24%, float=8.9M
+    VSEE: ticks=74,495 armed=0 signals=0 trades=0 pnl=+0
+    WFF: ticks=7,444 armed=1 signals=1 trades=1 pnl=+1392
+    LGL: ticks=886 armed=0 signals=0 trades=0 pnl=+0
+    MIND: ticks=7,005 armed=2 signals=2 trades=1 pnl=+49
+    VSEE: ticks=74,495 armed=0 signals=0 trades=0 pnl=+0
+    WFF: ticks=7,444 armed=1 signals=1 trades=1 pnl=+1392
+    LGL: ticks=886 armed=0 signals=0 trades=0 pnl=+0
+    MIND: ticks=7,005 armed=2 signals=2 trades=1 pnl=+49
+  A: 2 trades, $+1,441, eq=$110,435 | B: 2 trades, $+1,441, eq=$110,435
+[118/297] 2025-06-24: 2 scanned → 2 passed → top 2 selected (risk A=$2760, B=$2760)
+    #1 INM: vol=23,712,165, gap=98%, float=1.8M
+    #2 XBIO: vol=134,547, gap=14%, float=1.3M
+    INM: ticks=695,734 armed=5 signals=5 trades=3 pnl=+986
+    INM: ticks=695,734 armed=5 signals=5 trades=3 pnl=+986
+  A: 1 trades, $-8,725, eq=$101,710 | B: 1 trades, $-8,725, eq=$101,710
+[119/297] 2025-06-25: 1 scanned → 1 passed → top 1 selected (risk A=$2542, B=$2542)
+    #1 ATON: vol=2,227,016, gap=21%, float=0.8M
+    ATON: ticks=57,096 armed=2 signals=2 trades=1 pnl=+373
+    ATON: ticks=57,096 armed=2 signals=2 trades=1 pnl=+373
+  A: 0 trades, $+0, eq=$101,710 | B: 0 trades, $+0, eq=$101,710
+[120/297] 2025-06-26: 2 scanned → 2 passed → top 2 selected (risk A=$2542, B=$2542)
+    #1 CYN: vol=3,618,543, gap=92%, float=8.0M
+    #2 ASTI: vol=424,568, gap=228%, float=3.0M
+    CYN: ticks=1,263,240 armed=4 signals=4 trades=4 pnl=+2429
+    ASTI: ticks=336,848 armed=0 signals=0 trades=0 pnl=+0
+    CYN: ticks=1,263,240 armed=4 signals=4 trades=4 pnl=+2429
+    ASTI: ticks=336,848 armed=0 signals=0 trades=0 pnl=+0
+  A: 4 trades, $+2,429, eq=$104,139 | B: 4 trades, $+2,429, eq=$104,139
+[121/297] 2025-06-27: 3 scanned → 2 passed → top 2 selected (risk A=$2603, B=$2603)
+    #1 BBLG: vol=4,917,331, gap=147%, float=1.8M
+    #2 HCWB: vol=1,661,136, gap=24%, float=2.4M
+    BBLG: ticks=362,155 armed=4 signals=4 trades=3 pnl=+4517
+    HCWB: ticks=35,590 armed=0 signals=0 trades=0 pnl=+0
+    BBLG: ticks=362,155 armed=4 signals=4 trades=3 pnl=+4517
+    HCWB: ticks=35,590 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-260, eq=$103,879 | B: 1 trades, $-260, eq=$103,879
+[122/297] 2025-06-30: 3 scanned → 3 passed → top 3 selected (risk A=$2596, B=$2596)
+    #1 IPDN: vol=15,086,917, gap=172%, float=2.8M
+    #2 ARTL: vol=4,150,651, gap=156%, float=2.1M
+    #3 WBUY: vol=14,890,283, gap=75%, float=0.9M
+    IPDN: ticks=494,891 armed=0 signals=0 trades=0 pnl=+0
+    ARTL: ticks=367,661 armed=5 signals=4 trades=4 pnl=+6256
+    WBUY: ticks=479,524 armed=1 signals=1 trades=1 pnl=-1349
+    IPDN: ticks=494,891 armed=0 signals=0 trades=0 pnl=+0
+    ARTL: ticks=367,661 armed=5 signals=4 trades=4 pnl=+6256
+    WBUY: ticks=479,524 armed=1 signals=1 trades=1 pnl=-1349
+  A: 2 trades, $+885, eq=$104,764 | B: 2 trades, $+885, eq=$104,764
+[123/297] 2025-07-01: 4 scanned → 3 passed → top 3 selected (risk A=$2619, B=$2619)
+    #1 BGLC: vol=13,310,463, gap=340%, float=1.3M
+    #2 CLRO: vol=9,446,567, gap=145%, float=0.3M
+    #3 POLA: vol=74,609, gap=24%, float=1.9M
+    BGLC: ticks=839,689 armed=4 signals=3 trades=3 pnl=+4979
+    CLRO: ticks=650,560 armed=4 signals=4 trades=4 pnl=+771
+    BGLC: ticks=839,689 armed=4 signals=3 trades=3 pnl=+4979
+    CLRO: ticks=650,560 armed=4 signals=4 trades=4 pnl=+771
+  A: 1 trades, $-1,523, eq=$103,241 | B: 1 trades, $-1,523, eq=$103,241
+[124/297] 2025-07-02: 2 scanned → 2 passed → top 2 selected (risk A=$2581, B=$2581)
+    #1 NAMM: vol=3,444,177, gap=64%, float=6.8M
+    #2 VCIG: vol=9,078,180, gap=11%, float=0.1M
+    NAMM: ticks=168,642 armed=3 signals=3 trades=3 pnl=+1855
+    VCIG: ticks=115,443 armed=1 signals=1 trades=1 pnl=-247
+    NAMM: ticks=168,642 armed=3 signals=3 trades=3 pnl=+1855
+    VCIG: ticks=115,443 armed=1 signals=1 trades=1 pnl=-247
+  A: 1 trades, $+1,394, eq=$104,635 | B: 1 trades, $+1,394, eq=$104,635
+[125/297] 2025-07-03: 3 scanned → 3 passed → top 3 selected (risk A=$2615, B=$2615)
+    #1 GITS: vol=11,449,243, gap=167%, float=2.5M
+    #2 FIEE: vol=12,423,406, gap=58%, float=0.4M
+    #3 LIXT: vol=11,397,543, gap=72%, float=5.7M
+    GITS: ticks=412,359 armed=0 signals=0 trades=0 pnl=+0
+    FIEE: ticks=289,095 armed=0 signals=0 trades=0 pnl=+0
+    LIXT: ticks=325,902 armed=2 signals=2 trades=2 pnl=-116
+    GITS: ticks=412,359 armed=0 signals=0 trades=0 pnl=+0
+    FIEE: ticks=289,095 armed=0 signals=0 trades=0 pnl=+0
+    LIXT: ticks=325,902 armed=2 signals=2 trades=2 pnl=-116
+  A: 2 trades, $-116, eq=$104,519 | B: 2 trades, $-116, eq=$104,519
+[126/297] 2025-07-07: 3 scanned → 3 passed → top 3 selected (risk A=$2612, B=$2612)
+    #1 LGPS: vol=24,285,051, gap=138%, float=6.3M
+    #2 MBIO: vol=28,932,737, gap=135%, float=5.1M
+    #3 AMST: vol=135,006, gap=14%, float=3.0M
+    LGPS: ticks=303,837 armed=1 signals=1 trades=1 pnl=+54
+    MBIO: ticks=1,207,558 armed=4 signals=4 trades=4 pnl=+55
+    LGPS: ticks=303,837 armed=1 signals=1 trades=1 pnl=+54
+    MBIO: ticks=1,207,558 armed=4 signals=4 trades=4 pnl=+55
+  A: 5 trades, $+109, eq=$104,628 | B: 5 trades, $+109, eq=$104,628
+[127/297] 2025-07-08: 6 scanned → 5 passed → top 5 selected (risk A=$2615, B=$2615)
+    #1 NDRA: vol=17,375,238, gap=125%, float=1.1M
+    #2 BSLK: vol=8,190,871, gap=36%, float=1.4M
+    #3 OCC: vol=1,995,673, gap=30%, float=5.7M
+    #4 MB: vol=554,539, gap=39%, float=4.7M
+    #5 WKHS: vol=2,720,857, gap=33%, float=3.5M
+    NDRA: ticks=1,059,995 armed=4 signals=4 trades=3 pnl=+5498
+    BSLK: ticks=294,348 armed=2 signals=2 trades=2 pnl=+7652
+    OCC: ticks=62,016 armed=1 signals=1 trades=1 pnl=-18
+    MB: ticks=29,966 armed=0 signals=0 trades=0 pnl=+0
+    WKHS: ticks=140,318 armed=3 signals=3 trades=2 pnl=+430
+    NDRA: ticks=1,059,995 armed=4 signals=4 trades=3 pnl=+5498
+    BSLK: ticks=294,348 armed=2 signals=2 trades=2 pnl=+7652
+    OCC: ticks=62,016 armed=1 signals=1 trades=1 pnl=-18
+    MB: ticks=29,966 armed=0 signals=0 trades=0 pnl=+0
+    WKHS: ticks=140,318 armed=3 signals=3 trades=2 pnl=+430
+  A: 1 trades, $-18, eq=$104,610 | B: 1 trades, $-18, eq=$104,610
+[128/297] 2025-07-09: 2 scanned → 2 passed → top 2 selected (risk A=$2615, B=$2615)
+    #1 BMGL: vol=35,745,049, gap=114%, float=6.0M
+    #2 SOBR: vol=11,118,062, gap=54%, float=1.1M
+    BMGL: ticks=581,535 armed=3 signals=3 trades=3 pnl=-81
+    SOBR: ticks=289,491 armed=0 signals=0 trades=0 pnl=+0
+    BMGL: ticks=581,535 armed=3 signals=3 trades=3 pnl=-81
+    SOBR: ticks=289,491 armed=0 signals=0 trades=0 pnl=+0
+  A: 3 trades, $-81, eq=$104,529 | B: 3 trades, $-81, eq=$104,529
+[129/297] 2025-07-10: 2 scanned → 2 passed → top 2 selected (risk A=$2613, B=$2613)
+    #1 AIRI: vol=3,580,716, gap=32%, float=3.7M
+    #2 DUO: vol=485,413, gap=12%, float=4.0M
+    AIRI: ticks=229,059 armed=2 signals=2 trades=2 pnl=+2368
+    DUO: ticks=7,301 armed=1 signals=1 trades=0 pnl=+0
+    AIRI: ticks=229,059 armed=2 signals=2 trades=2 pnl=+2368
+    DUO: ticks=7,301 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$104,529 | B: 0 trades, $+0, eq=$104,529
+[130/297] 2025-07-11: 3 scanned → 3 passed → top 3 selected (risk A=$2613, B=$2613)
+    #1 FTFT: vol=30,293,971, gap=85%, float=0.1M
+    #2 CVM: vol=6,299,834, gap=56%, float=7.4M
+    #3 BTCT: vol=2,395,738, gap=17%, float=7.2M
+    FTFT: ticks=433,274 armed=3 signals=3 trades=2 pnl=+6854
+    CVM: ticks=181,024 armed=3 signals=3 trades=3 pnl=+817
+    BTCT: ticks=67,819 armed=1 signals=0 trades=0 pnl=+0
+    FTFT: ticks=433,274 armed=3 signals=3 trades=2 pnl=+6854
+    CVM: ticks=181,024 armed=3 signals=3 trades=3 pnl=+817
+    BTCT: ticks=67,819 armed=1 signals=0 trades=0 pnl=+0
+  A: 3 trades, $+817, eq=$105,346 | B: 3 trades, $+817, eq=$105,346
+[131/297] 2025-07-14: 3 scanned → 3 passed → top 3 selected (risk A=$2633, B=$2633)
+    #1 SQFT: vol=5,774,308, gap=125%, float=0.7M
+    #2 AIFF: vol=13,544,748, gap=23%, float=6.3M
+    #3 MSW: vol=316,406, gap=11%, float=4.0M
+    SQFT: ticks=740,875 armed=2 signals=2 trades=2 pnl=+4134
+    AIFF: ticks=161,762 armed=1 signals=1 trades=1 pnl=+27
+    MSW: ticks=4,639 armed=1 signals=1 trades=1 pnl=+1899
+    SQFT: ticks=740,875 armed=2 signals=2 trades=2 pnl=+4134
+    AIFF: ticks=161,762 armed=1 signals=1 trades=1 pnl=+27
+    MSW: ticks=4,639 armed=1 signals=1 trades=1 pnl=+1899
+  A: 1 trades, $+27, eq=$105,373 | B: 1 trades, $+27, eq=$105,373
+[132/297] 2025-07-15: 3 scanned → 3 passed → top 3 selected (risk A=$2634, B=$2634)
+    #1 SMX: vol=15,572,513, gap=70%, float=0.0M
+    #2 XAGE: vol=10,635,418, gap=94%, float=0.9M
+    #3 SXTP: vol=6,353,988, gap=70%, float=0.9M
+    SMX: ticks=276,295 armed=3 signals=3 trades=3 pnl=+3816
+    XAGE: ticks=945,115 armed=5 signals=4 trades=4 pnl=+1624
+    SXTP: ticks=174,568 armed=2 signals=2 trades=2 pnl=+19876
+    SMX: ticks=276,295 armed=3 signals=3 trades=3 pnl=+3816
+    XAGE: ticks=945,115 armed=5 signals=4 trades=4 pnl=+1624
+    SXTP: ticks=174,568 armed=2 signals=2 trades=2 pnl=+19876
+  A: 1 trades, $+842, eq=$106,215 | B: 1 trades, $+842, eq=$106,215
+[133/297] 2025-07-16: 7 scanned → 7 passed → top 5 selected (risk A=$2655, B=$2655)
+    #1 APM: vol=21,094,478, gap=146%, float=5.3M
+    #2 DTST: vol=4,216,720, gap=33%, float=5.5M
+    #3 NUWE: vol=10,305,886, gap=157%, float=0.9M
+    #4 BNRG: vol=5,418,935, gap=16%, float=0.4M
+    #5 MLEC: vol=554,158, gap=11%, float=0.7M
+    APM: ticks=429,511 armed=2 signals=2 trades=2 pnl=-120
+    DTST: ticks=111,067 armed=1 signals=1 trades=0 pnl=+0
+    NUWE: ticks=611,271 armed=5 signals=5 trades=4 pnl=+7691
+    BNRG: ticks=66,822 armed=1 signals=1 trades=0 pnl=+0
+    MLEC: ticks=18,775 armed=0 signals=0 trades=0 pnl=+0
+    APM: ticks=429,511 armed=2 signals=2 trades=2 pnl=-120
+    DTST: ticks=111,067 armed=1 signals=1 trades=0 pnl=+0
+    NUWE: ticks=611,271 armed=5 signals=5 trades=4 pnl=+7691
+    BNRG: ticks=66,822 armed=1 signals=1 trades=0 pnl=+0
+    MLEC: ticks=18,775 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $-120, eq=$106,095 | B: 2 trades, $-120, eq=$106,095
+[134/297] 2025-07-17: 2 scanned → 2 passed → top 2 selected (risk A=$2652, B=$2652)
+    #1 XXII: vol=8,431,100, gap=124%, float=0.4M
+    #2 BSLK: vol=6,679,092, gap=60%, float=1.4M
+    XXII: ticks=370,146 armed=2 signals=2 trades=2 pnl=+949
+    BSLK: ticks=547,743 armed=2 signals=2 trades=2 pnl=+5719
+    XXII: ticks=370,146 armed=2 signals=2 trades=2 pnl=+949
+    BSLK: ticks=547,743 armed=2 signals=2 trades=2 pnl=+5719
+  A: 0 trades, $+0, eq=$106,095 | B: 0 trades, $+0, eq=$106,095
+[135/297] 2025-07-18: 0 scanned, 0 passed filter, 0 selected
+[136/297] 2025-07-21: 3 scanned → 3 passed → top 3 selected (risk A=$2652, B=$2652)
+    #1 SABS: vol=10,430,004, gap=50%, float=7.9M
+    #2 GCTK: vol=9,070,200, gap=70%, float=0.8M
+    #3 APLM: vol=227,242, gap=20%, float=0.8M
+    SABS: ticks=533,147 armed=4 signals=4 trades=4 pnl=+79
+    SABS: ticks=533,147 armed=4 signals=4 trades=4 pnl=+79
+  A: 2 trades, $-222, eq=$105,873 | B: 2 trades, $-222, eq=$105,873
+[137/297] 2025-07-22: 1 scanned → 1 passed → top 1 selected (risk A=$2646, B=$2646)
+    #1 IVF: vol=8,434,089, gap=85%, float=1.7M
+    IVF: ticks=522,140 armed=4 signals=4 trades=2 pnl=+252
+    IVF: ticks=522,140 armed=4 signals=4 trades=2 pnl=+252
+  A: 1 trades, $-2,285, eq=$103,588 | B: 1 trades, $-2,285, eq=$103,588
+[138/297] 2025-07-23: 8 scanned → 7 passed → top 5 selected (risk A=$2589, B=$2589)
+    #1 OFAL: vol=13,818,603, gap=43%, float=5.1M
+    #2 PLRZ: vol=26,761,685, gap=49%, float=0.9M
+    #3 RNAZ: vol=84,001, gap=31%, float=0.8M
+    #4 ZOOZ: vol=3,795,348, gap=38%, float=8.0M
+    #5 SDOT: vol=326,607, gap=23%, float=0.8M
+    OFAL: ticks=190,256 armed=0 signals=0 trades=0 pnl=+0
+    PLRZ: ticks=199,363 armed=3 signals=2 trades=1 pnl=-100
+    RNAZ: ticks=18,561 armed=2 signals=2 trades=0 pnl=+0
+    ZOOZ: ticks=53,232 armed=2 signals=2 trades=1 pnl=+114
+    SDOT: ticks=2,230 armed=1 signals=1 trades=1 pnl=-922
+    OFAL: ticks=190,256 armed=0 signals=0 trades=0 pnl=+0
+    PLRZ: ticks=199,363 armed=3 signals=2 trades=1 pnl=-100
+    RNAZ: ticks=18,561 armed=2 signals=2 trades=0 pnl=+0
+    ZOOZ: ticks=53,232 armed=2 signals=2 trades=1 pnl=+114
+    SDOT: ticks=2,230 armed=1 signals=1 trades=1 pnl=-922
+  A: 2 trades, $+14, eq=$103,602 | B: 2 trades, $+14, eq=$103,602
+[139/297] 2025-07-24: 0 scanned, 0 passed filter, 0 selected
+[140/297] 2025-07-25: 1 scanned → 1 passed → top 1 selected (risk A=$2590, B=$2590)
+    #1 NXTC: vol=851,079, gap=16%, float=1.5M
+    NXTC: ticks=35,161 armed=0 signals=0 trades=0 pnl=+0
+    NXTC: ticks=35,161 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$103,602 | B: 0 trades, $+0, eq=$103,602
+[141/297] 2025-07-28: 4 scanned → 4 passed → top 4 selected (risk A=$2590, B=$2590)
+    #1 TRUG: vol=4,438,112, gap=42%, float=2.4M
+    #2 CRVO: vol=3,798,089, gap=51%, float=5.5M
+    #3 XXII: vol=9,337,512, gap=23%, float=0.4M
+    #4 SMX: vol=19,647,819, gap=36%, float=0.0M
+    TRUG: ticks=136,915 armed=1 signals=1 trades=1 pnl=-294
+    CRVO: ticks=164,057 armed=4 signals=3 trades=3 pnl=+798
+    XXII: ticks=207,919 armed=2 signals=2 trades=2 pnl=+3098
+    SMX: ticks=368,755 armed=3 signals=3 trades=2 pnl=+1240
+    TRUG: ticks=136,915 armed=1 signals=1 trades=1 pnl=-294
+    CRVO: ticks=164,057 armed=4 signals=3 trades=3 pnl=+798
+    XXII: ticks=207,919 armed=2 signals=2 trades=2 pnl=+3098
+    SMX: ticks=368,755 armed=3 signals=3 trades=2 pnl=+1240
+  A: 2 trades, $+781, eq=$104,383 | B: 2 trades, $+781, eq=$104,383
+[142/297] 2025-07-29: 4 scanned → 4 passed → top 4 selected (risk A=$2609, B=$2609)
+    #1 DCOY: vol=22,669,264, gap=196%, float=0.5M
+    #2 AEHL: vol=1,959,190, gap=27%, float=1.1M
+    #3 SOAR: vol=16,455,849, gap=30%, float=7.0M
+    #4 ZOOZ: vol=5,943,811, gap=30%, float=8.0M
+    DCOY: ticks=419,214 armed=1 signals=1 trades=1 pnl=-1209
+    AEHL: ticks=83,651 armed=1 signals=1 trades=1 pnl=-2231
+    DCOY: ticks=419,214 armed=1 signals=1 trades=1 pnl=-1209
+    AEHL: ticks=83,651 armed=1 signals=1 trades=1 pnl=-2231
+  A: 2 trades, $-3,440, eq=$100,943 | B: 2 trades, $-3,440, eq=$100,943
+[143/297] 2025-07-30: 4 scanned → 4 passed → top 4 selected (risk A=$2523, B=$2523)
+    #1 XBP: vol=16,799,653, gap=126%, float=3.5M
+    #2 STAK: vol=6,161,411, gap=22%, float=6.9M
+    #3 WBUY: vol=892,690, gap=15%, float=0.9M
+    #4 TOYO: vol=63,107, gap=17%, float=9.1M
+    XBP: ticks=307,739 armed=1 signals=1 trades=1 pnl=-961
+    STAK: ticks=89,449 armed=0 signals=0 trades=0 pnl=+0
+    WBUY: ticks=25,144 armed=1 signals=1 trades=1 pnl=+9944
+    TOYO: ticks=662 armed=2 signals=1 trades=0 pnl=+0
+    XBP: ticks=307,739 armed=1 signals=1 trades=1 pnl=-961
+    STAK: ticks=89,449 armed=0 signals=0 trades=0 pnl=+0
+    WBUY: ticks=25,144 armed=1 signals=1 trades=1 pnl=+9944
+    TOYO: ticks=662 armed=2 signals=2 trades=1 pnl=+143
+  A: 1 trades, $-961, eq=$99,982 | B: 2 trades, $-818, eq=$100,125
+[144/297] 2025-07-31: 4 scanned → 3 passed → top 3 selected (risk A=$2499, B=$2503)
+    #1 PBM: vol=5,243,612, gap=62%, float=0.3M
+    #2 ONCO: vol=12,351,706, gap=46%, float=1.3M
+    #3 SILC: vol=76,739, gap=14%, float=5.4M
+    PBM: ticks=382,029 armed=1 signals=1 trades=1 pnl=+2975
+    ONCO: ticks=261,036 armed=4 signals=4 trades=2 pnl=+429
+    SILC: ticks=623 armed=0 signals=0 trades=0 pnl=+0
+    PBM: ticks=382,029 armed=1 signals=1 trades=1 pnl=+2981
+    ONCO: ticks=261,036 armed=4 signals=4 trades=2 pnl=+431
+    SILC: ticks=623 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $+3,172, eq=$103,154 | B: 2 trades, $+3,179, eq=$103,304
+[145/297] 2025-08-01: 2 scanned → 2 passed → top 2 selected (risk A=$2578, B=$2582)
+    #1 NAMM: vol=7,639,533, gap=80%, float=6.8M
+    #2 MSW: vol=2,490,964, gap=133%, float=4.0M
+    NAMM: ticks=250,855 armed=1 signals=1 trades=1 pnl=+87
+    MSW: ticks=46,903 armed=1 signals=1 trades=1 pnl=+8884
+    NAMM: ticks=250,855 armed=1 signals=1 trades=1 pnl=+87
+    MSW: ticks=46,903 armed=1 signals=1 trades=1 pnl=+8898
+  A: 2 trades, $+8,971, eq=$112,125 | B: 2 trades, $+8,985, eq=$112,289
+[146/297] 2025-08-04: 4 scanned → 3 passed → top 3 selected (risk A=$2803, B=$2807)
+    #1 BTBD: vol=4,658,806, gap=30%, float=3.1M
+    #2 PBM: vol=8,733,516, gap=100%, float=0.3M
+    #3 XCUR: vol=192,408, gap=16%, float=3.4M
+    BTBD: ticks=623,096 armed=5 signals=5 trades=4 pnl=+5468
+    PBM: ticks=377,543 armed=1 signals=1 trades=1 pnl=-1209
+    XCUR: ticks=9,054 armed=0 signals=0 trades=0 pnl=+0
+    BTBD: ticks=623,096 armed=5 signals=5 trades=4 pnl=+5471
+    PBM: ticks=377,543 armed=1 signals=1 trades=1 pnl=-1211
+    XCUR: ticks=9,054 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+2,309, eq=$114,434 | B: 1 trades, $+2,312, eq=$114,601
+[147/297] 2025-08-05: 1 scanned → 1 passed → top 1 selected (risk A=$2860, B=$2865)
+    #1 AUUD: vol=7,228,191, gap=41%, float=3.1M
+    AUUD: ticks=173,292 armed=3 signals=3 trades=3 pnl=+404
+    AUUD: ticks=173,292 armed=3 signals=3 trades=3 pnl=+404
+  A: 0 trades, $+0, eq=$114,434 | B: 0 trades, $+0, eq=$114,601
+[148/297] 2025-08-06: 4 scanned → 3 passed → top 3 selected (risk A=$2860, B=$2865)
+    #1 IPDN: vol=7,292,671, gap=49%, float=2.8M
+    #2 GV: vol=9,639,303, gap=22%, float=4.0M
+    #3 XTKG: vol=1,249,251, gap=19%, float=1.0M
+    IPDN: ticks=205,610 armed=1 signals=1 trades=1 pnl=+2975
+    GV: ticks=115,160 armed=1 signals=1 trades=1 pnl=-340
+    XTKG: ticks=1,436 armed=1 signals=1 trades=0 pnl=+0
+    IPDN: ticks=205,610 armed=1 signals=1 trades=1 pnl=+2980
+    GV: ticks=115,160 armed=1 signals=1 trades=1 pnl=-341
+    XTKG: ticks=1,436 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $+2,975, eq=$117,409 | B: 1 trades, $+2,980, eq=$117,581
+[149/297] 2025-08-07: 2 scanned → 2 passed → top 2 selected (risk A=$2935, B=$2939)
+    #1 CMCT: vol=1,958,114, gap=39%, float=0.7M
+    #2 DXR: vol=166,636, gap=47%, float=2.6M
+    CMCT: ticks=233,135 armed=0 signals=0 trades=0 pnl=+0
+    DXR: ticks=28,188 armed=0 signals=0 trades=0 pnl=+0
+    CMCT: ticks=233,135 armed=0 signals=0 trades=0 pnl=+0
+    DXR: ticks=28,188 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$117,409 | B: 0 trades, $+0, eq=$117,581
+[150/297] 2025-08-08: 0 scanned, 0 passed filter, 0 selected
+[151/297] 2025-08-11: 4 scanned → 4 passed → top 4 selected (risk A=$2935, B=$2939)
+    #1 BJDX: vol=21,101,727, gap=45%, float=0.4M
+    #2 GMHS: vol=12,336,022, gap=61%, float=3.9M
+    #3 AUUD: vol=9,699,939, gap=35%, float=3.1M
+    #4 ELA: vol=75,519, gap=15%, float=6.7M
+    BJDX: ticks=233,558 armed=3 signals=2 trades=1 pnl=+1102
+    GMHS: ticks=69,599 armed=1 signals=1 trades=1 pnl=+3752
+    AUUD: ticks=243,213 armed=0 signals=0 trades=0 pnl=+0
+    ELA: ticks=374 armed=1 signals=0 trades=0 pnl=+0
+    BJDX: ticks=233,558 armed=3 signals=2 trades=1 pnl=+1103
+    GMHS: ticks=69,599 armed=1 signals=1 trades=1 pnl=+3752
+    AUUD: ticks=243,213 armed=0 signals=0 trades=0 pnl=+0
+    ELA: ticks=374 armed=1 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+1,102, eq=$118,511 | B: 0 trades, $+0, eq=$117,581
+[152/297] 2025-08-12: 1 scanned → 1 passed → top 1 selected (risk A=$2962, B=$2939)
+    #1 ZENA: vol=6,967,865, gap=14%, float=8.4M
+    ZENA: ticks=171,297 armed=3 signals=1 trades=1 pnl=-63
+    ZENA: ticks=171,297 armed=3 signals=1 trades=1 pnl=-63
+  A: 1 trades, $-63, eq=$118,448 | B: 1 trades, $-63, eq=$117,518
+[153/297] 2025-08-14: 4 scanned → 3 passed → top 3 selected (risk A=$2961, B=$2937)
+    #1 SNOA: vol=29,831,758, gap=120%, float=1.7M
+    #2 XOS: vol=4,715,127, gap=50%, float=7.4M
+    #3 BMRA: vol=2,858,085, gap=28%, float=2.6M
+    SNOA: ticks=715,436 armed=5 signals=5 trades=4 pnl=-40
+    XOS: ticks=193,740 armed=2 signals=2 trades=2 pnl=-194
+    SNOA: ticks=715,436 armed=5 signals=5 trades=4 pnl=-40
+    XOS: ticks=193,740 armed=2 signals=2 trades=2 pnl=-194
+  A: 2 trades, $-194, eq=$118,254 | B: 2 trades, $-194, eq=$117,324
+[154/297] 2025-08-15: 4 scanned → 4 passed → top 4 selected (risk A=$2956, B=$2933)
+    #1 PPSI: vol=25,430,872, gap=62%, float=8.6M
+    #2 TIVC: vol=14,177,971, gap=51%, float=1.5M
+    #3 VMAR: vol=422,894, gap=46%, float=0.9M
+    #4 MCRP: vol=316,432, gap=20%, float=8.8M
+    PPSI: ticks=697,181 armed=5 signals=5 trades=5 pnl=-408
+    PPSI: ticks=697,181 armed=5 signals=5 trades=5 pnl=-408
+  A: 2 trades, $-291, eq=$117,963 | B: 2 trades, $-291, eq=$117,033
+[155/297] 2025-08-18: 3 scanned → 3 passed → top 3 selected (risk A=$2949, B=$2925)
+    #1 VTAK: vol=13,598,796, gap=83%, float=1.3M
+    #2 MB: vol=164,930, gap=80%, float=4.7M
+    #3 NERV: vol=71,113, gap=13%, float=6.3M
+    VTAK: ticks=346,865 armed=1 signals=1 trades=1 pnl=+371
+    MB: ticks=18,340 armed=1 signals=1 trades=1 pnl=+12432
+    NERV: ticks=314 armed=0 signals=0 trades=0 pnl=+0
+    VTAK: ticks=346,865 armed=1 signals=1 trades=1 pnl=+371
+    MB: ticks=18,340 armed=1 signals=1 trades=1 pnl=+12432
+    NERV: ticks=314 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$117,963 | B: 0 trades, $+0, eq=$117,033
+[156/297] 2025-08-19: 2 scanned → 1 passed → top 1 selected (risk A=$2949, B=$2925)
+    #1 PRFX: vol=958,840, gap=112%, float=0.4M
+    PRFX: ticks=682,576 armed=4 signals=4 trades=2 pnl=+7964
+    PRFX: ticks=682,576 armed=4 signals=4 trades=2 pnl=+7899
+  A: 1 trades, $+9,005, eq=$126,968 | B: 1 trades, $+8,931, eq=$125,964
+[157/297] 2025-08-20: 2 scanned → 2 passed → top 2 selected (risk A=$3174, B=$3149)
+    #1 AUUD: vol=13,865,572, gap=41%, float=3.1M
+    #2 RAVE: vol=78,287, gap=10%, float=9.3M
+    AUUD: ticks=299,057 armed=4 signals=4 trades=1 pnl=+1497
+    RAVE: ticks=394 armed=1 signals=1 trades=0 pnl=+0
+    AUUD: ticks=299,057 armed=4 signals=4 trades=1 pnl=+1497
+    RAVE: ticks=394 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$126,968 | B: 0 trades, $+0, eq=$125,964
+[158/297] 2025-08-21: 3 scanned → 3 passed → top 3 selected (risk A=$3174, B=$3149)
+    #1 APM: vol=33,056,897, gap=93%, float=5.3M
+    #2 PTIX: vol=10,483,155, gap=71%, float=1.8M
+    #3 VS: vol=811,973, gap=18%, float=1.8M
+    APM: ticks=1,035,337 armed=3 signals=2 trades=2 pnl=-32
+    PTIX: ticks=770,831 armed=5 signals=5 trades=4 pnl=+1105
+    VS: ticks=14,805 armed=0 signals=0 trades=0 pnl=+0
+    APM: ticks=1,035,337 armed=3 signals=2 trades=2 pnl=-32
+    PTIX: ticks=770,831 armed=5 signals=5 trades=4 pnl=+1105
+    VS: ticks=14,805 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $-32, eq=$126,936 | B: 2 trades, $-32, eq=$125,932
+[159/297] 2025-09-02: 6 scanned → 6 passed → top 5 selected (risk A=$3173, B=$3148)
+    #1 HWH: vol=36,322,616, gap=80%, float=0.4M
+    #2 GCTK: vol=4,832,414, gap=40%, float=0.8M
+    #3 SHFS: vol=4,630,981, gap=94%, float=1.3M
+    #4 UUU: vol=4,262,527, gap=28%, float=1.6M
+    #5 SSKN: vol=12,037,910, gap=68%, float=2.0M
+    HWH: ticks=1,184,167 armed=4 signals=4 trades=1 pnl=-1686
+    HWH: ticks=1,184,167 armed=4 signals=4 trades=1 pnl=-1672
+  A: 1 trades, $-1,686, eq=$125,250 | B: 1 trades, $-1,672, eq=$124,260
+[160/297] 2025-09-03: 7 scanned → 7 passed → top 5 selected (risk A=$3131, B=$3106)
+    #1 STI: vol=31,095,446, gap=145%, float=2.2M
+    #2 AIHS: vol=10,405,597, gap=37%, float=4.4M
+    #3 BTBD: vol=3,401,453, gap=63%, float=3.1M
+    #4 SINT: vol=1,460,172, gap=32%, float=3.0M
+    #5 BAOS: vol=289,261, gap=18%, float=0.9M
+    STI: ticks=752,547 armed=4 signals=4 trades=4 pnl=+2511
+    AIHS: ticks=1,124,488 armed=6 signals=5 trades=3 pnl=+13609
+    BTBD: ticks=497,982 armed=2 signals=2 trades=2 pnl=-290
+    SINT: ticks=344,885 armed=2 signals=1 trades=1 pnl=-497
+    BAOS: ticks=195,994 armed=5 signals=5 trades=2 pnl=+13621
+    STI: ticks=752,547 armed=4 signals=4 trades=4 pnl=+2511
+    AIHS: ticks=1,124,488 armed=6 signals=5 trades=3 pnl=+13516
+    BTBD: ticks=497,982 armed=2 signals=2 trades=2 pnl=-290
+    SINT: ticks=344,885 armed=2 signals=1 trades=1 pnl=-497
+    BAOS: ticks=195,994 armed=5 signals=5 trades=2 pnl=+13621
+  A: 1 trades, $+4,406, eq=$129,656 | B: 1 trades, $+4,371, eq=$128,631
+[161/297] 2025-09-04: 7 scanned → 7 passed → top 5 selected (risk A=$3241, B=$3215)
+    #1 BRIA: vol=10,186,227, gap=98%, float=5.9M
+    #2 BBLG: vol=3,132,384, gap=28%, float=1.8M
+    #3 POLA: vol=1,013,505, gap=46%, float=1.9M
+    #4 NCI: vol=6,844,048, gap=27%, float=3.5M
+    #5 SNTG: vol=775,566, gap=16%, float=1.1M
+    BRIA: ticks=260,123 armed=2 signals=2 trades=1 pnl=+458
+    BBLG: ticks=628,970 armed=4 signals=4 trades=2 pnl=-2968
+    BRIA: ticks=260,123 armed=2 signals=2 trades=1 pnl=+458
+    BBLG: ticks=628,970 armed=4 signals=4 trades=2 pnl=-2946
+  A: 2 trades, $-2,346, eq=$127,310 | B: 2 trades, $-2,324, eq=$126,307
+[162/297] 2025-09-05: 3 scanned → 3 passed → top 3 selected (risk A=$3182, B=$3157)
+    #1 HOUR: vol=26,140,886, gap=57%, float=1.7M
+    #2 VEEE: vol=14,332,327, gap=58%, float=8.2M
+    #3 CERO: vol=69,194, gap=25%, float=1.2M
+    HOUR: ticks=882,275 armed=3 signals=2 trades=1 pnl=+2437
+    VEEE: ticks=439,508 armed=2 signals=2 trades=2 pnl=-287
+    HOUR: ticks=882,275 armed=3 signals=2 trades=1 pnl=+2437
+    VEEE: ticks=439,508 armed=2 signals=2 trades=2 pnl=-287
+  A: 2 trades, $-287, eq=$127,023 | B: 2 trades, $-287, eq=$126,020
+[163/297] 2025-09-08: 0 scanned, 0 passed filter, 0 selected
+[164/297] 2025-09-09: 5 scanned → 4 passed → top 4 selected (risk A=$3175, B=$3150)
+    #1 BON: vol=25,243,977, gap=106%, float=6.0M
+    #2 CWD: vol=20,465,530, gap=368%, float=5.5M
+    #3 SBLX: vol=377,481, gap=25%, float=0.6M
+    #4 YJ: vol=51,386, gap=20%, float=2.5M
+    BON: ticks=361,348 armed=3 signals=3 trades=3 pnl=+473
+    CWD: ticks=1,796,393 armed=5 signals=5 trades=4 pnl=+3171
+    BON: ticks=361,348 armed=3 signals=3 trades=3 pnl=+473
+    CWD: ticks=1,796,393 armed=5 signals=5 trades=4 pnl=+3171
+  A: 5 trades, $+3,579, eq=$130,602 | B: 5 trades, $+3,579, eq=$129,599
+[165/297] 2025-09-10: 12 scanned → 12 passed → top 5 selected (risk A=$3265, B=$3239)
+    #1 RBNE: vol=15,002,332, gap=81%, float=2.7M
+    #2 JBDI: vol=24,054,803, gap=138%, float=3.8M
+    #3 AEHL: vol=3,242,821, gap=313%, float=1.1M
+    #4 TANH: vol=9,207,755, gap=35%, float=1.4M
+    #5 GLE: vol=27,069,288, gap=320%, float=4.3M
+    RBNE: ticks=380,497 armed=3 signals=3 trades=3 pnl=+3859
+    JBDI: ticks=342,812 armed=0 signals=0 trades=0 pnl=+0
+    AEHL: ticks=642,383 armed=3 signals=2 trades=2 pnl=+25649
+    TANH: ticks=171,840 armed=3 signals=3 trades=2 pnl=+5275
+    GLE: ticks=658,455 armed=1 signals=1 trades=1 pnl=+3935
+    RBNE: ticks=380,497 armed=3 signals=3 trades=3 pnl=+3859
+    JBDI: ticks=342,812 armed=0 signals=0 trades=0 pnl=+0
+    AEHL: ticks=642,383 armed=3 signals=2 trades=2 pnl=+25649
+    TANH: ticks=171,840 armed=3 signals=3 trades=2 pnl=+5275
+    GLE: ticks=658,455 armed=1 signals=1 trades=1 pnl=+3904
+  A: 1 trades, $+3,935, eq=$134,537 | B: 1 trades, $+3,904, eq=$133,503
+[166/297] 2025-09-11: 8 scanned → 8 passed → top 5 selected (risk A=$3363, B=$3337)
+    #1 AMST: vol=13,756,656, gap=68%, float=3.0M
+    #2 SLXN: vol=2,884,512, gap=268%, float=3.0M
+    #3 GRI: vol=6,653,589, gap=84%, float=1.4M
+    #4 VNCE: vol=11,348,256, gap=108%, float=2.6M
+    #5 TWG: vol=2,016,482, gap=37%, float=0.4M
+    AMST: ticks=537,939 armed=3 signals=3 trades=2 pnl=+3369
+    SLXN: ticks=277,266 armed=1 signals=1 trades=0 pnl=+0
+    GRI: ticks=310,409 armed=2 signals=2 trades=2 pnl=+7263
+    VNCE: ticks=555,831 armed=1 signals=1 trades=0 pnl=+0
+    TWG: ticks=70,476 armed=3 signals=3 trades=3 pnl=+19299
+    AMST: ticks=537,939 armed=3 signals=3 trades=2 pnl=+3369
+    SLXN: ticks=277,266 armed=1 signals=1 trades=0 pnl=+0
+    GRI: ticks=310,409 armed=2 signals=2 trades=2 pnl=+7263
+    VNCE: ticks=555,831 armed=1 signals=1 trades=0 pnl=+0
+    TWG: ticks=70,476 armed=3 signals=3 trades=3 pnl=+19299
+  A: 0 trades, $+0, eq=$134,537 | B: 0 trades, $+0, eq=$133,503
+[167/297] 2025-09-12: 4 scanned → 4 passed → top 4 selected (risk A=$3363, B=$3337)
+    #1 COCP: vol=27,028,997, gap=115%, float=6.8M
+    #2 GCTK: vol=13,529,524, gap=173%, float=0.8M
+    #3 BGLC: vol=1,540,580, gap=11%, float=1.3M
+    #4 MGIH: vol=10,033,575, gap=43%, float=1.2M
+    COCP: ticks=410,459 armed=3 signals=3 trades=2 pnl=+657
+    GCTK: ticks=667,630 armed=4 signals=3 trades=3 pnl=+677
+    BGLC: ticks=38,375 armed=1 signals=1 trades=1 pnl=+869
+    MGIH: ticks=157,968 armed=0 signals=0 trades=0 pnl=+0
+    COCP: ticks=410,459 armed=3 signals=3 trades=2 pnl=+657
+    GCTK: ticks=667,630 armed=4 signals=3 trades=3 pnl=+677
+    BGLC: ticks=38,375 armed=1 signals=1 trades=1 pnl=+869
+    MGIH: ticks=157,968 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $+657, eq=$135,194 | B: 2 trades, $+657, eq=$134,160
+[168/297] 2025-09-15: 9 scanned → 8 passed → top 5 selected (risk A=$3379, B=$3354)
+    #1 IHT: vol=6,324,508, gap=90%, float=2.8M
+    #2 EVTV: vol=4,525,356, gap=61%, float=3.0M
+    #3 MBAI: vol=21,250,170, gap=215%, float=4.7M
+    #4 DCOY: vol=1,661,184, gap=26%, float=0.5M
+    #5 FRGT: vol=619,824, gap=45%, float=0.5M
+    IHT: ticks=185,880 armed=4 signals=3 trades=3 pnl=+9847
+    EVTV: ticks=178,223 armed=3 signals=3 trades=3 pnl=+10317
+    MBAI: ticks=621,925 armed=4 signals=4 trades=2 pnl=-633
+    DCOY: ticks=50,439 armed=2 signals=2 trades=1 pnl=+6385
+    FRGT: ticks=177,313 armed=2 signals=2 trades=1 pnl=-1445
+    IHT: ticks=185,880 armed=4 signals=3 trades=3 pnl=+9847
+    EVTV: ticks=178,223 armed=3 signals=3 trades=3 pnl=+10317
+    MBAI: ticks=621,925 armed=4 signals=4 trades=2 pnl=-623
+    DCOY: ticks=50,439 armed=2 signals=2 trades=1 pnl=+6385
+    FRGT: ticks=177,313 armed=2 signals=2 trades=1 pnl=-1434
+  A: 1 trades, $-1,373, eq=$133,821 | B: 1 trades, $-1,363, eq=$132,797
+[169/297] 2025-09-16: 7 scanned → 7 passed → top 5 selected (risk A=$3345, B=$3319)
+    #1 FGI: vol=18,494,893, gap=282%, float=0.5M
+    #2 PRHI: vol=19,685,985, gap=84%, float=3.4M
+    #3 SLMT: vol=261,414, gap=49%, float=1.5M
+    #4 TANH: vol=9,942,838, gap=15%, float=1.4M
+    #5 APVO: vol=687,777, gap=69%, float=0.9M
+    FGI: ticks=878,637 armed=3 signals=3 trades=3 pnl=+8566
+    PRHI: ticks=263,348 armed=0 signals=0 trades=0 pnl=+0
+    SLMT: ticks=44,091 armed=2 signals=2 trades=2 pnl=+2189
+    TANH: ticks=133,236 armed=1 signals=1 trades=0 pnl=+0
+    APVO: ticks=486,313 armed=2 signals=2 trades=2 pnl=+2178
+    FGI: ticks=878,637 armed=3 signals=3 trades=3 pnl=+8566
+    PRHI: ticks=263,348 armed=0 signals=0 trades=0 pnl=+0
+    SLMT: ticks=44,091 armed=2 signals=2 trades=2 pnl=+2188
+    TANH: ticks=133,236 armed=1 signals=1 trades=0 pnl=+0
+    APVO: ticks=486,313 armed=2 signals=2 trades=2 pnl=+2161
+  A: 1 trades, $+157, eq=$133,978 | B: 1 trades, $+156, eq=$132,953
+[170/297] 2025-09-17: 7 scanned → 7 passed → top 5 selected (risk A=$3349, B=$3323)
+    #1 IPM: vol=24,783,891, gap=54%, float=5.7M
+    #2 SQFT: vol=9,709,864, gap=45%, float=0.7M
+    #3 GV: vol=12,537,328, gap=75%, float=4.0M
+    #4 HIND: vol=2,055,967, gap=143%, float=1.5M
+    #5 SPRC: vol=17,174,837, gap=107%, float=0.4M
+    IPM: ticks=382,493 armed=3 signals=3 trades=3 pnl=+497
+    SQFT: ticks=304,837 armed=1 signals=1 trades=1 pnl=+6670
+    GV: ticks=410,955 armed=2 signals=1 trades=1 pnl=-1555
+    HIND: ticks=210,551 armed=1 signals=1 trades=1 pnl=+20309
+    SPRC: ticks=890,643 armed=2 signals=2 trades=1 pnl=+2463
+    IPM: ticks=382,493 armed=3 signals=3 trades=3 pnl=+497
+    SQFT: ticks=304,837 armed=1 signals=1 trades=1 pnl=+6670
+    GV: ticks=410,955 armed=2 signals=1 trades=1 pnl=-1555
+    HIND: ticks=210,551 armed=1 signals=1 trades=1 pnl=+20309
+    SPRC: ticks=890,643 armed=2 signals=2 trades=1 pnl=+2463
+  A: 3 trades, $+497, eq=$134,475 | B: 3 trades, $+497, eq=$133,450
+[171/297] 2025-09-18: 5 scanned → 5 passed → top 5 selected (risk A=$3361, B=$3336)
+    #1 PBM: vol=10,062,107, gap=25%, float=0.3M
+    #2 BRFH: vol=1,125,068, gap=20%, float=7.0M
+    #3 APVO: vol=26,900,826, gap=72%, float=0.9M
+    #4 MAMO: vol=738,249, gap=10%, float=4.9M
+    #5 RMCF: vol=501,948, gap=22%, float=4.9M
+    PBM: ticks=355,363 armed=3 signals=3 trades=3 pnl=+7990
+    BRFH: ticks=21,911 armed=0 signals=0 trades=0 pnl=+0
+    APVO: ticks=463,670 armed=1 signals=1 trades=1 pnl=-1029
+    MAMO: ticks=10,795 armed=0 signals=0 trades=0 pnl=+0
+    RMCF: ticks=87,112 armed=0 signals=0 trades=0 pnl=+0
+    PBM: ticks=355,363 armed=3 signals=3 trades=3 pnl=+7990
+    BRFH: ticks=21,911 armed=0 signals=0 trades=0 pnl=+0
+    APVO: ticks=463,670 armed=1 signals=1 trades=1 pnl=-1029
+    MAMO: ticks=10,795 armed=0 signals=0 trades=0 pnl=+0
+    RMCF: ticks=87,112 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$134,475 | B: 0 trades, $+0, eq=$133,450
+[172/297] 2025-09-19: 5 scanned → 5 passed → top 5 selected (risk A=$3361, B=$3336)
+    #1 AGMH: vol=27,355,165, gap=203%, float=1.9M
+    #2 VRCA: vol=4,713,448, gap=11%, float=3.3M
+    #3 XXII: vol=12,569,822, gap=18%, float=0.4M
+    #4 FATN: vol=839,999, gap=20%, float=6.2M
+    #5 BRFH: vol=542,058, gap=38%, float=7.0M
+    AGMH: ticks=1,782,720 armed=3 signals=3 trades=3 pnl=+1541
+    VRCA: ticks=66,023 armed=2 signals=2 trades=1 pnl=+1054
+    XXII: ticks=140,368 armed=1 signals=1 trades=1 pnl=-2721
+    AGMH: ticks=1,782,720 armed=3 signals=3 trades=3 pnl=+1541
+    VRCA: ticks=66,023 armed=2 signals=2 trades=1 pnl=+1054
+    XXII: ticks=140,368 armed=1 signals=1 trades=1 pnl=-2700
+  A: 1 trades, $-2,721, eq=$131,754 | B: 1 trades, $-2,700, eq=$130,750
+[173/297] 2025-09-22: 6 scanned → 6 passed → top 5 selected (risk A=$3293, B=$3268)
+    #1 AVX: vol=27,194,614, gap=349%, float=2.0M
+    #2 AIXC: vol=28,569,296, gap=203%, float=5.1M
+    #3 BOXL: vol=28,333,727, gap=92%, float=0.7M
+    #4 ONCO: vol=503,340, gap=12%, float=1.3M
+    #5 ARBB: vol=769,355, gap=28%, float=1.1M
+    AVX: ticks=1,364,403 armed=4 signals=3 trades=3 pnl=+9850
+    AIXC: ticks=1,696,940 armed=2 signals=2 trades=2 pnl=+1192
+    BOXL: ticks=1,632,213 armed=5 signals=5 trades=4 pnl=+4488
+    ONCO: ticks=20,239 armed=1 signals=1 trades=1 pnl=+62
+    ARBB: ticks=49,761 armed=6 signals=6 trades=4 pnl=+1270
+    AVX: ticks=1,364,403 armed=4 signals=3 trades=3 pnl=+9850
+    AIXC: ticks=1,696,940 armed=2 signals=2 trades=2 pnl=+1192
+    BOXL: ticks=1,632,213 armed=5 signals=5 trades=4 pnl=+4471
+    ONCO: ticks=20,239 armed=1 signals=1 trades=1 pnl=+62
+    ARBB: ticks=49,761 armed=6 signals=6 trades=4 pnl=+1270
+  A: 3 trades, $+829, eq=$132,583 | B: 3 trades, $+832, eq=$131,582
+[174/297] 2025-09-23: 2 scanned → 2 passed → top 2 selected (risk A=$3314, B=$3289)
+    #1 SLE: vol=12,160,357, gap=184%, float=0.1M
+    #2 SSKN: vol=54,741,670, gap=94%, float=2.0M
+    SLE: ticks=816,993 armed=0 signals=0 trades=0 pnl=+0
+    SSKN: ticks=603,447 armed=1 signals=1 trades=1 pnl=-1523
+    SLE: ticks=816,993 armed=0 signals=0 trades=0 pnl=+0
+    SSKN: ticks=603,447 armed=1 signals=1 trades=1 pnl=-1523
+  A: 0 trades, $+0, eq=$132,583 | B: 0 trades, $+0, eq=$131,582
+[175/297] 2025-09-24: 6 scanned → 5 passed → top 5 selected (risk A=$3314, B=$3289)
+    #1 AQMS: vol=9,386,499, gap=52%, float=2.7M
+    #2 CYCN: vol=7,106,916, gap=38%, float=2.7M
+    #3 JZXN: vol=18,618,199, gap=44%, float=1.3M
+    #4 SHFS: vol=7,499,649, gap=155%, float=1.3M
+    #5 LUCY: vol=4,948,577, gap=11%, float=5.0M
+    AQMS: ticks=283,141 armed=2 signals=2 trades=2 pnl=+17902
+    CYCN: ticks=158,264 armed=1 signals=1 trades=1 pnl=+1042
+    JZXN: ticks=366,188 armed=2 signals=2 trades=1 pnl=-493
+    SHFS: ticks=438,138 armed=0 signals=0 trades=0 pnl=+0
+    LUCY: ticks=51,853 armed=0 signals=0 trades=0 pnl=+0
+    AQMS: ticks=283,141 armed=2 signals=2 trades=2 pnl=+17902
+    CYCN: ticks=158,264 armed=1 signals=1 trades=1 pnl=+1042
+    JZXN: ticks=366,188 armed=2 signals=2 trades=1 pnl=-493
+    SHFS: ticks=438,138 armed=0 signals=0 trades=0 pnl=+0
+    LUCY: ticks=51,853 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$132,583 | B: 0 trades, $+0, eq=$131,582
+[176/297] 2025-09-25: 0 scanned, 0 passed filter, 0 selected
+[177/297] 2025-09-26: 1 scanned → 1 passed → top 1 selected (risk A=$3314, B=$3289)
+    #1 EGG: vol=90,237, gap=15%, float=8.3M
+    EGG: ticks=2,739 armed=1 signals=1 trades=1 pnl=-196
+    EGG: ticks=2,739 armed=1 signals=1 trades=1 pnl=-196
+  A: 1 trades, $-196, eq=$132,387 | B: 1 trades, $-196, eq=$131,386
+[178/297] 2025-09-29: 5 scanned → 5 passed → top 5 selected (risk A=$3309, B=$3284)
+    #1 JFB: vol=7,190,248, gap=81%, float=1.5M
+    #2 SCOR: vol=208,896, gap=27%, float=1.1M
+    #3 DWTX: vol=144,125, gap=69%, float=1.4M
+    #4 BQ: vol=234,572, gap=27%, float=2.8M
+    #5 ENSC: vol=169,788, gap=11%, float=3.1M
+    JFB: ticks=509,810 armed=3 signals=3 trades=2 pnl=-129
+    SCOR: ticks=32,207 armed=3 signals=2 trades=2 pnl=-841
+    DWTX: ticks=620,312 armed=1 signals=1 trades=0 pnl=+0
+    BQ: ticks=283,484 armed=1 signals=1 trades=1 pnl=-2901
+    ENSC: ticks=583 armed=0 signals=0 trades=0 pnl=+0
+    JFB: ticks=509,810 armed=3 signals=3 trades=2 pnl=-129
+    SCOR: ticks=32,207 armed=3 signals=2 trades=2 pnl=-838
+    DWTX: ticks=620,312 armed=1 signals=1 trades=0 pnl=+0
+    BQ: ticks=283,484 armed=1 signals=1 trades=1 pnl=-2880
+    ENSC: ticks=583 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-418, eq=$131,969 | B: 1 trades, $-415, eq=$130,971
+[179/297] 2025-09-30: 0 scanned, 0 passed filter, 0 selected
+[180/297] 2025-10-01: 4 scanned → 4 passed → top 4 selected (risk A=$3299, B=$3274)
+    #1 GLXG: vol=12,025,113, gap=34%, float=0.6M
+    #2 UCFI: vol=2,122,294, gap=69%, float=4.5M
+    #3 HCTI: vol=17,279,422, gap=20%, float=0.1M
+    #4 AKAN: vol=1,530,745, gap=64%, float=0.1M
+    GLXG: ticks=361,232 armed=0 signals=0 trades=0 pnl=+0
+    UCFI: ticks=99,562 armed=4 signals=4 trades=4 pnl=+1652
+    HCTI: ticks=121,766 armed=4 signals=3 trades=1 pnl=-1655
+    AKAN: ticks=208,588 armed=1 signals=1 trades=1 pnl=+9266
+    GLXG: ticks=361,232 armed=0 signals=0 trades=0 pnl=+0
+    UCFI: ticks=99,562 armed=4 signals=4 trades=4 pnl=+1658
+    HCTI: ticks=121,766 armed=4 signals=3 trades=1 pnl=-1643
+    AKAN: ticks=208,588 armed=1 signals=1 trades=1 pnl=+9197
+  A: 1 trades, $-855, eq=$131,114 | B: 1 trades, $-849, eq=$130,122
+[181/297] 2025-10-02: 0 scanned, 0 passed filter, 0 selected
+[182/297] 2025-10-03: 2 scanned → 2 passed → top 2 selected (risk A=$3277, B=$3253)
+    #1 XELB: vol=8,008,649, gap=34%, float=3.3M
+    #2 ASTC: vol=406,918, gap=18%, float=1.3M
+    XELB: ticks=175,220 armed=0 signals=0 trades=0 pnl=+0
+    ASTC: ticks=264,609 armed=1 signals=1 trades=1 pnl=+0
+    XELB: ticks=175,220 armed=0 signals=0 trades=0 pnl=+0
+    ASTC: ticks=264,609 armed=1 signals=1 trades=1 pnl=+0
+  A: 0 trades, $+0, eq=$131,114 | B: 0 trades, $+0, eq=$130,122
+[183/297] 2025-10-06: 4 scanned → 4 passed → top 4 selected (risk A=$3277, B=$3253)
+    #1 SPRB: vol=5,251,754, gap=107%, float=0.4M
+    #2 SOPA: vol=50,430,621, gap=119%, float=5.7M
+    #3 BTTC: vol=1,309,807, gap=20%, float=1.3M
+    #4 GRAN: vol=176,885, gap=30%, float=4.7M
+    SPRB: ticks=611,691 armed=4 signals=4 trades=4 pnl=+15059
+    SOPA: ticks=784,114 armed=2 signals=2 trades=2 pnl=-129
+    SPRB: ticks=611,691 armed=4 signals=4 trades=4 pnl=+15053
+    SOPA: ticks=784,114 armed=2 signals=2 trades=2 pnl=-129
+  A: 2 trades, $-129, eq=$130,985 | B: 2 trades, $-129, eq=$129,993
+[184/297] 2025-10-07: 4 scanned → 4 passed → top 4 selected (risk A=$3274, B=$3249)
+    #1 CISS: vol=17,940,527, gap=49%, float=0.1M
+    #2 BJDX: vol=2,325,497, gap=32%, float=0.4M
+    #3 ELAB: vol=442,358, gap=20%, float=2.1M
+    #4 SNOA: vol=105,542, gap=11%, float=1.7M
+    CISS: ticks=742,625 armed=3 signals=3 trades=2 pnl=+4124
+    BJDX: ticks=261,896 armed=3 signals=3 trades=2 pnl=-1403
+    ELAB: ticks=10,015 armed=3 signals=3 trades=1 pnl=+1037
+    SNOA: ticks=2,799 armed=0 signals=0 trades=0 pnl=+0
+    CISS: ticks=742,625 armed=3 signals=3 trades=2 pnl=+4124
+    BJDX: ticks=261,896 armed=3 signals=3 trades=2 pnl=-1392
+    ELAB: ticks=10,015 armed=3 signals=3 trades=1 pnl=+1029
+    SNOA: ticks=2,799 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+234, eq=$131,219 | B: 1 trades, $+232, eq=$130,225
+[185/297] 2025-10-08: 7 scanned → 7 passed → top 5 selected (risk A=$3280, B=$3255)
+    #1 XBIO: vol=20,737,135, gap=241%, float=1.3M
+    #2 RNAZ: vol=2,577,538, gap=60%, float=0.8M
+    #3 UPC: vol=5,612,628, gap=121%, float=0.6M
+    #4 ACXP: vol=10,634,881, gap=93%, float=2.0M
+    #5 ATON: vol=7,157,272, gap=163%, float=0.8M
+    XBIO: ticks=821,943 armed=4 signals=4 trades=4 pnl=+10986
+    RNAZ: ticks=160,462 armed=0 signals=0 trades=0 pnl=+0
+    UPC: ticks=371,269 armed=4 signals=4 trades=3 pnl=+7937
+    ACXP: ticks=352,559 armed=1 signals=1 trades=1 pnl=-1401
+    ATON: ticks=501,585 armed=3 signals=3 trades=3 pnl=+4708
+    XBIO: ticks=821,943 armed=4 signals=4 trades=4 pnl=+10985
+    RNAZ: ticks=160,462 armed=0 signals=0 trades=0 pnl=+0
+    UPC: ticks=371,269 armed=4 signals=4 trades=3 pnl=+7937
+    ACXP: ticks=352,559 armed=1 signals=1 trades=1 pnl=-1391
+    ATON: ticks=501,585 armed=3 signals=3 trades=3 pnl=+4708
+  A: 1 trades, $+172, eq=$131,391 | B: 1 trades, $+171, eq=$130,396
+[186/297] 2025-10-09: 5 scanned → 5 passed → top 5 selected (risk A=$3284, B=$3259)
+    #1 TCRT: vol=17,460,005, gap=21%, float=1.9M
+    #2 BAOS: vol=19,582,088, gap=52%, float=0.9M
+    #3 BJDX: vol=18,762,348, gap=155%, float=0.4M
+    #4 AMBO: vol=1,406,556, gap=44%, float=0.1M
+    #5 SUGP: vol=416,823, gap=15%, float=4.0M
+    TCRT: ticks=323,551 armed=2 signals=2 trades=2 pnl=+54
+    BAOS: ticks=420,801 armed=2 signals=2 trades=2 pnl=+714
+    BJDX: ticks=688,330 armed=3 signals=3 trades=3 pnl=+6152
+    AMBO: ticks=37,147 armed=0 signals=0 trades=0 pnl=+0
+    SUGP: ticks=30,892 armed=1 signals=1 trades=0 pnl=+0
+    TCRT: ticks=323,551 armed=2 signals=2 trades=2 pnl=+57
+    BAOS: ticks=420,801 armed=2 signals=2 trades=2 pnl=+714
+    BJDX: ticks=688,330 armed=3 signals=3 trades=3 pnl=+6152
+    AMBO: ticks=37,147 armed=0 signals=0 trades=0 pnl=+0
+    SUGP: ticks=30,892 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $-401, eq=$130,990 | B: 1 trades, $-398, eq=$129,998
+[187/297] 2025-10-10: 3 scanned → 3 passed → top 3 selected (risk A=$3274, B=$3249)
+    #1 OLOX: vol=24,409,951, gap=87%, float=5.5M
+    #2 YHGJ: vol=1,046,301, gap=40%, float=0.8M
+    #3 WAI: vol=7,738,198, gap=41%, float=0.5M
+    OLOX: ticks=858,160 armed=5 signals=4 trades=4 pnl=+660
+    YHGJ: ticks=54,623 armed=1 signals=1 trades=0 pnl=+0
+    WAI: ticks=200,429 armed=1 signals=1 trades=0 pnl=+0
+    OLOX: ticks=858,160 armed=5 signals=4 trades=4 pnl=+660
+    YHGJ: ticks=54,623 armed=1 signals=1 trades=0 pnl=+0
+    WAI: ticks=200,429 armed=1 signals=1 trades=0 pnl=+0
+  A: 4 trades, $+660, eq=$131,650 | B: 4 trades, $+660, eq=$130,658
+[188/297] 2025-10-13: 8 scanned → 8 passed → top 5 selected (risk A=$3291, B=$3266)
+    #1 STI: vol=13,256,575, gap=137%, float=2.2M
+    #2 PMAX: vol=16,984,547, gap=117%, float=0.4M
+    #3 NAMM: vol=6,401,278, gap=21%, float=6.8M
+    #4 ACON: vol=2,309,367, gap=25%, float=0.7M
+    #5 VCIG: vol=2,506,418, gap=49%, float=0.1M
+    STI: ticks=1,150,212 armed=3 signals=3 trades=3 pnl=+3869
+    PMAX: ticks=446,737 armed=3 signals=3 trades=3 pnl=+1894
+    STI: ticks=1,150,212 armed=3 signals=3 trades=3 pnl=+3880
+    PMAX: ticks=446,737 armed=3 signals=3 trades=3 pnl=+1907
+    NAMM: ticks=165,704 armed=6 signals=6 trades=4 pnl=+24
+    ACON: ticks=104,818 armed=0 signals=0 trades=0 pnl=+0
+    VCIG: ticks=80,169 armed=3 signals=3 trades=2 pnl=+2678
+  A: 1 trades, $-1,668, eq=$129,982 | B: 1 trades, $-1,405, eq=$129,253
+[189/297] 2025-10-14: 7 scanned → 7 passed → top 5 selected (risk A=$3249, B=$3231)
+    #1 JDZG: vol=6,871,171, gap=88%, float=2.8M
+    #2 GWAV: vol=6,957,520, gap=107%, float=0.8M
+    #3 ELAB: vol=10,066,530, gap=115%, float=2.1M
+    #4 RDGT: vol=194,379, gap=34%, float=5.1M
+    #5 SBLX: vol=2,648,465, gap=22%, float=0.6M
+    JDZG: ticks=358,809 armed=2 signals=2 trades=1 pnl=+2056
+    GWAV: ticks=574,770 armed=7 signals=7 trades=3 pnl=+1102
+    ELAB: ticks=576,494 armed=1 signals=1 trades=1 pnl=+1943
+    RDGT: ticks=1,216 armed=0 signals=0 trades=0 pnl=+0
+    SBLX: ticks=92,332 armed=3 signals=3 trades=3 pnl=+2253
+    JDZG: ticks=358,809 armed=2 signals=2 trades=1 pnl=+2056
+    GWAV: ticks=574,770 armed=7 signals=7 trades=3 pnl=+1097
+    ELAB: ticks=576,494 armed=1 signals=1 trades=1 pnl=+1934
+    RDGT: ticks=1,216 armed=0 signals=0 trades=0 pnl=+0
+    SBLX: ticks=92,332 armed=3 signals=3 trades=3 pnl=+2255
+  A: 1 trades, $+1,256, eq=$131,238 | B: 1 trades, $+1,249, eq=$130,502
+[190/297] 2025-10-15: 8 scanned → 7 passed → top 5 selected (risk A=$3280, B=$3262)
+    #1 PFAI: vol=29,636,243, gap=128%, float=3.6M
+    #2 SDOT: vol=7,509,392, gap=152%, float=0.8M
+    #3 RKDA: vol=12,656,370, gap=49%, float=1.4M
+    #4 COOT: vol=44,367,256, gap=310%, float=6.4M
+    #5 SEED: vol=14,315,423, gap=66%, float=7.0M
+    PFAI: ticks=639,044 armed=3 signals=3 trades=3 pnl=-570
+    SDOT: ticks=544,203 armed=0 signals=0 trades=0 pnl=+0
+    RKDA: ticks=427,658 armed=3 signals=2 trades=1 pnl=+331
+    COOT: ticks=1,054,656 armed=5 signals=5 trades=5 pnl=-78
+    SEED: ticks=282,364 armed=0 signals=0 trades=0 pnl=+0
+    PFAI: ticks=639,044 armed=3 signals=3 trades=3 pnl=-570
+    SDOT: ticks=544,203 armed=0 signals=0 trades=0 pnl=+0
+    RKDA: ticks=427,658 armed=3 signals=2 trades=1 pnl=+331
+    COOT: ticks=1,054,656 armed=5 signals=5 trades=5 pnl=-78
+    SEED: ticks=282,364 armed=0 signals=0 trades=0 pnl=+0
+  A: 2 trades, $+26, eq=$131,264 | B: 3 trades, $+5, eq=$130,507
+[191/297] 2025-10-16: 8 scanned → 8 passed → top 5 selected (risk A=$3281, B=$3262)
+    #1 LGCB: vol=31,312,678, gap=102%, float=1.7M
+    #2 AUUD: vol=21,019,611, gap=28%, float=3.1M
+    #3 SBFM: vol=10,781,838, gap=24%, float=4.9M
+    #4 RYOJ: vol=8,368,300, gap=129%, float=2.0M
+    #5 NXTC: vol=155,234, gap=10%, float=1.5M
+    LGCB: ticks=638,572 armed=4 signals=4 trades=3 pnl=+4554
+    AUUD: ticks=328,494 armed=3 signals=3 trades=1 pnl=-164
+    SBFM: ticks=170,278 armed=0 signals=0 trades=0 pnl=+0
+    RYOJ: ticks=340,227 armed=0 signals=0 trades=0 pnl=+0
+    NXTC: ticks=487 armed=0 signals=0 trades=0 pnl=+0
+    LGCB: ticks=638,572 armed=4 signals=4 trades=3 pnl=+4549
+    AUUD: ticks=328,494 armed=3 signals=3 trades=1 pnl=-164
+    SBFM: ticks=170,278 armed=0 signals=0 trades=0 pnl=+0
+    RYOJ: ticks=340,227 armed=0 signals=0 trades=0 pnl=+0
+    NXTC: ticks=487 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+851, eq=$132,115 | B: 1 trades, $+846, eq=$131,353
+[192/297] 2025-10-17: 3 scanned → 3 passed → top 3 selected (risk A=$3302, B=$3283)
+    #1 ARTV: vol=14,494,301, gap=131%, float=4.1M
+    #2 AKAN: vol=5,977,074, gap=31%, float=0.1M
+    #3 KZR: vol=729,729, gap=38%, float=6.4M
+    ARTV: ticks=628,230 armed=3 signals=3 trades=0 pnl=+0
+    AKAN: ticks=146,326 armed=0 signals=0 trades=0 pnl=+0
+    KZR: ticks=34,795 armed=3 signals=3 trades=3 pnl=-323
+    ARTV: ticks=628,230 armed=3 signals=3 trades=0 pnl=+0
+    AKAN: ticks=146,326 armed=0 signals=0 trades=0 pnl=+0
+    KZR: ticks=34,795 armed=3 signals=3 trades=3 pnl=-323
+  A: 3 trades, $-323, eq=$131,792 | B: 3 trades, $-323, eq=$131,030
+[193/297] 2025-10-20: 3 scanned → 3 passed → top 3 selected (risk A=$3294, B=$3275)
+    #1 FGI: vol=5,898,216, gap=43%, float=0.5M
+    #2 SINT: vol=2,001,909, gap=11%, float=3.0M
+    #3 GNLN: vol=506,762, gap=66%, float=1.1M
+    FGI: ticks=205,101 armed=0 signals=0 trades=0 pnl=+0
+    SINT: ticks=65,821 armed=0 signals=0 trades=0 pnl=+0
+    GNLN: ticks=134,159 armed=0 signals=0 trades=0 pnl=+0
+    FGI: ticks=205,101 armed=0 signals=0 trades=0 pnl=+0
+    SINT: ticks=65,821 armed=0 signals=0 trades=0 pnl=+0
+    GNLN: ticks=134,159 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,792 | B: 0 trades, $+0, eq=$131,030
+[194/297] 2025-10-21: 4 scanned → 4 passed → top 4 selected (risk A=$3294, B=$3275)
+    #1 BOF: vol=12,889,256, gap=44%, float=9.2M
+    #2 AMCI: vol=1,463,785, gap=67%, float=1.2M
+    #3 JWEL: vol=6,103,529, gap=19%, float=1.8M
+    #4 RYOJ: vol=6,099,938, gap=34%, float=2.0M
+    BOF: ticks=346,063 armed=4 signals=4 trades=4 pnl=-41
+    BOF: ticks=346,063 armed=4 signals=4 trades=4 pnl=-41
+  A: 2 trades, $-136, eq=$131,656 | B: 2 trades, $-136, eq=$130,894
+[195/297] 2025-10-22: 3 scanned → 3 passed → top 3 selected (risk A=$3291, B=$3272)
+    #1 BDSX: vol=2,065,241, gap=18%, float=3.7M
+    #2 SBEV: vol=9,122,848, gap=30%, float=2.4M
+    #3 HHS: vol=863,476, gap=12%, float=5.1M
+    BDSX: ticks=70,200 armed=1 signals=1 trades=1 pnl=-221
+    SBEV: ticks=238,872 armed=0 signals=0 trades=0 pnl=+0
+    HHS: ticks=28,491 armed=0 signals=0 trades=0 pnl=+0
+    BDSX: ticks=70,200 armed=1 signals=1 trades=1 pnl=-221
+    SBEV: ticks=238,872 armed=0 signals=0 trades=0 pnl=+0
+    HHS: ticks=28,491 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,656 | B: 0 trades, $+0, eq=$130,894
+[196/297] 2025-10-23: 5 scanned → 5 passed → top 5 selected (risk A=$3291, B=$3272)
+    #1 IMCC: vol=12,445,683, gap=26%, float=3.1M
+    #2 SLMT: vol=2,951,370, gap=70%, float=1.5M
+    #3 VCIG: vol=3,536,840, gap=18%, float=0.1M
+    #4 OLOX: vol=13,668,359, gap=41%, float=5.5M
+    #5 MGN: vol=3,568,547, gap=15%, float=5.0M
+    IMCC: ticks=167,334 armed=3 signals=3 trades=2 pnl=-988
+    SLMT: ticks=209,315 armed=3 signals=3 trades=2 pnl=+3454
+    VCIG: ticks=54,482 armed=4 signals=2 trades=1 pnl=+97
+    OLOX: ticks=289,490 armed=2 signals=2 trades=1 pnl=+62
+    MGN: ticks=65,293 armed=1 signals=1 trades=1 pnl=-434
+    IMCC: ticks=167,334 armed=3 signals=3 trades=2 pnl=-980
+    SLMT: ticks=209,315 armed=3 signals=3 trades=2 pnl=+3444
+    VCIG: ticks=54,482 armed=4 signals=2 trades=1 pnl=+96
+    OLOX: ticks=289,490 armed=2 signals=2 trades=1 pnl=+62
+    MGN: ticks=65,293 armed=1 signals=1 trades=1 pnl=-431
+  A: 2 trades, $+1,848, eq=$133,504 | B: 2 trades, $+1,838, eq=$132,732
+[197/297] 2025-10-24: 2 scanned → 2 passed → top 2 selected (risk A=$3337, B=$3318)
+    #1 AIXC: vol=23,223,545, gap=72%, float=5.1M
+    #2 NEUP: vol=3,727,118, gap=39%, float=4.2M
+    AIXC: ticks=656,594 armed=1 signals=1 trades=1 pnl=-22
+    NEUP: ticks=608,533 armed=4 signals=4 trades=3 pnl=+2321
+    AIXC: ticks=656,594 armed=1 signals=1 trades=1 pnl=-22
+    NEUP: ticks=608,533 armed=4 signals=4 trades=3 pnl=+2321
+  A: 1 trades, $-22, eq=$133,482 | B: 1 trades, $-22, eq=$132,710
+[198/297] 2025-10-27: 2 scanned → 2 passed → top 2 selected (risk A=$3337, B=$3317)
+    #1 BKYI: vol=64,964,732, gap=169%, float=9.6M
+    #2 KITT: vol=21,906,078, gap=75%, float=5.4M
+    BKYI: ticks=585,531 armed=0 signals=0 trades=0 pnl=+0
+    KITT: ticks=417,611 armed=3 signals=3 trades=3 pnl=+252
+    BKYI: ticks=585,531 armed=0 signals=0 trades=0 pnl=+0
+    KITT: ticks=417,611 armed=3 signals=3 trades=3 pnl=+252
+  A: 3 trades, $+252, eq=$133,734 | B: 3 trades, $+252, eq=$132,962
+[199/297] 2025-10-28: 2 scanned → 2 passed → top 2 selected (risk A=$3343, B=$3324)
+    #1 POLA: vol=9,124,315, gap=27%, float=1.9M
+    #2 VSEE: vol=58,418,635, gap=308%, float=7.2M
+    POLA: ticks=172,287 armed=0 signals=0 trades=0 pnl=+0
+    VSEE: ticks=490,930 armed=2 signals=1 trades=1 pnl=+1127
+    POLA: ticks=172,287 armed=0 signals=0 trades=0 pnl=+0
+    VSEE: ticks=490,930 armed=2 signals=1 trades=1 pnl=+1127
+  A: 1 trades, $+1,127, eq=$134,861 | B: 1 trades, $+1,127, eq=$134,089
+[200/297] 2025-10-29: 1 scanned → 1 passed → top 1 selected (risk A=$3371, B=$3352)
+    #1 ERNA: vol=23,801,986, gap=68%, float=2.5M
+    ERNA: ticks=724,066 armed=4 signals=4 trades=2 pnl=-511
+    ERNA: ticks=724,066 armed=4 signals=4 trades=2 pnl=-503
+  A: 1 trades, $-1,491, eq=$133,370 | B: 1 trades, $-1,483, eq=$132,606
+[201/297] 2025-10-30: 4 scanned → 4 passed → top 4 selected (risk A=$3334, B=$3315)
+    #1 VIVS: vol=12,535,891, gap=32%, float=2.6M
+    #2 VCIG: vol=21,665,423, gap=133%, float=0.1M
+    #3 ARBB: vol=1,052,948, gap=24%, float=1.1M
+    #4 QCLS: vol=2,611,956, gap=28%, float=1.6M
+    VIVS: ticks=287,180 armed=2 signals=1 trades=1 pnl=+1593
+    VCIG: ticks=490,107 armed=1 signals=1 trades=1 pnl=+252
+    ARBB: ticks=40,472 armed=0 signals=0 trades=0 pnl=+0
+    QCLS: ticks=52,904 armed=1 signals=1 trades=1 pnl=-397
+    VIVS: ticks=287,180 armed=2 signals=1 trades=1 pnl=+1593
+    VCIG: ticks=490,107 armed=1 signals=1 trades=1 pnl=+251
+    ARBB: ticks=40,472 armed=0 signals=0 trades=0 pnl=+0
+    QCLS: ticks=52,904 armed=1 signals=1 trades=1 pnl=-397
+  A: 1 trades, $+252, eq=$133,622 | B: 1 trades, $+251, eq=$132,857
+[202/297] 2025-10-31: 5 scanned → 5 passed → top 5 selected (risk A=$3340, B=$3321)
+    #1 DFSC: vol=15,257,041, gap=28%, float=1.2M
+    #2 TGE: vol=953,190, gap=38%, float=7.5M
+    #3 WAI: vol=3,025,549, gap=18%, float=0.5M
+    #4 FMFC: vol=2,052,321, gap=44%, float=8.7M
+    #5 DLHC: vol=288,487, gap=16%, float=6.3M
+    DFSC: ticks=498,464 armed=4 signals=4 trades=4 pnl=+4778
+    TGE: ticks=118,636 armed=1 signals=1 trades=1 pnl=-100
+    WAI: ticks=73,321 armed=0 signals=0 trades=0 pnl=+0
+    FMFC: ticks=36,949 armed=1 signals=1 trades=1 pnl=+866
+    DLHC: ticks=27,682 armed=1 signals=1 trades=1 pnl=+19
+    DFSC: ticks=498,464 armed=4 signals=4 trades=4 pnl=+4781
+    TGE: ticks=118,636 armed=1 signals=1 trades=1 pnl=-100
+    WAI: ticks=73,321 armed=0 signals=0 trades=0 pnl=+0
+    FMFC: ticks=36,949 armed=1 signals=1 trades=1 pnl=+866
+    DLHC: ticks=27,682 armed=1 signals=1 trades=1 pnl=+19
+  A: 3 trades, $+785, eq=$134,407 | B: 3 trades, $+785, eq=$133,642
+[203/297] 2025-11-03: 3 scanned → 2 passed → top 2 selected (risk A=$3360, B=$3341)
+    #1 NCRA: vol=4,484,255, gap=67%, float=6.2M
+    #2 SHPH: vol=1,186,793, gap=18%, float=1.6M
+    NCRA: ticks=250,905 armed=0 signals=0 trades=0 pnl=+0
+    SHPH: ticks=38,033 armed=1 signals=1 trades=1 pnl=+371
+    NCRA: ticks=250,905 armed=0 signals=0 trades=0 pnl=+0
+    SHPH: ticks=38,033 armed=1 signals=1 trades=1 pnl=+371
+  A: 0 trades, $+0, eq=$134,407 | B: 0 trades, $+0, eq=$133,642
+[204/297] 2025-11-04: 2 scanned, 0 passed filter, 0 selected
+[205/297] 2025-11-05: 2 scanned → 2 passed → top 2 selected (risk A=$3360, B=$3341)
+    #1 SMX: vol=18,720,948, gap=42%, float=0.0M
+    #2 TULP: vol=73,355, gap=19%, float=1.0M
+    SMX: ticks=324,792 armed=0 signals=0 trades=0 pnl=+0
+    TULP: ticks=1,275 armed=1 signals=1 trades=0 pnl=+0
+    SMX: ticks=324,792 armed=0 signals=0 trades=0 pnl=+0
+    TULP: ticks=1,275 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$134,407 | B: 0 trades, $+0, eq=$133,642
+[206/297] 2025-11-06: 1 scanned → 1 passed → top 1 selected (risk A=$3360, B=$3341)
+    #1 GMEX: vol=6,866,953, gap=36%, float=1.4M
+    GMEX: ticks=422,981 armed=2 signals=2 trades=2 pnl=+1906
+    GMEX: ticks=422,981 armed=2 signals=2 trades=2 pnl=+1906
+  A: 0 trades, $+0, eq=$134,407 | B: 0 trades, $+0, eq=$133,642
+[207/297] 2025-11-07: 1 scanned → 1 passed → top 1 selected (risk A=$3360, B=$3341)
+    #1 MSGM: vol=19,911,893, gap=110%, float=2.5M
+    MSGM: ticks=833,939 armed=3 signals=3 trades=2 pnl=+1339
+    MSGM: ticks=833,939 armed=3 signals=3 trades=2 pnl=+1339
+  A: 0 trades, $+0, eq=$134,407 | B: 0 trades, $+0, eq=$133,642
+[208/297] 2025-11-10: 5 scanned → 5 passed → top 5 selected (risk A=$3360, B=$3341)
+    #1 VERO: vol=8,853,331, gap=16%, float=1.6M
+    #2 MOVE: vol=1,632,123, gap=21%, float=0.6M
+    #3 DCOY: vol=772,867, gap=11%, float=0.5M
+    #4 HKIT: vol=332,016, gap=17%, float=8.7M
+    #5 OESX: vol=56,434, gap=15%, float=3.4M
+    VERO: ticks=227,326 armed=1 signals=1 trades=1 pnl=+329
+    MOVE: ticks=583,061 armed=3 signals=3 trades=3 pnl=+8042
+    DCOY: ticks=5,092 armed=1 signals=1 trades=1 pnl=+2533
+    HKIT: ticks=1,529 armed=1 signals=1 trades=1 pnl=-31
+    VERO: ticks=227,326 armed=1 signals=1 trades=1 pnl=+329
+    MOVE: ticks=583,061 armed=3 signals=3 trades=3 pnl=+8047
+    DCOY: ticks=5,092 armed=1 signals=1 trades=1 pnl=+2533
+    HKIT: ticks=1,529 armed=1 signals=1 trades=1 pnl=-31
+  A: 2 trades, $-892, eq=$133,515 | B: 2 trades, $-887, eq=$132,755
+[209/297] 2025-11-11: 5 scanned → 5 passed → top 5 selected (risk A=$3337, B=$3318)
+    #1 BODI: vol=3,634,639, gap=39%, float=3.2M
+    #2 RAIN: vol=1,655,027, gap=27%, float=2.8M
+    #3 VCIG: vol=13,962,786, gap=16%, float=0.1M
+    #4 WHLR: vol=300,669, gap=13%, float=0.2M
+    #5 ZENA: vol=4,520,238, gap=16%, float=8.4M
+    BODI: ticks=149,150 armed=0 signals=0 trades=0 pnl=+0
+    RAIN: ticks=42,684 armed=2 signals=1 trades=1 pnl=+5821
+    VCIG: ticks=199,551 armed=0 signals=0 trades=0 pnl=+0
+    WHLR: ticks=3,265 armed=1 signals=0 trades=0 pnl=+0
+    ZENA: ticks=73,102 armed=0 signals=0 trades=0 pnl=+0
+    BODI: ticks=149,150 armed=0 signals=0 trades=0 pnl=+0
+    RAIN: ticks=42,684 armed=2 signals=1 trades=1 pnl=+5821
+    VCIG: ticks=199,551 armed=0 signals=0 trades=0 pnl=+0
+    WHLR: ticks=3,265 armed=1 signals=1 trades=1 pnl=-1114
+    ZENA: ticks=73,102 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,515 | B: 0 trades, $+0, eq=$132,755
+[210/297] 2025-11-12: 1 scanned → 1 passed → top 1 selected (risk A=$3337, B=$3318)
+    #1 CMCT: vol=3,128,648, gap=72%, float=0.7M
+    CMCT: ticks=671,476 armed=1 signals=1 trades=1 pnl=-1668
+    CMCT: ticks=671,476 armed=1 signals=1 trades=1 pnl=-1659
+  A: 1 trades, $-1,668, eq=$131,847 | B: 1 trades, $-1,659, eq=$131,096
+[211/297] 2025-11-13: 4 scanned → 3 passed → top 3 selected (risk A=$3296, B=$3277)
+    #1 LVLU: vol=1,837,053, gap=21%, float=1.2M
+    #2 MGRX: vol=5,718,506, gap=33%, float=9.1M
+    #3 AVX: vol=1,602,959, gap=17%, float=2.0M
+    LVLU: ticks=72,826 armed=0 signals=0 trades=0 pnl=+0
+    MGRX: ticks=300,687 armed=0 signals=0 trades=0 pnl=+0
+    AVX: ticks=40,784 armed=0 signals=0 trades=0 pnl=+0
+    LVLU: ticks=72,826 armed=0 signals=0 trades=0 pnl=+0
+    MGRX: ticks=300,687 armed=0 signals=0 trades=0 pnl=+0
+    AVX: ticks=40,784 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,847 | B: 0 trades, $+0, eq=$131,096
+[212/297] 2025-11-14: 1 scanned → 1 passed → top 1 selected (risk A=$3296, B=$3277)
+    #1 TRNR: vol=496,910, gap=20%, float=0.2M
+    TRNR: ticks=19,228 armed=0 signals=0 trades=0 pnl=+0
+    TRNR: ticks=19,228 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,847 | B: 0 trades, $+0, eq=$131,096
+[213/297] 2025-11-17: 1 scanned → 1 passed → top 1 selected (risk A=$3296, B=$3277)
+    #1 VEEE: vol=8,743,376, gap=16%, float=8.2M
+    VEEE: ticks=140,430 armed=0 signals=0 trades=0 pnl=+0
+    VEEE: ticks=140,430 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,847 | B: 0 trades, $+0, eq=$131,096
+[214/297] 2025-11-18: 1 scanned → 1 passed → top 1 selected (risk A=$3296, B=$3277)
+    #1 LPCN: vol=89,512, gap=12%, float=4.9M
+    LPCN: ticks=1,445 armed=0 signals=0 trades=0 pnl=+0
+    LPCN: ticks=1,445 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,847 | B: 0 trades, $+0, eq=$131,096
+[215/297] 2025-11-19: 0 scanned, 0 passed filter, 0 selected
+[216/297] 2025-11-20: 2 scanned → 2 passed → top 2 selected (risk A=$3296, B=$3277)
+    #1 MNDR: vol=17,405,335, gap=83%, float=0.7M
+    #2 PBM: vol=5,249,304, gap=20%, float=0.3M
+    MNDR: ticks=514,164 armed=2 signals=2 trades=1 pnl=+2380
+    PBM: ticks=183,550 armed=0 signals=0 trades=0 pnl=+0
+    MNDR: ticks=514,164 armed=2 signals=2 trades=1 pnl=+2367
+    PBM: ticks=183,550 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+2,380, eq=$134,227 | B: 1 trades, $+2,367, eq=$133,463
+[217/297] 2025-11-21: 3 scanned → 3 passed → top 3 selected (risk A=$3355, B=$3336)
+    #1 MNDR: vol=11,565,470, gap=38%, float=0.7M
+    #2 SHPH: vol=1,159,945, gap=16%, float=1.6M
+    #3 MFI: vol=118,369, gap=21%, float=0.5M
+    MNDR: ticks=501,362 armed=2 signals=2 trades=2 pnl=-460
+    SHPH: ticks=28,506 armed=1 signals=1 trades=1 pnl=+1442
+    MFI: ticks=21,286 armed=1 signals=0 trades=0 pnl=+0
+    MNDR: ticks=501,362 armed=2 signals=2 trades=2 pnl=-457
+    SHPH: ticks=28,506 armed=1 signals=1 trades=1 pnl=+1442
+    MFI: ticks=21,286 armed=1 signals=0 trades=0 pnl=+0
+  A: 1 trades, $-559, eq=$133,668 | B: 1 trades, $-556, eq=$132,907
+[218/297] 2025-11-24: 3 scanned → 3 passed → top 3 selected (risk A=$3341, B=$3322)
+    #1 AEHL: vol=8,834,484, gap=76%, float=1.1M
+    #2 ATON: vol=5,552,805, gap=59%, float=0.8M
+    #3 JXG: vol=2,704,457, gap=20%, float=0.2M
+    AEHL: ticks=209,467 armed=0 signals=0 trades=0 pnl=+0
+    ATON: ticks=289,050 armed=2 signals=2 trades=2 pnl=+186
+    JXG: ticks=76,409 armed=1 signals=1 trades=1 pnl=-455
+    AEHL: ticks=209,467 armed=0 signals=0 trades=0 pnl=+0
+    ATON: ticks=289,050 armed=2 signals=2 trades=2 pnl=+186
+    JXG: ticks=76,409 armed=1 signals=1 trades=1 pnl=-455
+  A: 0 trades, $+0, eq=$133,668 | B: 0 trades, $+0, eq=$132,907
+[219/297] 2025-11-25: 1 scanned → 1 passed → top 1 selected (risk A=$3341, B=$3322)
+    #1 CETY: vol=78,789,162, gap=92%, float=4.2M
+    CETY: ticks=430,723 armed=0 signals=0 trades=0 pnl=+0
+    CETY: ticks=430,723 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,668 | B: 0 trades, $+0, eq=$132,907
+[220/297] 2025-11-26: 2 scanned → 2 passed → top 2 selected (risk A=$3341, B=$3322)
+    #1 SPRC: vol=12,352,315, gap=33%, float=0.4M
+    #2 ATON: vol=3,704,486, gap=14%, float=0.8M
+    SPRC: ticks=324,410 armed=0 signals=0 trades=0 pnl=+0
+    ATON: ticks=47,791 armed=1 signals=1 trades=0 pnl=+0
+    SPRC: ticks=324,410 armed=0 signals=0 trades=0 pnl=+0
+    ATON: ticks=47,791 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,668 | B: 0 trades, $+0, eq=$132,907
+[221/297] 2025-11-28: 1 scanned → 1 passed → top 1 selected (risk A=$3341, B=$3322)
+    #1 CDT: vol=2,314,507, gap=12%, float=1.4M
+    CDT: ticks=40,840 armed=0 signals=0 trades=0 pnl=+0
+    CDT: ticks=40,840 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,668 | B: 0 trades, $+0, eq=$132,907
+[222/297] 2025-12-01: 2 scanned → 2 passed → top 2 selected (risk A=$3341, B=$3322)
+    #1 QTTB: vol=639,243, gap=70%, float=5.0M
+    #2 WBUY: vol=4,072,201, gap=31%, float=0.9M
+    QTTB: ticks=1,147,296 armed=5 signals=5 trades=4 pnl=+3848
+    WBUY: ticks=106,604 armed=1 signals=1 trades=0 pnl=+0
+    QTTB: ticks=1,147,296 armed=5 signals=5 trades=4 pnl=+3850
+    WBUY: ticks=106,604 armed=1 signals=1 trades=0 pnl=+0
+  A: 1 trades, $-431, eq=$133,237 | B: 1 trades, $-429, eq=$132,478
+[223/297] 2025-12-02: 3 scanned → 3 passed → top 3 selected (risk A=$3330, B=$3311)
+    #1 TAOP: vol=8,355,897, gap=59%, float=1.0M
+    #2 PLRZ: vol=4,001,355, gap=64%, float=0.9M
+    #3 ACON: vol=52,354, gap=12%, float=0.7M
+    TAOP: ticks=168,294 armed=2 signals=2 trades=1 pnl=-1114
+    PLRZ: ticks=1,011,079 armed=3 signals=3 trades=3 pnl=+1041
+    ACON: ticks=1,050 armed=1 signals=1 trades=0 pnl=+0
+    TAOP: ticks=168,294 armed=2 signals=2 trades=1 pnl=-1114
+    PLRZ: ticks=1,011,079 armed=3 signals=3 trades=3 pnl=+1041
+    ACON: ticks=1,050 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,237 | B: 0 trades, $+0, eq=$132,478
+[224/297] 2025-12-03: 3 scanned → 3 passed → top 3 selected (risk A=$3330, B=$3311)
+    #1 HTOO: vol=10,009,260, gap=28%, float=0.6M
+    #2 PMAX: vol=10,658,848, gap=41%, float=0.4M
+    #3 QCLS: vol=2,145,792, gap=17%, float=1.6M
+    HTOO: ticks=217,188 armed=1 signals=0 trades=0 pnl=+0
+    PMAX: ticks=213,060 armed=2 signals=1 trades=1 pnl=+1650
+    QCLS: ticks=266,089 armed=2 signals=2 trades=1 pnl=+2369
+    HTOO: ticks=217,188 armed=1 signals=0 trades=0 pnl=+0
+    PMAX: ticks=213,060 armed=2 signals=1 trades=1 pnl=+1650
+    QCLS: ticks=266,089 armed=2 signals=2 trades=1 pnl=+2369
+  A: 0 trades, $+0, eq=$133,237 | B: 0 trades, $+0, eq=$132,478
+[225/297] 2025-12-04: 3 scanned → 3 passed → top 3 selected (risk A=$3330, B=$3311)
+    #1 MAMO: vol=1,054,649, gap=16%, float=4.9M
+    #2 UPC: vol=72,170, gap=23%, float=0.6M
+    #3 ACON: vol=68,335, gap=14%, float=0.7M
+    MAMO: ticks=31,774 armed=0 signals=0 trades=0 pnl=+0
+    UPC: ticks=9,696 armed=1 signals=1 trades=0 pnl=+0
+    ACON: ticks=1,303 armed=0 signals=0 trades=0 pnl=+0
+    MAMO: ticks=31,774 armed=0 signals=0 trades=0 pnl=+0
+    UPC: ticks=9,696 armed=1 signals=1 trades=0 pnl=+0
+    ACON: ticks=1,303 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,237 | B: 0 trades, $+0, eq=$132,478
+[226/297] 2025-12-05: 4 scanned → 4 passed → top 4 selected (risk A=$3330, B=$3311)
+    #1 WHLR: vol=13,277,117, gap=73%, float=0.2M
+    #2 LICN: vol=263,167, gap=17%, float=0.8M
+    #3 PCSC: vol=410,808, gap=12%, float=8.6M
+    #4 SPRC: vol=7,050,054, gap=14%, float=0.4M
+    WHLR: ticks=688,816 armed=5 signals=4 trades=3 pnl=+7674
+    LICN: ticks=3,700 armed=0 signals=0 trades=0 pnl=+0
+    PCSC: ticks=5,699 armed=1 signals=0 trades=0 pnl=+0
+    SPRC: ticks=103,536 armed=2 signals=1 trades=0 pnl=+0
+    WHLR: ticks=688,816 armed=5 signals=4 trades=3 pnl=+7674
+    LICN: ticks=3,700 armed=0 signals=0 trades=0 pnl=+0
+    PCSC: ticks=5,699 armed=1 signals=0 trades=0 pnl=+0
+    SPRC: ticks=103,536 armed=2 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,237 | B: 0 trades, $+0, eq=$132,478
+[227/297] 2025-12-08: 7 scanned → 7 passed → top 5 selected (risk A=$3330, B=$3311)
+    #1 CETX: vol=22,317,607, gap=321%, float=0.8M
+    #2 ELAB: vol=1,828,721, gap=12%, float=2.1M
+    #3 TWG: vol=3,475,108, gap=75%, float=0.4M
+    #4 MRNO: vol=55,827, gap=23%, float=1.4M
+    #5 HWH: vol=832,585, gap=20%, float=0.4M
+    CETX: ticks=1,361,147 armed=4 signals=4 trades=4 pnl=+12106
+    ELAB: ticks=52,134 armed=1 signals=1 trades=1 pnl=+1738
+    TWG: ticks=214,321 armed=2 signals=2 trades=2 pnl=+2683
+    MRNO: ticks=4,638 armed=1 signals=1 trades=0 pnl=+0
+    HWH: ticks=46,207 armed=0 signals=0 trades=0 pnl=+0
+    CETX: ticks=1,361,147 armed=4 signals=4 trades=4 pnl=+12106
+    ELAB: ticks=52,134 armed=1 signals=1 trades=1 pnl=+1738
+    TWG: ticks=214,321 armed=2 signals=2 trades=2 pnl=+2683
+    MRNO: ticks=4,638 armed=1 signals=1 trades=0 pnl=+0
+    HWH: ticks=46,207 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$133,237 | B: 0 trades, $+0, eq=$132,478
+[228/297] 2025-12-09: 7 scanned → 7 passed → top 5 selected (risk A=$3330, B=$3311)
+    #1 OCG: vol=727,095, gap=14%, float=0.1M
+    #2 XCUR: vol=5,312,348, gap=66%, float=3.4M
+    #3 SNTI: vol=3,760,490, gap=26%, float=9.7M
+    #4 VOR: vol=10,158,369, gap=38%, float=4.9M
+    #5 PBM: vol=8,259,537, gap=22%, float=0.3M
+    OCG: ticks=182,367 armed=3 signals=3 trades=3 pnl=-1876
+    OCG: ticks=182,367 armed=3 signals=3 trades=3 pnl=-1855
+  A: 1 trades, $-3,593, eq=$129,644 | B: 1 trades, $-3,572, eq=$128,906
+[229/297] 2025-12-10: 4 scanned → 4 passed → top 4 selected (risk A=$3241, B=$3222)
+    #1 ENVB: vol=8,094,084, gap=107%, float=0.5M
+    #2 ESHA: vol=196,072, gap=44%, float=1.0M
+    #3 GWAV: vol=381,129, gap=15%, float=0.8M
+    #4 AHT: vol=433,106, gap=18%, float=6.0M
+    ENVB: ticks=779,277 armed=3 signals=3 trades=2 pnl=+2982
+    ESHA: ticks=12,926 armed=2 signals=2 trades=0 pnl=+0
+    GWAV: ticks=19,408 armed=0 signals=0 trades=0 pnl=+0
+    AHT: ticks=38,677 armed=1 signals=1 trades=1 pnl=-47
+    ENVB: ticks=779,277 armed=3 signals=3 trades=2 pnl=+2982
+    ESHA: ticks=12,926 armed=2 signals=2 trades=0 pnl=+0
+    GWAV: ticks=19,408 armed=0 signals=0 trades=0 pnl=+0
+    AHT: ticks=38,677 armed=1 signals=1 trades=1 pnl=-47
+  A: 1 trades, $-47, eq=$129,597 | B: 1 trades, $-47, eq=$128,859
+[230/297] 2025-12-11: 3 scanned → 3 passed → top 3 selected (risk A=$3239, B=$3221)
+    #1 AXIL: vol=7,167,189, gap=119%, float=3.5M
+    #2 GLXG: vol=2,975,561, gap=19%, float=0.6M
+    #3 BTTC: vol=124,982, gap=48%, float=1.3M
+    AXIL: ticks=518,454 armed=1 signals=1 trades=1 pnl=+4913
+    GLXG: ticks=84,733 armed=3 signals=2 trades=2 pnl=-50
+    BTTC: ticks=746,401 armed=3 signals=3 trades=3 pnl=+9365
+    AXIL: ticks=518,454 armed=1 signals=1 trades=1 pnl=+4913
+    GLXG: ticks=84,733 armed=3 signals=2 trades=2 pnl=-50
+    BTTC: ticks=746,401 armed=3 signals=3 trades=3 pnl=+9365
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[231/297] 2025-12-12: 3 scanned → 3 passed → top 3 selected (risk A=$3239, B=$3221)
+    #1 KPLT: vol=4,166,953, gap=38%, float=3.9M
+    #2 JZXN: vol=5,059,344, gap=44%, float=1.3M
+    #3 NPT: vol=100,135, gap=11%, float=3.5M
+    KPLT: ticks=323,801 armed=3 signals=3 trades=3 pnl=+567
+    JZXN: ticks=170,752 armed=3 signals=3 trades=3 pnl=+3650
+    NPT: ticks=592 armed=0 signals=0 trades=0 pnl=+0
+    KPLT: ticks=323,801 armed=3 signals=3 trades=3 pnl=+567
+    JZXN: ticks=170,752 armed=3 signals=3 trades=3 pnl=+3650
+    NPT: ticks=592 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[232/297] 2025-12-15: 5 scanned → 4 passed → top 4 selected (risk A=$3239, B=$3221)
+    #1 AMCI: vol=5,008,628, gap=36%, float=1.2M
+    #2 GLSI: vol=406,946, gap=17%, float=6.6M
+    #3 ARBB: vol=163,373, gap=11%, float=1.1M
+    #4 RKLZ: vol=372,455, gap=14%, float=0.2M
+    AMCI: ticks=579,623 armed=4 signals=3 trades=3 pnl=+4752
+    GLSI: ticks=78,006 armed=0 signals=0 trades=0 pnl=+0
+    ARBB: ticks=32,523 armed=1 signals=1 trades=1 pnl=+1583
+    RKLZ: ticks=1,936 armed=0 signals=0 trades=0 pnl=+0
+    AMCI: ticks=579,623 armed=4 signals=3 trades=3 pnl=+4752
+    GLSI: ticks=78,006 armed=0 signals=0 trades=0 pnl=+0
+    ARBB: ticks=32,523 armed=1 signals=1 trades=1 pnl=+1583
+    RKLZ: ticks=1,936 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[233/297] 2025-12-16: 5 scanned → 5 passed → top 5 selected (risk A=$3239, B=$3221)
+    #1 ASNS: vol=3,890,783, gap=33%, float=1.4M
+    #2 VERO: vol=3,996,878, gap=23%, float=1.6M
+    #3 CYN: vol=2,637,241, gap=28%, float=8.0M
+    #4 SQFT: vol=70,726, gap=15%, float=0.7M
+    #5 WATT: vol=80,851, gap=12%, float=1.6M
+    ASNS: ticks=89,401 armed=1 signals=1 trades=1 pnl=+0
+    VERO: ticks=184,661 armed=2 signals=2 trades=1 pnl=+193
+    CYN: ticks=51,032 armed=0 signals=0 trades=0 pnl=+0
+    SQFT: ticks=30,823 armed=0 signals=0 trades=0 pnl=+0
+    WATT: ticks=6,028 armed=1 signals=0 trades=0 pnl=+0
+    ASNS: ticks=89,401 armed=1 signals=1 trades=1 pnl=+0
+    VERO: ticks=184,661 armed=2 signals=2 trades=1 pnl=+193
+    CYN: ticks=51,032 armed=0 signals=0 trades=0 pnl=+0
+    SQFT: ticks=30,823 armed=0 signals=0 trades=0 pnl=+0
+    WATT: ticks=6,028 armed=1 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+0, eq=$129,597 | B: 1 trades, $+0, eq=$128,859
+[234/297] 2025-12-17: 0 scanned, 0 passed filter, 0 selected
+[235/297] 2025-12-18: 1 scanned → 1 passed → top 1 selected (risk A=$3239, B=$3221)
+    #1 LONA: vol=3,437,132, gap=62%, float=2.7M
+    LONA: ticks=581,081 armed=4 signals=4 trades=2 pnl=+1207
+    LONA: ticks=581,081 armed=4 signals=4 trades=2 pnl=+1207
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[236/297] 2025-12-19: 2 scanned → 2 passed → top 2 selected (risk A=$3239, B=$3221)
+    #1 AMST: vol=2,585,789, gap=12%, float=3.0M
+    #2 RDAC: vol=246,811, gap=17%, float=5.8M
+    AMST: ticks=59,245 armed=1 signals=1 trades=0 pnl=+0
+    RDAC: ticks=27,286 armed=0 signals=0 trades=0 pnl=+0
+    AMST: ticks=59,245 armed=1 signals=1 trades=0 pnl=+0
+    RDAC: ticks=27,286 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[237/297] 2025-12-22: 1 scanned → 1 passed → top 1 selected (risk A=$3239, B=$3221)
+    #1 CMCT: vol=5,181,741, gap=26%, float=0.7M
+    CMCT: ticks=412,723 armed=2 signals=2 trades=1 pnl=+124
+    CMCT: ticks=412,723 armed=2 signals=2 trades=1 pnl=+124
+  A: 0 trades, $+0, eq=$129,597 | B: 0 trades, $+0, eq=$128,859
+[238/297] 2025-12-23: 5 scanned → 4 passed → top 4 selected (risk A=$3239, B=$3221)
+    #1 TIVC: vol=13,808,134, gap=61%, float=1.5M
+    #2 OPTX: vol=14,240,274, gap=40%, float=6.0M
+    #3 BBLG: vol=1,871,063, gap=11%, float=1.8M
+    #4 BMRA: vol=856,348, gap=15%, float=2.6M
+    TIVC: ticks=338,916 armed=2 signals=2 trades=1 pnl=-2013
+    OPTX: ticks=442,731 armed=4 signals=3 trades=3 pnl=+405
+    BBLG: ticks=104,083 armed=0 signals=0 trades=0 pnl=+0
+    BMRA: ticks=16,254 armed=1 signals=1 trades=1 pnl=-2216
+    TIVC: ticks=338,916 armed=2 signals=2 trades=1 pnl=-2013
+    OPTX: ticks=442,731 armed=4 signals=3 trades=3 pnl=+405
+    BBLG: ticks=104,083 armed=0 signals=0 trades=0 pnl=+0
+    BMRA: ticks=16,254 armed=1 signals=1 trades=1 pnl=-2204
+  A: 4 trades, $-1,811, eq=$127,786 | B: 4 trades, $-1,799, eq=$127,060
+[239/297] 2025-12-24: 5 scanned → 5 passed → top 5 selected (risk A=$3194, B=$3176)
+    #1 ELOG: vol=11,539,167, gap=69%, float=2.9M
+    #2 SOBR: vol=14,277,097, gap=68%, float=1.1M
+    #3 INDP: vol=4,900,289, gap=55%, float=1.4M
+    #4 TNMG: vol=4,559,563, gap=19%, float=1.1M
+    #5 AIRI: vol=477,414, gap=10%, float=3.7M
+    ELOG: ticks=205,405 armed=2 signals=2 trades=1 pnl=+1027
+    SOBR: ticks=432,107 armed=1 signals=1 trades=1 pnl=+114
+    INDP: ticks=173,310 armed=2 signals=2 trades=0 pnl=+0
+    TNMG: ticks=61,258 armed=0 signals=0 trades=0 pnl=+0
+    AIRI: ticks=11,125 armed=3 signals=3 trades=1 pnl=-385
+    ELOG: ticks=205,405 armed=2 signals=2 trades=1 pnl=+1021
+    SOBR: ticks=432,107 armed=1 signals=1 trades=1 pnl=+113
+    INDP: ticks=173,310 armed=2 signals=2 trades=0 pnl=+0
+    TNMG: ticks=61,258 armed=0 signals=0 trades=0 pnl=+0
+    AIRI: ticks=11,125 armed=3 signals=3 trades=1 pnl=-385
+  A: 1 trades, $+1,027, eq=$128,813 | B: 1 trades, $+1,021, eq=$128,081
+[240/297] 2025-12-26: 0 scanned, 0 passed filter, 0 selected
+[241/297] 2025-12-29: 3 scanned → 3 passed → top 3 selected (risk A=$3220, B=$3202)
+    #1 BNAI: vol=33,455,189, gap=72%, float=3.3M
+    #2 SOPA: vol=16,985,871, gap=24%, float=5.7M
+    #3 NTRB: vol=123,026, gap=20%, float=4.9M
+    BNAI: ticks=201,242 armed=2 signals=2 trades=0 pnl=+0
+    SOPA: ticks=505,820 armed=4 signals=4 trades=3 pnl=+78
+    BNAI: ticks=201,242 armed=2 signals=2 trades=0 pnl=+0
+    SOPA: ticks=505,820 armed=4 signals=4 trades=3 pnl=+78
+  A: 2 trades, $-277, eq=$128,536 | B: 2 trades, $-277, eq=$127,804
+[242/297] 2025-12-30: 3 scanned → 3 passed → top 3 selected (risk A=$3213, B=$3195)
+    #1 AEHL: vol=15,131,833, gap=108%, float=1.1M
+    #2 EKSO: vol=3,345,350, gap=48%, float=1.8M
+    #3 DRMA: vol=9,293,782, gap=25%, float=0.5M
+    AEHL: ticks=139,510 armed=2 signals=1 trades=1 pnl=+3069
+    EKSO: ticks=734,354 armed=5 signals=5 trades=3 pnl=-824
+    DRMA: ticks=132,425 armed=0 signals=0 trades=0 pnl=+0
+    AEHL: ticks=139,510 armed=2 signals=1 trades=1 pnl=+3052
+    EKSO: ticks=734,354 armed=5 signals=5 trades=3 pnl=-824
+    DRMA: ticks=132,425 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+3,069, eq=$131,605 | B: 1 trades, $+3,052, eq=$130,856
+[243/297] 2025-12-31: 2 scanned → 2 passed → top 2 selected (risk A=$3290, B=$3271)
+    #1 ANGH: vol=5,718,828, gap=68%, float=1.7M
+    #2 ALCY: vol=97,793, gap=13%, float=1.0M
+    ANGH: ticks=307,458 armed=6 signals=6 trades=1 pnl=-911
+    ALCY: ticks=4,909 armed=1 signals=1 trades=0 pnl=+0
+    ANGH: ticks=307,458 armed=6 signals=6 trades=1 pnl=-911
+    ALCY: ticks=4,909 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,605 | B: 0 trades, $+0, eq=$130,856
+[244/297] 2026-01-02: 2 scanned → 2 passed → top 2 selected (risk A=$3290, B=$3271)
+    #1 FUTG: vol=78,316, gap=11%, float=0.2M
+    #2 SNSE: vol=279,226, gap=11%, float=0.7M
+    FUTG: ticks=228 armed=1 signals=0 trades=0 pnl=+0
+    SNSE: ticks=16,595 armed=0 signals=0 trades=0 pnl=+0
+    FUTG: ticks=228 armed=1 signals=0 trades=0 pnl=+0
+    SNSE: ticks=16,595 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,605 | B: 0 trades, $+0, eq=$130,856
+[245/297] 2026-01-03: 0 scanned, 0 passed filter, 0 selected
+[246/297] 2026-01-05: 1 scanned → 1 passed → top 1 selected (risk A=$3290, B=$3271)
+    #1 UUU: vol=142,844, gap=23%, float=1.6M
+    UUU: ticks=1,938 armed=0 signals=0 trades=0 pnl=+0
+    UUU: ticks=1,938 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,605 | B: 0 trades, $+0, eq=$130,856
+[247/297] 2026-01-06: 2 scanned → 2 passed → top 2 selected (risk A=$3290, B=$3271)
+    #1 NOMA: vol=2,704,087, gap=17%, float=4.0M
+    #2 CYCN: vol=8,666,636, gap=56%, float=2.7M
+    NOMA: ticks=34,394 armed=0 signals=0 trades=0 pnl=+0
+    CYCN: ticks=257,121 armed=0 signals=0 trades=0 pnl=+0
+    NOMA: ticks=34,394 armed=0 signals=0 trades=0 pnl=+0
+    CYCN: ticks=257,121 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$131,605 | B: 0 trades, $+0, eq=$130,856
+[248/297] 2026-01-07: 2 scanned → 2 passed → top 2 selected (risk A=$3290, B=$3271)
+    #1 CDIO: vol=6,536,915, gap=38%, float=1.7M
+    #2 NVVE: vol=15,642,799, gap=47%, float=0.2M
+    CDIO: ticks=140,999 armed=2 signals=2 trades=2 pnl=+0
+    NVVE: ticks=182,657 armed=1 signals=1 trades=1 pnl=-1779
+    CDIO: ticks=140,999 armed=2 signals=2 trades=2 pnl=+0
+    NVVE: ticks=182,657 armed=1 signals=1 trades=1 pnl=-1769
+  A: 1 trades, $-1,779, eq=$129,826 | B: 1 trades, $-1,769, eq=$129,087
+[249/297] 2026-01-08: 2 scanned → 2 passed → top 2 selected (risk A=$3245, B=$3227)
+    #1 ACON: vol=4,695,008, gap=47%, float=0.7M
+    #2 SXTC: vol=2,345,330, gap=55%, float=0.8M
+    ACON: ticks=418,618 armed=3 signals=3 trades=2 pnl=+149
+    SXTC: ticks=219,858 armed=2 signals=2 trades=1 pnl=+5609
+    ACON: ticks=418,618 armed=3 signals=3 trades=2 pnl=+149
+    SXTC: ticks=219,858 armed=2 signals=2 trades=1 pnl=+5609
+  A: 0 trades, $+0, eq=$129,826 | B: 0 trades, $+0, eq=$129,087
+[250/297] 2026-01-09: 4 scanned → 4 passed → top 4 selected (risk A=$3245, B=$3227)
+    #1 FEED: vol=2,868,491, gap=10%, float=0.8M
+    #2 KUST: vol=2,700,325, gap=14%, float=0.2M
+    #3 ICON: vol=3,622,622, gap=22%, float=0.7M
+    #4 APVO: vol=3,993,762, gap=20%, float=0.9M
+    FEED: ticks=46,648 armed=0 signals=0 trades=0 pnl=+0
+    KUST: ticks=25,857 armed=0 signals=0 trades=0 pnl=+0
+    ICON: ticks=37,556 armed=0 signals=0 trades=0 pnl=+0
+    APVO: ticks=30,384 armed=0 signals=0 trades=0 pnl=+0
+    FEED: ticks=46,648 armed=0 signals=0 trades=0 pnl=+0
+    KUST: ticks=25,857 armed=0 signals=0 trades=0 pnl=+0
+    ICON: ticks=37,556 armed=0 signals=0 trades=0 pnl=+0
+    APVO: ticks=30,384 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$129,826 | B: 0 trades, $+0, eq=$129,087
+[251/297] 2026-01-12: 2 scanned → 2 passed → top 2 selected (risk A=$3245, B=$3227)
+    #1 BDSX: vol=5,401,463, gap=26%, float=3.7M
+    #2 SUGP: vol=218,401, gap=18%, float=4.0M
+    BDSX: ticks=442,026 armed=4 signals=4 trades=3 pnl=+400
+    SUGP: ticks=14,137 armed=2 signals=1 trades=1 pnl=+1249
+    BDSX: ticks=442,026 armed=4 signals=4 trades=3 pnl=+400
+    SUGP: ticks=14,137 armed=2 signals=2 trades=1 pnl=+1249
+  A: 0 trades, $+0, eq=$129,826 | B: 0 trades, $+0, eq=$129,087
+[252/297] 2026-01-13: 7 scanned → 7 passed → top 5 selected (risk A=$3245, B=$3227)
+    #1 XAIR: vol=71,249,379, gap=172%, float=9.4M
+    #2 IOTR: vol=11,884,420, gap=36%, float=0.7M
+    #3 PMAX: vol=10,271,808, gap=16%, float=0.4M
+    #4 AHMA: vol=10,117,699, gap=86%, float=2.0M
+    #5 SPRC: vol=11,816,128, gap=52%, float=0.4M
+    XAIR: ticks=200,139 armed=0 signals=0 trades=0 pnl=+0
+    IOTR: ticks=102,610 armed=0 signals=0 trades=0 pnl=+0
+    PMAX: ticks=57,146 armed=0 signals=0 trades=0 pnl=+0
+    AHMA: ticks=428,895 armed=3 signals=2 trades=1 pnl=+3181
+    SPRC: ticks=197,457 armed=2 signals=2 trades=0 pnl=+0
+    XAIR: ticks=200,139 armed=0 signals=0 trades=0 pnl=+0
+    IOTR: ticks=102,610 armed=0 signals=0 trades=0 pnl=+0
+    PMAX: ticks=57,146 armed=0 signals=0 trades=0 pnl=+0
+    AHMA: ticks=428,895 armed=3 signals=2 trades=1 pnl=+3181
+    SPRC: ticks=197,457 armed=2 signals=2 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$129,826 | B: 0 trades, $+0, eq=$129,087
+[253/297] 2026-01-14: 2 scanned → 2 passed → top 2 selected (risk A=$3245, B=$3227)
+    #1 ROLR: vol=10,669,416, gap=289%, float=3.6M
+    #2 CMND: vol=460,213, gap=13%, float=0.1M
+    ROLR: ticks=878,325 armed=6 signals=5 trades=4 pnl=+36819
+    CMND: ticks=6,141 armed=0 signals=0 trades=0 pnl=+0
+    ROLR: ticks=878,325 armed=6 signals=5 trades=4 pnl=+36699
+    CMND: ticks=6,141 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+20,929, eq=$150,755 | B: 1 trades, $+20,809, eq=$149,896
+[254/297] 2026-01-15: 6 scanned → 5 passed → top 5 selected (risk A=$3768, B=$3747)
+    #1 CJMB: vol=16,555,670, gap=127%, float=1.4M
+    #2 SPHL: vol=5,016,154, gap=91%, float=0.5M
+    #3 CHNR: vol=125,588, gap=12%, float=0.5M
+    #4 AGPU: vol=237,778, gap=17%, float=1.8M
+    #5 NUWE: vol=62,102, gap=21%, float=0.9M
+    CJMB: ticks=986,939 armed=5 signals=4 trades=4 pnl=+14337
+    SPHL: ticks=1,100,050 armed=5 signals=5 trades=5 pnl=+5742
+    CHNR: ticks=1,177 armed=0 signals=0 trades=0 pnl=+0
+    AGPU: ticks=39,974 armed=2 signals=2 trades=2 pnl=-174
+    NUWE: ticks=2,958 armed=0 signals=0 trades=0 pnl=+0
+    CJMB: ticks=986,939 armed=5 signals=4 trades=4 pnl=+14317
+    SPHL: ticks=1,100,050 armed=5 signals=5 trades=5 pnl=+5747
+    CHNR: ticks=1,177 armed=0 signals=0 trades=0 pnl=+0
+    AGPU: ticks=39,974 armed=2 signals=2 trades=2 pnl=-174
+    NUWE: ticks=2,958 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+3,526, eq=$154,281 | B: 1 trades, $+3,506, eq=$153,402
+[255/297] 2026-01-16: 6 scanned → 6 passed → top 5 selected (risk A=$3857, B=$3835)
+    #1 VERO: vol=26,831,003, gap=181%, float=1.6M
+    #2 ACCL: vol=10,272,856, gap=28%, float=2.9M
+    #3 BIYA: vol=7,050,459, gap=42%, float=0.1M
+    #4 LCFY: vol=143,179, gap=132%, float=1.4M
+    #5 GWAV: vol=1,537,606, gap=26%, float=0.8M
+    VERO: ticks=1,696,214 armed=3 signals=3 trades=3 pnl=+1365
+    ACCL: ticks=160,400 armed=0 signals=0 trades=0 pnl=+0
+    BIYA: ticks=181,960 armed=1 signals=1 trades=1 pnl=+3146
+    LCFY: ticks=470,263 armed=2 signals=1 trades=1 pnl=-426
+    GWAV: ticks=82,507 armed=3 signals=3 trades=2 pnl=+4552
+    VERO: ticks=1,696,214 armed=3 signals=3 trades=3 pnl=+1365
+    ACCL: ticks=160,400 armed=0 signals=0 trades=0 pnl=+0
+    BIYA: ticks=181,960 armed=1 signals=1 trades=1 pnl=+3146
+    LCFY: ticks=470,263 armed=2 signals=1 trades=1 pnl=-426
+    GWAV: ticks=82,507 armed=3 signals=3 trades=2 pnl=+4552
+  A: 0 trades, $+0, eq=$154,281 | B: 0 trades, $+0, eq=$153,402
+[256/297] 2026-01-20: 8 scanned → 8 passed → top 5 selected (risk A=$3857, B=$3835)
+    #1 BTTC: vol=29,798,487, gap=85%, float=1.3M
+    #2 TWG: vol=9,478,348, gap=123%, float=0.4M
+    #3 IVF: vol=43,686,384, gap=346%, float=1.7M
+    #4 ICON: vol=12,463,348, gap=47%, float=0.7M
+    #5 POLA: vol=4,490,129, gap=26%, float=1.9M
+    BTTC: ticks=289,194 armed=0 signals=0 trades=0 pnl=+0
+    TWG: ticks=674,822 armed=0 signals=0 trades=0 pnl=+0
+    IVF: ticks=899,844 armed=0 signals=0 trades=0 pnl=+0
+    ICON: ticks=104,837 armed=1 signals=1 trades=0 pnl=+0
+    POLA: ticks=338,918 armed=2 signals=1 trades=1 pnl=+345
+    BTTC: ticks=289,194 armed=0 signals=0 trades=0 pnl=+0
+    TWG: ticks=674,822 armed=0 signals=0 trades=0 pnl=+0
+    IVF: ticks=899,844 armed=0 signals=0 trades=0 pnl=+0
+    ICON: ticks=104,837 armed=1 signals=1 trades=0 pnl=+0
+    POLA: ticks=338,918 armed=2 signals=1 trades=1 pnl=+345
+  A: 0 trades, $+0, eq=$154,281 | B: 0 trades, $+0, eq=$153,402
+[257/297] 2026-01-21: 4 scanned → 4 passed → top 4 selected (risk A=$3857, B=$3835)
+    #1 GITS: vol=25,657,515, gap=172%, float=2.5M
+    #2 SLGB: vol=15,293,392, gap=134%, float=1.0M
+    #3 LSTA: vol=1,890,202, gap=83%, float=7.1M
+    #4 BOXL: vol=13,705,568, gap=92%, float=0.7M
+    GITS: ticks=176,860 armed=0 signals=0 trades=0 pnl=+0
+    SLGB: ticks=463,437 armed=4 signals=4 trades=4 pnl=+7966
+    LSTA: ticks=11,481 armed=0 signals=0 trades=0 pnl=+0
+    BOXL: ticks=286,811 armed=0 signals=0 trades=0 pnl=+0
+    GITS: ticks=176,860 armed=0 signals=0 trades=0 pnl=+0
+    SLGB: ticks=463,437 armed=4 signals=4 trades=4 pnl=+7966
+    LSTA: ticks=11,481 armed=0 signals=0 trades=0 pnl=+0
+    BOXL: ticks=286,811 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$154,281 | B: 0 trades, $+0, eq=$153,402
+[258/297] 2026-01-22: 4 scanned → 4 passed → top 4 selected (risk A=$3857, B=$3835)
+    #1 NXTS: vol=21,390,097, gap=54%, float=1.1M
+    #2 IOTR: vol=22,198,275, gap=203%, float=0.7M
+    #3 SXTP: vol=13,877,243, gap=43%, float=0.9M
+    #4 RAYA: vol=7,955,230, gap=31%, float=0.6M
+    NXTS: ticks=173,714 armed=0 signals=0 trades=0 pnl=+0
+    IOTR: ticks=472,909 armed=3 signals=3 trades=3 pnl=+636
+    SXTP: ticks=1,476,033 armed=4 signals=4 trades=3 pnl=+451
+    RAYA: ticks=66,188 armed=1 signals=1 trades=0 pnl=+0
+    NXTS: ticks=173,714 armed=0 signals=0 trades=0 pnl=+0
+    IOTR: ticks=472,909 armed=3 signals=3 trades=3 pnl=+636
+    SXTP: ticks=1,476,033 armed=4 signals=4 trades=3 pnl=+451
+    RAYA: ticks=66,188 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$154,281 | B: 0 trades, $+0, eq=$153,402
+[259/297] 2026-01-23: 7 scanned → 5 passed → top 5 selected (risk A=$3857, B=$3835)
+    #1 MOVE: vol=7,698,221, gap=157%, float=0.6M
+    #2 RVYL: vol=5,400,826, gap=56%, float=0.3M
+    #3 AUST: vol=2,868,732, gap=23%, float=7.8M
+    #4 RAYA: vol=3,987,249, gap=23%, float=0.6M
+    #5 KUST: vol=1,727,561, gap=21%, float=0.2M
+    MOVE: ticks=610,891 armed=5 signals=4 trades=4 pnl=+4928
+    RVYL: ticks=99,708 armed=1 signals=1 trades=1 pnl=+335
+    AUST: ticks=7,726 armed=2 signals=1 trades=1 pnl=-62
+    RAYA: ticks=310,948 armed=2 signals=2 trades=0 pnl=+0
+    KUST: ticks=801,046 armed=4 signals=4 trades=1 pnl=+493
+    MOVE: ticks=610,891 armed=5 signals=4 trades=4 pnl=+4928
+    RVYL: ticks=99,708 armed=1 signals=1 trades=1 pnl=+335
+    AUST: ticks=7,726 armed=2 signals=1 trades=1 pnl=-62
+    RAYA: ticks=310,948 armed=2 signals=2 trades=0 pnl=+0
+    KUST: ticks=801,046 armed=4 signals=4 trades=1 pnl=+493
+  A: 1 trades, $-62, eq=$154,219 | B: 1 trades, $-62, eq=$153,340
+[260/297] 2026-01-26: 5 scanned → 4 passed → top 4 selected (risk A=$3855, B=$3833)
+    #1 BATL: vol=69,454,863, gap=391%, float=7.2M
+    #2 MBAI: vol=3,302,918, gap=63%, float=4.7M
+    #3 ARAI: vol=6,451,557, gap=12%, float=6.2M
+    #4 STAI: vol=749,277, gap=12%, float=1.0M
+    BATL: ticks=1,179,703 armed=1 signals=0 trades=0 pnl=+0
+    MBAI: ticks=444,940 armed=0 signals=0 trades=0 pnl=+0
+    ARAI: ticks=179,454 armed=3 signals=3 trades=2 pnl=-116
+    BATL: ticks=1,179,703 armed=1 signals=0 trades=0 pnl=+0
+    MBAI: ticks=444,940 armed=0 signals=0 trades=0 pnl=+0
+    ARAI: ticks=179,454 armed=3 signals=3 trades=2 pnl=-116
+  A: 2 trades, $-116, eq=$154,103 | B: 2 trades, $-116, eq=$153,224
+[261/297] 2026-01-27: 5 scanned → 4 passed → top 4 selected (risk A=$3852, B=$3830)
+    #1 NUWE: vol=44,961,800, gap=152%, float=0.9M
+    #2 XHLD: vol=7,858,738, gap=61%, float=1.3M
+    #3 PHGE: vol=3,841,638, gap=67%, float=1.2M
+    #4 CYN: vol=4,255,770, gap=25%, float=8.0M
+    NUWE: ticks=544,783 armed=0 signals=0 trades=0 pnl=+0
+    XHLD: ticks=280,144 armed=0 signals=0 trades=0 pnl=+0
+    PHGE: ticks=272,388 armed=1 signals=1 trades=0 pnl=+0
+    CYN: ticks=435,552 armed=1 signals=1 trades=1 pnl=-198
+    NUWE: ticks=544,783 armed=0 signals=0 trades=0 pnl=+0
+    XHLD: ticks=280,144 armed=0 signals=0 trades=0 pnl=+0
+    PHGE: ticks=272,388 armed=1 signals=1 trades=0 pnl=+0
+    CYN: ticks=435,552 armed=1 signals=1 trades=1 pnl=-198
+  A: 1 trades, $-198, eq=$153,905 | B: 1 trades, $-198, eq=$153,026
+[262/297] 2026-01-28: 3 scanned → 3 passed → top 3 selected (risk A=$3847, B=$3825)
+    #1 AIMD: vol=14,577,647, gap=33%, float=1.7M
+    #2 MRNO: vol=24,078,277, gap=143%, float=1.4M
+    #3 BBGI: vol=483,760, gap=28%, float=0.6M
+    AIMD: ticks=89,412 armed=1 signals=0 trades=0 pnl=+0
+    MRNO: ticks=276,511 armed=0 signals=0 trades=0 pnl=+0
+    BBGI: ticks=9,105 armed=3 signals=3 trades=1 pnl=+848
+    AIMD: ticks=89,412 armed=1 signals=0 trades=0 pnl=+0
+    MRNO: ticks=276,511 armed=0 signals=0 trades=0 pnl=+0
+    BBGI: ticks=9,105 armed=3 signals=3 trades=1 pnl=+848
+  A: 0 trades, $+0, eq=$153,905 | B: 0 trades, $+0, eq=$153,026
+[263/297] 2026-01-29: 5 scanned → 3 passed → top 3 selected (risk A=$3847, B=$3825)
+    #1 SER: vol=26,039,627, gap=62%, float=3.6M
+    #2 FEED: vol=40,631,634, gap=70%, float=0.8M
+    #3 ZSTK: vol=409,368, gap=31%, float=2.3M
+    SER: ticks=285,606 armed=0 signals=0 trades=0 pnl=+0
+    FEED: ticks=408,164 armed=2 signals=2 trades=2 pnl=+1818
+    ZSTK: ticks=31,175 armed=0 signals=0 trades=0 pnl=+0
+    SER: ticks=285,606 armed=0 signals=0 trades=0 pnl=+0
+    FEED: ticks=408,164 armed=2 signals=2 trades=2 pnl=+1807
+    ZSTK: ticks=31,175 armed=0 signals=0 trades=0 pnl=+0
+  A: 1 trades, $+1,891, eq=$155,796 | B: 1 trades, $+1,880, eq=$154,906
+[264/297] 2026-01-30: 2 scanned → 2 passed → top 2 selected (risk A=$3894, B=$3872)
+    #1 PMN: vol=1,484,456, gap=41%, float=1.3M
+    #2 VIVS: vol=10,777,851, gap=76%, float=2.6M
+    PMN: ticks=146,458 armed=0 signals=0 trades=0 pnl=+0
+    VIVS: ticks=305,105 armed=1 signals=0 trades=0 pnl=+0
+    PMN: ticks=146,458 armed=0 signals=0 trades=0 pnl=+0
+    VIVS: ticks=305,105 armed=1 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,796 | B: 0 trades, $+0, eq=$154,906
+[265/297] 2026-02-02: 3 scanned → 3 passed → top 3 selected (risk A=$3894, B=$3872)
+    #1 SWVL: vol=3,874,975, gap=20%, float=5.5M
+    #2 CISS: vol=19,182,335, gap=67%, float=0.1M
+    #3 IPW: vol=3,241,138, gap=19%, float=0.5M
+    SWVL: ticks=370,263 armed=1 signals=1 trades=0 pnl=+0
+    CISS: ticks=167,032 armed=0 signals=0 trades=0 pnl=+0
+    IPW: ticks=17,655 armed=0 signals=0 trades=0 pnl=+0
+    SWVL: ticks=370,263 armed=1 signals=1 trades=0 pnl=+0
+    CISS: ticks=167,032 armed=0 signals=0 trades=0 pnl=+0
+    IPW: ticks=17,655 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,796 | B: 0 trades, $+0, eq=$154,906
+[266/297] 2026-02-03: 5 scanned → 4 passed → top 4 selected (risk A=$3894, B=$3872)
+    #1 FATN: vol=19,689,792, gap=93%, float=6.2M
+    #2 NPT: vol=3,557,700, gap=37%, float=3.5M
+    #3 CYN: vol=24,521,510, gap=28%, float=8.0M
+    #4 FIEE: vol=808,084, gap=19%, float=0.4M
+    FATN: ticks=249,907 armed=0 signals=0 trades=0 pnl=+0
+    NPT: ticks=338,958 armed=2 signals=2 trades=1 pnl=+32882
+    CYN: ticks=217,513 armed=1 signals=1 trades=1 pnl=-46
+    FIEE: ticks=30,485 armed=1 signals=1 trades=1 pnl=+1252
+    FATN: ticks=249,907 armed=0 signals=0 trades=0 pnl=+0
+    NPT: ticks=338,958 armed=2 signals=2 trades=1 pnl=+32882
+    CYN: ticks=217,513 armed=1 signals=1 trades=1 pnl=-46
+    FIEE: ticks=30,485 armed=1 signals=1 trades=1 pnl=+1252
+  A: 1 trades, $-46, eq=$155,750 | B: 1 trades, $-46, eq=$154,860
+[267/297] 2026-02-04: 3 scanned → 3 passed → top 3 selected (risk A=$3893, B=$3871)
+    #1 ELPW: vol=31,138,608, gap=128%, float=0.5M
+    #2 CIGL: vol=5,720,243, gap=49%, float=1.2M
+    #3 BOXL: vol=23,869,470, gap=57%, float=0.7M
+    ELPW: ticks=151,599 armed=1 signals=0 trades=0 pnl=+0
+    CIGL: ticks=87,641 armed=0 signals=0 trades=0 pnl=+0
+    BOXL: ticks=502,369 armed=4 signals=3 trades=1 pnl=-463
+    ELPW: ticks=151,599 armed=1 signals=0 trades=0 pnl=+0
+    CIGL: ticks=87,641 armed=0 signals=0 trades=0 pnl=+0
+    BOXL: ticks=502,369 armed=4 signals=3 trades=1 pnl=-463
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[268/297] 2026-02-05: 1 scanned → 1 passed → top 1 selected (risk A=$3893, B=$3871)
+    #1 RNAZ: vol=2,728,563, gap=55%, float=0.8M
+    RNAZ: ticks=193,713 armed=1 signals=1 trades=1 pnl=+489
+    RNAZ: ticks=193,713 armed=1 signals=1 trades=1 pnl=+489
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[269/297] 2026-02-06: 1 scanned → 1 passed → top 1 selected (risk A=$3893, B=$3871)
+    #1 WHLR: vol=4,175,931, gap=45%, float=0.2M
+    WHLR: ticks=185,563 armed=1 signals=1 trades=1 pnl=-247
+    WHLR: ticks=185,563 armed=1 signals=1 trades=1 pnl=-247
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[270/297] 2026-02-09: 1 scanned → 1 passed → top 1 selected (risk A=$3893, B=$3871)
+    #1 ELTK: vol=423,304, gap=16%, float=2.8M
+    ELTK: ticks=10,407 armed=0 signals=0 trades=0 pnl=+0
+    ELTK: ticks=10,407 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[271/297] 2026-02-10: 2 scanned → 1 passed → top 1 selected (risk A=$3893, B=$3871)
+    #1 SPOG: vol=205,695, gap=19%, float=0.0M
+    SPOG: ticks=3,656 armed=1 signals=1 trades=1 pnl=-196
+    SPOG: ticks=3,656 armed=1 signals=1 trades=1 pnl=-196
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[272/297] 2026-02-11: 4 scanned → 4 passed → top 4 selected (risk A=$3893, B=$3871)
+    #1 BNRG: vol=7,093,915, gap=18%, float=0.4M
+    #2 ELAB: vol=3,242,923, gap=31%, float=2.1M
+    #3 SIF: vol=89,139, gap=25%, float=4.5M
+    #4 DFSC: vol=148,573, gap=10%, float=1.2M
+    BNRG: ticks=79,727 armed=0 signals=0 trades=0 pnl=+0
+    ELAB: ticks=156,221 armed=2 signals=2 trades=0 pnl=+0
+    SIF: ticks=3,525 armed=4 signals=1 trades=0 pnl=+0
+    DFSC: ticks=1,631 armed=0 signals=0 trades=0 pnl=+0
+    BNRG: ticks=79,727 armed=0 signals=0 trades=0 pnl=+0
+    ELAB: ticks=156,221 armed=2 signals=2 trades=0 pnl=+0
+    SIF: ticks=3,525 armed=2 signals=2 trades=1 pnl=-1009
+    DFSC: ticks=1,631 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[273/297] 2026-02-12: 1 scanned → 1 passed → top 1 selected (risk A=$3893, B=$3871)
+    #1 VTAK: vol=84,170, gap=26%, float=1.3M
+    VTAK: ticks=11,242 armed=0 signals=0 trades=0 pnl=+0
+    VTAK: ticks=11,242 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[274/297] 2026-02-13: 3 scanned → 3 passed → top 3 selected (risk A=$3893, B=$3871)
+    #1 JDZG: vol=8,588,420, gap=44%, float=2.8M
+    #2 RAIN: vol=73,431, gap=10%, float=2.8M
+    #3 SIF: vol=95,144, gap=13%, float=4.5M
+    JDZG: ticks=134,012 armed=1 signals=1 trades=0 pnl=+0
+    RAIN: ticks=1,678 armed=1 signals=1 trades=1 pnl=+712
+    SIF: ticks=908 armed=2 signals=0 trades=0 pnl=+0
+    JDZG: ticks=134,012 armed=1 signals=1 trades=0 pnl=+0
+    RAIN: ticks=1,678 armed=1 signals=1 trades=1 pnl=+712
+    SIF: ticks=908 armed=2 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,750 | B: 0 trades, $+0, eq=$154,860
+[275/297] 2026-02-17: 2 scanned → 2 passed → top 2 selected (risk A=$3893, B=$3871)
+    #1 OBAI: vol=9,878,007, gap=94%, float=3.2M
+    #2 PLYX: vol=5,456,965, gap=72%, float=1.3M
+    OBAI: ticks=285,113 armed=1 signals=1 trades=1 pnl=-426
+    PLYX: ticks=317,832 armed=2 signals=2 trades=2 pnl=-855
+    OBAI: ticks=285,113 armed=1 signals=1 trades=1 pnl=-426
+    PLYX: ticks=317,832 armed=2 signals=2 trades=2 pnl=-852
+  A: 1 trades, $-607, eq=$155,143 | B: 1 trades, $-604, eq=$154,256
+[276/297] 2026-02-18: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 BENF: vol=5,824,265, gap=46%, float=1.2M
+    #2 LRHC: vol=8,844,996, gap=50%, float=0.1M
+    BENF: ticks=125,816 armed=0 signals=0 trades=0 pnl=+0
+    LRHC: ticks=212,788 armed=0 signals=0 trades=0 pnl=+0
+    BENF: ticks=125,816 armed=0 signals=0 trades=0 pnl=+0
+    LRHC: ticks=212,788 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[277/297] 2026-02-19: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 RUBI: vol=8,486,662, gap=40%, float=0.0M
+    RUBI: ticks=729,849 armed=4 signals=4 trades=4 pnl=+2594
+    RUBI: ticks=729,849 armed=4 signals=4 trades=4 pnl=+2594
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[278/297] 2026-02-20: 5 scanned → 4 passed → top 4 selected (risk A=$3878, B=$3856)
+    #1 ANPA: vol=1,545,342, gap=25%, float=0.7M
+    #2 BJDX: vol=2,812,762, gap=10%, float=0.4M
+    #3 CDIO: vol=9,818,698, gap=33%, float=1.7M
+    #4 BIYA: vol=240,927, gap=19%, float=0.1M
+    ANPA: ticks=31,277 armed=0 signals=0 trades=0 pnl=+0
+    BJDX: ticks=17,672 armed=1 signals=0 trades=0 pnl=+0
+    CDIO: ticks=320,233 armed=8 signals=8 trades=2 pnl=-771
+    BIYA: ticks=48,622 armed=1 signals=0 trades=0 pnl=+0
+    ANPA: ticks=31,277 armed=0 signals=0 trades=0 pnl=+0
+    BJDX: ticks=17,672 armed=1 signals=0 trades=0 pnl=+0
+    CDIO: ticks=320,233 armed=8 signals=8 trades=2 pnl=-767
+    BIYA: ticks=48,622 armed=1 signals=1 trades=1 pnl=+2391
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[279/297] 2026-02-23: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 GNPX: vol=1,627,057, gap=22%, float=0.7M
+    GNPX: ticks=15,564 armed=0 signals=0 trades=0 pnl=+0
+    GNPX: ticks=15,564 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[280/297] 2026-02-24: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 GRAN: vol=193,626, gap=66%, float=4.7M
+    GRAN: ticks=67,516 armed=0 signals=0 trades=0 pnl=+0
+    GRAN: ticks=67,516 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[281/297] 2026-02-25: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 INBS: vol=468,877, gap=11%, float=0.6M
+    INBS: ticks=9,255 armed=0 signals=0 trades=0 pnl=+0
+    INBS: ticks=9,255 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[282/297] 2026-02-26: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 SMJF: vol=2,871,906, gap=38%, float=8.2M
+    SMJF: ticks=27,622 armed=0 signals=0 trades=0 pnl=+0
+    SMJF: ticks=27,622 armed=0 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[283/297] 2026-02-27: 1 scanned, 0 passed filter, 0 selected
+[284/297] 2026-03-02: 3 scanned → 3 passed → top 3 selected (risk A=$3878, B=$3856)
+    #1 TMDE: vol=47,462,115, gap=235%, float=3.6M
+    #2 RBNE: vol=4,938,148, gap=14%, float=2.7M
+    #3 RLYB: vol=824,538, gap=19%, float=2.7M
+    TMDE: ticks=408,606 armed=1 signals=1 trades=0 pnl=+0
+    RBNE: ticks=117,110 armed=0 signals=0 trades=0 pnl=+0
+    RLYB: ticks=22,910 armed=1 signals=0 trades=0 pnl=+0
+    TMDE: ticks=408,606 armed=1 signals=1 trades=0 pnl=+0
+    RBNE: ticks=117,110 armed=0 signals=0 trades=0 pnl=+0
+    RLYB: ticks=22,910 armed=1 signals=0 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[285/297] 2026-03-03: 1 scanned → 1 passed → top 1 selected (risk A=$3878, B=$3856)
+    #1 MXC: vol=69,245, gap=15%, float=0.8M
+    MXC: ticks=2,289 armed=2 signals=2 trades=1 pnl=+1517
+    MXC: ticks=2,289 armed=2 signals=2 trades=1 pnl=+1517
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[286/297] 2026-03-04: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 VCIG: vol=4,955,408, gap=92%, float=0.1M
+    #2 ADVB: vol=4,872,809, gap=29%, float=0.4M
+    VCIG: ticks=384,487 armed=3 signals=3 trades=3 pnl=+4414
+    ADVB: ticks=92,226 armed=2 signals=2 trades=2 pnl=+2397
+    VCIG: ticks=384,487 armed=3 signals=3 trades=3 pnl=+4414
+    ADVB: ticks=92,226 armed=2 signals=2 trades=2 pnl=+2397
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[287/297] 2026-03-05: 5 scanned → 3 passed → top 3 selected (risk A=$3878, B=$3856)
+    #1 MTEK: vol=16,314,662, gap=52%, float=4.6M
+    #2 HTOO: vol=4,026,558, gap=16%, float=0.6M
+    #3 MSGM: vol=108,060, gap=11%, float=2.5M
+    MTEK: ticks=116,434 armed=0 signals=0 trades=0 pnl=+0
+    HTOO: ticks=75,896 armed=0 signals=0 trades=0 pnl=+0
+    MSGM: ticks=1,403 armed=1 signals=1 trades=1 pnl=-1770
+    MTEK: ticks=116,434 armed=0 signals=0 trades=0 pnl=+0
+    HTOO: ticks=75,896 armed=0 signals=0 trades=0 pnl=+0
+    MSGM: ticks=1,403 armed=1 signals=1 trades=1 pnl=-1770
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[288/297] 2026-03-06: 3 scanned → 3 passed → top 3 selected (risk A=$3878, B=$3856)
+    #1 CRE: vol=8,851,611, gap=59%, float=1.0M
+    #2 IBG: vol=7,190,524, gap=40%, float=0.2M
+    #3 QCLS: vol=1,772,571, gap=15%, float=1.6M
+    CRE: ticks=173,780 armed=2 signals=2 trades=1 pnl=+8446
+    IBG: ticks=113,393 armed=1 signals=1 trades=1 pnl=+4077
+    QCLS: ticks=27,529 armed=2 signals=2 trades=1 pnl=-1484
+    CRE: ticks=173,780 armed=2 signals=2 trades=1 pnl=+8446
+    IBG: ticks=113,393 armed=1 signals=1 trades=1 pnl=+4077
+    QCLS: ticks=27,529 armed=2 signals=2 trades=1 pnl=-1484
+  A: 0 trades, $+0, eq=$155,143 | B: 0 trades, $+0, eq=$154,256
+[289/297] 2026-03-09: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 AGH: vol=8,225,206, gap=47%, float=4.6M
+    #2 OPTX: vol=1,294,570, gap=11%, float=6.0M
+    AGH: ticks=256,113 armed=0 signals=0 trades=0 pnl=+0
+    OPTX: ticks=11,369 armed=1 signals=1 trades=1 pnl=-3
+    AGH: ticks=256,113 armed=0 signals=0 trades=0 pnl=+0
+    OPTX: ticks=11,369 armed=1 signals=1 trades=1 pnl=-3
+  A: 1 trades, $-3, eq=$155,140 | B: 1 trades, $-3, eq=$154,253
+[290/297] 2026-03-10: 3 scanned → 3 passed → top 3 selected (risk A=$3878, B=$3856)
+    #1 INKT: vol=4,446,474, gap=71%, float=1.7M
+    #2 VTAK: vol=20,624,502, gap=63%, float=1.3M
+    #3 PIII: vol=76,664, gap=16%, float=1.4M
+    INKT: ticks=316,156 armed=1 signals=1 trades=1 pnl=+1475
+    VTAK: ticks=144,117 armed=2 signals=1 trades=1 pnl=-1709
+    PIII: ticks=2,289 armed=1 signals=1 trades=0 pnl=+0
+    INKT: ticks=316,156 armed=1 signals=1 trades=1 pnl=+1475
+    VTAK: ticks=144,117 armed=2 signals=1 trades=1 pnl=-1709
+    PIII: ticks=2,289 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,140 | B: 0 trades, $+0, eq=$154,253
+[291/297] 2026-03-11: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 SXTP: vol=4,552,651, gap=14%, float=0.9M
+    #2 CYN: vol=1,629,601, gap=26%, float=8.0M
+    SXTP: ticks=22,079 armed=1 signals=1 trades=0 pnl=+0
+    CYN: ticks=179,366 armed=2 signals=1 trades=0 pnl=+0
+    SXTP: ticks=22,079 armed=1 signals=1 trades=0 pnl=+0
+    CYN: ticks=179,366 armed=2 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,140 | B: 0 trades, $+0, eq=$154,253
+[292/297] 2026-03-12: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 POLA: vol=7,192,426, gap=33%, float=1.9M
+    #2 TLYS: vol=9,533,749, gap=63%, float=9.3M
+    POLA: ticks=171,991 armed=0 signals=0 trades=0 pnl=+0
+    TLYS: ticks=135,419 armed=1 signals=1 trades=0 pnl=+0
+    POLA: ticks=171,991 armed=0 signals=0 trades=0 pnl=+0
+    TLYS: ticks=135,419 armed=1 signals=1 trades=0 pnl=+0
+  A: 0 trades, $+0, eq=$155,140 | B: 0 trades, $+0, eq=$154,253
+[293/297] 2026-03-13: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 BIAF: vol=58,819,656, gap=122%, float=4.3M
+    #2 EDHL: vol=2,511,571, gap=19%, float=0.5M
+    BIAF: ticks=459,404 armed=1 signals=1 trades=1 pnl=+246
+    EDHL: ticks=85,383 armed=1 signals=1 trades=1 pnl=+331
+    BIAF: ticks=459,404 armed=1 signals=1 trades=1 pnl=+246
+    EDHL: ticks=85,383 armed=1 signals=1 trades=1 pnl=+331
+  A: 0 trades, $+0, eq=$155,140 | B: 0 trades, $+0, eq=$154,253
+[294/297] 2026-03-17: 0 scanned, 0 passed filter, 0 selected
+[295/297] 2026-03-18: 2 scanned → 2 passed → top 2 selected (risk A=$3878, B=$3856)
+    #1 ARTL: vol=5,389,390, gap=31%, float=2.1M
+    #2 ZENA: vol=2,863,072, gap=16%, float=8.4M
+    ARTL: ticks=555,129 armed=3 signals=3 trades=2 pnl=+11607
+    ZENA: ticks=58,792 armed=2 signals=1 trades=1 pnl=-28
+    ARTL: ticks=555,129 armed=3 signals=3 trades=2 pnl=+11607
+    ZENA: ticks=58,792 armed=2 signals=1 trades=1 pnl=-28
+  A: 1 trades, $-28, eq=$155,112 | B: 1 trades, $-28, eq=$154,225
+[296/297] 2026-03-19: 4 scanned → 4 passed → top 4 selected (risk A=$3877, B=$3855)
+    #1 CHNR: vol=16,578,027, gap=71%, float=0.5M
+    #2 SER: vol=16,357,200, gap=76%, float=3.6M
+    #3 SUNE: vol=6,611,877, gap=48%, float=3.4M
+    #4 DLTH: vol=874,194, gap=15%, float=9.8M
+    CHNR: ticks=572,469 armed=2 signals=2 trades=2 pnl=+497
+    SER: ticks=318,491 armed=5 signals=5 trades=2 pnl=-900
+    SUNE: ticks=145,864 armed=2 signals=2 trades=0 pnl=+0
+    DLTH: ticks=62,268 armed=1 signals=1 trades=1 pnl=-125
+    CHNR: ticks=572,469 armed=2 signals=2 trades=2 pnl=+497
+    SER: ticks=318,491 armed=5 signals=5 trades=2 pnl=-900
+    SUNE: ticks=145,864 armed=2 signals=2 trades=0 pnl=+0
+    DLTH: ticks=62,268 armed=1 signals=1 trades=1 pnl=-125
+  A: 1 trades, $-125, eq=$154,987 | B: 1 trades, $-125, eq=$154,100
+[297/297] 2026-03-20: 2 scanned → 2 passed → top 2 selected (risk A=$3874, B=$3852)
+    #1 RDGT: vol=52,226, gap=17%, float=5.1M
+    #2 ANNA: vol=1,506,902, gap=21%, float=9.4M
+    RDGT: ticks=1,995 armed=1 signals=1 trades=1 pnl=-96
+    ANNA: ticks=492,468 armed=6 signals=5 trades=4 pnl=+124
+    RDGT: ticks=1,995 armed=1 signals=1 trades=1 pnl=-96
+    ANNA: ticks=492,468 armed=6 signals=5 trades=4 pnl=+124
+  A: 2 trades, $-194, eq=$154,793 | B: 2 trades, $-194, eq=$153,906
+
+Report saved: /Users/duffy/warrior_bot/megatest_results/MEGATEST_RESULTS_all_three.md
+
+============================================================
+Config A (Gate=8): $+124,793 (+416.0%)
+Config B (No Gate): $+123,906 (+413.0%)
+Gate impact: $+887
+============================================================
