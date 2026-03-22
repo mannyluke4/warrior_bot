@@ -185,6 +185,18 @@ class SimTradeManager:
         self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
         self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
 
+        # Fix 1: partial exit on sq_target_hit — take only N% at target, let rest run
+        self.sq_partial_exit_enabled = os.getenv("WB_SQ_PARTIAL_EXIT_ENABLED", "0") == "1"
+        self.sq_partial_pct = int(os.getenv("WB_SQ_PARTIAL_PCT", "50"))
+
+        # Fix 2: wider parabolic trail — multiply trail width to give winners more room
+        self.sq_wide_trail_enabled = os.getenv("WB_SQ_WIDE_TRAIL_ENABLED", "0") == "1"
+        self.sq_trail_multiplier = float(os.getenv("WB_SQ_TRAIL_MULTIPLIER", "2.0"))
+
+        # Fix 3: runner detection — stocks hitting target in <5m get even wider trail (3x)
+        self.sq_runner_detect_enabled = os.getenv("WB_SQ_RUNNER_DETECT_ENABLED", "0") == "1"
+        self._sq_target_hit_min: Optional[int] = None  # minutes since midnight when target was hit
+
         # --- VWAP Reclaim exit parameters (Strategy 4) ---
         self.vr_stall_bars = int(os.getenv("WB_VR_STALL_BARS", "5"))
         self.vr_target_r = float(os.getenv("WB_VR_TARGET_R", "1.5"))
@@ -275,7 +287,9 @@ class SimTradeManager:
 
         if setup_type == "squeeze":
             # Squeeze: core + runner split for partial exits
-            qty_core = max(1, int(math.floor(qty * self.sq_core_pct / 100)))
+            # Fix 1: when partial exit enabled, use sq_partial_pct instead of sq_core_pct
+            _sq_split_pct = self.sq_partial_pct if self.sq_partial_exit_enabled else self.sq_core_pct
+            qty_core = max(1, int(math.floor(qty * _sq_split_pct / 100)))
             qty_t2 = 0
             qty_runner = max(0, qty - qty_core)
         elif setup_type == "vwap_reclaim":
@@ -317,6 +331,8 @@ class SimTradeManager:
             runner_stop=stop,
         )
         self.open_trade = t
+        if setup_type == "squeeze":
+            self._sq_target_hit_min = None  # reset runner detection state
 
         # Track open notional for buying power
         if self.account_equity > 0:
@@ -542,6 +558,9 @@ class SimTradeManager:
             if t.r > 0:
                 is_parabolic = "[PARABOLIC]" in (t.score_detail or "")
                 trail_r = self.sq_para_trail_r if is_parabolic else self.sq_trail_r
+                # Fix 2: widen trail to give winners more room
+                if self.sq_wide_trail_enabled:
+                    trail_r *= self.sq_trail_multiplier
                 trail_price = t.peak - (trail_r * t.r)
                 if price <= trail_price:
                     reason = "sq_para_trail_exit" if is_parabolic else "sq_trail_exit"
@@ -555,7 +574,7 @@ class SimTradeManager:
                     self._close(t)
                     return
 
-            # 4) Target hit — exit core, keep runner
+            # 4) Target hit — exit core (partial or full), keep runner
             if t.r > 0 and price >= t.entry + (self.sq_target_r * t.r):
                 t.tp_hit = True
                 t.core_exit_price = price
@@ -563,13 +582,26 @@ class SimTradeManager:
                 t.core_exit_reason = "sq_target_hit"
                 # Move runner stop to breakeven
                 t.runner_stop = max(t.stop, t.entry + 0.01)
+                # Fix 3: record when target was hit for runner detection
+                if self.sq_runner_detect_enabled:
+                    self._sq_target_hit_min = self._time_to_minutes(time_str)
                 return
 
         # --- Post-target phase (runner only) ---
         if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0:
             # Runner trailing stop
             if t.r > 0:
-                runner_trail = t.peak - (self.sq_runner_trail_r * t.r)
+                eff_runner_trail_r = self.sq_runner_trail_r
+                # Fix 2: apply multiplier to runner trail too
+                if self.sq_wide_trail_enabled:
+                    eff_runner_trail_r *= self.sq_trail_multiplier
+                # Fix 3: runner detection — target hit within 5 minutes → 3x trail
+                if (self.sq_runner_detect_enabled and self._sq_target_hit_min is not None):
+                    now_min = self._time_to_minutes(time_str)
+                    minutes_since_target = now_min - self._sq_target_hit_min
+                    if minutes_since_target <= 5 and price >= t.entry + (self.sq_target_r * t.r):
+                        eff_runner_trail_r = self.sq_runner_trail_r * 3.0
+                runner_trail = t.peak - (eff_runner_trail_r * t.r)
                 t.runner_stop = max(t.runner_stop, runner_trail)
 
             if price <= t.runner_stop:
