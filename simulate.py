@@ -185,6 +185,17 @@ class SimTradeManager:
         self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
         self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
 
+        # --- VWAP Reclaim exit parameters (Strategy 4) ---
+        self.vr_stall_bars = int(os.getenv("WB_VR_STALL_BARS", "5"))
+        self.vr_target_r = float(os.getenv("WB_VR_TARGET_R", "1.5"))
+        self.vr_core_pct = int(os.getenv("WB_VR_CORE_PCT", "75"))
+        self.vr_runner_trail_r = float(os.getenv("WB_VR_RUNNER_TRAIL_R", "2.0"))
+        self.vr_vwap_exit = os.getenv("WB_VR_VWAP_EXIT", "1") == "1"
+        self.vr_trail_r = float(os.getenv("WB_VR_TRAIL_R", "1.5"))
+        self.vr_max_loss_dollars = float(os.getenv("WB_VR_MAX_LOSS_DOLLARS", "300"))
+        self._vr_bars_no_new_high = 0  # stall counter for VR time stop
+        self._vr_last_vwap: Optional[float] = None  # updated on 1m bar close
+
         # Account tracking for realistic backtesting
         self.account_equity = float(os.getenv("WB_SIM_ACCOUNT_EQUITY", "0"))  # 0 = disabled
         self.current_equity = self.account_equity  # tracks running balance
@@ -267,6 +278,11 @@ class SimTradeManager:
             qty_core = max(1, int(math.floor(qty * self.sq_core_pct / 100)))
             qty_t2 = 0
             qty_runner = max(0, qty - qty_core)
+        elif setup_type == "vwap_reclaim":
+            # VWAP Reclaim: core + runner split (similar to squeeze)
+            qty_core = max(1, int(math.floor(qty * self.vr_core_pct / 100)))
+            qty_t2 = 0
+            qty_runner = max(0, qty - qty_core)
         elif self.three_tranche_enabled:
             # 3-tranche split: T1 (core) + T2 + T3 (runner)
             qty_core = max(1, int(math.floor(qty * self.scale_t1)))
@@ -324,13 +340,20 @@ class SimTradeManager:
         if price > t.peak:
             t.peak = price
             t.peak_time = time_str
-            # Reset stall counter for squeeze
+            # Reset stall counter for squeeze / vwap_reclaim
             if t.setup_type == "squeeze":
                 self._sq_bars_no_new_high = 0
+            elif t.setup_type == "vwap_reclaim":
+                self._vr_bars_no_new_high = 0
 
         # --- Route squeeze exits ---
         if t.setup_type == "squeeze":
             self._squeeze_tick_exits(t, price, time_str)
+            return
+
+        # --- Route VWAP Reclaim exits ---
+        if t.setup_type == "vwap_reclaim":
+            self._vr_tick_exits(t, price, time_str)
             return
 
         # --- MAX LOSS CAP (hard safety net) ---
@@ -608,6 +631,144 @@ class SimTradeManager:
                 t.runner_exit_price = c
                 t.runner_exit_time = time_str
                 t.runner_exit_reason = "sq_runner_vwap_exit"
+                self._close(t)
+                return
+
+    # ------------------------------------------------------------------
+    # VWAP Reclaim tick-level exit logic (Strategy 4)
+    # ------------------------------------------------------------------
+    def _vr_tick_exits(self, t: SimTrade, price: float, time_str: str):
+        """Tick-level exits for VWAP reclaim trades."""
+        # 0) Absolute dollar loss cap
+        if self.vr_max_loss_dollars > 0:
+            unrealized_loss = (t.entry - price) * t.qty_total
+            if unrealized_loss >= self.vr_max_loss_dollars:
+                reason = f"vr_dollar_loss_cap (${unrealized_loss:,.0f} >= ${self.vr_max_loss_dollars:,.0f})"
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = reason
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = reason
+                self._close(t)
+                return
+
+        # 1) Hard stop
+        if price <= t.stop:
+            t.core_exit_price = price
+            t.core_exit_time = time_str
+            t.core_exit_reason = "vr_stop_hit"
+            if t.qty_runner > 0:
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "vr_stop_hit"
+            self._close(t)
+            return
+
+        # 2) Max loss R cap (same logic as squeeze)
+        _eff_mlr = self.max_loss_r
+        if _eff_mlr > 0 and t.r > 0:
+            loss_per_share = t.entry - price
+            if loss_per_share >= _eff_mlr * t.r:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = "vr_max_loss_hit"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "vr_max_loss_hit"
+                self._close(t)
+                return
+
+        # --- Pre-target phase ---
+        if not t.tp_hit:
+            # Trailing stop (pre-target)
+            if t.r > 0:
+                trail_price = t.peak - (self.vr_trail_r * t.r)
+                if price <= trail_price:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = "vr_trail_exit"
+                    if t.qty_runner > 0:
+                        t.runner_exit_price = price
+                        t.runner_exit_time = time_str
+                        t.runner_exit_reason = "vr_trail_exit"
+                    self._close(t)
+                    return
+
+            # Core TP: hit target R → close core, keep runner
+            if t.r > 0 and price >= t.entry + (self.vr_target_r * t.r):
+                t.tp_hit = True
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = f"vr_core_tp_{self.vr_target_r}R"
+                if t.qty_runner > 0:
+                    t.runner_stop = max(t.runner_stop, t.entry + 0.01)
+                else:
+                    self._close(t)
+                return
+        else:
+            # --- Post-target: runner management ---
+            if t.qty_runner > 0 and t.runner_exit_price == 0:
+                runner_trail = t.peak - (self.vr_runner_trail_r * t.r)
+                if price <= runner_trail:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "vr_runner_trail"
+                    self._close(t)
+                    return
+
+    def on_1m_bar_close_vr(self, t: SimTrade, o: float, h: float, l: float,
+                           c: float, v: float, vwap: Optional[float],
+                           time_str: str):
+        """1m bar-level exits for VWAP reclaim trades (stall + VWAP loss)."""
+        if t is None or t.closed or t.setup_type != "vwap_reclaim":
+            return
+
+        self._vr_last_vwap = vwap
+
+        # Stall counter
+        if h <= t.peak:
+            self._vr_bars_no_new_high += 1
+        else:
+            self._vr_bars_no_new_high = 0
+
+        # Time stop: no new high in N bars
+        if self._vr_bars_no_new_high >= self.vr_stall_bars:
+            if not t.tp_hit:
+                t.core_exit_price = c
+                t.core_exit_time = time_str
+                t.core_exit_reason = f"vr_time_exit({self._vr_bars_no_new_high}bars)"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = c
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = f"vr_time_exit({self._vr_bars_no_new_high}bars)"
+                self._close(t)
+                return
+            elif t.qty_runner > 0 and t.runner_exit_price == 0:
+                t.runner_exit_price = c
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = f"vr_runner_time_exit({self._vr_bars_no_new_high}bars)"
+                self._close(t)
+                return
+
+        # VWAP loss exit (CRITICAL for VWAP reclaim — thesis is dead if VWAP lost again)
+        if self.vr_vwap_exit and vwap is not None and c < vwap:
+            if not t.tp_hit:
+                t.core_exit_price = c
+                t.core_exit_time = time_str
+                t.core_exit_reason = "vr_vwap_exit"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = c
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "vr_vwap_exit"
+                self._close(t)
+                return
+            elif t.qty_runner > 0 and t.runner_exit_price == 0:
+                t.runner_exit_price = c
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "vr_runner_vwap_exit"
                 self._close(t)
                 return
 
@@ -1343,11 +1504,19 @@ def run_simulation(
     sq_det.symbol = symbol
     sq_enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 
+    # VWAP Reclaim detector (Strategy 4)
+    from vwap_reclaim_detector import VwapReclaimDetector
+    vr_det = VwapReclaimDetector()
+    vr_det.symbol = symbol
+    vr_enabled = os.getenv("WB_VR_ENABLED", "0") == "1"
+
     # Pass gap_pct for conviction floor gate
     if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
         det.gap_pct = _sim_stock_info.gap_pct
         if sq_enabled:
             sq_det.gap_pct = _sim_stock_info.gap_pct
+        if vr_enabled:
+            vr_det.gap_pct = _sim_stock_info.gap_pct
 
     # LevelMap resistance tracking (entry gate)
     _level_map_enabled = os.getenv("WB_LEVEL_MAP_ENABLED", "0") == "1"
@@ -1396,11 +1565,13 @@ def run_simulation(
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
-        # Only count MP trades against MP quality gate (squeeze has its own tracking)
-        if t.setup_type != "squeeze":
+        # Only count MP trades against MP quality gate (squeeze/VR have own tracking)
+        if t.setup_type not in ("squeeze", "vwap_reclaim"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
+        if vr_enabled and t.setup_type == "vwap_reclaim":
+            vr_det.notify_trade_closed(symbol, t.pnl())
     sim_mgr.on_trade_close = _on_sim_trade_close
 
     # ── Behavior metrics (for --export-json study) ──
@@ -1416,6 +1587,8 @@ def run_simulation(
         det.seed_bar_close(o, h, l, c, v)
         if sq_enabled:
             sq_det.seed_bar_close(o, h, l, c, v)
+        if vr_enabled:
+            vr_det.seed_bar_close(o, h, l, c, v)
         bar_builder.seed_bar_close(symbol, o, h, l, c, v, ts)
 
     ema_after_seed = det.ema
@@ -1635,10 +1808,10 @@ def run_simulation(
 
                 return False, ""
 
-            # Skip ALL pattern exit detection on 10s bars for squeeze trades
-            # (squeeze has its own exit logic — TW/BE are too sensitive for squeeze candles)
+            # Skip ALL pattern exit detection on 10s bars for squeeze/VR trades
+            # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type == "squeeze":
+                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim"):
                     return
 
             # If in 5m guard or 1m exit mode, skip ALL pattern exit detection on 10s bars
@@ -1748,6 +1921,34 @@ def run_simulation(
                             if verbose:
                                 print(
                                     f"  [{time_str}] SQ_EXIT: {closed_t.core_exit_reason} "
+                                    f"P&L=${closed_t.pnl():+,.0f}",
+                                    flush=True,
+                                )
+
+            # --- VWAP Reclaim detection (only if not already in a trade) ---
+            vr_msg = None
+            if vr_enabled and sim_mgr.open_trade is None:
+                vr_msg = vr_det.on_bar_close_1m(bar, vwap=vwap)
+                if vr_msg and verbose:
+                    print(f"  [{time_str}] {vr_msg}", flush=True)
+                if vr_msg and "VR_ARMED" in vr_msg:
+                    tick_sim_state["armed_count"] += 1
+
+            # --- VWAP Reclaim 1m bar exits ---
+            if vr_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                if sim_mgr.open_trade.setup_type == "vwap_reclaim":
+                    sim_mgr.on_1m_bar_close_vr(
+                        sim_mgr.open_trade,
+                        bar.open, bar.high, bar.low, bar.close, bar.volume,
+                        vwap, time_str,
+                    )
+                    if sim_mgr.open_trade is None or sim_mgr.open_trade.closed:
+                        closed_t = sim_mgr.closed_trades[-1] if sim_mgr.closed_trades else None
+                        if closed_t:
+                            vr_det.notify_trade_closed(symbol, closed_t.pnl())
+                            if verbose:
+                                print(
+                                    f"  [{time_str}] VR_EXIT: {closed_t.core_exit_reason} "
                                     f"P&L=${closed_t.pnl():+,.0f}",
                                     flush=True,
                                 )
@@ -2001,6 +2202,32 @@ def run_simulation(
                                     f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
                                     f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
                                     f"setup_type=squeeze",
+                                    flush=True,
+                                )
+
+                # --- VWAP Reclaim trigger (priority between squeeze and MP) ---
+                _vr_armed_before = vr_det.armed if vr_enabled else None
+                if vr_enabled and _vr_armed_before is not None and sim_mgr.open_trade is None:
+                    vr_trigger = vr_det.on_trade_price(price, is_premarket=is_premarket)
+                    if vr_trigger and "ENTRY SIGNAL" in vr_trigger:
+                        trade = sim_mgr.on_signal(
+                            symbol=symbol,
+                            entry=_vr_armed_before.trigger_high,
+                            stop=_vr_armed_before.stop_low,
+                            r=_vr_armed_before.r,
+                            score=_vr_armed_before.score,
+                            detail=_vr_armed_before.score_detail,
+                            time_str=time_str,
+                            setup_type="vwap_reclaim",
+                            size_mult=_vr_armed_before.size_mult,
+                        )
+                        if trade:
+                            vr_det.notify_trade_opened()
+                            if verbose:
+                                print(
+                                    f"  [{time_str}] VR_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                    f"setup_type=vwap_reclaim",
                                     flush=True,
                                 )
 
@@ -2371,8 +2598,8 @@ def print_report(
 
     # Header
     print()
-    print(f"  {'#':>3}  {'TIME':>6}  {'ENTRY':>7}  {'STOP':>7}  {'R':>6}  {'SCORE':>5}  {'EXIT':>7}  {'REASON':<20}  {'P&L':>8}  {'R-MULT':>6}")
-    print(f"  {'─'*3}  {'─'*6}  {'─'*7}  {'─'*7}  {'─'*6}  {'─'*5}  {'─'*7}  {'─'*20}  {'─'*8}  {'─'*6}")
+    print(f"  {'#':>3}  {'TIME':>6}  {'ENTRY':>7}  {'STOP':>7}  {'R':>6}  {'SCORE':>5}  {'EXIT':>7}  {'REASON':<20}  {'P&L':>8}  {'R-MULT':>6}  {'XTIME':>5}")
+    print(f"  {'─'*3}  {'─'*6}  {'─'*7}  {'─'*7}  {'─'*6}  {'─'*5}  {'─'*7}  {'─'*20}  {'─'*8}  {'─'*6}  {'─'*5}")
 
     total_pnl = 0.0
     wins = 0
@@ -2388,9 +2615,10 @@ def print_report(
             core_pnl = (t.core_exit_price - t.entry) * t.qty_core
             core_r = core_pnl / (t.r * t.qty_total) if t.r > 0 else 0
             t1_label = "t1_tp" if t.qty_t2 > 0 else "core_tp"
+            _xtime = t.runner_exit_time or t.t2_exit_time or t.core_exit_time or ""
             print(
                 f"  {i:>3}  {t.entry_time:>6}  {t.entry:>7.4f}  {t.stop:>7.4f}  {t.r:>6.4f}  {t.score:>5.1f}  "
-                f"{t.core_exit_price:>7.4f}  {t1_label:<20}  {core_pnl:>+8.0f}  {core_r:>+6.1f}R"
+                f"{t.core_exit_price:>7.4f}  {t1_label:<20}  {core_pnl:>+8.0f}  {core_r:>+6.1f}R  {_xtime:>5}"
             )
             # T2 line (3-tranche only)
             if t.qty_t2 > 0 and t.t2_exit_price > 0:
@@ -2414,9 +2642,10 @@ def print_report(
             reason = t.core_exit_reason if t.core_exit_reason else t.runner_exit_reason
             trade_pnl = t.pnl()
             trade_r = t.r_multiple()
+            _xtime = t.runner_exit_time or t.t2_exit_time or t.core_exit_time or ""
             print(
                 f"  {i:>3}  {t.entry_time:>6}  {t.entry:>7.4f}  {t.stop:>7.4f}  {t.r:>6.4f}  {t.score:>5.1f}  "
-                f"{exit_price:>7.4f}  {reason:<20}  {trade_pnl:>+8.0f}  {trade_r:>+6.1f}R"
+                f"{exit_price:>7.4f}  {reason:<20}  {trade_pnl:>+8.0f}  {trade_r:>+6.1f}R  {_xtime:>5}"
             )
 
         trade_pnl = t.pnl()

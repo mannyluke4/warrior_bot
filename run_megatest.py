@@ -20,7 +20,7 @@ from datetime import datetime
 STARTING_EQUITY = 30_000
 RISK_PCT = 0.025  # 2.5% of equity per trade
 MAX_TRADES_PER_DAY = 5
-DAILY_LOSS_LIMIT = -1500  # Stop trading if daily P&L hits this
+DAILY_LOSS_LIMIT = -3000  # Stop trading if daily P&L hits this (aligned with live .env WB_MAX_DAILY_LOSS=3000)
 MAX_NOTIONAL = 50_000
 TOP_N = 5  # Watchlist size
 
@@ -120,7 +120,7 @@ ENV_BASE.update(COMBO_OVERRIDES[COMBO_ID])
 MEGATEST_DIR = "megatest_results"
 os.makedirs(os.path.join(os.getenv("WB_WORKDIR", os.path.dirname(os.path.abspath(__file__))), MEGATEST_DIR), exist_ok=True)
 
-STATE_FILE = os.path.join(MEGATEST_DIR, f"megatest_state_{COMBO_ID}.json")
+STATE_FILE = os.path.join(MEGATEST_DIR, f"megatest_state_{COMBO_ID}_v2.json")
 SCANNER_DIR = "scanner_results"
 WORKDIR = os.getenv("WB_WORKDIR", os.path.dirname(os.path.abspath(__file__)))
 
@@ -187,15 +187,16 @@ def load_and_rank(date_str: str) -> tuple:
 
 TRADE_PAT = re.compile(
     r'^\s*(\d+)\s+'           # trade number
-    r'(\d{2}:\d{2})\s+'      # time
-    r'([\d.]+)\s+'           # entry
-    r'([\d.]+)\s+'           # stop
+    r'(\d{2}:\d{2})\s+'      # entry time
+    r'([\d.]+)\s+'           # entry price
+    r'([\d.]+)\s+'           # stop price
     r'([\d.]+)\s+'           # R
     r'([\d.]+)\s+'           # score
-    r'([\d.]+)\s+'           # exit
+    r'([\d.]+)\s+'           # exit price
     r'(\S+)\s+'              # reason
     r'([+-]?\d+)\s+'         # P&L
-    r'([+-]?[\d.]+R)',       # R-mult
+    r'([+-]?[\d.]+R)'        # R-mult
+    r'(?:\s+(\d{2}:\d{2}))?',  # XTIME (exit time) — optional, added in simulate.py
     re.MULTILINE
 )
 
@@ -264,7 +265,8 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
 
         trades.append({
             "num": int(m.group(1)),
-            "time": m.group(2),
+            "time": m.group(2),            # entry time (HH:MM)
+            "exit_time": m.group(11) or "", # final exit time (HH:MM) from XTIME column
             "entry": entry_price,
             "stop": stop_price,
             "r": r_val,
@@ -413,15 +415,57 @@ def run_backtest():
 
 
 def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
-    """Run one config for one day with trade cap + daily loss limit + notional tracking.
+    """Run one config for one day with trade cap + daily loss limit + single-position enforcement.
+
+    Bug fixes (v2):
+      #1 — Single-position enforcement: live bot holds only ONE position at a time.
+           All stocks' trades are sorted by entry time; trades that start before the
+           current position's exit time are blocked.
+      #2 — Per-position notional: MAX_NOTIONAL is a per-trade cap, not cumulative.
+           Each trade is checked independently (the previous trade has closed before
+           the next one can open, so there's no additive notional exposure).
+      #8 — DAILY_LOSS_LIMIT aligned with live: -$3,000 (was -$1,500).
+
     max_consec_losses: stop trading after N consecutive losses (0 = disabled).
     """
+    # Step 1: Run all stocks and collect trades per symbol.
+    all_stock_trades = []
+    for c in top5:
+        sym = c["symbol"]
+        float_m = c.get("float_millions", 0) or 0
+        stock_risk = min(risk, 250) if float_m > 5.0 else risk
+        sim_start = c.get("sim_start", "07:00")
+        trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
+        time.sleep(1)
+        if trades:
+            all_stock_trades.append((sym, trades))
+
+    # Step 2: Annotate each trade with estimated exit_time.
+    # simulate.py now outputs an XTIME (final exit time) column. When present, use it.
+    # Fallback: use the entry time of the NEXT trade from the SAME stock (conservative
+    # upper bound — works because simulate.py trades are already sequential per stock).
+    all_trades_flat = []
+    for sym, trades in all_stock_trades:
+        for i, t in enumerate(trades):
+            t = dict(t)  # copy — don't mutate the parsed dict
+            if not t.get("exit_time"):
+                # XTIME not captured (shouldn't happen with updated simulate.py, but safe)
+                if i + 1 < len(trades):
+                    t["exit_time"] = trades[i + 1]["time"]
+                else:
+                    t["exit_time"] = "12:00"
+            all_trades_flat.append(t)
+
+    # Step 3: Sort all trades across all stocks chronologically.
+    all_trades_flat.sort(key=lambda t: t["time"])
+
+    # Step 4: Enforce single-position + per-day limits.
     day_trades = []
     day_pnl = 0
-    day_notional = 0
     consec_losses = 0
+    position_end = "00:00"  # no open position at start of day
 
-    for c in top5:
+    for t in all_trades_flat:
         if len(day_trades) >= MAX_TRADES_PER_DAY:
             break
         if day_pnl <= DAILY_LOSS_LIMIT:
@@ -429,34 +473,23 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         if max_consec_losses > 0 and consec_losses >= max_consec_losses:
             break
 
-        sym = c["symbol"]
-        # Mid-float risk cap: float > 5M → cap risk at $250
-        float_m = c.get("float_millions", 0) or 0
-        stock_risk = min(risk, 250) if float_m > 5.0 else risk
-        sim_start = c.get("sim_start", "07:00")  # Respect scanner discovery time
-        all_trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
-        time.sleep(1)  # Rate limit: 1 second between API calls
+        # Bug #1 fix: single-position gate — skip if previous position still open
+        if t["time"] < position_end:
+            continue
 
-        for t in all_trades:
-            if len(day_trades) >= MAX_TRADES_PER_DAY:
-                break
-            if day_pnl <= DAILY_LOSS_LIMIT:
-                break
-            if max_consec_losses > 0 and consec_losses >= max_consec_losses:
-                break
-            # Notional check
-            if day_notional + t["notional"] > MAX_NOTIONAL:
-                continue
+        # Bug #2 fix: per-position notional cap — each trade checked independently
+        # (previous trade has closed by the time we enter this one)
+        if t["notional"] > MAX_NOTIONAL:
+            continue
 
-            day_trades.append(t)
-            day_pnl += t["pnl"]
-            day_notional += t["notional"]
+        day_trades.append(t)
+        day_pnl += t["pnl"]
+        position_end = t["exit_time"]  # block new entries until this trade closes
 
-            # Track consecutive losses
-            if t["pnl"] < 0:
-                consec_losses += 1
-            else:
-                consec_losses = 0
+        if t["pnl"] < 0:
+            consec_losses += 1
+        else:
+            consec_losses = 0
 
     return day_trades, day_pnl
 
