@@ -565,18 +565,27 @@ def resolve_precise_discovery(candidates: list, prev_close: dict,
 
         if discovery_minute:
             precise_start = f"{discovery_minute.hour:02d}:{discovery_minute.minute:02d}"
-            old_start = c.get("sim_start", "?")
+            c["precise_discovery"] = precise_start
 
-            # Only update if earlier than current sim_start
-            if precise_start < old_start or old_start == "?":
-                c["precise_discovery"] = precise_start
-                c["sim_start"] = precise_start
-                c["discovery_time"] = precise_start
-                c["discovery_method"] = "precise"
-                print(f"  [precise] {sym}: {old_start} → {precise_start} "
-                      f"(gap={gap:+.1f}%, vol={cum_vol:,})")
+            # sim_start = the scanner checkpoint that would have found this stock,
+            # NOT the raw minute it first met criteria. A stock that meets gap/vol
+            # criteria at 04:00 is only visible at the 07:15 premarket scan (07:00).
+            old_start = c.get("sim_start", "?")
+            CHECKPOINTS = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30"]
+            if precise_start < "07:15":
+                correct_start = "07:00"
             else:
-                c["precise_discovery"] = precise_start
+                correct_start = "10:30"  # default to last checkpoint
+                for cp in CHECKPOINTS:
+                    if precise_start <= cp:
+                        correct_start = cp
+                        break
+
+            c["sim_start"] = correct_start
+            c["discovery_time"] = correct_start
+            c["discovery_method"] = "precise"
+            print(f"  [precise] {sym}: {old_start} → {correct_start} "
+                  f"(criteria_met={precise_start}, gap={gap:+.1f}%, vol={cum_vol:,})")
         else:
             c["precise_discovery"] = None
 
