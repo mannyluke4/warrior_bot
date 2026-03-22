@@ -229,7 +229,8 @@ TICK_CACHE_DIR = os.path.join(WORKDIR, "tick_cache")
 
 def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             candidate: dict = None, use_tick_cache: bool = True,
-            max_notional_override: int = None) -> list:
+            max_notional_override: int = None,
+            env_overrides: dict = None) -> list:
     """Run simulate.py and parse trade results."""
     env = {**os.environ, **ENV_BASE}
     env["WB_MIN_ENTRY_SCORE"] = str(min_score)
@@ -240,6 +241,9 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
         env["WB_SCANNER_GAP_PCT"] = str(candidate.get("gap_pct", 0))
         env["WB_SCANNER_RVOL"] = str(candidate.get("relative_volume", 0) or 0)
         env["WB_SCANNER_FLOAT_M"] = str(candidate.get("float_millions", 20) or 20)
+    # Per-call env overrides (e.g., conviction-scaled MAX_NOTIONAL)
+    if env_overrides:
+        env.update(env_overrides)
 
     cmd = [
         sys.executable, "simulate.py", symbol, date, sim_start, "12:00",
@@ -465,6 +469,12 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
     session_start_str = min(all_sim_starts)  # lexicographic min works for HH:MM
 
     # Step 1: Run all stocks and collect trades per symbol.
+    _conviction_enabled = os.getenv("WB_CONVICTION_SIZING_ENABLED", "0") == "1"
+    _conviction_base = float(os.getenv("WB_CONVICTION_BASE_SCORE", "0.6"))
+    _conviction_min = float(os.getenv("WB_CONVICTION_MIN_MULT", "0.5"))
+    _conviction_max = float(os.getenv("WB_CONVICTION_MAX_MULT", "2.5"))
+    _conviction_scale_notional = os.getenv("WB_CONVICTION_SCALE_NOTIONAL", "1") == "1"
+
     all_stock_trades = []
     for c in top5:
         sym = c["symbol"]
@@ -475,8 +485,19 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         notional_override = None
         if c.get("_profile_x"):
             notional_override = int(MAX_NOTIONAL * PROFILE_X_NOTIONAL_FACTOR)
+
+        # Conviction sizing: scale risk and MAX_NOTIONAL by scanner rank score
+        env_overrides = {}
+        if _conviction_enabled:
+            score = rank_score(c)
+            conv_mult = max(_conviction_min, min(_conviction_max, score / _conviction_base if _conviction_base > 0 else 1.0))
+            stock_risk = int(stock_risk * conv_mult)
+            if _conviction_scale_notional:
+                env_overrides["WB_MAX_NOTIONAL"] = str(int(MAX_NOTIONAL * conv_mult))
+
         trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c,
-                         max_notional_override=notional_override)
+                         max_notional_override=notional_override,
+                         env_overrides=env_overrides if env_overrides else None)
         time.sleep(1)
         if trades:
             all_stock_trades.append((sym, trades))

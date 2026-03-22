@@ -410,6 +410,13 @@ class PaperTradeManager:
         self._symbol_rank: Dict[str, int] = {}   # symbol → rank position (1=best)
         self._rank_grace_start: Optional[datetime] = None  # when the grace clock starts
 
+        # Conviction sizing — scale position size by scanner rank score (OFF by default)
+        self._conviction_sizing_enabled = os.getenv("WB_CONVICTION_SIZING_ENABLED", "0") == "1"
+        self._conviction_base_score = float(os.getenv("WB_CONVICTION_BASE_SCORE", "0.6"))
+        self._conviction_min_mult = float(os.getenv("WB_CONVICTION_MIN_MULT", "0.5"))
+        self._conviction_max_mult = float(os.getenv("WB_CONVICTION_MAX_MULT", "2.5"))
+        self._conviction_scale_notional = os.getenv("WB_CONVICTION_SCALE_NOTIONAL", "1") == "1"
+
     def set_stock_info_cache(self, cache: dict):
         """Store fundamental data from startup filtering for trade-time access."""
         self._stock_info_cache = dict(cache)
@@ -422,6 +429,29 @@ class PaperTradeManager:
         Call this after set_stock_info_cache whenever the watchlist rank order is known.
         """
         self._symbol_rank = {sym: idx + 1 for idx, sym in enumerate(symbol_list)}
+
+    def _compute_conviction_mult(self, symbol: str) -> float:
+        """Compute position size multiplier based on scanner rank score.
+
+        Uses same formula as run_megatest.py rank_score() (0-1 range).
+        mult = clamp(rank_score / base_score, min_mult, max_mult)
+        """
+        if not self._conviction_sizing_enabled:
+            return 1.0
+        info = self._stock_info_cache.get(symbol)
+        if not info:
+            return 1.0
+        rvol = info.rel_volume if info.rel_volume else 0
+        vol = info.volume if info.volume else 0
+        gap = info.gap_pct if info.gap_pct else 0
+        float_m = info.float_shares if info.float_shares else 10
+        rvol_score = math.log10(max(rvol, 0.1) + 1) / math.log10(51)
+        vol_score = math.log10(max(vol, 1)) / 8
+        gap_score = min(gap, 100) / 100
+        float_penalty = min(float_m, 10) / 10
+        rank = (0.4 * rvol_score) + (0.3 * vol_score) + (0.2 * gap_score) + (0.1 * (1 - float_penalty))
+        mult = rank / self._conviction_base_score if self._conviction_base_score > 0 else 1.0
+        return max(self._conviction_min_mult, min(self._conviction_max_mult, mult))
 
     def _passes_quality_gate(self, symbol: str) -> tuple:
         """Pre-trade fundamental check using cached StockInfo."""
@@ -617,16 +647,17 @@ class PaperTradeManager:
             score = float(sm.group(1))
         return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp, score=score)
 
-    def size_qty(self, entry: float, r: float) -> int:
+    def size_qty(self, entry: float, r: float, conviction_mult: float = 1.0) -> int:
         if r <= 0 or r < self.min_r:
             return 0
 
-        effective_risk = self._get_effective_risk()
+        effective_risk = self._get_effective_risk() * conviction_mult
         qty_risk = int(math.floor(effective_risk / r))
         if qty_risk <= 0:
             return 0
 
-        qty_notional = int(math.floor(self.max_notional / max(entry, 0.01)))
+        effective_max_notional = self.max_notional * conviction_mult if self._conviction_scale_notional else self.max_notional
+        qty_notional = int(math.floor(effective_max_notional / max(entry, 0.01)))
         qty_cap = min(qty_risk, qty_notional, self.max_shares)
         if qty_cap <= 0:
             return 0
@@ -1052,7 +1083,13 @@ class PaperTradeManager:
             _float_m = info.float_shares if info and hasattr(info, 'float_shares') and info.float_shares else 0
             _mid_float_cap = _float_m > 5.0
 
-            qty_total = self.size_qty(plan.entry, plan.r)
+            # Conviction sizing: scale position size by scanner rank score
+            _conviction_mult = self._compute_conviction_mult(symbol)
+            if _conviction_mult != 1.0:
+                log_event("conviction_sizing", symbol, mult=round(_conviction_mult, 3))
+                print(f"  CONVICTION_SIZING {symbol}: {_conviction_mult:.2f}x", flush=True)
+
+            qty_total = self.size_qty(plan.entry, plan.r, conviction_mult=_conviction_mult)
 
             if _mid_float_cap and plan.r > 0:
                 max_qty_for_cap = int(math.floor(250 / plan.r))
