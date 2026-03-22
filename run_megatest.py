@@ -31,6 +31,13 @@ MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
 MIN_RVOL = 2.0
 
+# Profile X gate: allow missing-float stocks with exceptional signals (OFF by default)
+ALLOW_PROFILE_X = int(os.environ.get("WB_ALLOW_PROFILE_X", "0")) == 1
+PROFILE_X_MIN_GAP = 50.0        # strong premarket gap required
+PROFILE_X_MIN_PM_VOL = 1_000_000  # confirmed premarket interest
+PROFILE_X_MIN_RVOL = 10.0       # unusual activity required
+PROFILE_X_NOTIONAL_FACTOR = 0.5  # conservative 50% of normal max notional
+
 ENV_BASE = {
     "WB_CLASSIFIER_ENABLED": "1",
     "WB_CLASSIFIER_RECLASS_ENABLED": "1",
@@ -162,16 +169,29 @@ def load_and_rank(date_str: str) -> tuple:
         gap = c.get("gap_pct", 0) or 0
         float_m = c.get("float_millions", None)
         profile = c.get("profile", "")
+        rvol = c.get("relative_volume", 0) or 0
 
+        # Profile X gate: missing-float or explicitly X-tagged stocks
+        if profile == "X" or float_m is None or float_m == 0:
+            if not ALLOW_PROFILE_X:
+                continue
+            # Require exceptional signals to compensate for unknown float
+            if (gap < PROFILE_X_MIN_GAP or gap > MAX_GAP_PCT
+                    or pm_vol < PROFILE_X_MIN_PM_VOL
+                    or rvol < PROFILE_X_MIN_RVOL):
+                continue
+            c = dict(c)  # copy before mutating
+            c["_profile_x"] = True
+            filtered.append(c)
+            continue
+
+        # Standard filters for known-float stocks
         if pm_vol < MIN_PM_VOLUME:
             continue
         if gap < MIN_GAP_PCT or gap > MAX_GAP_PCT:
             continue
-        if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
+        if float_m > MAX_FLOAT_MILLIONS:
             continue
-        if profile == "X":
-            continue
-        rvol = c.get("relative_volume", 0) or 0
         if rvol < MIN_RVOL:
             continue
         filtered.append(c)
@@ -208,10 +228,13 @@ TICK_CACHE_DIR = os.path.join(WORKDIR, "tick_cache")
 
 
 def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
-            candidate: dict = None, use_tick_cache: bool = True) -> list:
+            candidate: dict = None, use_tick_cache: bool = True,
+            max_notional_override: int = None) -> list:
     """Run simulate.py and parse trade results."""
     env = {**os.environ, **ENV_BASE}
     env["WB_MIN_ENTRY_SCORE"] = str(min_score)
+    if max_notional_override is not None:
+        env["WB_MAX_NOTIONAL"] = str(max_notional_override)
     # Pass Ross Pillar data via env vars for entry-time checks
     if candidate:
         env["WB_SCANNER_GAP_PCT"] = str(candidate.get("gap_pct", 0))
@@ -448,7 +471,12 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         float_m = c.get("float_millions", 0) or 0
         stock_risk = min(risk, 250) if float_m > 5.0 else risk
         sim_start = c.get("sim_start", "07:00")
-        trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
+        # Profile X stocks get conservative 50% notional cap
+        notional_override = None
+        if c.get("_profile_x"):
+            notional_override = int(MAX_NOTIONAL * PROFILE_X_NOTIONAL_FACTOR)
+        trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c,
+                         max_notional_override=notional_override)
         time.sleep(1)
         if trades:
             all_stock_trades.append((sym, trades))
