@@ -40,6 +40,10 @@ if not API_KEY or not API_SECRET:
     raise RuntimeError("Missing APCA_API_KEY_ID or APCA_API_SECRET_KEY in .env")
 
 # -----------------------------
+# Strategy gates
+# -----------------------------
+MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"  # OFF: 0% win rate Jan 2025, -$3,947
+
 # Console-noise controls
 # -----------------------------
 # Keep these off for a trade-focused tape.
@@ -582,7 +586,9 @@ def on_trade(symbol: str, price: float, size: int, ts: datetime):
             if msg.startswith("ENTRY SIGNAL"):
                 entry_signal_hits += 1
                 print(f"[{now} ET] {symbol} | {msg} | VWAP={vwap_str} HOD={hod_str} PM_HIGH={pm_high_str}", flush=True)
-                if trade_manager:
+                if not MP_ENABLED:
+                    print(f"[{now} ET] {symbol} | MP_DISABLED: skipping entry (WB_MP_ENABLED=0)", flush=True)
+                elif trade_manager:
                     print(f"🟩 Sending to trade_manager: {symbol} | {msg}", flush=True)
                     trade_manager.on_signal(symbol, msg)
 

@@ -1498,6 +1498,9 @@ def run_simulation(
     det = MicroPullbackDetector()
     det.symbol = symbol
 
+    # Micro Pullback gate (Strategy 1 — OFF by default, 0% win rate Jan 2025)
+    mp_enabled = os.getenv("WB_MP_ENABLED", "0") == "1"
+
     # Squeeze detector (Strategy 2)
     from squeeze_detector import SqueezeDetector
     sq_det = SqueezeDetector()
@@ -2258,6 +2261,9 @@ def run_simulation(
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
+                    elif not mp_enabled:
+                        if verbose:
+                            print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
@@ -2461,6 +2467,9 @@ def run_simulation(
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
+                    elif not mp_enabled:
+                        if verbose:
+                            print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
