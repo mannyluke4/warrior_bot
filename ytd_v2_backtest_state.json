@@ -1,7 +1,7 @@
 {
-  "last_completed_date": "2026-03-19",
+  "last_completed_date": "2026-03-20",
   "config_a": {
-    "equity": 46785,
+    "equity": 55709,
     "trades": [
       {
         "num": 1,
@@ -10,14 +10,14 @@
         "stop": 7.9,
         "r": 0.14,
         "score": 9.9,
-        "exit_price": 8.17,
-        "reason": "ross_cuc_exit",
-        "pnl": 348,
-        "r_mult": "+0.9R",
+        "exit_price": 8.32,
+        "reason": "sq_target_hit",
+        "pnl": 582,
+        "r_mult": "+1.6R",
         "symbol": "ACON",
         "date": "2026-01-08",
         "notional": 43071.428571428565,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -28,11 +28,11 @@
         "score": 9.2,
         "exit_price": 8.18,
         "reason": "sq_max_loss_hit",
-        "pnl": -325,
+        "pnl": -327,
         "r_mult": "-0.9R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 44938.57142857143,
+        "notional": 45294.28571428572,
         "setup_type": "squeeze"
       },
       {
@@ -42,14 +42,14 @@
         "stop": 1.9,
         "r": 0.14,
         "score": 7.7,
-        "exit_price": 2.03,
-        "reason": "ross_cuc_exit",
-        "pnl": -27,
-        "r_mult": "-0.1R",
+        "exit_price": 2.06,
+        "reason": "sq_para_trail_exit",
+        "pnl": 54,
+        "r_mult": "+0.1R",
         "symbol": "SPRC",
         "date": "2026-01-13",
-        "notional": 10928.571428571428,
-        "setup_type": "micro_pullback"
+        "notional": 11015.999999999998,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -59,12 +59,12 @@
         "r": 3.58,
         "score": 17.0,
         "exit_price": 13.38,
-        "reason": "ross_cuc_exit",
-        "pnl": 238,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 241,
         "r_mult": "+0.3R",
         "symbol": "ROLR",
         "date": "2026-01-14",
-        "notional": 2560.8268156424583,
+        "notional": 2588.1787709497207,
         "setup_type": "micro_pullback"
       },
       {
@@ -74,14 +74,14 @@
         "stop": 4.54,
         "r": 0.14,
         "score": 7.8,
-        "exit_price": 5.11,
-        "reason": "ross_cuc_exit",
-        "pnl": 1159,
-        "r_mult": "+3.1R",
+        "exit_price": 4.96,
+        "reason": "sq_target_hit",
+        "pnl": 736,
+        "r_mult": "+1.9R",
         "symbol": "CJMB",
         "date": "2026-01-15",
-        "notional": 25238.571428571424,
-        "setup_type": "micro_pullback"
+        "notional": 25505.999999999993,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -90,13 +90,13 @@
         "stop": 3.9,
         "r": 0.14,
         "score": 7.7,
-        "exit_price": 3.9,
-        "reason": "sq_stop_hit",
-        "pnl": -377,
-        "r_mult": "-1.0R",
+        "exit_price": 4.13,
+        "reason": "sq_para_trail_exit",
+        "pnl": 245,
+        "r_mult": "+0.6R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 21787.142857142855,
+        "notional": 22017.999999999996,
         "setup_type": "squeeze"
       },
       {
@@ -106,13 +106,13 @@
         "stop": 3.59,
         "r": 0.12,
         "score": 15.6,
-        "exit_price": 5.66,
-        "reason": "ross_shooting_star",
-        "pnl": 13433,
-        "r_mult": "+17.3R",
+        "exit_price": 5.81,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 14642,
+        "r_mult": "+18.6R",
         "symbol": "VERO",
         "date": "2026-01-16",
-        "notional": 23120.833333333336,
+        "notional": 23508.666666666668,
         "setup_type": "micro_pullback"
       },
       {
@@ -122,14 +122,14 @@
         "stop": 2.76,
         "r": 0.14,
         "score": 9.1,
-        "exit_price": 3.1099,
-        "reason": "ross_cuc_exit",
-        "pnl": 833,
-        "r_mult": "+1.5R",
+        "exit_price": 2.94,
+        "reason": "sq_para_trail_exit",
+        "pnl": 165,
+        "r_mult": "+0.3R",
         "symbol": "POLA",
         "date": "2026-01-20",
-        "notional": 23013.571428571428,
-        "setup_type": "micro_pullback"
+        "notional": 23904.28571428571,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -138,14 +138,14 @@
         "stop": 2.9,
         "r": 0.14,
         "score": 10.0,
-        "exit_price": 3.53,
-        "reason": "ross_cuc_exit",
-        "pnl": 1981,
-        "r_mult": "+3.5R",
+        "exit_price": 4.0,
+        "reason": "sq_target_hit",
+        "pnl": 3690,
+        "r_mult": "+6.4R",
         "symbol": "SLGB",
         "date": "2026-01-21",
-        "notional": 24580.571428571428,
-        "setup_type": "micro_pullback"
+        "notional": 25145.142857142855,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -154,13 +154,13 @@
         "stop": 8.14,
         "r": 0.48,
         "score": 17.0,
-        "exit_price": 8.31,
-        "reason": "ross_cuc_exit",
-        "pnl": -763,
-        "r_mult": "-0.6R",
+        "exit_price": 8.45,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -443,
+        "r_mult": "-0.4R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 21208.791666666668,
+        "notional": 22447.916666666668,
         "setup_type": "micro_pullback"
       },
       {
@@ -172,11 +172,11 @@
         "score": 16.0,
         "exit_price": 6.87,
         "reason": "stop_hit",
-        "pnl": -590,
-        "r_mult": "-0.5R",
+        "pnl": -1250,
+        "r_mult": "-1.0R",
         "symbol": "SXTP",
         "date": "2026-01-22",
-        "notional": 20498.785714285714,
+        "notional": 21696.428571428572,
         "setup_type": "micro_pullback"
       },
       {
@@ -186,13 +186,13 @@
         "stop": 19.14,
         "r": 0.78,
         "score": 18.5,
-        "exit_price": 19.36,
-        "reason": "ross_cuc_exit",
-        "pnl": -823,
-        "r_mult": "-0.7R",
+        "exit_price": 19.4928,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -661,
+        "r_mult": "-0.5R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 29292.615384615387,
+        "notional": 30850.461538461543,
         "setup_type": "micro_pullback"
       },
       {
@@ -202,14 +202,46 @@
         "stop": 4.9,
         "r": 0.14,
         "score": 6.0,
-        "exit_price": 6.15,
-        "reason": "ross_doji_partial",
-        "pnl": 963,
-        "r_mult": "+7.7R",
+        "exit_price": 5.11,
+        "reason": "sq_para_trail_exit",
+        "pnl": 62,
+        "r_mult": "+0.5R",
         "symbol": "BATL",
         "date": "2026-01-26",
         "notional": 9000.0,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:02",
+        "entry": 5.04,
+        "stop": 4.93,
+        "r": 0.11,
+        "score": 6.1,
+        "exit_price": 5.31,
+        "reason": "sq_target_hit",
+        "pnl": 423,
+        "r_mult": "+3.4R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 11454.545454545454,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 3,
+        "time": "07:04",
+        "entry": 6.04,
+        "stop": 5.9,
+        "r": 0.14,
+        "score": 7.7,
+        "exit_price": 6.32,
+        "reason": "sq_target_hit",
+        "pnl": 245,
+        "r_mult": "+2.0R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 10785.714285714284,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -220,8 +252,8 @@
         "score": 15.5,
         "exit_price": 3.48,
         "reason": "max_loss_hit",
-        "pnl": -99,
-        "r_mult": "-0.4R",
+        "pnl": -198,
+        "r_mult": "-0.8R",
         "symbol": "CYN",
         "date": "2026-01-27",
         "notional": 3822.916666666667,
@@ -235,12 +267,12 @@
         "r": 0.2,
         "score": 15.0,
         "exit_price": 4.104,
-        "reason": "ross_shooting_star",
-        "pnl": -34,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -36,
         "r_mult": "-0.0R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 23591.4,
+        "notional": 24762.750000000004,
         "setup_type": "micro_pullback"
       },
       {
@@ -250,14 +282,30 @@
         "stop": 1.9,
         "r": 0.14,
         "score": 9.2,
-        "exit_price": 2.08,
-        "reason": "ross_cuc_exit",
-        "pnl": 164,
-        "r_mult": "+0.3R",
+        "exit_price": 1.98,
+        "reason": "sq_para_trail_exit",
+        "pnl": -258,
+        "r_mult": "-0.4R",
         "symbol": "BOXL",
         "date": "2026-02-04",
-        "notional": 16713.42857142857,
-        "setup_type": "micro_pullback"
+        "notional": 17544.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:20",
+        "entry": 2.16,
+        "stop": 2.06,
+        "r": 0.1,
+        "score": 6.5,
+        "exit_price": 2.12,
+        "reason": "sq_para_trail_exit",
+        "pnl": -241,
+        "r_mult": "-0.4R",
+        "symbol": "BOXL",
+        "date": "2026-02-04",
+        "notional": 26006.4,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -266,29 +314,13 @@
         "stop": 2.69,
         "r": 0.43,
         "score": 14.5,
-        "exit_price": 3.15,
-        "reason": "ross_cuc_exit",
-        "pnl": 40,
+        "exit_price": 3.18,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 83,
         "r_mult": "+0.1R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 8358.697674418605,
-        "setup_type": "micro_pullback"
-      },
-      {
-        "num": 2,
-        "time": "07:10",
-        "entry": 3.22,
-        "stop": 2.99,
-        "r": 0.23,
-        "score": 17.5,
-        "exit_price": 3.05,
-        "reason": "ross_cuc_exit",
-        "pnl": -426,
-        "r_mult": "-0.7R",
-        "symbol": "WHLR",
-        "date": "2026-02-06",
-        "notional": 16128.0,
+        "notional": 8641.67441860465,
         "setup_type": "micro_pullback"
       },
       {
@@ -298,13 +330,13 @@
         "stop": 2.62,
         "r": 0.0829,
         "score": 12.5,
-        "exit_price": 2.7501,
-        "reason": "ross_gravestone_doji",
-        "pnl": 325,
-        "r_mult": "+0.6R",
+        "exit_price": 2.66,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -309,
+        "r_mult": "-0.5R",
         "symbol": "RAIN",
         "date": "2026-02-13",
-        "notional": 37234.159227985525,
+        "notional": 38896.980699638116,
         "setup_type": "micro_pullback"
       },
       {
@@ -314,13 +346,13 @@
         "stop": 4.41,
         "r": 0.4796,
         "score": 16.5,
-        "exit_price": 4.48,
-        "reason": "max_loss_hit",
-        "pnl": -245,
-        "r_mult": "-0.4R",
+        "exit_price": 4.74,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -185,
+        "r_mult": "-0.3R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 11724.437030859048,
+        "notional": 12091.462885738114,
         "setup_type": "micro_pullback"
       },
       {
@@ -330,13 +362,13 @@
         "stop": 2.94,
         "r": 0.21,
         "score": 16.0,
-        "exit_price": 3.11,
-        "reason": "ross_cuc_exit",
-        "pnl": -109,
+        "exit_price": 3.1,
+        "reason": "topping_wicky_exit_full",
+        "pnl": -141,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 17160.0,
+        "notional": 17715.0,
         "setup_type": "micro_pullback"
       },
       {
@@ -346,13 +378,13 @@
         "stop": 3.11,
         "r": 0.16,
         "score": 15.5,
-        "exit_price": 3.1795,
-        "reason": "ross_cuc_exit",
-        "pnl": -323,
+        "exit_price": 3.17,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -368,
         "r_mult": "-0.6R",
         "symbol": "CDIO",
         "date": "2026-02-20",
-        "notional": 23319.1875,
+        "notional": 24054.9375,
         "setup_type": "micro_pullback"
       },
       {
@@ -362,13 +394,13 @@
         "stop": 15.4401,
         "r": 0.3799,
         "score": 14.5,
-        "exit_price": 16.0,
-        "reason": "ross_shooting_star",
-        "pnl": 537,
-        "r_mult": "+0.5R",
+        "exit_price": 16.3,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 1476,
+        "r_mult": "+1.3R",
         "symbol": "MXC",
         "date": "2026-03-03",
-        "notional": 47180.99499868386,
+        "notional": 48638.483811529346,
         "setup_type": "micro_pullback"
       },
       {
@@ -380,12 +412,28 @@
         "score": 8.5,
         "exit_price": 4.36,
         "reason": "max_loss_hit",
-        "pnl": -540,
-        "r_mult": "-0.5R",
+        "pnl": -1134,
+        "r_mult": "-0.9R",
         "symbol": "MSGM",
         "date": "2026-03-05",
-        "notional": 30496.705882352937,
+        "notional": 32038.823529411762,
         "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "08:23",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 7.5,
+        "exit_price": 6.8903,
+        "reason": "sq_target_hit",
+        "pnl": 7156,
+        "r_mult": "+12.2R",
+        "symbol": "CRE",
+        "date": "2026-03-06",
+        "notional": 42372.0,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -394,10 +442,10 @@
         "stop": 2.59,
         "r": 0.13,
         "score": 16.5,
-        "exit_price": 2.72,
-        "reason": "ross_gravestone_doji",
-        "pnl": 0,
-        "r_mult": "+0.0R",
+        "exit_price": 2.73,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 19,
+        "r_mult": "+0.1R",
         "symbol": "TLYS",
         "date": "2026-03-12",
         "notional": 5230.769230769231,
@@ -410,13 +458,13 @@
         "stop": 7.3,
         "r": 0.32,
         "score": 14.5,
-        "exit_price": 8.0,
-        "reason": "ross_shooting_star",
-        "pnl": 1345,
-        "r_mult": "+1.2R",
+        "exit_price": 7.915,
+        "reason": "topping_wicky_exit_full",
+        "pnl": 1250,
+        "r_mult": "+0.9R",
         "symbol": "ARTL",
         "date": "2026-03-18",
-        "notional": 26979.5625,
+        "notional": 32289.75,
         "setup_type": "micro_pullback"
       },
       {
@@ -426,14 +474,14 @@
         "stop": 2.1,
         "r": 0.12,
         "score": 11.0,
-        "exit_price": 2.26,
-        "reason": "ross_cuc_exit",
-        "pnl": 194,
-        "r_mult": "+0.3R",
+        "exit_price": 2.3,
+        "reason": "sq_para_trail_exit",
+        "pnl": 462,
+        "r_mult": "+0.7R",
         "symbol": "SER",
         "date": "2026-03-19",
-        "notional": 21589.500000000004,
-        "setup_type": "micro_pullback"
+        "notional": 25659.500000000004,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -442,14 +490,46 @@
         "stop": 2.8001,
         "r": 0.1201,
         "score": 15.0,
-        "exit_price": 2.83,
-        "reason": "max_loss_hit",
-        "pnl": -94,
-        "r_mult": "-0.4R",
+        "exit_price": 2.86,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -125,
+        "r_mult": "-0.5R",
         "symbol": "DLTH",
         "date": "2026-03-19",
         "notional": 6078.684429641966,
         "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:08",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.93,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "ANNA",
+        "date": "2026-03-20",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:14",
+        "entry": 5.04,
+        "stop": 4.83,
+        "r": 0.21,
+        "score": 8.3,
+        "exit_price": 4.96,
+        "reason": "sq_trail_exit",
+        "pnl": -48,
+        "r_mult": "-0.4R",
+        "symbol": "ANNA",
+        "date": "2026-03-20",
+        "notional": 6000.000000000001,
+        "setup_type": "squeeze"
       }
     ],
     "daily": [
@@ -499,8 +579,8 @@
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 348,
-        "equity": 30348
+        "day_pnl": 582,
+        "equity": 30582
       },
       {
         "date": "2026-01-09",
@@ -508,95 +588,95 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 30348
+        "equity": 30582
       },
       {
         "date": "2026-01-12",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -325,
-        "equity": 30023
+        "day_pnl": -327,
+        "equity": 30255
       },
       {
         "date": "2026-01-13",
         "trades": 1,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -27,
-        "equity": 29996
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 54,
+        "equity": 30309
       },
       {
         "date": "2026-01-14",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 238,
-        "equity": 30234
+        "day_pnl": 241,
+        "equity": 30550
       },
       {
         "date": "2026-01-15",
         "trades": 2,
-        "wins": 1,
-        "losses": 1,
-        "day_pnl": 782,
-        "equity": 31016
+        "wins": 2,
+        "losses": 0,
+        "day_pnl": 981,
+        "equity": 31531
       },
       {
         "date": "2026-01-16",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 13433,
-        "equity": 44449
+        "day_pnl": 14642,
+        "equity": 46173
       },
       {
         "date": "2026-01-20",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 833,
-        "equity": 45282
+        "day_pnl": 165,
+        "equity": 46338
       },
       {
         "date": "2026-01-21",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 1981,
-        "equity": 47263
+        "day_pnl": 3690,
+        "equity": 50028
       },
       {
         "date": "2026-01-22",
         "trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -1353,
-        "equity": 45910
+        "day_pnl": -1693,
+        "equity": 48335
       },
       {
         "date": "2026-01-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -823,
-        "equity": 45087
+        "day_pnl": -661,
+        "equity": 47674
       },
       {
         "date": "2026-01-26",
-        "trades": 1,
-        "wins": 1,
+        "trades": 3,
+        "wins": 3,
         "losses": 0,
-        "day_pnl": 963,
-        "equity": 46050
+        "day_pnl": 730,
+        "equity": 48404
       },
       {
         "date": "2026-01-27",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -99,
-        "equity": 45951
+        "day_pnl": -198,
+        "equity": 48206
       },
       {
         "date": "2026-01-28",
@@ -604,15 +684,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45951
+        "equity": 48206
       },
       {
         "date": "2026-01-29",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -34,
-        "equity": 45917
+        "day_pnl": -36,
+        "equity": 48170
       },
       {
         "date": "2026-01-30",
@@ -620,7 +700,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 48170
       },
       {
         "date": "2026-02-02",
@@ -628,7 +708,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 48170
       },
       {
         "date": "2026-02-03",
@@ -636,15 +716,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 48170
       },
       {
         "date": "2026-02-04",
-        "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 164,
-        "equity": 46081
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -499,
+        "equity": 47671
       },
       {
         "date": "2026-02-05",
@@ -652,15 +732,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 46081
+        "equity": 47671
       },
       {
         "date": "2026-02-06",
-        "trades": 2,
+        "trades": 1,
         "wins": 1,
-        "losses": 1,
-        "day_pnl": -386,
-        "equity": 45695
+        "losses": 0,
+        "day_pnl": 83,
+        "equity": 47754
       },
       {
         "date": "2026-02-09",
@@ -668,7 +748,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 47754
       },
       {
         "date": "2026-02-10",
@@ -676,7 +756,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 47754
       },
       {
         "date": "2026-02-11",
@@ -684,7 +764,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 47754
       },
       {
         "date": "2026-02-12",
@@ -692,23 +772,23 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 47754
       },
       {
         "date": "2026-02-13",
         "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 325,
-        "equity": 46020
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -309,
+        "equity": 47445
       },
       {
         "date": "2026-02-17",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -245,
-        "equity": 45775
+        "day_pnl": -185,
+        "equity": 47260
       },
       {
         "date": "2026-02-18",
@@ -716,23 +796,23 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45775
+        "equity": 47260
       },
       {
         "date": "2026-02-19",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -109,
-        "equity": 45666
+        "day_pnl": -141,
+        "equity": 47119
       },
       {
         "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -323,
-        "equity": 45343
+        "day_pnl": -368,
+        "equity": 46751
       },
       {
         "date": "2026-02-23",
@@ -740,7 +820,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 46751
       },
       {
         "date": "2026-02-24",
@@ -748,7 +828,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 46751
       },
       {
         "date": "2026-02-25",
@@ -756,7 +836,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 46751
       },
       {
         "date": "2026-02-26",
@@ -764,7 +844,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 46751
       },
       {
         "date": "2026-02-27",
@@ -772,7 +852,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343,
+        "equity": 46751,
         "note": "no candidates (total=1, passed=0)"
       },
       {
@@ -781,15 +861,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 46751
       },
       {
         "date": "2026-03-03",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 537,
-        "equity": 45880
+        "day_pnl": 1476,
+        "equity": 48227
       },
       {
         "date": "2026-03-04",
@@ -797,23 +877,23 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45880
+        "equity": 48227
       },
       {
         "date": "2026-03-05",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -540,
-        "equity": 45340
+        "day_pnl": -1134,
+        "equity": 47093
       },
       {
         "date": "2026-03-06",
-        "trades": 0,
-        "wins": 0,
+        "trades": 1,
+        "wins": 1,
         "losses": 0,
-        "day_pnl": 0,
-        "equity": 45340
+        "day_pnl": 7156,
+        "equity": 54249
       },
       {
         "date": "2026-03-09",
@@ -821,7 +901,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 54249
       },
       {
         "date": "2026-03-10",
@@ -829,7 +909,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 54249
       },
       {
         "date": "2026-03-11",
@@ -837,15 +917,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 54249
       },
       {
         "date": "2026-03-12",
         "trades": 1,
-        "wins": 0,
+        "wins": 1,
         "losses": 0,
-        "day_pnl": 0,
-        "equity": 45340
+        "day_pnl": 19,
+        "equity": 54268
       },
       {
         "date": "2026-03-13",
@@ -853,7 +933,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 54268
       },
       {
         "date": "2026-03-16",
@@ -861,7 +941,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340,
+        "equity": 54268,
         "note": "no candidates (total=0, passed=0)"
       },
       {
@@ -870,7 +950,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340,
+        "equity": 54268,
         "note": "no candidates (total=0, passed=0)"
       },
       {
@@ -878,23 +958,31 @@
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 1345,
-        "equity": 46685
+        "day_pnl": 1250,
+        "equity": 55518
       },
       {
         "date": "2026-03-19",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 100,
-        "equity": 46785
+        "day_pnl": 337,
+        "equity": 55855
+      },
+      {
+        "date": "2026-03-20",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -146,
+        "equity": 55709
       }
     ],
-    "max_equity": 47263,
-    "max_drawdown": 2176
+    "max_equity": 55855,
+    "max_drawdown": 3277
   },
   "config_b": {
-    "equity": 46785,
+    "equity": 44910,
     "trades": [
       {
         "num": 1,
@@ -903,14 +991,14 @@
         "stop": 7.9,
         "r": 0.14,
         "score": 9.9,
-        "exit_price": 8.17,
-        "reason": "ross_cuc_exit",
-        "pnl": 348,
-        "r_mult": "+0.9R",
+        "exit_price": 7.9,
+        "reason": "sq_stop_hit",
+        "pnl": -375,
+        "r_mult": "-1.0R",
         "symbol": "ACON",
         "date": "2026-01-08",
         "notional": 43071.428571428565,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -921,11 +1009,11 @@
         "score": 9.2,
         "exit_price": 8.18,
         "reason": "sq_max_loss_hit",
-        "pnl": -325,
+        "pnl": -317,
         "r_mult": "-0.9R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 44938.57142857143,
+        "notional": 43871.42857142857,
         "setup_type": "squeeze"
       },
       {
@@ -935,14 +1023,14 @@
         "stop": 1.9,
         "r": 0.14,
         "score": 7.7,
-        "exit_price": 2.03,
-        "reason": "ross_cuc_exit",
-        "pnl": -27,
-        "r_mult": "-0.1R",
+        "exit_price": 1.9,
+        "reason": "sq_stop_hit",
+        "pnl": -366,
+        "r_mult": "-1.0R",
         "symbol": "SPRC",
         "date": "2026-01-13",
-        "notional": 10928.571428571428,
-        "setup_type": "micro_pullback"
+        "notional": 10666.285714285714,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -953,11 +1041,11 @@
         "score": 17.0,
         "exit_price": 13.38,
         "reason": "ross_cuc_exit",
-        "pnl": 238,
+        "pnl": 229,
         "r_mult": "+0.3R",
         "symbol": "ROLR",
         "date": "2026-01-14",
-        "notional": 2560.8268156424583,
+        "notional": 2471.9329608938547,
         "setup_type": "micro_pullback"
       },
       {
@@ -967,13 +1055,13 @@
         "stop": 4.54,
         "r": 0.14,
         "score": 7.8,
-        "exit_price": 5.11,
-        "reason": "ross_cuc_exit",
-        "pnl": 1159,
-        "r_mult": "+3.1R",
+        "exit_price": 5.13,
+        "reason": "ross_shooting_star",
+        "pnl": 1171,
+        "r_mult": "+3.2R",
         "symbol": "CJMB",
         "date": "2026-01-15",
-        "notional": 25238.571428571424,
+        "notional": 24369.42857142857,
         "setup_type": "micro_pullback"
       },
       {
@@ -985,11 +1073,11 @@
         "score": 7.7,
         "exit_price": 3.9,
         "reason": "sq_stop_hit",
-        "pnl": -377,
+        "pnl": -364,
         "r_mult": "-1.0R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 21787.142857142855,
+        "notional": 21036.85714285714,
         "setup_type": "squeeze"
       },
       {
@@ -1001,11 +1089,11 @@
         "score": 15.6,
         "exit_price": 5.66,
         "reason": "ross_shooting_star",
-        "pnl": 13433,
+        "pnl": 12981,
         "r_mult": "+17.3R",
         "symbol": "VERO",
         "date": "2026-01-16",
-        "notional": 23120.833333333336,
+        "notional": 22345.166666666668,
         "setup_type": "micro_pullback"
       },
       {
@@ -1017,11 +1105,11 @@
         "score": 9.1,
         "exit_price": 3.1099,
         "reason": "ross_cuc_exit",
-        "pnl": 833,
+        "pnl": 804,
         "r_mult": "+1.5R",
         "symbol": "POLA",
         "date": "2026-01-20",
-        "notional": 23013.571428571428,
+        "notional": 22226.42857142857,
         "setup_type": "micro_pullback"
       },
       {
@@ -1033,11 +1121,11 @@
         "score": 10.0,
         "exit_price": 3.53,
         "reason": "ross_cuc_exit",
-        "pnl": 1981,
+        "pnl": 1914,
         "r_mult": "+3.5R",
         "symbol": "SLGB",
         "date": "2026-01-21",
-        "notional": 24580.571428571428,
+        "notional": 23755.42857142857,
         "setup_type": "micro_pullback"
       },
       {
@@ -1049,27 +1137,11 @@
         "score": 17.0,
         "exit_price": 8.31,
         "reason": "ross_cuc_exit",
-        "pnl": -763,
+        "pnl": -737,
         "r_mult": "-0.6R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 21208.791666666668,
-        "setup_type": "micro_pullback"
-      },
-      {
-        "num": 4,
-        "time": "09:41",
-        "entry": 7.29,
-        "stop": 6.87,
-        "r": 0.42,
-        "score": 16.0,
-        "exit_price": 6.87,
-        "reason": "stop_hit",
-        "pnl": -590,
-        "r_mult": "-0.5R",
-        "symbol": "SXTP",
-        "date": "2026-01-22",
-        "notional": 20498.785714285714,
+        "notional": 20490.458333333332,
         "setup_type": "micro_pullback"
       },
       {
@@ -1081,11 +1153,11 @@
         "score": 18.5,
         "exit_price": 19.36,
         "reason": "ross_cuc_exit",
-        "pnl": -823,
+        "pnl": -806,
         "r_mult": "-0.7R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 29292.615384615387,
+        "notional": 28679.69230769231,
         "setup_type": "micro_pullback"
       },
       {
@@ -1128,28 +1200,12 @@
         "r": 0.2,
         "score": 15.0,
         "exit_price": 4.104,
-        "reason": "ross_shooting_star",
-        "pnl": -34,
-        "r_mult": "-0.0R",
+        "reason": "ross_doji_partial",
+        "pnl": -295,
+        "r_mult": "-0.3R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 23591.4,
-        "setup_type": "micro_pullback"
-      },
-      {
-        "num": 1,
-        "time": "07:16",
-        "entry": 2.04,
-        "stop": 1.9,
-        "r": 0.14,
-        "score": 9.2,
-        "exit_price": 2.08,
-        "reason": "ross_cuc_exit",
-        "pnl": 164,
-        "r_mult": "+0.3R",
-        "symbol": "BOXL",
-        "date": "2026-02-04",
-        "notional": 16713.42857142857,
+        "notional": 23098.2,
         "setup_type": "micro_pullback"
       },
       {
@@ -1159,29 +1215,13 @@
         "stop": 2.69,
         "r": 0.43,
         "score": 14.5,
-        "exit_price": 3.15,
-        "reason": "ross_cuc_exit",
-        "pnl": 40,
-        "r_mult": "+0.1R",
+        "exit_price": 3.18,
+        "reason": "ross_topping_tail_warning",
+        "pnl": -6,
+        "r_mult": "-0.0R",
         "symbol": "WHLR",
         "date": "2026-02-06",
-        "notional": 8358.697674418605,
-        "setup_type": "micro_pullback"
-      },
-      {
-        "num": 2,
-        "time": "07:10",
-        "entry": 3.22,
-        "stop": 2.99,
-        "r": 0.23,
-        "score": 17.5,
-        "exit_price": 3.05,
-        "reason": "ross_cuc_exit",
-        "pnl": -426,
-        "r_mult": "-0.7R",
-        "symbol": "WHLR",
-        "date": "2026-02-06",
-        "notional": 16128.0,
+        "notional": 8104.744186046512,
         "setup_type": "micro_pullback"
       },
       {
@@ -1191,13 +1231,13 @@
         "stop": 2.62,
         "r": 0.0829,
         "score": 12.5,
-        "exit_price": 2.7501,
-        "reason": "ross_gravestone_doji",
-        "pnl": 325,
-        "r_mult": "+0.6R",
+        "exit_price": 2.6065,
+        "reason": "max_loss_hit",
+        "pnl": -325,
+        "r_mult": "-0.6R",
         "symbol": "RAIN",
         "date": "2026-02-13",
-        "notional": 37234.159227985525,
+        "notional": 36419.05066344994,
         "setup_type": "micro_pullback"
       },
       {
@@ -1209,11 +1249,11 @@
         "score": 16.5,
         "exit_price": 4.48,
         "reason": "max_loss_hit",
-        "pnl": -245,
+        "pnl": -237,
         "r_mult": "-0.4R",
         "symbol": "PLYX",
         "date": "2026-02-17",
-        "notional": 11724.437030859048,
+        "notional": 11306.435362802333,
         "setup_type": "micro_pullback"
       },
       {
@@ -1225,11 +1265,27 @@
         "score": 16.0,
         "exit_price": 3.11,
         "reason": "ross_cuc_exit",
-        "pnl": -109,
+        "pnl": -105,
         "r_mult": "-0.2R",
         "symbol": "RUBI",
         "date": "2026-02-19",
-        "notional": 17160.0,
+        "notional": 16545.0,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "08:43",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 6.7,
+        "exit_price": 4.08,
+        "reason": "ross_shooting_star",
+        "pnl": 158,
+        "r_mult": "+0.3R",
+        "symbol": "RUBI",
+        "date": "2026-02-19",
+        "notional": 31829.42857142857,
         "setup_type": "micro_pullback"
       },
       {
@@ -1241,11 +1297,11 @@
         "score": 15.5,
         "exit_price": 3.1795,
         "reason": "ross_cuc_exit",
-        "pnl": -323,
+        "pnl": -312,
         "r_mult": "-0.6R",
         "symbol": "CDIO",
         "date": "2026-02-20",
-        "notional": 23319.1875,
+        "notional": 22563.0,
         "setup_type": "micro_pullback"
       },
       {
@@ -1257,11 +1313,11 @@
         "score": 14.5,
         "exit_price": 16.0,
         "reason": "ross_shooting_star",
-        "pnl": 537,
+        "pnl": 519,
         "r_mult": "+0.5R",
         "symbol": "MXC",
         "date": "2026-03-03",
-        "notional": 47180.99499868386,
+        "notional": 45640.22111081864,
         "setup_type": "micro_pullback"
       },
       {
@@ -1273,11 +1329,11 @@
         "score": 8.5,
         "exit_price": 4.36,
         "reason": "max_loss_hit",
-        "pnl": -540,
+        "pnl": -522,
         "r_mult": "-0.5R",
         "symbol": "MSGM",
         "date": "2026-03-05",
-        "notional": 30496.705882352937,
+        "notional": 29486.352941176465,
         "setup_type": "micro_pullback"
       },
       {
@@ -1304,12 +1360,12 @@
         "r": 0.32,
         "score": 14.5,
         "exit_price": 8.0,
-        "reason": "ross_shooting_star",
-        "pnl": 1345,
-        "r_mult": "+1.2R",
+        "reason": "ross_doji_partial",
+        "pnl": 1053,
+        "r_mult": "+1.0R",
         "symbol": "ARTL",
         "date": "2026-03-18",
-        "notional": 26979.5625,
+        "notional": 26098.5,
         "setup_type": "micro_pullback"
       },
       {
@@ -1319,13 +1375,13 @@
         "stop": 2.1,
         "r": 0.12,
         "score": 11.0,
-        "exit_price": 2.26,
+        "exit_price": 2.2601,
         "reason": "ross_cuc_exit",
-        "pnl": 194,
+        "pnl": 188,
         "r_mult": "+0.3R",
         "symbol": "SER",
         "date": "2026-03-19",
-        "notional": 21589.500000000004,
+        "notional": 20775.500000000004,
         "setup_type": "micro_pullback"
       },
       {
@@ -1342,6 +1398,38 @@
         "symbol": "DLTH",
         "date": "2026-03-19",
         "notional": 6078.684429641966,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 1,
+        "time": "07:08",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.93,
+        "reason": "sq_max_loss_hit",
+        "pnl": -98,
+        "r_mult": "-0.8R",
+        "symbol": "ANNA",
+        "date": "2026-03-20",
+        "notional": 9000.0,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "10:14",
+        "entry": 5.04,
+        "stop": 4.83,
+        "r": 0.21,
+        "score": 8.3,
+        "exit_price": 5.02,
+        "reason": "ross_cuc_exit",
+        "pnl": -12,
+        "r_mult": "-0.1R",
+        "symbol": "ANNA",
+        "date": "2026-03-20",
+        "notional": 6000.000000000001,
         "setup_type": "micro_pullback"
       }
     ],
@@ -1390,10 +1478,10 @@
       {
         "date": "2026-01-08",
         "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 348,
-        "equity": 30348
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -375,
+        "equity": 29625
       },
       {
         "date": "2026-01-09",
@@ -1401,79 +1489,79 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 30348
+        "equity": 29625
       },
       {
         "date": "2026-01-12",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -325,
-        "equity": 30023
+        "day_pnl": -317,
+        "equity": 29308
       },
       {
         "date": "2026-01-13",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -27,
-        "equity": 29996
+        "day_pnl": -366,
+        "equity": 28942
       },
       {
         "date": "2026-01-14",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 238,
-        "equity": 30234
+        "day_pnl": 229,
+        "equity": 29171
       },
       {
         "date": "2026-01-15",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 782,
-        "equity": 31016
+        "day_pnl": 807,
+        "equity": 29978
       },
       {
         "date": "2026-01-16",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 13433,
-        "equity": 44449
+        "day_pnl": 12981,
+        "equity": 42959
       },
       {
         "date": "2026-01-20",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 833,
-        "equity": 45282
+        "day_pnl": 804,
+        "equity": 43763
       },
       {
         "date": "2026-01-21",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 1981,
-        "equity": 47263
+        "day_pnl": 1914,
+        "equity": 45677
       },
       {
         "date": "2026-01-22",
-        "trades": 2,
+        "trades": 1,
         "wins": 0,
-        "losses": 2,
-        "day_pnl": -1353,
-        "equity": 45910
+        "losses": 1,
+        "day_pnl": -737,
+        "equity": 44940
       },
       {
         "date": "2026-01-23",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -823,
-        "equity": 45087
+        "day_pnl": -806,
+        "equity": 44134
       },
       {
         "date": "2026-01-26",
@@ -1481,7 +1569,7 @@
         "wins": 1,
         "losses": 0,
         "day_pnl": 963,
-        "equity": 46050
+        "equity": 45097
       },
       {
         "date": "2026-01-27",
@@ -1489,7 +1577,7 @@
         "wins": 0,
         "losses": 1,
         "day_pnl": -99,
-        "equity": 45951
+        "equity": 44998
       },
       {
         "date": "2026-01-28",
@@ -1497,15 +1585,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45951
+        "equity": 44998
       },
       {
         "date": "2026-01-29",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -34,
-        "equity": 45917
+        "day_pnl": -295,
+        "equity": 44703
       },
       {
         "date": "2026-01-30",
@@ -1513,7 +1601,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 44703
       },
       {
         "date": "2026-02-02",
@@ -1521,7 +1609,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 44703
       },
       {
         "date": "2026-02-03",
@@ -1529,15 +1617,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45917
+        "equity": 44703
       },
       {
         "date": "2026-02-04",
-        "trades": 1,
-        "wins": 1,
+        "trades": 0,
+        "wins": 0,
         "losses": 0,
-        "day_pnl": 164,
-        "equity": 46081
+        "day_pnl": 0,
+        "equity": 44703
       },
       {
         "date": "2026-02-05",
@@ -1545,15 +1633,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 46081
+        "equity": 44703
       },
       {
         "date": "2026-02-06",
-        "trades": 2,
-        "wins": 1,
+        "trades": 1,
+        "wins": 0,
         "losses": 1,
-        "day_pnl": -386,
-        "equity": 45695
+        "day_pnl": -6,
+        "equity": 44697
       },
       {
         "date": "2026-02-09",
@@ -1561,7 +1649,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 44697
       },
       {
         "date": "2026-02-10",
@@ -1569,7 +1657,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 44697
       },
       {
         "date": "2026-02-11",
@@ -1577,7 +1665,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 44697
       },
       {
         "date": "2026-02-12",
@@ -1585,23 +1673,23 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45695
+        "equity": 44697
       },
       {
         "date": "2026-02-13",
         "trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 325,
-        "equity": 46020
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -325,
+        "equity": 44372
       },
       {
         "date": "2026-02-17",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -245,
-        "equity": 45775
+        "day_pnl": -237,
+        "equity": 44135
       },
       {
         "date": "2026-02-18",
@@ -1609,23 +1697,23 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45775
+        "equity": 44135
       },
       {
         "date": "2026-02-19",
-        "trades": 1,
-        "wins": 0,
+        "trades": 2,
+        "wins": 1,
         "losses": 1,
-        "day_pnl": -109,
-        "equity": 45666
+        "day_pnl": 53,
+        "equity": 44188
       },
       {
         "date": "2026-02-20",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -323,
-        "equity": 45343
+        "day_pnl": -312,
+        "equity": 43876
       },
       {
         "date": "2026-02-23",
@@ -1633,7 +1721,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 43876
       },
       {
         "date": "2026-02-24",
@@ -1641,7 +1729,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 43876
       },
       {
         "date": "2026-02-25",
@@ -1649,7 +1737,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 43876
       },
       {
         "date": "2026-02-26",
@@ -1657,7 +1745,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 43876
       },
       {
         "date": "2026-02-27",
@@ -1665,7 +1753,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343,
+        "equity": 43876,
         "note": "no candidates (total=1, passed=0)"
       },
       {
@@ -1674,15 +1762,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45343
+        "equity": 43876
       },
       {
         "date": "2026-03-03",
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 537,
-        "equity": 45880
+        "day_pnl": 519,
+        "equity": 44395
       },
       {
         "date": "2026-03-04",
@@ -1690,15 +1778,15 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45880
+        "equity": 44395
       },
       {
         "date": "2026-03-05",
         "trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -540,
-        "equity": 45340
+        "day_pnl": -522,
+        "equity": 43873
       },
       {
         "date": "2026-03-06",
@@ -1706,7 +1794,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-09",
@@ -1714,7 +1802,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-10",
@@ -1722,7 +1810,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-11",
@@ -1730,7 +1818,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-12",
@@ -1738,7 +1826,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-13",
@@ -1746,7 +1834,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340
+        "equity": 43873
       },
       {
         "date": "2026-03-16",
@@ -1754,7 +1842,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340,
+        "equity": 43873,
         "note": "no candidates (total=0, passed=0)"
       },
       {
@@ -1763,7 +1851,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 45340,
+        "equity": 43873,
         "note": "no candidates (total=0, passed=0)"
       },
       {
@@ -1771,20 +1859,28 @@
         "trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 1345,
-        "equity": 46685
+        "day_pnl": 1053,
+        "equity": 44926
       },
       {
         "date": "2026-03-19",
         "trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 100,
-        "equity": 46785
+        "day_pnl": 94,
+        "equity": 45020
+      },
+      {
+        "date": "2026-03-20",
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "day_pnl": -110,
+        "equity": 44910
       }
     ],
-    "max_equity": 47263,
-    "max_drawdown": 2176
+    "max_equity": 45677,
+    "max_drawdown": 1804
   },
   "missed_opportunities": [],
   "selection_log": [
@@ -3069,6 +3165,27 @@
           "gap_pct": 14.75,
           "float_millions": 9.83,
           "rank_score": 0.593
+        }
+      ]
+    },
+    {
+      "date": "2026-03-20",
+      "total_candidates": 2,
+      "passed_filter": 2,
+      "selected": [
+        {
+          "symbol": "RDGT",
+          "pm_volume": 52226.0,
+          "gap_pct": 16.89,
+          "float_millions": 5.14,
+          "rank_score": 0.419
+        },
+        {
+          "symbol": "ANNA",
+          "pm_volume": 1506902.0,
+          "gap_pct": 21.37,
+          "float_millions": 9.39,
+          "rank_score": 0.399
         }
       ]
     }
