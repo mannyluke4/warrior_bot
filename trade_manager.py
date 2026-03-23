@@ -2549,16 +2549,20 @@ class PaperTradeManager:
             unrealized_r=unrealized_r,
         )
 
-        # Structural stop ratchet: green bar low → never lower the stop
+        # Structural stop ratchet: track the level but do NOT apply to t.stop.
+        # Ross exits on 1m bar CLOSE, not intra-bar ticks. The CUC signal handles
+        # the case when a 1m bar closes below prior low. Applying structural stop
+        # as a tick-level stop causes premature exits on intra-bar noise.
         if new_stop is not None and t is not None:
-            if new_stop > t.stop:
-                old_stop = t.stop
-                t.stop = new_stop
-                t.runner_stop = new_stop
+            if not hasattr(t, '_ross_structural_stop'):
+                t._ross_structural_stop = 0.0
+            if new_stop > t._ross_structural_stop:
+                old = t._ross_structural_stop
+                t._ross_structural_stop = new_stop
                 log_event("ross_structural_stop_update", symbol,
-                          old_stop=round(old_stop, 4), new_stop=round(new_stop, 4))
+                          old_stop=round(old, 4), new_stop=round(new_stop, 4))
                 print(
-                    f"  ROSS_STRUCT_STOP {symbol}: {old_stop:.4f} → {new_stop:.4f}",
+                    f"  ROSS_STRUCT_STOP {symbol}: {old:.4f} → {new_stop:.4f} (tracked, not applied to tick stop)",
                     flush=True,
                 )
 

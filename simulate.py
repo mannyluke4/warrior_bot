@@ -2422,9 +2422,39 @@ def run_simulation(
             from collections import namedtuple
             _DbnTick = namedtuple("_DbnTick", ["price", "size", "timestamp"])
             tick_trades = [_DbnTick(t["price"], t["size"], t["timestamp"]) for t in _db_trades_raw]
+
+            # ── Write to tick cache if tick_cache dir was specified ──
+            if tick_cache and _db_trades_raw:
+                import gzip as _gzip
+                _cache_dir = os.path.join(tick_cache, date_str)
+                os.makedirs(_cache_dir, exist_ok=True)
+                _cache_out = os.path.join(_cache_dir, f"{symbol}.json.gz")
+                _cache_payload = [
+                    {"p": t["price"], "s": t["size"], "t": t["timestamp"].isoformat()
+                     if hasattr(t["timestamp"], "isoformat") else str(t["timestamp"])}
+                    for t in _db_trades_raw
+                ]
+                with _gzip.open(_cache_out, "wt") as _cf:
+                    json.dump(_cache_payload, _cf)
+                print(f"  Cached {len(_cache_payload)} ticks → {_cache_out}", flush=True)
         else:
             print(f"  Fetching tick data from Alpaca...", flush=True)
             tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
+
+            # ── Write to tick cache if tick_cache dir was specified ──
+            if tick_cache and tick_trades:
+                import gzip as _gzip
+                _cache_dir = os.path.join(tick_cache, date_str)
+                os.makedirs(_cache_dir, exist_ok=True)
+                _cache_out = os.path.join(_cache_dir, f"{symbol}.json.gz")
+                _cache_payload = [
+                    {"p": float(t.price), "s": int(t.size),
+                     "t": t.timestamp.isoformat() if hasattr(t.timestamp, "isoformat") else str(t.timestamp)}
+                    for t in tick_trades
+                ]
+                with _gzip.open(_cache_out, "wt") as _cf:
+                    json.dump(_cache_payload, _cf)
+                print(f"  Cached {len(_cache_payload)} ticks → {_cache_out}", flush=True)
         print(f"  Tick replay: {len(tick_trades)} trades for sim window", flush=True)
 
         if not tick_trades:

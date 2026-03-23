@@ -4,17 +4,23 @@ Ross Cameron Exit Signal Manager  (WB_ROSS_EXIT_ENABLED=1)
 Implements pure signal-based 1m exits modeled on Ross Cameron's actual methodology.
 All logic is gated OFF by default; existing behavior is 100% unchanged when disabled.
 
-Signal hierarchy (fastest → most confirmed):
-  1. Hard backstops — immediate 100% exit:
+Signal hierarchy (Ross's actual order — candle patterns FIRST, backstops LAST):
+
+  TIER 1 — WARNING CANDLES (50% partial exit, fires once per trade):
+       • Regular Doji     (body ≤15% range, wicks ≥20% each side)
+       • Topping Tail     (green/flat, upper wick ≥50% range, wick ≥2× body)
+
+  TIER 2 — CONFIRMED CANDLE REVERSALS (100% exit of remaining):
+       • Gravestone Doji  (body ≤10% range, upper wick ≥70%, lower wick ≤15%)
+       • Shooting Star    (red close + long upper wick — confirmed reversal)
+       • Candle Under Candle (CUC) — current low < prior low in bullish context
+         (requires ≥2 consecutive higher-highs before firing)
+
+  TIER 3 — TECHNICAL BACKSTOPS (100% exit — last resort, only if no candle signal):
        • 1m close below VWAP
        • 1m close below 20 EMA
        • MACD(12,26,9) histogram goes negative on 1m
-  2. Strong candle reversals — 100% exit:
-       • Gravestone Doji  (body ≤10% range, upper wick ≥70%, lower wick ≤15%)
-       • Shooting Star    (red, upper wick ≥ 2× body, upper wick ≥50% range)
-       • Candle Under Candle (CUC) — current low < prior low in bullish context
-  3. Warning candle — 50% partial exit:
-       • Regular Doji     (body ≤15% range, wicks ≥20% each side)
+       NOTE: Above 5R, backstops fire as partial_50 to protect runners.
 
 Structural trailing stop:
   • stop = low of last completed green 1m candle, never below entry + $0.01
@@ -24,12 +30,14 @@ Key gates (all default ON when WB_ROSS_EXIT_ENABLED=1):
   WB_ROSS_DOJI_ENABLED=1
   WB_ROSS_GRAVESTONE_ENABLED=1
   WB_ROSS_SHOOTING_STAR_ENABLED=1
+  WB_ROSS_TOPPING_TAIL_ENABLED=1
   WB_ROSS_MACD_ENABLED=1
   WB_ROSS_EMA20_ENABLED=1
   WB_ROSS_VWAP_ENABLED=1
   WB_ROSS_STRUCTURAL_TRAIL=1
   WB_ROSS_MIN_BARS=2     # minimum 1m bars in trade before any signal fires
   WB_ROSS_CUC_MIN_R=5.0  # suppress CUC when unrealized gain >= this R (deep runner gate)
+  WB_ROSS_BACKSTOP_MIN_R=0.0  # backstops soften to 50% above this AND ≥5R
 """
 
 import os
@@ -103,7 +111,9 @@ class RossExitManager:
         self._ema20_enabled = os.getenv("WB_ROSS_EMA20_ENABLED", "1") == "1"
         self._vwap_enabled = os.getenv("WB_ROSS_VWAP_ENABLED", "1") == "1"
         self._structural_trail = os.getenv("WB_ROSS_STRUCTURAL_TRAIL", "1") == "1"
+        self._topping_tail_enabled = os.getenv("WB_ROSS_TOPPING_TAIL_ENABLED", "1") == "1"
         self._cuc_min_r = float(os.getenv("WB_ROSS_CUC_MIN_R", "5.0"))
+        self._backstop_min_r = float(os.getenv("WB_ROSS_BACKSTOP_MIN_R", "0.0"))
 
     # ------------------------------------------------------------------
     # Public API
@@ -193,23 +203,32 @@ class RossExitManager:
         is_red = curr["c"] < curr["o"]
 
         # ═══════════════════════════════════════════════════════════════════════════
-        # TIER 1 — HARD BACKSTOPS (any one = 100% exit, no waiting for candle shape)
+        # TIER 1 — WARNING CANDLES (50% partial exit — only fires once per trade)
+        # Ross's hierarchy: candle patterns are the PRIMARY exit trigger.
         # ═══════════════════════════════════════════════════════════════════════════
 
-        # VWAP break
-        if self._vwap_enabled and vwap and vwap > 0 and c < vwap:
-            return "full_100", "ross_vwap_break", new_structural_stop
+        # Regular Doji: tiny body, wicks on BOTH sides — after a big green run.
+        # Ross's definition: "after a big green run" so the prior bar MUST be green.
+        if self._doji_enabled and not self.partial_taken:
+            prior_was_green = prev["c"] > prev["o"]
+            if (prior_was_green
+                    and body / rng <= 0.15
+                    and upper_wick / rng >= 0.20
+                    and lower_wick / rng >= 0.20):
+                return "partial_50", "ross_doji_partial", new_structural_stop
 
-        # 20 EMA break
-        if self._ema20_enabled and e20 is not None and c < e20:
-            return "full_100", "ross_ema20_break", new_structural_stop
-
-        # MACD histogram negative
-        if self._macd_enabled and macd_histogram is not None and macd_histogram < 0:
-            return "full_100", "ross_macd_negative", new_structural_stop
+        # Topping Tail: large upper wick after green run, NOT a red close.
+        # (If it closes red, it's a shooting star — handled in Tier 2)
+        if self._topping_tail_enabled and not self.partial_taken:
+            if (not is_red                             # green or flat close
+                    and upper_wick / rng >= 0.50       # wick ≥50% of bar range
+                    and upper_wick >= 2.0 * max(body, 1e-9)):   # wick ≥2× body
+                prior_was_green = prev["c"] > prev["o"]
+                if prior_was_green:
+                    return "partial_50", "ross_topping_tail_warning", new_structural_stop
 
         # ═══════════════════════════════════════════════════════════════════════════
-        # TIER 2 — STRONG CANDLE REVERSALS (100% exit)
+        # TIER 2 — CONFIRMED CANDLE REVERSALS (100% exit of remaining)
         # ═══════════════════════════════════════════════════════════════════════════
 
         # Gravestone Doji: tiny body, all upper wick, minimal lower wick
@@ -220,18 +239,30 @@ class RossExitManager:
                 return "full_100", "ross_gravestone_doji", new_structural_stop
 
         # Shooting Star: red candle, long upper wick >= 2× body, wick >= 50% range
+        # This is a CONFIRMED reversal (red close = sellers won) → 100% exit
         if self._shooting_star_enabled and is_red:
             if (upper_wick >= 2.0 * max(body, 1e-9)
                     and upper_wick / rng >= 0.50):
                 return "full_100", "ross_shooting_star", new_structural_stop
 
         # Candle Under Candle: current low breaks prior low in bullish context
+        # Requires ≥2 consecutive higher-highs before (establishes uptrend to reverse from)
         if self._cuc_enabled and curr["l"] < prev["l"]:
-            # Require prior bullish context so we don't exit on the very first red tick
-            prior_green = prev["c"] > prev["o"]
-            if not prior_green and len(self._bars) >= 3:
-                prior_green = self._bars[-3]["c"] > self._bars[-3]["o"]
-            if prior_green:
+            bullish_context = False
+            if len(self._bars) >= 3:
+                b_minus2 = self._bars[-3]
+                b_minus1 = self._bars[-2]  # == prev
+                # Two prior bars made consecutive higher highs
+                if b_minus1["h"] > b_minus2["h"]:
+                    if len(self._bars) >= 4:
+                        b_minus3 = self._bars[-4]
+                        bullish_context = b_minus2["h"] > b_minus3["h"]
+                    else:
+                        # Only 3 bars available — require the 2 we have to be green
+                        bullish_context = (b_minus2["c"] > b_minus2["o"]
+                                           and b_minus1["c"] > b_minus1["o"])
+
+            if bullish_context:
                 # Deep runner gate: suppress CUC when deep in profit (pullback, not reversal)
                 if in_trade and unrealized_r >= self._cuc_min_r:
                     print(
@@ -243,19 +274,28 @@ class RossExitManager:
                     return "full_100", "ross_cuc_exit", new_structural_stop
 
         # ═══════════════════════════════════════════════════════════════════════════
-        # TIER 3 — WARNING (50% partial exit — only fires once per trade)
+        # TIER 3 — TECHNICAL BACKSTOPS (last resort — only fire if no candle signal)
+        # Ross uses these as the "you must not still be holding" fallback.
+        # Above 5R, backstops soften to partial_50 to protect runners from MACD flicker.
         # ═══════════════════════════════════════════════════════════════════════════
 
-        # Regular Doji: tiny body, wicks on BOTH sides — after ≥2 large green candles.
-        # Ross's definition: "after a big green run" so the prior bar MUST be green.
-        # This prevents doji noise at entry-level consolidations.
-        if self._doji_enabled and not self.partial_taken:
-            prior_was_green = prev["c"] > prev["o"]
-            if (prior_was_green
-                    and body / rng <= 0.15
-                    and upper_wick / rng >= 0.20
-                    and lower_wick / rng >= 0.20):
-                return "partial_50", "ross_doji_partial", new_structural_stop
+        # VWAP break
+        if self._vwap_enabled and vwap and vwap > 0 and c < vwap:
+            if in_trade and unrealized_r >= 5.0 and not self.partial_taken:
+                return "partial_50", "ross_vwap_break_warning", new_structural_stop
+            return "full_100", "ross_vwap_break", new_structural_stop
+
+        # 20 EMA break
+        if self._ema20_enabled and e20 is not None and c < e20:
+            if in_trade and unrealized_r >= 5.0 and not self.partial_taken:
+                return "partial_50", "ross_ema20_break_warning", new_structural_stop
+            return "full_100", "ross_ema20_break", new_structural_stop
+
+        # MACD histogram negative
+        if self._macd_enabled and macd_histogram is not None and macd_histogram < 0:
+            if in_trade and unrealized_r >= 5.0 and not self.partial_taken:
+                return "partial_50", "ross_macd_negative_warning", new_structural_stop
+            return "full_100", "ross_macd_negative", new_structural_stop
 
         return None, None, new_structural_stop
 
