@@ -23,33 +23,33 @@
 | FTCI   | 10.35M | $5.31 | +23.5% | B | **TRADE** Profile B ✅ (top 1) |
 | TURB   | 1.29M | $4.13 | +23.1% | A | **TRADE** Profile A ✅ |
 | ALOY   | 3.14M | $19.90 | +22.5% | A | **SKIP** — price >$10 |
-| SBTU   | unknown | $5.01 | +18.6% | X | **SKIP** — Profile X |
+| SBTU   | unknown | $5.01 | +18.6% | X | **SKIP** — unknown-float |
 | OPRX   | 14.37M | $7.92 | +18.2% | B | **TRADE** Profile B ✅ (top 2) |
-| PLUL   | unknown | $12.86 | +15.3% | X | **SKIP** — Profile X |
+| PLUL   | unknown | $12.86 | +15.3% | X | **SKIP** — unknown-float |
 | RBNE   | 2.68M | $2.98 | +14.6% | A | **SKIP** — price <$3 |
 | ANNA   | 9.39M | $4.27 | +13.9% | B | **SKIP** — B cap at top 2 |
 | RIOX   | 1.08M | $8.14 | +13.9% | A | **TRADE** Profile A ✅ |
 | SHMD   | 13.93M | $6.80 | +13.7% | B | **SKIP** — B cap at top 2 |
-| GLXU   | unknown | $8.00 | +13.6% | X | **SKIP** — Profile X |
+| GLXU   | unknown | $8.00 | +13.6% | X | **SKIP** — unknown-float |
 | PMTS   | 6.00M | $18.47 | +13.6% | B | **SKIP** — price >$10 |
 | CIFG   | 0.24M | $7.22 | +13.5% | A | **SKIP** — float <0.5M |
 | NTRP   | 6.29M | $3.35 | +13.2% | B | **SKIP** — B cap at top 2 |
-| USGG   | unknown | $13.50 | +13.0% | X | **SKIP** — Profile X |
+| USGG   | unknown | $13.50 | +13.0% | X | **SKIP** — unknown-float |
 | BAER   | 36.83M | $2.51 | +12.8% | B | **SKIP** — price <$3 |
 | WOLF   | 28.23M | $18.86 | +12.8% | B | **SKIP** — price >$10 |
 | GLGG   | 0.06M | $6.80 | +12.8% | A | **SKIP** — float <0.5M |
 | MRAL   | 2.96M | $3.33 | +12.3% | A | **TRADE** Profile A ✅ |
 | IBG    | 0.20M | $6.01 | +11.9% | A | **SKIP** — float <0.5M |
-| VMET   | unknown | $12.39 | +11.8% | X | **SKIP** — Profile X |
+| VMET   | unknown | $12.39 | +11.8% | X | **SKIP** — unknown-float |
 | PTRN   | 32.35M | $12.40 | +11.8% | B | **SKIP** — price >$10 |
 | OMDA   | 4.45M | $15.55 | +11.5% | A | **SKIP** — price >$10 |
 | MARPS  | 1.51M | $5.86 | +11.4% | A | **TRADE** Profile A ✅ |
 | RKLZ   | 0.16M | $3.44 | +11.4% | A | **SKIP** — float <0.5M |
-| DJTU   | unknown | $2.27 | +11.1% | X | **SKIP** — Profile X |
+| DJTU   | unknown | $2.27 | +11.1% | X | **SKIP** — unknown-float |
 | CNVS   | 17.91M | $3.30 | +11.0% | B | **SKIP** — B cap at top 2 |
 | CRMX   | 0.60M | $6.60 | +10.6% | A | **TRADE** Profile A ✅ |
 | TPET   | 7.59M | $2.12 | +10.5% | B | **SKIP** — price <$3 |
-| CLSX   | unknown | $11.55 | +10.1% | X | **SKIP** — Profile X |
+| CLSX   | unknown | $11.55 | +10.1% | X | **SKIP** — unknown-float |
 | NKLR   | 21.74M | $4.51 | +10.0% | B | **SKIP** — B cap at top 2 |
 
 **Live watchlist would have been:**
@@ -89,7 +89,7 @@ OPRX:B
 - **Total P&L (Profile B)**: $0
 - **Combined P&L**: **$0**
 - **Stocks traded**: 0 of 8 candidates
-- **Stocks skipped (Profile X / out-of-filter)**: 26 of 34
+- **Stocks skipped (unknown-float / out-of-filter)**: 26 of 34
 
 ---
 

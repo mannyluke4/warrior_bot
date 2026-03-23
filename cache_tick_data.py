@@ -97,12 +97,13 @@ def load_top_stocks(date_str):
     for c in candidates:
         gap = c.get("gap_pct", 0) or 0
         float_m = c.get("float_millions") or 999
-        profile = c.get("profile", "X")
+        profile = c.get("profile", "unknown")
         if gap < MIN_GAP_PCT or gap > MAX_GAP_PCT:
             continue
         if float_m > MAX_FLOAT_MILLIONS:
             continue
-        if profile == "X":
+        # "X" is legacy name for unknown-float, kept for backward compat with old scanner JSONs
+        if profile in ("X", "unknown"):
             continue
         filtered.append(c)
 

@@ -1,28 +1,96 @@
 # Warrior Bot — Master Task Tracker
-## Last Updated: 2026-03-19
+## Last Updated: 2026-03-23
 
 This document tracks ALL open work items across every strategy and system. Updated by Cowork after each session. Lives in the repo so nothing gets lost.
 
 ---
 
-## 🔴 CRITICAL — Scanner Alignment (Blocks Everything)
+## 🟢 COMPLETED — Jan 2025 Missed Stocks Backtest
 
-The live scanner has found ZERO usable stocks across 3 trading days. The live and backtest scanners use completely different data pipelines and criteria. Until they're aligned, we can't trust backtests OR trade live.
+**Result: Scanner is confirmed as the #1 bottleneck.** If the scanner had found all of Ross's January stocks, the bot would have made **+$42,818** vs ~$5,543 actual — a **7.7x multiplier**.
 
-**Directive**: `DIRECTIVE_SCANNER_ALIGNMENT.md` — IN PROGRESS
+Key findings: 88% stock-level profitability, SQ is the only strategy that fires, 18-22% capture rate on Ross's P&L, bot beats Ross on all 3 of his losses. 10 tickers had no Databento data (likely OTC). 6 had data but 0 trades (large float, MACD gate, no ARM).
+
+**Report:** `cowork_reports/2025-01_missed_stocks_backtest_results.md`
+
+---
+
+## 🟢 COMPLETED — Ross Exit V3 CUC Fix
+
+CC implemented both CUC gates and ran the 4-config YTD comparison. **Result: CUC tuning alone cannot close the gap.** Best config (MinBars=5) improved V2 by +$2,049 but still -$8,750 vs baseline. The sq_target_hit architecture issue dominates (-$12,832).
+
+**Code changes (merged):** `WB_ROSS_CUC_FLOOR_R` and `WB_ROSS_CUC_MIN_TRADE_BARS` in ross_exit.py
+**Report:** `cowork_reports/2026-03-23_v3_cuc_comparison.md`
+**Decision:** Phase 2 signal-at-level partials deferred. Focus shifts to scanner coverage (missed stocks backtest).
+
+---
+
+## 🔴 #1 PRIORITY — Scanner Coverage Improvement
+
+The January 2025 missed stocks backtest proved the scanner is the highest-leverage fix. The bot found 7.4% of Ross's tickers (5/68) and left ~$37K on the table in one month. The bot IS profitable on these stocks — it just never sees them.
+
+**Root causes of scanner misses (29 missed opportunities, Jan 2025):**
+
+| Category | Count | % | Fix Approach |
+|----------|-------|---|-------------|
+| Scanner never found stock | 13 | 45% | Broader criteria, continuous rescan, news feed |
+| Found but bot didn't trade | 5 | 17% | Already mostly fixed by SQ V2 (post-Jan addition) |
+| Found AND traded (exit gap) | 3 | 10% | Ross exit refinement (in progress) |
+| Sympathy/thematic plays | 3 | 10% | Sector momentum tracking (hard to automate) |
+| Mid-morning discovery | 2 | 7% | Continuous intraday rescan |
+| Unknown float (no float data) | 2 | 7% | Float data fallback / allow unknown-float with gates |
+| Scanner timing (pre-7:15 move) | 1 | 3% | Earlier first scan or streaming mode |
+
+**Scanner Gap Analysis COMPLETED (2026-03-23):**
+Per-stock analysis of every profitable missed stock. 5 root cause categories: float too high (4 stocks, +$1,379), unknown float (4 stocks, +$12,178), not in data universe (10 stocks, no data), failed scanner gates (13 stocks, +$13,445), structural (3 stocks, $0).
+**Report:** `cowork_reports/2026-03-23_scanner_gap_analysis.md`
+
+**Phase 1 tasks (scanner architecture):**
+
+| Task | Status | Priority | Notes |
+|------|--------|----------|-------|
+| Analyze WHY 13 stocks weren't found | **COMPLETED** | **P0** | Report: `cowork_reports/2026-03-23_scanner_gap_analysis.md` |
+| Enable unknown-float stock trading | **COMPLETED** | **P0** | Done 2026-03-23. WB_ALLOW_UNKNOWN_FLOAT=1 in .env; gate logic in run_ytd_v2_backtest.py |
+| Fix continuous rescan (0 finds in Jan) | **DIRECTIVE WRITTEN** | **P0** | `DIRECTIVE_SCANNER_FIXES_V1.md` Item 2. Rescan found 0/66 candidates |
+| Rename "unknown-float" terminology (was "Profile X") | **COMPLETED** | **P0** | Done 2026-03-23. All Python files, .env, docs updated. |
+| Research: alt data feeds + float sources | **DIRECTIVE WRITTEN** | **P1** | `RESEARCH_DIRECTIVE_DATA_FEEDS_AND_FLOAT_SOURCES.md` for Perplexity |
+| News feed integration (catalyst detection) | **NOT STARTED** | **P2** | Ross's edge: news at 7:00 AM → scanner alert. Bot: gap-only |
+| Sector/sympathy tracking | **NOT STARTED** | **P3** | EVAC (GLP-1 sympathy), BTCT (crypto theme) — hard to automate |
+
+**Key evidence:**
+- `cowork_reports/2026-03-23_scanner_gap_analysis.md` — per-stock rejection analysis + recommendations
+- `cowork_reports/2025-01_missed_stocks_backtest_results.md` — full backtest results
+- `cowork_reports/missed_stocks_backtest_plan.md` — per-stock miss analysis
+- `cowork_reports/ross_vs_bot_jan_2025.md` — January comparison summary
+
+---
+
+## 🔴 CRITICAL — Live Bot Audit (Mac Mini)
+
+Mac Mini was running stale code (v6-dynamic-sizing, 22 commits behind main). daily_run.sh updated to pull main. Additional issues: Alpaca websocket failures, scanner divergence.
+
+**Directive**: `DIRECTIVE_LIVE_BOT_AUDIT_2026_03_23.md`
 
 | Task | Status | Owner | Notes |
 |------|--------|-------|-------|
-| **Phase 1: Fix `live_scanner.py`** | **✅ CODE PUSHED** | CC MBP | Commit `e9cbb88`. Thresholds, RVOL, ranking, watchlist format updated |
-| **Phase 2: Align `scanner_sim.py`** | **✅ CODE PUSHED** | CC MBP | Same commit. Aligned to unified criteria |
-| **Phase 3: Regenerate scanner data** | **DIRECTIVE SENT** | CC MM | `DIRECTIVE_MAC_MINI_SCANNER_VALIDATE.md`. Re-run scanner_sim for all 49 dates |
-| **Phase 4: Align batch runner filters** | **✅ CODE PUSHED** | CC MBP | Same commit. RVOL≥2x, min PM vol 50K, gap≥10% |
-| **Phase 5: Validate + re-run 49-day backtest** | **DIRECTIVE SENT** | CC MM | Verify VERO/ROLR/SXTC/GITS still selected. Full backtest with new data |
-| Connect `live_scanner.py` to `daily_run.sh` | **NOT STARTED** | CC MM | After Phase 5 validates. Start alongside `bot.py`, disable `WB_ENABLE_DYNAMIC_SCANNER` |
-| Verify Databento streaming costs | **NOT STARTED** | Manny | Usage-based pricing — need to confirm acceptable |
-| Test: would ARTL have been found? | **IN DIRECTIVE** | CC MM | Part of Phase 5 validation. Generate scanner data for Mar 18 |
-| **Faster rescan for news-driven movers** | **NOT STARTED** | **HIGH** | CHNR 2026-03-19: news at 7:15, Ross alerted at 7:16, our scanner found it at 8:00 (44 min late). Need faster rescan cycle or streaming mode for intra-premarket moves. See `CHNR_2026-03-19_METHODOLOGY_GAP_ANALYSIS.md`. |
-| Cache CHNR 2026-03-19 tick data | **NOT STARTED** | MEDIUM | Need tick data to backtest CHNR with squeeze V2 + future strategies |
+| Switch Mac Mini to `main` branch | **daily_run.sh UPDATED** | CC | v6 had 0 unique commits vs main |
+| Verify .env on Mac Mini | **PENDING** | CC | WB_ROSS_EXIT_ENABLED=0, WB_MP_ENABLED=0 |
+| Smoke test bot.py on Mac Mini | **PENDING** | CC | Pre-flight import check + 10s health check |
+| Verify cron schedule | **PENDING** | CC | 0 2 * * 1-5 (2 AM MT weekdays) |
+| Investigate Alpaca websocket failures | **NOTED** | MEDIUM | 99,934 retries on 2026-03-23, 0 trades |
+| Databento migration for live data | **NOT STARTED** | HIGH | Scanner divergence = 0 overlap between live and sim |
+
+---
+
+## 🟡 Scanner Alignment (Mostly Complete)
+
+| Task | Status | Owner | Notes |
+|------|--------|-------|-------|
+| Phase 1-4: Scanner code alignment | **✅ DONE** | CC | Commit `e9cbb88` |
+| Phase 5: Validate with new data | **✅ DONE** | CC | YTD runner uses aligned scanner |
+| Connect `live_scanner.py` to `daily_run.sh` | **NOT STARTED** | CC MM | Blocked by Databento cost verification |
+| Verify Databento streaming costs | **NOT STARTED** | Manny | Usage-based pricing |
+| Faster rescan for news-driven movers | **NOT STARTED** | HIGH | CHNR 44 min late |
 
 ---
 
@@ -195,12 +263,14 @@ The "extended candles" reset and TW resets during pullback phase are too aggress
 
 | Metric | Value | Date |
 |--------|-------|------|
-| 49-day backtest P&L | **+$19,072 (+63.6%)** | 2026-03-18 |
-| Profit factor | **3.38** | 2026-03-18 |
-| VERO regression | **+$18,583** | 2026-03-18 |
-| ROLR regression | **+$6,444** | 2026-03-18 |
-| Live trades taken | 1 (NUAI -$542) | 2026-03-18 |
-| Live scanner status | **BROKEN — 0 stocks found in 3 days** | 2026-03-19 |
+| 55-day YTD baseline P&L | **+$25,709** (33 trades, 52% WR, PF 5.42) | 2026-03-23 |
+| 55-day YTD Ross Exit V2 P&L | +$14,910 (28 trades, 37% WR, PF 3.94) | 2026-03-23 |
+| V3 CUC best config (MinBars=5) | +$16,959 (-$8,750 vs baseline) | 2026-03-23 |
+| Jan 2025 missed stocks potential | **+$42,818** (7.7x vs actual $5,543) | 2026-03-23 |
+| Scanner capture rate (Jan 2025) | 7.4% of Ross's tickers, 18-22% of P&L when found | 2026-03-23 |
+| VERO regression | **+$18,583** (requires `WB_MP_ENABLED=1`) | 2026-03-18 |
+| ROLR regression | **+$6,444** (requires `WB_MP_ENABLED=1`) | 2026-03-18 |
+| Live bot status | 0 trades on 2026-03-23 (Alpaca websocket failure) | 2026-03-23 |
 
 ---
 

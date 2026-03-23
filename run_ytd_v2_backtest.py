@@ -29,6 +29,13 @@ MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
 MIN_RVOL = 2.0
 
+# Unknown-float gate: allow missing-float stocks with exceptional signals (OFF by default)
+ALLOW_UNKNOWN_FLOAT = int(os.environ.get("WB_ALLOW_UNKNOWN_FLOAT", "0")) == 1
+UNKNOWN_FLOAT_MIN_GAP = 50.0        # strong premarket gap required
+UNKNOWN_FLOAT_MIN_PM_VOL = 1_000_000  # confirmed premarket interest
+UNKNOWN_FLOAT_MIN_RVOL = 10.0       # unusual activity required
+UNKNOWN_FLOAT_NOTIONAL_FACTOR = 0.5  # conservative 50% of normal max notional
+
 ENV_BASE = {
     "WB_CLASSIFIER_ENABLED": "1",
     "WB_CLASSIFIER_RECLASS_ENABLED": "1",
@@ -137,11 +144,24 @@ def load_and_rank(date_str: str) -> tuple:
             continue
         if gap < MIN_GAP_PCT or gap > MAX_GAP_PCT:
             continue
-        if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
-            continue
-        if profile == "X":
-            continue
         rvol = c.get("relative_volume", 0) or 0
+
+        # Unknown-float gate: missing-float or explicitly unknown-tagged stocks
+        # "X" is legacy name for unknown-float, kept for backward compat with old scanner JSONs
+        if profile in ("X", "unknown") or float_m is None or float_m == 0:
+            if not ALLOW_UNKNOWN_FLOAT:
+                continue
+            if (gap < UNKNOWN_FLOAT_MIN_GAP
+                    or pm_vol < UNKNOWN_FLOAT_MIN_PM_VOL
+                    or rvol < UNKNOWN_FLOAT_MIN_RVOL):
+                continue
+            c = dict(c)
+            c["_unknown_float"] = True
+            filtered.append(c)
+            continue
+
+        if float_m > MAX_FLOAT_MILLIONS:
+            continue
         if rvol < MIN_RVOL:
             continue
         filtered.append(c)
@@ -406,6 +426,8 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         float_m = c.get("float_millions", 0) or 0
         stock_risk = min(risk, 250) if float_m > 5.0 else risk
         sim_start = c.get("sim_start", "07:00")  # Respect scanner discovery time
+        # Unknown-float stocks get conservative 50% notional cap
+        uf_notional_cap = int(MAX_NOTIONAL * UNKNOWN_FLOAT_NOTIONAL_FACTOR) if c.get("_unknown_float") else MAX_NOTIONAL
         all_trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
         time.sleep(1)  # Rate limit: 1 second between API calls
 
@@ -416,8 +438,8 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
                 break
             if max_consec_losses > 0 and consec_losses >= max_consec_losses:
                 break
-            # Notional check
-            if day_notional + t["notional"] > MAX_NOTIONAL:
+            # Notional check (unknown-float stocks capped at 50% of MAX_NOTIONAL)
+            if day_notional + t["notional"] > uf_notional_cap:
                 continue
 
             day_trades.append(t)

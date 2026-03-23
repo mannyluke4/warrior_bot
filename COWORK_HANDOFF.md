@@ -1,5 +1,5 @@
 # Claude Cowork Handoff — Warrior Bot Project
-## Updated: 2026-03-20 (afternoon)
+## Updated: 2026-03-23 (afternoon)
 
 **Your role**: Strategy analyst and coordinator for a multi-machine trading bot project. You have **full read access to the GitHub repo** — use it to read data, analyze reports, and write directives. The master task list is in `MASTER_TODO.md`. Read it first.
 
@@ -13,8 +13,9 @@
 | **Mac Mini** | PRIMARY | CC (terminal) + Cowork | Code changes, backtesting, live bot, strategy analysis |
 | **MacBook Pro** | REMOTE/BACKUP | CC (VS Code) + Cowork | Remote access, weekend work, backup development |
 
-All share the same GitHub repo (`mannyluke4/warrior_bot`, branch `v6-dynamic-sizing`).
+All share the same GitHub repo (`mannyluke4/warrior_bot`, branch `main`).
 The `.env` file is **gitignored** (contains API keys) — each machine has its own copy.
+**NOTE (2026-03-23):** Branch switched from `v6-dynamic-sizing` to `main`. v6 was 22 commits behind main with 0 unique commits. Mac Mini daily_run.sh updated.
 
 ### Roles & Boundaries
 
@@ -54,7 +55,7 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 
 - **Owner**: Manny — day trader, prefers consistent $200-500 daily hits, methodical approach
 - **Stage**: Paper trading on Alpaca with $30K account
-- **Branch**: `v6-dynamic-sizing` (all work happens here)
+- **Branch**: `main` (switched from `v6-dynamic-sizing` on 2026-03-23)
 - **Repo**: GitHub, `mannyluke4/warrior_bot`
 
 ---
@@ -87,94 +88,89 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 
 ### Exit Strategy
 - `exit_mode = "signal"` — no fixed take-profit, let patterns manage exits
-- **Bearish engulfing (BE)**: Detected on 10-second bars, exits full position
-- **Topping wicky (TW)**: Detected on 10-second bars, exits full position — BUT suppressed above 1.5R profit (Fix 5, let BE handle runners)
-- **Cascading re-entry**: BE/TW exits free capital for re-entry on the next pullback
+- **When `WB_ROSS_EXIT_ENABLED=1`**: 1m candle signals replace 10s BE/TW exits. Signal hierarchy: Tier 1 warnings (doji/topping tail → 50% partial), Tier 2 confirmed (gravestone/shooting star/CUC → 100%), Tier 3 backstops (VWAP/EMA20/MACD → 100%). Structural trail = low of last green 1m candle.
+- **When `WB_ROSS_EXIT_ENABLED=0` (current live)**: 10s BE/TW exits, TW suppressed above 1.5R, cascading re-entry
 - **Stop loss**: Hard stop at entry - R, with float-tiered max loss cap (Fix 2)
 
 ---
 
-## 3. Current State (as of 2026-03-21)
+## 3. Current State (as of 2026-03-23)
 
-### ⚠️ P0: sim_start Bug — ALL Megatest Results Invalid
-A critical bug in `resolve_precise_discovery()` (commit `efa9b3f`) set `sim_start` to raw premarket times (e.g., 04:00 AM) instead of scanner checkpoint times. 46% of candidates affected (405/873). VERO produces $0 instead of +$18,583 with wrong timing. **All megatest results are faulty and must be re-run.**
-- **Directive**: `DIRECTIVE_FIX_SIM_START_BUG.md` (P0, committed)
-- **Pipeline audit**: `cowork_reports/pipeline_audit_preliminary.md` (13 potential bugs, 5 critical)
-- **Live bot audit**: `cowork_reports/live_bot_audit.md` (19 bugs, 4 must-fix before Monday)
-- **VR shelving decision**: V1/V2/V3 standalone results (0 trades) are still valid, but megatest VR=0 needs re-verification with corrected data
-- **Next**: CC fixes sim_start + live bot bugs → verification tests → corrected v2 megatest
+### #1 PRIORITY — Scanner Coverage Improvement
 
-### Megatest V1 Results (FAULTY — do not use)
-| Combo | P&L (FAULTY) | Trades | Status |
-|-------|-------------|--------|--------|
-| MP only | -$14,339 | 250 | ⚠️ Invalid — 46% wrong sim_start |
-| SQ only | +$118,369 | 183 | ⚠️ Invalid |
-| MP + SQ | +$130,621 | 298 | ⚠️ Invalid |
-| All three | +$124,793 | 329 | ⚠️ Invalid |
+**The Problem:** Bot found only 5/68 (7.4%) of Ross's January 2025 tickers. Scanner coverage is the single biggest bottleneck.
 
-### Strategy Fixes Implemented (2026-03-18)
-Five data-backed fixes were implemented and validated:
+**Proof It Matters — January 2025 Missed Stocks Backtest (COMPLETED 2026-03-23):**
+- Backtested all 41 Ross-traded tickers from Jan 2025 against current bot config
+- **Total potential P&L: +$42,818** (vs $5,543 actual — **7.7x multiplier**)
+- 25/41 stocks had data AND trades; 88% stock-level profitability
+- Bot BEATS Ross on all 3 of his loss days (OST: Ross -$3K → Bot +$6,876)
+- SQ is doing virtually all the work; MP dormant on this dataset
+- 10 tickers had no Databento data; 6 had data but 0 trades
 
-| Fix | What It Does | Impact | Gate |
-|-----|-------------|--------|------|
-| 1 | Direction-aware continuation hold | +$317 | `WB_CONT_HOLD_DIRECTION_CHECK=1` |
-| 2 | Float-tiered max loss cap | +$937 | `WB_MAX_LOSS_R_TIERED=1` |
-| 3 | max_loss_hit triggers cooldown (bug fix) | +$916 | `WB_MAX_LOSS_TRIGGERS_COOLDOWN=1` |
-| 4 | No re-entry after loss on same symbol | +$1,315 | `WB_NO_REENTRY_ENABLED=1` |
-| 5 | TW profit gate — suppress TW above 1.5R | +$12,619 | `WB_TW_MIN_PROFIT_R=1.5` |
+**Scanner Miss Categories (from missed_stocks_backtest_plan.md):**
+- 45% scanner never found at all (13 stocks) — THIS IS THE MAIN TARGET
+- 17% found but didn't trade (5) — entry logic, not scanner
+- 10% exit gap (3) — exit timing, not scanner
+- 10% sympathy/thematic (3) — hard to detect programmatically
+- 7% mid-morning movers (2) — need continuous rescan
+- 7% unknown-float (2) — missing float data
+- 3% timing (1) — scan timing window
 
-### Strategy 2: Squeeze / Breakout (2026-03-19, V2 COMPLETE)
-New strategy module captures first-leg momentum moves. Three iterations in one day:
-- **V1**: Basic squeeze detector. R-cap blocked all parabolic first legs.
-- **Parabolic mode**: Level-based stop fallback when consolidation R exceeds cap. ARTL went from 0 entries to +$6,963.
-- **V2 fixes**: HOD gate (blocks bounce entries), separate entry counters (squeeze doesn't block MP), dollar loss cap (catches gap-throughs).
-- **Result**: 4-stock total went from $28,162 (MP-only) to $44,605 (+58%).
-- **Next**: Full 55-day YTD backtest with squeeze enabled. See `DIRECTIVE_SQUEEZE_YTD_OVERNIGHT.md`.
+**Next Step:** Deep analysis of WHY each missed stock wasn't found — which specific scanner filter rejected each one. Report in progress.
 
-### Strategy 4: VWAP Reclaim (2026-03-20, SHELVED — pending re-verification)
-New strategy module detects Ross's "first 1-min candle to make new high after VWAP reclaim" pattern.
-- **V1/V2/V3 standalone tuning**: 27 test runs, 0 VR trades (VALID — used hardcoded sim_start)
-- **Megatest all_three**: 0 VR trades (INVALID — sim_start bug may have caused false negatives)
-- **Status**: Shelved for now. Will re-verify with corrected v2 megatest data. If still 0 trades at scale, confirm shelving.
-- **Gate**: `WB_VR_ENABLED=0` (OFF by default)
-- **Design doc**: `DESIGN_VWAP_RECLAIM_DETECTOR.md`
+**Key Reports:**
+- `cowork_reports/2025-01_missed_stocks_backtest_results.md` — Full backtest results
+- `cowork_reports/missed_stocks_backtest_plan.md` — Per-stock miss log (89 entries)
+- `DIRECTIVE_JAN2025_MISSED_STOCKS_BACKTEST.md` — Backtest directive (COMPLETED)
 
-### Scanner Alignment (2026-03-19, IN PROGRESS)
-The live scanner was completely broken (0 stocks found in 3 days). Root cause: Alpaca snapshot API returns stale/null data for small caps. Solution: switch to Databento-powered `live_scanner.py` (already built).
+### Ross Exit System — V2 Backtested, V3 CUC Fix COMPLETED
 
-Both scanners (live and backtest) are being aligned to use identical Ross Pillar criteria. See `DIRECTIVE_SCANNER_ALIGNMENT.md`.
+**Ross Exit V2 YTD Results (55 days, Jan 2 - Mar 20 2026):**
 
-### Last Validated Backtest
-- **49-day MP-only (Jan 2 - Mar 12)**: +$19,072 (+63.6%), profit factor 3.38, 28 trades
-- **4-stock squeeze V2 validation**: +$44,605 total across ARTL, VERO, ROLR, SXTC (+58% vs MP-only)
-- **VERO regression (squeeze OFF)**: +$18,583 (1 trade, 18.6R — unchanged)
-- **ROLR regression (squeeze OFF)**: +$6,444 (1 trade, 6.4R — unchanged)
+| Metric | Baseline (Ross Exit OFF) | V2 (Ross Exit ON) | Delta |
+|--------|--------------------------|---------------------|-------|
+| Total P&L | **+$25,709** | +$14,910 | **-$10,799** |
+| Total Trades | 33 | 28 | -5 |
+| Win Rate | 52% | 37% | -15pp |
+| Max Drawdown | $3,277 | $1,804 | -$1,473 (better) |
 
-### Live Config (.env, all fixes enabled, squeeze LIVE in paper)
+**V3 CUC Fix Results (COMPLETED 2026-03-23):**
+- Config C (MinBars=5): +$16,959, best single CUC fix (+$2,049 vs V2)
+- Config D (FloorR=2): +$15,924
+- Config E (Both): +$16,786 — CUC exits reduced to 0
+- **Conclusion:** CUC tuning alone cannot close the gap. The sq_target_hit architecture issue dominates.
+- **Decision:** Ross exit is ON in live (.env), but scanner improvement is higher leverage than further exit tuning.
+
+**Key Reports:**
+- `cowork_reports/ross_exit_video_analysis.md` — Ross Cameron exit methodology deep dive
+- `cowork_reports/ross_exit_analysis.md` — 19 daily recaps reverse-engineered
+- `cowork_reports/2026-03-23_ytd_ross_exit_v2_comparison.md` — YTD V2 results
+- `cowork_reports/2026-03-23_ross_exit_v3_variations.md` — V3 variation design + modeling
+- `cowork_reports/2026-03-23_v3_cuc_comparison.md` — V3 CUC comparison results
+
+### Live Bot Audit (2026-03-23)
+
+Mac Mini was running `v6-dynamic-sizing` branch (22 commits behind main). `daily_run.sh` updated to pull/push `main`. Full audit directive: `DIRECTIVE_LIVE_BOT_AUDIT_2026_03_23.md`.
+
+Issues found on 2026-03-23:
+- Alpaca websocket failure (99,934 failed retries, 0 trades)
+- Scanner divergence: live (ANNA, ARTL, SUNE) vs sim (UGRO, AHMA, WSHP) — zero overlap
+- Recommendation: Databento migration for data feed
+
+**Live Config (.env on Mac Mini):**
 ```
-WB_MODE=PAPER
-WB_EXIT_MODE=signal
-WB_RISK_DOLLARS=1000
-WB_MAX_NOTIONAL=50000
-WB_CLASSIFIER_ENABLED=1
-WB_EXHAUSTION_ENABLED=1
-WB_CONTINUATION_HOLD_ENABLED=1
+WB_ROSS_EXIT_ENABLED=0         # OFF — V2 showed -$10,799 vs baseline
+WB_MP_ENABLED=0                # OFF by default (gated 2026-03-22)
+WB_SQUEEZE_ENABLED=1           # Primary strategy
 WB_PILLAR_GATES_ENABLED=1
-WB_ARM_EARLIEST_HOUR_ET=7
-WB_CONT_HOLD_DIRECTION_CHECK=1
-WB_MAX_LOSS_R_TIERED=1
-WB_MAX_LOSS_R_ULTRA_LOW_FLOAT=0
-WB_MAX_LOSS_R_LOW_FLOAT=0.85
-WB_MAX_LOSS_TRIGGERS_COOLDOWN=1
-WB_NO_REENTRY_ENABLED=1
-WB_TW_MIN_PROFIT_R=1.5
-WB_SQUEEZE_ENABLED=1          # LIVE in paper (2026-03-19)
-WB_SQ_PARA_ENABLED=1
-WB_SQ_NEW_HOD_REQUIRED=1
-WB_SQ_MAX_LOSS_DOLLARS=500
-# VR (backtest validation pending — NOT live yet)
-# WB_VR_ENABLED=1
+WB_CLASSIFIER_ENABLED=1
 ```
+
+### Regression Targets
+- VERO 2026-01-16: **+$18,583** (with `WB_MP_ENABLED=1`)
+- ROLR 2026-01-14: **+$6,444** (with `WB_MP_ENABLED=1`)
+- Note: `WB_MP_ENABLED=1` required since Item 1 (2026-03-22) gated MP off by default
 
 ---
 
@@ -250,8 +246,11 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 | `DIRECTIVE_VR_TUNING_V3.md` | VR V3 code fix + R-cap $1.00 + 20% severe_loss |
 | `CHNR_2026-03-19_METHODOLOGY_GAP_ANALYSIS.md` | CHNR gap analysis — 2/3 trades were VR |
 | `SCANNER_DATA_QUALITY_REPORT.md` | Why live scanner finds 0 stocks |
-| `YTD_V2_BACKTEST_RESULTS.md` | Latest 49-day backtest results |
+| `YTD_V2_BACKTEST_RESULTS.md` | Latest 55-day YTD backtest results (Ross Exit A/B) |
 | `ALL_FIXES_BACKTEST_RESULTS.md` | Validation of all 5 fixes |
+| `DIRECTIVE_ROSS_EXIT_V3_CUC_FIX.md` | V3 CUC fix directive for CC |
+| `DIRECTIVE_LIVE_BOT_AUDIT_2026_03_23.md` | Mac Mini live bot audit directive |
+| `DIRECTIVE_YTD_2026_ROSS_EXIT_V2.md` | YTD A/B backtest directive (completed) |
 
 ---
 
@@ -266,4 +265,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-21 | P0 sim_start bug found, megatest results invalid, directive + audits committed for CC*
+*Handoff updated: 2026-03-23 | Scanner coverage is #1 priority (7.7x multiplier proven). Ross Exit V3 CUC fix COMPLETED. Jan 2025 missed stocks backtest COMPLETED (+$42,818 potential). Live bot on main with ross exit ON.*

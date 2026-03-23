@@ -36,7 +36,7 @@ JAN_STOCKS = [
 # Item 1 (MP gate): WB_MP_ENABLED=0 is default — SQ only
 BASELINE_ENV = {
     "WB_MP_ENABLED": "0",
-    "WB_ALLOW_PROFILE_X": "0",
+    "WB_ALLOW_UNKNOWN_FLOAT": "0",
     "WB_SQ_PARTIAL_EXIT_ENABLED": "0",
     "WB_SQ_WIDE_TRAIL_ENABLED": "0",
     "WB_SQ_RUNNER_DETECT_ENABLED": "0",
@@ -48,7 +48,7 @@ BASELINE_ENV = {
 # Features ON: all items enabled
 FEATURES_ON_ENV = {
     "WB_MP_ENABLED": "0",          # Item 1: keep MP off (that's the point)
-    "WB_ALLOW_PROFILE_X": "1",     # Item 2
+    "WB_ALLOW_UNKNOWN_FLOAT": "1",  # Item 2
     "WB_SQ_PARTIAL_EXIT_ENABLED": "1",  # Item 3 Fix 1
     "WB_SQ_WIDE_TRAIL_ENABLED": "1",    # Item 3 Fix 2
     "WB_SQ_RUNNER_DETECT_ENABLED": "1", # Item 3 Fix 3
