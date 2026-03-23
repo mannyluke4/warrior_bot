@@ -18,6 +18,7 @@ from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 from candles import is_bearish_engulfing
+from ross_exit import RossExitManager
 
 load_dotenv()
 
@@ -430,6 +431,12 @@ class PaperTradeManager:
         self._conviction_max_mult = float(os.getenv("WB_CONVICTION_MAX_MULT", "2.5"))
         self._conviction_scale_notional = os.getenv("WB_CONVICTION_SCALE_NOTIONAL", "1") == "1"
 
+        # --- Ross exit system (WB_ROSS_EXIT_ENABLED gates this) ---
+        # When ON: 1m candle signals replace TW/BE/fixed-trail exits.
+        # Hard stops (max_loss, stop_hit, bail timer) remain active as safety nets.
+        self.ross_exit_enabled = os.getenv("WB_ROSS_EXIT_ENABLED", "0") == "1"
+        self._ross_exit_mgrs: Dict[str, object] = {}  # symbol -> RossExitManager
+
     def set_stock_info_cache(self, cache: dict):
         """Store fundamental data from startup filtering for trade-time access."""
         self._stock_info_cache = dict(cache)
@@ -774,6 +781,11 @@ class PaperTradeManager:
     def _split_core_runner(self, qty_total: int) -> tuple[int, int]:
         if qty_total <= 0:
             return 0, 0
+        # Ross exit: 50/50 split — core exits on doji warning, runner on confirmed signal
+        if self.ross_exit_enabled:
+            qty_core = max(1, qty_total // 2)
+            qty_runner = max(0, qty_total - qty_core)
+            return qty_core, qty_runner
         qty_core = int(math.floor(qty_total * self.scale_core))
         qty_core = max(1, min(qty_core, qty_total))
         qty_runner = max(0, qty_total - qty_core)
@@ -787,6 +799,12 @@ class PaperTradeManager:
         qty_t2 = max(0, int(math.floor(qty_total * self.scale_t2)))
         qty_t3 = max(0, qty_total - qty_t1 - qty_t2)
         return qty_t1, qty_t2, qty_t3
+
+    def _get_ross_mgr(self, symbol: str) -> RossExitManager:
+        """Get (or lazily create) the RossExitManager for a symbol."""
+        if symbol not in self._ross_exit_mgrs:
+            self._ross_exit_mgrs[symbol] = RossExitManager()
+        return self._ross_exit_mgrs[symbol]
 
     # -----------------------------
     # Public heartbeats
@@ -852,6 +870,10 @@ class PaperTradeManager:
                             new_t._cont_hold_5m_mode = True
                             new_t._5m_bars = list(recent)
                             print(f"  5M_GUARD_SEEDED {symbol}: {green_count} green bars → IMMEDIATE activation", flush=True)
+            # Ross exit: reset per-trade state when new trade opens
+            if self.ross_exit_enabled:
+                self._get_ross_mgr(symbol).reset()
+                print(f"  ROSS_EXIT_RESET {symbol}: new trade opened", flush=True)
         else:
             t.qty_total = alp_qty
             if not t.tp_hit:
@@ -1520,6 +1542,10 @@ class PaperTradeManager:
                                         new_t2._cont_hold_5m_mode = True
                                         new_t2._5m_bars = list(recent)
                                         print(f"  5M_GUARD_SEEDED {symbol}: {green_count} green bars → IMMEDIATE activation", flush=True)
+                        # Ross exit: reset per-trade state when new trade opens
+                        if self.ross_exit_enabled:
+                            self._get_ross_mgr(symbol).reset()
+                            print(f"  ROSS_EXIT_RESET {symbol}: new trade opened", flush=True)
                     else:
                         t.qty_total += delta
                         if not t.tp_hit:
@@ -2490,6 +2516,108 @@ class PaperTradeManager:
 
         self._last_1m_bar[symbol] = {"o": o, "h": h, "l": l, "c": c}
 
+    def on_bar_close_1m_ross_exit(
+        self,
+        symbol: str,
+        o: float,
+        h: float,
+        l: float,
+        c: float,
+        vwap: Optional[float] = None,
+    ):
+        """
+        Feed a completed 1m bar to the per-symbol RossExitManager and execute any exit signal.
+
+        Called from bot.py on_bar_close_1m when WB_ROSS_EXIT_ENABLED=1.
+        Replaces: TW/BE exits on 10s bars, fixed trail/target exits.
+        Keeps:    bail timer, hard stop, max_loss_hit  (all in _manage_exits / on_tick).
+        """
+        if not self.ross_exit_enabled:
+            return
+
+        mgr = self._get_ross_mgr(symbol)
+        t = self.open.get(symbol)
+        in_trade = t is not None
+        entry_price = t.entry if t else 0.0
+        unrealized_r = (c - t.entry) / t.r if (t and t.r > 0) else 0.0
+
+        action, signal_name, new_stop = mgr.on_1m_bar_close(
+            o=o, h=h, l=l, c=c,
+            vwap=vwap,
+            in_trade=in_trade,
+            entry_price=entry_price,
+            unrealized_r=unrealized_r,
+        )
+
+        # Structural stop ratchet: green bar low → never lower the stop
+        if new_stop is not None and t is not None:
+            if new_stop > t.stop:
+                old_stop = t.stop
+                t.stop = new_stop
+                t.runner_stop = new_stop
+                log_event("ross_structural_stop_update", symbol,
+                          old_stop=round(old_stop, 4), new_stop=round(new_stop, 4))
+                print(
+                    f"  ROSS_STRUCT_STOP {symbol}: {old_stop:.4f} → {new_stop:.4f}",
+                    flush=True,
+                )
+
+        if action is None or t is None:
+            return
+
+        # Don't fire exits while entry order is still filling (avoid wash-trade rejection)
+        if symbol in self.pending:
+            return
+
+        # Don't double-fire if an exit order is already live
+        if symbol in self.pending_exits:
+            log_event("exit_signal_ignored_pending_exit", symbol, signal=signal_name)
+            return
+
+        # Use bid price for exit limit (freshest available)
+        px = self.last_bid.get(symbol)
+        if px is None:
+            px = self.last_price.get(symbol, c)
+        px = float(px)
+
+        if action == "partial_50":
+            if t.tp_hit:
+                return  # partial already taken; ignore subsequent doji warnings
+            mgr.partial_taken = True
+            qty_exit = t.qty_core if t.qty_core > 0 else max(1, t.qty_total // 2)
+            if qty_exit <= 0:
+                return
+            log_event("ross_exit_signal", symbol,
+                      action=action, signal=signal_name,
+                      qty=qty_exit, price=round(px, 4),
+                      unrealized_r=round(unrealized_r, 2))
+            print(
+                f"🟧 ROSS_EXIT {symbol} {signal_name}"
+                f" partial={qty_exit}sh @ {px:.4f} ({unrealized_r:.1f}R)",
+                flush=True,
+            )
+            t.tp_hit = True  # mark partial taken so runner stays open
+            self._exit(symbol, qty=qty_exit, reason=f"ross_{signal_name}_partial50", price=px)
+
+        elif action == "full_100":
+            if t.tp_hit:
+                # Core already sold on doji warning; exit runner only
+                qty_exit = t.qty_runner if t.qty_runner > 0 else t.qty_total
+            else:
+                qty_exit = t.qty_total
+            if qty_exit <= 0:
+                return
+            log_event("ross_exit_signal", symbol,
+                      action=action, signal=signal_name,
+                      qty=qty_exit, price=round(px, 4),
+                      unrealized_r=round(unrealized_r, 2))
+            print(
+                f"🔴 ROSS_EXIT {symbol} {signal_name}"
+                f" full={qty_exit}sh @ {px:.4f} ({unrealized_r:.1f}R)",
+                flush=True,
+            )
+            self._exit(symbol, qty=qty_exit, reason=f"ross_{signal_name}_full100", price=px)
+
     def on_bar_close_5m_trend_guard(self, symbol: str, o: float, h: float, l: float, c: float, v: float = 0):
         """5m bar close: track completed bars + active-phase exit detection."""
         # Always track completed bars for seeded activation (with time for session filter)
@@ -2563,6 +2691,11 @@ class PaperTradeManager:
                 det.on_10s_bar(o, h, l, c, v, t.entry, t.r)
 
         self._manage_exits(symbol)
+
+        # Ross exit: 1m signals handle all pattern exits; skip 10s BE/TW detection entirely.
+        # Hard stops above (_manage_exits) still fire — only pattern detection is bypassed.
+        if self.ross_exit_enabled and symbol in self.open:
+            return
 
         # If in 5m guard mode, skip ALL 10s exit detection (handled in 5m handler)
         if self._cont_hold_5m_guard and self._continuation_hold_enabled:

@@ -395,6 +395,7 @@ def on_bar_close_10s(bar):
     _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
     if (trade_manager
         and getattr(trade_manager, 'exit_on_topping_wicky', False)
+        and not getattr(trade_manager, 'ross_exit_enabled', False)  # Ross exit handles exits on 1m bars
         and symbol in trade_manager.open
         and "TOPPING_WICKY" in (det.last_patterns or [])):
         t = trade_manager.open[symbol]
@@ -470,6 +471,13 @@ def on_bar_close_1m(bar):
     # Continuation hold: 1m bar exit detection for live bot
     if trade_manager:
         trade_manager.on_bar_close_1m_cont_hold(symbol, bar.open, bar.high, bar.low, bar.close, bar.volume)
+
+    # Ross exit: feed 1m bar to RossExitManager when WB_ROSS_EXIT_ENABLED=1.
+    # vwap is already queried above from the 10s bar_builder (canonical source).
+    if trade_manager and getattr(trade_manager, 'ross_exit_enabled', False):
+        trade_manager.on_bar_close_1m_ross_exit(
+            symbol, bar.open, bar.high, bar.low, bar.close, vwap=vwap
+        )
 
     if msg:
         # Console printing policy:
