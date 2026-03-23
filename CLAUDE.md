@@ -10,9 +10,10 @@ A Python trading bot that detects micro-pullback setups on small-cap stocks and 
 - **Backtest window: 07:00-12:00 ET** (Ross Cameron's active hours)
 - **Always run regression before pushing**: VERO +$18,583, ROLR +$6,444
   ```bash
-  python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
-  python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
+  WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
+  WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
   ```
+  Note: `WB_MP_ENABLED=1` required since Item 1 (2026-03-22) gated MP off by default.
 - VERO target updated 2026-03-18 after Fix 5 (TW profit gate). Old target was +$9,166.
 - GWAV and ANPA no longer produce trades in standalone mode (detector evolution)
 
