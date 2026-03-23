@@ -648,8 +648,8 @@ def run_comparison():
         for c in top5:
             uf_tag = " [UF]" if c.get("_unknown_float") else ""
             rs_tag = " [RS]" if c.get("discovery_method") == "rescan" else ""
-            print(f"    {c['symbol']}: vol={c.get('pm_volume',0):,.0f} "
-                  f"gap={c.get('gap_pct',0):.0f}% float={c.get('float_millions',0):.1f}M"
+            print(f"    {c['symbol']}: vol={c.get('pm_volume') or 0:,.0f} "
+                  f"gap={c.get('gap_pct') or 0:.0f}% float={c.get('float_millions') or 0:.1f}M"
                   f"{uf_tag}{rs_tag}", flush=True)
 
         if top5:
@@ -710,8 +710,8 @@ def run_comparison():
         for c in top5:
             uf_tag = " [UF]" if c.get("_unknown_float") else ""
             rs_tag = " [RS]" if c.get("discovery_method") == "rescan" else ""
-            print(f"    {c['symbol']}: vol={c.get('pm_volume',0):,.0f} "
-                  f"gap={c.get('gap_pct',0):.0f}% float={c.get('float_millions',0):.1f}M"
+            print(f"    {c['symbol']}: vol={c.get('pm_volume') or 0:,.0f} "
+                  f"gap={c.get('gap_pct') or 0:.0f}% float={c.get('float_millions') or 0:.1f}M"
                   f"{uf_tag}{rs_tag}", flush=True)
 
         if top5:
