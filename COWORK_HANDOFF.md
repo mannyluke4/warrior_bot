@@ -1,5 +1,5 @@
 # Claude Cowork Handoff — Warrior Bot Project
-## Updated: 2026-03-23 (afternoon)
+## Updated: 2026-03-23 (post-directive)
 
 **Your role**: Strategy analyst and coordinator for a multi-machine trading bot project. You have **full read access to the GitHub repo** — use it to read data, analyze reports, and write directives. The master task list is in `MASTER_TODO.md`. Read it first.
 
@@ -117,12 +117,29 @@ A Python day trading bot that detects micro-pullback setups on small-cap stocks 
 - 7% unknown-float (2) — missing float data
 - 3% timing (1) — scan timing window
 
-**Next Step:** Deep analysis of WHY each missed stock wasn't found — which specific scanner filter rejected each one. Report in progress.
+**Scanner Fixes V1 — ALL 6 ITEMS COMPLETED (commit `6a91afe`, `7e2d7f0`):**
+1. ✅ Enable unknown-float trading (`WB_ALLOW_UNKNOWN_FLOAT=1`) — safety gates: gap≥50%, pm_vol≥1M, rvol≥10x, 50% notional cap
+2. ✅ Fix continuous rescan — cumulative 4AM→checkpoint volume, RVOL inline calc, gap 5% for RVOL≥10x
+3. ✅ Rename "Profile X" → "unknown-float" across entire codebase (backward compat for old scanner JSONs)
+4. ✅ SEC EDGAR as Tier 5 float fallback — free, 10 req/s, CIK map + XBRL API
+5. ✅ Float cache invalidation — clears stale None entries on load, forces re-lookup
+6. ✅ Alpha Vantage as Tier 6 float fallback — `WB_ALPHA_VANTAGE_API_KEY` env var, 25 calls/day free
+
+**Float lookup chain (updated):** KNOWN_FLOATS → float_cache → FMP → yfinance → SEC EDGAR → Alpha Vantage
+
+**Free-tier recovery model:** +$15-17K/month potential at zero additional cost.
+
+**OTC coverage deferred:** Polygon $199/mo + IBKR $18/mo would cover ~10 missing OTC tickers. Manny declined for now.
+
+**Regression PASSED:** VERO +$18,583 ✅, ROLR +$6,444 ✅
 
 **Key Reports:**
 - `cowork_reports/2025-01_missed_stocks_backtest_results.md` — Full backtest results
 - `cowork_reports/missed_stocks_backtest_plan.md` — Per-stock miss log (89 entries)
+- `cowork_reports/2026-03-23_scanner_gap_analysis.md` — Per-stock rejection analysis
+- `scanner_deep_dive_report.md` — Perplexity data feed + float source research
 - `DIRECTIVE_JAN2025_MISSED_STOCKS_BACKTEST.md` — Backtest directive (COMPLETED)
+- `DIRECTIVE_SCANNER_FIXES_V1.md` — Scanner fixes directive (ALL 6 ITEMS COMPLETED)
 
 ### Ross Exit System — V2 Backtested, V3 CUC Fix COMPLETED
 
@@ -251,6 +268,10 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 | `DIRECTIVE_ROSS_EXIT_V3_CUC_FIX.md` | V3 CUC fix directive for CC |
 | `DIRECTIVE_LIVE_BOT_AUDIT_2026_03_23.md` | Mac Mini live bot audit directive |
 | `DIRECTIVE_YTD_2026_ROSS_EXIT_V2.md` | YTD A/B backtest directive (completed) |
+| `DIRECTIVE_SCANNER_FIXES_V1.md` | Scanner fixes V1 — all 6 items COMPLETED |
+| `RESEARCH_DIRECTIVE_DATA_FEEDS_AND_FLOAT_SOURCES.md` | Perplexity research directive (completed) |
+| `scanner_deep_dive_report.md` | Perplexity output — data feed + float source research |
+| `cowork_reports/2026-03-23_scanner_gap_analysis.md` | Per-stock scanner miss analysis (34 stocks, 5 categories) |
 
 ---
 
@@ -265,4 +286,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-23 | Scanner coverage is #1 priority (7.7x multiplier proven). Ross Exit V3 CUC fix COMPLETED. Jan 2025 missed stocks backtest COMPLETED (+$42,818 potential). Live bot on main with ross exit ON.*
+*Handoff updated: 2026-03-23 | Scanner Fixes V1 directive FULLY EXECUTED (6/6 items). Float chain: KNOWN→cache→FMP→yfinance→EDGAR→AlphaVantage. Unknown-float trading ON. Rescan fixed. Regression passed. OTC deferred. Live bot audit pending on Mac Mini.*

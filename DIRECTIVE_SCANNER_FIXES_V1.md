@@ -1,4 +1,4 @@
-# Directive: Scanner Fixes V1 — Unknown-Float Trading + Rescan Fix + Terminology Cleanup
+# Directive: Scanner Fixes V1 — Unknown-Float Trading + Rescan Fix + EDGAR Float + Terminology Cleanup
 
 **Date:** 2026-03-23
 **From:** Cowork (Opus)
@@ -195,13 +195,220 @@ This ensures old cached scanner results still work. Add a comment: `# "X" is leg
 
 ---
 
+## Item 4: Add SEC EDGAR as Tier 5 Float Fallback (FREE)
+
+### What
+Add SEC EDGAR XBRL API as a fallback float lookup after FMP and yfinance both fail. Uses `EntityCommonStockSharesOutstanding` as a float proxy. Free, 10 requests/second, no API key — just needs a User-Agent header.
+
+### Why
+Perplexity research confirmed: 3 of 4 "float missing" tickers (XPON, VRME, AMOD) are resolvable through EDGAR. XPON had 10,846,135 shares outstanding in its March 2026 filing — well within our 10M ceiling. FMP and yfinance both returned None for it, costing us +$3,321 in bot P&L.
+
+GDTC (the 4th ticker) is a foreign filer (Singapore, 20-F) and EDGAR's `EntityPublicFloat` returns 404 for those. But `EntityCommonStockSharesOutstanding` returns 11,540,000. Since GDTC is already covered by the unknown-float gate (Item 1), EDGAR is a bonus for it, not critical.
+
+### Implementation
+
+Add this to BOTH `scanner_sim.py` and `live_scanner.py` in the `get_float()` function, as Tier 5 after yfinance:
+
+```python
+import requests
+
+# --- SEC EDGAR ticker→CIK map (load once at startup) ---
+_EDGAR_CIK_MAP = {}
+
+def _load_edgar_cik_map():
+    global _EDGAR_CIK_MAP
+    if _EDGAR_CIK_MAP:
+        return _EDGAR_CIK_MAP
+    try:
+        resp = requests.get(
+            "https://www.sec.gov/files/company_tickers.json",
+            headers={"User-Agent": "WarriorBot luke@delightedpath.net"},
+            timeout=10
+        )
+        data = resp.json()
+        _EDGAR_CIK_MAP = {
+            v['ticker'].upper(): str(v['cik_str']).zfill(10)
+            for v in data.values()
+        }
+    except Exception as e:
+        print(f"  [EDGAR] Failed to load CIK map: {e}")
+    return _EDGAR_CIK_MAP
+
+
+def get_edgar_shares_outstanding(symbol: str) -> float | None:
+    """Tier 5: SEC EDGAR shares outstanding as float proxy. Free, 10 req/s."""
+    cik_map = _load_edgar_cik_map()
+    cik = cik_map.get(symbol.upper())
+    if not cik:
+        return None
+    try:
+        url = (f"https://data.sec.gov/api/xbrl/companyconcept/"
+               f"CIK{cik}/dei/EntityCommonStockSharesOutstanding.json")
+        resp = requests.get(url, headers={
+            "User-Agent": "WarriorBot luke@delightedpath.net"
+        }, timeout=10)
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        shares_list = data.get("units", {}).get("shares", [])
+        if not shares_list:
+            return None
+        # Get most recent filing
+        latest = sorted(shares_list, key=lambda x: x.get("end", ""), reverse=True)[0]
+        shares = latest.get("val", 0)
+        if shares > 0:
+            print(f"  [EDGAR] {symbol}: {shares/1e6:.2f}M shares outstanding")
+            return shares
+    except Exception as e:
+        print(f"  [EDGAR] {symbol}: {e}")
+    return None
+```
+
+Then update `get_float()` in both files to add the EDGAR call after the yfinance block:
+
+```python
+def get_float(symbol: str, cache: dict) -> float | None:
+    # ... existing code: KNOWN_FLOATS → cache → FMP → yfinance ...
+
+    # 5. SEC EDGAR fallback (free, 10 req/s)
+    if float_shares is None:
+        float_shares = get_edgar_shares_outstanding(symbol)
+
+    cache[symbol] = float_shares
+    save_float_cache(cache)
+    return float_shares
+```
+
+### Notes
+- The CIK map is ~13K tickers. Load it once at scanner startup (takes ~1-2 seconds).
+- EDGAR returns shares outstanding, not true float. For small-caps with <10M shares outstanding, this is close enough — insiders/institutions typically hold a small %. The existing float ceiling filter handles the rest.
+- Rate limit: 10 req/s. The scanner processes candidates sequentially, so this is never hit.
+- Foreign filers (20-F) may not have `EntityCommonStockSharesOutstanding` either. In that case, EDGAR returns 404 and we fall through to the unknown-float gate.
+
+### Acceptance Criteria
+- XPON resolves to ~10.8M shares via EDGAR (would be classified as "skip" since >10M, but close — shows the lookup works)
+- VRME resolves to ~12.4M shares via EDGAR
+- AMOD resolves to ~42M shares via EDGAR (confirms it's a large-float stock — unknown-float gate is the right path for this one)
+- GDTC returns None from EDGAR (foreign filer) — falls through to unknown-float gate correctly
+
+---
+
+## Item 5: Float Cache Invalidation for Stale None Entries (FREE)
+
+### What
+When `float_cache.json` contains a `None` value for a ticker, that None blocks the ticker forever — even if FMP/yfinance/EDGAR can resolve it now. Add a mechanism to re-attempt None lookups periodically.
+
+### Why
+Float data providers update at different times. A ticker that returned None from FMP last week (between an offering and the next quarterly filing) may now be resolvable. Caching None permanently means we never discover this.
+
+### Implementation
+
+In `load_float_cache()` (both `scanner_sim.py` and `live_scanner.py`), add a filter that drops None entries older than 7 days:
+
+```python
+import time
+
+def load_float_cache() -> dict:
+    if os.path.exists(FLOAT_CACHE_PATH):
+        with open(FLOAT_CACHE_PATH) as f:
+            raw = json.load(f)
+        # Drop stale None entries older than 7 days
+        # Format: cache stores {symbol: float_or_none}
+        # To track age, we need to add timestamps. Simple approach:
+        # Just clear ALL None entries on each load — forces re-lookup.
+        # This is fine because the lookup chain (FMP→yfinance→EDGAR) is fast
+        # and we only have ~5-15 None entries per month.
+        cleaned = {k: v for k, v in raw.items() if v is not None}
+        dropped = len(raw) - len(cleaned)
+        if dropped > 0:
+            print(f"  [float_cache] Cleared {dropped} stale None entries — will re-attempt lookups")
+            save_float_cache(cleaned)
+        return cleaned
+    return {}
+```
+
+**Simpler alternative (preferred):** Just clear None entries every time. With the EDGAR fallback added (Item 4), most previously-None tickers will now resolve successfully. The cache only holds ~300 tickers, so re-looking up 10-20 None entries adds <10 seconds.
+
+### Acceptance Criteria
+- After clearing, previously-None tickers get re-looked-up through the full chain (FMP → yfinance → EDGAR)
+- Tickers that still can't be resolved get re-cached as None (will be cleared again next run)
+- No regression on scanner performance or speed
+
+---
+
+## Item 6: Alpha Vantage Free Tier as Tier 6 Float Fallback (FREE — 25 calls/day)
+
+### What
+Add Alpha Vantage OVERVIEW endpoint as a final fallback for float data. Their `SharesFloat` field returns actual tradeable float (not shares outstanding). Free tier: 25 API calls/day, 5/minute.
+
+### Why
+For the rare cases where FMP, yfinance, AND EDGAR all fail (foreign 20-F filers like GDTC), Alpha Vantage may have the data. Their OVERVIEW endpoint was verified to return float: e.g., IBM `SharesFloat=936,083,000`. 25 calls/day is tight for a full scanner run but more than enough as a last-resort fallback — we typically have <5 None entries per day after the first three tiers.
+
+### Implementation
+
+Get a free API key from https://www.alphavantage.co/support/#api-key
+
+Add after EDGAR in `get_float()`:
+
+```python
+ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+
+def get_alpha_vantage_float(symbol: str) -> float | None:
+    """Tier 6: Alpha Vantage OVERVIEW — true float. Free tier: 25 calls/day."""
+    if not ALPHA_VANTAGE_KEY:
+        return None
+    try:
+        url = (f"https://www.alphavantage.co/query?function=OVERVIEW"
+               f"&symbol={symbol}&apikey={ALPHA_VANTAGE_KEY}")
+        resp = requests.get(url, timeout=10)
+        data = resp.json()
+        shares_float = data.get("SharesFloat")
+        if shares_float and shares_float != "None" and shares_float != "0":
+            val = float(shares_float)
+            if val > 0:
+                print(f"  [AlphaVantage] {symbol}: {val/1e6:.2f}M float")
+                return val
+    except Exception as e:
+        print(f"  [AlphaVantage] {symbol}: {e}")
+    return None
+```
+
+Then in `get_float()`, after EDGAR:
+
+```python
+    # 6. Alpha Vantage free tier (25 calls/day, true float)
+    if float_shares is None:
+        float_shares = get_alpha_vantage_float(symbol)
+```
+
+Add to `.env`:
+```
+ALPHA_VANTAGE_API_KEY=           # Free tier: https://www.alphavantage.co/support/#api-key
+```
+
+### Notes
+- 25 calls/day limit means this ONLY fires as a last resort. With KNOWN_FLOATS + cache + FMP + yfinance + EDGAR covering ~95% of tickers, Alpha Vantage handles the remaining ~5%.
+- If the free tier quota is exhausted, the function returns None silently — no crash, no retry.
+- `time.sleep(0.5)` between calls to stay under the 5/min limit.
+
+### Acceptance Criteria
+- GDTC resolves to ~3.7M float via Alpha Vantage (matches yfinance current value)
+- Rate limit is respected (no more than 5 calls per minute)
+- Graceful degradation when quota exhausted
+
+---
+
 ## Execution Order
 
 1. **Item 3 first** (rename) — pure refactor, no behavior change. Commit.
-2. **Item 1 second** (enable unknown-float) — config + code change in `run_ytd_v2_backtest.py`. Commit.
-3. **Item 2 third** (rescan fix) — debugging + code change in `scanner_sim.py`. Commit.
-4. **Run regression** after all three: VERO +$18,583 (with `WB_MP_ENABLED=1`).
-5. **Push to origin main.**
+2. **Item 1 second** (enable unknown-float) — .env already updated. Update `run_ytd_v2_backtest.py` to respect the gate. Commit.
+3. **Item 4 third** (EDGAR fallback) — add to both scanner files. Commit.
+4. **Item 5 fourth** (cache invalidation) — add to both scanner files. Commit.
+5. **Item 6 fifth** (Alpha Vantage) — add to both scanner files + .env key. Commit.
+6. **Item 2 sixth** (rescan fix) — debugging + code change in `scanner_sim.py`. Commit.
+7. **Run regression** after all items: VERO +$18,583 (with `WB_MP_ENABLED=1`).
+8. **Validation:** Re-run `scanner_sim.py --date 2025-01-06` and verify GDTC now appears as a tradeable candidate (not unknown-float blocked).
+9. **Push to origin main.**
 
 ---
 

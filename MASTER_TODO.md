@@ -1,5 +1,5 @@
 # Warrior Bot — Master Task Tracker
-## Last Updated: 2026-03-23
+## Last Updated: 2026-03-23 (post-directive)
 
 This document tracks ALL open work items across every strategy and system. Updated by Cowork after each session. Lives in the repo so nothing gets lost.
 
@@ -51,17 +51,36 @@ Per-stock analysis of every profitable missed stock. 5 root cause categories: fl
 |------|--------|----------|-------|
 | Analyze WHY 13 stocks weren't found | **COMPLETED** | **P0** | Report: `cowork_reports/2026-03-23_scanner_gap_analysis.md` |
 | Enable unknown-float stock trading | **COMPLETED** | **P0** | Done 2026-03-23. WB_ALLOW_UNKNOWN_FLOAT=1 in .env; gate logic in run_ytd_v2_backtest.py |
-| Fix continuous rescan (0 finds in Jan) | **DIRECTIVE WRITTEN** | **P0** | `DIRECTIVE_SCANNER_FIXES_V1.md` Item 2. Rescan found 0/66 candidates |
+| Fix continuous rescan (0 finds in Jan) | **✅ COMPLETED** | **P0** | Commit `6a91afe`. Cumulative 4AM→checkpoint volume, RVOL inline calc, gap 5% for RVOL≥10x. |
 | Rename "unknown-float" terminology (was "Profile X") | **COMPLETED** | **P0** | Done 2026-03-23. All Python files, .env, docs updated. |
-| Research: alt data feeds + float sources | **DIRECTIVE WRITTEN** | **P1** | `RESEARCH_DIRECTIVE_DATA_FEEDS_AND_FLOAT_SOURCES.md` for Perplexity |
+| Research: alt data feeds + float sources | **✅ COMPLETED** | **P1** | Perplexity deep dive done 2026-03-23. See findings below. |
+| Add SEC EDGAR as Tier 5 float fallback | **✅ COMPLETED** | **P1** | Commit `6a91afe`. In both live_scanner.py and scanner_sim.py. CIK map + XBRL API. |
+| Add float cache invalidation (clear stale Nones) | **✅ COMPLETED** | **P1** | Commit `6a91afe`. Clears None entries on load, forces re-lookup through full chain. |
+| Add Alpha Vantage free tier as Tier 6 float | **✅ COMPLETED** | **P2** | Commit `6a91afe`. `WB_ALPHA_VANTAGE_API_KEY` env var (empty = disabled). 25 calls/day. |
+| **Jan 2025 vs Jan 2026 comparison** | **DIRECTIVE WRITTEN** | **P0** | `DIRECTIVE_JAN_COMPARISON_V1.md`. Re-run scanner_sim for Jan 2025 with fixes, then backtest both months side-by-side. Validates all scanner + exit changes. |
+| OTC coverage (Polygon + IBKR) | **DEFERRED** | **P3** | Polygon $199/mo + IBKR $18/mo. Manny declined for now. Would cover ~10 missing OTC tickers. Revisit after free-tier improvements are maximized. |
 | News feed integration (catalyst detection) | **NOT STARTED** | **P2** | Ross's edge: news at 7:00 AM → scanner alert. Bot: gap-only |
 | Sector/sympathy tracking | **NOT STARTED** | **P3** | EVAC (GLP-1 sympathy), BTCT (crypto theme) — hard to automate |
+
+**Perplexity Research Findings (2026-03-23):**
+- **Trade Ideas**: No programmatic API — browser-only. Not viable.
+- **IEX Cloud**: Permanently shut down Aug 2024.
+- **Polygon.io**: $199/mo covers OTC + real-time. Best option for OTC but cost deferred.
+- **SEC EDGAR**: Free XBRL API, 10 req/s, `EntityCommonStockSharesOutstanding`. Covers ~80% of unknown-float failures. **ADOPTED → Item 4.**
+- **Alpha Vantage**: Free tier 25 calls/day, has true `SharesFloat` field. **ADOPTED → Item 6.**
+- **Float cache invalidation**: Clearing stale None entries prevents permanent lookup failures. **ADOPTED → Item 5.**
+- **OTC stocks**: ~28% of Jan 2025 misses are OTC/pink sheet. Would need Polygon + IBKR ($217/mo). **DEFERRED** — Manny declined.
+- **Alpaca cannot trade OTC stocks.** Databento EQUS.MINI = NMS only. Both are structural limitations.
+- **Report:** `scanner_deep_dive_report.md` (Perplexity output)
+
+**Free-tier recovery model:** Unknown-float gate ($8,035, done) + SEC EDGAR ($4,143 est) + rescan fix ($3-5K est) + cache invalidation (prevents future misses) = **+$15-17K/month potential** at zero additional cost.
 
 **Key evidence:**
 - `cowork_reports/2026-03-23_scanner_gap_analysis.md` — per-stock rejection analysis + recommendations
 - `cowork_reports/2025-01_missed_stocks_backtest_results.md` — full backtest results
 - `cowork_reports/missed_stocks_backtest_plan.md` — per-stock miss analysis
 - `cowork_reports/ross_vs_bot_jan_2025.md` — January comparison summary
+- `scanner_deep_dive_report.md` — Perplexity data feed + float source research
 
 ---
 
