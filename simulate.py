@@ -378,7 +378,13 @@ class SimTradeManager:
         if qty <= 0:
             return None
 
-        if setup_type == "squeeze":
+        if self.ross_exit_enabled:
+            # Ross exit: 50/50 split for ALL trade types (MP, SQ, VR)
+            # Core exits on warning (doji partial), runner on confirmed signal
+            qty_core = max(1, qty // 2)
+            qty_t2 = 0
+            qty_runner = max(0, qty - qty_core)
+        elif setup_type == "squeeze":
             # Squeeze: core + runner split for partial exits
             # Fix 1: when partial exit enabled, use sq_partial_pct instead of sq_core_pct
             _sq_split_pct = self.sq_partial_pct if self.sq_partial_exit_enabled else self.sq_core_pct
@@ -398,11 +404,6 @@ class SimTradeManager:
             # Guard: if qty is too small for T3, fold remainder into T2
             if qty_runner <= 0 and qty_t2 > 0:
                 qty_runner = 0
-        elif self.ross_exit_enabled and setup_type not in ("squeeze", "vwap_reclaim"):
-            # Ross exit: 50/50 split — core exits on warning (doji), runner on confirmed signal
-            qty_core = max(1, qty // 2)
-            qty_t2 = 0
-            qty_runner = max(0, qty - qty_core)
         elif self.exit_mode == "signal":
             qty_core = qty      # full position, no split
             qty_t2 = 0
@@ -658,6 +659,10 @@ class SimTradeManager:
                 self._close(t)
                 return
 
+        # When Ross exit is ON, skip trail/target — Ross 1m signals handle all SQ exits
+        if self.ross_exit_enabled:
+            return
+
         # --- Pre-target phase (full position) ---
         if not t.tp_hit:
             # 3) Trailing stop (pre-target) — tighter for parabolic entries
@@ -727,6 +732,10 @@ class SimTradeManager:
             return
 
         self._sq_last_vwap = vwap
+
+        # When Ross exit is ON, skip stall/VWAP exits — Ross 1m signals handle it
+        if self.ross_exit_enabled:
+            return
 
         # Stall counter: increment if no new high on this bar
         if h <= t.peak:
@@ -821,6 +830,10 @@ class SimTradeManager:
                 self._close(t)
                 return
 
+        # When Ross exit is ON, skip trail/target — Ross 1m signals handle all VR exits
+        if self.ross_exit_enabled:
+            return
+
         # --- Pre-target phase ---
         if not t.tp_hit:
             # Trailing stop (pre-target)
@@ -867,6 +880,10 @@ class SimTradeManager:
             return
 
         self._vr_last_vwap = vwap
+
+        # When Ross exit is ON, skip stall/VWAP exits — Ross 1m signals handle it
+        if self.ross_exit_enabled:
+            return
 
         # Stall counter
         if h <= t.peak:
@@ -2028,11 +2045,11 @@ def run_simulation(
 
             # Skip ALL pattern exit detection on 10s bars for squeeze/VR trades
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
-            # Also skip for MP trades when Ross exit is ON (1m signals take over)
+            # Also skip for ALL trade types when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
                 if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim"):
                     return
-                if _ross_exit_enabled and sim_mgr.open_trade.setup_type == "micro_pullback":
+                if _ross_exit_enabled:
                     return
 
             # If in 5m guard or 1m exit mode, skip ALL pattern exit detection on 10s bars
@@ -2226,11 +2243,11 @@ def run_simulation(
             # Topping wicky exit after 1m bar close (with grace period after entry)
             # Skip when in 1m exit mode (handled by cont hold block above)
             # Skip for squeeze trades (squeeze has its own exit logic)
-            # Skip for MP trades when Ross exit mode is ON (Ross logic below handles it)
+            # Skip for all trades when Ross exit mode is ON (Ross logic below handles it)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
                 and sim_mgr.open_trade.setup_type != "squeeze"
-                and not (_ross_exit_enabled and sim_mgr.open_trade.setup_type == "micro_pullback")
+                and not _ross_exit_enabled
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
@@ -2249,15 +2266,14 @@ def run_simulation(
                     if verbose:
                         print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
 
-            # --- Ross exit: 1m signal-based exits for MP trades ---
-            # Runs when WB_ROSS_EXIT_ENABLED=1 and a micro_pullback trade is open.
-            # Replaces: TW/BE on 10s bars, fixed trails, stall timer, R targets.
-            # Keeps: bail timer, max_loss_hit, hard stop (all in on_tick).
+            # --- Ross exit: 1m signal-based exits for ALL trade types ---
+            # Runs when WB_ROSS_EXIT_ENABLED=1 and any trade is open (MP, SQ, VR).
+            # Replaces: TW/BE on 10s bars, SQ/VR trail/target, stall timer, R targets.
+            # Keeps: sq_max_loss_hit, vr_max_loss_hit, hard stop (all in on_tick/_tick_exits).
             if (_ross_exit_enabled
                     and _ross_exit_mgr is not None
                     and sim_mgr.open_trade is not None
-                    and not sim_mgr.open_trade.closed
-                    and sim_mgr.open_trade.setup_type == "micro_pullback"):
+                    and not sim_mgr.open_trade.closed):
                 _rt = sim_mgr.open_trade
                 _unrealized_r = (bar.close - _rt.entry) / _rt.r if _rt.r > 0 else 0.0
                 _r_action, _r_signal, _r_new_stop = _ross_exit_mgr.on_1m_bar_close(
@@ -2462,6 +2478,8 @@ def run_simulation(
                         )
                         if trade:
                             sq_det.notify_trade_opened()
+                            if _ross_exit_mgr is not None:
+                                _ross_exit_mgr.reset()
                             if verbose:
                                 print(
                                     f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
@@ -2488,6 +2506,8 @@ def run_simulation(
                         )
                         if trade:
                             vr_det.notify_trade_opened()
+                            if _ross_exit_mgr is not None:
+                                _ross_exit_mgr.reset()
                             if verbose:
                                 print(
                                     f"  [{time_str}] VR_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
