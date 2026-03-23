@@ -68,6 +68,8 @@ ENV_BASE = {
     "WB_SQ_STALL_BARS": "5",
     "WB_SQ_VWAP_EXIT": "1",
     "WB_SQ_PM_CONFIDENCE": "1",
+    "WB_PILLAR_GATES_ENABLED": "1",
+    "WB_MP_ENABLED": "1",
 }
 
 DATES = [
@@ -85,7 +87,7 @@ DATES = [
     # March
     "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06",
     "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13",
-    "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19",
+    "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20",
 ]
 
 STATE_FILE = "ytd_v2_backtest_state.json"
@@ -335,10 +337,12 @@ def run_backtest():
         for c in top5:
             print(f"    #{top5.index(c)+1} {c['symbol']}: vol={c.get('pm_volume',0):,.0f}, gap={c.get('gap_pct',0):.0f}%, float={c.get('float_millions',0):.1f}M", flush=True)
 
-        # Run Config A
+        # Run Config A: Baseline (Ross Exit OFF)
+        os.environ["WB_ROSS_EXIT_ENABLED"] = "0"
         day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=8.0, max_consec_losses=2)
-        # Run Config B
-        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=0, max_consec_losses=2)
+        # Run Config B: V2 (Ross Exit ON)
+        os.environ["WB_ROSS_EXIT_ENABLED"] = "1"
+        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=8.0, max_consec_losses=2)
 
         eq_a += day_pnl_a
         eq_b += day_pnl_b
@@ -476,9 +480,9 @@ def generate_report(results):
     sel_log = results.get("selection_log", [])
 
     L = []
-    L.append("# YTD V2 Backtest Results: Top-5 Ranked + Trade Cap")
+    L.append("# YTD V2 Backtest Results: Ross Exit V2 vs Baseline")
     L.append(f"## Generated {datetime.now().strftime('%Y-%m-%d')}")
-    L.append(f"\nPeriod: January 2 - March 12, 2026 ({len(DATES)} trading days)")
+    L.append(f"\nPeriod: January 2 - March 20, 2026 ({len(DATES)} trading days)")
     L.append(f"Starting Equity: ${STARTING_EQUITY:,}")
     L.append(f"Risk: {RISK_PCT*100:.1f}% of equity (dynamic)")
     L.append(f"Max trades/day: {MAX_TRADES_PER_DAY} | Daily loss limit: ${DAILY_LOSS_LIMIT:,} | Max notional: ${MAX_NOTIONAL:,}")
@@ -498,9 +502,9 @@ def generate_report(results):
 
     # Section 2: Summary
     L.append("\n---\n")
-    L.append("## Section 2: Summary - Config A vs Config B\n")
-    L.append("| Metric | Config A (Gate=8) | Config B (No Gate) |")
-    L.append("|--------|--------------------|--------------------|")
+    L.append("## Section 2: Summary - Baseline vs Ross Exit V2\n")
+    L.append("| Metric | Baseline (Ross Exit OFF) | V2 (Ross Exit ON) |")
+    L.append("|--------|--------------------------|---------------------|")
     L.append(f"| Final Equity | ${ca['equity']:,.0f} | ${cb['equity']:,.0f} |")
     L.append(f"| Total P&L | ${sa['total_pnl']:+,.0f} | ${sb['total_pnl']:+,.0f} |")
     L.append(f"| Total Return | {sa['total_return']:+.1f}% | {sb['total_return']:+.1f}% |")
@@ -543,13 +547,13 @@ def generate_report(results):
     # Section 5: Trade Detail
     L.append("\n---\n")
     L.append("## Section 5: Trade-Level Detail\n")
-    L.append("### Config A (Gate=8)\n")
+    L.append("### Baseline (Ross Exit OFF)\n")
     L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
     L.append("|------|--------|-------|-------|------|--------|-----|")
     for t in ca["trades"]:
         L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
 
-    L.append("\n### Config B (No Gate)\n")
+    L.append("\n### V2 (Ross Exit ON)\n")
     L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
     L.append("|------|--------|-------|-------|------|--------|-----|")
     for t in cb["trades"]:
@@ -557,20 +561,46 @@ def generate_report(results):
 
     # Section 6: Score Gate Diff
     L.append("\n---\n")
-    L.append("## Section 6: Score Gate Difference (Trades in B but not A)\n")
-    a_set = set((t["date"], t["symbol"], t["num"]) for t in ca["trades"])
-    diff = [t for t in cb["trades"] if (t["date"], t["symbol"], t["num"]) not in a_set]
-    if diff:
-        L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L (in B) |")
-        L.append("|------|--------|-------|-------|------|--------|------------|")
-        diff_pnl = 0
-        for t in diff:
-            L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
-            diff_pnl += t["pnl"]
-        L.append(f"\n**Total P&L of blocked trades**: ${diff_pnl:+,}")
-        L.append(f"**Score gate net impact**: ${-diff_pnl:+,} (positive = gate helped)")
+    L.append("## Section 6: Exit Reason Distribution\n")
+    for label, trades in [("Baseline (Ross Exit OFF)", ca["trades"]), ("V2 (Ross Exit ON)", cb["trades"])]:
+        reason_counts = {}
+        reason_pnl = {}
+        for t in trades:
+            r = t["reason"]
+            reason_counts[r] = reason_counts.get(r, 0) + 1
+            reason_pnl[r] = reason_pnl.get(r, 0) + t["pnl"]
+        L.append(f"### {label}")
+        L.append("| Exit Reason | Count | Total P&L | Avg P&L |")
+        L.append("|-------------|-------|-----------|---------|")
+        for r in sorted(reason_counts, key=lambda x: reason_counts[x], reverse=True):
+            cnt = reason_counts[r]
+            pnl = reason_pnl[r]
+            avg = pnl / cnt if cnt > 0 else 0
+            L.append(f"| {r} | {cnt} | ${pnl:+,} | ${avg:+,.0f} |")
+        L.append("")
+
+    L.append("## Section 6b: Head-to-Head Trade Comparison\n")
+    L.append("Trades on same date + symbol in both configs:\n")
+    # Group by date+symbol
+    from collections import defaultdict
+    a_by_ds = defaultdict(list)
+    b_by_ds = defaultdict(list)
+    for t in ca["trades"]:
+        a_by_ds[(t["date"], t["symbol"])].append(t)
+    for t in cb["trades"]:
+        b_by_ds[(t["date"], t["symbol"])].append(t)
+    common_keys = sorted(set(a_by_ds.keys()) & set(b_by_ds.keys()))
+    if common_keys:
+        L.append("| Date | Symbol | Baseline P&L | V2 P&L | Delta | Baseline Exit | V2 Exit |")
+        L.append("|------|--------|-------------|--------|-------|---------------|---------|")
+        for key in common_keys:
+            a_pnl = sum(t["pnl"] for t in a_by_ds[key])
+            b_pnl = sum(t["pnl"] for t in b_by_ds[key])
+            a_reasons = ", ".join(t["reason"] for t in a_by_ds[key])
+            b_reasons = ", ".join(t["reason"] for t in b_by_ds[key])
+            L.append(f"| {key[0]} | {key[1]} | ${a_pnl:+,} | ${b_pnl:+,} | ${b_pnl - a_pnl:+,} | {a_reasons} | {b_reasons} |")
     else:
-        L.append("No trades differ between A and B in the top-5 selected candidates.")
+        L.append("No common date+symbol pairs between configs.")
 
     # Section 7: Missed Opportunities (known winners)
     L.append("\n---\n")
@@ -670,8 +700,8 @@ def generate_report(results):
 
 def main():
     print("=" * 60)
-    print("YTD V2 A/B BACKTEST: Top-5 Ranked + Trade Cap")
-    print(f"Period: Jan 2 - Mar 12, 2026 ({len(DATES)} trading days)")
+    print("YTD V2 A/B BACKTEST: Ross Exit V2 vs Baseline")
+    print(f"Period: Jan 2 - Mar 20, 2026 ({len(DATES)} trading days)")
     print(f"Starting equity: ${STARTING_EQUITY:,}")
     print(f"Max {MAX_TRADES_PER_DAY} trades/day, daily loss limit ${DAILY_LOSS_LIMIT:,}")
     print("=" * 60)
@@ -682,9 +712,9 @@ def main():
     pnl_a = results["config_a"]["equity"] - STARTING_EQUITY
     pnl_b = results["config_b"]["equity"] - STARTING_EQUITY
     print(f"\n{'=' * 60}")
-    print(f"Config A (Gate=8): ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%)")
-    print(f"Config B (No Gate): ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%)")
-    print(f"Gate impact: ${pnl_a - pnl_b:+,.0f}")
+    print(f"Baseline (Ross Exit OFF): ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%)")
+    print(f"V2 (Ross Exit ON): ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%)")
+    print(f"Ross Exit V2 impact: ${pnl_b - pnl_a:+,.0f}")
     print(f"{'=' * 60}")
 
 
