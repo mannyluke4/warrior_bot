@@ -16,3 +16,13 @@ Watchdog: monitoring bot until 9:00 AM MT (Mon Mar 23 09:00:00 MDT 2026)...
 ALERT: bot.py died at Mon Mar 23 07:17:30 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot/logs/2026-03-23_daily.log.
 === Shutting down at Mon Mar 23 07:17:30 MDT 2026 ===
 Pushing logs...
+[main 1622ebb] auto: daily logs 2026-03-23
+ 6 files changed, 510553 insertions(+)
+ create mode 100644 logs/2026-03-23_daily.log
+ create mode 100644 logs/cron_2026-03-23.log
+ create mode 100644 logs/events_20260320T153648Z.jsonl
+ create mode 100644 logs/events_20260323T080134Z.jsonl
+ create mode 100644 logs/events_20260323T131652Z.jsonl
+ create mode 100644 logs/manual_run_2026-03-20.log
+=== Daily run complete: Mon Mar 23 07:17:39 MDT 2026 ===
+=== TRAP: cleanup at Mon Mar 23 07:17:39 MDT 2026 ===
