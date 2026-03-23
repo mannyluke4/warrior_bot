@@ -137,11 +137,22 @@ def load_and_rank(date_str: str) -> tuple:
             continue
         if gap < MIN_GAP_PCT or gap > MAX_GAP_PCT:
             continue
-        if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
-            continue
-        if profile == "X":
-            continue
         rvol = c.get("relative_volume", 0) or 0
+
+        # Unknown-float gate: allow if signals are exceptional
+        # "X" is legacy name for unknown-float, kept for backward compat with old scanner JSONs
+        if profile in ("X", "unknown") or float_m is None or float_m == 0:
+            allow_unknown = os.environ.get("WB_ALLOW_UNKNOWN_FLOAT", "0") == "1"
+            if not allow_unknown:
+                continue
+            # Require exceptional signals: gap>=50%, pm_vol>=1M, rvol>=10x
+            if gap < 50.0 or pm_vol < 1_000_000 or rvol < 10.0:
+                continue
+            filtered.append(c)
+            continue
+
+        if float_m > MAX_FLOAT_MILLIONS:
+            continue
         if rvol < MIN_RVOL:
             continue
         filtered.append(c)

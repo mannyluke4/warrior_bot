@@ -145,7 +145,8 @@ def load_and_rank(date_str: str) -> tuple:
             continue
         if float_m is None or float_m == 0 or float_m > MAX_FLOAT_MILLIONS:
             continue
-        if profile == "X":
+        # "X" is legacy name for unknown-float, kept for backward compat with old scanner JSONs
+        if profile in ("X", "unknown"):
             continue
         rvol = c.get("relative_volume", 0) or 0
         if rvol < MIN_RVOL:

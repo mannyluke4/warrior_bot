@@ -102,7 +102,16 @@ KNOWN_FLOATS = {
 def load_float_cache() -> dict:
     if os.path.exists(FLOAT_CACHE_PATH):
         with open(FLOAT_CACHE_PATH) as f:
-            return json.load(f)
+            raw = json.load(f)
+        # Clear stale None entries — forces re-lookup through full chain
+        # (FMP → yfinance → EDGAR → AlphaVantage). With new fallbacks,
+        # most previously-None tickers will now resolve successfully.
+        cleaned = {k: v for k, v in raw.items() if v is not None}
+        dropped = len(raw) - len(cleaned)
+        if dropped > 0:
+            print(f"  [float_cache] Cleared {dropped} stale None entries — will re-attempt lookups")
+            save_float_cache(cleaned)
+        return cleaned
     return {}
 
 
@@ -111,8 +120,84 @@ def save_float_cache(cache: dict):
         json.dump(cache, f, indent=2)
 
 
+# --- SEC EDGAR ticker→CIK map (load once at startup) ---
+_EDGAR_CIK_MAP = {}
+
+
+def _load_edgar_cik_map():
+    global _EDGAR_CIK_MAP
+    if _EDGAR_CIK_MAP:
+        return _EDGAR_CIK_MAP
+    try:
+        resp = requests.get(
+            "https://www.sec.gov/files/company_tickers.json",
+            headers={"User-Agent": "WarriorBot luke@delightedpath.net"},
+            timeout=10,
+        )
+        data = resp.json()
+        _EDGAR_CIK_MAP = {
+            v["ticker"].upper(): str(v["cik_str"]).zfill(10)
+            for v in data.values()
+        }
+    except Exception as e:
+        print(f"  [EDGAR] Failed to load CIK map: {e}")
+    return _EDGAR_CIK_MAP
+
+
+def get_edgar_shares_outstanding(symbol: str) -> Optional[float]:
+    """Tier 5: SEC EDGAR shares outstanding as float proxy. Free, 10 req/s."""
+    cik_map = _load_edgar_cik_map()
+    cik = cik_map.get(symbol.upper())
+    if not cik:
+        return None
+    try:
+        url = (f"https://data.sec.gov/api/xbrl/companyconcept/"
+               f"CIK{cik}/dei/EntityCommonStockSharesOutstanding.json")
+        resp = requests.get(url, headers={
+            "User-Agent": "WarriorBot luke@delightedpath.net"
+        }, timeout=10)
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        shares_list = data.get("units", {}).get("shares", [])
+        if not shares_list:
+            return None
+        latest = sorted(shares_list, key=lambda x: x.get("end", ""), reverse=True)[0]
+        shares = latest.get("val", 0)
+        if shares > 0:
+            print(f"  [EDGAR] {symbol}: {shares/1e6:.2f}M shares outstanding")
+            return shares
+    except Exception as e:
+        print(f"  [EDGAR] {symbol}: {e}")
+    return None
+
+
+# --- Alpha Vantage free tier (25 calls/day, true float) ---
+ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+
+
+def get_alpha_vantage_float(symbol: str) -> Optional[float]:
+    """Tier 6: Alpha Vantage OVERVIEW — true float. Free tier: 25 calls/day."""
+    if not ALPHA_VANTAGE_KEY:
+        return None
+    try:
+        url = (f"https://www.alphavantage.co/query?function=OVERVIEW"
+               f"&symbol={symbol}&apikey={ALPHA_VANTAGE_KEY}")
+        resp = requests.get(url, timeout=10)
+        data = resp.json()
+        shares_float = data.get("SharesFloat")
+        if shares_float and shares_float != "None" and shares_float != "0":
+            val = float(shares_float)
+            if val > 0:
+                print(f"  [AlphaVantage] {symbol}: {val/1e6:.2f}M float")
+                return val
+    except Exception as e:
+        print(f"  [AlphaVantage] {symbol}: {e}")
+    return None
+
+
 def get_float(symbol: str, cache: dict) -> Optional[float]:
-    """Priority: KNOWN_FLOATS → cache → FMP API → yfinance fallback."""
+    """Priority: KNOWN_FLOATS → cache → FMP → yfinance → EDGAR → AlphaVantage."""
     if symbol in KNOWN_FLOATS:
         return KNOWN_FLOATS[symbol]
     if symbol in cache:
@@ -120,7 +205,7 @@ def get_float(symbol: str, cache: dict) -> Optional[float]:
 
     float_shares = None
 
-    # FMP API
+    # 3. FMP API
     if FMP_API_KEY:
         try:
             url = (f"https://financialmodelingprep.com/stable/shares-float"
@@ -133,13 +218,21 @@ def get_float(symbol: str, cache: dict) -> Optional[float]:
         except Exception:
             pass
 
-    # yfinance fallback
+    # 4. yfinance fallback
     if float_shares is None:
         try:
             info = yf.Ticker(symbol).info
             float_shares = info.get("floatShares")
         except Exception:
             pass
+
+    # 5. SEC EDGAR fallback (free, 10 req/s)
+    if float_shares is None:
+        float_shares = get_edgar_shares_outstanding(symbol)
+
+    # 6. Alpha Vantage free tier (25 calls/day, true float)
+    if float_shares is None:
+        float_shares = get_alpha_vantage_float(symbol)
 
     cache[symbol] = float_shares
     save_float_cache(cache)
