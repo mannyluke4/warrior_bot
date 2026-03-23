@@ -1,0 +1,82 @@
+{"ts_utc": "2026-03-23T13:16:52.342194+00:00", "event": "market_scan_symbols_found", "symbol": null, "run_id": "20260323T131652Z", "count": 9922}
+{"ts_utc": "2026-03-23T13:17:00.355770+00:00", "event": "market_scan_prefiltered", "symbol": null, "run_id": "20260323T131652Z", "count": 3224}
+{"ts_utc": "2026-03-23T13:17:01.173518+00:00", "event": "stock_filtered_out", "symbol": "AAL", "run_id": "20260323T131652Z", "reasons": ["gap 3.7% < 10.0%", "rel_vol 0.66x < 2.00x", "float 650.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:01.534642+00:00", "event": "stock_filtered_out", "symbol": "AAPD", "run_id": "20260323T131652Z", "reasons": ["gap -1.4% < 10.0%", "rel_vol 1.36x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:01.908523+00:00", "event": "stock_filtered_out", "symbol": "ABAT", "run_id": "20260323T131652Z", "reasons": ["gap -2.9% < 10.0%", "rel_vol 1.41x < 2.00x", "float 127.1M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:02.298858+00:00", "event": "stock_filtered_out", "symbol": "ABR", "run_id": "20260323T131652Z", "reasons": ["gap -2.6% < 10.0%", "rel_vol 1.33x < 2.00x", "float 185.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:02.678899+00:00", "event": "stock_filtered_out", "symbol": "ABSI", "run_id": "20260323T131652Z", "reasons": ["gap -2.6% < 10.0%", "float 132.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:03.055860+00:00", "event": "stock_filtered_out", "symbol": "ABUS", "run_id": "20260323T131652Z", "reasons": ["gap -1.9% < 10.0%", "rel_vol 1.30x < 2.00x", "float 124.5M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:03.414147+00:00", "event": "stock_filtered_out", "symbol": "ACHR", "run_id": "20260323T131652Z", "reasons": ["gap -2.1% < 10.0%", "rel_vol 1.10x < 2.00x", "float 627.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:03.782341+00:00", "event": "stock_filtered_out", "symbol": "ACI", "run_id": "20260323T131652Z", "reasons": ["gap 1.6% < 10.0%", "float 353.8M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:04.147694+00:00", "event": "stock_filtered_out", "symbol": "ACVA", "run_id": "20260323T131652Z", "reasons": ["gap 1.9% < 10.0%", "rel_vol 0.94x < 2.00x", "float 156.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:04.517857+00:00", "event": "stock_filtered_out", "symbol": "ADBG", "run_id": "20260323T131652Z", "reasons": ["gap 3.6% < 10.0%", "rel_vol 0.98x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:04.880449+00:00", "event": "stock_filtered_out", "symbol": "ADMA", "run_id": "20260323T131652Z", "reasons": ["gap -5.8% < 10.0%", "float 233.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:05.280352+00:00", "event": "stock_filtered_out", "symbol": "ADT", "run_id": "20260323T131652Z", "reasons": ["gap 0.8% < 10.0%", "rel_vol 1.45x < 2.00x", "float 463.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:05.755023+00:00", "event": "stock_filtered_out", "symbol": "AEG", "run_id": "20260323T131652Z", "reasons": ["gap 1.3% < 10.0%", "rel_vol 1.08x < 2.00x", "float 1162.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:06.144817+00:00", "event": "stock_filtered_out", "symbol": "AEO", "run_id": "20260323T131652Z", "reasons": ["gap 0.3% < 10.0%", "rel_vol 1.13x < 2.00x", "float 154.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:06.523798+00:00", "event": "stock_filtered_out", "symbol": "AES", "run_id": "20260323T131652Z", "reasons": ["gap -0.4% < 10.0%", "rel_vol 1.14x < 2.00x", "float 708.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:06.893700+00:00", "event": "stock_filtered_out", "symbol": "AESI", "run_id": "20260323T131652Z", "reasons": ["gap -2.3% < 10.0%", "rel_vol 1.24x < 2.00x", "float 89.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:07.287509+00:00", "event": "stock_filtered_out", "symbol": "AG", "run_id": "20260323T131652Z", "reasons": ["gap -1.5% < 10.0%", "rel_vol 1.08x < 2.00x", "float 487.5M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:07.687111+00:00", "event": "stock_filtered_out", "symbol": "AGNC", "run_id": "20260323T131652Z", "reasons": ["gap -3.6% < 10.0%", "float 1100.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:08.069370+00:00", "event": "stock_filtered_out", "symbol": "AHRT", "run_id": "20260323T131652Z", "reasons": ["gap -4.0% < 10.0%", "float 79.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:08.469063+00:00", "event": "stock_filtered_out", "symbol": "AI", "run_id": "20260323T131652Z", "reasons": ["gap -0.9% < 10.0%", "rel_vol 0.91x < 2.00x", "float 135.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:08.837719+00:00", "event": "stock_filtered_out", "symbol": "AIOT", "run_id": "20260323T131652Z", "reasons": ["gap -6.8% < 10.0%", "float 125.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:09.226272+00:00", "event": "stock_filtered_out", "symbol": "AIRS", "run_id": "20260323T131652Z", "reasons": ["gap 2.9% < 10.0%", "rel_vol 0.91x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:09.637865+00:00", "event": "stock_filtered_out", "symbol": "AIV", "run_id": "20260323T131652Z", "reasons": ["gap -1.2% < 10.0%", "rel_vol 0.70x < 2.00x", "float 109.1M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:10.048220+00:00", "event": "stock_filtered_out", "symbol": "AKTS", "run_id": "20260323T131652Z", "reasons": ["gap -1.6% < 10.0%", "float 0.37M < 0.5M (micro-float)"]}
+{"ts_utc": "2026-03-23T13:17:13.471192+00:00", "event": "stock_filtered_out", "symbol": "ALHC", "run_id": "20260323T131652Z", "reasons": ["gap -3.4% < 10.0%", "rel_vol 1.56x < 2.00x", "float 168.1M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:13.870089+00:00", "event": "stock_filtered_out", "symbol": "ALLO", "run_id": "20260323T131652Z", "reasons": ["gap -3.6% < 10.0%", "float 187.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:14.291153+00:00", "event": "stock_filtered_out", "symbol": "ALM", "run_id": "20260323T131652Z", "reasons": ["gap -4.6% < 10.0%", "rel_vol 1.35x < 2.00x", "float 203.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:14.683628+00:00", "event": "stock_filtered_out", "symbol": "ALT", "run_id": "20260323T131652Z", "reasons": ["gap -0.9% < 10.0%", "float 129.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:15.067090+00:00", "event": "stock_filtered_out", "symbol": "AMDD", "run_id": "20260323T131652Z", "reasons": ["gap -0.1% < 10.0%", "rel_vol 1.47x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:15.452406+00:00", "event": "stock_filtered_out", "symbol": "AMPX", "run_id": "20260323T131652Z", "reasons": ["gap -4.4% < 10.0%", "rel_vol 0.88x < 2.00x", "float 127.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:15.848637+00:00", "event": "stock_filtered_out", "symbol": "AMRX", "run_id": "20260323T131652Z", "reasons": ["gap -1.2% < 10.0%", "float 176.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:16.527225+00:00", "event": "stock_filtered_out", "symbol": "AMZD", "run_id": "20260323T131652Z", "reasons": ["gap -0.3% < 10.0%", "rel_vol 0.95x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:17.026090+00:00", "event": "stock_filtered_out", "symbol": "ANGI", "run_id": "20260323T131652Z", "reasons": ["gap 2.2% < 10.0%", "float 28.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:17.412033+00:00", "event": "stock_passed_filter", "symbol": "ANNA", "run_id": "20260323T131652Z", "price": 6.3299, "gap_pct": 67.01583113456465, "rel_volume": 17.897152893149954, "rank": 74.00280283521265, "ema20": 3.7244201483668515, "ema50": null, "ema200": null}
+{"ts_utc": "2026-03-23T13:17:17.892893+00:00", "event": "stock_filtered_out", "symbol": "ANNX", "run_id": "20260323T131652Z", "reasons": ["gap -7.1% < 10.0%", "float 95.8M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:18.284135+00:00", "event": "stock_filtered_out", "symbol": "APLE", "run_id": "20260323T131652Z", "reasons": ["gap -0.4% < 10.0%", "float 218.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:18.679871+00:00", "event": "stock_filtered_out", "symbol": "APLS", "run_id": "20260323T131652Z", "reasons": ["gap -2.7% < 10.0%", "float 83.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:19.041630+00:00", "event": "stock_filtered_out", "symbol": "AQN", "run_id": "20260323T131652Z", "reasons": ["gap -2.3% < 10.0%", "float 622.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:19.423574+00:00", "event": "stock_filtered_out", "symbol": "ARCC", "run_id": "20260323T131652Z", "reasons": ["gap -0.5% < 10.0%", "rel_vol 0.90x < 2.00x", "float 718.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:19.818696+00:00", "event": "stock_filtered_out", "symbol": "ARDX", "run_id": "20260323T131652Z", "reasons": ["gap -2.2% < 10.0%", "float 222.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:20.203940+00:00", "event": "stock_filtered_out", "symbol": "AREB", "run_id": "20260323T131652Z", "reasons": ["rel_vol 1.31x < 2.00x", "float 0.31M < 0.5M (micro-float)"]}
+{"ts_utc": "2026-03-23T13:17:20.601220+00:00", "event": "stock_filtered_out", "symbol": "AREC", "run_id": "20260323T131652Z", "reasons": ["gap -4.6% < 10.0%", "rel_vol 1.82x < 2.00x", "float 81.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:20.984039+00:00", "event": "stock_filtered_out", "symbol": "ARI", "run_id": "20260323T131652Z", "reasons": ["gap -2.5% < 10.0%", "float 130.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:21.357701+00:00", "event": "stock_filtered_out", "symbol": "ARIS", "run_id": "20260323T131652Z", "reasons": ["gap -3.1% < 10.0%", "float 187.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:21.734996+00:00", "event": "stock_filtered_out", "symbol": "ARR", "run_id": "20260323T131652Z", "reasons": ["gap -5.2% < 10.0%", "float 119.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:22.162537+00:00", "event": "stock_filtered_out", "symbol": "ARRY", "run_id": "20260323T131652Z", "reasons": ["gap -3.2% < 10.0%", "rel_vol 0.78x < 2.00x", "float 139.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:22.593597+00:00", "event": "stock_filtered_out", "symbol": "ARTL", "run_id": "20260323T131652Z", "reasons": ["gap 8.1% < 10.0%"]}
+{"ts_utc": "2026-03-23T13:17:23.050347+00:00", "event": "stock_filtered_out", "symbol": "ASAN", "run_id": "20260323T131652Z", "reasons": ["gap 0.4% < 10.0%", "rel_vol 1.31x < 2.00x", "float 92.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:23.412595+00:00", "event": "stock_filtered_out", "symbol": "ASM", "run_id": "20260323T131652Z", "reasons": ["gap -4.2% < 10.0%", "rel_vol 1.28x < 2.00x", "float 157.8M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:23.789207+00:00", "event": "stock_filtered_out", "symbol": "ASPI", "run_id": "20260323T131652Z", "reasons": ["gap 8.7% < 10.0%", "rel_vol 1.50x < 2.00x", "float 88.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:24.186009+00:00", "event": "stock_filtered_out", "symbol": "ASST", "run_id": "20260323T131652Z", "reasons": ["gap -1.5% < 10.0%", "float 48.4M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:24.576244+00:00", "event": "stock_filtered_out", "symbol": "ASTL", "run_id": "20260323T131652Z", "reasons": ["gap -0.8% < 10.0%", "float 71.1M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:24.977147+00:00", "event": "stock_filtered_out", "symbol": "ATAI", "run_id": "20260323T131652Z", "reasons": ["gap -0.6% < 10.0%", "float 302.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:25.364019+00:00", "event": "stock_filtered_out", "symbol": "AUR", "run_id": "20260323T131652Z", "reasons": ["gap 1.7% < 10.0%", "rel_vol 1.60x < 2.00x", "float 1247.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:25.768691+00:00", "event": "stock_filtered_out", "symbol": "AVAH", "run_id": "20260323T131652Z", "reasons": ["gap 4.3% < 10.0%", "float 80.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:26.145555+00:00", "event": "stock_filtered_out", "symbol": "AVR", "run_id": "20260323T131652Z", "reasons": ["gap -2.4% < 10.0%", "float 78.5M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:26.569552+00:00", "event": "stock_filtered_out", "symbol": "AVTR", "run_id": "20260323T131652Z", "reasons": ["gap -0.1% < 10.0%", "rel_vol 1.22x < 2.00x", "float 663.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:27.016774+00:00", "event": "stock_filtered_out", "symbol": "BANC", "run_id": "20260323T131652Z", "reasons": ["gap 1.1% < 10.0%", "rel_vol 1.84x < 2.00x", "float 133.7M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:27.390778+00:00", "event": "stock_filtered_out", "symbol": "BATL", "run_id": "20260323T131652Z", "reasons": ["gap -15.4% < 10.0%", "rel_vol 0.21x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:27.762424+00:00", "event": "stock_filtered_out", "symbol": "BAX", "run_id": "20260323T131652Z", "reasons": ["gap -1.2% < 10.0%", "rel_vol 1.75x < 2.00x", "float 512.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:28.136826+00:00", "event": "stock_filtered_out", "symbol": "BB", "run_id": "20260323T131652Z", "reasons": ["gap -2.1% < 10.0%", "float 588.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:28.517385+00:00", "event": "stock_filtered_out", "symbol": "BBAI", "run_id": "20260323T131652Z", "reasons": ["gap -3.2% < 10.0%", "rel_vol 0.84x < 2.00x", "float 472.6M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:28.878047+00:00", "event": "stock_filtered_out", "symbol": "BBD", "run_id": "20260323T131652Z", "reasons": ["gap 0.3% < 10.0%", "rel_vol 0.71x < 2.00x", "float 7558.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:29.283339+00:00", "event": "stock_filtered_out", "symbol": "BCRX", "run_id": "20260323T131652Z", "reasons": ["gap 0.0% < 10.0%", "rel_vol 1.97x < 2.00x", "float 218.2M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:29.727338+00:00", "event": "stock_filtered_out", "symbol": "BDMD", "run_id": "20260323T131652Z", "reasons": ["rel_vol 1.42x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:30.084308+00:00", "event": "stock_filtered_out", "symbol": "BDN", "run_id": "20260323T131652Z", "reasons": ["gap -3.1% < 10.0%", "rel_vol 1.82x < 2.00x", "float 165.5M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:30.460911+00:00", "event": "stock_filtered_out", "symbol": "BEKE", "run_id": "20260323T131652Z", "reasons": ["gap -4.0% < 10.0%", "rel_vol 1.58x < 2.00x", "float 1972.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:30.851836+00:00", "event": "stock_filtered_out", "symbol": "BETA", "run_id": "20260323T131652Z", "reasons": ["gap -5.3% < 10.0%", "float 113.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:31.225265+00:00", "event": "stock_filtered_out", "symbol": "BFLY", "run_id": "20260323T131652Z", "reasons": ["gap 2.0% < 10.0%", "rel_vol 0.65x < 2.00x", "float 175.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:31.623193+00:00", "event": "stock_filtered_out", "symbol": "BGC", "run_id": "20260323T131652Z", "reasons": ["gap -0.5% < 10.0%", "rel_vol 1.44x < 2.00x", "float 361.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:32.026302+00:00", "event": "stock_filtered_out", "symbol": "BHVN", "run_id": "20260323T131652Z", "reasons": ["gap 1.3% < 10.0%", "float 123.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:32.422522+00:00", "event": "stock_filtered_out", "symbol": "BIAF", "run_id": "20260323T131652Z", "reasons": ["gap -4.2% < 10.0%", "rel_vol 0.69x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:32.808940+00:00", "event": "stock_filtered_out", "symbol": "BITF", "run_id": "20260323T131652Z", "reasons": ["gap -5.9% < 10.0%", "rel_vol 1.44x < 2.00x", "float 569.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:33.207173+00:00", "event": "stock_filtered_out", "symbol": "BITO", "run_id": "20260323T131652Z", "reasons": ["gap 0.7% < 10.0%", "rel_vol 1.30x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:33.617579+00:00", "event": "stock_filtered_out", "symbol": "BKD", "run_id": "20260323T131652Z", "reasons": ["gap -1.3% < 10.0%", "rel_vol 1.47x < 2.00x", "float 234.3M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:34.016107+00:00", "event": "stock_filtered_out", "symbol": "BLMN", "run_id": "20260323T131652Z", "reasons": ["gap -1.3% < 10.0%", "float 75.0M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:34.437207+00:00", "event": "stock_filtered_out", "symbol": "BMBL", "run_id": "20260323T131652Z", "reasons": ["gap -1.3% < 10.0%", "rel_vol 1.38x < 2.00x", "float 98.9M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:34.812939+00:00", "event": "stock_filtered_out", "symbol": "BMNU", "run_id": "20260323T131652Z", "reasons": ["gap 1.9% < 10.0%", "rel_vol 1.09x < 2.00x"]}
+{"ts_utc": "2026-03-23T13:17:35.228746+00:00", "event": "stock_filtered_out", "symbol": "BORR", "run_id": "20260323T131652Z", "reasons": ["gap -2.7% < 10.0%", "rel_vol 1.08x < 2.00x", "float 238.7M > 10.0M"]}
+{"ts_utc": "2026-03-23T13:17:35.643735+00:00", "event": "stock_filtered_out", "symbol": "BRBR", "run_id": "20260323T131652Z", "reasons": ["gap -0.7% < 10.0%", "rel_vol 1.60x < 2.00x", "float 108.4M > 10.0M"]}
