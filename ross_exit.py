@@ -37,6 +37,8 @@ Key gates (all default ON when WB_ROSS_EXIT_ENABLED=1):
   WB_ROSS_STRUCTURAL_TRAIL=1
   WB_ROSS_MIN_BARS=2     # minimum 1m bars in trade before any signal fires
   WB_ROSS_CUC_MIN_R=5.0  # suppress CUC when unrealized gain >= this R (deep runner gate)
+  WB_ROSS_CUC_FLOOR_R=0.0  # CUC only fires when unrealized >= this R (0=disabled)
+  WB_ROSS_CUC_MIN_TRADE_BARS=0  # CUC suppressed for first N 1m bars of trade (0=disabled)
   WB_ROSS_BACKSTOP_MIN_R=0.0  # backstops soften to 50% above this AND ≥5R
 """
 
@@ -113,6 +115,8 @@ class RossExitManager:
         self._structural_trail = os.getenv("WB_ROSS_STRUCTURAL_TRAIL", "1") == "1"
         self._topping_tail_enabled = os.getenv("WB_ROSS_TOPPING_TAIL_ENABLED", "1") == "1"
         self._cuc_min_r = float(os.getenv("WB_ROSS_CUC_MIN_R", "5.0"))
+        self._cuc_floor_r = float(os.getenv("WB_ROSS_CUC_FLOOR_R", "0.0"))
+        self._cuc_min_trade_bars = int(os.getenv("WB_ROSS_CUC_MIN_TRADE_BARS", "0"))
         self._backstop_min_r = float(os.getenv("WB_ROSS_BACKSTOP_MIN_R", "0.0"))
 
     # ------------------------------------------------------------------
@@ -268,6 +272,20 @@ class RossExitManager:
                     print(
                         f"  ROSS_CUC_SUPPRESSED: unrealized={unrealized_r:.1f}R >= threshold={self._cuc_min_r:.1f}R"
                         f" — letting other signals handle exit",
+                        flush=True,
+                    )
+                # Floor gate: suppress CUC when not yet profitable enough
+                elif self._cuc_floor_r > 0 and in_trade and unrealized_r < self._cuc_floor_r:
+                    print(
+                        f"  ROSS_CUC_FLOOR: unrealized={unrealized_r:.1f}R < floor={self._cuc_floor_r:.1f}R"
+                        f" — suppressing CUC",
+                        flush=True,
+                    )
+                # Min trade bars gate: suppress CUC in early bars of trade
+                elif self._cuc_min_trade_bars > 0 and self._bars_since_entry < self._cuc_min_trade_bars:
+                    print(
+                        f"  ROSS_CUC_MIN_BARS: bars_in_trade={self._bars_since_entry}"
+                        f" < min={self._cuc_min_trade_bars} — suppressing CUC",
                         flush=True,
                     )
                 else:
