@@ -2411,6 +2411,19 @@ def run_simulation(
             else:
                 print(f"  WARNING: No cache file {_cache_file} — falling back to API", flush=True)
                 tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
+
+                # ── Write fetched ticks to cache so future runs don't re-fetch ──
+                if tick_trades:
+                    _cache_dir = os.path.join(tick_cache, date_str)
+                    os.makedirs(_cache_dir, exist_ok=True)
+                    _cache_payload = [
+                        {"p": float(t.price), "s": int(t.size),
+                         "t": t.timestamp.isoformat() if hasattr(t.timestamp, "isoformat") else str(t.timestamp)}
+                        for t in tick_trades
+                    ]
+                    with _gzip.open(_cache_file, "wt") as _cf:
+                        json.dump(_cache_payload, _cf)
+                    print(f"  Cached {len(_cache_payload)} ticks → {_cache_file}", flush=True)
         elif feed == "databento":
             print(f"  Fetching tick data from Databento...", flush=True)
             from databento_feed import fetch_trades_historical
