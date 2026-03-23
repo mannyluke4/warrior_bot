@@ -402,9 +402,26 @@ class PaperTradeManager:
         self._stock_info_cache: dict = {}
         self.quality_min_float = float(os.getenv("WB_QUALITY_MIN_FLOAT", "0.5"))
 
+        # Rank-based grace period: hold lower-ranked stocks back for N minutes
+        # so the #1 ranked stock gets first shot at capital.
+        self.rank_grace_enabled = os.getenv("WB_RANK_GRACE_ENABLED", "0") == "1"
+        self.rank_grace_minutes = int(os.getenv("WB_RANK_GRACE_MINUTES", "10"))
+        self.rank_grace_top_n = int(os.getenv("WB_RANK_GRACE_TOP_N", "2"))
+        self._symbol_rank: Dict[str, int] = {}   # symbol → rank position (1=best)
+        self._rank_grace_start: Optional[datetime] = None  # when the grace clock starts
+
     def set_stock_info_cache(self, cache: dict):
         """Store fundamental data from startup filtering for trade-time access."""
         self._stock_info_cache = dict(cache)
+        # Reset the grace-period clock whenever the watchlist is (re)established.
+        if self.rank_grace_enabled:
+            self._rank_grace_start = datetime.now(timezone.utc)
+
+    def set_symbol_ranks(self, symbol_list: list):
+        """Record rank positions from a pre-sorted symbol list (index 0 = rank 1 = best).
+        Call this after set_stock_info_cache whenever the watchlist rank order is known.
+        """
+        self._symbol_rank = {sym: idx + 1 for idx, sym in enumerate(symbol_list)}
 
     def _passes_quality_gate(self, symbol: str) -> tuple:
         """Pre-trade fundamental check using cached StockInfo."""
@@ -417,6 +434,28 @@ class PaperTradeManager:
             return False, f"micro_float:{info.float_shares:.2f}M"
 
         return True, ""
+
+    def _check_rank_grace(self, symbol: str) -> tuple:
+        """Return (blocked, reason) if rank-grace period is active and symbol is below top-N.
+
+        Grace period starts when set_stock_info_cache() is called (watchlist established)
+        and lasts WB_RANK_GRACE_MINUTES.  During this window only the top
+        WB_RANK_GRACE_TOP_N ranked symbols are allowed to generate entries.
+        """
+        if not self._symbol_rank:
+            return False, ""  # no rank data — allow all
+        if self._rank_grace_start is None:
+            return False, ""  # grace clock not started
+
+        elapsed = (datetime.now(timezone.utc) - self._rank_grace_start).total_seconds() / 60.0
+        if elapsed >= self.rank_grace_minutes:
+            return False, ""  # grace period expired
+
+        rank = self._symbol_rank.get(symbol, len(self._symbol_rank) + 1)
+        if rank <= self.rank_grace_top_n:
+            return False, ""  # eligible during grace
+
+        return True, f"rank_grace: {symbol} rank={rank} > top{self.rank_grace_top_n} ({elapsed:.1f}/{self.rank_grace_minutes}m elapsed)"
 
     def _check_pillar_gates(self, symbol: str, entry_price: float) -> tuple:
         """Ross Pillar entry-time gates. Must match simulate.py pillar logic exactly.
@@ -849,6 +888,8 @@ class PaperTradeManager:
             self._giveback_warned = False
             self._warmup_graduated = False
             self.risk_dollars = self._original_risk_dollars
+            self._symbol_rank = {}
+            self._rank_grace_start = None
             log_event("daily_reset", None, date=today, risk_dollars=self.risk_dollars)
 
     def _record_trade_pnl(self, pnl: float):
@@ -946,6 +987,14 @@ class PaperTradeManager:
             if self._daily_stopped:
                 log_event("skip_entry_daily_stopped", symbol)
                 return
+
+            # Rank-based grace period: only top-N ranked stocks allowed during grace window
+            if self.rank_grace_enabled:
+                grace_blocked, grace_reason = self._check_rank_grace(symbol)
+                if grace_blocked:
+                    log_event("skip_entry_rank_grace", symbol, reason=grace_reason)
+                    print(f"  RANK_GRACE {symbol}: {grace_reason}", flush=True)
+                    return
 
             plan = self.parse_plan(msg)
             if not plan:

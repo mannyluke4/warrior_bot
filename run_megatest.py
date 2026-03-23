@@ -428,6 +428,19 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
 
     max_consec_losses: stop trading after N consecutive losses (0 = disabled).
     """
+    # Rank-grace config (OFF by default — matches WB_RANK_GRACE_ENABLED=0 in live bot).
+    rank_grace_enabled = os.getenv("WB_RANK_GRACE_ENABLED", "0") == "1"
+    rank_grace_minutes = int(os.getenv("WB_RANK_GRACE_MINUTES", "10"))
+    rank_grace_top_n = int(os.getenv("WB_RANK_GRACE_TOP_N", "2"))
+
+    # Build rank map: {symbol: rank_position} where 1 = highest-ranked.
+    # top5 is already sorted best-first by load_and_rank().
+    symbol_rank = {c["symbol"]: idx + 1 for idx, c in enumerate(top5)}
+
+    # Earliest sim_start across candidates is the "session open" for grace timing.
+    all_sim_starts = [c.get("sim_start", "07:00") for c in top5]
+    session_start_str = min(all_sim_starts)  # lexicographic min works for HH:MM
+
     # Step 1: Run all stocks and collect trades per symbol.
     all_stock_trades = []
     for c in top5:
@@ -440,12 +453,13 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         if trades:
             all_stock_trades.append((sym, trades))
 
-    # Step 2: Annotate each trade with estimated exit_time.
+    # Step 2: Annotate each trade with estimated exit_time and rank position.
     # simulate.py now outputs an XTIME (final exit time) column. When present, use it.
     # Fallback: use the entry time of the NEXT trade from the SAME stock (conservative
     # upper bound — works because simulate.py trades are already sequential per stock).
     all_trades_flat = []
     for sym, trades in all_stock_trades:
+        sym_rank = symbol_rank.get(sym, len(top5) + 1)
         for i, t in enumerate(trades):
             t = dict(t)  # copy — don't mutate the parsed dict
             if not t.get("exit_time"):
@@ -454,6 +468,7 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
                     t["exit_time"] = trades[i + 1]["time"]
                 else:
                     t["exit_time"] = "12:00"
+            t["rank"] = sym_rank  # annotate with rank position for grace-period check
             all_trades_flat.append(t)
 
     # Step 3: Sort all trades across all stocks chronologically.
@@ -464,6 +479,14 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
     day_pnl = 0
     consec_losses = 0
     position_end = "00:00"  # no open position at start of day
+
+    # Compute the grace-period cutoff time string (HH:MM) for comparison.
+    if rank_grace_enabled:
+        sess_h, sess_m = map(int, session_start_str.split(":"))
+        grace_total_min = sess_h * 60 + sess_m + rank_grace_minutes
+        grace_cutoff_str = f"{grace_total_min // 60:02d}:{grace_total_min % 60:02d}"
+    else:
+        grace_cutoff_str = "00:00"  # unused when disabled
 
     for t in all_trades_flat:
         if len(day_trades) >= MAX_TRADES_PER_DAY:
@@ -476,6 +499,11 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
         # Bug #1 fix: single-position gate — skip if previous position still open
         if t["time"] < position_end:
             continue
+
+        # Rank-grace gate: during grace window only top-N ranked stocks can enter.
+        if rank_grace_enabled and t["time"] < grace_cutoff_str:
+            if t.get("rank", 1) > rank_grace_top_n:
+                continue
 
         # Bug #2 fix: per-position notional cap — each trade checked independently
         # (previous trade has closed by the time we enter this one)

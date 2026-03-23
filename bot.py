@@ -136,15 +136,17 @@ def filter_watchlist(symbols):
         )
 
         print(f"\n🎯 Top Candidates (by rank):", flush=True)
-        for symbol, info in ranked[:10]:
+        for i, (symbol, info) in enumerate(ranked[:10]):
             rank = stock_filter.rank_stock(info)
             float_str = f"float={info.float_shares:.1f}M" if info.float_shares is not None else "float=N/A"
             print(
-                f"   {symbol}: ${info.price:.2f} gap={info.gap_pct:+.1f}% "
-                f"vol={info.rel_volume:.1f}x {float_str} rank={rank:.1f}",
+                f"   #{i+1} {symbol}: ${info.price:.2f} gap={info.gap_pct:+.1f}% "
+                f"vol={info.rel_volume:.1f}x {float_str} rank={rank:.3f}",
                 flush=True
             )
 
+        # Attach rank order to the dict so callers can plumb it to trade_manager
+        filtered_stocks["__rank_order__"] = [sym for sym, _ in ranked]
         return filtered_stocks  # dict {symbol: StockInfo} — preserves fundamentals
 
     except Exception as e:
@@ -654,12 +656,16 @@ def rescan_thread():
                         filtered_result = filter_watchlist(raw)
 
                         if isinstance(filtered_result, dict):
+                            # Extract rank order before updating cache
+                            rescan_rank_order = filtered_result.pop("__rank_order__", [])
                             new_syms = set(filtered_result.keys())
                             # Update stock_info_cache for new symbols
                             with state_lock:
                                 _stock_info_cache.update(filtered_result)
                                 if trade_manager:
                                     trade_manager.set_stock_info_cache(_stock_info_cache)
+                                    if rescan_rank_order:
+                                        trade_manager.set_symbol_ranks(rescan_rank_order)
                         else:
                             new_syms = filtered_result if isinstance(filtered_result, set) else set()
 
@@ -793,10 +799,13 @@ def main():
     # Normalize: filter returns dict {symbol: StockInfo} when successful, set when disabled/failed
     global _stock_info_cache
     if isinstance(filtered_result, dict):
+        # Extract rank order before storing cache (__rank_order__ is not a StockInfo entry)
+        _rank_order = filtered_result.pop("__rank_order__", [])
         stock_info_cache = filtered_result
         _stock_info_cache = stock_info_cache
         filtered_watchlist = set(filtered_result.keys())
     else:
+        _rank_order = []
         stock_info_cache = {}
         _stock_info_cache = {}
         filtered_watchlist = filtered_result
@@ -828,6 +837,8 @@ def main():
 
     trade_manager = PaperTradeManager()
     trade_manager.set_stock_info_cache(stock_info_cache)
+    if _rank_order:
+        trade_manager.set_symbol_ranks(_rank_order)
     trade_manager._micro_detectors = detectors  # Share detector refs for continuation hold vol_dom
 
     # Wire up quality gate: notify detector of trade results for Gate 5 (no re-entry after loss)
