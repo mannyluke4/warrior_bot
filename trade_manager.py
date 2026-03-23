@@ -2581,8 +2581,8 @@ class PaperTradeManager:
         px = float(px)
 
         if action == "partial_50":
-            if t.tp_hit:
-                return  # partial already taken; ignore subsequent doji warnings
+            if mgr.partial_taken:
+                return  # Ross doji partial already fired; ignore subsequent warnings
             mgr.partial_taken = True
             qty_exit = t.qty_core if t.qty_core > 0 else max(1, t.qty_total // 2)
             if qty_exit <= 0:
@@ -2600,8 +2600,8 @@ class PaperTradeManager:
             self._exit(symbol, qty=qty_exit, reason=f"ross_{signal_name}_partial50", price=px)
 
         elif action == "full_100":
-            if t.tp_hit:
-                # Core already sold on doji warning; exit runner only
+            if mgr.partial_taken:
+                # Ross doji partial already fired; exit remaining runner only
                 qty_exit = t.qty_runner if t.qty_runner > 0 else t.qty_total
             else:
                 qty_exit = t.qty_total

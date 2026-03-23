@@ -83,7 +83,18 @@ WB_CONTINUATION_HOLD_ENABLED=1
 WB_CONT_HOLD_5M_TREND_GUARD=1
 WB_MAX_NOTIONAL=50000      # Aligned to batch runner ENV_BASE
 WB_PILLAR_GATES_ENABLED=1  # Ross Pillar entry-time gates in live bot
+WB_ROSS_EXIT_ENABLED=1     # Ross Cameron 1m signal exits (enabled 2026-03-23)
 ```
+
+### Ross Exit System (as of 2026-03-23)
+`WB_ROSS_EXIT_ENABLED=1` is now live. When ON:
+- Replaces: 10s BE/TW pattern exits, fixed R trails (signal mode trail=0.99 = no-op)
+- Keeps: hard stop, max_loss_hit, bail timer (all still fire on every tick)
+- Uses: 1m candle signals (CUC, doji 50% partial, gravestone, shooting star) + MACD/EMA20/VWAP backstops
+- Structural trailing stop: `t.stop` ratchets up to low of last green 1m candle
+- Re-entry: detector state machine unchanged; bot can re-enter after a Ross exit fires
+- MACD warmup: ~35 bars (~35 min after bot start) before MACD backstop is active; pattern exits work immediately after bar 2
+- **BUG FIXED 2026-03-23**: `partial_50` and `full_100` now check `mgr.partial_taken` (not `t.tp_hit`) so signal-mode BE trigger at 3R does not silently block the doji partial or cause a half-exit on full signals
 
 ### Exhaustion Filter + Dynamic Scaling (CRITICAL INSIGHT)
 The exhaustion filter is enabled by default and works CORRECTLY for cascading stocks because of dynamic scaling:
