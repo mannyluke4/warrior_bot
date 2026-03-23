@@ -84,6 +84,10 @@ class SimTrade:
     runner_stop: float = 0.0
     highest_r: float = 0.0   # Peak R-multiple seen (for WB_TRAILING_STOP)
     closed: bool = False
+    # Halt-through state (WB_HALT_THROUGH_ENABLED)
+    halt_detected: bool = False
+    halt_detected_at_ts: Optional[datetime] = None
+    halt_resume_grace_until_ts: Optional[datetime] = None
 
     def pnl(self) -> float:
         pnl = 0.0
@@ -208,6 +212,13 @@ class SimTradeManager:
         self._vr_bars_no_new_high = 0  # stall counter for VR time stop
         self._vr_last_vwap: Optional[float] = None  # updated on 1m bar close
 
+        # --- Halt-through (WB_HALT_THROUGH_ENABLED=0 by default) ---
+        self._halt_through_enabled = os.getenv("WB_HALT_THROUGH_ENABLED", "0") == "1"
+        self._halt_detect_sec = float(os.getenv("WB_HALT_DETECT_SEC", "30"))
+        self._halt_min_profit_r = float(os.getenv("WB_HALT_MIN_PROFIT_R", "1.0"))
+        self._halt_resume_grace_sec = float(os.getenv("WB_HALT_RESUME_GRACE_SEC", "10"))
+        self._halt_max_duration_sec = float(os.getenv("WB_HALT_MAX_DURATION_SEC", "600"))
+
         # Account tracking for realistic backtesting
         self.account_equity = float(os.getenv("WB_SIM_ACCOUNT_EQUITY", "0"))  # 0 = disabled
         self.current_equity = self.account_equity  # tracks running balance
@@ -228,6 +239,82 @@ class SimTradeManager:
         """Convert 'HH:MM' to minutes since midnight for cooldown tracking."""
         parts = time_str.split(":")
         return int(parts[0]) * 60 + int(parts[1])
+
+    # ------------------------------------------------------------------
+    # Halt-through helpers (simulate tick-gap halts)
+    # ------------------------------------------------------------------
+    def _is_sim_halt_active(self, t: "SimTrade") -> bool:
+        """True if halt-through is suspending trail/pattern exits for this trade."""
+        if t.halt_detected:
+            return True
+        if t.halt_resume_grace_until_ts is not None:
+            return True  # cleared by handle_tick_halt on next tick
+        return False
+
+    def handle_tick_halt(self, ts: datetime, prev_ts: Optional[datetime]):
+        """Detect/manage halt state based on gap between consecutive tick timestamps.
+
+        Call before on_tick() for each tick in the replay loop when --ticks mode is active.
+        """
+        if not self._halt_through_enabled:
+            return
+        t = self.open_trade
+        if t is None or t.closed:
+            return
+
+        # Clear expired grace period
+        if t.halt_resume_grace_until_ts is not None and ts >= t.halt_resume_grace_until_ts:
+            t.halt_resume_grace_until_ts = None
+
+        # Handle resumption: got a tick while halt was detected
+        if t.halt_detected:
+            t.halt_detected = False
+            t.halt_detected_at_ts = None
+            grace_td = timedelta(seconds=self._halt_resume_grace_sec)
+            t.halt_resume_grace_until_ts = ts + grace_td
+            ts_et = ts.astimezone(ET).strftime("%H:%M:%S")
+            print(
+                f"  HALT_THROUGH [{ts_et}] {t.symbol}: halt resumed,"
+                f" grace={self._halt_resume_grace_sec:.0f}s",
+                flush=True,
+            )
+            return
+
+        # Detect new halt: large time gap while position is profitable
+        if prev_ts is None:
+            return
+        gap_sec = (ts - prev_ts).total_seconds()
+        if gap_sec < self._halt_detect_sec:
+            return
+
+        # Only halt-through on profitable positions
+        unrealized_r = (t.peak - t.entry) / t.r if t.r > 0 else 0
+        if unrealized_r < self._halt_min_profit_r:
+            return
+
+        # Enforce max duration: if gap > max_duration, don't treat as halt-through
+        if self._halt_max_duration_sec > 0 and gap_sec > self._halt_max_duration_sec:
+            return
+
+        # Halt detected!
+        t.halt_detected = True
+        t.halt_detected_at_ts = prev_ts
+        ts_et = ts.astimezone(ET).strftime("%H:%M:%S")
+        print(
+            f"  HALT_THROUGH [{ts_et}] {t.symbol}: halt detected"
+            f" (gap={gap_sec:.0f}s, profit={unrealized_r:.1f}R) — suspending trail exits",
+            flush=True,
+        )
+        # Immediately process resumption: this tick IS the resumption
+        t.halt_detected = False
+        t.halt_detected_at_ts = None
+        grace_td = timedelta(seconds=self._halt_resume_grace_sec)
+        t.halt_resume_grace_until_ts = ts + grace_td
+        print(
+            f"  HALT_THROUGH [{ts_et}] {t.symbol}: halt resumed (same tick),"
+            f" grace={self._halt_resume_grace_sec:.0f}s",
+            flush=True,
+        )
 
     def on_signal(self, symbol: str, entry: float, stop: float, r: float,
                   score: float, detail: str, time_str: str,
@@ -406,14 +493,15 @@ class SimTradeManager:
                 t.stop = max(t.stop, t.entry + self.be_offset)
 
             # Trail only after TP level reached (before that, hard stop provides safety)
-            if t.tp_hit:
+            # Halt-through: skip trail update during halt/grace (hard stop still runs below)
+            if t.tp_hit and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
                 trail_stop = t.peak * (1.0 - self.signal_trail_pct)
                 t.stop = max(t.stop, trail_stop)
 
             # NOTE: R-multiple trailing stop is updated on 10s bar closes, not per tick.
             # See on_10s_close() below. The stop level (t.stop) is checked here every tick.
 
-            # Check stop (hard or trailed)
+            # Check stop (hard or trailed) — always active even during halt
             if price <= t.stop:
                 reason = "trail_stop" if t.tp_hit else "stop_hit"
                 t.core_exit_price = price
@@ -555,7 +643,8 @@ class SimTradeManager:
         # --- Pre-target phase (full position) ---
         if not t.tp_hit:
             # 3) Trailing stop (pre-target) — tighter for parabolic entries
-            if t.r > 0:
+            # Halt-through: skip trail during halt/grace (hard stop above still active)
+            if t.r > 0 and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
                 is_parabolic = "[PARABOLIC]" in (t.score_detail or "")
                 trail_r = self.sq_para_trail_r if is_parabolic else self.sq_trail_r
                 # Fix 2: widen trail to give winners more room
@@ -590,7 +679,8 @@ class SimTradeManager:
         # --- Post-target phase (runner only) ---
         if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0:
             # Runner trailing stop
-            if t.r > 0:
+            # Halt-through: skip trail update/check during halt/grace
+            if t.r > 0 and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
                 eff_runner_trail_r = self.sq_runner_trail_r
                 # Fix 2: apply multiplier to runner trail too
                 if self.sq_wide_trail_enabled:
@@ -604,7 +694,7 @@ class SimTradeManager:
                 runner_trail = t.peak - (eff_runner_trail_r * t.r)
                 t.runner_stop = max(t.runner_stop, runner_trail)
 
-            if price <= t.runner_stop:
+            if price <= t.runner_stop and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
                 t.runner_exit_price = price
                 t.runner_exit_time = time_str
                 t.runner_exit_reason = "sq_runner_trail"
@@ -825,6 +915,13 @@ class SimTradeManager:
     def on_exit_signal(self, signal_name: str, price: float, time_str: str):
         """Handle pattern-based exit signals (topping_wicky, l2_bearish, etc.)."""
         t = self.open_trade
+        # Halt-through: suppress pattern exits during halt/grace (hard stops handled in on_tick)
+        _halt_pattern_exits = ("topping_wicky", "bearish_engulfing", "chandelier_stop",
+                               "parabolic_exhaustion", "5m_trend_guard_exit")
+        if (self._halt_through_enabled and t is not None and not t.closed
+                and signal_name in _halt_pattern_exits
+                and self._is_sim_halt_active(t)):
+            return
         if t is None or t.closed:
             return
 
@@ -2195,6 +2292,7 @@ def run_simulation(
         else:
             last_price = None
             last_time_str = None
+            last_ts_utc = None  # for halt-through gap detection
 
             for t in tick_trades:
                 price = float(t.price)
@@ -2364,6 +2462,9 @@ def run_simulation(
                                 elif verbose:
                                     print(f"  [{time_str}] 5M_GUARD_SKIP: only {len(session_bars)} session bars (need {_cont_hold_5m_min_bars}) — staying in 10s hold", flush=True)
 
+                # Halt-through: detect/manage halt state via tick timestamp gap
+                sim_mgr.handle_tick_halt(ts, last_ts_utc)
+
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)
 
@@ -2387,6 +2488,7 @@ def run_simulation(
 
                 last_price = price
                 last_time_str = time_str
+                last_ts_utc = ts
 
             # Force-close any open position at sim end
             if last_price is not None:

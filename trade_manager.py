@@ -153,6 +153,11 @@ class OpenTrade:
     # Exit fill tracking for realized P&L
     exit_filled_qty: int = 0
     exit_filled_cost: float = 0.0  # cumulative (price * qty) for weighted avg
+    # Halt-through state (WB_HALT_THROUGH_ENABLED)
+    halt_detected: bool = False
+    halt_detected_at: Optional[datetime] = None
+    halt_resume_grace_until: Optional[datetime] = None
+    halt_frozen_sec: float = 0.0  # total halt seconds frozen from bail timer
 
 
 @dataclass
@@ -343,6 +348,14 @@ class PaperTradeManager:
         # --- Bail Timer: exit if not profitable within N minutes ---
         self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
         self.bail_timer_minutes = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
+        # --- Halt-through logic (WB_HALT_THROUGH_ENABLED=0 by default) ---
+        self._halt_through_enabled = os.getenv("WB_HALT_THROUGH_ENABLED", "0") == "1"
+        self._halt_detect_sec = float(os.getenv("WB_HALT_DETECT_SEC", "30"))
+        self._halt_min_profit_r = float(os.getenv("WB_HALT_MIN_PROFIT_R", "1.0"))
+        self._halt_resume_grace_sec = float(os.getenv("WB_HALT_RESUME_GRACE_SEC", "10"))
+        self._halt_max_duration_sec = float(os.getenv("WB_HALT_MAX_DURATION_SEC", "600"))
+        self._halt_freeze_bail = os.getenv("WB_HALT_FREEZE_BAIL_TIMER", "1") == "1"
 
         # --- Daily risk management ---
         self.daily_goal = float(os.getenv("WB_DAILY_GOAL", "500"))
@@ -577,6 +590,10 @@ class PaperTradeManager:
             if not (trade_stale and quote_stale):
                 return
 
+            # Halt-through: suppress stale feed noise during a known halt
+            if self._halt_through_enabled and t.halt_detected:
+                return
+
             last_warn = self.last_stale_warn_ts_utc.get(symbol)
             if last_warn and (now - last_warn).total_seconds() < self.stale_warn_every_sec:
                 return
@@ -611,6 +628,81 @@ class PaperTradeManager:
             stale_quote_sec=self.stale_quote_sec,
         )
 
+
+    # -----------------------------
+    # Halt-through helpers
+    # -----------------------------
+    def _is_halt_active(self, symbol: str) -> bool:
+        """True if halt-through is suspending trail/pattern exits for this symbol."""
+        if not self._halt_through_enabled:
+            return False
+        t = self.open.get(symbol)
+        if t is None:
+            return False
+        if t.halt_detected:
+            return True
+        if t.halt_resume_grace_until is not None:
+            if datetime.now(timezone.utc) < t.halt_resume_grace_until:
+                return True
+            else:
+                t.halt_resume_grace_until = None  # expired — clear it
+        return False
+
+    def check_halt_detection(self):
+        """Detect trading halts via feed silence. Call every ~0.5s from pending_heartbeat."""
+        if not self._halt_through_enabled:
+            return
+        now = datetime.now(timezone.utc)
+        with self._lock:
+            for symbol, t in list(self.open.items()):
+                if t.halt_detected:
+                    # Already halted — enforce max duration safety
+                    if self._halt_max_duration_sec > 0 and t.halt_detected_at is not None:
+                        halt_age = (now - t.halt_detected_at).total_seconds()
+                        if halt_age > self._halt_max_duration_sec:
+                            log_event("halt_max_duration_exceeded", symbol,
+                                      halt_age_sec=round(halt_age, 1),
+                                      max_sec=self._halt_max_duration_sec)
+                            print(
+                                f"HALT_THROUGH {symbol}: max duration {self._halt_max_duration_sec:.0f}s exceeded"
+                                f" — re-enabling exits",
+                                flush=True,
+                            )
+                            t.halt_detected = False
+                            t.halt_detected_at = None
+                    continue
+
+                # Skip if already in grace period
+                if t.halt_resume_grace_until is not None:
+                    continue
+
+                last_ts = self.last_trade_ts_utc.get(symbol)
+                if last_ts is None:
+                    continue
+                silence_sec = (now - last_ts).total_seconds()
+                if silence_sec < self._halt_detect_sec:
+                    continue
+
+                # Only halt-through on profitable positions
+                last_price = float(self.last_price.get(symbol, 0))
+                if last_price <= 0 or t.r <= 0:
+                    continue
+                unrealized_r = (last_price - t.entry) / t.r
+                if unrealized_r < self._halt_min_profit_r:
+                    continue
+
+                # Halt detected on profitable position — suspend trail/pattern exits
+                t.halt_detected = True
+                t.halt_detected_at = now
+                log_event("halt_detected", symbol,
+                          silence_sec=round(silence_sec, 1),
+                          last_price=last_price,
+                          unrealized_r=round(unrealized_r, 2))
+                print(
+                    f"HALT_THROUGH {symbol}: halt detected after {silence_sec:.0f}s silence,"
+                    f" unrealized={unrealized_r:.1f}R — suspending trail/pattern exits",
+                    flush=True,
+                )
 
     # -----------------------------
     # Parsing + sizing
@@ -2172,6 +2264,32 @@ class PaperTradeManager:
             # ✅ trade print timestamp
             self._touch_trade_ts(symbol, ts)
 
+            # Halt-through: when a tick arrives after a detected halt, start grace period
+            if self._halt_through_enabled:
+                t = self.open.get(symbol)
+                if t is not None and t.halt_detected:
+                    now_utc = datetime.now(timezone.utc)
+                    # Accrue frozen halt time for bail timer
+                    if self._halt_freeze_bail and t.halt_detected_at is not None:
+                        frozen = (now_utc - t.halt_detected_at).total_seconds()
+                        t.halt_frozen_sec += frozen
+                    t.halt_detected = False
+                    t.halt_detected_at = None
+                    t.halt_resume_grace_until = now_utc + timedelta(seconds=self._halt_resume_grace_sec)
+                    # Update peak from resumption price if above entry
+                    if float(price) > t.entry:
+                        t.peak = max(t.peak, float(price))
+                    log_event("halt_resumed", symbol,
+                              price=float(price),
+                              grace_sec=self._halt_resume_grace_sec,
+                              frozen_sec=round(t.halt_frozen_sec, 1))
+                    print(
+                        f"HALT_THROUGH {symbol}: trading resumed @ {price:.4f},"
+                        f" grace={self._halt_resume_grace_sec:.0f}s"
+                        f" (bail_timer frozen {t.halt_frozen_sec:.0f}s)",
+                        flush=True,
+                    )
+
             # ✅ Always keep pending entry synced
             if symbol in self.pending:
                 self._check_pending(symbol)
@@ -2469,6 +2587,10 @@ class PaperTradeManager:
         if not bear:
             return
 
+        # Halt-through: suppress bearish engulfing during halt/grace
+        if self._is_halt_active(symbol):
+            return
+
         # Time-based BE grace (like TW grace — suppress BE for first N minutes after entry)
         if self.be_grace_sec > 0 and t.created_at_utc:
             age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
@@ -2546,6 +2668,16 @@ class PaperTradeManager:
         if symbol in self.pending_exits:
             log_event("exit_signal_ignored_pending_exit", symbol, signal=signal_name)
             return
+
+        # Halt-through: suppress pattern exits during halt/grace — hard stops NEVER suppressed
+        _halt_pattern_exits = ("topping_wicky", "bearish_engulfing", "chandelier_stop",
+                               "parabolic_exhaustion", "l2_bearish", "l2_ask_wall",
+                               "5m_trend_guard_exit")
+        if self._halt_through_enabled and signal_name in _halt_pattern_exits:
+            if self._is_halt_active(symbol):
+                log_event("pattern_exit_suppressed_halt", symbol, signal=signal_name)
+                print(f"  {signal_name.upper()}_SUPPRESSED (halt_through) {symbol}", flush=True)
+                return
 
         # Suppress pattern exits (TW, L2) — hard stops NEVER suppressed
         if signal_name in ("topping_wicky", "l2_bearish", "l2_ask_wall"):
@@ -2683,31 +2815,36 @@ class PaperTradeManager:
                 return
 
         # --- Bail Timer: exit if not profitable within N minutes ---
+        # Halt-through: freeze bail timer during halt/grace; deduct accrued frozen time
         if self.bail_timer_enabled and t.created_at_utc and t.r > 0:
-            age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
-            bail_sec = self.bail_timer_minutes * 60
-            if age_sec >= bail_sec:
-                unrealized = float(bid) - t.entry
-                if unrealized <= 0:
-                    if symbol not in self.pending_exits:
-                        log_event("bail_timer_exit", symbol,
-                                  entry=t.entry, bid=float(bid),
-                                  unrealized=round(unrealized, 4),
-                                  age_min=round(age_sec / 60, 1))
-                        print(
-                            f"BAIL TIMER {symbol}: {age_sec/60:.1f}min elapsed, "
-                            f"unrealized=${unrealized:.2f} <= $0 — EXIT qty={t.qty_total}",
-                            flush=True,
-                        )
-                        self._exit(symbol, qty=t.qty_total, reason="bail_timer", price=bid)
-                    return
+            _bail_frozen = (self._halt_through_enabled and self._halt_freeze_bail
+                            and self._is_halt_active(symbol))
+            if not _bail_frozen:
+                age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds()
+                age_sec -= t.halt_frozen_sec  # subtract total accrued halt time
+                bail_sec = self.bail_timer_minutes * 60
+                if age_sec >= bail_sec:
+                    unrealized = float(bid) - t.entry
+                    if unrealized <= 0:
+                        if symbol not in self.pending_exits:
+                            log_event("bail_timer_exit", symbol,
+                                      entry=t.entry, bid=float(bid),
+                                      unrealized=round(unrealized, 4),
+                                      age_min=round(age_sec / 60, 1))
+                            print(
+                                f"BAIL TIMER {symbol}: {age_sec/60:.1f}min elapsed, "
+                                f"unrealized=${unrealized:.2f} <= $0 — EXIT qty={t.qty_total}",
+                                flush=True,
+                            )
+                            self._exit(symbol, qty=t.qty_total, reason="bail_timer", price=bid)
+                        return
 
         # --- Chandelier stop (parabolic regime, classic mode ONLY) ---
         # In signal mode, the existing signal trail handles exits;
         # Chandelier is wider and causes worse exits on flash spikes / cascading re-entry stocks
         if self.parabolic_regime_enabled and self.exit_mode == "classic":
             det = self._parabolic_detectors.get(symbol)
-            if det:
+            if det and not self._is_halt_active(symbol):  # suppress during halt/grace
                 chandelier = det.get_chandelier_stop()
                 if chandelier > 0 and float(bid) <= chandelier:
                     if symbol not in self.pending_exits:
@@ -2743,14 +2880,15 @@ class PaperTradeManager:
                 t.stop = max(t.stop, be_stop)
 
             # Trail only after TP level reached (before that, hard stop provides safety)
-            if t.tp_hit:
+            # Halt-through: skip trail update during halt/grace (hard stop check still runs)
+            if t.tp_hit and not self._is_halt_active(symbol):
                 trail_stop = t.peak * (1.0 - self.signal_trail_pct)
                 t.stop = max(t.stop, trail_stop)
 
             # NOTE: R-multiple trailing stop is updated on 10s bar closes via
             # update_trailing_stop_on_10s_bar(). The stop level (t.stop) is checked here every tick.
 
-            # Check stop (hard or trailed)
+            # Check stop (hard or trailed) — always active even during halt
             if bid <= t.stop:
                 if symbol not in self.pending_exits:
                     reason = "trail_stop" if t.tp_hit else "stop_hit"
@@ -2770,9 +2908,11 @@ class PaperTradeManager:
             be_stop = t.entry + float(os.getenv("WB_BE_OFFSET", "0.01"))
             t.stop = max(t.stop, be_stop)
 
-            trail_r = float(os.getenv("WB_RUNNER_TRAIL_R", "1.0"))
-            trail_stop = t.peak - (trail_r * t.r)
-            t.runner_stop = max(t.runner_stop, trail_stop, t.stop)
+            # Halt-through: skip trail update during halt/grace
+            if not self._is_halt_active(symbol):
+                trail_r = float(os.getenv("WB_RUNNER_TRAIL_R", "1.0"))
+                trail_stop = t.peak - (trail_r * t.r)
+                t.runner_stop = max(t.runner_stop, trail_stop, t.stop)
 
             # Post-T1, pre-T2 stop: exit remaining T2 + T3
             if self.three_tranche_enabled and not t.t2_hit and bid <= t.runner_stop:

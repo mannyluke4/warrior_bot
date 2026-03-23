@@ -519,6 +519,7 @@ def pending_heartbeat():
             if trade_manager:
                 trade_manager.check_pending_entries()
                 trade_manager.check_pending_exits()
+                trade_manager.check_halt_detection()
         except Exception:
             log_event("exception", None, where="pending_heartbeat", error=traceback.format_exc())
         time.sleep(0.5)
