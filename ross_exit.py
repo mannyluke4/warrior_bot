@@ -29,6 +29,7 @@ Key gates (all default ON when WB_ROSS_EXIT_ENABLED=1):
   WB_ROSS_VWAP_ENABLED=1
   WB_ROSS_STRUCTURAL_TRAIL=1
   WB_ROSS_MIN_BARS=2     # minimum 1m bars in trade before any signal fires
+  WB_ROSS_CUC_MIN_R=5.0  # suppress CUC when unrealized gain >= this R (deep runner gate)
 """
 
 import os
@@ -102,6 +103,7 @@ class RossExitManager:
         self._ema20_enabled = os.getenv("WB_ROSS_EMA20_ENABLED", "1") == "1"
         self._vwap_enabled = os.getenv("WB_ROSS_VWAP_ENABLED", "1") == "1"
         self._structural_trail = os.getenv("WB_ROSS_STRUCTURAL_TRAIL", "1") == "1"
+        self._cuc_min_r = float(os.getenv("WB_ROSS_CUC_MIN_R", "5.0"))
 
     # ------------------------------------------------------------------
     # Public API
@@ -123,6 +125,7 @@ class RossExitManager:
         vwap: Optional[float],
         in_trade: bool,
         entry_price: float = 0.0,
+        unrealized_r: float = 0.0,
     ) -> Tuple[Optional[str], Optional[str], Optional[float]]:
         """
         Process one completed 1m bar.
@@ -132,6 +135,7 @@ class RossExitManager:
             vwap         : current VWAP (None or 0 = not available)
             in_trade     : True if a position is currently open
             entry_price  : entry price of open trade (for BE floor on structural stop)
+            unrealized_r : current unrealized gain in R-multiples (for CUC suppression)
 
         Returns:
             (action, signal_name, new_structural_stop)
@@ -228,7 +232,15 @@ class RossExitManager:
             if not prior_green and len(self._bars) >= 3:
                 prior_green = self._bars[-3]["c"] > self._bars[-3]["o"]
             if prior_green:
-                return "full_100", "ross_cuc_exit", new_structural_stop
+                # Deep runner gate: suppress CUC when deep in profit (pullback, not reversal)
+                if in_trade and unrealized_r >= self._cuc_min_r:
+                    print(
+                        f"  ROSS_CUC_SUPPRESSED: unrealized={unrealized_r:.1f}R >= threshold={self._cuc_min_r:.1f}R"
+                        f" — letting other signals handle exit",
+                        flush=True,
+                    )
+                else:
+                    return "full_100", "ross_cuc_exit", new_structural_stop
 
         # ═══════════════════════════════════════════════════════════════════════════
         # TIER 3 — WARNING (50% partial exit — only fires once per trade)

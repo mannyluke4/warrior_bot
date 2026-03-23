@@ -2259,11 +2259,13 @@ def run_simulation(
                     and not sim_mgr.open_trade.closed
                     and sim_mgr.open_trade.setup_type == "micro_pullback"):
                 _rt = sim_mgr.open_trade
+                _unrealized_r = (bar.close - _rt.entry) / _rt.r if _rt.r > 0 else 0.0
                 _r_action, _r_signal, _r_new_stop = _ross_exit_mgr.on_1m_bar_close(
                     o=bar.open, h=bar.high, l=bar.low, c=bar.close,
                     vwap=vwap,
                     in_trade=True,
                     entry_price=_rt.entry,
+                    unrealized_r=_unrealized_r,
                 )
                 # Note: structural stop (_r_new_stop) is NOT applied to t.stop.
                 # The CUC signal already handles the case when a 1m bar closes below
