@@ -31,7 +31,7 @@ MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
 MIN_RVOL = 2.0
 
-# Unknown-float gate: allow missing-float stocks with exceptional signals (OFF by default)
+# Unknown-float gate: allow stocks with no float data if signals are exceptional (OFF by default)
 ALLOW_UNKNOWN_FLOAT = int(os.environ.get("WB_ALLOW_UNKNOWN_FLOAT", "0")) == 1
 UNKNOWN_FLOAT_MIN_GAP = 50.0        # strong premarket gap required
 UNKNOWN_FLOAT_MIN_PM_VOL = 1_000_000  # confirmed premarket interest
@@ -171,7 +171,7 @@ def load_and_rank(date_str: str) -> tuple:
         profile = c.get("profile", "")
         rvol = c.get("relative_volume", 0) or 0
 
-        # Unknown-float gate: missing-float or explicitly unknown-tagged stocks
+        # Unknown-float gate: missing-float or unknown-tagged stocks
         # "X" is legacy name for unknown-float, kept for backward compat with old scanner JSONs
         if profile in ("X", "unknown") or float_m is None or float_m == 0:
             if not ALLOW_UNKNOWN_FLOAT:

@@ -105,7 +105,16 @@ FLOAT_CACHE_PATH = os.path.join(SCANNER_DIR, "float_cache.json")
 def load_float_cache() -> dict:
     if os.path.exists(FLOAT_CACHE_PATH):
         with open(FLOAT_CACHE_PATH) as f:
-            return json.load(f)
+            raw = json.load(f)
+        # Clear stale None entries — forces re-lookup through full chain
+        # (FMP → yfinance → EDGAR → AlphaVantage). With new fallbacks,
+        # most previously-None tickers will now resolve successfully.
+        cleaned = {k: v for k, v in raw.items() if v is not None}
+        dropped = len(raw) - len(cleaned)
+        if dropped > 0:
+            print(f"  [float_cache] Cleared {dropped} stale None entries — will re-attempt lookups")
+            save_float_cache(cleaned)
+        return cleaned
     return {}
 
 
@@ -114,8 +123,84 @@ def save_float_cache(cache: dict):
         json.dump(cache, f, indent=2)
 
 
+# --- SEC EDGAR ticker→CIK map (load once at startup) ---
+_EDGAR_CIK_MAP = {}
+
+
+def _load_edgar_cik_map():
+    global _EDGAR_CIK_MAP
+    if _EDGAR_CIK_MAP:
+        return _EDGAR_CIK_MAP
+    try:
+        resp = requests.get(
+            "https://www.sec.gov/files/company_tickers.json",
+            headers={"User-Agent": "WarriorBot luke@delightedpath.net"},
+            timeout=10,
+        )
+        data = resp.json()
+        _EDGAR_CIK_MAP = {
+            v["ticker"].upper(): str(v["cik_str"]).zfill(10)
+            for v in data.values()
+        }
+    except Exception as e:
+        print(f"  [EDGAR] Failed to load CIK map: {e}")
+    return _EDGAR_CIK_MAP
+
+
+def get_edgar_shares_outstanding(symbol: str) -> float | None:
+    """Tier 5: SEC EDGAR shares outstanding as float proxy. Free, 10 req/s."""
+    cik_map = _load_edgar_cik_map()
+    cik = cik_map.get(symbol.upper())
+    if not cik:
+        return None
+    try:
+        url = (f"https://data.sec.gov/api/xbrl/companyconcept/"
+               f"CIK{cik}/dei/EntityCommonStockSharesOutstanding.json")
+        resp = requests.get(url, headers={
+            "User-Agent": "WarriorBot luke@delightedpath.net"
+        }, timeout=10)
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        shares_list = data.get("units", {}).get("shares", [])
+        if not shares_list:
+            return None
+        latest = sorted(shares_list, key=lambda x: x.get("end", ""), reverse=True)[0]
+        shares = latest.get("val", 0)
+        if shares > 0:
+            print(f"  [EDGAR] {symbol}: {shares/1e6:.2f}M shares outstanding")
+            return shares
+    except Exception as e:
+        print(f"  [EDGAR] {symbol}: {e}")
+    return None
+
+
+# --- Alpha Vantage free tier (25 calls/day, true float) ---
+ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+
+
+def get_alpha_vantage_float(symbol: str) -> float | None:
+    """Tier 6: Alpha Vantage OVERVIEW — true float. Free tier: 25 calls/day."""
+    if not ALPHA_VANTAGE_KEY:
+        return None
+    try:
+        url = (f"https://www.alphavantage.co/query?function=OVERVIEW"
+               f"&symbol={symbol}&apikey={ALPHA_VANTAGE_KEY}")
+        resp = requests.get(url, timeout=10)
+        data = resp.json()
+        shares_float = data.get("SharesFloat")
+        if shares_float and shares_float != "None" and shares_float != "0":
+            val = float(shares_float)
+            if val > 0:
+                print(f"  [AlphaVantage] {symbol}: {val/1e6:.2f}M float")
+                return val
+    except Exception as e:
+        print(f"  [AlphaVantage] {symbol}: {e}")
+    return None
+
+
 def get_float(symbol: str, cache: dict) -> float | None:
-    """Look up float shares. Priority: KNOWN_FLOATS → cache → FMP API → yfinance fallback."""
+    """Look up float shares. Priority: KNOWN_FLOATS → cache → FMP → yfinance → EDGAR → AlphaVantage."""
     # 1. Hardcoded known floats (most reliable for our universe)
     if symbol in KNOWN_FLOATS:
         return KNOWN_FLOATS[symbol]
@@ -150,6 +235,16 @@ def get_float(symbol: str, cache: dict) -> float | None:
         except Exception as e:
             print(f"  [yfinance] {symbol}: {e}")
 
+    # 5. SEC EDGAR fallback (free, 10 req/s)
+    if float_shares is None:
+        float_shares = get_edgar_shares_outstanding(symbol)
+
+    # 6. Alpha Vantage free tier (25 calls/day, true float)
+    if float_shares is None:
+        float_shares = get_alpha_vantage_float(symbol)
+        if float_shares is not None:
+            time.sleep(0.5)  # respect 5/min rate limit
+
     # Cache result (even None to avoid re-lookups)
     cache[symbol] = float_shares
     save_float_cache(cache)
@@ -158,7 +253,7 @@ def get_float(symbol: str, cache: dict) -> float | None:
 
 
 def classify_profile(float_shares: float | None) -> str:
-    """Classify stock by float: A (<5M), B (5-10M), unknown (no float data)."""
+    """Classify stock by float: A (<5M), B (5-10M), unknown (no data)."""
     if float_shares is None:
         return "unknown"
     millions = float_shares / 1_000_000
@@ -422,57 +517,25 @@ _CHECKPOINT_WINDOWS = [
 ]
 
 
-def _fetch_cumulative_volume(sym: str, date: datetime, end_hour: int, end_min: int) -> int:
-    """Fetch cumulative bar volume for sym from 4:00 AM ET to (end_hour:end_min) ET.
-
-    Used by find_emerging_movers to get true cumulative PM volume rather than
-    just the narrow checkpoint window volume.
-    """
-    day_start = ET.localize(datetime.combine(
-        date.date(), datetime.min.time().replace(hour=4, minute=0)))
-    day_end = ET.localize(datetime.combine(
-        date.date(), datetime.min.time().replace(hour=end_hour, minute=end_min)))
-    try:
-        req = StockBarsRequest(
-            symbol_or_symbols=[sym],
-            timeframe=TimeFrame.Minute,
-            start=day_start.astimezone(pytz.utc),
-            end=day_end.astimezone(pytz.utc),
-        )
-        bars = hist_client.get_stock_bars(req)
-        bar_list = bars.data.get(sym, [])
-        return sum(b.volume for b in bar_list if b.volume)
-    except Exception:
-        return 0
-
-
 def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
-                         date_str: str, avg_daily_vol: dict | None = None) -> list[dict]:
+                         date_str: str) -> list[dict]:
     """Continuous re-scan: check for new gap candidates at multiple checkpoints.
 
     Scans at 8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET for stocks that
     have gapped >= 5% vs prev_close but weren't caught by the original
     7:15 AM premarket scan. This catches mid-morning catalysts like ROLR
-    on Jan 14 (news at 8:18 AM, +340% gap) and ZENA (news at 7:30 AM).
-
-    Fixes vs original:
-    - Uses cumulative volume from 4 AM to checkpoint (not just the 30-min window)
-    - Computes RVOL inline using avg_daily_vol so the outer gate has real data
-    - Accepts gap >= 5% (down from 10%) when RVOL >= 10x (strong intraday movers)
-    - Stocks with no ADV data pass through if absolute volume >= 500K
+    on Jan 14 (news at 8:18 AM, +340% gap).
 
     Args:
         prev_close: {symbol: prev_close_price} for all active symbols
         existing_candidates: list of candidate dicts already found by premarket scan
         date_str: date string YYYY-MM-DD
-        avg_daily_vol: {symbol: avg_daily_volume} for RVOL computation
 
     Returns:
         list of new candidate dicts with discovery_time and discovery_method fields
     """
     date = datetime.strptime(date_str, "%Y-%m-%d")
     found_symbols = {c["symbol"] for c in existing_candidates}
-    adv = avg_daily_vol or {}
     all_new = []
 
     for label, win_start_h, win_start_m, win_end_h, win_end_m in _CHECKPOINT_WINDOWS:
@@ -486,12 +549,6 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
         win_end = ET.localize(datetime.combine(
             date.date(), datetime.min.time().replace(hour=win_end_h, minute=win_end_m)))
 
-        # Stats for debug logging
-        checked = 0
-        passed_gap = 0
-        rejected_rvol = 0
-        rejected_gap_low = 0
-
         checkpoint_new = []
         chunk_size = 1000
         for i in range(0, len(check_symbols), chunk_size):
@@ -504,7 +561,6 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     end=win_end,
                 )
                 bars = hist_client.get_stock_bars(request)
-                checked += len(chunk)
                 for sym, bar_list in bars.data.items():
                     if not bar_list or sym in found_symbols:
                         continue
@@ -516,42 +572,22 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     latest_price = bar_list[-1].close
                     gap_pct = (latest_price - pc) / pc * 100
 
-                    # Initial gap + price filter (5% floor — tightened below per RVOL)
-                    if gap_pct < 5.0:
+                    if gap_pct < 10:
                         continue
                     if latest_price < 2.0 or latest_price > 20.0:
                         continue
-                    passed_gap += 1
 
-                    # Fetch cumulative volume from 4 AM to checkpoint (true PM volume)
-                    cum_vol = _fetch_cumulative_volume(sym, date, win_end_h, win_end_m)
-
-                    # Compute RVOL using avg daily volume
-                    sym_adv = adv.get(sym)
-                    if sym_adv and sym_adv > 0:
-                        rvol = round(cum_vol / sym_adv, 2)
-                    else:
-                        # No ADV data — allow through if absolute volume is strong
-                        rvol = round(cum_vol / 500_000 * 2.0, 2) if cum_vol >= 500_000 else 0.0
-
-                    # For 5-10% gap stocks, require very high RVOL (strong intraday move)
-                    if gap_pct < 10.0 and rvol < 10.0:
-                        rejected_gap_low += 1
-                        continue
-
-                    # Pre-filter by RVOL to avoid polluting outer gate with zeroes
-                    if rvol < 2.0:
-                        rejected_rvol += 1
-                        continue
+                    # Use window volume as a rough indicator — cumulative
+                    # volume from 4 AM will be computed after the full scan
+                    # when RVOL is calculated (Step 4b in run_scanner_for_date)
+                    vol = sum(b.volume for b in bar_list if b.volume)
 
                     checkpoint_new.append({
                         "symbol": sym,
                         "prev_close": round(pc, 4),
                         "pm_price": round(latest_price, 4),
                         "gap_pct": round(gap_pct, 2),
-                        "pm_volume": cum_vol,       # cumulative from 4 AM
-                        "relative_volume": rvol,
-                        "avg_daily_volume": round(sym_adv, 0) if sym_adv else None,
+                        "pm_volume": vol,  # window vol — replaced by cumulative in step 4b
                         "first_seen_et": label,
                         "sim_start": label,
                         "discovery_time": label,
@@ -561,13 +597,10 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
             except Exception as e:
                 print(f"  [rescan {label} chunk {i}] Error: {e}")
 
-        print(f"         [rescan {label}] checked={checked} passed_gap={passed_gap} "
-              f"rej_gap_low={rejected_gap_low} rej_rvol={rejected_rvol} new={len(checkpoint_new)}")
         if checkpoint_new:
             checkpoint_new.sort(key=lambda x: rank_score(x), reverse=True)
             for c in checkpoint_new:
-                print(f"         RESCAN [{label}]: {c['symbol']} gap={c['gap_pct']:+.1f}% "
-                      f"${c['pm_price']:.2f} vol={c['pm_volume']:,} rvol={c['relative_volume']:.1f}x")
+                print(f"         RESCAN [{label}]: {c['symbol']} gap={c['gap_pct']:+.1f}% ${c['pm_price']:.2f}")
             all_new.extend(checkpoint_new)
 
     return all_new
@@ -704,17 +737,45 @@ def run_scanner(date_str: str):
 
     # Step 4b: Continuous re-scan (8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET)
     print(f"  [4b/6] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
-    emerging = find_emerging_movers(prev_close, candidates, date_str, avg_daily_vol)
+    emerging = find_emerging_movers(prev_close, candidates, date_str)
     print(f"         {len(emerging)} emerging movers found across all checkpoints")
-    # RVOL already computed inside find_emerging_movers using cumulative volume;
-    # fill in any missing entries for robustness then apply gate
-    for c in emerging:
-        if c.get("relative_volume") is None:
+    # Fetch cumulative volume (4 AM → checkpoint) for emerging movers
+    # The window volume from find_emerging_movers() only covers the 30-min
+    # checkpoint window. For accurate RVOL, we need cumulative premarket volume.
+    if emerging:
+        date = datetime.strptime(date_str, "%Y-%m-%d")
+        four_am = ET.localize(datetime.combine(
+            date.date(), datetime.min.time().replace(hour=4, minute=0)))
+        for c in emerging:
             sym = c["symbol"]
-            adv_val = avg_daily_vol.get(sym)
-            c["avg_daily_volume"] = round(adv_val, 0) if adv_val else None
-            pm_vol = c.get("pm_volume", 0) or 0
-            c["relative_volume"] = round(pm_vol / adv_val, 2) if adv_val and adv_val > 0 else None
+            disc_time = c.get("discovery_time", "10:30")
+            # Parse checkpoint time
+            dh, dm = int(disc_time.split(":")[0]), int(disc_time.split(":")[1])
+            checkpoint = ET.localize(datetime.combine(
+                date.date(), datetime.min.time().replace(hour=dh, minute=dm)))
+            try:
+                request = StockBarsRequest(
+                    symbol_or_symbols=[sym],
+                    timeframe=TimeFrame.Minute,
+                    start=four_am,
+                    end=checkpoint,
+                )
+                bars = hist_client.get_stock_bars(request)
+                bar_list = bars.data.get(sym, [])
+                cum_vol = sum(b.volume for b in bar_list if b.volume)
+                if cum_vol > 0:
+                    c["pm_volume"] = cum_vol
+                    print(f"         RESCAN {sym}: cumulative vol 4AM-{disc_time} = {cum_vol:,}")
+            except Exception as e:
+                print(f"         RESCAN {sym}: cumulative vol fetch error: {e}")
+
+    # Add RVOL to emerging movers
+    for c in emerging:
+        sym = c["symbol"]
+        adv = avg_daily_vol.get(sym)
+        c["avg_daily_volume"] = round(adv, 0) if adv else None
+        pm_vol = c.get("pm_volume", 0) or 0
+        c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
     # Apply RVOL and PM volume gates to emerging movers
     emerging = [c for c in emerging
                 if (c.get("relative_volume") or 0) >= 2.0
