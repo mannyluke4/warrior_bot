@@ -36,6 +36,7 @@ from bars import TradeBarBuilder, Bar
 from candles import is_bearish_engulfing
 from micro_pullback import MicroPullbackDetector
 from trade_manager import check_toxic_filters
+from ross_exit import RossExitManager
 
 load_dotenv()
 
@@ -88,6 +89,8 @@ class SimTrade:
     halt_detected: bool = False
     halt_detected_at_ts: Optional[datetime] = None
     halt_resume_grace_until_ts: Optional[datetime] = None
+    # Ross exit state (WB_ROSS_EXIT_ENABLED)
+    _ross_partial_taken: bool = False
 
     def pnl(self) -> float:
         pnl = 0.0
@@ -211,6 +214,9 @@ class SimTradeManager:
         self.vr_max_loss_dollars = float(os.getenv("WB_VR_MAX_LOSS_DOLLARS", "300"))
         self._vr_bars_no_new_high = 0  # stall counter for VR time stop
         self._vr_last_vwap: Optional[float] = None  # updated on 1m bar close
+
+        # --- Ross exit mode (WB_ROSS_EXIT_ENABLED=0 by default) ---
+        self.ross_exit_enabled = os.getenv("WB_ROSS_EXIT_ENABLED", "0") == "1"
 
         # --- Halt-through (WB_HALT_THROUGH_ENABLED=0 by default) ---
         self._halt_through_enabled = os.getenv("WB_HALT_THROUGH_ENABLED", "0") == "1"
@@ -392,6 +398,11 @@ class SimTradeManager:
             # Guard: if qty is too small for T3, fold remainder into T2
             if qty_runner <= 0 and qty_t2 > 0:
                 qty_runner = 0
+        elif self.ross_exit_enabled and setup_type not in ("squeeze", "vwap_reclaim"):
+            # Ross exit: 50/50 split — core exits on warning (doji), runner on confirmed signal
+            qty_core = max(1, qty // 2)
+            qty_t2 = 0
+            qty_runner = max(0, qty - qty_core)
         elif self.exit_mode == "signal":
             qty_core = qty      # full position, no split
             qty_t2 = 0
@@ -504,9 +515,16 @@ class SimTradeManager:
             # Check stop (hard or trailed) — always active even during halt
             if price <= t.stop:
                 reason = "trail_stop" if t.tp_hit else "stop_hit"
-                t.core_exit_price = price
-                t.core_exit_time = time_str
-                t.core_exit_reason = reason
+                if t._ross_partial_taken:
+                    # Core (50%) was already exited by a Ross warning signal;
+                    # stop hit now closes the remaining runner portion only.
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = reason
+                else:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = reason
                 self._close(t)
             return
 
@@ -958,6 +976,68 @@ class SimTradeManager:
                 t.runner_exit_reason = f"{signal_name}_exit_runner"
             if t.qty_t2 > 0 or t.qty_runner > 0:
                 self._close(t)
+
+    def on_ross_exit_signal(
+        self,
+        action: str,
+        signal_name: str,
+        price: float,
+        time_str: str,
+        verbose: bool = False,
+    ):
+        """
+        Handle a Ross exit signal emitted by RossExitManager.
+
+        action="partial_50"  → exit core tranche (50%), keep runner open.
+        action="full_100"    → exit remaining position entirely.
+        """
+        t = self.open_trade
+        if t is None or t.closed:
+            return
+
+        if action == "partial_50":
+            if t.tp_hit:
+                return  # partial already taken — ignore subsequent doji warnings
+            # Exit the core (50%) portion
+            t.core_exit_price = price
+            t.core_exit_time = time_str
+            t.core_exit_reason = signal_name
+            t.tp_hit = True
+            t._ross_partial_taken = True
+            # Keep the original pattern stop — DO NOT tighten to BE here.
+            # The runner holds with the structural stop (original pattern low).
+            # CUC, MACD, EMA20, or VWAP will exit the runner on the next 1m bar.
+            # Tightening to BE immediately would stop the runner out on the next tick.
+            if verbose:
+                print(
+                    f"  [{time_str}] ROSS_PARTIAL_50 ({signal_name}) "
+                    f"@ {price:.4f} — {t.qty_core} shares exited, "
+                    f"{t.qty_runner} runner shares remain (stop stays @ {t.stop:.4f})",
+                    flush=True,
+                )
+            # DO NOT call _close() — runner portion is still live
+
+        elif action == "full_100":
+            if t._ross_partial_taken:
+                # Core already sold on warning; now exit runner only
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = signal_name
+            else:
+                # No prior partial — close entire position at once
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = signal_name
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = signal_name
+            if verbose:
+                print(
+                    f"  [{time_str}] ROSS_FULL_100 ({signal_name}) @ {price:.4f}",
+                    flush=True,
+                )
+            self._close(t)
 
     def on_bar_close_1m_cooldown(self):
         """Decrement stop-hit cooldowns on each 1m bar close."""
@@ -1706,6 +1786,12 @@ def run_simulation(
             vr_det.notify_trade_closed(symbol, t.pnl())
     sim_mgr.on_trade_close = _on_sim_trade_close
 
+    # Ross exit manager — only active when WB_ROSS_EXIT_ENABLED=1
+    _ross_exit_enabled = sim_mgr.ross_exit_enabled
+    _ross_exit_mgr = RossExitManager() if _ross_exit_enabled else None
+    if _ross_exit_enabled and verbose:
+        print("  ROSS_EXIT: ENABLED (WB_ROSS_EXIT_ENABLED=1) — 1m signal-based exits active", flush=True)
+
     # ── Behavior metrics (for --export-json study) ──
     _bm = BehaviorMetrics(start_et_str) if export_json else None
 
@@ -1942,8 +2028,11 @@ def run_simulation(
 
             # Skip ALL pattern exit detection on 10s bars for squeeze/VR trades
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
+            # Also skip for MP trades when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
                 if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim"):
+                    return
+                if _ross_exit_enabled and sim_mgr.open_trade.setup_type == "micro_pullback":
                     return
 
             # If in 5m guard or 1m exit mode, skip ALL pattern exit detection on 10s bars
@@ -2137,9 +2226,11 @@ def run_simulation(
             # Topping wicky exit after 1m bar close (with grace period after entry)
             # Skip when in 1m exit mode (handled by cont hold block above)
             # Skip for squeeze trades (squeeze has its own exit logic)
+            # Skip for MP trades when Ross exit mode is ON (Ross logic below handles it)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
                 and sim_mgr.open_trade.setup_type != "squeeze"
+                and not (_ross_exit_enabled and sim_mgr.open_trade.setup_type == "micro_pullback")
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
                 and "TOPPING_WICKY" in (det.last_patterns or [])
@@ -2157,6 +2248,45 @@ def run_simulation(
                     sim_mgr.on_exit_signal("topping_wicky", bar.close, time_str)
                     if verbose:
                         print(f"  [{time_str}] TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+
+            # --- Ross exit: 1m signal-based exits for MP trades ---
+            # Runs when WB_ROSS_EXIT_ENABLED=1 and a micro_pullback trade is open.
+            # Replaces: TW/BE on 10s bars, fixed trails, stall timer, R targets.
+            # Keeps: bail timer, max_loss_hit, hard stop (all in on_tick).
+            if (_ross_exit_enabled
+                    and _ross_exit_mgr is not None
+                    and sim_mgr.open_trade is not None
+                    and not sim_mgr.open_trade.closed
+                    and sim_mgr.open_trade.setup_type == "micro_pullback"):
+                _rt = sim_mgr.open_trade
+                _r_action, _r_signal, _r_new_stop = _ross_exit_mgr.on_1m_bar_close(
+                    o=bar.open, h=bar.high, l=bar.low, c=bar.close,
+                    vwap=vwap,
+                    in_trade=True,
+                    entry_price=_rt.entry,
+                )
+                # Note: structural stop (_r_new_stop) is NOT applied to t.stop.
+                # The CUC signal already handles the case when a 1m bar closes below
+                # the prior bar's low — which IS the structural trail.  Applying it as
+                # a tick-by-tick mechanical stop would cause premature exits on intra-bar
+                # noise that Ross explicitly ignores (he exits on bar CLOSE, not on tick).
+                # Act on exit signal (if any)
+                if _r_action is not None and (sim_mgr.open_trade is None or not sim_mgr.open_trade.closed):
+                    if _r_action == "partial_50":
+                        _ross_exit_mgr.partial_taken = True
+                    sim_mgr.on_ross_exit_signal(
+                        action=_r_action,
+                        signal_name=_r_signal,
+                        price=bar.close,
+                        time_str=time_str,
+                        verbose=verbose,
+                    )
+            elif _ross_exit_enabled and _ross_exit_mgr is not None:
+                # Not in a trade — still feed bars so EMAs warm up
+                _ross_exit_mgr.on_1m_bar_close(
+                    o=bar.open, h=bar.high, l=bar.low, c=bar.close,
+                    vwap=vwap, in_trade=False,
+                )
 
             # Decrement stop-hit re-entry cooldown
             sim_mgr.on_bar_close_1m_cooldown()
@@ -2426,6 +2556,9 @@ def run_simulation(
                                 f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
                                 flush=True,
                             )
+                        # Ross exit: reset per-trade state on new entry
+                        if trade and _ross_exit_mgr is not None:
+                            _ross_exit_mgr.reset()
                         # Initialize continuation hold 1m mode on new trade
                         if trade and _cont_hold_use_1m_exits and _continuation_hold_enabled:
                             trade._cont_hold_1m_mode = False
