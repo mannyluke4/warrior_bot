@@ -15,20 +15,18 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
     kill "$BOT_PID" 2>/dev/null || true
-    kill "$IBC_PID" 2>/dev/null || true
     pkill -f "bot.py" 2>/dev/null || true
     pkill -f "java.*tws" 2>/dev/null || true
     kill "$CAFFEINE_PID" 2>/dev/null || true
     cd ~/warrior_bot
     git add -f logs/ 2>/dev/null || true
     git commit -m "auto: daily logs ${TODAY}" 2>/dev/null || true
-    git push origin v6-dynamic-sizing 2>/dev/null || true
+    git push origin main 2>/dev/null || true
     echo "=== Cleanup complete: $(date) ==="
 }
 trap cleanup EXIT
 
 BOT_PID=""
-IBC_PID=""
 
 # Keep Mac awake for the entire trading session
 caffeinate -dims -w $$ &
@@ -39,7 +37,7 @@ echo "=== Daily run started: $(date) ==="
 
 # 1. Pull latest code
 cd ~/warrior_bot
-git pull origin v6-dynamic-sizing 2>&1 || echo "WARN: git pull failed"
+git pull origin main 2>&1 || echo "WARN: git pull failed"
 
 # 2. Activate venv
 source ~/warrior_bot/venv/bin/activate
@@ -52,12 +50,11 @@ python3 -c "from market_scanner import MarketScanner; from trade_manager import 
     exit 1
 }
 
-# 3. Start TWS via IBC (auto-login, wait for it to be ready)
-echo "Starting TWS via IBC..."
-~/ibc/twsstartmacos.sh &
-IBC_PID=$!
-sleep 90  # TWS needs ~60-90s to fully log in
-echo "TWS started (IBC PID: $IBC_PID)"
+# 3. Kill any stale processes that might hold Alpaca websocket connections
+echo "Cleaning up stale connections..."
+pkill -f "bot.py" 2>/dev/null || true
+pkill -f "java.*tws" 2>/dev/null || true
+sleep 2
 
 # 4. Start the bot
 echo "Starting bot..."
@@ -99,7 +96,6 @@ done
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
 sleep 5
-kill "$IBC_PID" 2>/dev/null || true
 
 # Force kill any lingering processes
 pkill -f "bot.py" 2>/dev/null || true
@@ -110,6 +106,6 @@ echo "Pushing logs..."
 cd ~/warrior_bot
 git add -f logs/ 2>/dev/null || true
 git commit -m "auto: daily logs ${TODAY}" 2>/dev/null || true
-git push origin v6-dynamic-sizing 2>/dev/null || echo "WARN: git push failed"
+git push origin main 2>/dev/null || echo "WARN: git push failed"
 
 echo "=== Daily run complete: $(date) ==="
