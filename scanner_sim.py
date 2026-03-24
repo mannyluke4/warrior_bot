@@ -253,13 +253,14 @@ def get_float(symbol: str, cache: dict) -> float | None:
 
 
 def classify_profile(float_shares: float | None) -> str:
-    """Classify stock by float: A (<5M), B (5-10M), unknown (no data)."""
+    """Classify stock by float profile. Thresholds from .env."""
     if float_shares is None:
         return "unknown"
+    _max_float_m = float(os.getenv("WB_MAX_FLOAT", "15"))
     millions = float_shares / 1_000_000
     if millions < 5:
         return "A"
-    elif millions <= 10:
+    elif millions <= _max_float_m:
         return "B"
     else:
         return "skip"
@@ -378,7 +379,10 @@ def fetch_premarket_bars(symbols: list[str], date_str: str) -> dict[str, list]:
 
 
 def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
-    """Find stocks gapping up >= 10% with price $2-$20."""
+    """Find stocks gapping up with price and gap filters from .env."""
+    _min_gap = float(os.getenv("WB_MIN_GAP_PCT", "10"))
+    _min_price = float(os.getenv("WB_MIN_PRICE", "2.00"))
+    _max_price = float(os.getenv("WB_MAX_PRICE", "20.00"))
     candidates = []
     for sym, bars in pm_bars.items():
         if sym not in prev_close:
@@ -391,9 +395,9 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
         pm_price = bars[-1].close
         gap_pct = (pm_price - pc) / pc * 100
 
-        if gap_pct < 10:
+        if gap_pct < _min_gap:
             continue
-        if pm_price < 2.0 or pm_price > 20.0:
+        if pm_price < _min_price or pm_price > _max_price:
             continue
 
         # Determine first activity time (first bar with volume)
@@ -477,7 +481,10 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
                     continue
                 open_price = bar_list[0].open
                 gap_pct = (open_price - pc) / pc * 100
-                if gap_pct < 10 or open_price < 2.0 or open_price > 20.0:
+                _mg = float(os.getenv("WB_MIN_GAP_PCT", "10"))
+                _mp = float(os.getenv("WB_MIN_PRICE", "2.00"))
+                _xp = float(os.getenv("WB_MAX_PRICE", "20.00"))
+                if gap_pct < _mg or open_price < _mp or open_price > _xp:
                     continue
                 late_movers.append({
                     "symbol": sym,
@@ -573,7 +580,7 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     latest_price = bar_list[-1].close
                     gap_pct = (latest_price - pc) / pc * 100
 
-                    if gap_pct < 10:
+                    if gap_pct < float(os.getenv("WB_MIN_GAP_PCT", "10")):
                         continue
                     if latest_price < 2.0 or latest_price > 20.0:
                         continue

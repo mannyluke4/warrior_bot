@@ -49,21 +49,21 @@ os.makedirs(SCANNER_DIR, exist_ok=True)
 # ---------------------------------------------------------------------------
 FMP_API_KEY = os.getenv("FMP_API_KEY")
 
-# Filter thresholds (Phase 1 simplification: widened to match Ross Cameron criteria)
-MIN_GAP_PCT = 10.0           # 10%+ gaps only
+# Filter thresholds — read from .env (shared with stock_filter.py / scanner_sim.py)
+MIN_GAP_PCT = float(os.getenv("WB_MIN_GAP_PCT", "10"))
 MAX_GAP_PCT_A = 999.0       # No gap ceiling (Ross traded 500%+ gaps)
 MAX_GAP_PCT_B = 999.0       # Same — no gap ceiling
-MIN_PRICE = 2.0             # Ross trades $2+
-MAX_PRICE = 20.0            # Ross's stated range for small account
+MIN_PRICE = float(os.getenv("WB_MIN_PRICE", "2.00"))
+MAX_PRICE = float(os.getenv("WB_MAX_PRICE", "20.00"))
 WINDOW_START_HOUR = 7
 WINDOW_START_MINUTE = 0
-WINDOW_END_HOUR = 11         # Extended to 11:00 AM ET
+WINDOW_END_HOUR = 11
 WINDOW_END_MINUTE = 0
-MIN_FLOAT = 100_000          # 100K (sane floor)
-MAX_FLOAT = 10_000_000       # 10M float ceiling
-MIN_PM_VOLUME = 50_000       # Minimum pre-market volume
-MIN_RVOL = 2.0               # Minimum relative volume (vs 20-day avg)
-MAX_SCANNER_SYMBOLS = 8      # Cap total symbols across all writes
+MIN_FLOAT = int(float(os.getenv("WB_MIN_FLOAT", "0.5")) * 1_000_000)
+MAX_FLOAT = int(float(os.getenv("WB_MAX_FLOAT", "15")) * 1_000_000)
+MIN_PM_VOLUME = int(os.getenv("WB_MIN_PM_VOLUME", "50000"))
+MIN_RVOL = float(os.getenv("WB_MIN_REL_VOLUME", "2.0"))
+MAX_SCANNER_SYMBOLS = int(os.getenv("WB_MAX_SCANNER_SYMBOLS", "8"))
 
 # Known floats (highest reliability — no API needed)
 KNOWN_FLOATS = {
