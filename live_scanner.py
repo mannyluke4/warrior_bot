@@ -6,7 +6,7 @@ Streams all US equity pre-market quotes from 4:00 AM ET, identifies stocks that
 are gapping 10%+ with price $2-$20, RVOL >= 2x, and PM volume >= 50K.
 Ranks by composite score and writes to watchlist.txt every minute from 7:00 AM.
 New symbol additions cut off at 9:30 AM ET (post-09:30 = negative EV).
-Scanner continues tracking existing symbols until 11:00 AM ET.
+Stops at 9:30 AM ET — post-09:30 discoveries are negative EV.
 
 Usage:
     python live_scanner.py             # Normal run
@@ -386,7 +386,7 @@ class LiveScanner:
         if gap_pct < MIN_GAP_PCT:
             return
 
-        # Timing filter: only accept 4:00 AM – 11:00 AM ET
+        # Timing filter: only accept 4:00 AM – 9:00 AM ET (WINDOW_END_HOUR)
         ts_et = pd.Timestamp(event.ts_recv, unit="ns", tz="UTC").tz_convert(ET)
         hour, minute = ts_et.hour, ts_et.minute
         if hour < 4:

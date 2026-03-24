@@ -1,0 +1,36 @@
+[
+  {
+    "symbol": "ACON",
+    "prev_close": 5.75,
+    "pm_price": 8.48,
+    "gap_pct": 47.48,
+    "pm_volume": 4695008.0,
+    "first_seen_et": "05:28",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 106698.0,
+    "relative_volume": 44.0,
+    "precise_discovery": "06:37",
+    "float_shares": 700000,
+    "float_millions": 0.7,
+    "profile": "A"
+  },
+  {
+    "symbol": "CNCK",
+    "prev_close": 2.66,
+    "pm_price": 3.03,
+    "gap_pct": 13.91,
+    "pm_volume": 896473.0,
+    "first_seen_et": "07:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 247836.0,
+    "relative_volume": 3.62,
+    "precise_discovery": "07:05",
+    "float_shares": 12859609,
+    "float_millions": 12.86,
+    "profile": "B"
+  }
+]

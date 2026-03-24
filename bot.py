@@ -667,12 +667,13 @@ def on_quote(symbol: str, bid, ask, ts: datetime):
         return
 
 # -----------------------------
-# Re-scan thread (12 data-driven checkpoints, 9:30 cutoff)
+# Re-scan thread (11 data-driven checkpoints, 9:30 cutoff)
 # -----------------------------
+# Matches scanner_sim.py _CUSTOM_CHECKPOINTS (11 entries, no 08:10).
 # Dense coverage in golden hour (08:00-08:30), no post-9:30 additions (negative EV)
 RESCAN_CHECKPOINTS_ET = [
     (7, 0), (7, 15), (7, 30), (7, 45),
-    (8, 0), (8, 10), (8, 15), (8, 30), (8, 45),
+    (8, 0), (8, 15), (8, 30), (8, 45),
     (9, 0), (9, 15), (9, 30),
 ]
 

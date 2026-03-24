@@ -1,6 +1,6 @@
 # January 2025 vs January 2026 Comparison — Scanner Fixes V1 + SQ Exit Fixes
 
-**Generated:** 2026-03-23 16:58
+**Generated:** 2026-03-24 09:58
 **Config:** Full ENV_BASE with all fixes: unknown-float gate, SQ partial/wide/runner exits, halt-through, MP enabled
 
 ---
@@ -10,21 +10,21 @@
 | Metric | Jan 2025 | Jan 2026 |
 |--------|----------|----------|
 | Trading Days | 21 | 21 |
-| Scanner Candidates (total) | 71 | 79 |
-| Candidates Passing Filters | 70 | 73 |
-| Unknown-Float Candidates | 0 | 1 |
-| Rescan Candidates | 0 | 1 |
-| Total Trades | 32 | 15 |
+| Scanner Candidates (total) | 71 | 91 |
+| Candidates Passing Filters | 71 | 91 |
+| Unknown-Float Candidates | 0 | 0 |
+| Rescan Candidates | 0 | 0 |
+| Total Trades | 32 | 17 |
 | SQ Trades | 22 | 8 |
-| MP Trades | 10 | 7 |
-| Win Rate | 40.6% | 46.7% |
-| Total P&L | $+3,423 | $+17,728 |
-| Avg P&L / Day | $+163 | $+844 |
-| Profit Factor | 1.63 | 6.74 |
-| Max Drawdown | $-1,282 | $-2,339 |
-| Best Day | $+2,506 | $+14,457 |
-| Worst Day | $-1,120 | $-1,682 |
-| Ending Equity | $+33,423 | $+47,728 |
+| MP Trades | 10 | 9 |
+| Win Rate | 40.6% | 41.2% |
+| Total P&L | $+3,423 | $+16,409 |
+| Avg P&L / Day | $+163 | $+781 |
+| Profit Factor | 1.63 | 5.16 |
+| Max Drawdown | $-1,282 | $-2,285 |
+| Best Day | $+2,506 | $+14,123 |
+| Worst Day | $-1,120 | $-1,643 |
+| Ending Equity | $+33,423 | $+46,409 |
 
 ---
 
@@ -67,27 +67,27 @@
 
 | Date | Candidates | Traded | Trades | P&L | Equity | Best Trade |
 |------|-----------|--------|--------|-----|--------|-----------|
-| 2026-01-02 | 2 | 2 | 0 | +0 | $30,000 | — |
+| 2026-01-02 | 3 | 3 | 0 | +0 | $30,000 | — |
 | 2026-01-03 | 0 | 0 | 0 | +0 | $30,000 | — |
-| 2026-01-05 | 1 | 1 | 0 | +0 | $30,000 | — |
-| 2026-01-06 | 2 | 2 | 0 | +0 | $30,000 | — |
-| 2026-01-07 | 2 | 2 | 0 | +0 | $30,000 | — |
-| 2026-01-08 | 2 | 2 | 1 | +362 | $30,362 | ACON +362 |
-| 2026-01-09 | 4 | 4 | 0 | +0 | $30,362 | — |
-| 2026-01-12 | 2 | 2 | 1 | -325 | $30,037 | BDSX -325 |
-| 2026-01-13 | 7 | 5 | 1 | -54 | $29,983 | SPRC -54 |
-| 2026-01-14 | 2 | 2 | 1 | +238 | $30,221 | ROLR +238 |
-| 2026-01-15 | 6 | 5 | 2 | +916 | $31,137 | CJMB +1051 |
-| 2026-01-16 | 6 | 5 | 1 | +14,457 | $45,594 | VERO +14457 |
-| 2026-01-20 | 8 | 5 | 1 | +569 | $46,163 | POLA +569 |
-| 2026-01-21 | 4 | 4 | 1 | +3,523 | $49,686 | SLGB +3523 |
-| 2026-01-22 | 4 | 4 | 2 | -1,682 | $48,004 | IOTR -440 |
-| 2026-01-23 | 7 | 5 | 1 | -657 | $47,347 | MOVE -657 |
-| 2026-01-26 | 5 | 5 | 1 | +615 | $47,962 | BATL +615 |
-| 2026-01-27 | 5 | 4 | 1 | -198 | $47,764 | CYN -198 |
-| 2026-01-28 | 3 | 3 | 0 | +0 | $47,764 | — |
-| 2026-01-29 | 5 | 3 | 1 | -36 | $47,728 | FEED -36 |
-| 2026-01-30 | 2 | 2 | 0 | +0 | $47,728 | — |
+| 2026-01-05 | 2 | 2 | 0 | +0 | $30,000 | — |
+| 2026-01-06 | 4 | 4 | 1 | -687 | $29,313 | CELZ -687 |
+| 2026-01-07 | 2 | 2 | 0 | +0 | $29,313 | — |
+| 2026-01-08 | 2 | 2 | 1 | +353 | $29,666 | ACON +353 |
+| 2026-01-09 | 5 | 5 | 0 | +0 | $29,666 | — |
+| 2026-01-12 | 5 | 5 | 1 | -318 | $29,348 | BDSX -318 |
+| 2026-01-13 | 7 | 5 | 1 | -52 | $29,296 | SPRC -52 |
+| 2026-01-14 | 2 | 2 | 1 | +233 | $29,529 | ROLR +233 |
+| 2026-01-15 | 5 | 5 | 2 | +896 | $30,425 | CJMB +1028 |
+| 2026-01-16 | 7 | 5 | 1 | +14,123 | $44,548 | VERO +14123 |
+| 2026-01-20 | 8 | 5 | 1 | +556 | $45,104 | POLA +556 |
+| 2026-01-21 | 5 | 5 | 1 | +3,441 | $48,545 | SLGB +3441 |
+| 2026-01-22 | 4 | 4 | 2 | -1,643 | $46,902 | IOTR -430 |
+| 2026-01-23 | 7 | 5 | 1 | -642 | $46,260 | MOVE -642 |
+| 2026-01-26 | 5 | 5 | 1 | +615 | $46,875 | BATL +615 |
+| 2026-01-27 | 6 | 5 | 1 | -198 | $46,677 | CYN -198 |
+| 2026-01-28 | 3 | 3 | 0 | +0 | $46,677 | — |
+| 2026-01-29 | 5 | 5 | 1 | -35 | $46,642 | FEED -35 |
+| 2026-01-30 | 4 | 4 | 1 | -233 | $46,409 | CISS -233 |
 
 ---
 
@@ -104,8 +104,8 @@
 
 | Strategy | Trades | Wins | Win Rate | P&L |
 |----------|--------|------|----------|-----|
-| Squeeze (SQ) | 8 | 5 | 62% | $+5,606 |
-| Micro Pullback (MP) | 7 | 2 | 29% | $+12,122 |
+| Squeeze (SQ) | 8 | 5 | 62% | $+5,491 |
+| Micro Pullback (MP) | 9 | 2 | 22% | $+10,918 |
 
 ---
 
@@ -135,21 +135,21 @@
 
 | # | Symbol | Date | Strategy | P&L | Reason |
 |---|--------|------|----------|-----|--------|
-| 1 | VERO | 2026-01-16 | micro_pullback | +14,457 | bearish_engulfing_exit_full |
-| 2 | SLGB | 2026-01-21 | squeeze | +3,523 | sq_target_hit |
-| 3 | CJMB | 2026-01-15 | squeeze | +1,051 | sq_target_hit |
+| 1 | VERO | 2026-01-16 | micro_pullback | +14,123 | bearish_engulfing_exit_full |
+| 2 | SLGB | 2026-01-21 | squeeze | +3,441 | sq_target_hit |
+| 3 | CJMB | 2026-01-15 | squeeze | +1,028 | sq_target_hit |
 | 4 | BATL | 2026-01-26 | squeeze | +615 | sq_target_hit |
-| 5 | POLA | 2026-01-20 | squeeze | +569 | sq_target_hit |
+| 5 | POLA | 2026-01-20 | squeeze | +556 | sq_target_hit |
 
 ## Jan 2026 — Bottom 5 Trades
 
 | # | Symbol | Date | Strategy | P&L | Reason |
 |---|--------|------|----------|-----|--------|
-| 1 | SXTP | 2026-01-22 | micro_pullback | -1,242 | stop_hit |
-| 2 | MOVE | 2026-01-23 | micro_pullback | -657 | bearish_engulfing_exit_full |
-| 3 | IOTR | 2026-01-22 | micro_pullback | -440 | bearish_engulfing_exit_full |
-| 4 | BDSX | 2026-01-12 | squeeze | -325 | sq_max_loss_hit |
-| 5 | CYN | 2026-01-27 | micro_pullback | -198 | max_loss_hit |
+| 1 | SXTP | 2026-01-22 | micro_pullback | -1,213 | stop_hit |
+| 2 | CELZ | 2026-01-06 | micro_pullback | -687 | max_loss_hit |
+| 3 | MOVE | 2026-01-23 | micro_pullback | -642 | bearish_engulfing_exit_full |
+| 4 | IOTR | 2026-01-22 | micro_pullback | -430 | bearish_engulfing_exit_full |
+| 5 | BDSX | 2026-01-12 | squeeze | -318 | sq_max_loss_hit |
 
 ---
 
@@ -160,4 +160,4 @@
 - SQ exit fixes (partial exit, wide trail, runner detect, halt-through) are enabled for the first time in batch mode.
 - MP regression targets: VERO 2026-01-16 +$18,583, ROLR 2026-01-14 +$6,444 (both verified).
 
-*Report generated: 2026-03-23 16:58*
+*Report generated: 2026-03-24 09:58*

@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "BDSX",
+    "prev_close": 5.46,
+    "pm_price": 6.89,
+    "gap_pct": 26.19,
+    "pm_volume": 5401463.0,
+    "first_seen_et": "06:03",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 62711.0,
+    "relative_volume": 86.13,
+    "precise_discovery": "06:07",
+    "float_shares": 3700000,
+    "float_millions": 3.7,
+    "profile": "A"
+  },
+  {
+    "symbol": "OM",
+    "prev_close": 4.56,
+    "pm_price": 5.73,
+    "gap_pct": 25.66,
+    "pm_volume": 2266388.0,
+    "first_seen_et": "08:45",
+    "sim_start": "08:45",
+    "discovery_time": "08:45",
+    "discovery_method": "precise",
+    "avg_daily_volume": 475847.0,
+    "relative_volume": 4.76,
+    "precise_discovery": "08:34",
+    "float_shares": 13062782,
+    "float_millions": 13.06,
+    "profile": "B"
+  },
+  {
+    "symbol": "CLRB",
+    "prev_close": 3.08,
+    "pm_price": 3.47,
+    "gap_pct": 12.66,
+    "pm_volume": 179591.0,
+    "first_seen_et": "07:45",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 71078.0,
+    "relative_volume": 2.53,
+    "precise_discovery": "04:04",
+    "float_shares": 3010926,
+    "float_millions": 3.01,
+    "profile": "A"
+  }
+]

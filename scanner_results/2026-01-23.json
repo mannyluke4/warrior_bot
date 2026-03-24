@@ -17,6 +17,23 @@
     "profile": "A"
   },
   {
+    "symbol": "SLE",
+    "prev_close": 0.5302,
+    "pm_price": 10.1652,
+    "gap_pct": 1817.24,
+    "pm_volume": 2494497.0,
+    "first_seen_et": "09:15",
+    "sim_start": "09:15",
+    "discovery_time": "09:15",
+    "discovery_method": "precise",
+    "avg_daily_volume": 399278.0,
+    "relative_volume": 6.25,
+    "precise_discovery": "09:02",
+    "float_shares": 64583,
+    "float_millions": 0.06,
+    "profile": "A"
+  },
+  {
     "symbol": "RVYL",
     "prev_close": 5.24,
     "pm_price": 8.15,
@@ -82,6 +99,23 @@
     "precise_discovery": "06:18",
     "float_shares": 6369716,
     "float_millions": 6.37,
+    "profile": "B"
+  },
+  {
+    "symbol": "MAXN",
+    "prev_close": 2.96,
+    "pm_price": 3.3509,
+    "gap_pct": 13.21,
+    "pm_volume": 86781.0,
+    "first_seen_et": "08:45",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "precise",
+    "avg_daily_volume": 42048.0,
+    "relative_volume": 2.06,
+    "precise_discovery": "08:19",
+    "float_shares": 6808832,
+    "float_millions": 6.81,
     "profile": "B"
   }
 ]

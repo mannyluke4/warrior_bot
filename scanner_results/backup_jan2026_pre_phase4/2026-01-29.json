@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "SER",
+    "prev_close": 2.72,
+    "pm_price": 4.4,
+    "gap_pct": 61.76,
+    "pm_volume": 26039627.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 483910.0,
+    "relative_volume": 53.81,
+    "precise_discovery": "04:03",
+    "float_shares": 3575301,
+    "float_millions": 3.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "GCTK",
+    "prev_close": 3.41,
+    "pm_price": 4.38,
+    "gap_pct": 28.45,
+    "pm_volume": 8389088.0,
+    "first_seen_et": "08:15",
+    "sim_start": "08:15",
+    "discovery_time": "08:15",
+    "discovery_method": "precise",
+    "avg_daily_volume": 166650.0,
+    "relative_volume": 50.34,
+    "precise_discovery": "08:01",
+    "float_shares": 767491,
+    "float_millions": 0.77,
+    "profile": "A"
+  },
+  {
+    "symbol": "ZSTK",
+    "prev_close": 8.95,
+    "pm_price": 11.69,
+    "gap_pct": 30.61,
+    "pm_volume": 409368.0,
+    "first_seen_et": "04:07",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 124838.0,
+    "relative_volume": 3.28,
+    "precise_discovery": "04:13",
+    "float_shares": 2317376,
+    "float_millions": 2.32,
+    "profile": "A"
+  }
+]

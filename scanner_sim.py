@@ -521,7 +521,11 @@ _CUSTOM_CHECKPOINTS = [
 ]
 
 def _build_checkpoint_windows(checkpoints):
-    """Build (label, prev_h, prev_m, h, m) windows from checkpoint list."""
+    """Build (label, prev_h, prev_m, h, m) windows from checkpoint list.
+
+    Note: prev_h/prev_m are retained for reference but find_emerging_movers()
+    now uses cumulative windows (4AM → checkpoint) instead of incremental.
+    """
     windows = []
     for i, (label, h, m) in enumerate(checkpoints):
         if i == 0:
@@ -539,10 +543,11 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                          date_str: str) -> list[dict]:
     """Continuous re-scan: check for new gap candidates at multiple checkpoints.
 
-    Scans at 8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET for stocks that
-    have gapped >= 5% vs prev_close but weren't caught by the original
-    7:15 AM premarket scan. This catches mid-morning catalysts like ROLR
-    on Jan 14 (news at 8:18 AM, +340% gap).
+    Uses cumulative windows (4AM → checkpoint) rather than incremental
+    (prev_checkpoint → checkpoint). This ensures stocks that gap and halt
+    within a narrow window (e.g. ROLR on Jan 14: news at 08:18, halted
+    quickly) are still visible at each checkpoint. The found_symbols skip
+    set prevents double-counting across checkpoints.
 
     Args:
         prev_close: {symbol: prev_close_price} for all active symbols
@@ -562,8 +567,12 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
         if not check_symbols:
             break
 
+        # CUMULATIVE window: always start from 4 AM to catch stocks that
+        # gapped and halted within a narrow checkpoint slice.
+        # Each checkpoint still only adds NEW stocks (found_symbols skip set),
+        # so there's no double-counting.
         win_start = ET.localize(datetime.combine(
-            date.date(), datetime.min.time().replace(hour=win_start_h, minute=win_start_m)))
+            date.date(), datetime.min.time().replace(hour=4, minute=0)))
         win_end = ET.localize(datetime.combine(
             date.date(), datetime.min.time().replace(hour=win_end_h, minute=win_end_m)))
 
@@ -595,10 +604,16 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     if latest_price < 2.0 or latest_price > 20.0:
                         continue
 
-                    # Use window volume as a rough indicator — cumulative
-                    # volume from 4 AM will be computed after the full scan
-                    # when RVOL is calculated (Step 4b in run_scanner_for_date)
+                    # Cumulative volume from 4AM to this checkpoint.
+                    # If below the PM volume threshold, don't claim this stock
+                    # yet — let it be re-evaluated at the next checkpoint when
+                    # volume (and gap%) may be much higher. Critical for halt-
+                    # gap stocks like ROLR: 38K vol at 08:15 (pre-news), but
+                    # 2M+ vol at 08:30 after the 08:18 catalyst.
                     vol = sum(b.volume for b in bar_list if b.volume)
+                    MIN_CLAIM_VOL = 50_000
+                    if vol < MIN_CLAIM_VOL:
+                        continue  # re-evaluate at next checkpoint
 
                     checkpoint_new.append({
                         "symbol": sym,
@@ -794,10 +809,16 @@ def run_scanner(date_str: str):
         c["avg_daily_volume"] = round(adv, 0) if adv else None
         pm_vol = c.get("pm_volume", 0) or 0
         c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
-    # Apply RVOL and PM volume gates to emerging movers
+    # Apply RVOL and PM volume gates to emerging movers.
+    # WB_RESCAN_MIN_RVOL / WB_RESCAN_MIN_PM_VOL allow loosening thresholds
+    # for the rescan phase only (e.g. to catch RVOL~1.5 stocks like MNTS/SMX).
+    # Defaults match the premarket scan thresholds — no behavior change unless
+    # these env vars are explicitly set.
+    rescan_min_rvol = float(os.getenv("WB_RESCAN_MIN_RVOL", os.getenv("WB_MIN_REL_VOLUME", "2.0")))
+    rescan_min_pm_vol = int(os.getenv("WB_RESCAN_MIN_PM_VOL", os.getenv("WB_MIN_PM_VOLUME", "50000")))
     emerging = [c for c in emerging
-                if (c.get("relative_volume") or 0) >= 2.0
-                and (c.get("pm_volume") or 0) >= 50_000]
+                if (c.get("relative_volume") or 0) >= rescan_min_rvol
+                and (c.get("pm_volume") or 0) >= rescan_min_pm_vol]
     candidates.extend(emerging)
     # Re-sort all candidates by composite rank score descending
     candidates.sort(key=lambda x: rank_score(x), reverse=True)
@@ -819,7 +840,7 @@ def run_scanner(date_str: str):
         profile = classify_profile(float_shares)
 
         if profile == "skip":
-            print(f"         {sym}: float {float_shares/1e6:.1f}M → skip (>10M)")
+            print(f"         {sym}: float {float_shares/1e6:.1f}M → skip (>15M)")
             continue
 
         float_m = round(float_shares / 1e6, 2) if float_shares else None
