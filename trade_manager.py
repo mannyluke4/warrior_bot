@@ -126,6 +126,8 @@ class TradePlan:
     r: float
     take_profit: float
     score: float = 0.0
+    setup_type: str = "micro_pullback"
+    size_mult: float = 1.0
 
 
 @dataclass
@@ -345,6 +347,14 @@ class PaperTradeManager:
         self.last_trade_ts_utc: Dict[str, datetime] = {}  # symbol -> last trade print timestamp (UTC)
         self.last_quote_ts_utc: Dict[str, datetime] = {}  # symbol -> last quote timestamp (UTC)
         self.last_stale_warn_ts_utc: Dict[str, datetime] = {}  # symbol -> last warning timestamp (UTC)
+
+        # --- Squeeze exit config (must match simulate.py) ---
+        self.sq_target_r = float(os.getenv("WB_SQ_TARGET_R", "2.0"))
+        self.sq_trail_r = float(os.getenv("WB_SQ_TRAIL_R", "1.5"))
+        self.sq_runner_trail_r = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
+        self.sq_para_trail_r = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
+        self.sq_max_loss_dollars = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
+        self.sq_core_pct = int(os.getenv("WB_SQ_CORE_PCT", "75"))
 
         # --- Bail Timer: exit if not profitable within N minutes ---
         self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
@@ -715,6 +725,16 @@ class PaperTradeManager:
     # Parsing + sizing
     # -----------------------------
     def parse_plan(self, msg: str) -> Optional[TradePlan]:
+        # Extract setup_type and size_mult (common to all patterns)
+        setup_type = "micro_pullback"
+        st_match = re.search(r"setup_type=(\w+)", msg)
+        if st_match:
+            setup_type = st_match.group(1)
+        size_mult = 1.0
+        sm_match = re.search(r"size_mult=([0-9]*\.?[0-9]+)", msg)
+        if sm_match:
+            size_mult = float(sm_match.group(1))
+
         # Pattern 1: Generic entry=X stop=Y R=Z format
         m = re.search(
             r"entry=([0-9]*\.?[0-9]+)\s+stop=([0-9]*\.?[0-9]+)\s+R=([0-9]*\.?[0-9]+)",
@@ -725,7 +745,8 @@ class PaperTradeManager:
             stop  = float(m.group(2))
             r     = float(m.group(3))
             tp = entry + (self.tp_r_mult * r)
-            return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp)
+            return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp,
+                            setup_type=setup_type, size_mult=size_mult)
 
         # Pattern 2: ENTRY SIGNAL @ X ... stop=Y R=Z (micro pullback format)
         m = re.search(
@@ -739,12 +760,12 @@ class PaperTradeManager:
         stop  = float(m.group(2))
         r     = float(m.group(3))
         tp = entry + (self.tp_r_mult * r)
-        # Extract score if present in the message
         score = 0.0
         sm = re.search(r"score=([0-9]*\.?[0-9]+)", msg)
         if sm:
             score = float(sm.group(1))
-        return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp, score=score)
+        return TradePlan(entry=entry, stop=stop, r=r, take_profit=tp, score=score,
+                        setup_type=setup_type, size_mult=size_mult)
 
     def size_qty(self, entry: float, r: float, conviction_mult: float = 1.0) -> int:
         if r <= 0 or r < self.min_r:
@@ -1407,6 +1428,7 @@ class PaperTradeManager:
                 qty_t2=qty_t2,
                 take_profit_t2=take_profit_t2,
                 score=plan.score,
+                setup_type=plan.setup_type,
                 filled_applied=0,
             )
 
@@ -2878,6 +2900,75 @@ class PaperTradeManager:
 
         self._exit(symbol, qty=qty_to_exit, reason=reason, price=px)
 
+    def _squeeze_manage_exits(self, symbol: str, t, bid: float):
+        """Squeeze-specific exit logic — mirrors simulate.py _squeeze_tick_exits()."""
+        # 0) Dollar loss cap (catches gap-throughs)
+        if self.sq_max_loss_dollars > 0:
+            unrealized_loss = (t.entry - bid) * t.qty_total
+            if unrealized_loss >= self.sq_max_loss_dollars:
+                reason = f"sq_dollar_loss_cap (${unrealized_loss:,.0f} >= ${self.sq_max_loss_dollars:,.0f})"
+                print(f"🟥 SQ_EXIT {symbol}: {reason} @ {bid:.4f}", flush=True)
+                self._exit(symbol, qty=t.qty_total, reason=reason, price=bid)
+                return
+
+        # 1) Hard stop
+        if bid <= t.stop:
+            print(f"🟥 SQ_EXIT {symbol}: sq_stop_hit @ {bid:.4f} (stop={t.stop:.4f})", flush=True)
+            self._exit(symbol, qty=t.qty_total, reason="sq_stop_hit", price=bid)
+            return
+
+        # 2) Max loss cap (tiered by float, same as MP)
+        _eff_mlr = self.max_loss_r
+        if self._max_loss_r_tiered and t.float_m > 0:
+            if t.float_m < self._max_loss_r_float_thresh_low:
+                _eff_mlr = self._max_loss_r_ultra_low
+            elif t.float_m <= self._max_loss_r_float_thresh_high:
+                _eff_mlr = self._max_loss_r_low
+        if _eff_mlr > 0 and t.r > 0:
+            loss_per_share = t.entry - bid
+            if loss_per_share >= _eff_mlr * t.r:
+                print(f"🟥 SQ_EXIT {symbol}: sq_max_loss_hit @ {bid:.4f}", flush=True)
+                self._exit(symbol, qty=t.qty_total, reason="sq_max_loss_hit", price=bid)
+                return
+
+        # --- Pre-target phase (full position) ---
+        if not t.tp_hit:
+            # 3) Trailing stop (pre-target)
+            if t.r > 0:
+                is_parabolic = "[PARABOLIC]" in (getattr(t, 'score_detail', '') or '')
+                trail_r = self.sq_para_trail_r if is_parabolic else self.sq_trail_r
+                trail_price = t.peak - (trail_r * t.r)
+                if bid <= trail_price:
+                    reason = "sq_para_trail_exit" if is_parabolic else "sq_trail_exit"
+                    print(f"🟥 SQ_EXIT {symbol}: {reason} @ {bid:.4f} (peak={t.peak:.4f})", flush=True)
+                    self._exit(symbol, qty=t.qty_total, reason=reason, price=bid)
+                    return
+
+            # 4) Target hit — exit core, keep runner
+            if t.r > 0 and bid >= t.entry + (self.sq_target_r * t.r):
+                t.tp_hit = True
+                qty_core = max(1, int(t.qty_total * self.sq_core_pct / 100))
+                qty_runner = t.qty_total - qty_core
+                print(f"🟢 SQ_TARGET_HIT {symbol}: +{self.sq_target_r}R @ {bid:.4f} — exiting core ({qty_core}), keeping runner ({qty_runner})", flush=True)
+                if qty_runner > 0:
+                    # Move stop to breakeven for runner
+                    t.runner_stop = max(t.stop, t.entry + 0.01)
+                    self._exit(symbol, qty=qty_core, reason="sq_target_hit", price=bid)
+                else:
+                    self._exit(symbol, qty=t.qty_total, reason="sq_target_hit", price=bid)
+                return
+
+        # --- Post-target phase (runner only) ---
+        if t.tp_hit and t.qty_total > 0:
+            # Runner trailing stop
+            if t.r > 0:
+                runner_trail = t.peak - (self.sq_runner_trail_r * t.r)
+                runner_stop = max(getattr(t, 'runner_stop', t.stop), runner_trail)
+                if bid <= runner_stop:
+                    print(f"🟥 SQ_RUNNER_EXIT {symbol}: sq_runner_trail @ {bid:.4f} (peak={t.peak:.4f})", flush=True)
+                    self._exit(symbol, qty=t.qty_total, reason="sq_runner_trail", price=bid)
+                    return
+
     def _manage_exits(self, symbol: str):
         # ✅ Stale-price warning (rate-limited)
         self._warn_if_stale_trade_and_quote(symbol)
@@ -2922,6 +3013,11 @@ class PaperTradeManager:
             bid = last
 
         t.peak = max(t.peak, float(bid))
+
+        # --- Route squeeze exits ---
+        if t.setup_type == "squeeze":
+            self._squeeze_manage_exits(symbol, t, float(bid))
+            return
 
         # --- MAX LOSS CAP (hard safety net) ---
         # Determine effective cap: flat or float-tiered

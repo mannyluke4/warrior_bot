@@ -192,6 +192,10 @@ class SimTradeManager:
         self._sq_bars_no_new_high = 0  # stall counter for squeeze time stop
         self._sq_last_vwap: Optional[float] = None  # updated on 1m bar close
 
+        # --- Bail timer (matches live bot) ---
+        self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
+        self.bail_timer_minutes = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
         # Fix 1: partial exit on sq_target_hit — take only N% at target, let rest run
         self.sq_partial_exit_enabled = os.getenv("WB_SQ_PARTIAL_EXIT_ENABLED", "0") == "1"
         self.sq_partial_pct = int(os.getenv("WB_SQ_PARTIAL_PCT", "50"))
@@ -462,6 +466,22 @@ class SimTradeManager:
                 self._sq_bars_no_new_high = 0
             elif t.setup_type == "vwap_reclaim":
                 self._vr_bars_no_new_high = 0
+
+        # --- Bail timer: exit if unprofitable after N minutes ---
+        if self.bail_timer_enabled and t.entry_time:
+            entry_min = int(t.entry_time.split(":")[0]) * 60 + int(t.entry_time.split(":")[1])
+            now_min = int(time_str.split(":")[0]) * 60 + int(time_str.split(":")[1])
+            if (now_min - entry_min) >= self.bail_timer_minutes:
+                if price <= t.entry:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = "bail_timer"
+                    if t.qty_runner > 0:
+                        t.runner_exit_price = price
+                        t.runner_exit_time = time_str
+                        t.runner_exit_reason = "bail_timer"
+                    self._close(t)
+                    return
 
         # --- Route squeeze exits ---
         if t.setup_type == "squeeze":

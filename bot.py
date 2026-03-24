@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, timezone
 from logger import log_event
 from bars import TradeBarBuilder
 from micro_pullback import MicroPullbackDetector
+from squeeze_detector import SqueezeDetector
 from trade_manager import PaperTradeManager
 from stock_filter import StockFilter
 from market_scanner import MarketScanner
@@ -43,6 +44,7 @@ if not API_KEY or not API_SECRET:
 # Strategy gates
 # -----------------------------
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"  # OFF: 0% win rate Jan 2025, -$3,947
+SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 
 # Console-noise controls
 # -----------------------------
@@ -203,6 +205,8 @@ def seed_symbol_from_history(symbol: str, minutes: int = 60):
             v = float(b.volume)
 
             det.seed_bar_close(o, h, l, c, v)
+            if SQ_ENABLED:
+                ensure_sq_detector(symbol).seed_bar_close(o, h, l, c, v)
 
             # Seed VWAP/HOD/PM_HIGH in bar_builder without triggering on_bar_close
             ts = getattr(b, "timestamp", None) or getattr(b, "t", None) or end
@@ -237,6 +241,7 @@ premarket_reported: set[str] = set()
 _premarket_reported_date: str = ""  # ET date string when premarket_reported was last cleared
 
 detectors: dict[str, MicroPullbackDetector] = {}
+sq_detectors: dict[str, SqueezeDetector] = {}
 stop_flag = threading.Event()
 
 # Simple lock for shared counters/maps (keeps races from doing weird things)
@@ -249,6 +254,17 @@ def ensure_detector(symbol: str) -> MicroPullbackDetector:
         detectors[symbol] = det
         print(f"Detector created for {symbol}: max_pullback_bars={det.max_pullback_bars}", flush=True)
     return detectors[symbol]
+
+def ensure_sq_detector(symbol: str) -> SqueezeDetector:
+    if symbol not in sq_detectors:
+        sq_det = SqueezeDetector()
+        sq_det.symbol = symbol
+        info = _stock_info_cache.get(symbol)
+        if info and hasattr(info, 'gap_pct'):
+            sq_det.gap_pct = info.gap_pct
+        sq_detectors[symbol] = sq_det
+        print(f"SqueezeDetector created for {symbol}", flush=True)
+    return sq_detectors[symbol]
 
 def _now_utc_epoch() -> float:
     return time.time()
@@ -424,6 +440,21 @@ def on_bar_close_1m(bar):
     # PRIMARY: 1-minute setup detection
     msg = det.on_bar_close_1m(bar, vwap=vwap)
 
+    # Squeeze detector: 1m bar processing
+    if SQ_ENABLED:
+        sq_det = ensure_sq_detector(symbol)
+        pm_bf_high = bar_builder.get_premarket_bull_flag_high(symbol) if bar_builder else None
+        sq_det.update_premarket_levels(pm_high, pm_bf_high)
+        sq_msg = sq_det.on_bar_close_1m(bar, vwap=vwap)
+        if sq_msg:
+            log_event("signal_1m_squeeze", symbol, msg=sq_msg, close=bar.close, vwap=vwap)
+            if PRINT_ARMED_ONLY and "ARMED" in sq_msg:
+                now_et_str = datetime.now(ET).strftime("%H:%M:%S")
+                print(f"[{now_et_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+            elif PRINT_BAR_SIGNALS and sq_msg:
+                now_et_str = datetime.now(ET).strftime("%H:%M:%S")
+                print(f"[{now_et_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+
     # Block ARM signals for symbols that failed session-start filter
     if msg and msg.startswith("ARMED") and symbol in _session_filtered_out:
         msg = None
@@ -575,6 +606,22 @@ def on_trade(symbol: str, price: float, size: int, ts: datetime):
         # Fast trigger check on prints (includes both micro pullback and Gap and Go)
         # Pass is_premarket so Gap and Go doesn't fire on continuously-updating pm_high during premarket
         in_premarket = bar_builder.is_premarket(ts) if bar_builder else False
+
+        # --- Squeeze trigger (priority over MP, same as simulate.py) ---
+        if (SQ_ENABLED and trade_manager
+            and symbol not in trade_manager.open
+            and symbol not in trade_manager.pending):
+            sq_det = ensure_sq_detector(symbol)
+            sq_armed_before = sq_det.armed
+            sq_msg = sq_det.on_trade_price(price, is_premarket=in_premarket)
+            if sq_msg and "ENTRY SIGNAL" in sq_msg and sq_armed_before:
+                now = datetime.now(ET).strftime("%H:%M:%S")
+                entry_signal_hits += 1
+                print(f"[{now} ET] {symbol} SQ | {sq_msg}", flush=True)
+                print(f"🟩 Sending SQ to trade_manager: {symbol}", flush=True)
+                trade_manager.on_signal(symbol, sq_msg)
+                sq_det.notify_trade_opened()
+
         msg = det.on_trade_price(price, is_premarket=in_premarket)
         # Suppress all signal activity for symbols that failed session-start filter
         if msg and symbol in _session_filtered_out:
@@ -860,6 +907,9 @@ def main():
     def _on_trade_close(symbol: str, pnl: float):
         if symbol in detectors:
             detectors[symbol].record_trade_result(pnl)
+        # Notify squeeze detector of trade close (for per-symbol loss tracking)
+        if SQ_ENABLED and symbol in sq_detectors:
+            sq_detectors[symbol].notify_trade_closed(symbol, pnl)
     trade_manager.on_trade_close_callback = _on_trade_close
 
     print(f"✅ PaperTradeManager initialized (stock_info cached: {len(stock_info_cache)} symbols)", flush=True)
