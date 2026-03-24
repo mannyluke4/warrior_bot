@@ -502,21 +502,19 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
     return late_movers
 
 
-# Continuous scanning checkpoints (all times ET)
-# Generate 5-minute rescan checkpoints from 07:20 to 10:30
-def _build_checkpoints(start_h=7, start_m=15, end_h=10, end_m=30, step_min=5):
+# Rescan checkpoints — manually tuned windows with 9:30 cutoff
+_CHECKPOINT_LABELS = [
+    "07:00", "07:15", "07:30", "07:45",
+    "08:00", "08:10", "08:15", "08:30", "08:45",
+    "09:00", "09:15", "09:30",
+]
+
+def _build_checkpoints():
     checkpoints = []
     windows = []
-    h, m = start_h, start_m
-    prev_h, prev_m = start_h, start_m
-    while True:
-        m += step_min
-        if m >= 60:
-            h += 1
-            m -= 60
-        if h > end_h or (h == end_h and m > end_m):
-            break
-        label = f"{h:02d}:{m:02d}"
+    prev_h, prev_m = 4, 0  # PM scan starts at 4:00
+    for label in _CHECKPOINT_LABELS:
+        h, m = int(label[:2]), int(label[3:])
         checkpoints.append((label, h, m))
         windows.append((label, prev_h, prev_m, h, m))
         prev_h, prev_m = h, m
