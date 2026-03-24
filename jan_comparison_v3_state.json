@@ -1,6 +1,6 @@
 {
   "jan2025": {
-    "equity": 35837,
+    "equity": 33121,
     "trades": [
       {
         "num": 1,
@@ -25,10 +25,10 @@
         "stop": 2.91,
         "r": 0.13,
         "score": 7.9,
-        "exit_price": 2.91,
-        "reason": "sq_stop_hit",
-        "pnl": -375,
-        "r_mult": "-1.0R",
+        "exit_price": 2.95,
+        "reason": "sq_para_trail_exit",
+        "pnl": -260,
+        "r_mult": "-0.7R",
         "symbol": "ORIS",
         "date": "2025-01-02",
         "notional": 17538.461538461535,
@@ -41,13 +41,45 @@
         "stop": 4.9,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 7.47,
-        "reason": "ross_doji_partial",
-        "pnl": 5546,
-        "r_mult": "+15.2R",
+        "exit_price": 6.24,
+        "reason": "sq_target_hit",
+        "pnl": 2175,
+        "r_mult": "+5.9R",
         "symbol": "GDTC",
         "date": "2025-01-06",
-        "notional": 26315.999999999996,
+        "notional": 26423.999999999996,
+        "setup_type": "squeeze"
+      },
+      {
+        "num": 2,
+        "time": "07:06",
+        "entry": 7.02,
+        "stop": 5.0,
+        "r": 2.02,
+        "score": 10.5,
+        "exit_price": 7.47,
+        "reason": "ross_doji_partial",
+        "pnl": 207,
+        "r_mult": "+0.3R",
+        "symbol": "GDTC",
+        "date": "2025-01-06",
+        "notional": 2550.831683168317,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 3,
+        "time": "07:09",
+        "entry": 7.8,
+        "stop": 7.26,
+        "r": 0.54,
+        "score": 9.0,
+        "exit_price": 7.33,
+        "reason": "max_loss_hit",
+        "pnl": -319,
+        "r_mult": "-0.4R",
+        "symbol": "GDTC",
+        "date": "2025-01-06",
+        "notional": 10602.22222222222,
         "setup_type": "micro_pullback"
       },
       {
@@ -59,11 +91,11 @@
         "score": 11.0,
         "exit_price": 3.07,
         "reason": "sq_max_loss_hit",
-        "pnl": -372,
+        "pnl": -336,
         "r_mult": "-0.9R",
         "symbol": "MYSE",
         "date": "2025-01-07",
-        "notional": 19800.785714285714,
+        "notional": 17886.785714285714,
         "setup_type": "squeeze"
       },
       {
@@ -73,13 +105,13 @@
         "stop": 3.05,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 3.07,
-        "reason": "sq_max_loss_hit",
-        "pnl": -372,
-        "r_mult": "-0.9R",
+        "exit_price": 3.09,
+        "reason": "sq_para_trail_exit",
+        "pnl": -280,
+        "r_mult": "-0.7R",
         "symbol": "MYSE",
         "date": "2025-01-07",
-        "notional": 19800.785714285714,
+        "notional": 17886.785714285714,
         "setup_type": "squeeze"
       },
       {
@@ -89,10 +121,10 @@
         "stop": 1.9,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 1.93,
-        "reason": "sq_max_loss_hit",
-        "pnl": -98,
-        "r_mult": "-0.8R",
+        "exit_price": 1.96,
+        "reason": "sq_para_trail_exit",
+        "pnl": -71,
+        "r_mult": "-0.6R",
         "symbol": "SILO",
         "date": "2025-01-08",
         "notional": 3642.8571428571427,
@@ -105,14 +137,14 @@
         "stop": 2.33,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 2.5717,
-        "reason": "ross_shooting_star",
-        "pnl": 91,
-        "r_mult": "+0.7R",
+        "exit_price": 2.76,
+        "reason": "sq_target_hit",
+        "pnl": 134,
+        "r_mult": "+1.1R",
         "symbol": "SILO",
         "date": "2025-01-08",
         "notional": 4410.714285714285,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -121,13 +153,13 @@
         "stop": 3.59,
         "r": 0.14,
         "score": 6.5,
-        "exit_price": 3.59,
-        "reason": "sq_stop_hit",
-        "pnl": -425,
-        "r_mult": "-1.0R",
+        "exit_price": 3.61,
+        "reason": "sq_para_trail_exit",
+        "pnl": -330,
+        "r_mult": "-0.9R",
         "symbol": "VMAR",
         "date": "2025-01-10",
-        "notional": 22673.071428571428,
+        "notional": 20541.642857142855,
         "setup_type": "squeeze"
       },
       {
@@ -155,11 +187,11 @@
         "score": 18.0,
         "exit_price": 2.48,
         "reason": "ross_ema20_break",
-        "pnl": -401,
+        "pnl": -364,
         "r_mult": "-0.5R",
         "symbol": "ATPC",
         "date": "2025-01-13",
-        "notional": 5135.454545454545,
+        "notional": 4664.704545454545,
         "setup_type": "micro_pullback"
       },
       {
@@ -185,10 +217,10 @@
         "stop": 4.48,
         "r": 0.13,
         "score": 11.0,
-        "exit_price": 5.3798,
-        "reason": "ross_doji_partial",
-        "pnl": 711,
-        "r_mult": "+5.7R",
+        "exit_price": 5.32,
+        "reason": "ross_shooting_star",
+        "pnl": 682,
+        "r_mult": "+5.5R",
         "symbol": "AIFF",
         "date": "2025-01-14",
         "notional": 8865.384615384615,
@@ -201,13 +233,13 @@
         "stop": 2.9,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 2.92,
-        "reason": "sq_max_loss_hit",
-        "pnl": -354,
-        "r_mult": "-0.9R",
+        "exit_price": 3.54,
+        "reason": "sq_target_hit",
+        "pnl": 711,
+        "r_mult": "+1.9R",
         "symbol": "OST",
         "date": "2025-01-14",
-        "notional": 17957.714285714286,
+        "notional": 16329.142857142855,
         "setup_type": "squeeze"
       },
       {
@@ -251,11 +283,11 @@
         "score": 11.0,
         "exit_price": 4.151,
         "reason": "ross_shooting_star",
-        "pnl": 330,
+        "pnl": 310,
         "r_mult": "+0.8R",
         "symbol": "WHLR",
         "date": "2025-01-16",
-        "notional": 24037.999999999996,
+        "notional": 22595.142857142855,
         "setup_type": "micro_pullback"
       },
       {
@@ -267,11 +299,11 @@
         "score": 16.5,
         "exit_price": 3.4,
         "reason": "max_loss_hit",
-        "pnl": -364,
+        "pnl": -343,
         "r_mult": "-0.4R",
         "symbol": "PTHS",
         "date": "2025-01-21",
-        "notional": 10260.2,
+        "notional": 9650.2,
         "setup_type": "micro_pullback"
       },
       {
@@ -283,11 +315,11 @@
         "score": 12.0,
         "exit_price": 2.32,
         "reason": "sq_max_loss_hit",
-        "pnl": -360,
+        "pnl": -339,
         "r_mult": "-0.9R",
         "symbol": "LEDS",
         "date": "2025-01-21",
-        "notional": 14657.42857142857,
+        "notional": 13785.999999999998,
         "setup_type": "squeeze"
       },
       {
@@ -299,28 +331,28 @@
         "score": 9.5,
         "exit_price": 4.12,
         "reason": "ross_doji_partial",
-        "pnl": 382,
+        "pnl": 359,
         "r_mult": "+0.9R",
         "symbol": "VNCE",
         "date": "2025-01-23",
-        "notional": 23749.428571428572,
+        "notional": 22335.428571428572,
         "setup_type": "micro_pullback"
       },
       {
-        "num": 3,
-        "time": "10:06",
+        "num": 2,
+        "time": "09:32",
         "entry": 4.64,
-        "stop": 4.39,
-        "r": 0.25,
-        "score": 8.5,
-        "exit_price": 4.8501,
-        "reason": "ross_cuc_exit",
-        "pnl": 692,
-        "r_mult": "+0.8R",
+        "stop": 4.5,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.52,
+        "reason": "sq_max_loss_hit",
+        "pnl": -332,
+        "r_mult": "-0.9R",
         "symbol": "VNCE",
         "date": "2025-01-23",
-        "notional": 15274.88,
-        "setup_type": "micro_pullback"
+        "notional": 25652.571428571428,
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -329,29 +361,29 @@
         "stop": 7.9,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 10.61,
-        "reason": "ross_doji_partial",
-        "pnl": 2212,
-        "r_mult": "+17.7R",
+        "exit_price": 8.4,
+        "reason": "sq_target_hit",
+        "pnl": 1525,
+        "r_mult": "+12.2R",
         "symbol": "ALUR",
         "date": "2025-01-24",
         "notional": 14357.142857142855,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 2,
-        "time": "07:33",
-        "entry": 11.04,
-        "stop": 10.9,
+        "time": "07:41",
+        "entry": 13.04,
+        "stop": 12.9,
         "r": 0.14,
-        "score": 5.4,
-        "exit_price": 10.92,
-        "reason": "sq_max_loss_hit",
-        "pnl": -107,
-        "r_mult": "-0.9R",
+        "score": 6.6,
+        "exit_price": 14.39,
+        "reason": "sq_target_hit",
+        "pnl": 932,
+        "r_mult": "+7.5R",
         "symbol": "ALUR",
         "date": "2025-01-24",
-        "notional": 19714.28571428571,
+        "notional": 23285.714285714283,
         "setup_type": "squeeze"
       },
       {
@@ -371,6 +403,22 @@
         "setup_type": "micro_pullback"
       },
       {
+        "num": 2,
+        "time": "09:32",
+        "entry": 2.48,
+        "stop": 2.36,
+        "r": 0.12,
+        "score": 11.0,
+        "exit_price": 2.72,
+        "reason": "sq_target_hit",
+        "pnl": 125,
+        "r_mult": "+1.0R",
+        "symbol": "NVNI",
+        "date": "2025-01-24",
+        "notional": 5166.666666666667,
+        "setup_type": "squeeze"
+      },
+      {
         "num": 1,
         "time": "07:37",
         "entry": 2.3,
@@ -379,11 +427,11 @@
         "score": 14.0,
         "exit_price": 2.25,
         "reason": "ross_macd_negative",
-        "pnl": -214,
+        "pnl": -199,
         "r_mult": "-0.2R",
         "symbol": "SLXN",
         "date": "2025-01-29",
-        "notional": 9868.095238095239,
+        "notional": 9167.142857142857,
         "setup_type": "micro_pullback"
       },
       {
@@ -395,11 +443,11 @@
         "score": 9.2,
         "exit_price": 2.51,
         "reason": "ross_cuc_exit",
-        "pnl": 328,
+        "pnl": 304,
         "r_mult": "+0.7R",
         "symbol": "SLXN",
         "date": "2025-01-29",
-        "notional": 19903.909090909092,
+        "notional": 18490.09090909091,
         "setup_type": "micro_pullback"
       },
       {
@@ -409,14 +457,14 @@
         "stop": 3.35,
         "r": 0.14,
         "score": 11.0,
-        "exit_price": 4.45,
-        "reason": "ross_macd_negative_warning",
-        "pnl": 878,
-        "r_mult": "+7.0R",
+        "exit_price": 3.99,
+        "reason": "sq_target_hit",
+        "pnl": 633,
+        "r_mult": "+5.1R",
         "symbol": "AMOD",
         "date": "2025-01-30",
         "notional": 6232.142857142857,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -427,11 +475,11 @@
         "score": 13.5,
         "exit_price": 2.02,
         "reason": "max_loss_hit",
-        "pnl": -414,
+        "pnl": -385,
         "r_mult": "-0.5R",
         "symbol": "STAI",
         "date": "2025-01-30",
-        "notional": 16046.0,
+        "notional": 14910.0,
         "setup_type": "micro_pullback"
       },
       {
@@ -443,11 +491,11 @@
         "score": 14.3,
         "exit_price": 3.21,
         "reason": "max_loss_hit",
-        "pnl": -398,
+        "pnl": -368,
         "r_mult": "-0.4R",
         "symbol": "CYCN",
         "date": "2025-01-31",
-        "notional": 20442.140468227422,
+        "notional": 18900.602006688965,
         "setup_type": "micro_pullback"
       },
       {
@@ -459,11 +507,11 @@
         "score": 12.0,
         "exit_price": 3.91,
         "reason": "sq_max_loss_hit",
-        "pnl": -392,
+        "pnl": -363,
         "r_mult": "-0.9R",
         "symbol": "CYCN",
         "date": "2025-01-31",
-        "notional": 26338.928571428572,
+        "notional": 24352.714285714286,
         "setup_type": "squeeze"
       }
     ],
@@ -477,8 +525,8 @@
         "mp_trades": 0,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -750,
-        "equity": 29250
+        "day_pnl": -635,
+        "equity": 29365
       },
       {
         "date": "2025-01-03",
@@ -490,19 +538,19 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 29250
+        "equity": 29365
       },
       {
         "date": "2025-01-06",
         "total_cands": 5,
         "n_traded": 5,
-        "trades": 1,
-        "sq_trades": 0,
-        "mp_trades": 1,
-        "wins": 1,
-        "losses": 0,
-        "day_pnl": 5546,
-        "equity": 34796
+        "trades": 3,
+        "sq_trades": 1,
+        "mp_trades": 2,
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 2063,
+        "equity": 31428
       },
       {
         "date": "2025-01-07",
@@ -513,20 +561,20 @@
         "mp_trades": 0,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -744,
-        "equity": 34052
+        "day_pnl": -616,
+        "equity": 30812
       },
       {
         "date": "2025-01-08",
         "total_cands": 3,
         "n_traded": 3,
         "trades": 2,
-        "sq_trades": 1,
-        "mp_trades": 1,
+        "sq_trades": 2,
+        "mp_trades": 0,
         "wins": 1,
         "losses": 1,
-        "day_pnl": -7,
-        "equity": 34045
+        "day_pnl": 63,
+        "equity": 30875
       },
       {
         "date": "2025-01-09",
@@ -538,7 +586,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 34045
+        "equity": 30875
       },
       {
         "date": "2025-01-10",
@@ -549,8 +597,8 @@
         "mp_trades": 0,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -425,
-        "equity": 33620
+        "day_pnl": -330,
+        "equity": 30545
       },
       {
         "date": "2025-01-13",
@@ -561,8 +609,8 @@
         "mp_trades": 2,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -502,
-        "equity": 33118
+        "day_pnl": -465,
+        "equity": 30080
       },
       {
         "date": "2025-01-14",
@@ -571,10 +619,10 @@
         "trades": 3,
         "sq_trades": 1,
         "mp_trades": 2,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": 249,
-        "equity": 33367
+        "wins": 2,
+        "losses": 1,
+        "day_pnl": 1285,
+        "equity": 31365
       },
       {
         "date": "2025-01-15",
@@ -586,7 +634,7 @@
         "wins": 1,
         "losses": 1,
         "day_pnl": -29,
-        "equity": 33338
+        "equity": 31336
       },
       {
         "date": "2025-01-16",
@@ -597,8 +645,8 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 330,
-        "equity": 33668
+        "day_pnl": 310,
+        "equity": 31646
       },
       {
         "date": "2025-01-17",
@@ -610,7 +658,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 33668
+        "equity": 31646
       },
       {
         "date": "2025-01-21",
@@ -621,8 +669,8 @@
         "mp_trades": 1,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -724,
-        "equity": 32944
+        "day_pnl": -682,
+        "equity": 30964
       },
       {
         "date": "2025-01-22",
@@ -634,31 +682,31 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 32944
+        "equity": 30964
       },
       {
         "date": "2025-01-23",
         "total_cands": 6,
         "n_traded": 5,
         "trades": 2,
-        "sq_trades": 0,
-        "mp_trades": 2,
-        "wins": 2,
-        "losses": 0,
-        "day_pnl": 1074,
-        "equity": 34018
+        "sq_trades": 1,
+        "mp_trades": 1,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 27,
+        "equity": 30991
       },
       {
         "date": "2025-01-24",
         "total_cands": 5,
         "n_traded": 5,
-        "trades": 3,
-        "sq_trades": 1,
-        "mp_trades": 2,
-        "wins": 1,
-        "losses": 2,
-        "day_pnl": 2031,
-        "equity": 36049
+        "trades": 4,
+        "sq_trades": 3,
+        "mp_trades": 1,
+        "wins": 3,
+        "losses": 1,
+        "day_pnl": 2508,
+        "equity": 33499
       },
       {
         "date": "2025-01-27",
@@ -670,7 +718,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 36049
+        "equity": 33499
       },
       {
         "date": "2025-01-28",
@@ -682,7 +730,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 36049
+        "equity": 33499
       },
       {
         "date": "2025-01-29",
@@ -693,20 +741,20 @@
         "mp_trades": 2,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 114,
-        "equity": 36163
+        "day_pnl": 105,
+        "equity": 33604
       },
       {
         "date": "2025-01-30",
         "total_cands": 3,
         "n_traded": 3,
         "trades": 2,
-        "sq_trades": 0,
-        "mp_trades": 2,
+        "sq_trades": 1,
+        "mp_trades": 1,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 464,
-        "equity": 36627
+        "day_pnl": 248,
+        "equity": 33852
       },
       {
         "date": "2025-01-31",
@@ -717,12 +765,12 @@
         "mp_trades": 1,
         "wins": 0,
         "losses": 2,
-        "day_pnl": -790,
-        "equity": 35837
+        "day_pnl": -731,
+        "equity": 33121
       }
     ],
-    "max_equity": 36627,
-    "max_drawdown": 1852,
+    "max_equity": 33852,
+    "max_drawdown": 1348,
     "dates_completed": [
       "2025-01-02",
       "2025-01-03",
@@ -748,7 +796,7 @@
     ]
   },
   "jan2026": {
-    "equity": 42677,
+    "equity": 43212,
     "trades": [
       {
         "num": 1,
@@ -773,10 +821,10 @@
         "stop": 7.9,
         "r": 0.14,
         "score": 9.9,
-        "exit_price": 7.9,
-        "reason": "sq_stop_hit",
-        "pnl": -370,
-        "r_mult": "-1.0R",
+        "exit_price": 8.32,
+        "reason": "sq_target_hit",
+        "pnl": 357,
+        "r_mult": "+1.0R",
         "symbol": "ACON",
         "date": "2026-01-08",
         "notional": 42554.57142857142,
@@ -791,11 +839,11 @@
         "score": 9.2,
         "exit_price": 8.18,
         "reason": "sq_max_loss_hit",
-        "pnl": -314,
+        "pnl": -321,
         "r_mult": "-0.9R",
         "symbol": "BDSX",
         "date": "2026-01-12",
-        "notional": 43397.14285714286,
+        "notional": 44464.28571428572,
         "setup_type": "squeeze"
       },
       {
@@ -805,13 +853,13 @@
         "stop": 1.9,
         "r": 0.14,
         "score": 7.7,
-        "exit_price": 1.9,
-        "reason": "sq_stop_hit",
-        "pnl": -362,
-        "r_mult": "-1.0R",
+        "exit_price": 1.92,
+        "reason": "sq_para_trail_exit",
+        "pnl": -318,
+        "r_mult": "-0.9R",
         "symbol": "SPRC",
         "date": "2026-01-13",
-        "notional": 10549.714285714284,
+        "notional": 10811.999999999998,
         "setup_type": "squeeze"
       },
       {
@@ -823,11 +871,11 @@
         "score": 17.0,
         "exit_price": 13.38,
         "reason": "ross_cuc_exit",
-        "pnl": 227,
+        "pnl": 234,
         "r_mult": "+0.3R",
         "symbol": "ROLR",
         "date": "2026-01-14",
-        "notional": 2444.5810055865923,
+        "notional": 2509.541899441341,
         "setup_type": "micro_pullback"
       },
       {
@@ -839,11 +887,11 @@
         "score": 7.8,
         "exit_price": 5.13,
         "reason": "ross_shooting_star",
-        "pnl": 1157,
+        "pnl": 1189,
         "r_mult": "+3.2R",
         "symbol": "CJMB",
         "date": "2026-01-15",
-        "notional": 24068.571428571424,
+        "notional": 24737.142857142855,
         "setup_type": "micro_pullback"
       },
       {
@@ -853,13 +901,13 @@
         "stop": 3.9,
         "r": 0.14,
         "score": 7.7,
-        "exit_price": 3.9,
-        "reason": "sq_stop_hit",
-        "pnl": -360,
-        "r_mult": "-1.0R",
+        "exit_price": 3.99,
+        "reason": "sq_para_trail_exit",
+        "pnl": -132,
+        "r_mult": "-0.4R",
         "symbol": "SPHL",
         "date": "2026-01-15",
-        "notional": 20777.142857142855,
+        "notional": 21354.285714285714,
         "setup_type": "squeeze"
       },
       {
@@ -871,11 +919,11 @@
         "score": 15.6,
         "exit_price": 5.66,
         "reason": "ross_shooting_star",
-        "pnl": 12825,
+        "pnl": 13277,
         "r_mult": "+17.3R",
         "symbol": "VERO",
         "date": "2026-01-16",
-        "notional": 22076.666666666668,
+        "notional": 22852.333333333336,
         "setup_type": "micro_pullback"
       },
       {
@@ -887,11 +935,11 @@
         "score": 9.1,
         "exit_price": 3.1099,
         "reason": "ross_cuc_exit",
-        "pnl": 795,
+        "pnl": 823,
         "r_mult": "+1.5R",
         "symbol": "POLA",
         "date": "2026-01-20",
-        "notional": 21977.857142857138,
+        "notional": 22744.28571428571,
         "setup_type": "micro_pullback"
       },
       {
@@ -903,11 +951,11 @@
         "score": 10.0,
         "exit_price": 3.53,
         "reason": "ross_cuc_exit",
-        "pnl": 1891,
+        "pnl": 1958,
         "r_mult": "+3.5R",
         "symbol": "SLGB",
         "date": "2026-01-21",
-        "notional": 23473.142857142855,
+        "notional": 24298.285714285714,
         "setup_type": "micro_pullback"
       },
       {
@@ -919,11 +967,27 @@
         "score": 17.0,
         "exit_price": 8.31,
         "reason": "ross_cuc_exit",
-        "pnl": -728,
+        "pnl": -754,
         "r_mult": "-0.6R",
         "symbol": "IOTR",
         "date": "2026-01-22",
-        "notional": 20256.999999999996,
+        "notional": 20975.333333333332,
+        "setup_type": "micro_pullback"
+      },
+      {
+        "num": 4,
+        "time": "09:41",
+        "entry": 7.29,
+        "stop": 6.87,
+        "r": 0.42,
+        "score": 16.0,
+        "exit_price": 6.87,
+        "reason": "stop_hit",
+        "pnl": -584,
+        "r_mult": "-0.5R",
+        "symbol": "SXTP",
+        "date": "2026-01-22",
+        "notional": 20273.14285714286,
         "setup_type": "micro_pullback"
       },
       {
@@ -935,11 +999,11 @@
         "score": 18.5,
         "exit_price": 19.36,
         "reason": "ross_cuc_exit",
-        "pnl": -797,
+        "pnl": -814,
         "r_mult": "-0.7R",
         "symbol": "MOVE",
         "date": "2026-01-23",
-        "notional": 28347.692307692312,
+        "notional": 28960.615384615387,
         "setup_type": "micro_pullback"
       },
       {
@@ -949,14 +1013,14 @@
         "stop": 4.9,
         "r": 0.14,
         "score": 6.0,
-        "exit_price": 6.15,
-        "reason": "ross_doji_partial",
-        "pnl": 937,
-        "r_mult": "+7.5R",
+        "exit_price": 5.32,
+        "reason": "sq_target_hit",
+        "pnl": 544,
+        "r_mult": "+4.4R",
         "symbol": "BATL",
         "date": "2026-01-26",
         "notional": 9000.0,
-        "setup_type": "micro_pullback"
+        "setup_type": "squeeze"
       },
       {
         "num": 1,
@@ -983,11 +1047,11 @@
         "score": 15.0,
         "exit_price": 4.104,
         "reason": "ross_doji_partial",
-        "pnl": -291,
+        "pnl": -295,
         "r_mult": "-0.3R",
         "symbol": "FEED",
         "date": "2026-01-29",
-        "notional": 22831.050000000003,
+        "notional": 23118.75,
         "setup_type": "micro_pullback"
       },
       {
@@ -999,11 +1063,11 @@
         "score": 15.5,
         "exit_price": 1.56,
         "reason": "stop_hit",
-        "pnl": -1490,
+        "pnl": -1509,
         "r_mult": "-1.4R",
         "symbol": "CISS",
         "date": "2026-01-30",
-        "notional": 8721.6,
+        "notional": 8832.2,
         "setup_type": "micro_pullback"
       }
     ],
@@ -1075,10 +1139,10 @@
         "trades": 1,
         "sq_trades": 1,
         "mp_trades": 0,
-        "wins": 0,
-        "losses": 1,
-        "day_pnl": -370,
-        "equity": 29286
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 357,
+        "equity": 30013
       },
       {
         "date": "2026-01-09",
@@ -1090,7 +1154,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 29286
+        "equity": 30013
       },
       {
         "date": "2026-01-12",
@@ -1101,8 +1165,8 @@
         "mp_trades": 0,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -314,
-        "equity": 28972
+        "day_pnl": -321,
+        "equity": 29692
       },
       {
         "date": "2026-01-13",
@@ -1113,8 +1177,8 @@
         "mp_trades": 0,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -362,
-        "equity": 28610
+        "day_pnl": -318,
+        "equity": 29374
       },
       {
         "date": "2026-01-14",
@@ -1125,8 +1189,8 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 227,
-        "equity": 28837
+        "day_pnl": 234,
+        "equity": 29608
       },
       {
         "date": "2026-01-15",
@@ -1137,8 +1201,8 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 1,
-        "day_pnl": 797,
-        "equity": 29634
+        "day_pnl": 1057,
+        "equity": 30665
       },
       {
         "date": "2026-01-16",
@@ -1149,8 +1213,8 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 12825,
-        "equity": 42459
+        "day_pnl": 13277,
+        "equity": 43942
       },
       {
         "date": "2026-01-20",
@@ -1161,8 +1225,8 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 795,
-        "equity": 43254
+        "day_pnl": 823,
+        "equity": 44765
       },
       {
         "date": "2026-01-21",
@@ -1173,20 +1237,20 @@
         "mp_trades": 1,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 1891,
-        "equity": 45145
+        "day_pnl": 1958,
+        "equity": 46723
       },
       {
         "date": "2026-01-22",
         "total_cands": 4,
         "n_traded": 4,
-        "trades": 1,
+        "trades": 2,
         "sq_trades": 0,
-        "mp_trades": 1,
+        "mp_trades": 2,
         "wins": 0,
-        "losses": 1,
-        "day_pnl": -728,
-        "equity": 44417
+        "losses": 2,
+        "day_pnl": -1338,
+        "equity": 45385
       },
       {
         "date": "2026-01-23",
@@ -1197,20 +1261,20 @@
         "mp_trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -797,
-        "equity": 43620
+        "day_pnl": -814,
+        "equity": 44571
       },
       {
         "date": "2026-01-26",
         "total_cands": 5,
         "n_traded": 5,
         "trades": 1,
-        "sq_trades": 0,
-        "mp_trades": 1,
+        "sq_trades": 1,
+        "mp_trades": 0,
         "wins": 1,
         "losses": 0,
-        "day_pnl": 937,
-        "equity": 44557
+        "day_pnl": 544,
+        "equity": 45115
       },
       {
         "date": "2026-01-27",
@@ -1222,7 +1286,7 @@
         "wins": 0,
         "losses": 1,
         "day_pnl": -99,
-        "equity": 44458
+        "equity": 45016
       },
       {
         "date": "2026-01-28",
@@ -1234,7 +1298,7 @@
         "wins": 0,
         "losses": 0,
         "day_pnl": 0,
-        "equity": 44458
+        "equity": 45016
       },
       {
         "date": "2026-01-29",
@@ -1245,8 +1309,8 @@
         "mp_trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -291,
-        "equity": 44167
+        "day_pnl": -295,
+        "equity": 44721
       },
       {
         "date": "2026-01-30",
@@ -1257,12 +1321,12 @@
         "mp_trades": 1,
         "wins": 0,
         "losses": 1,
-        "day_pnl": -1490,
-        "equity": 42677
+        "day_pnl": -1509,
+        "equity": 43212
       }
     ],
-    "max_equity": 45145,
-    "max_drawdown": 2468,
+    "max_equity": 46723,
+    "max_drawdown": 3511,
     "dates_completed": [
       "2026-01-02",
       "2026-01-03",

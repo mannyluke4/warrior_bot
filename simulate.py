@@ -217,6 +217,8 @@ class SimTradeManager:
 
         # --- Ross exit mode (WB_ROSS_EXIT_ENABLED=0 by default) ---
         self.ross_exit_enabled = os.getenv("WB_ROSS_EXIT_ENABLED", "0") == "1"
+        # SQ + Ross coexistence: let SQ mechanical exits (target hit, trail) work alongside Ross 1m signals
+        self.sq_ross_coexist = os.getenv("WB_SQ_ROSS_COEXIST", "0") == "1"
 
         # --- Halt-through (WB_HALT_THROUGH_ENABLED=0 by default) ---
         self._halt_through_enabled = os.getenv("WB_HALT_THROUGH_ENABLED", "0") == "1"
@@ -660,10 +662,10 @@ class SimTradeManager:
                 return
 
         # --- Pre-target phase (full position) ---
-        # When Ross exit is ON, skip mechanical trail and target exits entirely —
-        # Ross 1m signals (CUC, MACD, VWAP, EMA20, etc.) handle all exits.
-        # Only hard stops above (dollar loss cap, stop_hit, max_loss_hit) remain active.
-        if not t.tp_hit and not self.ross_exit_enabled:
+        # When Ross exit is ON and coexist is OFF, skip mechanical trail and target exits entirely —
+        # Ross 1m signals handle all exits. When coexist is ON, SQ/VR mechanical exits
+        # run alongside Ross signals: SQ handles core exit at target, Ross handles runner.
+        if not t.tp_hit and (not self.ross_exit_enabled or self.sq_ross_coexist):
             # 3) Trailing stop (pre-target) — tighter for parabolic entries
             # Halt-through: skip trail during halt/grace (hard stop above still active)
             if t.r > 0 and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
@@ -699,8 +701,8 @@ class SimTradeManager:
                 return
 
         # --- Post-target phase (runner only) ---
-        # Also skipped when Ross exit is ON (tp_hit never set, runner handled by Ross signals)
-        if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0 and not self.ross_exit_enabled:
+        # Skipped when Ross exit is ON (unless coexist allows SQ runner management)
+        if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0 and (not self.ross_exit_enabled or self.sq_ross_coexist):
             # Runner trailing stop
             # Halt-through: skip trail update/check during halt/grace
             if t.r > 0 and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
@@ -827,9 +829,9 @@ class SimTradeManager:
                 return
 
         # --- Pre-target phase ---
-        # When Ross exit is ON, skip mechanical trail and target exits —
-        # Ross 1m signals handle all exits; only hard stops above remain active.
-        if not t.tp_hit and not self.ross_exit_enabled:
+        # When Ross exit is ON and coexist is OFF, skip mechanical exits.
+        # When coexist is ON, VR mechanical exits run alongside Ross signals.
+        if not t.tp_hit and (not self.ross_exit_enabled or self.sq_ross_coexist):
             # Trailing stop (pre-target)
             if t.r > 0:
                 trail_price = t.peak - (self.vr_trail_r * t.r)
@@ -855,7 +857,7 @@ class SimTradeManager:
                 else:
                     self._close(t)
                 return
-        elif not self.ross_exit_enabled:
+        elif not self.ross_exit_enabled or self.sq_ross_coexist:
             # --- Post-target: runner management ---
             if t.qty_runner > 0 and t.runner_exit_price == 0:
                 runner_trail = t.peak - (self.vr_runner_trail_r * t.r)
