@@ -32,5 +32,39 @@
     "float_shares": 2581204,
     "float_millions": 2.58,
     "profile": "A"
+  },
+  {
+    "symbol": "LRHC",
+    "prev_close": 2.99,
+    "pm_price": 5.4,
+    "gap_pct": 80.6,
+    "pm_volume": 15138569.0,
+    "first_seen_et": "08:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 5721159.0,
+    "relative_volume": 2.65,
+    "precise_discovery": "04:01",
+    "float_shares": 133706,
+    "float_millions": 0.13,
+    "profile": "A"
+  },
+  {
+    "symbol": "CISS",
+    "prev_close": 1.44,
+    "pm_price": 2.04,
+    "gap_pct": 41.67,
+    "pm_volume": 11814093.0,
+    "first_seen_et": "08:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 4223335.0,
+    "relative_volume": 2.8,
+    "precise_discovery": "06:49",
+    "float_shares": 51820,
+    "float_millions": 0.05,
+    "profile": "A"
   }
 ]

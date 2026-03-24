@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "AHMA",
+    "prev_close": 4.545,
+    "pm_price": 6.6608,
+    "gap_pct": 46.55,
+    "pm_volume": 3370479.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:30",
+    "discovery_time": "09:30",
+    "discovery_method": "precise",
+    "avg_daily_volume": 29919.0,
+    "relative_volume": 112.66,
+    "precise_discovery": "09:15",
+    "float_shares": 2020480,
+    "float_millions": 2.02,
+    "profile": "A"
+  },
+  {
+    "symbol": "UGRO",
+    "prev_close": 2.18,
+    "pm_price": 3.2,
+    "gap_pct": 46.79,
+    "pm_volume": 2499306.0,
+    "first_seen_et": "04:39",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 75634.0,
+    "relative_volume": 33.04,
+    "precise_discovery": "07:06",
+    "float_shares": 674829,
+    "float_millions": 0.67,
+    "profile": "A"
+  },
+  {
+    "symbol": "WSHP",
+    "prev_close": 11.67,
+    "pm_price": 14.0,
+    "gap_pct": 19.97,
+    "pm_volume": 136455.0,
+    "first_seen_et": "08:00",
+    "sim_start": "08:00",
+    "discovery_time": "08:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 61824.0,
+    "relative_volume": 2.21,
+    "precise_discovery": "07:58",
+    "float_shares": 1325397,
+    "float_millions": 1.33,
+    "profile": "A"
+  }
+]
