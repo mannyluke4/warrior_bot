@@ -57,8 +57,8 @@ MIN_PRICE = float(os.getenv("WB_MIN_PRICE", "2.00"))
 MAX_PRICE = float(os.getenv("WB_MAX_PRICE", "20.00"))
 WINDOW_START_HOUR = 7
 WINDOW_START_MINUTE = 0
-WINDOW_END_HOUR = 11
-WINDOW_END_MINUTE = 0
+WINDOW_END_HOUR = 9              # Scanner stops adding new symbols at 9:30 (negative EV after)
+WINDOW_END_MINUTE = 30
 MIN_FLOAT = int(float(os.getenv("WB_MIN_FLOAT", "0.5")) * 1_000_000)
 MAX_FLOAT = int(float(os.getenv("WB_MAX_FLOAT", "15")) * 1_000_000)
 MIN_PM_VOLUME = int(os.getenv("WB_MIN_PM_VOLUME", "50000"))
@@ -480,6 +480,11 @@ class LiveScanner:
     # Watchlist output
     # -----------------------------------------------------------------------
 
+    def _get_current_symbols(self) -> set:
+        """Return current candidate symbols."""
+        with self.lock:
+            return set(self.candidates.keys())
+
     def write_watchlist(self, label: str = "final"):
         """Write qualified candidates to watchlist.txt (and save JSON snapshot).
         Filters by RVOL/volume, ranks by composite score, append-only."""
@@ -624,8 +629,10 @@ class LiveScanner:
         self.log.info(f"      Stream started, replaying from {premarket_start.strftime('%H:%M')} ET...")
 
         try:
-            # Step 3: Time-managed loop (continuous until 11:00 AM ET)
-            last_update_minute = -1  # track last 5-min update write
+            # Step 3: Time-managed loop (continuous until 9:30 AM ET cutoff)
+            last_update_minute = -1  # track last 1-min update write
+            _new_symbol_cutoff_h, _new_symbol_cutoff_m = 9, 30
+            _seen_symbols: set = set()  # track symbols for post-cutoff filtering
             while True:
                 now_et = datetime.now(ET)
                 h, m = now_et.hour, now_et.minute
@@ -635,6 +642,8 @@ class LiveScanner:
                     self._initial_watchlist_written = True
                     self.write_watchlist("initial")
                     last_update_minute = m
+                    # Snapshot current symbols
+                    _seen_symbols.update(self._get_current_symbols())
 
                 # Scheduled write at 7:14 AM
                 if not self._final_watchlist_written and (
@@ -643,19 +652,21 @@ class LiveScanner:
                     self._final_watchlist_written = True
                     self.write_watchlist("7_14")
                     last_update_minute = m
+                    _seen_symbols.update(self._get_current_symbols())
 
-                # After 7:14, continue writing every 5 minutes until 11:00 AM
-                if self._final_watchlist_written and h < WINDOW_END_HOUR:
-                    current_5min = (h * 60 + m) // 5
-                    last_5min = (h * 60 + last_update_minute) // 5 if last_update_minute >= 0 else -1
-                    if current_5min > last_5min:
+                # After 7:14, write every 1 minute until 9:30 cutoff
+                if self._final_watchlist_written and m != last_update_minute:
+                    past_cutoff = (h > _new_symbol_cutoff_h or
+                                   (h == _new_symbol_cutoff_h and m >= _new_symbol_cutoff_m))
+                    if not past_cutoff:
                         self.write_watchlist(f"update_{h:02d}{m:02d}")
                         last_update_minute = m
+                        _seen_symbols.update(self._get_current_symbols())
 
-                # Stop at 11:00 AM ET
-                if h >= WINDOW_END_HOUR:
+                # Stop at 9:30 AM ET — write final and exit
+                if h > _new_symbol_cutoff_h or (h == _new_symbol_cutoff_h and m >= _new_symbol_cutoff_m):
                     self.write_watchlist("final")
-                    self.log.info(f"Scanner window closed ({WINDOW_END_HOUR}:00 AM ET). Stopping stream.")
+                    self.log.info(f"Scanner cutoff reached (9:30 AM ET). Stopping stream.")
                     break
 
                 time.sleep(5)

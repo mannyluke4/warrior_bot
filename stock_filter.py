@@ -45,8 +45,8 @@ class StockFilter:
         self.min_gap_pct = float(os.getenv("WB_MIN_GAP_PCT", "10"))  # 10% minimum (Ross Pillar 1)
         self.preferred_gap_pct = float(os.getenv("WB_PREFERRED_GAP_PCT", "20"))  # 20% preferred
         self.min_float = float(os.getenv("WB_MIN_FLOAT", "0.5"))  # 0.5M min (blocks micro-float)
-        self.max_float = float(os.getenv("WB_MAX_FLOAT", "10"))  # 10M shares max (Ross Pillar 5)
-        self.preferred_max_float = float(os.getenv("WB_PREFERRED_MAX_FLOAT", "10"))  # 10M preferred
+        self.max_float = float(os.getenv("WB_MAX_FLOAT", "15"))  # 15M shares max (raised from 10M)
+        self.preferred_max_float = float(os.getenv("WB_PREFERRED_MAX_FLOAT", "15"))  # 15M preferred
         self.min_rel_volume = float(os.getenv("WB_MIN_REL_VOLUME", "2.0"))  # 2x average (Ross Pillar 2)
         self.require_ema_alignment = os.getenv("WB_REQUIRE_EMA_ALIGNMENT", "0") == "1"
         self.min_price = float(os.getenv("WB_MIN_PRICE", "2.00"))  # $2 minimum (Ross Pillar 4)

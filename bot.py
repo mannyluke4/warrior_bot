@@ -667,11 +667,13 @@ def on_quote(symbol: str, bid, ask, ts: datetime):
         return
 
 # -----------------------------
-# Re-scan thread (periodic scanner, matches backtest checkpoints)
+# Re-scan thread (12 data-driven checkpoints, 9:30 cutoff)
 # -----------------------------
-# Checkpoints in ET hours — scanner re-runs at each to catch emerging movers
+# Dense coverage in golden hour (08:00-08:30), no post-9:30 additions (negative EV)
 RESCAN_CHECKPOINTS_ET = [
-    (7, 30), (8, 0), (8, 30), (9, 0), (9, 30), (10, 0), (10, 30),
+    (7, 0), (7, 15), (7, 30), (7, 45),
+    (8, 0), (8, 10), (8, 15), (8, 30), (8, 45),
+    (9, 0), (9, 15), (9, 30),
 ]
 
 # Shared set that watchlist_thread reads — new symbols appear here after re-scans
