@@ -104,7 +104,7 @@
     BTCT: ticks=73,600 armed=0 signals=0 trades=0 pnl=+0
   → 2025-01-17: 0 trades  pnl=+0  equity=$32,833
 
-[Jan2025 2025-01-21] 8 scanned → 8 passed → 5 selected  (uf=0 rescan=0)  risk=$820
+[Jan2025 2025-01-21] 8 scanned → 7 passed → 5 selected  (uf=0 rescan=0)  risk=$820
     INM: vol=6,624,898 gap=64% float=1.8M
     DWTX: vol=5,758,473 gap=41% float=1.4M
     PTHS: vol=10,909,159 gap=56% float=1.2M
@@ -390,14 +390,12 @@
     BBGI: ticks=4,522 armed=0 signals=0 trades=0 pnl=+0
   → 2026-01-28: 0 trades  pnl=+0  equity=$46,677
 
-[Jan2026 2026-01-29] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$1166
+[Jan2026 2026-01-29] 5 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1166
     SER: vol=26,039,627 gap=62% float=3.6M
-    DCX: vol=14,040,287 gap=43% float=0.0M
     FEED: vol=42,054,496 gap=70% float=0.8M
     ZSTK: vol=409,368 gap=31% float=2.3M
     DZZ: vol=96,605 gap=34% float=2.7M
     SER: ticks=285,606 armed=0 signals=0 trades=0 pnl=+0
-    DCX: ticks=160,595 armed=0 signals=0 trades=0 pnl=+0
     FEED: ticks=408,164 armed=1 signals=1 trades=1 pnl=-35
     ZSTK: ticks=31,175 armed=0 signals=0 trades=0 pnl=+0
     DZZ: ticks=1,233 armed=1 signals=0 trades=0 pnl=+0
@@ -421,7 +419,7 @@
 ╠═══════════════════════════════╬═══════════════╬═══════════════════════╣
 ║ Trading Days                  ║      21       ║          21           ║
 ║ Scanner Candidates (total)    ║      71       ║          91           ║
-║ Candidates Passing Filters    ║      71       ║          91           ║
+║ Candidates Passing Filters    ║      70       ║          90           ║
 ║ Unknown-Float Candidates      ║       0       ║           0           ║
 ║ Rescan Candidates             ║       0       ║           0           ║
 ║ Total Trades                  ║      32       ║          17           ║
@@ -488,7 +486,7 @@
   2026-01-26            5       5       1       +615       46,875  BATL +615
   2026-01-27            6       5       1       -198       46,677  CYN -198
   2026-01-28            3       3       0         +0       46,677  —
-  2026-01-29            5       5       1        -35       46,642  FEED -35
+  2026-01-29            5       4       1        -35       46,642  FEED -35
   2026-01-30            4       4       1       -233       46,409  CISS -233
 
 ────────────────────────────────────────────────────────────
