@@ -82,7 +82,6 @@ ENV_BASE = {
 
 NEW_FEATURES = {
     "WB_MP_ENABLED": "0",              # Keep MP OFF (it's the fix)
-    "WB_ALLOW_UNKNOWN_FLOAT": "1",      # Item 2: allow unknown-float stocks
     "WB_SQ_PARTIAL_EXIT_ENABLED": "1", # Item 3: SQ partial exit
     "WB_SQ_WIDE_TRAIL_ENABLED": "1",   # Item 3: SQ wide trail
     "WB_SQ_RUNNER_DETECT_ENABLED": "1",# Item 3: SQ runner detect

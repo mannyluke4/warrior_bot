@@ -240,9 +240,9 @@ def get_float(symbol: str, cache: dict) -> Optional[float]:
 
 
 def passes_float_filter(float_shares: Optional[float]) -> bool:
-    """True if float is between MIN_FLOAT and MAX_FLOAT (or unknown → reject)."""
+    """True if float is between MIN_FLOAT and MAX_FLOAT, or unknown (allowed through)."""
     if float_shares is None:
-        return False
+        return True  # Unknown float → allow through, let strategy gates decide
     return MIN_FLOAT <= float_shares <= MAX_FLOAT
 
 

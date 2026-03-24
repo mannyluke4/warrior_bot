@@ -497,23 +497,49 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
 
 # Continuous scanning checkpoints (all times ET)
 SCAN_CHECKPOINTS = [
+    ("07:30", 7, 30),
+    ("07:40", 7, 40),
+    ("07:50", 7, 50),
     ("08:00", 8, 0),
+    ("08:10", 8, 10),
+    ("08:20", 8, 20),
     ("08:30", 8, 30),
+    ("08:40", 8, 40),
+    ("08:50", 8, 50),
     ("09:00", 9, 0),
+    ("09:10", 9, 10),
+    ("09:20", 9, 20),
     ("09:30", 9, 30),
+    ("09:40", 9, 40),
+    ("09:50", 9, 50),
     ("10:00", 10, 0),
+    ("10:10", 10, 10),
+    ("10:20", 10, 20),
     ("10:30", 10, 30),
 ]
 
 # Previous checkpoint for each (to define the fetch window)
 _CHECKPOINT_WINDOWS = [
     # (label, start_hour, start_min, end_hour, end_min)
-    ("08:00", 7, 15, 8, 0),
-    ("08:30", 8, 0, 8, 30),
-    ("09:00", 8, 30, 9, 0),
-    ("09:30", 9, 0, 9, 30),
-    ("10:00", 9, 30, 10, 0),
-    ("10:30", 10, 0, 10, 30),
+    ("07:30", 7, 15, 7, 30),
+    ("07:40", 7, 30, 7, 40),
+    ("07:50", 7, 40, 7, 50),
+    ("08:00", 7, 50, 8, 0),
+    ("08:10", 8, 0, 8, 10),
+    ("08:20", 8, 10, 8, 20),
+    ("08:30", 8, 20, 8, 30),
+    ("08:40", 8, 30, 8, 40),
+    ("08:50", 8, 40, 8, 50),
+    ("09:00", 8, 50, 9, 0),
+    ("09:10", 9, 0, 9, 10),
+    ("09:20", 9, 10, 9, 20),
+    ("09:30", 9, 20, 9, 30),
+    ("09:40", 9, 30, 9, 40),
+    ("09:50", 9, 40, 9, 50),
+    ("10:00", 9, 50, 10, 0),
+    ("10:10", 10, 0, 10, 10),
+    ("10:20", 10, 10, 10, 20),
+    ("10:30", 10, 20, 10, 30),
 ]
 
 
@@ -669,7 +695,7 @@ def resolve_precise_discovery(candidates: list, prev_close: dict,
             # NOT the raw minute it first met criteria. A stock that meets gap/vol
             # criteria at 04:00 is only visible at the 07:15 premarket scan (07:00).
             old_start = c.get("sim_start", "?")
-            CHECKPOINTS = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30"]
+            CHECKPOINTS = [cp[0] for cp in SCAN_CHECKPOINTS]  # Use same checkpoints as rescan
             if precise_start < "07:15":
                 correct_start = "07:00"
             else:

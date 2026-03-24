@@ -39,12 +39,6 @@ MAX_GAP_PCT = 500
 MAX_FLOAT_MILLIONS = 10
 MIN_RVOL = 2.0
 
-# Unknown-float gate: always ON for this comparison
-ALLOW_UNKNOWN_FLOAT = True
-UNKNOWN_FLOAT_MIN_GAP = 50.0
-UNKNOWN_FLOAT_MIN_PM_VOL = 1_000_000
-UNKNOWN_FLOAT_MIN_RVOL = 10.0
-UNKNOWN_FLOAT_NOTIONAL_FACTOR = 0.5
 
 WORKDIR = os.getenv("WB_WORKDIR", os.path.dirname(os.path.abspath(__file__)))
 SCANNER_DIR = "scanner_results"
@@ -96,7 +90,6 @@ ENV_BASE = {
     "WB_PILLAR_GATES_ENABLED": "1",
     "WB_MP_ENABLED": "1",
     # --- Scanner fixes ---
-    "WB_ALLOW_UNKNOWN_FLOAT": "1",
     # --- Squeeze exit fixes (were coded but OFF in batch runner) ---
     "WB_SQ_PARTIAL_EXIT_ENABLED": "1",   # 50% at target, runner continues
     "WB_SQ_WIDE_TRAIL_ENABLED": "1",     # 2x wider parabolic trail for winners
@@ -165,23 +158,7 @@ def load_and_rank(date_str: str) -> tuple:
             continue
         rvol = c.get("relative_volume", 0) or 0
 
-        # Unknown-float gate: "X" is legacy name, kept for backward compat
-        if profile in ("X", "unknown") or float_m is None or float_m == 0:
-            if not ALLOW_UNKNOWN_FLOAT:
-                continue
-            if (gap < UNKNOWN_FLOAT_MIN_GAP
-                    or pm_vol < UNKNOWN_FLOAT_MIN_PM_VOL
-                    or rvol < UNKNOWN_FLOAT_MIN_RVOL):
-                continue
-            c = dict(c)
-            c["_unknown_float"] = True
-            n_unknown_float += 1
-            if method == "rescan":
-                n_rescan += 1
-            filtered.append(c)
-            continue
-
-        if float_m > MAX_FLOAT_MILLIONS:
+        if float_m is not None and float_m > 0 and float_m > MAX_FLOAT_MILLIONS:
             continue
         if rvol < MIN_RVOL:
             continue
@@ -302,7 +279,7 @@ def _run_day(top5, date, risk):
         stock_risk = min(risk, 250) if float_m > 5.0 else risk
         sim_start = c.get("sim_start", "07:00")
         # Unknown-float stocks: conservative 50% notional cap
-        notional_cap = int(MAX_NOTIONAL * UNKNOWN_FLOAT_NOTIONAL_FACTOR) if c.get("_unknown_float") else MAX_NOTIONAL
+        notional_cap = MAX_NOTIONAL
 
         all_trades = run_sim(sym, date, sim_start, stock_risk, min_score=8.0, candidate=c)
         time.sleep(1)
@@ -646,11 +623,10 @@ def run_comparison():
         print(f"\n[Jan2025 {date}] {total} scanned → {passed} passed → "
               f"{len(top5)} selected  (uf={n_uf} rescan={n_rs})  risk=${risk}", flush=True)
         for c in top5:
-            uf_tag = " [UF]" if c.get("_unknown_float") else ""
             rs_tag = " [RS]" if c.get("discovery_method") == "rescan" else ""
             print(f"    {c['symbol']}: vol={c.get('pm_volume') or 0:,.0f} "
                   f"gap={c.get('gap_pct') or 0:.0f}% float={c.get('float_millions') or 0:.1f}M"
-                  f"{uf_tag}{rs_tag}", flush=True)
+                  f"{rs_tag}", flush=True)
 
         if top5:
             day_trades, day_pnl = _run_day(top5, date, risk)
@@ -708,11 +684,10 @@ def run_comparison():
         print(f"\n[Jan2026 {date}] {total} scanned → {passed} passed → "
               f"{len(top5)} selected  (uf={n_uf} rescan={n_rs})  risk=${risk}", flush=True)
         for c in top5:
-            uf_tag = " [UF]" if c.get("_unknown_float") else ""
             rs_tag = " [RS]" if c.get("discovery_method") == "rescan" else ""
             print(f"    {c['symbol']}: vol={c.get('pm_volume') or 0:,.0f} "
                   f"gap={c.get('gap_pct') or 0:.0f}% float={c.get('float_millions') or 0:.1f}M"
-                  f"{uf_tag}{rs_tag}", flush=True)
+                  f"{rs_tag}", flush=True)
 
         if top5:
             day_trades, day_pnl = _run_day(top5, date, risk)
