@@ -496,51 +496,29 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
 
 
 # Continuous scanning checkpoints (all times ET)
-SCAN_CHECKPOINTS = [
-    ("07:30", 7, 30),
-    ("07:40", 7, 40),
-    ("07:50", 7, 50),
-    ("08:00", 8, 0),
-    ("08:10", 8, 10),
-    ("08:20", 8, 20),
-    ("08:30", 8, 30),
-    ("08:40", 8, 40),
-    ("08:50", 8, 50),
-    ("09:00", 9, 0),
-    ("09:10", 9, 10),
-    ("09:20", 9, 20),
-    ("09:30", 9, 30),
-    ("09:40", 9, 40),
-    ("09:50", 9, 50),
-    ("10:00", 10, 0),
-    ("10:10", 10, 10),
-    ("10:20", 10, 20),
-    ("10:30", 10, 30),
-]
+# Generate 2.5-minute rescan checkpoints from 07:18 to 10:30
+# Alternates 3min/2min steps to average 2.5 minutes per interval
+def _build_checkpoints(start_h=7, start_m=15, end_h=10, end_m=30):
+    checkpoints = []
+    windows = []
+    h, m = start_h, start_m
+    prev_h, prev_m = start_h, start_m
+    step = 3
+    while True:
+        m += step
+        if m >= 60:
+            h += 1
+            m -= 60
+        if h > end_h or (h == end_h and m > end_m):
+            break
+        label = f"{h:02d}:{m:02d}"
+        checkpoints.append((label, h, m))
+        windows.append((label, prev_h, prev_m, h, m))
+        prev_h, prev_m = h, m
+        step = 2 if step == 3 else 3
+    return checkpoints, windows
 
-# Previous checkpoint for each (to define the fetch window)
-_CHECKPOINT_WINDOWS = [
-    # (label, start_hour, start_min, end_hour, end_min)
-    ("07:30", 7, 15, 7, 30),
-    ("07:40", 7, 30, 7, 40),
-    ("07:50", 7, 40, 7, 50),
-    ("08:00", 7, 50, 8, 0),
-    ("08:10", 8, 0, 8, 10),
-    ("08:20", 8, 10, 8, 20),
-    ("08:30", 8, 20, 8, 30),
-    ("08:40", 8, 30, 8, 40),
-    ("08:50", 8, 40, 8, 50),
-    ("09:00", 8, 50, 9, 0),
-    ("09:10", 9, 0, 9, 10),
-    ("09:20", 9, 10, 9, 20),
-    ("09:30", 9, 20, 9, 30),
-    ("09:40", 9, 30, 9, 40),
-    ("09:50", 9, 40, 9, 50),
-    ("10:00", 9, 50, 10, 0),
-    ("10:10", 10, 0, 10, 10),
-    ("10:20", 10, 10, 10, 20),
-    ("10:30", 10, 20, 10, 30),
-]
+SCAN_CHECKPOINTS, _CHECKPOINT_WINDOWS = _build_checkpoints()
 
 
 def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
