@@ -78,14 +78,47 @@ MAX_FLOAT = float(os.getenv("WB_MAX_FLOAT", "15"))  # was "10"
 
 This is cosmetic (`.env` overrides at runtime), but keeps the code honest if `.env` is missing.
 
+## Task 4: Investigate ROLR disappearance from scanner_sim (BUG)
+
+**Priority**: HIGH — ROLR is a regression stock (+$6,444 standalone, +$233 batch)
+
+ROLR (2026-01-14) disappeared from the new checkpoint scanner results despite having 288% gap, 59x RVOL, 3.6M float. The old scanner found it at the 08:30 checkpoint with `precise_discovery: 08:18`.
+
+**Root cause hypothesis**: The new checkpoint windows are narrower. The old 08:30 checkpoint had a 30-minute window (08:00-08:30). The new 08:30 checkpoint has a 15-minute window (08:15-08:30). ROLR news broke at 08:18 — within the new window — so it should still be caught. Possible causes:
+
+1. ROLR halted before 08:30 and Alpaca returned no bars in the 08:15-08:30 window
+2. The cumulative volume fetch (4AM→checkpoint) failed silently
+3. API timing edge case with the narrower window boundaries
+
+**Debug steps**:
+```bash
+# Run scanner for just this date with verbose output
+python scanner_sim.py 2026-01-14 2>&1 | tee /tmp/rolr_debug.txt
+
+# Search output for ROLR mentions
+grep -i rolr /tmp/rolr_debug.txt
+
+# If ROLR doesn't appear in rescan output, add temp debug print:
+# In find_emerging_movers(), after line 591 (gap_pct calc), add:
+#   if sym == 'ROLR': print(f"  DEBUG ROLR: gap={gap_pct:.1f}% price={latest_price} window={label}")
+#
+# In resolve_precise_discovery(), after bar fetching, add:
+#   if sym == 'ROLR': print(f"  DEBUG ROLR precise: {len(bar_list)} bars, cum_vol={cum_vol}")
+```
+
+**If ROLR is confirmed missing due to narrow windows**: The fix is to change `find_emerging_movers` to use cumulative windows (4AM→checkpoint) instead of incremental windows (prev_checkpoint→checkpoint) for the gap check. This ensures a stock that gaps mid-session is always caught regardless of which specific 10-15 minute slice its first bar falls in. The volume is already computed cumulatively (lines 764-788) — only the gap price check uses the narrow window.
+
+**Scope**: This likely affects other mid-session gap stocks too (any stock whose first bars fall in a narrow halt window). Could explain some of the other pre-9:30 removals (NCEL, AIFF, SLXN).
+
 ## Verification
 
 1. `grep -n "RESCAN_CHECKPOINTS" bot.py` — confirm 12 checkpoints, last is (9, 30)
 2. `grep -n "11:00\|1[01]:00\|10:30\|interval\|sleep" live_scanner.py` — confirm no 11:00 references, 1-min interval
 3. `grep -n "MAX_FLOAT" stock_filter.py` — confirm default is 15
-4. Run regression:
+4. ROLR appears in `scanner_results/2026-01-14.json` after fix
+5. Run regression:
    ```bash
    WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
    WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
    ```
-   Expected: VERO +$18,583, ROLR +$6,444 (these don't use bot.py/live_scanner, but confirm no accidental imports or shared state were broken)
+   Expected: VERO +$18,583, ROLR +$6,444
