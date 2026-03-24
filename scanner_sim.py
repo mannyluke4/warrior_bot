@@ -496,16 +496,14 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
 
 
 # Continuous scanning checkpoints (all times ET)
-# Generate 2.5-minute rescan checkpoints from 07:18 to 10:30
-# Alternates 3min/2min steps to average 2.5 minutes per interval
-def _build_checkpoints(start_h=7, start_m=15, end_h=10, end_m=30):
+# Generate 5-minute rescan checkpoints from 07:20 to 10:30
+def _build_checkpoints(start_h=7, start_m=15, end_h=10, end_m=30, step_min=5):
     checkpoints = []
     windows = []
     h, m = start_h, start_m
     prev_h, prev_m = start_h, start_m
-    step = 3
     while True:
-        m += step
+        m += step_min
         if m >= 60:
             h += 1
             m -= 60
@@ -515,7 +513,6 @@ def _build_checkpoints(start_h=7, start_m=15, end_h=10, end_m=30):
         checkpoints.append((label, h, m))
         windows.append((label, prev_h, prev_m, h, m))
         prev_h, prev_m = h, m
-        step = 2 if step == 3 else 3
     return checkpoints, windows
 
 SCAN_CHECKPOINTS, _CHECKPOINT_WINDOWS = _build_checkpoints()
