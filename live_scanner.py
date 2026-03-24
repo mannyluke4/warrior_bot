@@ -3,8 +3,10 @@
 live_scanner.py — Real-time pre-market gap-up scanner using Databento EQUS.MINI.
 
 Streams all US equity pre-market quotes from 4:00 AM ET, identifies stocks that
-are gapping 10%+ with price $2-$20, float under 10M, RVOL >= 2x, and PM volume
->= 50K. Ranks by composite score and writes to watchlist.txt from 7:00-11:00 AM ET.
+are gapping 10%+ with price $2-$20, RVOL >= 2x, and PM volume >= 50K.
+Ranks by composite score and writes to watchlist.txt every minute from 7:00 AM.
+New symbol additions cut off at 9:30 AM ET (post-09:30 = negative EV).
+Scanner continues tracking existing symbols until 11:00 AM ET.
 
 Usage:
     python live_scanner.py             # Normal run
@@ -545,6 +547,11 @@ class LiveScanner:
         # Sort by composite rank score descending
         scored_candidates.sort(key=lambda x: x["rank_score"], reverse=True)
 
+        # 9:30 ET cutoff: no NEW symbols after 9:30 (existing watchlist preserved)
+        # Data shows post-09:30 discoveries are negative EV (-$2,430, 25% WR)
+        now_et = datetime.now(ET)
+        past_cutoff = (now_et.hour > 9 or (now_et.hour == 9 and now_et.minute >= 30))
+
         # Apply MAX_SCANNER_SYMBOLS cap (existing symbols count toward the cap)
         all_final = []
         total_count = len(existing_symbols)
@@ -552,9 +559,16 @@ class LiveScanner:
             if c["symbol"] in existing_symbols:
                 all_final.append(c)  # already in watchlist, always include
                 continue
+            if past_cutoff:
+                continue  # Block new symbols after 9:30 ET
             if total_count < MAX_SCANNER_SYMBOLS:
                 all_final.append(c)
                 total_count += 1
+
+        if past_cutoff and scored_candidates:
+            new_blocked = [c["symbol"] for c in scored_candidates if c["symbol"] not in existing_symbols]
+            if new_blocked:
+                self.log.info(f"  [9:30 CUTOFF] Blocked {len(new_blocked)} new symbols: {new_blocked}")
 
         # Print summary
         self.log.info(f"\n{'='*60}")

@@ -253,14 +253,18 @@ def get_float(symbol: str, cache: dict) -> float | None:
 
 
 def classify_profile(float_shares: float | None) -> str:
-    """Classify stock by float profile. Thresholds from .env."""
+    """Classify stock by float: A (<5M), B (5-15M), unknown (no data).
+
+    Float cap raised from 10M to 15M based on WT scanner comparison (2026-03-24):
+    AMIX at 12.9M float produced +$4,111 (8.2R). Data shows diminishing returns
+    above 15M but the 10-15M bucket still has positive EV.
+    """
     if float_shares is None:
         return "unknown"
-    _max_float_m = float(os.getenv("WB_MAX_FLOAT", "15"))
     millions = float_shares / 1_000_000
     if millions < 5:
         return "A"
-    elif millions <= _max_float_m:
+    elif millions <= 15:
         return "B"
     else:
         return "skip"
@@ -379,10 +383,7 @@ def fetch_premarket_bars(symbols: list[str], date_str: str) -> dict[str, list]:
 
 
 def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
-    """Find stocks gapping up with price and gap filters from .env."""
-    _min_gap = float(os.getenv("WB_MIN_GAP_PCT", "10"))
-    _min_price = float(os.getenv("WB_MIN_PRICE", "2.00"))
-    _max_price = float(os.getenv("WB_MAX_PRICE", "20.00"))
+    """Find stocks gapping up >= 10% with price $2-$20."""
     candidates = []
     for sym, bars in pm_bars.items():
         if sym not in prev_close:
@@ -395,9 +396,9 @@ def compute_gap_candidates(prev_close: dict, pm_bars: dict) -> list[dict]:
         pm_price = bars[-1].close
         gap_pct = (pm_price - pc) / pc * 100
 
-        if gap_pct < _min_gap:
+        if gap_pct < 10:
             continue
-        if pm_price < _min_price or pm_price > _max_price:
+        if pm_price < 2.0 or pm_price > 20.0:
             continue
 
         # Determine first activity time (first bar with volume)
@@ -481,10 +482,7 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
                     continue
                 open_price = bar_list[0].open
                 gap_pct = (open_price - pc) / pc * 100
-                _mg = float(os.getenv("WB_MIN_GAP_PCT", "10"))
-                _mp = float(os.getenv("WB_MIN_PRICE", "2.00"))
-                _xp = float(os.getenv("WB_MAX_PRICE", "20.00"))
-                if gap_pct < _mg or open_price < _mp or open_price > _xp:
+                if gap_pct < 10 or open_price < 2.0 or open_price > 20.0:
                     continue
                 late_movers.append({
                     "symbol": sym,
@@ -502,25 +500,39 @@ def find_late_movers(prev_close: dict, existing_symbols: set, date_str: str) -> 
     return late_movers
 
 
-# Rescan checkpoints — manually tuned windows with 9:30 cutoff
-_CHECKPOINT_LABELS = [
-    "07:00", "07:15", "07:30", "07:45",
-    "08:00", "08:10", "08:15", "08:30", "08:45",
-    "09:00", "09:15", "09:30",
+# Continuous scanning checkpoints (all times ET)
+# Custom schedule based on WT scanner comparison data (2026-03-24):
+#   - Dense in golden hour (08:00-08:30): 71% WR, +$26,875
+#   - Taper after 09:00
+#   - Hard cutoff at 09:30: post-09:30 discoveries are negative EV (-$2,430, 25% WR)
+# 12 checkpoints total (was 39 at 5-min intervals)
+_CUSTOM_CHECKPOINTS = [
+    ("07:00",  7,  0),
+    ("07:15",  7, 15),
+    ("07:30",  7, 30),
+    ("07:45",  7, 45),
+    ("08:00",  8,  0),
+    ("08:15",  8, 15),
+    ("08:30",  8, 30),
+    ("08:45",  8, 45),
+    ("09:00",  9,  0),
+    ("09:15",  9, 15),
+    ("09:30",  9, 30),   # FINAL — hard cutoff, no new discoveries after this
 ]
 
-def _build_checkpoints():
-    checkpoints = []
+def _build_checkpoint_windows(checkpoints):
+    """Build (label, prev_h, prev_m, h, m) windows from checkpoint list."""
     windows = []
-    prev_h, prev_m = 4, 0  # PM scan starts at 4:00
-    for label in _CHECKPOINT_LABELS:
-        h, m = int(label[:2]), int(label[3:])
-        checkpoints.append((label, h, m))
+    for i, (label, h, m) in enumerate(checkpoints):
+        if i == 0:
+            prev_h, prev_m = 7, 0  # Window starts at 07:00
+        else:
+            _, prev_h, prev_m = checkpoints[i - 1]
         windows.append((label, prev_h, prev_m, h, m))
-        prev_h, prev_m = h, m
-    return checkpoints, windows
+    return windows
 
-SCAN_CHECKPOINTS, _CHECKPOINT_WINDOWS = _build_checkpoints()
+SCAN_CHECKPOINTS = _CUSTOM_CHECKPOINTS
+_CHECKPOINT_WINDOWS = _build_checkpoint_windows(_CUSTOM_CHECKPOINTS)
 
 
 def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
@@ -578,7 +590,7 @@ def find_emerging_movers(prev_close: dict, existing_candidates: list[dict],
                     latest_price = bar_list[-1].close
                     gap_pct = (latest_price - pc) / pc * 100
 
-                    if gap_pct < float(os.getenv("WB_MIN_GAP_PCT", "10")):
+                    if gap_pct < 10:
                         continue
                     if latest_price < 2.0 or latest_price > 20.0:
                         continue
@@ -679,7 +691,7 @@ def resolve_precise_discovery(candidates: list, prev_close: dict,
             if precise_start < "07:15":
                 correct_start = "07:00"
             else:
-                correct_start = "10:30"  # default to last checkpoint
+                correct_start = CHECKPOINTS[-1]  # default to last checkpoint
                 for cp in CHECKPOINTS:
                     if precise_start <= cp:
                         correct_start = cp

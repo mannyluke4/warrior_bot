@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "VS",
+    "prev_close": 1.92,
+    "pm_price": 3.28,
+    "gap_pct": 70.83,
+    "pm_volume": 20780336.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 243388.0,
+    "relative_volume": 85.38,
+    "precise_discovery": "04:00",
+    "float_shares": 1756614,
+    "float_millions": 1.76,
+    "profile": "A"
+  },
+  {
+    "symbol": "ISPC",
+    "prev_close": 2.85,
+    "pm_price": 3.65,
+    "gap_pct": 28.07,
+    "pm_volume": 8056286.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 467421.0,
+    "relative_volume": 17.24,
+    "precise_discovery": "04:00",
+    "float_shares": 9770833,
+    "float_millions": 9.77,
+    "profile": "B"
+  },
+  {
+    "symbol": "BTCT",
+    "prev_close": 4.76,
+    "pm_price": 6.03,
+    "gap_pct": 26.68,
+    "pm_volume": 1363107.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "precise",
+    "avg_daily_volume": 514224.0,
+    "relative_volume": 2.65,
+    "precise_discovery": "08:24",
+    "float_shares": 7175629,
+    "float_millions": 7.18,
+    "profile": "B"
+  }
+]

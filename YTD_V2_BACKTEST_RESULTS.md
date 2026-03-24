@@ -1,5 +1,5 @@
 # YTD V2 Backtest Results: Ross Exit V2 vs Baseline
-## Generated 2026-03-23
+## Generated 2026-03-24
 
 Period: January 2 - March 20, 2026 (55 trading days)
 Starting Equity: $30,000

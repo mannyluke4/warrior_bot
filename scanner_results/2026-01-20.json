@@ -100,39 +100,5 @@
     "float_shares": 1600000,
     "float_millions": 1.6,
     "profile": "A"
-  },
-  {
-    "symbol": "TULP",
-    "prev_close": 3.52,
-    "pm_price": 4.33,
-    "gap_pct": 23.01,
-    "pm_volume": 403961.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "precise",
-    "avg_daily_volume": 41620.0,
-    "relative_volume": 9.71,
-    "precise_discovery": "09:42",
-    "float_shares": 1001163,
-    "float_millions": 1.0,
-    "profile": "A"
-  },
-  {
-    "symbol": "ANNA",
-    "prev_close": 2.57,
-    "pm_price": 2.8801,
-    "gap_pct": 12.07,
-    "pm_volume": 74337.0,
-    "first_seen_et": "10:00",
-    "sim_start": "10:00",
-    "discovery_time": "10:00",
-    "discovery_method": "precise",
-    "avg_daily_volume": 21013.0,
-    "relative_volume": 3.54,
-    "precise_discovery": "09:54",
-    "float_shares": 9387147,
-    "float_millions": 9.39,
-    "profile": "B"
   }
 ]
