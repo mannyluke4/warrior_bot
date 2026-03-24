@@ -26,3 +26,7 @@ Pushing logs...
  create mode 100644 logs/manual_run_2026-03-20.log
 === Daily run complete: Mon Mar 23 07:17:39 MDT 2026 ===
 === TRAP: cleanup at Mon Mar 23 07:17:39 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 15: 58030 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[main 0f21fd6] auto: daily logs 2026-03-23
+ 2 files changed, 20 insertions(+)
+=== Cleanup complete: Mon Mar 23 07:17:41 MDT 2026 ===

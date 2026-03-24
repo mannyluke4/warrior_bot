@@ -1,0 +1,21 @@
+caffeinate started (PID: 74113)
+=== Daily run started: Tue Mar 24 02:00:00 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            main       -> FETCH_HEAD
+   7282f15..8d4a914  main       -> origin/main
+Updating 7282f15..8d4a914
+Fast-forward
+ DIRECTIVE_SQUEEZE_FOCUS_V1.md | 171 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 171 insertions(+)
+ create mode 100644 DIRECTIVE_SQUEEZE_FOCUS_V1.md
+Pre-flight: checking Python imports...
+Imports OK
+Cleaning up stale connections...
+Starting bot...
+Bot started (PID: 74134)
+Bot health check passed (still running after 10s, PID: 74134)
+Watchdog: monitoring bot until 9:00 AM MT (Tue Mar 24 09:00:00 MDT 2026)...
+Trading window closed. Proceeding to shutdown.
+=== Shutting down at Tue Mar 24 09:00:05 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 98: 74134 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
+Pushing logs...
