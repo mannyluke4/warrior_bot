@@ -352,11 +352,41 @@ def scan_historical(ib: IB, date_str: str, top_n: int = 20) -> list[dict]:
 
 # ── CLI ──────────────────────────────────────────────────────────────
 
+def backfill(ib: IB, start_date: str, end_date: str):
+    """Regenerate scanner_results for all trading days in range using IBKR data."""
+    import glob
+    # Find all dates that have existing scanner_results (seed data)
+    existing = sorted([
+        os.path.basename(f).replace('.json', '')
+        for f in glob.glob(os.path.join(SCANNER_RESULTS_DIR, '20??-??-??.json'))
+    ])
+    # Filter to requested range
+    dates = [d for d in existing if start_date <= d <= end_date]
+    print(f"Backfill: {len(dates)} dates from {start_date} to {end_date}")
+
+    total_candidates = 0
+    for i, date_str in enumerate(dates):
+        print(f"\n[{i+1}/{len(dates)}] {date_str}")
+        try:
+            candidates = scan_historical(ib, date_str)
+            total_candidates += len(candidates)
+            time.sleep(1)  # Rate limit between dates
+        except Exception as e:
+            print(f"  ERROR: {e}")
+            continue
+
+    print(f"\n{'='*60}")
+    print(f"  BACKFILL COMPLETE: {len(dates)} dates, {total_candidates} total candidates")
+    print(f"{'='*60}")
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="IBKR Unified Scanner")
-    parser.add_argument("--mode", choices=["live", "historical"], default="live")
+    parser.add_argument("--mode", choices=["live", "historical", "backfill"], default="live")
     parser.add_argument("--date", help="Date for historical mode (YYYY-MM-DD)")
+    parser.add_argument("--start", help="Start date for backfill (YYYY-MM-DD)")
+    parser.add_argument("--end", help="End date for backfill (YYYY-MM-DD)")
     parser.add_argument("--port", type=int, default=7497, help="TWS/Gateway port")
     parser.add_argument("--client-id", type=int, default=50)
     args = parser.parse_args()
@@ -379,6 +409,12 @@ def main():
             ib.disconnect()
             return
         candidates = scan_historical(ib, args.date)
+    elif args.mode == "backfill":
+        if not args.start or not args.end:
+            print("ERROR: --start and --end required for backfill mode")
+            ib.disconnect()
+            return
+        backfill(ib, args.start, args.end)
 
     ib.disconnect()
 
