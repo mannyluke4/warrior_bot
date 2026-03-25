@@ -1,0 +1,16 @@
+caffeinate started (PID: 93204)
+=== Daily run started: Wed Mar 25 02:00:00 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+Pre-flight: checking Python imports...
+Imports OK
+Cleaning up stale connections...
+Starting bot...
+Bot started (PID: 93222)
+Bot health check passed (still running after 10s, PID: 93222)
+Watchdog: monitoring bot until 9:00 AM MT (Wed Mar 25 09:00:00 MDT 2026)...
+Trading window closed. Proceeding to shutdown.
+=== Shutting down at Wed Mar 25 09:00:15 MDT 2026 ===
+/Users/duffy/warrior_bot/daily_run.sh: line 98: 93222 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
+Pushing logs...
