@@ -4,6 +4,50 @@
 
 ---
 
+## ⚠️ P0 CRITICAL FINDING: Scanner RVOL Bug Invalidates All Batch Backtests
+
+### The Bug
+
+`scanner_sim.py` computes RVOL using **PM volume (4:00-7:15 AM only)** for ALL stocks — including rescan stocks discovered at 8:00, 8:45, 9:30. A stock that starts moving at 8:00 AM has near-zero PM volume before 7:15, so its RVOL is < 2.0 → **filtered out**.
+
+The live bot (`stock_filter.py`) uses Alpaca's `daily_bar.volume` which is **cumulative for the entire day**. At 8:45, FEED shows RVOL = 19.2x → passes easily.
+
+### Evidence (Today, 2026-03-25)
+
+```
+scanner_sim.py: 13 raw PM candidates → ALL 13 filtered by RVOL<2.0 or PM vol<50K → 0 remain
+                18 rescan candidates found with real volume → ALL filtered → 0 total candidates
+
+Live bot:       6 stocks passed (RBNE, FEED, MKDW, CVV, ANNA, CRCD)
+```
+
+The rescan even computed the correct cumulative volumes:
+- FEED: 1,467,817 at 08:45 (but RVOL gate used stale PM-only volume → filtered)
+- CODX: 1,765,301 at 08:00 (filtered)
+- BIAF: 967,252 at 07:15 (filtered)
+
+### Impact
+
+**Every batch backtest that uses scanner_results JSON files is affected:**
+- Megatest (+$130K) — understated, missing rescan stocks
+- OOS 2025 Q4 (+$44K) — understated
+- YTD Jan comparisons — understated
+- All historical scanner data — systematically excludes stocks that built volume after 7:15 AM
+
+**NOT affected:**
+- Standalone regressions (VERO, ROLR) — these use simulate.py directly, no scanner
+- Strategy logic, entry/exit behavior — these are correct (confirmed by today's live vs backtest comparison)
+
+### Root Cause
+
+In `scanner_sim.py`, the RVOL gate at Step 4a (line ~650) runs on `pm_volume` from the 4:00-7:15 PM scan. The rescan at Step 4b computes `cumulative vol 4AM-{checkpoint}` but this volume is NOT used to recompute RVOL. The gate uses the original stale PM-only number.
+
+### Fix Required
+
+Rescan stocks must have their RVOL recomputed using cumulative volume at discovery time, not PM-only volume. The cumulative volume is already being fetched — it just needs to be used for the RVOL calculation before the filter gate runs.
+
+---
+
 ## Session Overview
 
 - **Startup**: Clean at 4:04 AM ET, no websocket errors, no TWS
