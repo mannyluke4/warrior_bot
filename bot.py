@@ -407,12 +407,14 @@ def on_bar_close_10s(bar):
 
     # Topping wicky exit: if we're in a trade and the pattern fires, get out
     # Grace period: skip exit within first N minutes of entry (breakout volatility)
+    # Skip for squeeze trades — squeeze has its own exit logic (_squeeze_manage_exits)
     _tw_grace_sec = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3")) * 60
     _tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.0"))
     if (trade_manager
         and getattr(trade_manager, 'exit_on_topping_wicky', False)
         and not getattr(trade_manager, 'ross_exit_enabled', False)  # Ross exit handles exits on 1m bars
         and symbol in trade_manager.open
+        and trade_manager.open[symbol].setup_type != "squeeze"  # Squeeze has own exits
         and "TOPPING_WICKY" in (det.last_patterns or [])):
         t = trade_manager.open[symbol]
         age_sec = (datetime.now(timezone.utc) - t.created_at_utc).total_seconds() if t.created_at_utc else 999

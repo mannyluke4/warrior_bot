@@ -2742,6 +2742,10 @@ class PaperTradeManager:
         if not t or not prev:
             return
 
+        # Skip BE exit for squeeze trades — squeeze has its own exit logic
+        if t.setup_type == "squeeze":
+            return
+
         bear = is_bearish_engulfing(o, h, l, c, prev["o"], prev["h"], prev["l"], prev["c"])
         if not bear:
             return
