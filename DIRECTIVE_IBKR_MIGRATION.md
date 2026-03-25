@@ -8,6 +8,41 @@
 
 ---
 
+## Phase 0: Preserve V1 (DO THIS FIRST)
+
+**Before touching ANY code, create a clean copy of the entire project.**
+
+```bash
+# On Mac Mini:
+cd /Users/duffy
+cp -r warrior_bot warrior_bot_v2
+cd warrior_bot_v2
+
+# Point v2 at a new branch (keep v1 on main untouched)
+git checkout -b v2-ibkr-migration
+git push origin v2-ibkr-migration
+```
+
+**All work happens in `warrior_bot_v2/` on the `v2-ibkr-migration` branch.** The original `warrior_bot/` folder stays untouched as a working fallback. If anything goes wrong, V1 is still there running on Alpaca.
+
+**Critical folders/files to verify are in v2:**
+- `squeeze_detector.py` — the core strategy (KEEP)
+- `micro_pullback.py` — secondary strategy (KEEP)
+- `simulate.py` — backtest engine (KEEP core, refactor data layer)
+- `run_megatest.py` — batch runner (KEEP)
+- `scanner_results/` — all historical scanner data (KEEP for reference)
+- `study_data/` — behavior metrics (KEEP)
+- `tick_cache/` — cached tick data (KEEP)
+- `megatest_results/` — V1 baseline numbers (KEEP for comparison)
+- `.env` — current config (COPY, then modify for IBKR)
+- `cowork_reports/` — all analysis history (KEEP)
+
+**Update `warrior_bot_v2/daily_run.sh`** to point at the v2 folder path. Do NOT let the v2 cron interfere with v1.
+
+**Only after v2 folder is confirmed complete, proceed to Phase 1.**
+
+---
+
 ## Why We're Doing This
 
 Alpaca was recommended by ChatGPT two months ago as a quick-start. It's the wrong platform for this strategy. The problems are structural and unfixable:
@@ -94,7 +129,7 @@ Python Stack:
 
 ---
 
-## Phase 1: Foundation (Days 1-3)
+## Phase 1: Foundation
 
 ### Task 1.1: Install Dependencies + Verify Connection
 
@@ -221,7 +256,7 @@ ib.run()
 
 ---
 
-## Phase 2: Unified Scanner (Days 3-5)
+## Phase 2: Unified Scanner
 
 ### Task 2.1: Build `ibkr_scanner.py`
 
@@ -314,7 +349,7 @@ Scanner outputs to `scanner_results/{date}.json` in the SAME format as current f
 
 ---
 
-## Phase 3: Rebuild bot.py (Days 5-8)
+## Phase 3: Rebuild bot.py
 
 ### Task 3.1: New Main Loop (`bot_ibkr.py`)
 
@@ -379,7 +414,7 @@ for symbol in active_symbols:
 
 ---
 
-## Phase 4: Backtest Data Migration (Days 8-10)
+## Phase 4: Backtest Data Migration
 
 ### Task 4.1: Rebuild scanner_sim for IBKR
 
@@ -407,7 +442,7 @@ On the new IBKR-sourced scanner data. Compare results to the old Alpaca-sourced 
 
 ---
 
-## Phase 5: Validation + Go-Live (Days 10-14)
+## Phase 5: Validation + Go-Live
 
 ### Task 5.1: Regression Tests
 
@@ -532,17 +567,18 @@ After this migration:
 
 ---
 
-## Timeline
+## Phase Summary
 
-| Phase | Days | What |
-|-------|------|------|
-| 1: Foundation | 1-3 | Install, connect, test scanner/data/halts |
-| 2: Unified Scanner | 3-5 | Build ibkr_scanner.py, replace all 3 scanners |
-| 3: Rebuild bot.py | 5-8 | New main loop, prune trade_manager.py |
-| 4: Backtest Migration | 8-10 | Regenerate scanner_results, fresh megatest |
-| 5: Validation | 10-14 | Regressions, paper trading, small live lots |
+| Phase | What |
+|-------|------|
+| **0: Preserve V1** | Copy warrior_bot → warrior_bot_v2, new branch, verify all critical files |
+| 1: Foundation | Install ib_insync, test connection/scanner/data/halts |
+| 2: Unified Scanner | Build ibkr_scanner.py, replace all 3 scanners |
+| 3: Rebuild bot.py | New main loop, prune trade_manager.py |
+| 4: Backtest Migration | Regenerate scanner_results with IBKR data, fresh megatest |
+| 5: Validation | Regressions, paper trading, small live lots |
 
-**Two weeks to a clean, trustworthy system.** The strategy works. The exits work. We just need plumbing that doesn't lie to us.
+The strategy works. The exits work. We just need plumbing that doesn't lie to us.
 
 ---
 
