@@ -81,6 +81,7 @@ def compute_adv(ib: IB, symbol: str, date_str: Optional[str] = None) -> float:
             whatToShow='TRADES',
             useRTH=True,
             formatDate=1,
+            timeout=15,  # 15 second timeout
         )
         ib.sleep(0.5)
         if bars and len(bars) >= 5:
@@ -255,6 +256,7 @@ def scan_historical(ib: IB, date_str: str, top_n: int = 20) -> list[dict]:
                 whatToShow='TRADES',
                 useRTH=False,
                 formatDate=1,
+            timeout=15,  # 15 second timeout
             )
             ib.sleep(0.5)
         except Exception as e:
@@ -274,6 +276,7 @@ def scan_historical(ib: IB, date_str: str, top_n: int = 20) -> list[dict]:
                 whatToShow='TRADES',
                 useRTH=True,
                 formatDate=1,
+            timeout=15,  # 15 second timeout
             )
             ib.sleep(0.5)
             prev_close = daily_bars[-2].close if daily_bars and len(daily_bars) >= 2 else 0
