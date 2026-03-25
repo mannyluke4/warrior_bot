@@ -187,6 +187,14 @@ def scan_premarket_live(ib: IB, top_n: int = 20) -> list[dict]:
 
     # Rank and return
     candidates.sort(key=rank_score, reverse=True)
+    # Save to scanner_results
+    today_str = datetime.now(ET).strftime("%Y-%m-%d")
+    os.makedirs(SCANNER_RESULTS_DIR, exist_ok=True)
+    out_path = os.path.join(SCANNER_RESULTS_DIR, f"{today_str}.json")
+    with open(out_path, "w") as f:
+        json.dump(candidates, f, indent=2)
+    print(f"  Saved: {out_path}")
+
     return candidates
 
 
