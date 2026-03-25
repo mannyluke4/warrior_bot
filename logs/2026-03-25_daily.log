@@ -3179,3 +3179,10 @@ Trading window closed. Proceeding to shutdown.
 === Shutting down at Wed Mar 25 09:00:15 MDT 2026 ===
 /Users/duffy/warrior_bot/daily_run.sh: line 98: 93222 Terminated: 15          python3 bot.py >> "$LOG_FILE" 2>&1
 Pushing logs...
+[main 97ab1da] auto: daily logs 2026-03-25
+ 5 files changed, 11493 insertions(+)
+ create mode 100644 logs/2026-03-25_daily.log
+ create mode 100644 logs/cron_2026-03-25.log
+ create mode 100644 logs/events_20260325T080007Z.jsonl
+=== Daily run complete: Wed Mar 25 09:00:22 MDT 2026 ===
+=== TRAP: cleanup at Wed Mar 25 09:00:22 MDT 2026 ===
