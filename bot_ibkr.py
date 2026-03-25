@@ -503,8 +503,14 @@ def check_halts():
 # Main Loop
 # ══════════════════════════════════════════════════════════════════════
 
-def on_ticker_update(ticker):
-    """Called on every market data update (~250ms)."""
+def on_ticker_update(tickers):
+    """Called on every market data update (~250ms). Receives a SET of updated tickers."""
+    for ticker in tickers:
+        _process_ticker(ticker)
+
+
+def _process_ticker(ticker):
+    """Process a single ticker update."""
     contract = ticker.contract
     if not contract:
         return
