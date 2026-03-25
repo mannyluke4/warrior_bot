@@ -43,11 +43,12 @@ IBKR_PORT = int(os.getenv("IBKR_PORT", "7497"))
 IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", "1"))
 
 # ── Risk ─────────────────────────────────────────────────────────────
-RISK_DOLLARS = float(os.getenv("WB_RISK_DOLLARS", "1000"))
-MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "50000"))
+STARTING_EQUITY = float(os.getenv("WB_STARTING_EQUITY", "30000"))
+RISK_PCT = float(os.getenv("WB_RISK_PCT", "0.025"))  # 2.5% of equity per trade
+MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "100000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
-MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "500"))
+MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
 BAIL_TIMER_ENABLED = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
 BAIL_TIMER_MINUTES = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
@@ -314,10 +315,19 @@ def enter_trade(symbol: str, armed, setup_type: str):
         print(f"  SKIP: R={r:.4f} < min {MIN_R}", flush=True)
         return
 
+    # Dynamic equity-based risk: 2.5% of current equity
+    current_equity = STARTING_EQUITY + state.daily_pnl  # Intraday equity
+    # TODO: fetch actual account equity from IBKR for multi-day compounding
+    risk_dollars = max(50, current_equity * RISK_PCT)
+
     # Size calculation
-    qty = int(math.floor(RISK_DOLLARS / r))
+    qty = int(math.floor(risk_dollars / r))
     qty_notional = int(math.floor(MAX_NOTIONAL / max(entry, 0.01)))
     qty = min(qty, qty_notional, MAX_SHARES)
+
+    notional = qty * entry
+    print(f"  Sizing: equity=${current_equity:,.0f} risk=${risk_dollars:,.0f} "
+          f"qty={qty} notional=${notional:,.0f}", flush=True)
 
     if size_mult < 1.0:
         qty = max(1, int(math.floor(qty * size_mult)))
