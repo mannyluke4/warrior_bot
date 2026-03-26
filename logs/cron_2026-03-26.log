@@ -12,3 +12,10 @@ Starting bot_ibkr.py...
 Bot started (PID: 13300)
 FATAL: bot_ibkr.py crashed within 15s of launch. Check /Users/duffy/warrior_bot_v2/logs/2026-03-26_daily.log for details.
 === TRAP: cleanup at Thu Mar 26 02:01:52 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 15: 13252 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 8dadf06] auto: daily logs 2026-03-26
+ 2 files changed, 79 insertions(+)
+ create mode 100644 logs/2026-03-26_daily.log
+ create mode 100644 logs/cron_2026-03-26.log
+=== Cleanup complete: Thu Mar 26 02:01:53 MDT 2026 ===
+18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
