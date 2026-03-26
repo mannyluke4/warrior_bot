@@ -2741,11 +2741,20 @@ def run_simulation(
             pm_bf_high = bar_builder.get_premarket_bull_flag_high(symbol)
             det.update_premarket_levels(pm_high, pm_bf_high)
 
-            # 2) Construct Bar object and feed to detector
+            # 2) Construct Bar object and feed to detectors
             bar_obj = Bar(symbol=symbol, start_utc=ts, open=o, high=h, low=l, close=c, volume=int(v))
             vwap = bar_builder.get_vwap(symbol)
 
             msg = det.on_bar_close_1m(bar_obj, vwap=vwap)
+
+            # Feed squeeze detector (bar mode was missing this entirely)
+            if sq_enabled:
+                pm_high = bar_builder.get_premarket_high(symbol)
+                pm_bf = bar_builder.get_premarket_bull_flag_high(symbol)
+                sq_det.update_premarket_levels(pm_high, pm_bf)
+                sq_msg = sq_det.on_bar_close_1m(bar_obj, vwap=vwap)
+                if verbose and sq_msg:
+                    print(f"  [{time_str}] {sq_msg}", flush=True)
 
             # Feed behavior metrics
             if _bm is not None:
@@ -2787,6 +2796,68 @@ def run_simulation(
             is_premarket = bar_builder.is_premarket(ts)
             ticks = synthetic_ticks(o, h, l, c)
             for tick in ticks:
+                # --- Squeeze trigger (priority over MP) ---
+                _sq_armed_before = sq_det.armed if sq_enabled else None
+                if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:
+                    sq_trigger = sq_det.on_trade_price(tick, is_premarket=is_premarket)
+                    if sq_trigger and "ENTRY SIGNAL" in sq_trigger:
+                        _sq_toxic = check_toxic_filters(
+                            entry_price=_sq_armed_before.trigger_high,
+                            stop_price=_sq_armed_before.stop_low,
+                            gap_pct=gap_pct,
+                            pm_volume=pm_volume,
+                            candidates_count=candidates_count,
+                            month=date.month,
+                        )
+                        _sq_blocked = False
+                        if _sq_toxic['action'] == 'BLOCK':
+                            if verbose:
+                                print(f"  [{time_str}] TOXIC_BLOCK {symbol}: {_sq_toxic['reason']}", flush=True)
+                            _sq_blocked = True
+                        elif _scanner_gap_pct > 0 and _scanner_gap_pct < _pillar_min_gap:
+                            if verbose:
+                                print(f"  [{time_str}] PILLAR_BLOCK: gap {_scanner_gap_pct:.1f}% < {_pillar_min_gap}%", flush=True)
+                            _sq_blocked = True
+                        elif _scanner_rvol > 0 and _scanner_rvol < _pillar_min_rvol:
+                            if verbose:
+                                print(f"  [{time_str}] PILLAR_BLOCK: RVOL {_scanner_rvol:.1f}x < {_pillar_min_rvol}x", flush=True)
+                            _sq_blocked = True
+                        elif _sq_armed_before.trigger_high < _pillar_min_price or _sq_armed_before.trigger_high > _pillar_max_price:
+                            if verbose:
+                                print(f"  [{time_str}] PILLAR_BLOCK: price ${_sq_armed_before.trigger_high:.2f} outside ${_pillar_min_price}-${_pillar_max_price}", flush=True)
+                            _sq_blocked = True
+
+                        if not _sq_blocked:
+                            _sq_size_mult = getattr(_sq_armed_before, 'size_mult', 1.0)
+                            _sq_eff_mult = _sq_toxic.get('multiplier', 1.0) if _sq_toxic['action'] == 'HALF_RISK' else 1.0
+                            _sq_eff_mult *= _sq_size_mult
+                            _sq_saved_risk = None
+                            if _sq_eff_mult < 1.0:
+                                _sq_saved_risk = sim_mgr.risk_dollars
+                                sim_mgr.risk_dollars = _sq_saved_risk * _sq_eff_mult
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_sq_armed_before.trigger_high,
+                                stop=_sq_armed_before.stop_low,
+                                r=_sq_armed_before.r,
+                                score=_sq_armed_before.score,
+                                detail=_sq_armed_before.score_detail,
+                                time_str=time_str,
+                                setup_type="squeeze",
+                                size_mult=_sq_size_mult,
+                            )
+                            if _sq_saved_risk is not None:
+                                sim_mgr.risk_dollars = _sq_saved_risk
+                            if trade:
+                                sq_det.notify_trade_opened()
+                                if verbose:
+                                    print(
+                                        f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                        f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                        f"setup_type=squeeze",
+                                        flush=True,
+                                    )
+
                 # Standard micro pullback trigger
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(tick, is_premarket=is_premarket)
