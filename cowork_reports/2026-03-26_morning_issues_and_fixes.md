@@ -169,10 +169,13 @@ Ran all 5 morning candidates (EEIQ, FCHL, BTBD, NDLS, FATN) through `simulate.py
 
 **Cause 3 — Live bot volume=0 bug:** Even with real-time IBKR data, the live bot passed `size=0` to bar builders. Squeeze detector requires `min_bar_vol=50,000` to prime — with volume=0, it could never arm.
 
-### What Needs to Happen
+### Resolution
+
 1. **Volume=0 bug**: FIXED (Issue 3 above). Live bot now uses `ticker.lastSize`.
-2. **Bar mode squeeze triggers**: Need to wire `sq_det.on_trade_price()` into bar mode's synthetic tick loop, OR build an IBKR tick data fetcher to populate tick cache for future backtests.
-3. **Tick cache going forward**: Since Databento is no longer running, we need a new source of tick data for backtesting. Options: (a) fetch IBKR historical ticks, (b) wire squeeze triggers into bar mode's synthetic ticks.
+2. **Bar mode squeeze triggers**: **FIXED.** Root cause was deeper than expected — `simulate.py` bar mode never fed `sq_det.on_bar_close_1m()` at all (only fed the MP detector), and never checked `sq_det.on_trade_price()` in the synthetic tick loop. Both are now wired. EEIQ bar mode now produces: entry $8.94 at 09:59 ET (matches manual trace).
+3. **Live bot**: Was already fully wired (PRIME→ARM→TRIGGER→enter_trade chain complete). The volume=0 fix was the only live blocker.
+
+**EEIQ bar mode result after fix:** Entry at $8.94, exited at $8.06 via dollar loss cap (-$1,178). This is a bar-mode artifact — synthetic ticks walk O→H→L→C, and the 09:59 bar had a $1.53 range. In reality with live ticks, the price broke $8.92, ran to $12.70, and the 2R target would have hit for a large winner. Bar mode can detect the setup correctly but can't simulate the intra-bar path — tick mode with real data is needed for accurate P&L.
 
 ---
 
