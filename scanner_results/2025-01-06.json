@@ -1,36 +1,18 @@
 [
   {
     "symbol": "GDTC",
-    "prev_close": 3.45,
-    "pm_price": 6.68,
-    "gap_pct": 93.62,
-    "pm_volume": 2692027.0,
+    "prev_close": 3.5,
+    "pm_price": 4.04,
+    "gap_pct": 15.43,
+    "pm_volume": 6613858.0,
     "first_seen_et": "07:00",
     "sim_start": "07:00",
     "discovery_time": "07:00",
-    "discovery_method": "precise",
-    "avg_daily_volume": 28525.0,
-    "relative_volume": 94.38,
-    "precise_discovery": "07:02",
+    "discovery_method": "ibkr_historical",
+    "avg_daily_volume": 91352.0,
+    "relative_volume": 72.4,
     "float_shares": 3679298,
     "float_millions": 3.68,
-    "profile": "A"
-  },
-  {
-    "symbol": "STAI",
-    "prev_close": 2.2,
-    "pm_price": 2.76,
-    "gap_pct": 25.45,
-    "pm_volume": 355795.0,
-    "first_seen_et": "08:00",
-    "sim_start": "07:00",
-    "discovery_time": "07:00",
-    "discovery_method": "precise",
-    "avg_daily_volume": 175345.0,
-    "relative_volume": 2.03,
-    "precise_discovery": "04:04",
-    "float_shares": 1000957,
-    "float_millions": 1.0,
     "profile": "A"
   }
 ]
