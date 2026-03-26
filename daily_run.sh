@@ -48,11 +48,20 @@ python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetect
     exit 1
 }
 
-# 4. Kill any stale TWS/Java before starting fresh
-echo "Killing stale TWS/Java processes..."
-pkill -f "java.*tws" 2>/dev/null || true
-pkill -f "java.*Jts" 2>/dev/null || true
+# 4. Kill any stale TWS/Java/bot before starting fresh
+echo "Killing stale processes..."
+pkill -9 -f "bot_ibkr.py" 2>/dev/null || true
+pkill -9 -f "java.*tws" 2>/dev/null || true
+pkill -9 -f "java.*Jts" 2>/dev/null || true
+pkill -9 -f "java.*ibc" 2>/dev/null || true
 sleep 5
+# Verify Java is truly dead (IBC uses pgrep to check)
+if pgrep -f "java.*config.ini" > /dev/null 2>&1; then
+    echo "WARNING: Java still alive, force killing all java..."
+    pkill -9 -f "java" 2>/dev/null || true
+    sleep 3
+fi
+echo "All stale processes cleared."
 
 # Start TWS via IBC
 echo "Starting TWS via IBC..."
