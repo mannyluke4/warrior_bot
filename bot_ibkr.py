@@ -9,8 +9,9 @@ Simplified flow:
 5. Feed bars to squeeze_detector / micro_pullback
 6. On signal: place order via IBKR
 7. Manage exits via trade_manager_ibkr
-8. At 9:30 ET: stop scanning for new symbols
-9. At 12:00 ET: close any open positions, shut down
+8. Scanner runs continuously during all trading windows
+9. Two sessions: morning (7:00-12:00 ET) + evening (16:00-20:00 ET)
+10. Sleeps during dead zone (12:00-16:00), shuts down after last window
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ import sys
 import time
 import math
 import traceback
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, time as time_cls
 from collections import deque
 
 import pytz
@@ -61,10 +62,30 @@ SQ_RUNNER_TRAIL_R = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
 SQ_MAX_LOSS_DOLLARS = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
 SQ_CORE_PCT = int(os.getenv("WB_SQ_CORE_PCT", "75"))
 
-# ── Scanner timing ───────────────────────────────────────────────────
-SCAN_CUTOFF_HOUR = int(os.getenv("WB_SCAN_CUTOFF_HOUR", "9"))
-SCAN_CUTOFF_MIN = int(os.getenv("WB_SCAN_CUTOFF_MIN", "30"))
-SHUTDOWN_HOUR = int(os.getenv("WB_SHUTDOWN_HOUR", "12"))  # Noon ET default
+# ── Trading windows (ET) ─────────────────────────────────────────────
+# Two sessions: morning and evening, with a dead zone 12:00-16:00.
+# Format: comma-separated "HH:MM-HH:MM" windows.
+TRADING_WINDOWS_STR = os.getenv("WB_TRADING_WINDOWS", "07:00-12:00,16:00-20:00")
+TRADING_WINDOWS = []
+for _w in TRADING_WINDOWS_STR.split(","):
+    _parts = _w.strip().split("-")
+    if len(_parts) == 2:
+        _s = time_cls(int(_parts[0].split(":")[0]), int(_parts[0].split(":")[1]))
+        _e = time_cls(int(_parts[1].split(":")[0]), int(_parts[1].split(":")[1]))
+        TRADING_WINDOWS.append((_s, _e))
+
+def in_trading_window(now_et: datetime) -> bool:
+    """Check if current time falls within any trading window."""
+    t = now_et.time()
+    return any(start <= t < end for start, end in TRADING_WINDOWS)
+
+def past_all_windows(now_et: datetime) -> bool:
+    """Check if we're past the last trading window for the day."""
+    t = now_et.time()
+    if not TRADING_WINDOWS:
+        return True
+    last_end = max(end for _, end in TRADING_WINDOWS)
+    return t >= last_end
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -100,7 +121,7 @@ class BotState:
         # Scanner
         self.candidates: list[dict] = []
         self.last_scan_time: datetime = None
-        self.scan_frozen: bool = False  # True after 9:30 cutoff
+        self.in_dead_zone: bool = False  # True while between trading windows
 
 
 state = BotState()
@@ -208,11 +229,9 @@ def seed_symbol(symbol: str):
 def run_scanner():
     """Run the IBKR scanner and subscribe to top candidates."""
     now = datetime.now(ET)
-    if state.scan_frozen:
-        return
-    if now.hour > SCAN_CUTOFF_HOUR or (now.hour == SCAN_CUTOFF_HOUR and now.minute >= SCAN_CUTOFF_MIN):
-        state.scan_frozen = True
-        print(f"🛑 Scanner cutoff reached ({SCAN_CUTOFF_HOUR}:{SCAN_CUTOFF_MIN:02d} ET). No new symbols.", flush=True)
+
+    # Only scan during active trading windows
+    if not in_trading_window(now):
         return
 
     # Don't scan more than every 5 minutes
@@ -349,6 +368,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
     contract = state.contracts[symbol]
     order = LimitOrder('BUY', qty, limit_price)
     order.tif = 'GTC'
+    order.outsideRth = True  # Allow fill in extended hours
 
     print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} "
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
@@ -461,9 +481,13 @@ def _mp_exit(symbol: str, price: float, pos: dict):
 
 
 def exit_trade(symbol: str, price: float, qty: int, reason: str):
-    """Place exit order and record trade."""
+    """Place exit order and record trade. Uses aggressive limit order (required for extended hours)."""
     contract = state.contracts[symbol]
-    order = MarketOrder('SELL', qty)
+    # Limit slightly below current price to fill fast (marketable limit)
+    limit_price = round(price - 0.03, 2)
+    order = LimitOrder('SELL', qty, limit_price)
+    order.tif = 'GTC'
+    order.outsideRth = True  # Allow fill in extended hours
     state.ib.placeOrder(contract, order)
 
     pos = state.open_position
@@ -586,33 +610,72 @@ def main():
     run_scanner()
 
     # Main event loop
-    print(f"\nBot running. Ctrl+C to stop.", flush=True)
+    windows_str = ", ".join(f"{s.strftime('%H:%M')}-{e.strftime('%H:%M')}" for s, e in TRADING_WINDOWS)
+    print(f"\nBot running. Windows: {windows_str} ET. Ctrl+C to stop.", flush=True)
     try:
         while True:
             now = datetime.now(ET)
 
-            # Shutdown at noon ET
-            if now.hour >= SHUTDOWN_HOUR:
-                print(f"\n🛑 Trading window closed ({SHUTDOWN_HOUR}:00 ET). Shutting down.", flush=True)
+            # Past all windows for the day → shut down
+            if past_all_windows(now):
+                print(f"\n🛑 All trading windows closed. Shutting down.", flush=True)
                 break
 
-            # Periodic rescan (every 5 min before cutoff)
-            if not state.scan_frozen:
+            # Check if we're in a trading window or the dead zone
+            active = in_trading_window(now)
+
+            if active:
+                # Coming back from dead zone — reset for fresh evening session
+                if state.in_dead_zone:
+                    state.in_dead_zone = False
+                    state.last_scan_time = None  # Force immediate rescan
+                    # Reset detectors — morning PM highs and EMAs are stale for evening
+                    state.sq_detectors.clear()
+                    state.mp_detectors.clear()
+                    # Reset bar builders so evening bars start fresh
+                    state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
+                    state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
+                    print(f"\n🟢 Evening session started ({now.strftime('%H:%M')} ET). Detectors reset. Resuming trading.", flush=True)
+
+                # Periodic rescan
                 run_scanner()
 
-            # Check halts
-            check_halts()
+                # Check halts
+                check_halts()
+            else:
+                # In dead zone between windows
+                if not state.in_dead_zone:
+                    state.in_dead_zone = True
+                    # Close any open position before dead zone
+                    if state.open_position:
+                        sym = state.open_position["symbol"]
+                        ticker = state.tickers.get(sym)
+                        # Try last, then bid, then close as fallback price
+                        price = None
+                        if ticker:
+                            for attr in ("last", "bid", "close"):
+                                p = getattr(ticker, attr, None)
+                                if p and not math.isnan(p) and p > 0:
+                                    price = p
+                                    break
+                        if price:
+                            print(f"🛑 Window closing — exiting {sym} at ${price:.2f}", flush=True)
+                            exit_trade(sym, price, state.open_position["qty"], "window_close")
+                        else:
+                            print(f"⚠️ Window closing — NO PRICE for {sym}, position left open!", flush=True)
+                    print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
 
             # Heartbeat every 30 seconds
             if now.second < 2:
                 pos_str = f"open={state.open_position['symbol']}" if state.open_position else "flat"
-                print(f"[{now.strftime('%H:%M:%S')} ET] heartbeat | "
+                zone = "ACTIVE" if active else "SLEEP"
+                print(f"[{now.strftime('%H:%M:%S')} ET] {zone} | "
                       f"watch={len(state.active_symbols)} {pos_str} "
                       f"daily=${state.daily_pnl:+,.0f} trades={state.daily_trades}",
                       flush=True)
 
-            # Let ib_insync process events
-            ib.sleep(1)
+            # Let ib_insync process events (sleep longer during dead zone)
+            ib.sleep(30 if state.in_dead_zone else 1)
 
     except KeyboardInterrupt:
         print("\nStopped by user.", flush=True)

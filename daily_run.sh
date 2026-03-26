@@ -106,16 +106,19 @@ if ! kill -0 "$BOT_PID" 2>/dev/null; then
 fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 
-# 8. Watchdog loop: wait until 9:00 AM MT (11:00 AM ET)
-TARGET_HOUR=9
-TARGET_MIN=0
+# 8. Watchdog loop: wait until 6:05 PM MT (8:05 PM ET) — 5 min after evening window closes
+# Bot handles its own dual-window schedule (morning 7-12 ET, evening 4-8 PM ET)
+# and sleeps during the dead zone automatically. Watchdog just ensures it stays alive.
+TARGET_HOUR=18
+TARGET_MIN=5
 TARGET_EPOCH=$(date -j -v${TARGET_HOUR}H -v${TARGET_MIN}M -v0S +%s)
 
-echo "Watchdog: monitoring bot until 9:00 AM MT ($(date -r $TARGET_EPOCH))..."
+echo "Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET ($(date -r $TARGET_EPOCH))..."
+echo "  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET"
 while true; do
     NOW_EPOCH=$(date +%s)
     if [ "$NOW_EPOCH" -ge "$TARGET_EPOCH" ]; then
-        echo "Trading window closed. Proceeding to shutdown."
+        echo "All trading windows closed. Proceeding to shutdown."
         break
     fi
     if ! kill -0 "$BOT_PID" 2>/dev/null; then
