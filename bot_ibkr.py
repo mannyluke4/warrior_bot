@@ -20,6 +20,8 @@ import os
 import sys
 import time
 import math
+import json
+import gzip
 import traceback
 from datetime import datetime, timedelta, timezone, time as time_cls
 from collections import deque
@@ -122,6 +124,9 @@ class BotState:
         self.candidates: list[dict] = []
         self.last_scan_time: datetime = None
         self.in_dead_zone: bool = False  # True while between trading windows
+
+        # Tick recording for backtest cache
+        self.tick_buffer: dict[str, list] = {}  # symbol -> [{p, s, t}, ...]
 
 
 state = BotState()
@@ -574,6 +579,15 @@ def _process_ticker(ticker):
 
     ts = datetime.now(ET)
 
+    # Record tick for backtest cache (exact same data the bot sees)
+    if symbol not in state.tick_buffer:
+        state.tick_buffer[symbol] = []
+    state.tick_buffer[symbol].append({
+        "p": price,
+        "s": size,
+        "t": ts.astimezone(timezone.utc).isoformat(),
+    })
+
     # Feed to bar builders (price + volume)
     if state.bar_builder_1m:
         state.bar_builder_1m.on_trade(symbol, price, size, ts)
@@ -586,6 +600,27 @@ def _process_ticker(ticker):
     # Manage exits
     if state.open_position and state.open_position["symbol"] == symbol:
         manage_exit(symbol, price)
+
+
+def save_tick_cache():
+    """Save recorded ticks to tick_cache/ for future backtesting.
+    Uses the exact same format simulate.py --ticks expects."""
+    today = datetime.now(ET).strftime("%Y-%m-%d")
+    cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tick_cache", today)
+    os.makedirs(cache_dir, exist_ok=True)
+
+    saved = 0
+    for symbol, ticks in state.tick_buffer.items():
+        if not ticks:
+            continue
+        out_path = os.path.join(cache_dir, f"{symbol}.json.gz")
+        with gzip.open(out_path, "wt") as f:
+            json.dump(ticks, f)
+        saved += 1
+        print(f"  Tick cache: {symbol} → {len(ticks):,} ticks saved", flush=True)
+
+    if saved:
+        print(f"📦 Tick cache saved: {saved} symbols → tick_cache/{today}/", flush=True)
 
 
 def main():
@@ -663,6 +698,8 @@ def main():
                             exit_trade(sym, price, state.open_position["qty"], "window_close")
                         else:
                             print(f"⚠️ Window closing — NO PRICE for {sym}, position left open!", flush=True)
+                    # Save tick cache from morning session
+                    save_tick_cache()
                     print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
 
             # Heartbeat every 30 seconds
@@ -689,6 +726,9 @@ def main():
             ticker = state.tickers.get(sym)
             if ticker and ticker.last:
                 exit_trade(sym, ticker.last, state.open_position["qty"], "shutdown")
+
+        # Save tick cache for backtesting (before disconnect)
+        save_tick_cache()
 
         # Disconnect
         ib.disconnect()
