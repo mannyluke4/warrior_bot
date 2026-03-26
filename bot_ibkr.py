@@ -111,12 +111,21 @@ state = BotState()
 # ══════════════════════════════════════════════════════════════════════
 
 def connect():
-    """Connect to IBKR."""
+    """Connect to IBKR with retry logic."""
     state.ib = IB()
-    state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
-    print(f"Connected: {state.ib.isConnected()}")
-    print(f"Account: {state.ib.managedAccounts()}")
-    return state.ib
+    for attempt in range(1, 4):
+        try:
+            state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+            print(f"Connected: {state.ib.isConnected()}")
+            print(f"Account: {state.ib.managedAccounts()}")
+            return state.ib
+        except Exception as e:
+            print(f"Connection attempt {attempt}/3 failed: {e}", flush=True)
+            if attempt < 3:
+                print(f"Retrying in 10 seconds...", flush=True)
+                time.sleep(10)
+            else:
+                raise
 
 
 def init_detectors(symbol: str):

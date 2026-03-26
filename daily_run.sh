@@ -48,12 +48,34 @@ python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetect
     exit 1
 }
 
-# 4. Start TWS via IBC (needed for IBKR API)
+# 4. Kill any stale TWS/Java before starting fresh
+echo "Killing stale TWS/Java processes..."
+pkill -f "java.*tws" 2>/dev/null || true
+pkill -f "java.*Jts" 2>/dev/null || true
+sleep 5
+
+# Start TWS via IBC
 echo "Starting TWS via IBC..."
 ~/ibc/twsstartmacos.sh &
 IBC_PID=$!
-sleep 90  # TWS needs ~60-90s to fully log in
-echo "TWS started (IBC PID: $IBC_PID)"
+
+# Wait for TWS to open port 7497, with retries every 5s up to 180s timeout
+echo "Waiting for TWS to accept connections on port 7497..."
+TWS_READY=0
+for i in $(seq 1 36); do
+    if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',7497)); s.close()" 2>/dev/null; then
+        echo "TWS is up on port 7497 (after ~$((i*5))s)"
+        TWS_READY=1
+        break
+    fi
+    echo "  attempt $i/36: port 7497 not ready yet, waiting 5s..."
+    sleep 5
+done
+
+if [ "$TWS_READY" -eq 0 ]; then
+    echo "FATAL: TWS did not open port 7497 within 180 seconds. Aborting."
+    exit 1
+fi
 
 # 5. Kill any stale bot processes
 echo "Cleaning up stale connections..."
