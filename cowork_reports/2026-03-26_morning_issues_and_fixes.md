@@ -141,9 +141,23 @@ Also added `outsideRth = True` to entry orders.
 
 ---
 
-## What EEIQ Would Have Done
+## This Morning's Backtest Simulation
 
-EEIQ was the morning's best candidate — it hit a volatility halt and spiked. Backtest simulation shows it would have been **+$1,600** if the volume bug hadn't blocked detection. This confirms the strategy works on today's market; the bug was the only thing stopping a live trade.
+Ran all 5 morning candidates (EEIQ, FCHL, NDLS, BTBD, FATN) through `simulate.py` for 2026-03-26 07:00-12:00 ET:
+
+| Symbol | Ticks in Cache | Result | Notes |
+|--------|---------------|--------|-------|
+| EEIQ | 3,270 (11:44-11:47 ET only) | No trades | Only 3 min of tick data — main move/halt was ~10 AM ET, not captured |
+| BTBD | 7,538 | No trades | Armed 3 times but never triggered (no level break) |
+| FCHL | 479 | No trades | Insufficient tick data |
+| NDLS | 55 | No trades | Insufficient tick data |
+| FATN | 148 | No trades | Insufficient tick data |
+
+**Why the backtest shows 0 trades:** The Databento tick cache for today is sparse — EEIQ's real action (the halt spike around 10 AM ET) wasn't captured. The tick cache only has a 3-minute window at 11:44 ET, well after the move. This is a **data coverage gap**, not a strategy failure.
+
+**Why the live bot also took 0 trades:** The volume=0 bug (Issue 3) meant all 1-minute bars had zero volume. The squeeze detector requires `min_bar_vol=50,000` to prime — with volume=0, it could never arm. Even though the live bot was receiving real-time data from IBKR during EEIQ's move, the volume wasn't being passed to the bar builder.
+
+**Bottom line:** Two independent problems — (1) live bot had the volume bug blocking detection, (2) backtest can't reproduce it because Databento didn't cache the ticks from the key timeframe. The volume=0 bug is now fixed. Future mornings will have the bot building bars with real volume from IBKR, and EEIQ-type setups will be detectable.
 
 ---
 
