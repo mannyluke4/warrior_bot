@@ -1,0 +1,14 @@
+caffeinate started (PID: 13252)
+=== V2 Daily run started: Thu Mar 26 02:00:00 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Pre-flight: checking Python imports...
+V2 Imports OK
+Starting TWS via IBC...
+TWS started (IBC PID: 13266)
+Cleaning up stale connections...
+Starting bot_ibkr.py...
+Bot started (PID: 13300)
+FATAL: bot_ibkr.py crashed within 15s of launch. Check /Users/duffy/warrior_bot_v2/logs/2026-03-26_daily.log for details.
+=== TRAP: cleanup at Thu Mar 26 02:01:52 MDT 2026 ===
