@@ -62,9 +62,9 @@ SQ_MAX_LOSS_DOLLARS = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
 SQ_CORE_PCT = int(os.getenv("WB_SQ_CORE_PCT", "75"))
 
 # ── Scanner timing ───────────────────────────────────────────────────
-SCAN_CUTOFF_HOUR = 9
-SCAN_CUTOFF_MIN = 30
-SHUTDOWN_HOUR = 12  # Noon ET
+SCAN_CUTOFF_HOUR = int(os.getenv("WB_SCAN_CUTOFF_HOUR", "9"))
+SCAN_CUTOFF_MIN = int(os.getenv("WB_SCAN_CUTOFF_MIN", "30"))
+SHUTDOWN_HOUR = int(os.getenv("WB_SHUTDOWN_HOUR", "12"))  # Noon ET default
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -438,8 +438,8 @@ def _squeeze_exit(symbol: str, price: float, pos: dict):
             qty_runner = qty - qty_core
             if qty_runner > 0:
                 pos["runner_stop"] = max(stop, entry + 0.01)
-                pos["qty"] = qty_runner
                 exit_trade(symbol, price, qty_core, "sq_target_hit")
+                pos["qty"] = qty_runner  # Set AFTER exit_trade so remaining calc is correct
             else:
                 exit_trade(symbol, price, qty, "sq_target_hit")
             return
@@ -506,16 +506,22 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
 # Halt Detection
 # ══════════════════════════════════════════════════════════════════════
 
+_halted_symbols: set = set()  # Track which symbols are currently halted (debounce)
+
 def check_halts():
-    """Check for halted stocks via Tick Type 49."""
+    """Check for halted stocks via Tick Type 49. Debounced — prints once per halt event."""
     for symbol in state.active_symbols:
         ticker = state.tickers.get(symbol)
         if ticker and hasattr(ticker, 'halted'):
             if ticker.halted == 1 or ticker.halted == 2:
-                halt_type = "regulatory" if ticker.halted == 1 else "volatility"
-                print(f"⚠️ HALT DETECTED: {symbol} ({halt_type})", flush=True)
-                # Cancel any pending orders on this symbol
-                # TODO: implement halt response logic
+                if symbol not in _halted_symbols:
+                    halt_type = "regulatory" if ticker.halted == 1 else "volatility"
+                    print(f"⚠️ HALT DETECTED: {symbol} ({halt_type})", flush=True)
+                    _halted_symbols.add(symbol)
+            else:
+                if symbol in _halted_symbols:
+                    print(f"✅ HALT RESUMED: {symbol}", flush=True)
+                    _halted_symbols.discard(symbol)
 
 
 # ══════════════════════════════════════════════════════════════════════
