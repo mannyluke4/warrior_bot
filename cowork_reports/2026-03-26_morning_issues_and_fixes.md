@@ -143,21 +143,36 @@ Also added `outsideRth = True` to entry orders.
 
 ## This Morning's Backtest Simulation
 
-Ran all 5 morning candidates (EEIQ, FCHL, NDLS, BTBD, FATN) through `simulate.py` for 2026-03-26 07:00-12:00 ET:
+### EEIQ Price Action (from IBKR 1-min bars)
+- Open at 4:01 AM ET: $3.23
+- **Morning high: $12.70 at 10:08 AM ET** (+293% from open)
+- Hit volatility halt during the spike
+- Closed around $8.35 by noon
 
-| Symbol | Ticks in Cache | Result | Notes |
-|--------|---------------|--------|-------|
-| EEIQ | 3,270 (11:44-11:47 ET only) | No trades | Only 3 min of tick data — main move/halt was ~10 AM ET, not captured |
-| BTBD | 7,538 | No trades | Armed 3 times but never triggered (no level break) |
-| FCHL | 479 | No trades | Insufficient tick data |
-| NDLS | 55 | No trades | Insufficient tick data |
-| FATN | 148 | No trades | Insufficient tick data |
+This was a textbook squeeze candidate that the bot should have caught.
 
-**Why the backtest shows 0 trades:** The Databento tick cache for today is sparse — EEIQ's real action (the halt spike around 10 AM ET) wasn't captured. The tick cache only has a 3-minute window at 11:44 ET, well after the move. This is a **data coverage gap**, not a strategy failure.
+### Backtest Results: 0 Trades (Two Independent Causes)
 
-**Why the live bot also took 0 trades:** The volume=0 bug (Issue 3) meant all 1-minute bars had zero volume. The squeeze detector requires `min_bar_vol=50,000` to prime — with volume=0, it could never arm. Even though the live bot was receiving real-time data from IBKR during EEIQ's move, the volume wasn't being passed to the bar builder.
+Ran all 5 morning candidates (EEIQ, FCHL, BTBD, NDLS, FATN) through `simulate.py` in both modes:
 
-**Bottom line:** Two independent problems — (1) live bot had the volume bug blocking detection, (2) backtest can't reproduce it because Databento didn't cache the ticks from the key timeframe. The volume=0 bug is now fixed. Future mornings will have the bot building bars with real volume from IBKR, and EEIQ-type setups will be detectable.
+| Symbol | Bar Mode (IBKR) | Tick Mode (Databento cache) | Notes |
+|--------|-----------------|---------------------------|-------|
+| EEIQ | Armed 2x, 0 triggers | 3,270 ticks (11:44-11:47 ET only) — 0 trades | Bar mode can't fire squeeze triggers; tick cache too sparse |
+| BTBD | Armed 2x, 0 triggers | Armed 3x, 0 triggers | Armed but never broke level |
+| FCHL | Armed 1x, 0 triggers | 479 ticks — 0 trades | Same dual issue |
+| NDLS | Armed 3x, 0 triggers | 55 ticks — 0 trades | Same dual issue |
+| FATN | Armed 2x, 0 triggers | 148 ticks — 0 trades | Same dual issue |
+
+**Cause 1 — Bar mode doesn't fire squeeze triggers (BUG):** `simulate.py` bar mode feeds bars to the squeeze detector's `on_bar_close_1m()` which correctly PRIMEs and ARMs setups, but the tick-level trigger check (`on_trade_price()`) is only wired in tick mode. Bar mode uses `synthetic_ticks()` for MP triggers but not for squeeze. This means squeeze backtests REQUIRE tick mode (`--ticks`).
+
+**Cause 2 — Databento tick cache is stale:** Since V2 migrated to IBKR, Databento live scanner isn't running. Today's tick cache only has 3 minutes of EEIQ data (11:44-11:47 ET), missing the entire $3→$12.70 move. The YTD backtests worked because historical tick cache was populated during V1 era.
+
+**Cause 3 — Live bot volume=0 bug:** Even with real-time IBKR data, the live bot passed `size=0` to bar builders. Squeeze detector requires `min_bar_vol=50,000` to prime — with volume=0, it could never arm.
+
+### What Needs to Happen
+1. **Volume=0 bug**: FIXED (Issue 3 above). Live bot now uses `ticker.lastSize`.
+2. **Bar mode squeeze triggers**: Need to wire `sq_det.on_trade_price()` into bar mode's synthetic tick loop, OR build an IBKR tick data fetcher to populate tick cache for future backtests.
+3. **Tick cache going forward**: Since Databento is no longer running, we need a new source of tick data for backtesting. Options: (a) fetch IBKR historical ticks, (b) wire squeeze triggers into bar mode's synthetic ticks.
 
 ---
 
