@@ -539,13 +539,16 @@ def _process_ticker(ticker):
     if price is None or price <= 0 or math.isnan(price):
         return
 
+    # Get trade size from ticker (lastSize = size of most recent trade print)
+    size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
+
     ts = datetime.now(ET)
 
-    # Feed to bar builders
+    # Feed to bar builders (price + volume)
     if state.bar_builder_1m:
-        state.bar_builder_1m.on_trade(symbol, price, 0, ts)
+        state.bar_builder_1m.on_trade(symbol, price, size, ts)
     if state.bar_builder_10s:
-        state.bar_builder_10s.on_trade(symbol, price, 0, ts)
+        state.bar_builder_10s.on_trade(symbol, price, size, ts)
 
     # Check triggers
     check_triggers(symbol, price)
