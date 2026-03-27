@@ -48,3 +48,10 @@ Waiting for TWS to accept connections on port 7497...
   attempt 36/36: port 7497 not ready yet, waiting 5s...
 FATAL: TWS did not open port 7497 within 180 seconds. Aborting.
 === TRAP: cleanup at Fri Mar 27 02:03:15 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 15: 33330 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration adee924] auto: daily logs 2026-03-27
+ 4 files changed, 3243 insertions(+)
+ create mode 100644 logs/2026-03-26_evening.log
+ create mode 100644 logs/2026-03-27_daily.log
+ create mode 100644 logs/cron_2026-03-27.log
+=== Cleanup complete: Fri Mar 27 02:03:17 MDT 2026 ===

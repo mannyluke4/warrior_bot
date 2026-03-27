@@ -133,6 +133,8 @@ def main():
                         help="Fetch all symbols from scanner_results for the given date")
     parser.add_argument("--date-range", nargs=2, metavar=("START", "END"),
                         help="Fetch all scanner candidates for a date range")
+    parser.add_argument("--force", action="store_true",
+                        help="Re-fetch even if cache file exists (overwrite Databento data with IBKR)")
     args = parser.parse_args()
 
     # Connect to IBKR
