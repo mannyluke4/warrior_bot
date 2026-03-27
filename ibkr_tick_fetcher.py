@@ -164,10 +164,13 @@ def main():
                     continue
 
                 symbols = [c["symbol"] for c in candidates]
-                # Skip if all already cached
-                cached = [s for s in symbols if os.path.exists(
-                    os.path.join(TICK_CACHE_DIR, date, f"{s}.json.gz"))]
-                to_fetch = [s for s in symbols if s not in cached]
+                if args.force:
+                    to_fetch = symbols
+                    cached = []
+                else:
+                    cached = [s for s in symbols if os.path.exists(
+                        os.path.join(TICK_CACHE_DIR, date, f"{s}.json.gz"))]
+                    to_fetch = [s for s in symbols if s not in cached]
 
                 if not to_fetch:
                     print(f"[{date}] All {len(symbols)} symbols already cached, skipping")
@@ -201,7 +204,7 @@ def main():
                 sym = c["symbol"]
                 # Skip if already cached
                 cache_path = os.path.join(TICK_CACHE_DIR, args.date, f"{sym}.json.gz")
-                if os.path.exists(cache_path):
+                if os.path.exists(cache_path) and not args.force:
                     print(f"  {sym}: already cached, skipping")
                     continue
                 print(f"  {sym}...", end=" ", flush=True)

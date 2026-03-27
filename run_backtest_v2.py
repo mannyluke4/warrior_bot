@@ -276,6 +276,8 @@ def main():
                         help="Custom status filename (default: current_run.md). Allows parallel runs.")
     parser.add_argument("--max-stocks", type=int, default=5,
                         help="Max scanner candidates per day (0 = unlimited, default 5)")
+    parser.add_argument("--ab-mp-v2", action="store_true",
+                        help="Run A/B comparison: Config A (SQ-only) vs Config B (SQ + MP V2)")
     args = parser.parse_args()
 
     # Find all dates with scanner data in range
@@ -299,10 +301,68 @@ def main():
         status_file = os.path.join(STATUS_DIR, args.status_file)
         state_file = os.path.join(STATUS_DIR, args.status_file.replace(".md", "_state.json"))
 
-    label = args.label or f"Backtest {args.start} to {args.end}"
     max_stocks = args.max_stocks if args.max_stocks > 0 else None
-    run_backtest(dates, label, windows=windows, status_file=status_file, state_file=state_file,
-                 max_stocks=max_stocks)
+
+    if args.ab_mp_v2:
+        # A/B comparison: SQ-only vs SQ + MP V2
+        mp_v2_vars = {
+            "WB_MP_V2_ENABLED": "1",
+            "WB_MP_V2_SQ_PRIORITY": "1",
+            "WB_MP_REENTRY_COOLDOWN_BARS": "3",
+            "WB_MP_MAX_REENTRIES": "3",
+            "WB_MP_REENTRY_MIN_R": "0.06",
+            "WB_MP_REENTRY_MACD_GATE": "0",
+            "WB_MP_REENTRY_USE_SQ_EXITS": "1",
+            "WB_MP_REENTRY_PROBE_SIZE": "0.5",
+        }
+
+        # Config A: SQ-only
+        os.environ["WB_MP_V2_ENABLED"] = "0"
+        label_a = f"Config A (SQ-Only) {args.start} to {args.end}"
+        sf_a = os.path.join(STATUS_DIR, "ab_config_a.md") if not status_file else status_file.replace(".md", "_a.md")
+        stf_a = sf_a.replace(".md", "_state.json")
+        print(f"\n>>> Running Config A: SQ-Only <<<\n")
+        run_backtest(dates, label_a, windows=windows, status_file=sf_a, state_file=stf_a,
+                     max_stocks=max_stocks)
+
+        # Config B: SQ + MP V2
+        for k, v in mp_v2_vars.items():
+            os.environ[k] = v
+        label_b = f"Config B (SQ + MP V2) {args.start} to {args.end}"
+        sf_b = os.path.join(STATUS_DIR, "ab_config_b.md") if not status_file else status_file.replace(".md", "_b.md")
+        stf_b = sf_b.replace(".md", "_state.json")
+        print(f"\n>>> Running Config B: SQ + MP V2 <<<\n")
+        run_backtest(dates, label_b, windows=windows, status_file=sf_b, state_file=stf_b,
+                     max_stocks=max_stocks)
+
+        # Read results and compare
+        with open(stf_a) as f:
+            res_a = json.load(f)
+        with open(stf_b) as f:
+            res_b = json.load(f)
+        eq_a = res_a["equity"]
+        eq_b = res_b["equity"]
+        pnl_a = eq_a - STARTING_EQUITY
+        pnl_b = eq_b - STARTING_EQUITY
+        trades_a = res_a["trades"]
+        trades_b = res_b["trades"]
+        wins_a = sum(1 for t in trades_a if t["pnl"] > 0)
+        wins_b = sum(1 for t in trades_b if t["pnl"] > 0)
+        losses_a = sum(1 for t in trades_a if t["pnl"] < 0)
+        losses_b = sum(1 for t in trades_b if t["pnl"] < 0)
+
+        print(f"\n{'='*60}")
+        print(f"  A/B COMPARISON: SQ-Only vs SQ + MP V2")
+        print(f"  Period: {args.start} to {args.end} ({len(dates)} days)")
+        print(f"{'='*60}")
+        print(f"  Config A (SQ-Only):   ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%) | {len(trades_a)} trades, {wins_a}W/{losses_a}L")
+        print(f"  Config B (SQ+MP V2):  ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%) | {len(trades_b)} trades, {wins_b}W/{losses_b}L")
+        print(f"  MP V2 impact:         ${pnl_b - pnl_a:+,.0f}")
+        print(f"{'='*60}")
+    else:
+        label = args.label or f"Backtest {args.start} to {args.end}"
+        run_backtest(dates, label, windows=windows, status_file=status_file, state_file=state_file,
+                     max_stocks=max_stocks)
 
 
 if __name__ == "__main__":
