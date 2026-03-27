@@ -268,6 +268,16 @@ def on_bar_close_1m(bar):
     vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else None
     pm_high = state.bar_builder_1m.get_premarket_high(symbol) if state.bar_builder_1m else None
 
+    # Diagnostic: log bar data every 5 minutes per symbol
+    hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else None
+    minute = datetime.now(ET).minute
+    if minute % 5 == 0:
+        sq_state = state.sq_detectors[symbol]._state if symbol in state.sq_detectors else "N/A"
+        armed_lvl = f"${state.sq_detectors[symbol].armed.trigger_high:.2f}" if (symbol in state.sq_detectors and state.sq_detectors[symbol].armed) else "none"
+        print(f"[{now_str} ET] {symbol} BAR | O={bar.open:.2f} H={bar.high:.2f} L={bar.low:.2f} C={bar.close:.2f} V={bar.volume:,} "
+              f"VWAP={vwap:.2f if vwap else 0:.2f} HOD={hod:.2f if hod else 0:.2f} PM_H={pm_high:.2f if pm_high else 0:.2f} "
+              f"sq={sq_state} armed={armed_lvl}", flush=True)
+
     # Squeeze detection
     if SQ_ENABLED and symbol in state.sq_detectors:
         sq = state.sq_detectors[symbol]
@@ -279,6 +289,8 @@ def on_bar_close_1m(bar):
             if "ARMED" in sq_msg:
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             elif "SQ_PRIMED" in sq_msg:
+                print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+            elif "SQ_REJECT" in sq_msg or "SQ_RESET" in sq_msg:
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
 
     # MP detection
@@ -614,10 +626,21 @@ def save_tick_cache():
         if not ticks:
             continue
         out_path = os.path.join(cache_dir, f"{symbol}.json.gz")
+        # Merge with existing cache (don't overwrite fetched historical data)
+        existing = []
+        if os.path.exists(out_path):
+            try:
+                with gzip.open(out_path, "rt") as f:
+                    existing = json.load(f)
+            except Exception:
+                existing = []
+        merged = existing + ticks
         with gzip.open(out_path, "wt") as f:
-            json.dump(ticks, f)
+            json.dump(merged, f)
         saved += 1
-        print(f"  Tick cache: {symbol} → {len(ticks):,} ticks saved", flush=True)
+        new_count = len(ticks)
+        total_count = len(merged)
+        print(f"  Tick cache: {symbol} → +{new_count:,} ticks (total {total_count:,})", flush=True)
 
     if saved:
         print(f"📦 Tick cache saved: {saved} symbols → tick_cache/{today}/", flush=True)

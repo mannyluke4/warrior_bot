@@ -138,7 +138,8 @@ def main():
     # Connect to IBKR
     ib = IB()
     try:
-        ib.connect("127.0.0.1", 7497, clientId=99, timeout=15)
+        port = int(os.getenv("IBKR_PORT", "4002"))
+        ib.connect("127.0.0.1", port, clientId=99, timeout=15)
     except Exception as e:
         print(f"FATAL: Cannot connect to IBKR: {e}")
         sys.exit(1)
