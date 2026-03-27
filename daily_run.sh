@@ -1,5 +1,5 @@
 #!/bin/bash
-# Daily automated trading run — Warrior Bot V2 (IBKR)
+# Daily automated trading run — Warrior Bot V2 (IBKR Gateway)
 # Triggered by cron: 0 2 * * 1-5 (2:00 AM MT, weekdays)
 
 set -euo pipefail
@@ -7,6 +7,7 @@ set -euo pipefail
 LOG_DIR=~/warrior_bot_v2/logs
 TODAY=$(date +%Y-%m-%d)
 LOG_FILE="$LOG_DIR/${TODAY}_daily.log"
+IBKR_PORT=4002  # Gateway paper trading port
 mkdir -p "$LOG_DIR"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
@@ -48,9 +49,11 @@ python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetect
     exit 1
 }
 
-# 4. Kill any stale TWS/Java/bot before starting fresh
+# 4. Kill any stale Gateway/TWS/Java/bot before starting fresh
 echo "Killing stale processes..."
 pkill -9 -f "bot_ibkr.py" 2>/dev/null || true
+pkill -9 -f "java.*ibgateway" 2>/dev/null || true
+pkill -9 -f "java.*IBGateway" 2>/dev/null || true
 pkill -9 -f "java.*tws" 2>/dev/null || true
 pkill -9 -f "java.*Jts" 2>/dev/null || true
 pkill -9 -f "java.*ibc" 2>/dev/null || true
@@ -63,42 +66,42 @@ if pgrep -f "java.*config.ini" > /dev/null 2>&1; then
 fi
 echo "All stale processes cleared."
 
-# Start TWS via IBC
-echo "Starting TWS via IBC..."
-~/ibc/twsstartmacos.sh &
+# 5. Start IB Gateway via IBC (headless — no GUI, no AppleScript dependency)
+echo "Starting IB Gateway via IBC..."
+~/ibc/gatewaystartmacos.sh -inline &
 IBC_PID=$!
 
-# Wait for TWS to open port 7497, with retries every 5s up to 180s timeout
-echo "Waiting for TWS to accept connections on port 7497..."
-TWS_READY=0
+# Wait for Gateway to open port 4002
+echo "Waiting for IB Gateway on port $IBKR_PORT..."
+GW_READY=0
 for i in $(seq 1 36); do
-    if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',7497)); s.close()" 2>/dev/null; then
-        echo "TWS is up on port 7497 (after ~$((i*5))s)"
-        TWS_READY=1
+    if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2>/dev/null; then
+        echo "Gateway is up on port $IBKR_PORT (after ~$((i*5))s)"
+        GW_READY=1
         break
     fi
-    echo "  attempt $i/36: port 7497 not ready yet, waiting 5s..."
+    echo "  attempt $i/36: port $IBKR_PORT not ready yet, waiting 5s..."
     sleep 5
 done
 
-if [ "$TWS_READY" -eq 0 ]; then
-    echo "FATAL: TWS did not open port 7497 within 180 seconds. Aborting."
+if [ "$GW_READY" -eq 0 ]; then
+    echo "FATAL: IB Gateway did not open port $IBKR_PORT within 180 seconds. Aborting."
     exit 1
 fi
 
-# 5. Kill any stale bot processes
+# 6. Kill any stale bot processes
 echo "Cleaning up stale connections..."
 pkill -f "bot_ibkr.py" 2>/dev/null || true
 sleep 2
 
-# 6. Start the V2 bot
+# 7. Start the V2 bot
 echo "Starting bot_ibkr.py..."
 cd ~/warrior_bot_v2
 python3 bot_ibkr.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 
-# 7. Post-launch health check
+# 8. Post-launch health check
 sleep 15
 if ! kill -0 "$BOT_PID" 2>/dev/null; then
     echo "FATAL: bot_ibkr.py crashed within 15s of launch. Check $LOG_FILE for details."
@@ -106,7 +109,7 @@ if ! kill -0 "$BOT_PID" 2>/dev/null; then
 fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 
-# 8. Watchdog loop: wait until 6:05 PM MT (8:05 PM ET) — 5 min after evening window closes
+# 9. Watchdog loop: wait until 6:05 PM MT (8:05 PM ET) — 5 min after evening window closes
 # Bot handles its own dual-window schedule (morning 7-12 ET, evening 4-8 PM ET)
 # and sleeps during the dead zone automatically. Watchdog just ensures it stays alive.
 TARGET_HOUR=18
@@ -128,13 +131,13 @@ while true; do
     sleep 60 || true
 done
 
-# 9. Shut down
+# 10. Shut down
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
 sleep 5
 pkill -f "bot_ibkr.py" 2>/dev/null || true
 
-# 10. Commit and push logs
+# 11. Commit and push logs
 echo "Pushing logs..."
 cd ~/warrior_bot_v2
 git add -f logs/ 2>/dev/null || true

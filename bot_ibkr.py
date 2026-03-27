@@ -42,7 +42,7 @@ MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
 
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
-IBKR_PORT = int(os.getenv("IBKR_PORT", "7497"))
+IBKR_PORT = int(os.getenv("IBKR_PORT", "4002"))  # 4002 = Gateway paper
 IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", "1"))
 
 # ── Risk ─────────────────────────────────────────────────────────────
