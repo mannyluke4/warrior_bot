@@ -1,0 +1,2859 @@
+{
+  "label": "MP-Only Jan 2025 - Mar 2026 (IBKR Data)",
+  "last_date": "2026-03-26",
+  "equity": 21934,
+  "trades": [
+    {
+      "date": "2025-01-06",
+      "symbol": "GDTC",
+      "pnl": 108,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-01-13",
+      "symbol": "PHIO",
+      "pnl": -746,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "DWTX",
+      "pnl": -633,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "VNCE",
+      "pnl": -48,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "HKPD",
+      "pnl": -624,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-01-27",
+      "symbol": "FMST",
+      "pnl": -546,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-02-03",
+      "symbol": "SOPA",
+      "pnl": -183,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-02-04",
+      "symbol": "QNTM",
+      "pnl": -310,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-02-13",
+      "symbol": "EDSA",
+      "pnl": -89,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2025-02-19",
+      "symbol": "SINT",
+      "pnl": -291,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-02-24",
+      "symbol": "ATCH",
+      "pnl": 248,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-02-25",
+      "symbol": "WAFU",
+      "pnl": -78,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-03-03",
+      "symbol": "POLA",
+      "pnl": -574,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-03-26",
+      "symbol": "OSRH",
+      "pnl": -506,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-03-28",
+      "symbol": "ATON",
+      "pnl": -642,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2025-04-22",
+      "symbol": "GELS",
+      "pnl": 584,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-04-22",
+      "symbol": "GELS",
+      "pnl": -68,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-04-22",
+      "symbol": "WNW",
+      "pnl": -130,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-04-28",
+      "symbol": "GLMD",
+      "pnl": -477,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "KTTA",
+      "pnl": -85,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-05-13",
+      "symbol": "ELSE",
+      "pnl": -908,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2025-05-14",
+      "symbol": "INM",
+      "pnl": 61,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-05-19",
+      "symbol": "PTIX",
+      "pnl": 458,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-05-19",
+      "symbol": "PTIX",
+      "pnl": 129,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-05-19",
+      "symbol": "DTSS",
+      "pnl": 73,
+      "reason": "trail_stop"
+    },
+    {
+      "date": "2025-05-29",
+      "symbol": "BOSC",
+      "pnl": 0,
+      "reason": "trail_stop"
+    },
+    {
+      "date": "2025-05-29",
+      "symbol": "WETO",
+      "pnl": -475,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-06-04",
+      "symbol": "BAOS",
+      "pnl": -183,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-06-09",
+      "symbol": "TAOX",
+      "pnl": -41,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-06-10",
+      "symbol": "EVGN",
+      "pnl": -179,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-06-18",
+      "symbol": "LSE",
+      "pnl": 4602,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-06-20",
+      "symbol": "AIFF",
+      "pnl": 5602,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-06-23",
+      "symbol": "WFF",
+      "pnl": -646,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-06-24",
+      "symbol": "INM",
+      "pnl": -2639,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-06-27",
+      "symbol": "BBLG",
+      "pnl": -77,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-06-30",
+      "symbol": "WBUY",
+      "pnl": -398,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-07-01",
+      "symbol": "CLRO",
+      "pnl": -645,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2025-07-07",
+      "symbol": "MBIO",
+      "pnl": -62,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-07-11",
+      "symbol": "CVM",
+      "pnl": 282,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-07-11",
+      "symbol": "CVM",
+      "pnl": 191,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-07-16",
+      "symbol": "NUWE",
+      "pnl": -185,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-07-28",
+      "symbol": "CRVO",
+      "pnl": 145,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-08-05",
+      "symbol": "AUUD",
+      "pnl": -385,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-08-14",
+      "symbol": "SNOA",
+      "pnl": -658,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-08-14",
+      "symbol": "XPON",
+      "pnl": -493,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-08-14",
+      "symbol": "BMRA",
+      "pnl": -256,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-08-15",
+      "symbol": "PPSI",
+      "pnl": -544,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-08-19",
+      "symbol": "PRFX",
+      "pnl": -244,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-08-21",
+      "symbol": "PTIX",
+      "pnl": -584,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-08-21",
+      "symbol": "APM",
+      "pnl": -211,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-02",
+      "symbol": "SHFS",
+      "pnl": -511,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-02",
+      "symbol": "UUU",
+      "pnl": 1138,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-02",
+      "symbol": "HWH",
+      "pnl": -558,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-03",
+      "symbol": "STI",
+      "pnl": -569,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-09-03",
+      "symbol": "BTBD",
+      "pnl": -33,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-03",
+      "symbol": "AIHS",
+      "pnl": 0,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-03",
+      "symbol": "AIHS",
+      "pnl": 1558,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-04",
+      "symbol": "CIGL",
+      "pnl": 1987,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-04",
+      "symbol": "CIGL",
+      "pnl": 225,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-04",
+      "symbol": "BRIA",
+      "pnl": 1266,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-04",
+      "symbol": "BBLG",
+      "pnl": -598,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-09-05",
+      "symbol": "VEEE",
+      "pnl": -587,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-09-15",
+      "symbol": "MBAI",
+      "pnl": -304,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-16",
+      "symbol": "SNTG",
+      "pnl": 0,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2025-09-16",
+      "symbol": "SNTG",
+      "pnl": -354,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-19",
+      "symbol": "FATN",
+      "pnl": 93,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-09-22",
+      "symbol": "AIXC",
+      "pnl": -562,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "EGG",
+      "pnl": -720,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-09-29",
+      "symbol": "JFB",
+      "pnl": -449,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-09-29",
+      "symbol": "SCOR",
+      "pnl": -872,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-06",
+      "symbol": "SOPA",
+      "pnl": -84,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-07",
+      "symbol": "BJDX",
+      "pnl": -333,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2025-10-08",
+      "symbol": "XBIO",
+      "pnl": 35,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-08",
+      "symbol": "ACXP",
+      "pnl": -281,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-08",
+      "symbol": "BGMS",
+      "pnl": -284,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-09",
+      "symbol": "TCRT",
+      "pnl": -79,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-10",
+      "symbol": "OLOX",
+      "pnl": 300,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-13",
+      "symbol": "PMAX",
+      "pnl": -329,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2025-10-13",
+      "symbol": "NDRA",
+      "pnl": -89,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-13",
+      "symbol": "STI",
+      "pnl": -280,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-14",
+      "symbol": "GWAV",
+      "pnl": -90,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-14",
+      "symbol": "CYN",
+      "pnl": -112,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-10-15",
+      "symbol": "COOT",
+      "pnl": 280,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-10-15",
+      "symbol": "COOT",
+      "pnl": -52,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-15",
+      "symbol": "PFAI",
+      "pnl": -152,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-16",
+      "symbol": "LGCB",
+      "pnl": 164,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-10-21",
+      "symbol": "BOF",
+      "pnl": -98,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-23",
+      "symbol": "IMCC",
+      "pnl": -269,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-23",
+      "symbol": "OLOX",
+      "pnl": -237,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-23",
+      "symbol": "SLMT",
+      "pnl": 342,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-10-24",
+      "symbol": "AIXC",
+      "pnl": -56,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-29",
+      "symbol": "ERNA",
+      "pnl": -277,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-10-31",
+      "symbol": "DFSC",
+      "pnl": -100,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-10-31",
+      "symbol": "DLHC",
+      "pnl": 31,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-11-07",
+      "symbol": "MSGM",
+      "pnl": -119,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-11-10",
+      "symbol": "MOVE",
+      "pnl": -157,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-11-12",
+      "symbol": "CMCT",
+      "pnl": -305,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2025-11-21",
+      "symbol": "MNDR",
+      "pnl": -100,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-01",
+      "symbol": "QTTB",
+      "pnl": -316,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-02",
+      "symbol": "TAOP",
+      "pnl": -346,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-03",
+      "symbol": "PMAX",
+      "pnl": 361,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-03",
+      "symbol": "HTOO",
+      "pnl": -584,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "CETX",
+      "pnl": -257,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-09",
+      "symbol": "XCUR",
+      "pnl": -498,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-12-09",
+      "symbol": "AMCI",
+      "pnl": 67,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-12-09",
+      "symbol": "AMCI",
+      "pnl": -113,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-09",
+      "symbol": "VOR",
+      "pnl": -101,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-15",
+      "symbol": "ARBB",
+      "pnl": -500,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-12-15",
+      "symbol": "GLSI",
+      "pnl": -180,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-16",
+      "symbol": "VERO",
+      "pnl": -498,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-12-18",
+      "symbol": "LONA",
+      "pnl": -276,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2025-12-23",
+      "symbol": "TIVC",
+      "pnl": -446,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-12-23",
+      "symbol": "OPTX",
+      "pnl": 42,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2025-12-29",
+      "symbol": "SOPA",
+      "pnl": -384,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2025-12-31",
+      "symbol": "ANGH",
+      "pnl": -233,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "OM",
+      "pnl": 692,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "BDSX",
+      "pnl": -13,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": -10,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 3293,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-01-15",
+      "symbol": "SPHL",
+      "pnl": -144,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-01-15",
+      "symbol": "BNKK",
+      "pnl": 604,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2026-01-15",
+      "symbol": "AGPU",
+      "pnl": 652,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2026-01-20",
+      "symbol": "SHPH",
+      "pnl": -546,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2026-01-20",
+      "symbol": "POLA",
+      "pnl": -349,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2026-01-21",
+      "symbol": "SLGB",
+      "pnl": -80,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-01-22",
+      "symbol": "SXTP",
+      "pnl": -597,
+      "reason": "stop_hit"
+    },
+    {
+      "date": "2026-01-27",
+      "symbol": "CYN",
+      "pnl": -461,
+      "reason": "max_loss_hit"
+    },
+    {
+      "date": "2026-01-30",
+      "symbol": "PMN",
+      "pnl": 207,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-02-10",
+      "symbol": "SPOG",
+      "pnl": -86,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "PLYX",
+      "pnl": 0,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "PLYX",
+      "pnl": -89,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-02-19",
+      "symbol": "RUBI",
+      "pnl": -82,
+      "reason": "bail_timer"
+    },
+    {
+      "date": "2026-02-20",
+      "symbol": "CDIO",
+      "pnl": -166,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-03-18",
+      "symbol": "ARTL",
+      "pnl": 521,
+      "reason": "topping_wicky_exit_full"
+    },
+    {
+      "date": "2026-03-19",
+      "symbol": "DLTH",
+      "pnl": -290,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "UGRO",
+      "pnl": -185,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-03-24",
+      "symbol": "FEED",
+      "pnl": -70,
+      "reason": "bearish_engulfing_exit_full"
+    },
+    {
+      "date": "2026-03-24",
+      "symbol": "LICN",
+      "pnl": -664,
+      "reason": "bail_timer"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2025-01-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2025-01-06",
+      "trades": 1,
+      "pnl": 108,
+      "equity": 30108,
+      "symbols": "GDTC"
+    },
+    {
+      "date": "2025-01-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30108,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30108
+    },
+    {
+      "date": "2025-01-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30108
+    },
+    {
+      "date": "2025-01-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30108
+    },
+    {
+      "date": "2025-01-13",
+      "trades": 1,
+      "pnl": -746,
+      "equity": 29362,
+      "symbols": "PHIO"
+    },
+    {
+      "date": "2025-01-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29362
+    },
+    {
+      "date": "2025-01-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29362
+    },
+    {
+      "date": "2025-01-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29362,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29362,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-21",
+      "trades": 1,
+      "pnl": -633,
+      "equity": 28729,
+      "symbols": "DWTX"
+    },
+    {
+      "date": "2025-01-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 28729,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-23",
+      "trades": 2,
+      "pnl": -672,
+      "equity": 28057,
+      "symbols": "VNCE HKPD"
+    },
+    {
+      "date": "2025-01-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 28057,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-27",
+      "trades": 1,
+      "pnl": -546,
+      "equity": 27511,
+      "symbols": "FMST"
+    },
+    {
+      "date": "2025-01-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27511,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27511
+    },
+    {
+      "date": "2025-01-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27511,
+      "symbols": ""
+    },
+    {
+      "date": "2025-01-31",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27511
+    },
+    {
+      "date": "2025-02-03",
+      "trades": 1,
+      "pnl": -183,
+      "equity": 27328,
+      "symbols": "SOPA"
+    },
+    {
+      "date": "2025-02-04",
+      "trades": 1,
+      "pnl": -310,
+      "equity": 27018,
+      "symbols": "QNTM"
+    },
+    {
+      "date": "2025-02-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018,
+      "symbols": ""
+    },
+    {
+      "date": "2025-02-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018,
+      "symbols": ""
+    },
+    {
+      "date": "2025-02-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018
+    },
+    {
+      "date": "2025-02-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018
+    },
+    {
+      "date": "2025-02-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018,
+      "symbols": ""
+    },
+    {
+      "date": "2025-02-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27018
+    },
+    {
+      "date": "2025-02-13",
+      "trades": 1,
+      "pnl": -89,
+      "equity": 26929,
+      "symbols": "EDSA"
+    },
+    {
+      "date": "2025-02-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26929,
+      "symbols": ""
+    },
+    {
+      "date": "2025-02-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26929
+    },
+    {
+      "date": "2025-02-19",
+      "trades": 1,
+      "pnl": -291,
+      "equity": 26638,
+      "symbols": "SINT"
+    },
+    {
+      "date": "2025-02-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26638
+    },
+    {
+      "date": "2025-02-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26638
+    },
+    {
+      "date": "2025-02-24",
+      "trades": 1,
+      "pnl": 248,
+      "equity": 26886,
+      "symbols": "ATCH"
+    },
+    {
+      "date": "2025-02-25",
+      "trades": 1,
+      "pnl": -78,
+      "equity": 26808,
+      "symbols": "WAFU"
+    },
+    {
+      "date": "2025-02-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26808
+    },
+    {
+      "date": "2025-02-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26808
+    },
+    {
+      "date": "2025-02-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26808
+    },
+    {
+      "date": "2025-03-03",
+      "trades": 1,
+      "pnl": -574,
+      "equity": 26234,
+      "symbols": "POLA"
+    },
+    {
+      "date": "2025-03-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234,
+      "symbols": ""
+    },
+    {
+      "date": "2025-03-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-19",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234,
+      "symbols": ""
+    },
+    {
+      "date": "2025-03-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234
+    },
+    {
+      "date": "2025-03-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234,
+      "symbols": ""
+    },
+    {
+      "date": "2025-03-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234,
+      "symbols": ""
+    },
+    {
+      "date": "2025-03-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26234,
+      "symbols": ""
+    },
+    {
+      "date": "2025-03-26",
+      "trades": 1,
+      "pnl": -506,
+      "equity": 25728,
+      "symbols": "OSRH"
+    },
+    {
+      "date": "2025-03-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25728
+    },
+    {
+      "date": "2025-03-28",
+      "trades": 1,
+      "pnl": -642,
+      "equity": 25086,
+      "symbols": "ATON"
+    },
+    {
+      "date": "2025-03-31",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-01",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086
+    },
+    {
+      "date": "2025-04-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-22",
+      "trades": 3,
+      "pnl": 386,
+      "equity": 25472,
+      "symbols": "GELS WNW"
+    },
+    {
+      "date": "2025-04-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25472,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25472,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25472
+    },
+    {
+      "date": "2025-04-28",
+      "trades": 1,
+      "pnl": -477,
+      "equity": 24995,
+      "symbols": "GLMD"
+    },
+    {
+      "date": "2025-04-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24995,
+      "symbols": ""
+    },
+    {
+      "date": "2025-04-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24995
+    },
+    {
+      "date": "2025-05-01",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24995,
+      "symbols": ""
+    },
+    {
+      "date": "2025-05-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24995
+    },
+    {
+      "date": "2025-05-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24995,
+      "symbols": ""
+    },
+    {
+      "date": "2025-05-06",
+      "trades": 1,
+      "pnl": -85,
+      "equity": 24910,
+      "symbols": "KTTA"
+    },
+    {
+      "date": "2025-05-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24910
+    },
+    {
+      "date": "2025-05-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24910
+    },
+    {
+      "date": "2025-05-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24910
+    },
+    {
+      "date": "2025-05-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24910
+    },
+    {
+      "date": "2025-05-13",
+      "trades": 1,
+      "pnl": -908,
+      "equity": 24002,
+      "symbols": "ELSE"
+    },
+    {
+      "date": "2025-05-14",
+      "trades": 1,
+      "pnl": 61,
+      "equity": 24063,
+      "symbols": "INM"
+    },
+    {
+      "date": "2025-05-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24063
+    },
+    {
+      "date": "2025-05-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24063,
+      "symbols": ""
+    },
+    {
+      "date": "2025-05-19",
+      "trades": 3,
+      "pnl": 660,
+      "equity": 24723,
+      "symbols": "PTIX DTSS"
+    },
+    {
+      "date": "2025-05-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723
+    },
+    {
+      "date": "2025-05-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723
+    },
+    {
+      "date": "2025-05-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723,
+      "symbols": ""
+    },
+    {
+      "date": "2025-05-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723
+    },
+    {
+      "date": "2025-05-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723
+    },
+    {
+      "date": "2025-05-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24723
+    },
+    {
+      "date": "2025-05-29",
+      "trades": 2,
+      "pnl": -475,
+      "equity": 24248,
+      "symbols": "BOSC WETO"
+    },
+    {
+      "date": "2025-05-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24248,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24248,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24248,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-04",
+      "trades": 1,
+      "pnl": -183,
+      "equity": 24065,
+      "symbols": "BAOS"
+    },
+    {
+      "date": "2025-06-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24065
+    },
+    {
+      "date": "2025-06-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24065,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-09",
+      "trades": 1,
+      "pnl": -41,
+      "equity": 24024,
+      "symbols": "TAOX"
+    },
+    {
+      "date": "2025-06-10",
+      "trades": 1,
+      "pnl": -179,
+      "equity": 23845,
+      "symbols": "EVGN"
+    },
+    {
+      "date": "2025-06-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23845
+    },
+    {
+      "date": "2025-06-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23845
+    },
+    {
+      "date": "2025-06-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23845,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23845,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23845,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-18",
+      "trades": 1,
+      "pnl": 4602,
+      "equity": 28447,
+      "symbols": "LSE"
+    },
+    {
+      "date": "2025-06-20",
+      "trades": 1,
+      "pnl": 5602,
+      "equity": 34049,
+      "symbols": "AIFF"
+    },
+    {
+      "date": "2025-06-23",
+      "trades": 1,
+      "pnl": -646,
+      "equity": 33403,
+      "symbols": "WFF"
+    },
+    {
+      "date": "2025-06-24",
+      "trades": 1,
+      "pnl": -2639,
+      "equity": 30764,
+      "symbols": "INM"
+    },
+    {
+      "date": "2025-06-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30764,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30764,
+      "symbols": ""
+    },
+    {
+      "date": "2025-06-27",
+      "trades": 1,
+      "pnl": -77,
+      "equity": 30687,
+      "symbols": "BBLG"
+    },
+    {
+      "date": "2025-06-30",
+      "trades": 1,
+      "pnl": -398,
+      "equity": 30289,
+      "symbols": "WBUY"
+    },
+    {
+      "date": "2025-07-01",
+      "trades": 1,
+      "pnl": -645,
+      "equity": 29644,
+      "symbols": "CLRO"
+    },
+    {
+      "date": "2025-07-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29644,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29644,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-07",
+      "trades": 1,
+      "pnl": -62,
+      "equity": 29582,
+      "symbols": "MBIO"
+    },
+    {
+      "date": "2025-07-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29582,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29582,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29582,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-11",
+      "trades": 2,
+      "pnl": 473,
+      "equity": 30055,
+      "symbols": "CVM"
+    },
+    {
+      "date": "2025-07-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30055,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30055,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-16",
+      "trades": 1,
+      "pnl": -185,
+      "equity": 29870,
+      "symbols": "NUWE"
+    },
+    {
+      "date": "2025-07-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870
+    },
+    {
+      "date": "2025-07-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870
+    },
+    {
+      "date": "2025-07-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870
+    },
+    {
+      "date": "2025-07-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29870,
+      "symbols": ""
+    },
+    {
+      "date": "2025-07-28",
+      "trades": 1,
+      "pnl": 145,
+      "equity": 30015,
+      "symbols": "CRVO"
+    },
+    {
+      "date": "2025-07-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30015
+    },
+    {
+      "date": "2025-07-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30015
+    },
+    {
+      "date": "2025-07-31",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30015
+    },
+    {
+      "date": "2025-08-01",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30015,
+      "symbols": ""
+    },
+    {
+      "date": "2025-08-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30015
+    },
+    {
+      "date": "2025-08-05",
+      "trades": 1,
+      "pnl": -385,
+      "equity": 29630,
+      "symbols": "AUUD"
+    },
+    {
+      "date": "2025-08-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29630,
+      "symbols": ""
+    },
+    {
+      "date": "2025-08-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29630,
+      "symbols": ""
+    },
+    {
+      "date": "2025-08-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29630
+    },
+    {
+      "date": "2025-08-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29630,
+      "symbols": ""
+    },
+    {
+      "date": "2025-08-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29630
+    },
+    {
+      "date": "2025-08-14",
+      "trades": 3,
+      "pnl": -1407,
+      "equity": 28223,
+      "symbols": "SNOA XPON BMRA"
+    },
+    {
+      "date": "2025-08-15",
+      "trades": 1,
+      "pnl": -544,
+      "equity": 27679,
+      "symbols": "PPSI"
+    },
+    {
+      "date": "2025-08-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27679
+    },
+    {
+      "date": "2025-08-19",
+      "trades": 1,
+      "pnl": -244,
+      "equity": 27435,
+      "symbols": "PRFX"
+    },
+    {
+      "date": "2025-08-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 27435,
+      "symbols": ""
+    },
+    {
+      "date": "2025-08-21",
+      "trades": 2,
+      "pnl": -795,
+      "equity": 26640,
+      "symbols": "PTIX APM"
+    },
+    {
+      "date": "2025-09-02",
+      "trades": 3,
+      "pnl": 69,
+      "equity": 26709,
+      "symbols": "SHFS UUU HWH"
+    },
+    {
+      "date": "2025-09-03",
+      "trades": 4,
+      "pnl": 956,
+      "equity": 27665,
+      "symbols": "STI BTBD AIHS"
+    },
+    {
+      "date": "2025-09-04",
+      "trades": 4,
+      "pnl": 2880,
+      "equity": 30545,
+      "symbols": "CIGL BRIA BBLG"
+    },
+    {
+      "date": "2025-09-05",
+      "trades": 1,
+      "pnl": -587,
+      "equity": 29958,
+      "symbols": "VEEE"
+    },
+    {
+      "date": "2025-09-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29958
+    },
+    {
+      "date": "2025-09-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29958,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29958,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29958,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29958,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-15",
+      "trades": 1,
+      "pnl": -304,
+      "equity": 29654,
+      "symbols": "MBAI"
+    },
+    {
+      "date": "2025-09-16",
+      "trades": 2,
+      "pnl": -354,
+      "equity": 29300,
+      "symbols": "SNTG"
+    },
+    {
+      "date": "2025-09-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29300,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 29300,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-19",
+      "trades": 1,
+      "pnl": 93,
+      "equity": 29393,
+      "symbols": "FATN"
+    },
+    {
+      "date": "2025-09-22",
+      "trades": 1,
+      "pnl": -562,
+      "equity": 28831,
+      "symbols": "AIXC"
+    },
+    {
+      "date": "2025-09-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 28831,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 28831,
+      "symbols": ""
+    },
+    {
+      "date": "2025-09-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 28831
+    },
+    {
+      "date": "2025-09-26",
+      "trades": 1,
+      "pnl": -720,
+      "equity": 28111,
+      "symbols": "EGG"
+    },
+    {
+      "date": "2025-09-29",
+      "trades": 2,
+      "pnl": -1321,
+      "equity": 26790,
+      "symbols": "JFB SCOR"
+    },
+    {
+      "date": "2025-09-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26790
+    },
+    {
+      "date": "2025-10-01",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26790,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26790
+    },
+    {
+      "date": "2025-10-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 26790,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-06",
+      "trades": 1,
+      "pnl": -84,
+      "equity": 26706,
+      "symbols": "SOPA"
+    },
+    {
+      "date": "2025-10-07",
+      "trades": 1,
+      "pnl": -333,
+      "equity": 26373,
+      "symbols": "BJDX"
+    },
+    {
+      "date": "2025-10-08",
+      "trades": 3,
+      "pnl": -530,
+      "equity": 25843,
+      "symbols": "XBIO ACXP BGMS"
+    },
+    {
+      "date": "2025-10-09",
+      "trades": 1,
+      "pnl": -79,
+      "equity": 25764,
+      "symbols": "TCRT"
+    },
+    {
+      "date": "2025-10-10",
+      "trades": 1,
+      "pnl": 300,
+      "equity": 26064,
+      "symbols": "OLOX"
+    },
+    {
+      "date": "2025-10-13",
+      "trades": 3,
+      "pnl": -698,
+      "equity": 25366,
+      "symbols": "PMAX NDRA STI"
+    },
+    {
+      "date": "2025-10-14",
+      "trades": 2,
+      "pnl": -202,
+      "equity": 25164,
+      "symbols": "GWAV CYN"
+    },
+    {
+      "date": "2025-10-15",
+      "trades": 3,
+      "pnl": 76,
+      "equity": 25240,
+      "symbols": "COOT PFAI"
+    },
+    {
+      "date": "2025-10-16",
+      "trades": 1,
+      "pnl": 164,
+      "equity": 25404,
+      "symbols": "LGCB"
+    },
+    {
+      "date": "2025-10-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25404,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25404,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-21",
+      "trades": 1,
+      "pnl": -98,
+      "equity": 25306,
+      "symbols": "BOF"
+    },
+    {
+      "date": "2025-10-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25306,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-23",
+      "trades": 3,
+      "pnl": -164,
+      "equity": 25142,
+      "symbols": "IMCC OLOX SLMT"
+    },
+    {
+      "date": "2025-10-24",
+      "trades": 1,
+      "pnl": -56,
+      "equity": 25086,
+      "symbols": "AIXC"
+    },
+    {
+      "date": "2025-10-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 25086,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-29",
+      "trades": 1,
+      "pnl": -277,
+      "equity": 24809,
+      "symbols": "ERNA"
+    },
+    {
+      "date": "2025-10-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24809,
+      "symbols": ""
+    },
+    {
+      "date": "2025-10-31",
+      "trades": 2,
+      "pnl": -69,
+      "equity": 24740,
+      "symbols": "DFSC DLHC"
+    },
+    {
+      "date": "2025-11-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24740,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24740,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24740
+    },
+    {
+      "date": "2025-11-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24740
+    },
+    {
+      "date": "2025-11-07",
+      "trades": 1,
+      "pnl": -119,
+      "equity": 24621,
+      "symbols": "MSGM"
+    },
+    {
+      "date": "2025-11-10",
+      "trades": 1,
+      "pnl": -157,
+      "equity": 24464,
+      "symbols": "MOVE"
+    },
+    {
+      "date": "2025-11-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24464,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-12",
+      "trades": 1,
+      "pnl": -305,
+      "equity": 24159,
+      "symbols": "CMCT"
+    },
+    {
+      "date": "2025-11-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159
+    },
+    {
+      "date": "2025-11-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159
+    },
+    {
+      "date": "2025-11-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159
+    },
+    {
+      "date": "2025-11-19",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159
+    },
+    {
+      "date": "2025-11-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24159,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-21",
+      "trades": 1,
+      "pnl": -100,
+      "equity": 24059,
+      "symbols": "MNDR"
+    },
+    {
+      "date": "2025-11-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24059,
+      "symbols": ""
+    },
+    {
+      "date": "2025-11-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24059
+    },
+    {
+      "date": "2025-11-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24059
+    },
+    {
+      "date": "2025-11-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24059,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-01",
+      "trades": 1,
+      "pnl": -316,
+      "equity": 23743,
+      "symbols": "QTTB"
+    },
+    {
+      "date": "2025-12-02",
+      "trades": 1,
+      "pnl": -346,
+      "equity": 23397,
+      "symbols": "TAOP"
+    },
+    {
+      "date": "2025-12-03",
+      "trades": 2,
+      "pnl": -223,
+      "equity": 23174,
+      "symbols": "PMAX HTOO"
+    },
+    {
+      "date": "2025-12-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23174
+    },
+    {
+      "date": "2025-12-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23174,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-08",
+      "trades": 1,
+      "pnl": -257,
+      "equity": 22917,
+      "symbols": "CETX"
+    },
+    {
+      "date": "2025-12-09",
+      "trades": 4,
+      "pnl": -645,
+      "equity": 22272,
+      "symbols": "XCUR AMCI VOR"
+    },
+    {
+      "date": "2025-12-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22272,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22272,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22272,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-15",
+      "trades": 2,
+      "pnl": -680,
+      "equity": 21592,
+      "symbols": "ARBB GLSI"
+    },
+    {
+      "date": "2025-12-16",
+      "trades": 1,
+      "pnl": -498,
+      "equity": 21094,
+      "symbols": "VERO"
+    },
+    {
+      "date": "2025-12-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 21094
+    },
+    {
+      "date": "2025-12-18",
+      "trades": 1,
+      "pnl": -276,
+      "equity": 20818,
+      "symbols": "LONA"
+    },
+    {
+      "date": "2025-12-19",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 20818,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 20818,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-23",
+      "trades": 2,
+      "pnl": -404,
+      "equity": 20414,
+      "symbols": "TIVC OPTX"
+    },
+    {
+      "date": "2025-12-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 20414,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 20414
+    },
+    {
+      "date": "2025-12-29",
+      "trades": 1,
+      "pnl": -384,
+      "equity": 20030,
+      "symbols": "SOPA"
+    },
+    {
+      "date": "2025-12-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 20030,
+      "symbols": ""
+    },
+    {
+      "date": "2025-12-31",
+      "trades": 1,
+      "pnl": -233,
+      "equity": 19797,
+      "symbols": "ANGH"
+    },
+    {
+      "date": "2026-01-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797
+    },
+    {
+      "date": "2026-01-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797
+    },
+    {
+      "date": "2026-01-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797
+    },
+    {
+      "date": "2026-01-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797
+    },
+    {
+      "date": "2026-01-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 19797,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-12",
+      "trades": 2,
+      "pnl": 679,
+      "equity": 20476,
+      "symbols": "OM BDSX"
+    },
+    {
+      "date": "2026-01-13",
+      "trades": 1,
+      "pnl": -10,
+      "equity": 20466,
+      "symbols": "AHMA"
+    },
+    {
+      "date": "2026-01-14",
+      "trades": 1,
+      "pnl": 3293,
+      "equity": 23759,
+      "symbols": "ROLR"
+    },
+    {
+      "date": "2026-01-15",
+      "trades": 3,
+      "pnl": 1112,
+      "equity": 24871,
+      "symbols": "SPHL BNKK AGPU"
+    },
+    {
+      "date": "2026-01-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 24871,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-20",
+      "trades": 2,
+      "pnl": -895,
+      "equity": 23976,
+      "symbols": "SHPH POLA"
+    },
+    {
+      "date": "2026-01-21",
+      "trades": 1,
+      "pnl": -80,
+      "equity": 23896,
+      "symbols": "SLGB"
+    },
+    {
+      "date": "2026-01-22",
+      "trades": 1,
+      "pnl": -597,
+      "equity": 23299,
+      "symbols": "SXTP"
+    },
+    {
+      "date": "2026-01-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23299,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23299,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-27",
+      "trades": 1,
+      "pnl": -461,
+      "equity": 22838,
+      "symbols": "CYN"
+    },
+    {
+      "date": "2026-01-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22838,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22838,
+      "symbols": ""
+    },
+    {
+      "date": "2026-01-30",
+      "trades": 1,
+      "pnl": 207,
+      "equity": 23045,
+      "symbols": "PMN"
+    },
+    {
+      "date": "2026-02-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 23045
+    },
+    {
+      "date": "2026-02-10",
+      "trades": 1,
+      "pnl": -86,
+      "equity": 22959,
+      "symbols": "SPOG"
+    },
+    {
+      "date": "2026-02-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22959,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22959
+    },
+    {
+      "date": "2026-02-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22959,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-17",
+      "trades": 2,
+      "pnl": -89,
+      "equity": 22870,
+      "symbols": "PLYX"
+    },
+    {
+      "date": "2026-02-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22870,
+      "symbols": ""
+    },
+    {
+      "date": "2026-02-19",
+      "trades": 1,
+      "pnl": -82,
+      "equity": 22788,
+      "symbols": "RUBI"
+    },
+    {
+      "date": "2026-02-20",
+      "trades": 1,
+      "pnl": -166,
+      "equity": 22622,
+      "symbols": "CDIO"
+    },
+    {
+      "date": "2026-02-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-02-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-02-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-02-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-02-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-03-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622,
+      "symbols": ""
+    },
+    {
+      "date": "2026-03-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22622
+    },
+    {
+      "date": "2026-03-18",
+      "trades": 1,
+      "pnl": 521,
+      "equity": 23143,
+      "symbols": "ARTL"
+    },
+    {
+      "date": "2026-03-19",
+      "trades": 1,
+      "pnl": -290,
+      "equity": 22853,
+      "symbols": "DLTH"
+    },
+    {
+      "date": "2026-03-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 22853
+    },
+    {
+      "date": "2026-03-23",
+      "trades": 1,
+      "pnl": -185,
+      "equity": 22668,
+      "symbols": "UGRO"
+    },
+    {
+      "date": "2026-03-24",
+      "trades": 2,
+      "pnl": -734,
+      "equity": 21934,
+      "symbols": "FEED LICN"
+    },
+    {
+      "date": "2026-03-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 21934
+    },
+    {
+      "date": "2026-03-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 21934,
+      "symbols": ""
+    }
+  ]
+}
