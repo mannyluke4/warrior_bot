@@ -384,8 +384,8 @@ class SimTradeManager:
         if qty <= 0:
             return None
 
-        if setup_type == "squeeze":
-            # Squeeze: core + runner split for partial exits
+        if setup_type in ("squeeze", "mp_reentry"):
+            # Squeeze / MP V2 re-entry: core + runner split for partial exits
             # Fix 1: when partial exit enabled, use sq_partial_pct instead of sq_core_pct
             _sq_split_pct = self.sq_partial_pct if self.sq_partial_exit_enabled else self.sq_core_pct
             qty_core = max(1, int(math.floor(qty * _sq_split_pct / 100)))
@@ -436,7 +436,7 @@ class SimTradeManager:
             runner_stop=stop,
         )
         self.open_trade = t
-        if setup_type == "squeeze":
+        if setup_type in ("squeeze", "mp_reentry"):
             self._sq_target_hit_min = None  # reset runner detection state
 
         # Track open notional for buying power
@@ -445,7 +445,8 @@ class SimTradeManager:
 
         # Track re-entry count and start cooldown when cap is reached
         # Squeeze trades use their own counter (detector._attempts), don't count against MP
-        if setup_type != "squeeze":
+        # MP V2 re-entry trades use mp_det._reentry_count, don't count against standard MP cooldown
+        if setup_type not in ("squeeze", "mp_reentry"):
             entry_count = self._symbol_entry_count.get(symbol, 0) + 1
             self._symbol_entry_count[symbol] = entry_count
             if entry_count >= self.max_entries_per_symbol:
@@ -461,8 +462,8 @@ class SimTradeManager:
         if price > t.peak:
             t.peak = price
             t.peak_time = time_str
-            # Reset stall counter for squeeze / vwap_reclaim
-            if t.setup_type == "squeeze":
+            # Reset stall counter for squeeze / mp_reentry / vwap_reclaim
+            if t.setup_type in ("squeeze", "mp_reentry"):
                 self._sq_bars_no_new_high = 0
             elif t.setup_type == "vwap_reclaim":
                 self._vr_bars_no_new_high = 0
@@ -485,6 +486,11 @@ class SimTradeManager:
 
         # --- Route squeeze exits ---
         if t.setup_type == "squeeze":
+            self._squeeze_tick_exits(t, price, time_str)
+            return
+
+        # --- Route MP V2 re-entry exits through squeeze exit system ---
+        if t.setup_type == "mp_reentry":
             self._squeeze_tick_exits(t, price, time_str)
             return
 
@@ -749,8 +755,8 @@ class SimTradeManager:
     def on_1m_bar_close_squeeze(self, t: SimTrade, o: float, h: float, l: float,
                                 c: float, v: float, vwap: Optional[float],
                                 time_str: str):
-        """1m bar-level exits for squeeze trades (stall + VWAP loss)."""
-        if t is None or t.closed or t.setup_type != "squeeze":
+        """1m bar-level exits for squeeze trades and mp_reentry (stall + VWAP loss)."""
+        if t is None or t.closed or t.setup_type not in ("squeeze", "mp_reentry"):
             return
 
         self._sq_last_vwap = vwap
@@ -1806,13 +1812,18 @@ def run_simulation(
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
-        # Only count MP trades against MP quality gate (squeeze/VR have own tracking)
-        if t.setup_type not in ("squeeze", "vwap_reclaim"):
+        # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry have own tracking)
+        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
+            # MP V2: unlock re-entry detection when squeeze trade closes
+            det.notify_squeeze_closed(symbol, t.pnl())
         if vr_enabled and t.setup_type == "vwap_reclaim":
             vr_det.notify_trade_closed(symbol, t.pnl())
+        # MP V2: track re-entry count when mp_reentry trade closes
+        if t.setup_type == "mp_reentry":
+            det._reentry_count += 1
     sim_mgr.on_trade_close = _on_sim_trade_close
 
     # Ross exit manager — only active when WB_ROSS_EXIT_ENABLED=1
@@ -2059,7 +2070,7 @@ def run_simulation(
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
             # Also skip for MP trades when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim"):
+                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry"):
                     return
                 if _ross_exit_enabled:
                     return  # Ross handles all trade types via 1m signals
@@ -2155,23 +2166,28 @@ def run_simulation(
                 if sq_msg and "ARMED" in sq_msg:
                     tick_sim_state["armed_count"] += 1
 
-            # --- Squeeze 1m bar exits ---
+            # --- Squeeze / MP V2 re-entry 1m bar exits ---
             # Skip when Ross exit is ON — Ross 1m signals handle exits instead
-            if sq_enabled and not _ross_exit_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type == "squeeze":
+            if not _ross_exit_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                if sim_mgr.open_trade.setup_type in ("squeeze", "mp_reentry"):
                     sim_mgr.on_1m_bar_close_squeeze(
                         sim_mgr.open_trade,
                         bar.open, bar.high, bar.low, bar.close, bar.volume,
                         vwap, time_str,
                     )
                     if sim_mgr.open_trade is None or sim_mgr.open_trade.closed:
-                        # Squeeze trade closed — notify detector
                         closed_t = sim_mgr.closed_trades[-1] if sim_mgr.closed_trades else None
                         if closed_t:
-                            sq_det.notify_trade_closed(symbol, closed_t.pnl())
+                            if closed_t.setup_type == "squeeze":
+                                sq_det.notify_trade_closed(symbol, closed_t.pnl())
+                                # MP V2: unlock re-entry detection
+                                det.notify_squeeze_closed(symbol, closed_t.pnl())
+                            elif closed_t.setup_type == "mp_reentry":
+                                det._reentry_count += 1
                             if verbose:
+                                _exit_label = "SQ_EXIT" if closed_t.setup_type == "squeeze" else "MP_V2_EXIT"
                                 print(
-                                    f"  [{time_str}] SQ_EXIT: {closed_t.core_exit_reason} "
+                                    f"  [{time_str}] {_exit_label}: {closed_t.core_exit_reason} "
                                     f"P&L=${closed_t.pnl():+,.0f}",
                                     flush=True,
                                 )
@@ -2260,7 +2276,7 @@ def run_simulation(
             # Skip when Ross exit mode is ON (Ross 1m signals handle all trade types)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
-                and sim_mgr.open_trade.setup_type != "squeeze"
+                and sim_mgr.open_trade.setup_type not in ("squeeze", "mp_reentry")
                 and not _ross_exit_enabled
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
@@ -2578,6 +2594,7 @@ def run_simulation(
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(price, is_premarket=is_premarket)
                 if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
+                    _armed_setup_type = getattr(armed_before, 'setup_type', 'micro_pullback')
                     # V6.1: Toxic entry filters
                     _toxic = check_toxic_filters(
                         entry_price=armed_before.trigger_high,
@@ -2602,7 +2619,7 @@ def run_simulation(
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
-                    elif not mp_enabled:
+                    elif not mp_enabled and _armed_setup_type != "mp_reentry":
                         if verbose:
                             print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
                     else:
@@ -2628,13 +2645,17 @@ def run_simulation(
                             score=armed_before.score,
                             detail=armed_before.score_detail,
                             time_str=time_str,
+                            setup_type=_armed_setup_type,
+                            size_mult=_qg_size_mult,
                         )
                         if _saved_risk is not None:
                             sim_mgr.risk_dollars = _saved_risk
                         if trade and verbose:
+                            _entry_label = "MP_V2_ENTRY" if _armed_setup_type == "mp_reentry" else "ENTRY"
                             print(
-                                f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
+                                f"  [{time_str}] {_entry_label}: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                f"setup_type={_armed_setup_type}",
                                 flush=True,
                             )
                         # Ross exit: reset per-trade state on new entry
@@ -2858,10 +2879,11 @@ def run_simulation(
                                         flush=True,
                                     )
 
-                # Standard micro pullback trigger
+                # Standard micro pullback / MP V2 re-entry trigger
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(tick, is_premarket=is_premarket)
                 if trigger_msg and "ENTRY SIGNAL" in trigger_msg and armed_before:
+                    _armed_setup_type = getattr(armed_before, 'setup_type', 'micro_pullback')
                     # V6.1: Toxic entry filters
                     _toxic = check_toxic_filters(
                         entry_price=armed_before.trigger_high,
@@ -2886,7 +2908,7 @@ def run_simulation(
                     elif _min_entry_score > 0 and armed_before.score < _min_entry_score:
                         if verbose:
                             print(f"  [{time_str}] ENTRY_BLOCKED: score {armed_before.score:.1f} < min {_min_entry_score}", flush=True)
-                    elif not mp_enabled:
+                    elif not mp_enabled and _armed_setup_type != "mp_reentry":
                         if verbose:
                             print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
                     else:
@@ -2912,13 +2934,17 @@ def run_simulation(
                             score=armed_before.score,
                             detail=armed_before.score_detail,
                             time_str=time_str,
+                            setup_type=_armed_setup_type,
+                            size_mult=_qg_size_mult,
                         )
                         if _saved_risk is not None:
                             sim_mgr.risk_dollars = _saved_risk
                         if trade and verbose:
+                            _entry_label = "MP_V2_ENTRY" if _armed_setup_type == "mp_reentry" else "ENTRY"
                             print(
-                                f"  [{time_str}] ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f}",
+                                f"  [{time_str}] {_entry_label}: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                f"setup_type={_armed_setup_type}",
                                 flush=True,
                             )
 

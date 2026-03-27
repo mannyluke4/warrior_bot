@@ -39,6 +39,7 @@ ET = pytz.timezone("US/Eastern")
 # ── Strategy gates ───────────────────────────────────────────────────
 SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
+MP_V2_ENABLED = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
 
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
@@ -161,7 +162,7 @@ def init_detectors(symbol: str):
         sq.symbol = symbol
         state.sq_detectors[symbol] = sq
 
-    if MP_ENABLED and symbol not in state.mp_detectors:
+    if (MP_ENABLED or MP_V2_ENABLED) and symbol not in state.mp_detectors:
         mp = MicroPullbackDetector()
         mp.symbol = symbol
         state.mp_detectors[symbol] = mp
@@ -216,7 +217,7 @@ def seed_symbol(symbol: str):
             o, h, l, c, v = b.open, b.high, b.low, b.close, b.volume
             if SQ_ENABLED and symbol in state.sq_detectors:
                 state.sq_detectors[symbol].seed_bar_close(o, h, l, c, v)
-            if MP_ENABLED and symbol in state.mp_detectors:
+            if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
                 state.mp_detectors[symbol].seed_bar_close(o, h, l, c, v)
 
         ema = state.sq_detectors[symbol].ema if SQ_ENABLED and symbol in state.sq_detectors else None
@@ -293,11 +294,11 @@ def on_bar_close_1m(bar):
             elif "SQ_REJECT" in sq_msg or "SQ_RESET" in sq_msg:
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
 
-    # MP detection
-    if MP_ENABLED and symbol in state.mp_detectors:
+    # MP detection (standalone MP or V2 re-entry)
+    if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
         mp = state.mp_detectors[symbol]
         mp_msg = mp.on_bar_close_1m(bar, vwap=vwap)
-        if mp_msg and "ARMED" in mp_msg:
+        if mp_msg and ("ARMED" in mp_msg or "MP_V2" in mp_msg):
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
 
 
@@ -333,14 +334,18 @@ def check_triggers(symbol: str, price: float):
             sq.notify_trade_opened()
             return
 
-    # MP trigger
-    if MP_ENABLED and symbol in state.mp_detectors:
+    # MP trigger (standalone or V2 re-entry)
+    if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
         mp = state.mp_detectors[symbol]
         armed_before = mp.armed
         mp_msg = mp.on_trade_price(price, is_premarket=is_premarket)
         if mp_msg and "ENTRY SIGNAL" in mp_msg and armed_before:
+            _mp_setup_type = getattr(armed_before, 'setup_type', 'micro_pullback')
+            # Block standalone MP entries if MP_ENABLED is off (only allow mp_reentry from V2)
+            if not MP_ENABLED and _mp_setup_type != "mp_reentry":
+                return
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
-            enter_trade(symbol, armed_before, "micro_pullback")
+            enter_trade(symbol, armed_before, _mp_setup_type)
             return
 
 
@@ -432,7 +437,7 @@ def manage_exit(symbol: str, price: float):
             exit_trade(symbol, price, qty, "bail_timer")
             return
 
-    if setup_type == "squeeze":
+    if setup_type in ("squeeze", "mp_reentry"):
         _squeeze_exit(symbol, price, pos)
     else:
         _mp_exit(symbol, price, pos)
@@ -534,6 +539,14 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     # Notify squeeze detector
     if SQ_ENABLED and symbol in state.sq_detectors:
         state.sq_detectors[symbol].notify_trade_closed(symbol, pnl)
+
+    # MP V2: unlock re-entry detection when squeeze trade closes
+    if pos["setup_type"] == "squeeze" and symbol in state.mp_detectors:
+        state.mp_detectors[symbol].notify_squeeze_closed(symbol, pnl)
+
+    # MP V2: track re-entry count when mp_reentry trade closes
+    if pos["setup_type"] == "mp_reentry" and symbol in state.mp_detectors:
+        state.mp_detectors[symbol]._reentry_count += 1
 
     # Clear position if fully exited
     remaining = pos["qty"] - qty
@@ -651,6 +664,7 @@ def main():
     print("  WARRIOR BOT V2 — IBKR Edition")
     print(f"  Squeeze: {'ON' if SQ_ENABLED else 'OFF'}")
     print(f"  MP: {'ON' if MP_ENABLED else 'OFF'}")
+    print(f"  MP V2 (Re-Entry): {'ON' if MP_V2_ENABLED else 'OFF'}")
     print(f"  Port: {IBKR_PORT}")
     print("=" * 60)
 

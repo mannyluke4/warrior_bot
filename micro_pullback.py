@@ -125,6 +125,18 @@ class MicroPullbackDetector:
 
         self.gap_pct: float | None = None  # set by caller (simulate.py or bot.py)
 
+        # --- MP V2: Post-Squeeze Re-Entry ---
+        self._mp_v2_enabled = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
+        self._sq_confirmed: bool = False       # Unlocked by squeeze trade close
+        self._cooldown_bars_remaining: int = 0  # Bars to wait before active detection
+        self._reentry_count: int = 0           # Re-entries taken this session
+        self._reentry_cooldown = int(os.getenv("WB_MP_REENTRY_COOLDOWN_BARS", "3"))
+        self._max_reentries = int(os.getenv("WB_MP_MAX_REENTRIES", "3"))
+        self._reentry_macd_gate = os.getenv("WB_MP_REENTRY_MACD_GATE", "0") == "1"
+        self._reentry_use_sq_exits = os.getenv("WB_MP_REENTRY_USE_SQ_EXITS", "1") == "1"
+        self._reentry_min_r = float(os.getenv("WB_MP_REENTRY_MIN_R", "0.06"))
+        self._reentry_probe_size = float(os.getenv("WB_MP_REENTRY_PROBE_SIZE", "0.5"))
+
         # --- Post-halt sizing override ---
         self.halt_sizing_enabled = os.getenv("WB_HALT_SIZING_OVERRIDE", "0") == "1"
         self.halt_range_multiplier = float(os.getenv("WB_HALT_RANGE_MULT", "5.0"))
@@ -190,6 +202,21 @@ class MicroPullbackDetector:
         self._impulse_bar_1m = None
         self._pullback_vols_1m = []
         self.armed = None
+        # V2: after reset, re-set impulse so we keep looking for pullbacks
+        # (squeeze confirmation persists across resets)
+        if self._mp_v2_enabled and self._sq_confirmed:
+            self.in_impulse_1m = True
+
+    def notify_squeeze_closed(self, symbol: str, pnl: float):
+        """Called when a squeeze trade closes. Unlocks MP V2 re-entry detection."""
+        if not self._mp_v2_enabled:
+            return
+        self._sq_confirmed = True
+        self._cooldown_bars_remaining = self._reentry_cooldown
+        # Reset the 1m state machine so it starts fresh for re-entry detection
+        self._full_reset_1m()
+        # Pre-set impulse as confirmed (the squeeze was the impulse)
+        self.in_impulse_1m = True
 
     def _is_stale_stock(self) -> tuple[bool, str]:
         """Check if the stock's move is over. Two independent checks:
@@ -985,7 +1012,9 @@ class MicroPullbackDetector:
         # CONFIRMATION: green bar after at least 1 pullback bar → ARM
         if self.pullback_count_1m >= 1 and b1["green"]:
 
-            if self.macd_hard_gate and (not self.macd_state.bullish()):
+            # V2: skip MACD gate when post-squeeze and MACD gate is OFF
+            _skip_macd = (self._mp_v2_enabled and self._sq_confirmed and not self._reentry_macd_gate)
+            if not _skip_macd and self.macd_hard_gate and (not self.macd_state.bullish()):
                 self._full_reset_1m()
                 return "1M RESET (MACD not bullish)"
 
@@ -1025,7 +1054,9 @@ class MicroPullbackDetector:
                 self._full_reset_1m()
                 return "1M RESET (invalid R)"
 
-            if r < self.MIN_R:
+            # V2: use wider min R for post-squeeze re-entries
+            _eff_min_r = self._reentry_min_r if (self._mp_v2_enabled and self._sq_confirmed) else self.MIN_R
+            if r < _eff_min_r:
                 self._full_reset_1m()
                 return f"1M RESET (R too small: {r:.4f})"
 
@@ -1101,15 +1132,29 @@ class MicroPullbackDetector:
             if len(self.bars_1m) < self.warmup_bars:
                 return f"1M NO_ARM warmup: {len(self.bars_1m)}/{self.warmup_bars} bars"
 
-            self.armed = ArmedTrade(
-                trigger_high=trigger_high,
-                stop_low=stop_low,
-                entry_price=entry,
-                r=r,
-                score=score,
-                score_detail=detail,
-                size_mult=qg_size_mult,
-            )
+            # V2: tag re-entry trades and use probe size for first entry
+            if self._mp_v2_enabled and self._sq_confirmed:
+                _v2_size = self._reentry_probe_size if self._reentry_count == 0 else 1.0
+                self.armed = ArmedTrade(
+                    trigger_high=trigger_high,
+                    stop_low=stop_low,
+                    entry_price=entry,
+                    r=r,
+                    score=score,
+                    score_detail=detail,
+                    setup_type="mp_reentry",
+                    size_mult=_v2_size,
+                )
+            else:
+                self.armed = ArmedTrade(
+                    trigger_high=trigger_high,
+                    stop_low=stop_low,
+                    entry_price=entry,
+                    r=r,
+                    score=score,
+                    score_detail=detail,
+                    size_mult=qg_size_mult,
+                )
             vf_tag = " [VOL_FLOOR]" if vol_adjusted else ""
             qg_tag = f" [QG_SIZE={qg_size_mult:.0%}]" if qg_size_mult < 1.0 else ""
             return (
@@ -1175,6 +1220,22 @@ class MicroPullbackDetector:
         if vwap is None or self.ema is None:
             return None
 
+        # --- MP V2 gate: post-squeeze re-entry mode ---
+        # When V2 is enabled, standalone MP logic is bypassed entirely.
+        # V2 only runs when squeeze has confirmed the stock.
+        if self._mp_v2_enabled:
+            if not self._sq_confirmed:
+                return None  # Stay dormant — no squeeze confirmation yet
+            if self._cooldown_bars_remaining > 0:
+                self._cooldown_bars_remaining -= 1
+                return f"MP_V2 COOLDOWN ({self._cooldown_bars_remaining} bars remaining)"
+            if self._reentry_count >= self._max_reentries:
+                return f"MP_V2 MAX_REENTRIES ({self._reentry_count}/{self._max_reentries})"
+            # Ensure impulse is set (squeeze was the impulse)
+            if not self.in_impulse_1m:
+                self.in_impulse_1m = True
+            # Fall through to detection logic with V2-specific behavior...
+
         above_vwap = c >= vwap
         above_ema = c >= self.ema
 
@@ -1199,11 +1260,16 @@ class MicroPullbackDetector:
             return None
 
         # MACD bearish cross resets structure
+        # V2: suppress MACD resets when post-squeeze and MACD gate is OFF (default)
+        # After a squeeze, MACD going bearish IS the pullback we want to buy.
         if self.macd_state.bearish_cross():
-            if self._has_active_structure_1m():
+            if self._mp_v2_enabled and self._sq_confirmed and not self._reentry_macd_gate:
+                pass  # V2: MACD bearish cross is expected during pullback — don't reset
+            elif self._has_active_structure_1m():
                 self._full_reset_1m()
                 return "1M RESET (MACD bearish cross)"
-            return None
+            else:
+                return None
 
         # Trend failure: hard block (dynamic for big runners)
         if "DANGER_TREND_DOWN_STRONG" in self.last_patterns:
