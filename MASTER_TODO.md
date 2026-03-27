@@ -1,5 +1,5 @@
 # Warrior Bot — Master Task Tracker
-## Last Updated: 2026-03-23 (post-directive)
+## Last Updated: 2026-03-27 (Cowork session — EEIQ comparison, execution gap analysis)
 
 This document tracks ALL open work items across every strategy and system. Updated by Cowork after each session. Lives in the repo so nothing gets lost.
 
@@ -84,7 +84,47 @@ Per-stock analysis of every profitable missed stock. 5 root cause categories: fl
 
 ---
 
-## 🔴 CRITICAL — Live Bot Audit (Mac Mini)
+## 🔴 #2 PRIORITY — Execution Gap: Scaling & Multi-Leg Extraction
+
+**The Problem:** On EEIQ (March 26), Ross made $37,860 while the bot's best-case estimate is $1,500–$3,000 — a **12–25x gap** on the same stock, same day. The bot correctly identified the stock (Profile A, 158% gap, 29.5x RVOL, sub-1M float) but can only capture ~5–8% of what a skilled discretionary trader extracts from a big runner.
+
+**Root Cause:** Single-entry, single-exit architecture vs Ross's multi-leg, scaling, cushion-based approach. Ross made 5+ entries across $5.95–$8.80, pressing to 30K shares on conviction. The bot takes 1 entry at fixed risk and rides to 2R target.
+
+**Report:** `cowork_reports/2026-03-27_eeiq_ross_vs_bot_comparison.md`
+
+| Task | Status | Priority | Est. Impact | Notes |
+|------|--------|----------|-------------|-------|
+| **Scaling in/out** | **NOT STARTED** | **P0** | **3–5x per-trade P&L** | Initial entry at probe size (50%), confirmation add at +0.5R held 2 bars, strength add on new level break. Requires multi-position tracking per symbol. Single biggest multiplier. |
+| **Post-halt re-entry** | **NOT STARTED** | **P1** | **2–3x on halt stocks** | On halt resume, if price dips then reclaims pre-halt high within 3 bars, enter fresh. Pre-halt level as stop. Already tracking halts (ONCO halt/resume working 2026-03-27). |
+| **Continuation pattern detection** | **NOT STARTED** | **P1** | **2x additional legs** | Inverted H&S, VWAP reclaim, curls — exactly the patterns Ross used for his $24K EEIQ trade. See Strategy 4 and 5 sections below. |
+| **Dynamic session risk sizing** | **NOT STARTED** | **P2** | **1.5–2x on conviction** | When bot is up $X on the day, allow larger position size on high-conviction setups. Ross's "cushion press" turned $4.5K scalp into $37K day. |
+
+**Realistic ceiling with all improvements:** ~$8K–$15K on a stock like EEIQ (~40% of Ross). Remaining gap is discretionary judgment that's extremely hard to automate.
+
+---
+
+## 🔴 CRITICAL — Live Bot Reliability (IBKR V2)
+
+V2 migrated to IBKR on 2026-03-25. First 3 live sessions (March 25–27) produced **zero trades** across 3 days.
+
+| Issue | Status | Notes |
+|-------|--------|-------|
+| TWS startup failure (port 7497 timeout) | **PARTIALLY FIXED** | daily_run.sh upgraded to 36 retries/180s, but March 27 still failed. Gateway/headless switch pending for Monday. |
+| Volume=0 bug (lastSize not read) | **✅ FIXED** | Was the #1 blocker for March 26. All bars had vol=0, detector could never prime. |
+| Competing live session (Error 10197) | **RESOLVED** | Caused by IBKR mobile login. Operational rule: no mobile/web during bot hours. |
+| Runner position destroyed on target hit | **✅ FIXED** | pos["qty"] set before exit_trade() caused negative remaining. The $1.6K EEIQ bug. |
+| Exit orders were market orders | **✅ FIXED** | Now limit orders with outsideRth=True for extended hours. |
+| Halt detection spam | **✅ FIXED** | Debounced — prints once on halt, once on resume. |
+| Bar-mode squeeze trigger wiring | **✅ FIXED** | simulate.py bar mode wasn't feeding sq_det at all. Now wired. |
+| Scanner cutoff (legacy V1) | **✅ FIXED** | Replaced with dual-window support. |
+| Stale detector state for evening | **✅ FIXED** | Detectors cleared on window transition. |
+| **March 27 validation: still 0 trades** | **NEEDS INVESTIGATION** | Bot started at 09:07 ET (late), watched ONCO (halted 2x) and ARTL. Zero squeeze signals fired. Need backtest to determine if this is expected (no setups) or another bug. |
+
+**Reports:** `cowork_reports/2026-03-26_morning_issues_and_fixes.md`, `cowork_reports/2026-03-26_morning_backtest.md`
+
+---
+
+## 🔴 CRITICAL — Live Bot Audit (Mac Mini) [SUPERSEDED by IBKR V2 section above]
 
 Mac Mini was running stale code (v6-dynamic-sizing, 22 commits behind main). daily_run.sh updated to pull main. Additional issues: Alpaca websocket failures, scanner divergence.
 
@@ -113,27 +153,49 @@ Mac Mini was running stale code (v6-dynamic-sizing, 22 commits behind main). dai
 
 ---
 
-## 🟡 Strategy 1: Micro Pullback (Current Strategy)
+## 🔴 Strategy 1: Micro Pullback — REDESIGNED as Post-Squeeze Re-Entry (MP V2)
 
-### Completed (2026-03-18)
+### Standalone MP: SCRAPPED (-$8,066 over 15 months, 24% WR)
+- `WB_MP_ENABLED=0` — keep OFF permanently
+- 34 max_loss_hit trades at 0% WR (-$19,122) — entries during pre-squeeze noise
+- Big MP winners (AIFF, LSE, ROLR) were all squeeze stocks — SQ catches them better
+- March 27: SQ-only=$0, SQ+MP=-$2,499. MP turns quiet days into losses.
+- **Report:** `cowork_reports/2026-03-27_mp_deep_dive.md`
+
+### MP V2: Post-Squeeze Re-Entry — IMPLEMENTED, NEEDS SQ-PRIORITY FIX
+Redesign MP as a re-entry module that only activates AFTER the squeeze detector has confirmed a stock is a legitimate mover. Core implementation done (commit 7c9d302), but **VERO regressed from +$18,583 to +$15,692** because MP V2 re-entries cannibalize SQ cascades on big runners.
+
+**Design Doc:** `STRATEGY_MP_V2_REENTRY_DESIGN.md`
+**Implementation Commit:** 7c9d302 (2026-03-27)
+**Fix Directive:** `DIRECTIVE_MP_V2_SQ_PRIORITY_GATE.md`
+
+**Key design decisions:**
+1. MP stays DORMANT until SQ fires a trade on the symbol (win or loss)
+2. 3-bar cooldown after SQ exit before MP starts looking
+3. Skip impulse detection (squeeze WAS the impulse) — go straight to pullback monitoring
+4. MACD gate relaxed (bearish MACD during post-squeeze pullback is the dip we want to buy)
+5. Exits via SQ V1 mechanical system (not MP 10s bar exits)
+6. Up to 3 re-entries per symbol per session
+7. Probe sizing (50%) on first re-entry, full size on confirmation adds
+8. **SQ has unconditional priority** — MP V2 defers when SQ is PRIMED/ARMED/in-trade (PENDING)
+
+| Task | Status | Priority | Notes |
+|------|--------|----------|-------|
+| ~~Implement MP V2 DORMANT/COOLDOWN/ACTIVE state machine~~ | **DONE** | **P0** | Commit 7c9d302. State vars, cooldown, impulse skip, MACD relaxation |
+| ~~Route MP V2 trades through SQ exit system~~ | **DONE** | **P0** | `setup_type="mp_reentry"` routes to SQ V1 exits in simulate.py + bot_ibkr.py |
+| **Add SQ-priority gate (fix VERO regression)** | **NOT STARTED** | **P0 BLOCKER** | MP V2 defers when `sq_det._state != "IDLE"`. See `DIRECTIVE_MP_V2_SQ_PRIORITY_GATE.md` |
+| **Add per-re-entry cooldown** | **NOT STARTED** | **P0** | `notify_reentry_closed()` method — resets cooldown between re-entries |
+| **Validate: VERO returns to +$18,583** | **NOT STARTED** | **P0 BLOCKER** | Must pass before Monday deployment |
+| **Validate: EEIQ shows MP V2 value-add** | **NOT STARTED** | **P0** | SQ-only vs SQ+V2 on EEIQ 2026-03-26. Proof that re-entries capture extra legs |
+| **Full YTD backtest (SQ + MP V2)** | **NOT STARTED** | **P1** | 15-month IBKR dataset. Key check: 0 trades on days where SQ didn't fire |
+| **Live paper observation (1 week)** | **NOT STARTED** | **P2** | Deploy alongside SQ, monitor for P&L add vs drag |
+
+### Prior MP Fixes (Historical — Applied to Standalone MP, May Carry Over)
 - [x] Fix 1: Direction-aware continuation hold (+$317) — `WB_CONT_HOLD_DIRECTION_CHECK=1`
 - [x] Fix 2: Float-tiered max loss cap (+$937) — `WB_MAX_LOSS_R_TIERED=1`
 - [x] Fix 3: max_loss_hit triggers cooldown (+$916) — `WB_MAX_LOSS_TRIGGERS_COOLDOWN=1`
 - [x] Fix 4: No re-entry after loss (+$1,315) — `WB_NO_REENTRY_ENABLED=1`
 - [x] Fix 5: TW profit gate at 1.5R (+$12,619) — `WB_TW_MIN_PROFIT_R=1.5`
-- [x] Float data propagation fix (+$937)
-- [x] 49-day backtest validated: +$19,072 (+63.6%), profit factor 3.38
-
-### Open — Refinement Tasks
-
-| Task | Status | Priority | Est. Impact | Notes |
-|------|--------|----------|-------------|-------|
-| **Missed re-entries after winning exits** | **ANALYZED — NOT A MP FIX** | LOW (for MP) | Belongs to Strategies 2-5 | Verbose sim analysis (2026-03-19): VERO goes silent 07:37-09:47 after exit, ROLR silent 08:44-10:50. Cause: MACD bearish + trend_down range check. These post-exit continuations are curl/extension patterns (Strategy 5), not micro pullbacks. The MP detector is correct to not re-arm. |
-| **Feb-Mar bleed / loser avoidance** | **LIKELY RESOLVED BY SCANNER** | MEDIUM | Pending full YTD scan | Scanner alignment reduced candidates from 94-108/day to 0-2/day. Key dates backtest: 9 trades, 56% win rate, PF 7.66. Full YTD scan (55 days) running overnight will confirm if bleed is eliminated. |
-| **Thin stock / min liquidity filter** | **✅ CODE PUSHED — THRESHOLD TBD** | HIGH | Saves ~$1,800 | `WB_MIN_SESSION_VOLUME` gate implemented (commit `df65a73`). Default 10K doesn't block FUTG (72K bar vol despite 312 ticks). 100K blocks FUTG, all winners unaffected. **ACTION: Validate threshold against full 55-day YTD scan before enabling in live.** Need more stocks to confirm 100K doesn't produce false positives. |
-| **Trade setup type tagging** | **✅ CODE PUSHED** | HIGH | Prep for multi-strategy | `setup_type` field on OpenTrade/PendingEntry (commit `df65a73`). All trades tagged `"micro_pullback"`. Ready for future strategy modules. |
-| **Post-windfall position sizing** | **NOT STARTED** | MEDIUM | Reduce drawdown | After VERO (+$17.5K), account jumps to $55K and 2.5% risk = $1,375/trade. Subsequent losses are amplified. Consider: risk cap, slower ramp, or fixed risk for N days after big win. |
-| **Dynamic sizing in batch runner** | **NOTED** | LOW | Better backtest accuracy | Batch runner uses 2.5% of equity (compounding). Live bot uses flat $1,000 (`WB_RISK_DOLLARS`). These will diverge. Need to decide: does live bot also scale with equity? |
 
 ---
 
@@ -282,14 +344,14 @@ The "extended candles" reset and TW resets during pullback phase are too aggress
 
 | Metric | Value | Date |
 |--------|-------|------|
-| 55-day YTD baseline P&L | **+$25,709** (33 trades, 52% WR, PF 5.42) | 2026-03-23 |
-| 55-day YTD Ross Exit V2 P&L | +$14,910 (28 trades, 37% WR, PF 3.94) | 2026-03-23 |
-| V3 CUC best config (MinBars=5) | +$16,959 (-$8,750 vs baseline) | 2026-03-23 |
+| YTD 2026 morning (IBKR data) | **+$120,221** (36 trades, 97% WR, $30K → $150K) | 2026-03-26 |
+| Full megatest Jan 2025–Mar 2026 | **+$1,348,605** (321 trades, 90% WR, $30K → $1.38M) | 2026-03-26 |
+| Realistic megatest (slippage adj) | **$350K–$550K** estimated | 2026-03-25 |
+| EEIQ execution gap vs Ross | Bot ~$1.5–3K vs Ross $37.8K (12–25x) | 2026-03-27 |
 | Jan 2025 missed stocks potential | **+$42,818** (7.7x vs actual $5,543) | 2026-03-23 |
-| Scanner capture rate (Jan 2025) | 7.4% of Ross's tickers, 18-22% of P&L when found | 2026-03-23 |
 | VERO regression | **+$18,583** (requires `WB_MP_ENABLED=1`) | 2026-03-18 |
 | ROLR regression | **+$6,444** (requires `WB_MP_ENABLED=1`) | 2026-03-18 |
-| Live bot status | 0 trades on 2026-03-23 (Alpaca websocket failure) | 2026-03-23 |
+| Live bot status | **0 trades across 3 days** (Mar 25–27, IBKR V2) | 2026-03-27 |
 
 ---
 
