@@ -18,20 +18,20 @@ from datetime import datetime
 STARTING_EQUITY = 30_000
 RISK_PCT = 0.025  # 2.5% of equity per trade
 MAX_TRADES_PER_DAY = 5
-DAILY_LOSS_LIMIT = -1500  # Stop trading if daily P&L hits this
-MAX_NOTIONAL = 50_000
+DAILY_LOSS_LIMIT = -3000  # Aligned with run_backtest_v2.py
+MAX_NOTIONAL = 100_000  # 4x margin on 30K (aligned with live bot)
 TOP_N = 5  # Watchlist size
 
 # Scanner filters
 MIN_PM_VOLUME = 50_000
 MIN_GAP_PCT = 10
 MAX_GAP_PCT = 500
-MAX_FLOAT_MILLIONS = 10  # Ross uses 10M — stocks above this aren't low-float movers
+MAX_FLOAT_MILLIONS = 15  # Aligned with .env WB_MAX_FLOAT=15
 MIN_RVOL = 2.0
 
 ENV_BASE = {
-    "WB_CLASSIFIER_ENABLED": "1",
-    "WB_CLASSIFIER_RECLASS_ENABLED": "1",
+    "WB_CLASSIFIER_ENABLED": "0",
+    "WB_CLASSIFIER_RECLASS_ENABLED": "0",
     "WB_EXHAUSTION_ENABLED": "1",
     "WB_WARMUP_BARS": "5",
     "WB_CONTINUATION_HOLD_ENABLED": "1",
@@ -43,7 +43,7 @@ ENV_BASE = {
     "WB_CONT_HOLD_MAX_LOSS_R": "0.5",
     "WB_CONT_HOLD_CUTOFF_HOUR": "10",
     "WB_CONT_HOLD_CUTOFF_MIN": "30",
-    "WB_MAX_NOTIONAL": "50000",
+    "WB_MAX_NOTIONAL": "100000",
     "WB_MAX_LOSS_R": "0.75",
     "WB_NO_REENTRY_ENABLED": "1",
     # Strategy 2: Squeeze V2
@@ -70,6 +70,16 @@ ENV_BASE = {
     "WB_SQ_PM_CONFIDENCE": "1",
     "WB_PILLAR_GATES_ENABLED": "1",
     "WB_MP_ENABLED": "1",
+    "WB_BAIL_TIMER_ENABLED": "1",
+    "WB_BAIL_TIMER_MINUTES": "5",
+    # MP V2 base settings (toggle is WB_MP_V2_ENABLED per config)
+    "WB_MP_V2_SQ_PRIORITY": "1",
+    "WB_MP_REENTRY_COOLDOWN_BARS": "3",
+    "WB_MP_MAX_REENTRIES": "3",
+    "WB_MP_REENTRY_MIN_R": "0.06",
+    "WB_MP_REENTRY_MACD_GATE": "0",
+    "WB_MP_REENTRY_USE_SQ_EXITS": "1",
+    "WB_MP_REENTRY_PROBE_SIZE": "0.5",
 }
 
 DATES = [
@@ -88,6 +98,7 @@ DATES = [
     "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06",
     "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13",
     "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20",
+    "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27",
 ]
 
 STATE_FILE = "ytd_v2_backtest_state.json"
@@ -175,9 +186,25 @@ ARMED_DIAG_PAT = re.compile(r'Armed:\s+(\d+)\s+\|\s+Signals:\s+(\d+)')
 TICK_CACHE_DIR = os.path.join(WORKDIR, "tick_cache")
 
 
+SIM_WINDOWS = [("07:00", "12:00"), ("16:00", "20:00")]  # Morning + Evening
+
+
 def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             candidate: dict = None, use_tick_cache: bool = True) -> list:
-    """Run simulate.py and parse trade results."""
+    """Run simulate.py across all trading windows and parse trade results."""
+    all_trades = []
+    for win_start, win_end in SIM_WINDOWS:
+        # Use scanner sim_start if it falls within this window, otherwise use window start
+        effective_start = sim_start if win_start <= sim_start < win_end else win_start
+        trades = _run_sim_window(symbol, date, effective_start, win_end, risk, min_score,
+                                  candidate, use_tick_cache)
+        all_trades.extend(trades)
+    return all_trades
+
+
+def _run_sim_window(symbol: str, date: str, sim_start: str, sim_end: str, risk: int,
+                    min_score: float, candidate: dict = None, use_tick_cache: bool = True) -> list:
+    """Run simulate.py for a single time window and parse trade results."""
     env = {**os.environ, **ENV_BASE}
     env["WB_MIN_ENTRY_SCORE"] = str(min_score)
     # Pass Ross Pillar data via env vars for entry-time checks
@@ -187,7 +214,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
         env["WB_SCANNER_FLOAT_M"] = str(candidate.get("float_millions", 20) or 20)
 
     cmd = [
-        sys.executable, "simulate.py", symbol, date, sim_start, "12:00",
+        sys.executable, "simulate.py", symbol, date, sim_start, sim_end,
         "--ticks",
         "--risk", str(risk), "--no-fundamentals",
     ]
@@ -246,6 +273,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             "date": date,
             "notional": notional,
             "setup_type": "squeeze" if m.group(8).startswith("sq_") else "micro_pullback",
+            # Note: mp_reentry also uses sq_ exits — detected via verbose output, not exit reason
         })
 
     trade_pnl = sum(t["pnl"] for t in trades)
@@ -336,12 +364,14 @@ def run_backtest():
         for c in top5:
             print(f"    #{top5.index(c)+1} {c['symbol']}: vol={c.get('pm_volume',0):,.0f}, gap={c.get('gap_pct',0):.0f}%, float={c.get('float_millions',0):.1f}M", flush=True)
 
-        # Run Config A: Baseline (Ross Exit OFF)
+        # Run Config A: SQ-only baseline (MP V2 OFF)
         os.environ["WB_ROSS_EXIT_ENABLED"] = "0"
-        day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=8.0, max_consec_losses=2)
-        # Run Config B: V2 (Ross Exit ON)
-        os.environ["WB_ROSS_EXIT_ENABLED"] = "1"
-        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=8.0, max_consec_losses=2)
+        os.environ["WB_MP_V2_ENABLED"] = "0"
+        day_trades_a, day_pnl_a = _run_config_day(top5, date, risk_a, min_score=0, max_consec_losses=0)
+        # Run Config B: SQ + MP V2 (MP V2 ON)
+        os.environ["WB_ROSS_EXIT_ENABLED"] = "0"
+        os.environ["WB_MP_V2_ENABLED"] = "1"
+        day_trades_b, day_pnl_b = _run_config_day(top5, date, risk_b, min_score=0, max_consec_losses=0)
 
         eq_a += day_pnl_a
         eq_b += day_pnl_b
@@ -401,9 +431,7 @@ def _run_config_day(top5, date, risk, min_score, max_consec_losses=0):
             break
 
         sym = c["symbol"]
-        # Mid-float risk cap: float > 5M → cap risk at $250
-        float_m = c.get("float_millions", 0) or 0
-        stock_risk = min(risk, 250) if float_m > 5.0 else risk
+        stock_risk = risk
         sim_start = c.get("sim_start", "07:00")  # Respect scanner discovery time
         all_trades = run_sim(sym, date, sim_start, stock_risk, min_score, candidate=c)
         time.sleep(1)  # Rate limit: 1 second between API calls
@@ -479,7 +507,7 @@ def generate_report(results):
     sel_log = results.get("selection_log", [])
 
     L = []
-    L.append("# YTD V2 Backtest Results: Ross Exit V2 vs Baseline")
+    L.append("# YTD V2 Backtest Results: SQ-Only vs SQ + MP V2")
     L.append(f"## Generated {datetime.now().strftime('%Y-%m-%d')}")
     L.append(f"\nPeriod: January 2 - March 20, 2026 ({len(DATES)} trading days)")
     L.append(f"Starting Equity: ${STARTING_EQUITY:,}")
@@ -501,8 +529,8 @@ def generate_report(results):
 
     # Section 2: Summary
     L.append("\n---\n")
-    L.append("## Section 2: Summary - Baseline vs Ross Exit V2\n")
-    L.append("| Metric | Baseline (Ross Exit OFF) | V2 (Ross Exit ON) |")
+    L.append("## Section 2: Summary - Baseline vs MP V2\n")
+    L.append("| Metric | Baseline (SQ-Only) | V2 (SQ + MP V2) |")
     L.append("|--------|--------------------------|---------------------|")
     L.append(f"| Final Equity | ${ca['equity']:,.0f} | ${cb['equity']:,.0f} |")
     L.append(f"| Total P&L | ${sa['total_pnl']:+,.0f} | ${sb['total_pnl']:+,.0f} |")
@@ -546,13 +574,13 @@ def generate_report(results):
     # Section 5: Trade Detail
     L.append("\n---\n")
     L.append("## Section 5: Trade-Level Detail\n")
-    L.append("### Baseline (Ross Exit OFF)\n")
+    L.append("### Baseline (SQ-Only)\n")
     L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
     L.append("|------|--------|-------|-------|------|--------|-----|")
     for t in ca["trades"]:
         L.append(f"| {t['date']} | {t['symbol']} | {t['score']:.1f} | ${t['entry']:.2f} | ${t['exit_price']:.2f} | {t['reason']} | ${t['pnl']:+,} |")
 
-    L.append("\n### V2 (Ross Exit ON)\n")
+    L.append("\n### V2 (SQ + MP V2)\n")
     L.append("| Date | Symbol | Score | Entry | Exit | Reason | P&L |")
     L.append("|------|--------|-------|-------|------|--------|-----|")
     for t in cb["trades"]:
@@ -561,7 +589,7 @@ def generate_report(results):
     # Section 6: Score Gate Diff
     L.append("\n---\n")
     L.append("## Section 6: Exit Reason Distribution\n")
-    for label, trades in [("Baseline (Ross Exit OFF)", ca["trades"]), ("V2 (Ross Exit ON)", cb["trades"])]:
+    for label, trades in [("Baseline (SQ-Only)", ca["trades"]), ("V2 (SQ + MP V2)", cb["trades"])]:
         reason_counts = {}
         reason_pnl = {}
         for t in trades:
@@ -699,7 +727,7 @@ def generate_report(results):
 
 def main():
     print("=" * 60)
-    print("YTD V2 A/B BACKTEST: Ross Exit V2 vs Baseline")
+    print("YTD V2 A/B BACKTEST: MP V2 vs Baseline")
     print(f"Period: Jan 2 - Mar 20, 2026 ({len(DATES)} trading days)")
     print(f"Starting equity: ${STARTING_EQUITY:,}")
     print(f"Max {MAX_TRADES_PER_DAY} trades/day, daily loss limit ${DAILY_LOSS_LIMIT:,}")
@@ -711,9 +739,9 @@ def main():
     pnl_a = results["config_a"]["equity"] - STARTING_EQUITY
     pnl_b = results["config_b"]["equity"] - STARTING_EQUITY
     print(f"\n{'=' * 60}")
-    print(f"Baseline (Ross Exit OFF): ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%)")
-    print(f"V2 (Ross Exit ON): ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%)")
-    print(f"Ross Exit V2 impact: ${pnl_b - pnl_a:+,.0f}")
+    print(f"Baseline (SQ-Only): ${pnl_a:+,.0f} ({pnl_a/STARTING_EQUITY*100:+.1f}%)")
+    print(f"V2 (SQ + MP V2): ${pnl_b:+,.0f} ({pnl_b/STARTING_EQUITY*100:+.1f}%)")
+    print(f"MP V2 impact: ${pnl_b - pnl_a:+,.0f}")
     print(f"{'=' * 60}")
 
 
