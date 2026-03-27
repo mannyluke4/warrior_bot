@@ -1,6 +1,6 @@
 # January 2025 vs January 2026 Comparison — Scanner Fixes V1 + SQ Exit Fixes
 
-**Generated:** 2026-03-24 18:02
+**Generated:** 2026-03-25 10:08
 **Config:** Full ENV_BASE with all fixes: unknown-float gate, SQ partial/wide/runner exits, halt-through, MP enabled
 
 ---
@@ -160,4 +160,4 @@
 - SQ exit fixes (partial exit, wide trail, runner detect, halt-through) are enabled for the first time in batch mode.
 - MP regression targets: VERO 2026-01-16 +$18,583, ROLR 2026-01-14 +$6,444 (both verified).
 
-*Report generated: 2026-03-24 18:02*
+*Report generated: 2026-03-25 10:08*

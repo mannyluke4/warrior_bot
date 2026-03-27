@@ -41,6 +41,9 @@ class SqueezeDetector:
 
         # --- HOD gate ---
         self.new_hod_required = os.getenv("WB_SQ_NEW_HOD_REQUIRED", "1") == "1"
+        # When ON, use premarket_high instead of session_hod for the HOD gate.
+        # Makes detector behavior discovery-time-invariant (seed bars don't shift threshold).
+        self.pm_hod_gate = os.getenv("WB_SQ_PM_HOD_GATE", "0") == "1"
 
         # --- State ---
         self.symbol: str = ""
@@ -157,12 +160,20 @@ class SqueezeDetector:
         if self._attempts >= self.max_attempts:
             return f"SQ_NO_ARM: max_attempts ({self._attempts}/{self.max_attempts})"
 
-        # HOD gate: bar must be at or making new session highs (blocks bounces)
-        if self.new_hod_required and self._session_hod > 0:
-            if h < self._session_hod:
-                return (
-                    f"SQ_REJECT: not_new_hod (bar_high=${h:.4f} < HOD=${self._session_hod:.4f})"
-                )
+        # HOD gate: bar must be at or making new highs (blocks bounces)
+        if self.new_hod_required:
+            if self.pm_hod_gate and self.premarket_high is not None and self.premarket_high > 0:
+                # Use fixed premarket_high — discovery-time-invariant
+                if h < self.premarket_high:
+                    return (
+                        f"SQ_REJECT: not_above_pm_high (bar_high=${h:.4f} < PM_HIGH=${self.premarket_high:.4f})"
+                    )
+            elif self._session_hod > 0:
+                # Default: use session HOD (seed-bar-dependent)
+                if h < self._session_hod:
+                    return (
+                        f"SQ_REJECT: not_new_hod (bar_high=${h:.4f} < HOD=${self._session_hod:.4f})"
+                    )
 
         # --- Transition to PRIMED ---
         self._state = "PRIMED"

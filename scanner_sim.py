@@ -760,13 +760,17 @@ def run_scanner(date_str: str):
         c["avg_daily_volume"] = round(adv, 0) if adv else None
         pm_vol = c.get("pm_volume", 0) or 0
         c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
+        rvol_str = f"{c['relative_volume']:.2f}x" if c["relative_volume"] else "N/A"
+        print(f"         PM {sym}: pm_vol={pm_vol:,.0f} ADV={'N/A' if not adv else f'{adv:,.0f}'} RVOL={rvol_str} gap={c.get('gap_pct', 0):.1f}%")
 
     # Apply RVOL and PM volume gates
+    min_rvol = float(os.getenv("WB_MIN_REL_VOLUME", "2.0"))
+    min_pm_vol = int(os.getenv("WB_MIN_PM_VOLUME", "50000"))
     pre_gate_count = len(candidates)
     candidates = [c for c in candidates
-                  if (c.get("relative_volume") or 0) >= 2.0
-                  and (c.get("pm_volume") or 0) >= 50_000]
-    print(f"         {pre_gate_count - len(candidates)} filtered by RVOL<2.0 or PM vol<50k → {len(candidates)} remain")
+                  if (c.get("relative_volume") or 0) >= min_rvol
+                  and (c.get("pm_volume") or 0) >= min_pm_vol]
+    print(f"         {pre_gate_count - len(candidates)} filtered by RVOL<{min_rvol} or PM vol<{min_pm_vol:,} → {len(candidates)} remain")
 
     # Step 4b: Continuous re-scan (8:00, 8:30, 9:00, 9:30, 10:00, 10:30 AM ET)
     print(f"  [4b/6] Running continuous re-scan (8:00 AM - 10:30 AM ET)...")
@@ -802,13 +806,30 @@ def run_scanner(date_str: str):
             except Exception as e:
                 print(f"         RESCAN {sym}: cumulative vol fetch error: {e}")
 
-    # Add RVOL to emerging movers
+    # Fetch ADV for any emerging stocks missing from the initial avg_daily_vol dict.
+    # This can happen when the Alpaca universe (get_all_active_symbols) didn't include
+    # them, or when they had < 3 days of history at fetch time.
+    missing_adv = [c["symbol"] for c in emerging if c["symbol"] not in avg_daily_vol]
+    if missing_adv:
+        print(f"         Fetching ADV for {len(missing_adv)} emerging stocks missing from initial lookup...")
+        extra_adv = fetch_avg_daily_volume(missing_adv, date_str)
+        avg_daily_vol.update(extra_adv)
+        for sym in missing_adv:
+            if sym in extra_adv:
+                print(f"         {sym}: ADV = {extra_adv[sym]:,.0f}")
+            else:
+                print(f"         {sym}: ADV lookup FAILED (no history?)")
+
+    # Add RVOL to emerging movers + diagnostic logging
     for c in emerging:
         sym = c["symbol"]
         adv = avg_daily_vol.get(sym)
         c["avg_daily_volume"] = round(adv, 0) if adv else None
         pm_vol = c.get("pm_volume", 0) or 0
         c["relative_volume"] = round(pm_vol / adv, 2) if adv and adv > 0 else None
+        rvol_str = f"{c['relative_volume']:.2f}x" if c["relative_volume"] else "N/A"
+        adv_str = f"{adv:,.0f}" if adv else "N/A"
+        print(f"         RESCAN {sym}: pm_vol={pm_vol:,.0f} ADV={adv_str} RVOL={rvol_str}")
     # Apply RVOL and PM volume gates to emerging movers.
     # WB_RESCAN_MIN_RVOL / WB_RESCAN_MIN_PM_VOL allow loosening thresholds
     # for the rescan phase only (e.g. to catch RVOL~1.5 stocks like MNTS/SMX).
@@ -816,9 +837,12 @@ def run_scanner(date_str: str):
     # these env vars are explicitly set.
     rescan_min_rvol = float(os.getenv("WB_RESCAN_MIN_RVOL", os.getenv("WB_MIN_REL_VOLUME", "2.0")))
     rescan_min_pm_vol = int(os.getenv("WB_RESCAN_MIN_PM_VOL", os.getenv("WB_MIN_PM_VOLUME", "50000")))
+    pre_gate_emerging = len(emerging)
     emerging = [c for c in emerging
                 if (c.get("relative_volume") or 0) >= rescan_min_rvol
                 and (c.get("pm_volume") or 0) >= rescan_min_pm_vol]
+    if pre_gate_emerging > len(emerging):
+        print(f"         {pre_gate_emerging - len(emerging)} emerging movers filtered (RVOL<{rescan_min_rvol} or vol<{rescan_min_pm_vol:,})")
     candidates.extend(emerging)
     # Re-sort all candidates by composite rank score descending
     candidates.sort(key=lambda x: rank_score(x), reverse=True)

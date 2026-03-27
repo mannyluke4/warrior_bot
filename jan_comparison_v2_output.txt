@@ -189,107 +189,123 @@
   JANUARY 2026 — 21 dates remaining
 ======================================================================
 
-[Jan2026 2026-01-02] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$750
-    FUTG: vol=78,316 gap=11% float=0.2M
-    SNSE: vol=279,226 gap=11% float=0.7M
+[Jan2026 2026-01-02] 3 scanned → 3 passed → 3 selected  (uf=0 rescan=0)  risk=$750
+    SMX: vol=4,872,212 gap=19% float=0.0M
+    SNSE: vol=431,445 gap=11% float=0.7M
+    FUTG: vol=83,696 gap=11% float=0.2M
+    SMX: ticks=24,143 armed=2 signals=0 trades=0 pnl=+0
+    SNSE: ticks=16,595 armed=1 signals=0 trades=0 pnl=+0
     FUTG: ticks=39 armed=0 signals=0 trades=0 pnl=+0
-    SNSE: ticks=16,595 armed=0 signals=0 trades=0 pnl=+0
   → 2026-01-02: 0 trades  pnl=+0  equity=$30,000
 
 [Jan2026 2026-01-03] 0 scanned → 0 passed → 0 selected  (uf=0 rescan=0)  risk=$750
   → 2026-01-03: 0 trades  pnl=+0  equity=$30,000
 
-[Jan2026 2026-01-05] 1 scanned → 1 passed → 1 selected  (uf=0 rescan=0)  risk=$750
-    UUU: vol=142,844 gap=23% float=1.6M
+[Jan2026 2026-01-05] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$750
+    UUU: vol=159,597 gap=23% float=1.6M
+    NCEL: vol=274,913 gap=10% float=2.1M
     UUU: ticks=1,101 armed=0 signals=0 trades=0 pnl=+0
+    NCEL: ticks=2,989 armed=0 signals=0 trades=0 pnl=+0
   → 2026-01-05: 0 trades  pnl=+0  equity=$30,000
 
-[Jan2026 2026-01-06] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$750
+[Jan2026 2026-01-06] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$750
     NOMA: vol=2,704,087 gap=17% float=4.0M
     CYCN: vol=8,666,636 gap=56% float=2.7M
+    CELZ: vol=221,298 gap=19% float=2.4M
+    PASG: vol=138,695 gap=12% float=2.9M
     NOMA: ticks=34,394 armed=0 signals=0 trades=0 pnl=+0
     CYCN: ticks=257,121 armed=1 signals=1 trades=0 pnl=+0
-  → 2026-01-06: 0 trades  pnl=+0  equity=$30,000
+    CELZ: ticks=2,060 armed=1 signals=1 trades=1 pnl=-344
+    PASG: ticks=955 armed=0 signals=0 trades=0 pnl=+0
+  → 2026-01-06: 1 trades  pnl=-344  equity=$29,656
 
-[Jan2026 2026-01-07] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$750
+[Jan2026 2026-01-07] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$741
     CDIO: vol=6,536,915 gap=38% float=1.7M
-    NVVE: vol=15,642,799 gap=47% float=0.2M
+    NVVE: vol=15,648,213 gap=47% float=0.2M
     CDIO: ticks=140,999 armed=0 signals=0 trades=0 pnl=+0
     NVVE: ticks=182,657 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-07: 0 trades  pnl=+0  equity=$30,000
+  → 2026-01-07: 0 trades  pnl=+0  equity=$29,656
 
-[Jan2026 2026-01-08] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$750
+[Jan2026 2026-01-08] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$741
     ACON: vol=4,695,008 gap=47% float=0.7M
-    SXTC: vol=2,345,330 gap=55% float=0.8M
+    SXTC: vol=2,372,379 gap=55% float=0.8M
     ACON: ticks=418,618 armed=3 signals=3 trades=2 pnl=-6
-    SXTC: ticks=219,858 armed=1 signals=1 trades=1 pnl=-139
-  → 2026-01-08: 1 trades  pnl=-375  equity=$29,625
+    SXTC: ticks=219,858 armed=1 signals=1 trades=1 pnl=-137
+  → 2026-01-08: 1 trades  pnl=-370  equity=$29,286
 
-[Jan2026 2026-01-09] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$740
-    FEED: vol=2,868,491 gap=10% float=0.8M
+[Jan2026 2026-01-09] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$732
+    FEED: vol=2,954,798 gap=10% float=0.8M
     KUST: vol=2,700,325 gap=14% float=0.2M
     ICON: vol=3,622,622 gap=22% float=0.7M
     APVO: vol=3,993,762 gap=20% float=0.9M
+    WHLR: vol=1,212,497 gap=15% float=0.2M
     FEED: ticks=21,356 armed=0 signals=0 trades=0 pnl=+0
     KUST: ticks=25,857 armed=0 signals=0 trades=0 pnl=+0
     ICON: ticks=37,556 armed=0 signals=0 trades=0 pnl=+0
     APVO: ticks=30,384 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-09: 0 trades  pnl=+0  equity=$29,625
+    WHLR: ticks=8,272 armed=0 signals=0 trades=0 pnl=+0
+  → 2026-01-09: 0 trades  pnl=+0  equity=$29,286
 
-[Jan2026 2026-01-12] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$740
+[Jan2026 2026-01-12] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$732
     BDSX: vol=5,401,463 gap=26% float=3.7M
-    SUGP: vol=218,401 gap=18% float=4.0M
+    NCEL: vol=1,511,800 gap=13% float=2.1M
+    GNPX: vol=1,655,214 gap=10% float=0.7M
+    CLRB: vol=280,962 gap=12% float=3.0M
+    SUGP: vol=219,300 gap=18% float=4.0M
     BDSX: ticks=442,026 armed=2 signals=2 trades=2 pnl=-83
+    NCEL: ticks=7,286 armed=0 signals=0 trades=0 pnl=+0
+    GNPX: ticks=6,779 armed=2 signals=2 trades=0 pnl=+0
+    CLRB: ticks=4,087 armed=1 signals=1 trades=1 pnl=-466
     SUGP: ticks=12,648 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-12: 1 trades  pnl=-317  equity=$29,308
+  → 2026-01-12: 1 trades  pnl=-314  equity=$28,972
 
-[Jan2026 2026-01-13] 7 scanned → 7 passed → 5 selected  (uf=0 rescan=0)  risk=$732
-    XAIR: vol=71,249,379 gap=172% float=9.4M
+[Jan2026 2026-01-13] 7 scanned → 7 passed → 5 selected  (uf=0 rescan=0)  risk=$724
+    XAIR: vol=217,773,149 gap=172% float=9.4M
     IOTR: vol=11,884,420 gap=36% float=0.7M
     PMAX: vol=10,271,808 gap=16% float=0.4M
-    AHMA: vol=10,117,699 gap=86% float=2.0M
+    AHMA: vol=10,168,499 gap=86% float=2.0M
     SPRC: vol=11,816,128 gap=52% float=0.4M
     XAIR: ticks=200,139 armed=0 signals=0 trades=0 pnl=+0
     IOTR: ticks=102,610 armed=0 signals=0 trades=0 pnl=+0
     PMAX: ticks=57,146 armed=0 signals=0 trades=0 pnl=+0
     AHMA: ticks=428,895 armed=2 signals=1 trades=0 pnl=+0
-    SPRC: ticks=197,457 armed=2 signals=2 trades=1 pnl=-366
-  → 2026-01-13: 1 trades  pnl=-366  equity=$28,942
+    SPRC: ticks=197,457 armed=2 signals=2 trades=1 pnl=-362
+  → 2026-01-13: 1 trades  pnl=-362  equity=$28,610
 
-[Jan2026 2026-01-14] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$723
-    ROLR: vol=10,669,416 gap=289% float=3.6M
-    CMND: vol=460,213 gap=13% float=0.1M
-    ROLR: ticks=878,325 armed=3 signals=2 trades=2 pnl=+5658
+[Jan2026 2026-01-14] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$715
+    ROLR: vol=10,674,993 gap=289% float=3.6M
+    CMND: vol=461,798 gap=13% float=0.1M
+    ROLR: ticks=878,325 armed=3 signals=2 trades=2 pnl=+5656
     CMND: ticks=6,141 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-14: 1 trades  pnl=+229  equity=$29,171
+  → 2026-01-14: 1 trades  pnl=+227  equity=$28,837
 
-[Jan2026 2026-01-15] 6 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$729
-    CJMB: vol=16,555,670 gap=127% float=1.4M
+[Jan2026 2026-01-15] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$720
+    CJMB: vol=16,556,914 gap=127% float=1.4M
     SPHL: vol=5,016,154 gap=91% float=0.5M
-    CHNR: vol=125,588 gap=12% float=0.5M
+    CHNR: vol=135,525 gap=12% float=0.5M
     AGPU: vol=237,778 gap=17% float=1.8M
-    NUWE: vol=62,102 gap=21% float=0.9M
-    CJMB: ticks=986,939 armed=1 signals=1 trades=1 pnl=+1171
-    SPHL: ticks=1,100,050 armed=4 signals=4 trades=2 pnl=-728
+    NUWE: vol=63,002 gap=21% float=0.9M
+    CJMB: ticks=986,939 armed=1 signals=1 trades=1 pnl=+1157
+    SPHL: ticks=1,100,050 armed=4 signals=4 trades=2 pnl=-720
     CHNR: ticks=356 armed=0 signals=0 trades=0 pnl=+0
-    AGPU: ticks=39,974 armed=3 signals=3 trades=3 pnl=+19
+    AGPU: ticks=39,974 armed=3 signals=3 trades=3 pnl=+11
     NUWE: ticks=2,958 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-15: 2 trades  pnl=+807  equity=$29,978
+  → 2026-01-15: 2 trades  pnl=+797  equity=$29,634
 
-[Jan2026 2026-01-16] 6 scanned → 6 passed → 5 selected  (uf=0 rescan=1)  risk=$749
+[Jan2026 2026-01-16] 7 scanned → 7 passed → 5 selected  (uf=0 rescan=0)  risk=$740
     VERO: vol=26,831,003 gap=181% float=1.6M
     ACCL: vol=10,272,856 gap=28% float=2.9M
     BIYA: vol=7,050,459 gap=42% float=0.1M
-    LCFY: vol=143,179 gap=132% float=1.4M [RS]
+    LCFY: vol=143,179 gap=132% float=1.4M
     GWAV: vol=1,537,606 gap=26% float=0.8M
-    VERO: ticks=1,696,214 armed=4 signals=4 trades=4 pnl=+13067
+    VERO: ticks=1,696,214 armed=4 signals=4 trades=4 pnl=+12910
     ACCL: ticks=160,400 armed=0 signals=0 trades=0 pnl=+0
     BIYA: ticks=181,960 armed=0 signals=0 trades=0 pnl=+0
-    LCFY: ticks=470,263 armed=2 signals=1 trades=1 pnl=-321
-    GWAV: ticks=82,507 armed=2 signals=2 trades=1 pnl=+2180
-  → 2026-01-16: 1 trades  pnl=+12,981  equity=$42,959
+    LCFY: ticks=470,263 armed=2 signals=1 trades=1 pnl=-317
+    GWAV: ticks=82,507 armed=2 signals=2 trades=1 pnl=+2153
+  → 2026-01-16: 1 trades  pnl=+12,825  equity=$42,459
 
-[Jan2026 2026-01-20] 8 scanned → 8 passed → 5 selected  (uf=0 rescan=0)  risk=$1073
+[Jan2026 2026-01-20] 8 scanned → 8 passed → 5 selected  (uf=0 rescan=0)  risk=$1061
     BTTC: vol=29,798,487 gap=85% float=1.3M
     TWG: vol=9,478,348 gap=123% float=0.4M
     IVF: vol=43,686,384 gap=346% float=1.7M
@@ -299,92 +315,117 @@
     TWG: ticks=674,822 armed=0 signals=0 trades=0 pnl=+0
     IVF: ticks=899,844 armed=0 signals=0 trades=0 pnl=+0
     ICON: ticks=104,837 armed=0 signals=0 trades=0 pnl=+0
-    POLA: ticks=292,395 armed=2 signals=1 trades=1 pnl=+804
-  → 2026-01-20: 1 trades  pnl=+804  equity=$43,763
+    POLA: ticks=292,395 armed=2 signals=1 trades=1 pnl=+795
+  → 2026-01-20: 1 trades  pnl=+795  equity=$43,254
 
-[Jan2026 2026-01-21] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1094
-    GITS: vol=25,657,515 gap=172% float=2.5M
+[Jan2026 2026-01-21] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$1081
+    GITS: vol=28,625,654 gap=172% float=2.5M
+    BOXL: vol=48,553,083 gap=92% float=0.7M
     SLGB: vol=15,293,392 gap=134% float=1.0M
     LSTA: vol=1,890,202 gap=83% float=7.1M
-    BOXL: vol=13,705,568 gap=92% float=0.7M
+    MLEC: vol=2,958,979 gap=48% float=0.7M
     GITS: ticks=176,860 armed=0 signals=0 trades=0 pnl=+0
-    SLGB: ticks=463,437 armed=3 signals=3 trades=1 pnl=+1914
-    LSTA: ticks=11,481 armed=0 signals=0 trades=0 pnl=+0
     BOXL: ticks=286,811 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-21: 1 trades  pnl=+1,914  equity=$45,677
+    SLGB: ticks=463,437 armed=3 signals=3 trades=1 pnl=+1891
+    LSTA: ticks=11,481 armed=0 signals=0 trades=0 pnl=+0
+    MLEC: ticks=48,337 armed=0 signals=0 trades=0 pnl=+0
+  → 2026-01-21: 1 trades  pnl=+1,891  equity=$45,145
 
-[Jan2026 2026-01-22] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1141
-    NXTS: vol=21,390,097 gap=54% float=1.1M
+[Jan2026 2026-01-22] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1128
+    NXTS: vol=21,390,357 gap=54% float=1.1M
     IOTR: vol=22,198,275 gap=203% float=0.7M
     SXTP: vol=13,877,243 gap=43% float=0.9M
     RAYA: vol=7,955,230 gap=31% float=0.6M
     NXTS: ticks=173,714 armed=0 signals=0 trades=0 pnl=+0
-    IOTR: ticks=472,909 armed=3 signals=3 trades=2 pnl=-1124
+    IOTR: ticks=472,909 armed=3 signals=3 trades=2 pnl=-1115
     SXTP: ticks=1,476,033 armed=4 signals=4 trades=1 pnl=+2775
     RAYA: ticks=66,188 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-22: 1 trades  pnl=-737  equity=$44,940
+  → 2026-01-22: 1 trades  pnl=-728  equity=$44,417
 
-[Jan2026 2026-01-23] 7 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$1123
+[Jan2026 2026-01-23] 7 scanned → 7 passed → 5 selected  (uf=0 rescan=0)  risk=$1110
     MOVE: vol=7,698,221 gap=157% float=0.6M
+    DRCT: vol=52,869,157 gap=144% float=0.6M
     RVYL: vol=5,400,826 gap=56% float=0.3M
-    AUST: vol=2,868,732 gap=23% float=7.8M
+    AUST: vol=2,955,117 gap=23% float=7.8M
     RAYA: vol=3,987,249 gap=23% float=0.6M
-    KUST: vol=1,727,561 gap=21% float=0.2M
-    MOVE: ticks=610,891 armed=5 signals=4 trades=4 pnl=+1871
+    MOVE: ticks=610,891 armed=5 signals=4 trades=4 pnl=+1880
+    DRCT: ticks=710,821 armed=3 signals=2 trades=2 pnl=+2775
     RVYL: ticks=99,708 armed=0 signals=0 trades=0 pnl=+0
     AUST: ticks=7,726 armed=0 signals=0 trades=0 pnl=+0
     RAYA: ticks=310,948 armed=2 signals=2 trades=0 pnl=+0
-    KUST: ticks=790,920 armed=4 signals=4 trades=1 pnl=+1438
-  → 2026-01-23: 1 trades  pnl=-806  equity=$44,134
+  → 2026-01-23: 1 trades  pnl=-797  equity=$43,620
 
-[Jan2026 2026-01-26] 5 scanned → 5 passed → 5 selected  (uf=1 rescan=0)  risk=$1103
+[Jan2026 2026-01-26] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$1090
+    GXAI: vol=34,237,780 gap=104% float=6.5M
     BATL: vol=69,454,863 gap=391% float=7.2M
-    GXAI: vol=33,481,482 gap=104% float=0.0M [UF]
-    MBAI: vol=3,302,918 gap=63% float=4.7M
+    MBAI: vol=3,508,564 gap=63% float=4.7M
     ARAI: vol=6,451,557 gap=12% float=6.2M
-    STAI: vol=749,277 gap=12% float=1.0M
-    BATL: ticks=1,179,703 armed=2 signals=1 trades=1 pnl=+937
+    STAI: vol=769,891 gap=12% float=1.0M
     GXAI: ticks=372,868 armed=0 signals=0 trades=0 pnl=+0
+Resuming from state file…
+  Jan 2025: 21 dates done, equity=$35,837
+  Jan 2026: 16 dates done, equity=$43,620
+
+======================================================================
+  JANUARY 2026 — 5 dates remaining
+======================================================================
+
+[Jan2026 2026-01-26] 5 scanned → 5 passed → 5 selected  (uf=0 rescan=0)  risk=$1090
+    GXAI: vol=34,237,780 gap=104% float=6.5M
+    BATL: vol=69,454,863 gap=391% float=7.2M
+    MBAI: vol=3,508,564 gap=63% float=4.7M
+    ARAI: vol=6,451,557 gap=12% float=6.2M
+    STAI: vol=769,891 gap=12% float=1.0M
+    GXAI: ticks=372,868 armed=0 signals=0 trades=0 pnl=+0
+    BATL: ticks=1,179,703 armed=2 signals=1 trades=1 pnl=+937
     MBAI: ticks=444,940 armed=0 signals=0 trades=0 pnl=+0
     ARAI: ticks=179,454 armed=1 signals=1 trades=0 pnl=+0
     STAI: ticks=5,369 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-26: 1 trades  pnl=+937  equity=$45,071
+  → 2026-01-26: 1 trades  pnl=+937  equity=$44,557
 
-[Jan2026 2026-01-27] 5 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1126
+[Jan2026 2026-01-27] 6 scanned → 6 passed → 5 selected  (uf=0 rescan=0)  risk=$1113
     NUWE: vol=44,961,800 gap=152% float=0.9M
-    XHLD: vol=7,858,738 gap=61% float=1.3M
+    XHLD: vol=8,318,177 gap=61% float=1.3M
     PHGE: vol=3,841,638 gap=67% float=1.2M
+    NETG: vol=62,272 gap=26% float=0.0M
     CYN: vol=4,255,770 gap=25% float=8.0M
     NUWE: ticks=544,783 armed=1 signals=1 trades=0 pnl=+0
     XHLD: ticks=280,144 armed=0 signals=0 trades=0 pnl=+0
     PHGE: ticks=272,388 armed=0 signals=0 trades=0 pnl=+0
+    NETG: ticks=562 armed=0 signals=0 trades=0 pnl=+0
     CYN: ticks=435,552 armed=1 signals=1 trades=1 pnl=-99
-  → 2026-01-27: 1 trades  pnl=-99  equity=$44,972
+  → 2026-01-27: 1 trades  pnl=-99  equity=$44,458
 
-[Jan2026 2026-01-28] 3 scanned → 3 passed → 3 selected  (uf=0 rescan=0)  risk=$1124
+[Jan2026 2026-01-28] 3 scanned → 3 passed → 3 selected  (uf=0 rescan=0)  risk=$1111
     AIMD: vol=14,577,647 gap=33% float=1.7M
     MRNO: vol=24,078,277 gap=143% float=1.4M
-    BBGI: vol=483,760 gap=28% float=0.6M
+    BBGI: vol=842,731 gap=28% float=0.6M
     AIMD: ticks=89,412 armed=0 signals=0 trades=0 pnl=+0
     MRNO: ticks=276,511 armed=0 signals=0 trades=0 pnl=+0
     BBGI: ticks=4,522 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-28: 0 trades  pnl=+0  equity=$44,972
+  → 2026-01-28: 0 trades  pnl=+0  equity=$44,458
 
-[Jan2026 2026-01-29] 5 scanned → 3 passed → 3 selected  (uf=0 rescan=0)  risk=$1124
+[Jan2026 2026-01-29] 5 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1111
     SER: vol=26,039,627 gap=62% float=3.6M
-    FEED: vol=40,631,634 gap=70% float=0.8M
+    FEED: vol=42,054,496 gap=70% float=0.8M
     ZSTK: vol=409,368 gap=31% float=2.3M
+    DZZ: vol=96,605 gap=34% float=2.7M
     SER: ticks=285,606 armed=0 signals=0 trades=0 pnl=+0
-    FEED: ticks=408,164 armed=1 signals=1 trades=1 pnl=-295
+    FEED: ticks=408,164 armed=1 signals=1 trades=1 pnl=-291
     ZSTK: ticks=31,175 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-29: 1 trades  pnl=-295  equity=$44,677
+    DZZ: ticks=1,233 armed=1 signals=0 trades=0 pnl=+0
+  → 2026-01-29: 1 trades  pnl=-291  equity=$44,167
 
-[Jan2026 2026-01-30] 2 scanned → 2 passed → 2 selected  (uf=0 rescan=0)  risk=$1116
+[Jan2026 2026-01-30] 4 scanned → 4 passed → 4 selected  (uf=0 rescan=0)  risk=$1104
     PMN: vol=1,484,456 gap=41% float=1.3M
     VIVS: vol=10,777,851 gap=76% float=2.6M
+    LRHC: vol=15,138,569 gap=81% float=0.1M
+    CISS: vol=11,814,093 gap=42% float=0.1M
     PMN: ticks=146,458 armed=1 signals=1 trades=1 pnl=-175
     VIVS: ticks=305,105 armed=0 signals=0 trades=0 pnl=+0
-  → 2026-01-30: 0 trades  pnl=+0  equity=$44,677
+    LRHC: ticks=324,254 armed=0 signals=0 trades=0 pnl=+0
+    CISS: ticks=101,236 armed=1 signals=1 trades=1 pnl=-1490
+  → 2026-01-30: 1 trades  pnl=-1,490  equity=$42,677
 
 ╔═══════════════════════════════════════════════════════════════════════╗
 ║        JANUARY COMPARISON V2 (Ross Exit ON): 2025 vs 2026            ║
@@ -392,17 +433,17 @@
 ║ Metric                        ║   Jan 2025    ║       Jan 2026        ║
 ╠═══════════════════════════════╬═══════════════╬═══════════════════════╣
 ║ Trading Days                  ║      21       ║          21           ║
-║ Total Trades                  ║      29       ║          14           ║
+║ Total Trades                  ║      29       ║          16           ║
 ║ SQ Trades                     ║      11       ║           4           ║
-║ MP Trades                     ║      18       ║          10           ║
-║ Win Rate                      ║     34.5%     ║         42.9%         ║
-║ Total P&L                     ║    $+5,837    ║       $+14,677        ║
-║ Avg P&L / Day                 ║     $+278     ║         $+699         ║
-║ Profit Factor                 ║     2.08      ║         5.37          ║
-║ Max Drawdown                  ║    $-1,852    ║        $-1,543        ║
-║ Best Day                      ║    $+5,546    ║       $+12,981        ║
-║ Worst Day                     ║     $-790     ║         $-806         ║
-║ Ending Equity                 ║   $+35,837    ║       $+44,677        ║
+║ MP Trades                     ║      18       ║          12           ║
+║ Win Rate                      ║     34.5%     ║         37.5%         ║
+║ Total P&L                     ║    $+5,837    ║       $+12,677        ║
+║ Avg P&L / Day                 ║     $+278     ║         $+604         ║
+║ Profit Factor                 ║     2.08      ║         3.46          ║
+║ Max Drawdown                  ║    $-1,852    ║        $-2,468        ║
+║ Best Day                      ║    $+5,546    ║       $+12,825        ║
+║ Worst Day                     ║     $-790     ║        $-1,490        ║
+║ Ending Equity                 ║   $+35,837    ║       $+42,677        ║
 ╚═══════════════════════════════╩═══════════════╩═══════════════════════╝
 
 ────────────────────────────────────────────────────────────────────────────────
@@ -437,42 +478,35 @@
 ────────────────────────────────────────────────────────────────────────────────
   Date         Candidates  Traded  Trades        P&L       Equity  Best Trade
   ──────────── ────────── ─────── ─────── ────────── ────────────
-  2026-01-02            2       2       0         +0       30,000  —
+  2026-01-02            3       3       0         +0       30,000  —
   2026-01-03            0       0       0         +0       30,000  —
-  2026-01-05            1       1       0         +0       30,000  —
-  2026-01-06            2       2       0         +0       30,000  —
-  2026-01-07            2       2       0         +0       30,000  —
-  2026-01-08            2       2       1       -375       29,625  ACON -375
-  2026-01-09            4       4       0         +0       29,625  —
-  2026-01-12            2       2       1       -317       29,308  BDSX -317
-  2026-01-13            7       5       1       -366       28,942  SPRC -366
-  2026-01-14            2       2       1       +229       29,171  ROLR +229
-  2026-01-15            6       5       2       +807       29,978  CJMB +1171
-  2026-01-16            6       5       1    +12,981       42,959  VERO +12981
-  2026-01-20            8       5       1       +804       43,763  POLA +804
-  2026-01-21            4       4       1     +1,914       45,677  SLGB +1914
-  2026-01-22            4       4       1       -737       44,940  IOTR -737
-  2026-01-23            7       5       1       -806       44,134  MOVE -806
-  2026-01-26            5       5       1       +937       45,071  BATL +937
-  2026-01-27            5       4       1        -99       44,972  CYN -99
-  2026-01-28            3       3       0         +0       44,972  —
-  2026-01-29            5       3       1       -295       44,677  FEED -295
-  2026-01-30            2       2       0         +0       44,677  —
+  2026-01-05            2       2       0         +0       30,000  —
+  2026-01-06            4       4       1       -344       29,656  CELZ -344
+  2026-01-07            2       2       0         +0       29,656  —
+  2026-01-08            2       2       1       -370       29,286  ACON -370
+  2026-01-09            5       5       0         +0       29,286  —
+  2026-01-12            5       5       1       -314       28,972  BDSX -314
+  2026-01-13            7       5       1       -362       28,610  SPRC -362
+  2026-01-14            2       2       1       +227       28,837  ROLR +227
+  2026-01-15            5       5       2       +797       29,634  CJMB +1157
+  2026-01-16            7       5       1    +12,825       42,459  VERO +12825
+  2026-01-20            8       5       1       +795       43,254  POLA +795
+  2026-01-21            5       5       1     +1,891       45,145  SLGB +1891
+  2026-01-22            4       4       1       -728       44,417  IOTR -728
+  2026-01-23            7       5       1       -797       43,620  MOVE -797
+  2026-01-26            5       5       1       +937       44,557  BATL +937
+  2026-01-27            6       5       1        -99       44,458  CYN -99
+  2026-01-28            3       3       0         +0       44,458  —
+  2026-01-29            5       4       1       -291       44,167  FEED -291
+  2026-01-30            4       4       1     -1,490       42,677  CISS -1490
 
 ────────────────────────────────────────────────────────────
   Exit Reason Breakdown (V2 — Ross exit ON)
 ────────────────────────────────────────────────────────────
-  ross_cuc                       n=  9  wins=  6  avg_pnl=    +266
-  ross_doji_partial              n=  6  wins=  5  avg_pnl=   +1582
-  ross_shooting_star             n=  5  wins=  4  avg_pnl=   +2900
-  non_ross                       n= 23  wins=  1  avg_pnl=    -255
+  ross_cuc                       n=  9  wins=  6  avg_pnl=    +264
+  ross_doji_partial              n=  6  wins=  5  avg_pnl=   +1583
+  ross_shooting_star             n=  5  wins=  4  avg_pnl=   +2866
+  non_ross                       n= 25  wins=  1  avg_pnl=    -308
 
-Traceback (most recent call last):
-  File "/Users/duffy/warrior_bot/run_jan_v2_comparison.py", line 881, in <module>
-    run_comparison()
-  File "/Users/duffy/warrior_bot/run_jan_v2_comparison.py", line 876, in run_comparison
-    _save_report(state)
-  File "/Users/duffy/warrior_bot/run_jan_v2_comparison.py", line 569, in _save_report
-    f"║ Jan 2025 Total P&L            ║  ${V1_JAN2025_PNL:>+8,}   ║  {fmt(s25['total_pnl']):>+8}       ║  {delta(s25['total_pnl'], V1_JAN2025_PNL):>16}   ║",
-                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: Sign not allowed in string format specifier
+
+  Report saved → /Users/duffy/warrior_bot/cowork_reports/2026-03-23_jan_comparison_v2.md

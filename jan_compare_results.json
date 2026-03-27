@@ -1,0 +1,208 @@
+{
+  "generated": "2026-03-22T18:35:35.553285",
+  "dates": [
+    "2026-01-02",
+    "2026-01-03",
+    "2026-01-05",
+    "2026-01-06",
+    "2026-01-07",
+    "2026-01-08",
+    "2026-01-09",
+    "2026-01-12",
+    "2026-01-13",
+    "2026-01-14",
+    "2026-01-15",
+    "2026-01-16",
+    "2026-01-20",
+    "2026-01-21",
+    "2026-01-22",
+    "2026-01-23",
+    "2026-01-26",
+    "2026-01-27",
+    "2026-01-28",
+    "2026-01-29",
+    "2026-01-30"
+  ],
+  "baseline": {
+    "total_pnl": 8054,
+    "equity": 38054,
+    "trades": 15,
+    "win_rate": "11/15 (73%)"
+  },
+  "features_on": {
+    "total_pnl": 9376,
+    "equity": 39376,
+    "trades": 13,
+    "win_rate": "8/13 (62%)"
+  },
+  "daily": [
+    {
+      "date": "2026-01-02",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-03",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "note": "no candidates"
+    },
+    {
+      "date": "2026-01-05",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-06",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-07",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-08",
+      "base_pnl": 582,
+      "feat_pnl": 362,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": -220
+    },
+    {
+      "date": "2026-01-09",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-12",
+      "base_pnl": -327,
+      "feat_pnl": -325,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": 2
+    },
+    {
+      "date": "2026-01-13",
+      "base_pnl": 54,
+      "feat_pnl": -54,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": -108
+    },
+    {
+      "date": "2026-01-14",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-15",
+      "base_pnl": 973,
+      "feat_pnl": 909,
+      "base_trades": 2,
+      "feat_trades": 2,
+      "delta": -64
+    },
+    {
+      "date": "2026-01-16",
+      "base_pnl": 56,
+      "feat_pnl": 2385,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": 2329
+    },
+    {
+      "date": "2026-01-20",
+      "base_pnl": 112,
+      "feat_pnl": 415,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": 303
+    },
+    {
+      "date": "2026-01-21",
+      "base_pnl": 2280,
+      "feat_pnl": 2992,
+      "base_trades": 2,
+      "feat_trades": 2,
+      "delta": 712
+    },
+    {
+      "date": "2026-01-22",
+      "base_pnl": -421,
+      "feat_pnl": -458,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": -37
+    },
+    {
+      "date": "2026-01-23",
+      "base_pnl": 4151,
+      "feat_pnl": 3033,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": -1118
+    },
+    {
+      "date": "2026-01-26",
+      "base_pnl": 730,
+      "feat_pnl": 615,
+      "base_trades": 3,
+      "feat_trades": 1,
+      "delta": -115
+    },
+    {
+      "date": "2026-01-27",
+      "base_pnl": -136,
+      "feat_pnl": -498,
+      "base_trades": 1,
+      "feat_trades": 1,
+      "delta": -362
+    },
+    {
+      "date": "2026-01-28",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-29",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    },
+    {
+      "date": "2026-01-30",
+      "base_pnl": 0,
+      "feat_pnl": 0,
+      "base_trades": 0,
+      "feat_trades": 0,
+      "delta": 0
+    }
+  ]
+}
