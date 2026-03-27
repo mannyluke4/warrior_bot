@@ -106,3 +106,1974 @@ Waiting for TWS to accept connections on port 7497...
 18:82: execution error: Terminal got an error: AppleEvent timed out. (-1712)
 FATAL: TWS did not open port 7497 within 120 seconds. Aborting.
 === TRAP: cleanup at Thu Mar 26 04:57:32 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 15: 15297 Terminated: 15          caffeinate -dims -w $$  (wd: ~/warrior_bot/.claude/worktrees/cool-mirzakhani)
+[v2-ibkr-migration ee4bc74] auto: daily logs 2026-03-26
+ 2 files changed, 50 insertions(+)
+=== Cleanup complete: Thu Mar 26 04:57:34 MDT 2026 ===
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  Port: 7497
+============================================================
+Connected: True
+Account: ['DUQ143444']
+
+🔄 Running scanner at 08:04:21 ET...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+  [FMP] FCHL: 0.29M
+  [FMP] OLPX: 131.74M
+  [FMP] PROP: 26.20M
+  [FMP] TZA: 34.33M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded EEIQ: 245 bars, EMA=4.9901
+✅ Subscribed: EEIQ
+🔥 Seeded FCHL: 246 bars, EMA=2.9456
+✅ Subscribed: FCHL
+📊 Scanner: 2 candidates, 2 subscribed
+
+Bot running. Ctrl+C to stop.
+[08:06:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:06:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:07:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:07:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:08:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:08:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:09:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:09:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:09:21 ET...
+  [float_cache] Cleared 4 stale None entries — will re-attempt lookups
+Error 162, reqId 90: Historical Market Data Service error message:API scanner subscription cancelled: 90
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 2 candidates, 2 subscribed
+[08:11:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:11:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:12:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:12:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:13:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:13:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:14:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:14:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:14:22 ET...
+  [float_cache] Cleared 4 stale None entries — will re-attempt lookups
+Error 162, reqId 171: Historical Market Data Service error message:API scanner subscription cancelled: 171
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 2 candidates, 2 subscribed
+[08:16:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:16:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:17:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:17:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:18:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:18:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:19:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:19:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:19:22 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 252: Historical Market Data Service error message:API scanner subscription cancelled: 252
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 2 candidates, 2 subscribed
+[08:21:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:21:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:22:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:22:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:23:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:23:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:24:00 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+[08:24:01 ET] heartbeat | watch=2 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:24:23 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 333: Historical Market Data Service error message:API scanner subscription cancelled: 333
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded BTBD: 266 bars, EMA=2.2654
+✅ Subscribed: BTBD
+📊 Scanner: 3 candidates, 3 subscribed
+[08:26:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:26:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:27:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:27:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:28:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:28:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:29:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:29:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:29:23 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 417: Historical Market Data Service error message:API scanner subscription cancelled: 417
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 3 candidates, 3 subscribed
+[08:31:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:31:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:32:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:32:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:33:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:33:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:34:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:34:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:34:23 ET...
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+Error 162, reqId 498: Historical Market Data Service error message:API scanner subscription cancelled: 498
+  [FMP] BORR: 223.21M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 3 candidates, 3 subscribed
+[08:36:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:36:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:37:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:37:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+Error 10197, reqId 415: No market data during competing live session, contract: Stock(conId=526206290, symbol='BTBD', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='BTBD', tradingClass='SCM')
+Error 10197, reqId 88: No market data during competing live session, contract: Stock(conId=866505734, symbol='FCHL', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='FCHL', tradingClass='SCM')
+Error 10197, reqId 85: No market data during competing live session, contract: Stock(conId=854523242, symbol='EEIQ', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='EEIQ', tradingClass='SCM')
+Error 10197, reqId 415: No market data during competing live session, contract: Stock(conId=526206290, symbol='BTBD', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='BTBD', tradingClass='SCM')
+Error 10197, reqId 88: No market data during competing live session, contract: Stock(conId=866505734, symbol='FCHL', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='FCHL', tradingClass='SCM')
+Error 10197, reqId 85: No market data during competing live session, contract: Stock(conId=854523242, symbol='EEIQ', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='EEIQ', tradingClass='SCM')
+[08:38:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:38:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+Error 10197, reqId 415: No market data during competing live session, contract: Stock(conId=526206290, symbol='BTBD', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='BTBD', tradingClass='SCM')
+Error 10197, reqId 88: No market data during competing live session, contract: Stock(conId=866505734, symbol='FCHL', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='FCHL', tradingClass='SCM')
+Error 10197, reqId 85: No market data during competing live session, contract: Stock(conId=854523242, symbol='EEIQ', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='EEIQ', tradingClass='SCM')
+[08:39:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:39:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  Port: 7497
+============================================================
+Connected: True
+Account: ['DUQ143444']
+
+🔄 Running scanner at 08:41:16 ET...
+📊 Scanner: 0 candidates, 0 subscribed
+
+Bot running. Ctrl+C to stop.
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+[08:42:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:42:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:43:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:43:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:44:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:44:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:45:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:45:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:46:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:46:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:46:16 ET...
+📊 Scanner: 0 candidates, 0 subscribed
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+[08:47:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:47:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:48:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:48:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:49:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:49:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:50:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:50:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:51:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:51:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:51:17 ET...
+📊 Scanner: 0 candidates, 0 subscribed
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+[08:52:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:52:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:53:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:53:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:54:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:54:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:55:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:55:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:56:00 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+[08:56:01 ET] heartbeat | watch=0 flat daily=$+0 trades=0
+
+🔄 Running scanner at 08:56:18 ET...
+  [float_cache] Cleared 4 stale None entries — will re-attempt lookups
+Error 162, reqId 6: Historical Market Data Service error message:API scanner subscription cancelled: 6
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded FCHL: 298 bars, EMA=3.2436
+✅ Subscribed: FCHL
+🔥 Seeded EEIQ: 297 bars, EMA=4.5795
+✅ Subscribed: EEIQ
+🔥 Seeded BTBD: 298 bars, EMA=2.1387
+✅ Subscribed: BTBD
+📊 Scanner: 3 candidates, 3 subscribed
+[08:58:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:58:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:59:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[08:59:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[09:00:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[09:00:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[09:01:00 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+[09:01:01 ET] heartbeat | watch=3 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:01:18 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 96: Historical Market Data Service error message:API scanner subscription cancelled: 96
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded TGL: 29 bars, EMA=4.2503
+✅ Subscribed: TGL
+📊 Scanner: 4 candidates, 4 subscribed
+[09:03:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:03:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:04:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:04:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:05:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:05:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:06:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:06:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:06:18 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 180: Historical Market Data Service error message:API scanner subscription cancelled: 180
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 4 candidates, 4 subscribed
+[09:07:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:08:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:08:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:09:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:09:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:10:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:10:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:11:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:11:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:11:18 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 261: Historical Market Data Service error message:API scanner subscription cancelled: 261
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 3 candidates, 4 subscribed
+[09:12:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:13:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:13:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:14:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:14:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:15:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:15:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:16:00 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+[09:16:01 ET] heartbeat | watch=4 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:16:19 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 342: Historical Market Data Service error message:API scanner subscription cancelled: 342
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded FATN: 209 bars, EMA=2.2492
+✅ Subscribed: FATN
+📊 Scanner: 3 candidates, 5 subscribed
+[09:17:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:18:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:18:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:19:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:19:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:20:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:20:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:21:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:21:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:21:20 ET...
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+Error 162, reqId 426: Historical Market Data Service error message:API scanner subscription cancelled: 426
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 4 candidates, 5 subscribed
+[09:23:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:23:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:24:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:24:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:25:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:25:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:26:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:26:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 09:26:20 ET...
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+Error 162, reqId 507: Historical Market Data Service error message:API scanner subscription cancelled: 507
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 4 candidates, 5 subscribed
+[09:27:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:28:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:28:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:29:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:29:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+🛑 Scanner cutoff reached (9:30 ET). No new symbols.
+[09:30:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:30:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:31:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:31:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:32:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:32:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:33:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:33:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:34:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:34:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:35:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:35:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:36:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:36:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:37:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:37:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:38:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:38:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:39:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:39:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:40:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:40:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:41:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:41:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:42:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:42:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[09:43:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:43:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:44:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:44:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:45:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:45:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:46:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:46:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:47:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:47:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:48:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:48:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:49:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:49:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:50:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:50:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:51:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:51:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:52:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:52:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:53:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:53:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:54:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:54:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:55:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:55:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:56:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:56:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:57:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:57:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:58:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:58:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:59:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[09:59:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:00:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:00:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:01:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:01:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:02:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:02:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:03:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:03:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:04:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:04:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:05:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:05:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:06:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:06:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:07:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:07:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:08:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:08:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:09:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:09:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:10:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:10:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:11:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:11:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:12:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:12:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:13:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:13:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:14:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:14:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:15:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:15:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:16:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:16:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:17:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:17:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:18:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:18:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:19:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:19:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:20:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:20:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:21:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:21:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:22:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:22:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:23:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:23:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:24:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:24:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:25:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:25:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:26:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:26:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:27:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:27:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:28:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:28:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:29:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:29:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:30:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:30:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:31:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:31:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:32:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:32:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+⚠️ HALT DETECTED: EEIQ (volatility)
+⚠️ HALT DETECTED: EEIQ (volatility)
+[10:33:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:33:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:34:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:34:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:35:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:35:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:36:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:36:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:37:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:37:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:38:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:38:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:39:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:39:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:40:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:40:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:41:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:41:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:42:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:42:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:43:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:43:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:44:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:44:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:45:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:45:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:46:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:46:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:47:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:47:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:48:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:48:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:49:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:49:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:50:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:50:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:51:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:51:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:52:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:52:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:53:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:53:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:54:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:54:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:55:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:55:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:56:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:56:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:57:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:57:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:58:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:58:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:59:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[10:59:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:00:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:00:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:01:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:01:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:02:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:02:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:03:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:03:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:04:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:04:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:05:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:05:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:06:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:06:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:07:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:07:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:08:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:08:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:09:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:09:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:10:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:10:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:11:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:11:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:12:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:12:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:13:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:13:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:14:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:14:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:15:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:15:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:16:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:16:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:17:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:17:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:18:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:18:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:19:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:19:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:20:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:20:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:21:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:21:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:22:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:22:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:23:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:23:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:24:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:24:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:25:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:25:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:26:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:26:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:27:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:27:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:28:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:28:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:29:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:29:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  Port: 7497
+============================================================
+Connected: True
+Account: ['DUQ143444']
+
+🔄 Running scanner at 11:29:20 ET...
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+🔥 Seeded EEIQ: 449 bars, EMA=9.1383
+✅ Subscribed: EEIQ
+🔥 Seeded FCHL: 450 bars, EMA=3.0475
+✅ Subscribed: FCHL
+🔥 Seeded NDLS: 295 bars, EMA=9.5493
+✅ Subscribed: NDLS
+🔥 Seeded FATN: 342 bars, EMA=2.3676
+✅ Subscribed: FATN
+🔥 Seeded AIFF: 451 bars, EMA=2.2817
+✅ Subscribed: AIFF
+📊 Scanner: 9 candidates, 5 subscribed
+
+Bot running. Ctrl+C to stop.
+[11:31:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:31:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:32:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:32:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:33:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:33:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:34:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:34:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:34:20 ET...
+Error 162, reqId 99: Historical Market Data Service error message:API scanner subscription cancelled: 99
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[11:35:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:35:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:36:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:36:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:37:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:37:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:38:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:38:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:39:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:39:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:39:21 ET...
+Error 162, reqId 180: Historical Market Data Service error message:API scanner subscription cancelled: 180
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[11:40:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:41:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:41:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:42:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:42:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:43:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:43:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:44:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:44:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:44:21 ET...
+Error 162, reqId 261: Historical Market Data Service error message:API scanner subscription cancelled: 261
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 9 candidates, 5 subscribed
+[11:45:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:46:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:46:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:47:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:47:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:48:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:48:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:49:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:49:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:49:21 ET...
+Error 162, reqId 342: Historical Market Data Service error message:API scanner subscription cancelled: 342
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 9 candidates, 5 subscribed
+[11:51:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:51:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:52:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:52:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:53:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:53:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:54:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:54:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:54:22 ET...
+Error 162, reqId 423: Historical Market Data Service error message:API scanner subscription cancelled: 423
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 9 candidates, 5 subscribed
+[11:56:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:56:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:57:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:57:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:58:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:58:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:59:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[11:59:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 11:59:23 ET...
+Error 162, reqId 504: Historical Market Data Service error message:API scanner subscription cancelled: 504
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:01:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:01:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:02:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:02:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:03:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:03:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:04:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:04:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:04:23 ET...
+Error 162, reqId 585: Historical Market Data Service error message:API scanner subscription cancelled: 585
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 9 candidates, 5 subscribed
+[12:06:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:06:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:07:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:07:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:08:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:08:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:09:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:09:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:09:24 ET...
+Error 162, reqId 666: Historical Market Data Service error message:API scanner subscription cancelled: 666
+  [FMP] ORGN: 4.81M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 9 candidates, 5 subscribed
+[12:11:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:11:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:12:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:12:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:13:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:13:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:14:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:14:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:14:24 ET...
+Error 162, reqId 747: Historical Market Data Service error message:API scanner subscription cancelled: 747
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:16:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:16:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:17:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:17:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:18:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:18:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:19:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:19:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:19:24 ET...
+Error 162, reqId 828: Historical Market Data Service error message:API scanner subscription cancelled: 828
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:21:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:21:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:22:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:22:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:23:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:23:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:24:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:24:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:24:24 ET...
+Error 162, reqId 909: Historical Market Data Service error message:API scanner subscription cancelled: 909
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:26:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:26:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:27:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:27:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:28:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:28:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:29:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:29:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:29:25 ET...
+Error 162, reqId 990: Historical Market Data Service error message:API scanner subscription cancelled: 990
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:31:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:31:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:32:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:32:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:33:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:33:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:34:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:34:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:34:25 ET...
+Error 162, reqId 1071: Historical Market Data Service error message:API scanner subscription cancelled: 1071
+  [FMP] NBIZ: 0.01M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:36:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:36:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:37:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:37:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:38:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:38:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:39:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:39:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:39:25 ET...
+Error 162, reqId 1152: Historical Market Data Service error message:API scanner subscription cancelled: 1152
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:41:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:41:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:42:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:42:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:43:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:43:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:44:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:44:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:44:25 ET...
+Error 162, reqId 1233: Historical Market Data Service error message:API scanner subscription cancelled: 1233
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 10 candidates, 5 subscribed
+[12:46:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:46:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:47:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:47:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:48:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:48:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:49:00 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+[12:49:01 ET] heartbeat | watch=5 flat daily=$+0 trades=0
+
+🔄 Running scanner at 12:49:26 ET...
+Error 162, reqId 1314: Historical Market Data Service error message:API scanner subscription cancelled: 1314
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+📊 Scanner: 11 candidates, 5 subscribed
