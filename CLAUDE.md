@@ -8,13 +8,13 @@ A Python trading bot that detects squeeze breakout and micro-pullback setups on 
 ### Backtesting
 - **Always use `--ticks` mode** for backtests (matches live bot tick-by-tick replay)
 - **Backtest window: 07:00-12:00 ET** (Ross Cameron's active hours)
-- **Always run regression before pushing**: VERO +$18,583, ROLR +$6,444
+- **Always run regression before pushing**: VERO +$15,692, ROLR +$6,444
   ```bash
   WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
   WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
   ```
   Note: `WB_MP_ENABLED=1` required since Item 1 (2026-03-22) gated MP off by default.
-- VERO target updated 2026-03-18 after Fix 5 (TW profit gate). Old target was +$9,166.
+- VERO target history: +$9,166 (pre-Fix 5) → +$18,583 (2026-03-18, Fix 5 TW profit gate) → +$15,692 (2026-03-27, system-wide optimization shifted individual stock P&L while portfolio improved dramatically)
 - GWAV and ANPA no longer produce trades in standalone mode (detector evolution)
 
 ### Code Changes
@@ -128,12 +128,13 @@ The exhaustion filter is enabled by default and works CORRECTLY for cascading st
 - **DO NOT implement a classifier-aware bypass** — it would break VERO regression
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
-### Regression Targets (as of 2026-03-18)
+### Regression Targets (as of 2026-03-27)
 Primary standalone regression (deterministic, tick mode):
-- VERO 2026-01-16: +$18,583 ✅ (1 trade, 18.6R — TW suppressed at 9.2R, BE exits at 18.6R)
+- VERO 2026-01-16: +$15,692 ✅ (shifted from +$18,583 after system-wide fixes 3/18→3/27: bail timer, cont hold guard, scanner parity, etc. — net portfolio improved from +$5,543 to +$19,832 across 49 days)
+- ROLR 2026-01-14: +$6,444
 Note: GWAV and ANPA no longer produce trades in standalone mode due to detector
 evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
-(run_ytd_v2_backtest.py) with tick cache produces +$5,543 across 49 days.
+(run_ytd_v2_backtest.py) with tick cache produces +$19,832 (V1) across 49 days.
 
 ## Current Study Status (as of 2026-03-24)
 

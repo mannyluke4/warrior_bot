@@ -90,13 +90,14 @@ When OFF, MP V2 can compete freely with SQ (current broken behavior). This lets 
 
 ## Regression Tests
 
-### Test 1: VERO Regression — MUST Return to +$18,583
+### Test 1: VERO Regression — MUST Hold at +$15,692
 
 ```bash
 WB_MP_ENABLED=1 WB_MP_V2_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
 ```
 
-Expected: +$18,583 (SQ cascade unaffected, MP V2 deferred on every leg because SQ is always PRIMED/ARMED)
+Expected: +$15,692 (SQ cascade unaffected, MP V2 deferred on every leg because SQ is always PRIMED/ARMED)
+Note: Baseline shifted from +$18,583 (2026-03-18) to +$15,692 (2026-03-27) due to system-wide optimization. Portfolio went from +$5,543 to +$19,832 across 49 days — VERO gave back $2.9K but everything else improved $14K+.
 
 ### Test 2: VERO SQ-Only Baseline (sanity check)
 
@@ -104,7 +105,7 @@ Expected: +$18,583 (SQ cascade unaffected, MP V2 deferred on every leg because S
 WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
 ```
 
-Expected: +$18,583 (unchanged from pre-V2)
+Expected: +$15,692 (unchanged from pre-V2)
 
 ### Test 3: ROLR Regression
 
@@ -150,7 +151,7 @@ Expected: 0 trades (no squeeze fires, MP V2 stays dormant)
 
 | Test | Metric | Pass |
 |------|--------|------|
-| VERO | P&L | +$18,583 exactly |
+| VERO | P&L | +$15,692 exactly |
 | ROLR | P&L | +$6,444 exactly |
 | EEIQ SQ-only | P&L | Baseline number |
 | EEIQ SQ+V2 | P&L | > SQ-only baseline |
@@ -179,6 +180,6 @@ notify_reentry_closed() to prevent rapid-fire losing re-entries.
 
 New env var: WB_MP_V2_SQ_PRIORITY=1 (default ON)
 
-Regression: VERO +$18,583, ROLR +$6,444
+Regression: VERO +$15,692, ROLR +$6,444
 EEIQ validation: SQ-only=$X, SQ+V2=$Y (delta=$Z)
 ```
