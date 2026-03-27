@@ -1745,6 +1745,9 @@ def run_simulation(
     # Micro Pullback gate (Strategy 1 — OFF by default, 0% win rate Jan 2025)
     mp_enabled = os.getenv("WB_MP_ENABLED", "0") == "1"
 
+    # MP V2 SQ-priority gate (default ON — SQ always has priority over MP V2 re-entries)
+    _mp_v2_sq_priority = os.getenv("WB_MP_V2_SQ_PRIORITY", "1") == "1"
+
     # Squeeze detector (Strategy 2)
     from squeeze_detector import SqueezeDetector
     sq_det = SqueezeDetector()
@@ -1823,7 +1826,7 @@ def run_simulation(
             vr_det.notify_trade_closed(symbol, t.pnl())
         # MP V2: track re-entry count when mp_reentry trade closes
         if t.setup_type == "mp_reentry":
-            det._reentry_count += 1
+            det.notify_reentry_closed()
     sim_mgr.on_trade_close = _on_sim_trade_close
 
     # Ross exit manager — only active when WB_ROSS_EXIT_ENABLED=1
@@ -2183,7 +2186,7 @@ def run_simulation(
                                 # MP V2: unlock re-entry detection
                                 det.notify_squeeze_closed(symbol, closed_t.pnl())
                             elif closed_t.setup_type == "mp_reentry":
-                                det._reentry_count += 1
+                                det.notify_reentry_closed()
                             if verbose:
                                 _exit_label = "SQ_EXIT" if closed_t.setup_type == "squeeze" else "MP_V2_EXIT"
                                 print(
@@ -2622,6 +2625,9 @@ def run_simulation(
                     elif not mp_enabled and _armed_setup_type != "mp_reentry":
                         if verbose:
                             print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
+                    elif _armed_setup_type == "mp_reentry" and _mp_v2_sq_priority and sq_enabled and (sq_det._state != "IDLE" or sq_det._in_trade):
+                        if verbose:
+                            print(f"  [{time_str}] MP_V2_DEFERRED: SQ has priority (state={sq_det._state}, in_trade={sq_det._in_trade})", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)
@@ -2911,6 +2917,9 @@ def run_simulation(
                     elif not mp_enabled and _armed_setup_type != "mp_reentry":
                         if verbose:
                             print(f"  [{time_str}] MP_DISABLED: would-be entry @ {armed_before.trigger_high:.4f} score={armed_before.score:.1f} (WB_MP_ENABLED=0)", flush=True)
+                    elif _armed_setup_type == "mp_reentry" and _mp_v2_sq_priority and sq_enabled and (sq_det._state != "IDLE" or sq_det._in_trade):
+                        if verbose:
+                            print(f"  [{time_str}] MP_V2_DEFERRED: SQ has priority (state={sq_det._state}, in_trade={sq_det._in_trade})", flush=True)
                     else:
                         _saved_risk = None
                         _qg_size_mult = getattr(armed_before, 'size_mult', 1.0)

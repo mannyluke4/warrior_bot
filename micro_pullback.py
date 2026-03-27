@@ -218,6 +218,15 @@ class MicroPullbackDetector:
         # Pre-set impulse as confirmed (the squeeze was the impulse)
         self.in_impulse_1m = True
 
+    def notify_reentry_closed(self):
+        """Called when an mp_reentry trade closes. Increments count and resets cooldown."""
+        self._reentry_count += 1
+        self._cooldown_bars_remaining = self._reentry_cooldown
+        self._full_reset_1m()
+        # Re-set impulse (squeeze was still the impulse)
+        if self._sq_confirmed:
+            self.in_impulse_1m = True
+
     def _is_stale_stock(self) -> tuple[bool, str]:
         """Check if the stock's move is over. Two independent checks:
         1. Rolling window: no new high in last N bars (handles halt spikes aging out)
@@ -1221,11 +1230,13 @@ class MicroPullbackDetector:
             return None
 
         # --- MP V2 gate: post-squeeze re-entry mode ---
-        # When V2 is enabled, standalone MP logic is bypassed entirely.
-        # V2 only runs when squeeze has confirmed the stock.
-        if self._mp_v2_enabled:
+        # When V2 is enabled AND standalone MP is OFF, block until squeeze confirms.
+        # When standalone MP is also ON, let normal MP detection run; V2 adds re-entry after SQ.
+        _standalone_mp = os.getenv("WB_MP_ENABLED", "0") == "1"
+        if self._mp_v2_enabled and not _standalone_mp:
             if not self._sq_confirmed:
                 return None  # Stay dormant — no squeeze confirmation yet
+        if self._mp_v2_enabled and self._sq_confirmed:
             if self._cooldown_bars_remaining > 0:
                 self._cooldown_bars_remaining -= 1
                 return f"MP_V2 COOLDOWN ({self._cooldown_bars_remaining} bars remaining)"

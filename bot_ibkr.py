@@ -344,6 +344,12 @@ def check_triggers(symbol: str, price: float):
             # Block standalone MP entries if MP_ENABLED is off (only allow mp_reentry from V2)
             if not MP_ENABLED and _mp_setup_type != "mp_reentry":
                 return
+            # SQ-priority gate: defer MP V2 if SQ is actively hunting
+            if _mp_setup_type == "mp_reentry" and SQ_ENABLED and symbol in state.sq_detectors:
+                sq = state.sq_detectors[symbol]
+                if sq._state != "IDLE" or sq._in_trade:
+                    print(f"[{now_str} ET] {symbol} MP_V2 | DEFERRED (SQ priority: state={sq._state})", flush=True)
+                    return
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
             enter_trade(symbol, armed_before, _mp_setup_type)
             return
@@ -546,7 +552,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
 
     # MP V2: track re-entry count when mp_reentry trade closes
     if pos["setup_type"] == "mp_reentry" and symbol in state.mp_detectors:
-        state.mp_detectors[symbol]._reentry_count += 1
+        state.mp_detectors[symbol].notify_reentry_closed()
 
     # Clear position if fully exited
     remaining = pos["qty"] - qty
