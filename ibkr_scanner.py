@@ -128,18 +128,17 @@ def scan_premarket_live(ib: IB, top_n: int = 20) -> list[dict]:
         contract = r.contractDetails.contract
         symbol = contract.symbol
 
-        # Get live market data for gap, volume, price
+        # Get live market data snapshot for gap, volume, price
         ib.qualifyContracts(contract)
-        ticker = ib.reqMktData(contract, '', False, False)
-        ib.sleep(1)
+        ticker = ib.reqMktData(contract, '', True, False)  # snapshot=True
+        ib.sleep(2)  # Snapshots need a bit more time
 
         price = ticker.last or ticker.close or 0
         prev_close = ticker.close or 0
         volume = ticker.volume or 0
 
         if price <= 0 or prev_close <= 0:
-            ib.cancelMktData(contract)
-            continue
+            continue  # No need to cancel — snapshot auto-completes
 
         gap_pct = (price - prev_close) / prev_close * 100
 
@@ -151,8 +150,6 @@ def scan_premarket_live(ib: IB, top_n: int = 20) -> list[dict]:
         float_shares = get_float(symbol, float_cache)
         float_m = round(float_shares / 1e6, 2) if float_shares else None
         profile = classify_profile(float_shares)
-
-        ib.cancelMktData(contract)
 
         # Apply filters
         if gap_pct < MIN_GAP_PCT or gap_pct > MAX_GAP_PCT:

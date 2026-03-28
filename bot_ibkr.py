@@ -145,6 +145,18 @@ state = BotState()
 # Initialization
 # ══════════════════════════════════════════════════════════════════════
 
+def get_account_equity() -> float:
+    """Get current account equity from IBKR (NetLiquidation)."""
+    try:
+        account_values = state.ib.accountValues()
+        for av in account_values:
+            if av.tag == 'NetLiquidation' and av.currency == 'USD':
+                return float(av.value)
+    except Exception as e:
+        print(f"  Failed to fetch account equity: {e}", flush=True)
+    return STARTING_EQUITY  # Fallback
+
+
 def connect():
     """Connect to IBKR with retry logic."""
     state.ib = IB()
@@ -185,8 +197,8 @@ def subscribe_symbol(symbol: str):
     state.ib.qualifyContracts(contract)
     state.contracts[symbol] = contract
 
-    # Subscribe to market data (~250ms updates)
-    ticker = state.ib.reqMktData(contract, '', False, False)
+    # Subscribe to market data with RTVolume (generic tick 233) for Time & Sales
+    ticker = state.ib.reqMktData(contract, '233', False, False)
     state.tickers[symbol] = ticker
 
     # Initialize detectors
@@ -216,7 +228,7 @@ def check_subscription_health():
             try:
                 state.ib.cancelMktData(contract)
                 state.ib.sleep(2)
-                ticker = state.ib.reqMktData(contract, '', False, False)
+                ticker = state.ib.reqMktData(contract, '233', False, False)
                 state.tickers[symbol] = ticker
             except Exception as e:
                 print(f"  Resubscription failed for {symbol}: {e}", flush=True)
@@ -491,7 +503,30 @@ def enter_trade(symbol: str, armed, setup_type: str):
         "entry_time": datetime.now(ET),
         "order_id": trade.order.orderId,
         "is_parabolic": "[PARABOLIC]" in (armed.score_detail or ""),
+        "fill_confirmed": False,
     }
+
+    # Store pending order for timeout check
+    state.pending_order = {
+        "trade": trade,
+        "placed_time": datetime.now(ET),
+        "timeout_seconds": 10,
+    }
+
+    # Register fill callback to update position with actual fill price
+    def on_entry_fill(trade_obj, fill):
+        if state.open_position and state.open_position.get("order_id") == trade_obj.order.orderId:
+            actual_price = fill.execution.price
+            actual_qty = int(fill.execution.shares)
+            state.open_position["entry"] = actual_price
+            state.open_position["qty"] = actual_qty
+            state.open_position["peak"] = max(state.open_position["peak"], actual_price)
+            state.open_position["stop"] = actual_price - r
+            state.open_position["fill_confirmed"] = True
+            state.pending_order = None
+            print(f"  FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}", flush=True)
+
+    trade.fillEvent += on_entry_fill
 
 
 def manage_exit(symbol: str, price: float):
@@ -585,8 +620,12 @@ def _mp_exit(symbol: str, price: float, pos: dict):
 def exit_trade(symbol: str, price: float, qty: int, reason: str):
     """Place exit order and record trade. Uses aggressive limit order (required for extended hours)."""
     contract = state.contracts[symbol]
-    # Limit slightly below current price to fill fast (marketable limit)
-    limit_price = round(price - 0.03, 2)
+    # For urgent exits (stop hit, dollar loss cap, max loss), use very aggressive limit
+    urgent_reasons = ('sq_stop_hit', 'sq_dollar_loss_cap', 'sq_max_loss_hit', 'stop_hit')
+    if reason in urgent_reasons:
+        limit_price = round(price * 0.97, 2)  # 3% below current price
+    else:
+        limit_price = round(price - 0.03, 2)
     order = LimitOrder('SELL', qty, limit_price)
     order.tif = 'GTC'
     order.outsideRth = True  # Allow fill in extended hours
@@ -675,20 +714,37 @@ def _process_ticker(ticker):
     if not contract:
         return
     symbol = contract.symbol
-    price = ticker.last
 
-    if price is None or price <= 0 or math.isnan(price):
+    # Determine if we have a valid trade price
+    trade_price = ticker.last
+    is_trade = (trade_price is not None and not math.isnan(trade_price) and trade_price > 0)
+
+    # Fallback price for health monitoring: use bid or ask if no trade price
+    health_price = None
+    for attr in ('last', 'bid', 'ask'):
+        p = getattr(ticker, attr, None)
+        if p is not None and not math.isnan(p) and p > 0:
+            health_price = p
+            break
+
+    if health_price is None:
         return
-
-    # Get trade size from ticker (lastSize = size of most recent trade print)
-    size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
 
     ts = datetime.now(ET)
 
-    # Track tick health
+    # Always update health monitoring (even with bid/ask fallback)
     state.tick_counts[symbol] = state.tick_counts.get(symbol, 0) + 1
     state.last_tick_time[symbol] = ts
-    state.last_tick_price[symbol] = price
+    state.last_tick_price[symbol] = health_price
+
+    # Only feed trade prices to bar builders, triggers, and exit management
+    if not is_trade:
+        return
+
+    price = trade_price
+
+    # Get trade size from ticker (lastSize = size of most recent trade print)
+    size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
 
     # Record tick for backtest cache (exact same data the bot sees)
     if symbol not in state.tick_buffer:
@@ -761,7 +817,7 @@ def on_ib_error(reqId, errorCode, errorString, contract):
                     try:
                         state.ib.cancelMktData(c)
                         state.ib.sleep(1)
-                        ticker = state.ib.reqMktData(c, '', False, False)
+                        ticker = state.ib.reqMktData(c, '233', False, False)
                         state.tickers[symbol] = ticker
                     except Exception as e:
                         print(f"  Re-sub failed for {symbol}: {e}", flush=True)
@@ -821,6 +877,13 @@ def main():
 
     # Wire error handler (competing sessions, market data errors)
     ib.errorEvent += on_ib_error
+
+    # Fetch actual account equity for position sizing (multi-day compounding)
+    actual_equity = get_account_equity()
+    print(f"Account equity: ${actual_equity:,.0f}", flush=True)
+    # Override STARTING_EQUITY with actual account equity
+    global STARTING_EQUITY
+    STARTING_EQUITY = actual_equity
 
     # Bar builders
     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
@@ -893,6 +956,44 @@ def main():
                     # Save tick cache from morning session
                     save_tick_cache()
                     print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
+
+            # Issue 5: Pending order timeout check (cancel unfilled entries after 10s)
+            if state.pending_order:
+                elapsed = (now - state.pending_order['placed_time']).total_seconds()
+                if elapsed > state.pending_order['timeout_seconds']:
+                    try:
+                        state.ib.cancelOrder(state.pending_order['trade'].order)
+                    except Exception as e:
+                        print(f"  ORDER CANCEL ERROR: {e}", flush=True)
+                    if state.open_position and not state.open_position.get('fill_confirmed'):
+                        state.open_position = None
+                    state.pending_order = None
+                    print("  ORDER TIMEOUT: Entry order cancelled after 10s — no fill", flush=True)
+
+            # Issue 9: Connection watchdog — reconnect on disconnect
+            if not state.ib.isConnected():
+                print("CONNECTION LOST — attempting reconnect...", flush=True)
+                for attempt in range(1, 6):
+                    try:
+                        state.ib.disconnect()
+                        time.sleep(10)
+                        state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+                        # Re-wire events
+                        state.ib.pendingTickersEvent += on_ticker_update
+                        state.ib.pendingTickersEvent += on_pending_tickers_backup
+                        state.ib.errorEvent += on_ib_error
+                        # Re-subscribe all active symbols with RTVolume
+                        for sym in list(state.active_symbols):
+                            c = state.contracts.get(sym)
+                            if c:
+                                ticker = state.ib.reqMktData(c, '233', False, False)
+                                state.tickers[sym] = ticker
+                        print(f"  Reconnected on attempt {attempt}", flush=True)
+                        break
+                    except Exception as e:
+                        print(f"  Reconnect attempt {attempt}/5 failed: {e}", flush=True)
+                        if attempt == 5:
+                            print("  FATAL: Could not reconnect after 5 attempts", flush=True)
 
             # Heartbeat every ~1 minute
             if now.second < 2:

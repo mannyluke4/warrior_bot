@@ -40,6 +40,12 @@ cd ~/warrior_bot_v2
 git pull origin v2-ibkr-migration 2>&1 || echo "WARN: git pull failed"
 CODE_SHA=$(git rev-parse --short HEAD)
 echo "Code version: $CODE_SHA ($(git log -1 --format='%s'))"
+echo "daily_run.sh hash: $(md5 -q ~/warrior_bot_v2/daily_run.sh)"
+echo "bot_ibkr.py hash: $(md5 -q ~/warrior_bot_v2/bot_ibkr.py)"
+
+# 1b. NTP time sync — accurate bar timestamps depend on local clock
+sudo sntp -sS time.apple.com 2>&1 || echo "NTP sync failed"
+echo "System time: $(date -u)"
 
 # 2. Activate venv
 source ~/warrior_bot_v2/venv/bin/activate
