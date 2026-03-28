@@ -176,9 +176,9 @@ def main():
                     print(f"[{date}] All {len(symbols)} symbols already cached, skipping")
                     continue
 
-                print(f"\n[{date}] Fetching {len(to_fetch)} symbols ({len(cached)} already cached)...")
+                print(f"\n[{date}] Fetching {len(to_fetch)} symbols ({len(cached)} cached)...")
                 for sym in to_fetch:
-                    print(f"  {sym}...", end=" ", flush=True)
+                    print(f"  [{date}] {sym}...", flush=True)
                     ticks = fetch_ticks(ib, sym, date, args.start, args.end)
                     if ticks:
                         save_ticks(ticks, sym, date)
