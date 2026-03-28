@@ -27,7 +27,11 @@ from datetime import datetime, timedelta, timezone, time as time_cls
 from collections import deque
 
 import pytz
+from dotenv import load_dotenv
 from ib_insync import IB, Stock, LimitOrder, MarketOrder, util
+
+# Load .env if present (same as simulate.py — ensures env vars are set)
+load_dotenv()
 
 from squeeze_detector import SqueezeDetector
 from micro_pullback import MicroPullbackDetector
@@ -863,13 +867,23 @@ def on_pending_tickers_backup(tickers):
 
 
 def main():
+    global STARTING_EQUITY  # Must be at top of function before any reference
+
     print("=" * 60)
     print("  WARRIOR BOT V2 — IBKR Edition")
     print(f"  Squeeze: {'ON' if SQ_ENABLED else 'OFF'}")
     print(f"  MP: {'ON' if MP_ENABLED else 'OFF'}")
     print(f"  MP V2 (Re-Entry): {'ON' if MP_V2_ENABLED else 'OFF'}")
     print(f"  Port: {IBKR_PORT}")
+    print(f"  Risk: {RISK_PCT*100:.1f}% per trade")
+    print(f"  Starting Equity: ${STARTING_EQUITY:,.0f}")
+    print(f"  Max Daily Loss: ${MAX_DAILY_LOSS:,.0f}")
+    print(f"  Windows: {TRADING_WINDOWS_STR}")
+    print(f"  SQ Target R: {SQ_TARGET_R}")
     print("=" * 60)
+    if not SQ_ENABLED:
+        print("⚠️  WARNING: WB_SQUEEZE_ENABLED is OFF — bot will not trade squeezes!")
+        print("  Set WB_SQUEEZE_ENABLED=1 in .env or environment to enable.")
 
     # Pre-flight: check for port conflicts
     print("\nPre-flight port check:")
@@ -884,8 +898,6 @@ def main():
     # Fetch actual account equity for position sizing (multi-day compounding)
     actual_equity = get_account_equity()
     print(f"Account equity: ${actual_equity:,.0f}", flush=True)
-    # Override STARTING_EQUITY with actual account equity
-    global STARTING_EQUITY
     STARTING_EQUITY = actual_equity
 
     # Bar builders
