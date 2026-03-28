@@ -458,8 +458,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
         return
 
     # Dynamic equity-based risk: 2.5% of current equity
-    current_equity = STARTING_EQUITY + state.daily_pnl  # Intraday equity
-    # TODO: fetch actual account equity from IBKR for multi-day compounding
+    current_equity = STARTING_EQUITY + state.daily_pnl  # STARTING_EQUITY is set from IBKR NetLiquidation at startup
     risk_dollars = max(50, current_equity * RISK_PCT)
 
     # Size calculation
@@ -533,6 +532,10 @@ def manage_exit(symbol: str, price: float):
     """Manage exit for open position."""
     pos = state.open_position
     if pos is None or pos["symbol"] != symbol:
+        return
+
+    # Don't manage exits until entry fill is confirmed
+    if not pos.get('fill_confirmed', False):
         return
 
     # Update peak

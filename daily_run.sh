@@ -44,7 +44,8 @@ echo "daily_run.sh hash: $(md5 -q ~/warrior_bot_v2/daily_run.sh)"
 echo "bot_ibkr.py hash: $(md5 -q ~/warrior_bot_v2/bot_ibkr.py)"
 
 # 1b. NTP time sync — accurate bar timestamps depend on local clock
-sudo sntp -sS time.apple.com 2>&1 || echo "NTP sync failed"
+# NTP sync (non-sudo — sudo hangs in cron without a password)
+sntp -S time.apple.com 2>&1 || echo "NTP sync skipped (non-root)"
 echo "System time: $(date -u)"
 
 # 2. Activate venv
