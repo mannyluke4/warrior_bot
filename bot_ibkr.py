@@ -331,18 +331,27 @@ def on_bar_close_1m(bar):
     vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else None
     pm_high = state.bar_builder_1m.get_premarket_high(symbol) if state.bar_builder_1m else None
 
-    # Diagnostic: log bar data every 5 minutes per symbol
+    # Diagnostic: log full chart state every 5 minutes per symbol
     hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else None
     minute = datetime.now(ET).minute
     if minute % 5 == 0:
         try:
-            sq_state = state.sq_detectors[symbol]._state if symbol in state.sq_detectors else "N/A"
-            armed_lvl = f"${state.sq_detectors[symbol].armed.trigger_high:.2f}" if (symbol in state.sq_detectors and state.sq_detectors[symbol].armed) else "none"
-            print(f"[{now_str} ET] {symbol} BAR | O={bar.open:.2f} H={bar.high:.2f} L={bar.low:.2f} C={bar.close:.2f} V={bar.volume:,} "
-                  f"VWAP={(vwap or 0):.2f} HOD={(hod or 0):.2f} PM_H={(pm_high or 0):.2f} "
+            sq = state.sq_detectors.get(symbol)
+            sq_state = sq._state if sq else "N/A"
+            armed_lvl = f"${sq.armed.trigger_high:.2f}" if (sq and sq.armed) else "none"
+            ema = f"{sq.ema:.2f}" if (sq and sq.ema) else "none"
+            macd_hist = f"{sq.macd_state.histogram:.3f}" if (sq and hasattr(sq, 'macd_state') and sq.macd_state.histogram is not None) else "N/A"
+            bar_count = len(sq.bars_1m) if (sq and hasattr(sq, 'bars_1m')) else 0
+            avg_vol = sq._avg_vol if (sq and hasattr(sq, '_avg_vol') and sq._avg_vol) else 0
+            vol_ratio = bar.volume / avg_vol if avg_vol > 0 else 0
+            vwap_dist = ((bar.close - vwap) / vwap * 100) if vwap and vwap > 0 else 0
+            print(f"[{now_str} ET] {symbol} CHART | "
+                  f"O={bar.open:.2f} H={bar.high:.2f} L={bar.low:.2f} C={bar.close:.2f} V={bar.volume:,} | "
+                  f"EMA9={ema} VWAP={vwap or 0:.2f} ({vwap_dist:+.1f}%) HOD={hod or 0:.2f} PM_H={pm_high or 0:.2f} | "
+                  f"MACD={macd_hist} vol_ratio={vol_ratio:.1f}x avg_vol={avg_vol:,.0f} bars={bar_count} | "
                   f"sq={sq_state} armed={armed_lvl}", flush=True)
         except Exception as e:
-            print(f"[{now_str} ET] {symbol} BAR diagnostic error: {e}", flush=True)
+            print(f"[{now_str} ET] {symbol} CHART diagnostic error: {e}", flush=True)
 
     # Squeeze detection
     if SQ_ENABLED and symbol in state.sq_detectors:
