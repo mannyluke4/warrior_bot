@@ -31,7 +31,7 @@ class ContinuationDetector:
 
         # Quality filters
         self._max_retrace_pct = float(os.getenv("WB_CT_MAX_RETRACE_PCT", "50"))
-        self._min_vol_decay = float(os.getenv("WB_CT_MIN_VOL_DECAY", "0.50"))
+        self._min_vol_decay = float(os.getenv("WB_CT_MIN_VOL_DECAY", "1.50"))  # Pullback avg vol < 1.5x squeeze avg vol
         self._require_vwap = os.getenv("WB_CT_REQUIRE_VWAP", "1") == "1"
         self._require_ema = os.getenv("WB_CT_REQUIRE_EMA", "1") == "1"
         self._require_macd = os.getenv("WB_CT_REQUIRE_MACD", "1") == "1"

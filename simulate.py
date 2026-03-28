@@ -2196,9 +2196,10 @@ def run_simulation(
                 if sq_msg and "ARMED" in sq_msg:
                     tick_sim_state["armed_count"] += 1
 
-            # --- Continuation detection (only if not in a trade and SQ is idle) ---
+            # --- Continuation detection (only if not in a trade AND SQ is fully idle) ---
             ct_msg = None
-            if ct_enabled and sim_mgr.open_trade is None:
+            _ct_sq_idle = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
+            if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle:
                 ct_msg = ct_det.on_bar_close_1m(bar, vwap=vwap)
                 if ct_msg and verbose:
                     print(f"  [{time_str}] {ct_msg}", flush=True)
@@ -2869,8 +2870,9 @@ def run_simulation(
                 if verbose and sq_msg:
                     print(f"  [{time_str}] {sq_msg}", flush=True)
 
-            # Feed continuation detector (bar mode)
-            if ct_enabled and sim_mgr.open_trade is None:
+            # Feed continuation detector (bar mode — only when SQ is fully idle)
+            _ct_sq_idle_bar = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
+            if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle_bar:
                 ct_msg_bar = ct_det.on_bar_close_1m(bar_obj, vwap=vwap)
                 if verbose and ct_msg_bar:
                     print(f"  [{time_str}] {ct_msg_bar}", flush=True)

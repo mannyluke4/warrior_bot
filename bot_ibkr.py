@@ -400,8 +400,10 @@ def on_bar_close_1m(bar):
         if mp_msg and ("ARMED" in mp_msg or "MP_V2" in mp_msg):
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
 
-    # Continuation detection (post-squeeze)
-    if CT_ENABLED and symbol in state.ct_detectors:
+    # Continuation detection (post-squeeze — only when SQ is fully idle)
+    _ct_sq_idle = not (SQ_ENABLED and symbol in state.sq_detectors and
+                       (state.sq_detectors[symbol]._state != "IDLE" or state.sq_detectors[symbol]._in_trade))
+    if CT_ENABLED and _ct_sq_idle and symbol in state.ct_detectors:
         ct = state.ct_detectors[symbol]
         ct_msg = ct.on_bar_close_1m(bar, vwap=vwap)
         if ct_msg:
