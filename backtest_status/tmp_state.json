@@ -1,0 +1,37 @@
+{
+  "label": "tmp",
+  "last_date": "2026-01-14",
+  "equity": 42601,
+  "trades": [
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 3175,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 4137,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 5289,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-01-14",
+      "trades": 3,
+      "pnl": 12601,
+      "equity": 42601,
+      "symbols": "ROLR"
+    }
+  ]
+}

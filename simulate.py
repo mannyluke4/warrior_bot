@@ -384,8 +384,8 @@ class SimTradeManager:
         if qty <= 0:
             return None
 
-        if setup_type in ("squeeze", "mp_reentry"):
-            # Squeeze / MP V2 re-entry: core + runner split for partial exits
+        if setup_type in ("squeeze", "mp_reentry", "continuation"):
+            # Squeeze / MP V2 re-entry / CT: core + runner split for partial exits
             # Fix 1: when partial exit enabled, use sq_partial_pct instead of sq_core_pct
             _sq_split_pct = self.sq_partial_pct if self.sq_partial_exit_enabled else self.sq_core_pct
             qty_core = max(1, int(math.floor(qty * _sq_split_pct / 100)))
@@ -436,7 +436,7 @@ class SimTradeManager:
             runner_stop=stop,
         )
         self.open_trade = t
-        if setup_type in ("squeeze", "mp_reentry"):
+        if setup_type in ("squeeze", "mp_reentry", "continuation"):
             self._sq_target_hit_min = None  # reset runner detection state
 
         # Track open notional for buying power
@@ -446,7 +446,7 @@ class SimTradeManager:
         # Track re-entry count and start cooldown when cap is reached
         # Squeeze trades use their own counter (detector._attempts), don't count against MP
         # MP V2 re-entry trades use mp_det._reentry_count, don't count against standard MP cooldown
-        if setup_type not in ("squeeze", "mp_reentry"):
+        if setup_type not in ("squeeze", "mp_reentry", "continuation"):
             entry_count = self._symbol_entry_count.get(symbol, 0) + 1
             self._symbol_entry_count[symbol] = entry_count
             if entry_count >= self.max_entries_per_symbol:
@@ -463,7 +463,7 @@ class SimTradeManager:
             t.peak = price
             t.peak_time = time_str
             # Reset stall counter for squeeze / mp_reentry / vwap_reclaim
-            if t.setup_type in ("squeeze", "mp_reentry"):
+            if t.setup_type in ("squeeze", "mp_reentry", "continuation"):
                 self._sq_bars_no_new_high = 0
             elif t.setup_type == "vwap_reclaim":
                 self._vr_bars_no_new_high = 0
@@ -491,6 +491,11 @@ class SimTradeManager:
 
         # --- Route MP V2 re-entry exits through squeeze exit system ---
         if t.setup_type == "mp_reentry":
+            self._squeeze_tick_exits(t, price, time_str)
+            return
+
+        # --- Route continuation exits through squeeze exit system ---
+        if t.setup_type == "continuation":
             self._squeeze_tick_exits(t, price, time_str)
             return
 
@@ -756,7 +761,7 @@ class SimTradeManager:
                                 c: float, v: float, vwap: Optional[float],
                                 time_str: str):
         """1m bar-level exits for squeeze trades and mp_reentry (stall + VWAP loss)."""
-        if t is None or t.closed or t.setup_type not in ("squeeze", "mp_reentry"):
+        if t is None or t.closed or t.setup_type not in ("squeeze", "mp_reentry", "continuation"):
             return
 
         self._sq_last_vwap = vwap
@@ -1760,6 +1765,11 @@ def run_simulation(
     vr_det.symbol = symbol
     vr_enabled = os.getenv("WB_VR_ENABLED", "0") == "1"
 
+    # Continuation detector (Strategy 1c — post-squeeze continuation)
+    from continuation_detector import ContinuationDetector
+    ct_det = ContinuationDetector()
+    ct_enabled = ct_det.enabled
+
     # Pass gap_pct for conviction floor gate
     if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
         det.gap_pct = _sim_stock_info.gap_pct
@@ -1816,17 +1826,32 @@ def run_simulation(
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
         # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry have own tracking)
-        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry"):
+        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
             # MP V2: unlock re-entry detection when squeeze trade closes
             det.notify_squeeze_closed(symbol, t.pnl())
+            # CT: unlock continuation detection when squeeze trade closes
+            if ct_enabled:
+                _sq_hod = bar_builder.get_hod(symbol) or 0
+                _sq_avg_vol = 0
+                if hasattr(sq_det, 'bars_1m') and sq_det.bars_1m:
+                    _sq_avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
+                                      for b in sq_det.bars_1m) / len(sq_det.bars_1m)
+                ct_det.notify_squeeze_closed(
+                    symbol, t.pnl(),
+                    entry=t.entry, exit_price=t.core_exit_price or t.entry,
+                    hod=_sq_hod, avg_squeeze_vol=_sq_avg_vol,
+                )
         if vr_enabled and t.setup_type == "vwap_reclaim":
             vr_det.notify_trade_closed(symbol, t.pnl())
         # MP V2: track re-entry count when mp_reentry trade closes
         if t.setup_type == "mp_reentry":
             det.notify_reentry_closed()
+        # CT: track re-entry count when continuation trade closes
+        if t.setup_type == "continuation" and ct_enabled:
+            ct_det.notify_continuation_closed(t.pnl())
     sim_mgr.on_trade_close = _on_sim_trade_close
 
     # Ross exit manager — only active when WB_ROSS_EXIT_ENABLED=1
@@ -1850,6 +1875,8 @@ def run_simulation(
             sq_det.seed_bar_close(o, h, l, c, v)
         if vr_enabled:
             vr_det.seed_bar_close(o, h, l, c, v)
+        if ct_enabled:
+            ct_det.seed_bar_close(o, h, l, c, v)
         bar_builder.seed_bar_close(symbol, o, h, l, c, v, ts)
 
     ema_after_seed = det.ema
@@ -2073,7 +2100,7 @@ def run_simulation(
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
             # Also skip for MP trades when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry"):
+                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation"):
                     return
                 if _ross_exit_enabled:
                     return  # Ross handles all trade types via 1m signals
@@ -2169,10 +2196,19 @@ def run_simulation(
                 if sq_msg and "ARMED" in sq_msg:
                     tick_sim_state["armed_count"] += 1
 
-            # --- Squeeze / MP V2 re-entry 1m bar exits ---
+            # --- Continuation detection (only if not in a trade and SQ is idle) ---
+            ct_msg = None
+            if ct_enabled and sim_mgr.open_trade is None:
+                ct_msg = ct_det.on_bar_close_1m(bar, vwap=vwap)
+                if ct_msg and verbose:
+                    print(f"  [{time_str}] {ct_msg}", flush=True)
+                if ct_msg and "CT_ARMED" in ct_msg:
+                    tick_sim_state["armed_count"] += 1
+
+            # --- Squeeze / MP V2 / CT re-entry 1m bar exits ---
             # Skip when Ross exit is ON — Ross 1m signals handle exits instead
             if not _ross_exit_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type in ("squeeze", "mp_reentry"):
+                if sim_mgr.open_trade.setup_type in ("squeeze", "mp_reentry", "continuation"):
                     sim_mgr.on_1m_bar_close_squeeze(
                         sim_mgr.open_trade,
                         bar.open, bar.high, bar.low, bar.close, bar.volume,
@@ -2185,10 +2221,28 @@ def run_simulation(
                                 sq_det.notify_trade_closed(symbol, closed_t.pnl())
                                 # MP V2: unlock re-entry detection
                                 det.notify_squeeze_closed(symbol, closed_t.pnl())
+                                # CT: unlock continuation detection
+                                if ct_enabled:
+                                    _sq_hod = bb_1m.get_hod(symbol) or 0
+                                    _sq_avg_vol = 0
+                                    if hasattr(sq_det, 'bars_1m') and sq_det.bars_1m:
+                                        _sq_avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
+                                                          for b in sq_det.bars_1m) / len(sq_det.bars_1m)
+                                    ct_det.notify_squeeze_closed(
+                                        symbol, closed_t.pnl(),
+                                        entry=closed_t.entry, exit_price=closed_t.core_exit_price or closed_t.entry,
+                                        hod=_sq_hod, avg_squeeze_vol=_sq_avg_vol,
+                                    )
                             elif closed_t.setup_type == "mp_reentry":
                                 det.notify_reentry_closed()
+                            elif closed_t.setup_type == "continuation" and ct_enabled:
+                                ct_det.notify_continuation_closed(closed_t.pnl())
                             if verbose:
-                                _exit_label = "SQ_EXIT" if closed_t.setup_type == "squeeze" else "MP_V2_EXIT"
+                                _exit_label = {
+                                    "squeeze": "SQ_EXIT",
+                                    "mp_reentry": "MP_V2_EXIT",
+                                    "continuation": "CT_EXIT",
+                                }.get(closed_t.setup_type, "EXIT")
                                 print(
                                     f"  [{time_str}] {_exit_label}: {closed_t.core_exit_reason} "
                                     f"P&L=${closed_t.pnl():+,.0f}",
@@ -2279,7 +2333,7 @@ def run_simulation(
             # Skip when Ross exit mode is ON (Ross 1m signals handle all trade types)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
-                and sim_mgr.open_trade.setup_type not in ("squeeze", "mp_reentry")
+                and sim_mgr.open_trade.setup_type not in ("squeeze", "mp_reentry", "continuation")
                 and not _ross_exit_enabled
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
@@ -2565,6 +2619,38 @@ def run_simulation(
                             if _ross_exit_mgr is not None:
                                 _ross_exit_mgr.reset()
 
+                # --- Continuation trigger (after SQ, before VR/MP) ---
+                _ct_armed_before = ct_det.armed if ct_enabled else None
+                if ct_enabled and _ct_armed_before is not None and sim_mgr.open_trade is None:
+                    # SQ priority gate: defer CT if SQ is actively hunting
+                    _ct_sq_deferred = False
+                    if sq_enabled and (sq_det._state != "IDLE" or sq_det._in_trade):
+                        _ct_sq_deferred = True
+                        if verbose:
+                            print(f"  [{time_str}] CT DEFERRED: SQ has priority (state={sq_det._state})", flush=True)
+                    if not _ct_sq_deferred:
+                        ct_trigger = ct_det.on_trade_price(price, is_premarket=is_premarket)
+                        if ct_trigger and "ENTRY SIGNAL" in ct_trigger:
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_ct_armed_before.trigger_high,
+                                stop=_ct_armed_before.stop_low,
+                                r=_ct_armed_before.r,
+                                score=_ct_armed_before.score,
+                                detail=_ct_armed_before.score_detail,
+                                time_str=time_str,
+                                setup_type="continuation",
+                                size_mult=_ct_armed_before.size_mult,
+                            )
+                            if trade:
+                                if verbose:
+                                    print(
+                                        f"  [{time_str}] CT_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                        f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                        f"setup_type=continuation",
+                                        flush=True,
+                                    )
+
                 # --- VWAP Reclaim trigger (priority between squeeze and MP) ---
                 _vr_armed_before = vr_det.armed if vr_enabled else None
                 if vr_enabled and _vr_armed_before is not None and sim_mgr.open_trade is None:
@@ -2783,6 +2869,12 @@ def run_simulation(
                 if verbose and sq_msg:
                     print(f"  [{time_str}] {sq_msg}", flush=True)
 
+            # Feed continuation detector (bar mode)
+            if ct_enabled and sim_mgr.open_trade is None:
+                ct_msg_bar = ct_det.on_bar_close_1m(bar_obj, vwap=vwap)
+                if verbose and ct_msg_bar:
+                    print(f"  [{time_str}] {ct_msg_bar}", flush=True)
+
             # Feed behavior metrics
             if _bm is not None:
                 _bm.on_1m_bar(o, h, l, c, v, time_str, vwap)
@@ -2884,6 +2976,34 @@ def run_simulation(
                                         f"setup_type=squeeze",
                                         flush=True,
                                     )
+
+                # --- Continuation trigger (bar mode, after SQ, before MP) ---
+                _ct_armed_before_bar = ct_det.armed if ct_enabled else None
+                if ct_enabled and _ct_armed_before_bar is not None and sim_mgr.open_trade is None:
+                    _ct_sq_deferred_bar = False
+                    if sq_enabled and (sq_det._state != "IDLE" or sq_det._in_trade):
+                        _ct_sq_deferred_bar = True
+                    if not _ct_sq_deferred_bar:
+                        ct_trigger_bar = ct_det.on_trade_price(tick, is_premarket=is_premarket)
+                        if ct_trigger_bar and "ENTRY SIGNAL" in ct_trigger_bar:
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_ct_armed_before_bar.trigger_high,
+                                stop=_ct_armed_before_bar.stop_low,
+                                r=_ct_armed_before_bar.r,
+                                score=_ct_armed_before_bar.score,
+                                detail=_ct_armed_before_bar.score_detail,
+                                time_str=time_str,
+                                setup_type="continuation",
+                                size_mult=_ct_armed_before_bar.size_mult,
+                            )
+                            if trade and verbose:
+                                print(
+                                    f"  [{time_str}] CT_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                    f"setup_type=continuation",
+                                    flush=True,
+                                )
 
                 # Standard micro pullback / MP V2 re-entry trigger
                 armed_before = det.armed

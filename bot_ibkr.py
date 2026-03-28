@@ -35,6 +35,7 @@ load_dotenv()
 
 from squeeze_detector import SqueezeDetector
 from micro_pullback import MicroPullbackDetector
+from continuation_detector import ContinuationDetector
 from ibkr_scanner import scan_premarket_live, rank_score
 from bars import TradeBarBuilder, Bar
 
@@ -44,6 +45,7 @@ ET = pytz.timezone("US/Eastern")
 SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
 MP_V2_ENABLED = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
+CT_ENABLED = os.getenv("WB_CT_ENABLED", "0") == "1"
 
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
@@ -110,6 +112,7 @@ class BotState:
         # Detectors
         self.sq_detectors: dict[str, SqueezeDetector] = {}
         self.mp_detectors: dict[str, MicroPullbackDetector] = {}
+        self.ct_detectors: dict[str, ContinuationDetector] = {}
 
         # Bar builders (1m for detection, 10s for exits)
         self.bar_builder_1m: TradeBarBuilder = None
@@ -180,7 +183,7 @@ def connect():
 
 
 def init_detectors(symbol: str):
-    """Create squeeze + MP detectors for a symbol."""
+    """Create squeeze + MP + CT detectors for a symbol."""
     if SQ_ENABLED and symbol not in state.sq_detectors:
         sq = SqueezeDetector()
         sq.symbol = symbol
@@ -190,6 +193,10 @@ def init_detectors(symbol: str):
         mp = MicroPullbackDetector()
         mp.symbol = symbol
         state.mp_detectors[symbol] = mp
+
+    if CT_ENABLED and symbol not in state.ct_detectors:
+        ct = ContinuationDetector()
+        state.ct_detectors[symbol] = ct
 
 
 def subscribe_symbol(symbol: str):
@@ -297,6 +304,8 @@ def seed_symbol(symbol: str):
                 state.sq_detectors[symbol].seed_bar_close(o, h, l, c, v)
             if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
                 state.mp_detectors[symbol].seed_bar_close(o, h, l, c, v)
+            if CT_ENABLED and symbol in state.ct_detectors:
+                state.ct_detectors[symbol].seed_bar_close(o, h, l, c, v)
 
         ema = state.sq_detectors[symbol].ema if SQ_ENABLED and symbol in state.sq_detectors else None
         print(f"🔥 Seeded {symbol}: {len(bars)} bars, EMA={ema:.4f}" if ema else
@@ -391,6 +400,16 @@ def on_bar_close_1m(bar):
         if mp_msg and ("ARMED" in mp_msg or "MP_V2" in mp_msg):
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
 
+    # Continuation detection (post-squeeze)
+    if CT_ENABLED and symbol in state.ct_detectors:
+        ct = state.ct_detectors[symbol]
+        ct_msg = ct.on_bar_close_1m(bar, vwap=vwap)
+        if ct_msg:
+            if "CT_ARMED" in ct_msg or "CT_REJECT" in ct_msg or "CT_RESET" in ct_msg:
+                print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
+            elif "CT_WATCHING" in ct_msg or "CT_PULLBACK" in ct_msg:
+                print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
+
 
 def on_bar_close_10s(bar):
     """10-second bar close: exit detection (for MP trades only)."""
@@ -423,6 +442,25 @@ def check_triggers(symbol: str, price: float):
             enter_trade(symbol, armed_before, "squeeze")
             sq.notify_trade_opened()
             return
+
+    # Continuation trigger (after SQ, before MP)
+    if CT_ENABLED and symbol in state.ct_detectors:
+        ct = state.ct_detectors[symbol]
+        ct_armed_before = ct.armed
+        if ct_armed_before is not None:
+            # SQ-priority gate: defer CT if SQ is actively hunting
+            ct_deferred = False
+            if SQ_ENABLED and symbol in state.sq_detectors:
+                sq = state.sq_detectors[symbol]
+                if sq._state != "IDLE" or sq._in_trade:
+                    print(f"[{now_str} ET] {symbol} CT | DEFERRED (SQ priority: state={sq._state})", flush=True)
+                    ct_deferred = True
+            if not ct_deferred:
+                ct_msg = ct.on_trade_price(price, is_premarket=is_premarket)
+                if ct_msg and "ENTRY SIGNAL" in ct_msg:
+                    print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
+                    enter_trade(symbol, ct_armed_before, "continuation")
+                    return
 
     # MP trigger (standalone or V2 re-entry)
     if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
@@ -559,7 +597,7 @@ def manage_exit(symbol: str, price: float):
             exit_trade(symbol, price, qty, "bail_timer")
             return
 
-    if setup_type in ("squeeze", "mp_reentry"):
+    if setup_type in ("squeeze", "mp_reentry", "continuation"):
         _squeeze_exit(symbol, price, pos)
     else:
         _mp_exit(symbol, price, pos)
@@ -673,6 +711,24 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     # MP V2: track re-entry count when mp_reentry trade closes
     if pos["setup_type"] == "mp_reentry" and symbol in state.mp_detectors:
         state.mp_detectors[symbol].notify_reentry_closed()
+
+    # CT: unlock continuation detection when squeeze trade closes
+    if pos["setup_type"] == "squeeze" and CT_ENABLED and symbol in state.ct_detectors:
+        hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else 0
+        avg_vol = 0
+        sq = state.sq_detectors.get(symbol)
+        if sq and hasattr(sq, 'bars_1m') and sq.bars_1m:
+            avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
+                          for b in sq.bars_1m) / len(sq.bars_1m)
+        state.ct_detectors[symbol].notify_squeeze_closed(
+            symbol, pnl,
+            entry=pos["entry"], exit_price=price,
+            hod=hod or 0, avg_squeeze_vol=avg_vol,
+        )
+
+    # CT: track re-entry count when continuation trade closes
+    if pos["setup_type"] == "continuation" and CT_ENABLED and symbol in state.ct_detectors:
+        state.ct_detectors[symbol].notify_continuation_closed(pnl)
 
     # Clear position if fully exited
     remaining = pos["qty"] - qty
@@ -934,6 +990,7 @@ def main():
                     # Reset detectors — morning PM highs and EMAs are stale for evening
                     state.sq_detectors.clear()
                     state.mp_detectors.clear()
+                    state.ct_detectors.clear()
                     # Reset bar builders so evening bars start fresh
                     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
                     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
