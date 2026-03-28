@@ -188,13 +188,48 @@ def scan_premarket_live(ib: IB, top_n: int = 20) -> list[dict]:
 
     # Rank and return
     candidates.sort(key=rank_score, reverse=True)
-    # Save to scanner_results
+
+    # Save to scanner_results — append mode with timestamped snapshots
     today_str = datetime.now(ET).strftime("%Y-%m-%d")
+    now_et = datetime.now(ET)
     os.makedirs(SCANNER_RESULTS_DIR, exist_ok=True)
     out_path = os.path.join(SCANNER_RESULTS_DIR, f"{today_str}.json")
+
+    # Load existing snapshots (or start fresh)
+    existing = []
+    if os.path.exists(out_path):
+        try:
+            with open(out_path, "r") as f:
+                data = json.load(f)
+            # Handle both old format (flat list) and new format (list of snapshots)
+            if data and isinstance(data, list) and isinstance(data[0], dict) and "timestamp" in data[0]:
+                existing = data
+            elif data and isinstance(data, list):
+                # Old format — wrap as a legacy snapshot
+                existing = [{"timestamp": "legacy", "scan_time_et": "unknown", "candidates": data}]
+        except Exception:
+            existing = []
+
+    # Track symbols that dropped since last scan
+    if existing:
+        prev_symbols = {c["symbol"] for c in existing[-1].get("candidates", [])}
+        curr_symbols = {c["symbol"] for c in candidates}
+        dropped = prev_symbols - curr_symbols
+        added = curr_symbols - prev_symbols
+        for sym in sorted(dropped):
+            print(f"  Scanner: {sym} DROPPED (was present in previous scan)", flush=True)
+        for sym in sorted(added):
+            print(f"  Scanner: {sym} NEW (not in previous scan)", flush=True)
+
+    snapshot = {
+        "timestamp": now_et.astimezone(pytz.utc).isoformat(),
+        "scan_time_et": now_et.strftime("%H:%M:%S"),
+        "candidates": candidates,
+    }
+    existing.append(snapshot)
     with open(out_path, "w") as f:
-        json.dump(candidates, f, indent=2)
-    print(f"  Saved: {out_path}")
+        json.dump(existing, f, indent=2)
+    print(f"  Saved: {out_path} ({len(existing)} snapshots)")
 
     return candidates
 

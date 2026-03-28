@@ -38,6 +38,8 @@ echo "=== V2 Daily run started: $(date) ==="
 # 1. Pull latest code
 cd ~/warrior_bot_v2
 git pull origin v2-ibkr-migration 2>&1 || echo "WARN: git pull failed"
+CODE_SHA=$(git rev-parse --short HEAD)
+echo "Code version: $CODE_SHA ($(git log -1 --format='%s'))"
 
 # 2. Activate venv
 source ~/warrior_bot_v2/venv/bin/activate
@@ -57,6 +59,7 @@ pkill -9 -f "java.*IBGateway" 2>/dev/null || true
 pkill -9 -f "java.*tws" 2>/dev/null || true
 pkill -9 -f "java.*Jts" 2>/dev/null || true
 pkill -9 -f "java.*ibc" 2>/dev/null || true
+pkill -9 -f "java.*IBC" 2>/dev/null || true
 sleep 5
 # Verify Java is truly dead (IBC uses pgrep to check)
 if pgrep -f "java.*config.ini" > /dev/null 2>&1; then

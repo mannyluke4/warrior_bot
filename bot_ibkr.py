@@ -126,6 +126,14 @@ class BotState:
         self.last_scan_time: datetime = None
         self.in_dead_zone: bool = False  # True while between trading windows
 
+        # Tick health monitoring
+        self.tick_counts: dict[str, int] = {}  # symbol -> ticks since last audit
+        self.last_tick_time: dict[str, datetime] = {}  # symbol -> last tick timestamp
+        self.last_tick_price: dict[str, float] = {}  # symbol -> last tick price
+        self.last_tick_audit: datetime = None
+        self.sub_retry_counts: dict[str, int] = {}  # symbol -> resubscription attempts
+        self.last_on_ticker_fire: datetime = None  # track when on_ticker_update last fired
+
         # Tick recording for backtest cache
         self.tick_buffer: dict[str, list] = {}  # symbol -> [{p, s, t}, ...]
 
@@ -188,7 +196,61 @@ def subscribe_symbol(symbol: str):
     seed_symbol(symbol)
 
     state.active_symbols.add(symbol)
+    state.tick_counts[symbol] = 0
+    state.sub_retry_counts[symbol] = 0
     print(f"✅ Subscribed: {symbol}", flush=True)
+
+
+def check_subscription_health():
+    """Check that all subscribed symbols are receiving ticks. Resubscribe if not."""
+    for symbol in list(state.active_symbols):
+        count = state.tick_counts.get(symbol, 0)
+        retries = state.sub_retry_counts.get(symbol, 0)
+        if count == 0 and retries < 3:
+            contract = state.contracts.get(symbol)
+            if not contract:
+                continue
+            state.sub_retry_counts[symbol] = retries + 1
+            print(f"⚠️ TICK DROUGHT: {symbol} — 0 ticks in last audit period. "
+                  f"Resubscribing (attempt {retries + 1}/3)...", flush=True)
+            try:
+                state.ib.cancelMktData(contract)
+                state.ib.sleep(2)
+                ticker = state.ib.reqMktData(contract, '', False, False)
+                state.tickers[symbol] = ticker
+            except Exception as e:
+                print(f"  Resubscription failed for {symbol}: {e}", flush=True)
+        elif count == 0 and retries >= 3:
+            print(f"🔴 CRITICAL: {symbol} — no ticks after 3 resubscription attempts", flush=True)
+        else:
+            # Getting ticks — reset retry counter
+            state.sub_retry_counts[symbol] = 0
+
+
+def audit_tick_health():
+    """Log per-symbol tick counts every 60 seconds and trigger resubscription if needed."""
+    now = datetime.now(ET)
+    if state.last_tick_audit and (now - state.last_tick_audit).total_seconds() < 60:
+        return
+    state.last_tick_audit = now
+
+    if not state.active_symbols:
+        return
+
+    for symbol in sorted(state.active_symbols):
+        count = state.tick_counts.get(symbol, 0)
+        last_price = state.last_tick_price.get(symbol, 0)
+        last_time = state.last_tick_time.get(symbol)
+        last_str = last_time.strftime("%H:%M:%S") if last_time else "never"
+        print(f"  TICK AUDIT: {symbol}: {count} ticks in last 60s, "
+              f"last_price=${last_price:.2f}, last_tick_time={last_str}", flush=True)
+
+    # Check subscription health and resubscribe if needed
+    check_subscription_health()
+
+    # Reset counters for next interval
+    for symbol in state.active_symbols:
+        state.tick_counts[symbol] = 0
 
 
 def seed_symbol(symbol: str):
@@ -273,11 +335,14 @@ def on_bar_close_1m(bar):
     hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else None
     minute = datetime.now(ET).minute
     if minute % 5 == 0:
-        sq_state = state.sq_detectors[symbol]._state if symbol in state.sq_detectors else "N/A"
-        armed_lvl = f"${state.sq_detectors[symbol].armed.trigger_high:.2f}" if (symbol in state.sq_detectors and state.sq_detectors[symbol].armed) else "none"
-        print(f"[{now_str} ET] {symbol} BAR | O={bar.open:.2f} H={bar.high:.2f} L={bar.low:.2f} C={bar.close:.2f} V={bar.volume:,} "
-              f"VWAP={vwap:.2f if vwap else 0:.2f} HOD={hod:.2f if hod else 0:.2f} PM_H={pm_high:.2f if pm_high else 0:.2f} "
-              f"sq={sq_state} armed={armed_lvl}", flush=True)
+        try:
+            sq_state = state.sq_detectors[symbol]._state if symbol in state.sq_detectors else "N/A"
+            armed_lvl = f"${state.sq_detectors[symbol].armed.trigger_high:.2f}" if (symbol in state.sq_detectors and state.sq_detectors[symbol].armed) else "none"
+            print(f"[{now_str} ET] {symbol} BAR | O={bar.open:.2f} H={bar.high:.2f} L={bar.low:.2f} C={bar.close:.2f} V={bar.volume:,} "
+                  f"VWAP={(vwap or 0):.2f} HOD={(hod or 0):.2f} PM_H={(pm_high or 0):.2f} "
+                  f"sq={sq_state} armed={armed_lvl}", flush=True)
+        except Exception as e:
+            print(f"[{now_str} ET] {symbol} BAR diagnostic error: {e}", flush=True)
 
     # Squeeze detection
     if SQ_ENABLED and symbol in state.sq_detectors:
@@ -590,6 +655,7 @@ def check_halts():
 
 def on_ticker_update(tickers):
     """Called on every market data update (~250ms). Receives a SET of updated tickers."""
+    state.last_on_ticker_fire = datetime.now(ET)
     for ticker in tickers:
         _process_ticker(ticker)
 
@@ -609,6 +675,11 @@ def _process_ticker(ticker):
     size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
 
     ts = datetime.now(ET)
+
+    # Track tick health
+    state.tick_counts[symbol] = state.tick_counts.get(symbol, 0) + 1
+    state.last_tick_time[symbol] = ts
+    state.last_tick_price[symbol] = price
 
     # Record tick for backtest cache (exact same data the bot sees)
     if symbol not in state.tick_buffer:
@@ -665,6 +736,64 @@ def save_tick_cache():
         print(f"📦 Tick cache saved: {saved} symbols → tick_cache/{today}/", flush=True)
 
 
+def on_ib_error(reqId, errorCode, errorString, contract):
+    """Handle IBKR error events — especially market data and competing session errors."""
+    # Market data errors that may require resubscription
+    MKTDATA_ERRORS = {10197, 354, 2104, 2106, 2158}
+
+    if errorCode in MKTDATA_ERRORS:
+        sym = contract.symbol if contract else "?"
+        print(f"⚠️ IBKR ERROR {errorCode}: {errorString} (symbol={sym})", flush=True)
+        if errorCode == 10197:
+            print(f"  >> Competing session detected! Re-subscribing all active symbols...", flush=True)
+            for symbol in list(state.active_symbols):
+                c = state.contracts.get(symbol)
+                if c:
+                    try:
+                        state.ib.cancelMktData(c)
+                        state.ib.sleep(1)
+                        ticker = state.ib.reqMktData(c, '', False, False)
+                        state.tickers[symbol] = ticker
+                    except Exception as e:
+                        print(f"  Re-sub failed for {symbol}: {e}", flush=True)
+            print(f"  >> Re-subscription complete for {len(state.active_symbols)} symbols", flush=True)
+    elif errorCode not in {2104, 2106, 2158, 2119}:
+        # Log non-informational errors
+        sym = contract.symbol if contract else "?"
+        print(f"IBKR ERROR {errorCode}: {errorString} (reqId={reqId}, symbol={sym})", flush=True)
+
+
+def preflight_port_check():
+    """Verify no port conflicts before connecting."""
+    import subprocess
+    ports = {4002: False, 7497: False}
+    for port in ports:
+        result = subprocess.run(["lsof", "-i", f":{port}"], capture_output=True, text=True)
+        if result.stdout.strip():
+            ports[port] = True
+            print(f"  Port {port}: IN USE", flush=True)
+        else:
+            print(f"  Port {port}: free", flush=True)
+
+    if ports[4002] and ports[7497]:
+        print("🔴 CRITICAL: Both ports 4002 AND 7497 are occupied!", flush=True)
+        print("  This can cause IBKR data routing confusion. Kill one.", flush=True)
+        sys.exit(1)
+
+    if not ports[4002]:
+        print(f"  WARNING: Port 4002 not yet open (Gateway may still be starting)", flush=True)
+
+
+def on_pending_tickers_backup(tickers):
+    """Backup listener: alert if pendingTickersEvent fires but on_ticker_update is stale."""
+    if not state.last_on_ticker_fire:
+        return
+    stale_seconds = (datetime.now(ET) - state.last_on_ticker_fire).total_seconds()
+    if stale_seconds > 30:
+        print(f"⚠️ STALE TICKERS: pendingTickersEvent fired but on_ticker_update "
+              f"hasn't fired in {stale_seconds:.0f}s — possible callback issue!", flush=True)
+
+
 def main():
     print("=" * 60)
     print("  WARRIOR BOT V2 — IBKR Edition")
@@ -674,15 +803,23 @@ def main():
     print(f"  Port: {IBKR_PORT}")
     print("=" * 60)
 
+    # Pre-flight: check for port conflicts
+    print("\nPre-flight port check:")
+    preflight_port_check()
+
     # Connect
     ib = connect()
+
+    # Wire error handler (competing sessions, market data errors)
+    ib.errorEvent += on_ib_error
 
     # Bar builders
     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
 
-    # Wire ticker updates
+    # Wire ticker updates + backup stale-ticker monitor
     ib.pendingTickersEvent += on_ticker_update
+    ib.pendingTickersEvent += on_pending_tickers_backup
 
     # Initial scan
     run_scanner()
@@ -720,6 +857,9 @@ def main():
 
                 # Check halts
                 check_halts()
+
+                # Tick health audit (every 60s)
+                audit_tick_health()
             else:
                 # In dead zone between windows
                 if not state.in_dead_zone:
