@@ -885,13 +885,29 @@ def main():
                     save_tick_cache()
                     print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
 
-            # Heartbeat every 30 seconds
+            # Heartbeat every ~1 minute
             if now.second < 2:
-                pos_str = f"open={state.open_position['symbol']}" if state.open_position else "flat"
+                pos_str = f"OPEN={state.open_position['symbol']} @ ${state.open_position['entry']:.2f}" if state.open_position else "flat"
                 zone = "ACTIVE" if active else "SLEEP"
+
+                # Tick flow summary
+                total_ticks = sum(state.tick_counts.values())
+                tick_syms = []
+                for sym in sorted(state.active_symbols):
+                    tc = state.tick_counts.get(sym, 0)
+                    sq = state.sq_detectors.get(sym)
+                    sq_st = sq._state if sq else "?"
+                    armed_str = f"${sq.armed.trigger_high:.2f}" if (sq and sq.armed) else ""
+                    tick_syms.append(f"{sym}:{tc}t/{sq_st}" + (f"/arm{armed_str}" if armed_str else ""))
+
+                # Connection health
+                connected = state.ib.isConnected() if state.ib else False
+
                 print(f"[{now.strftime('%H:%M:%S')} ET] {zone} | "
-                      f"watch={len(state.active_symbols)} {pos_str} "
-                      f"daily=${state.daily_pnl:+,.0f} trades={state.daily_trades}",
+                      f"{pos_str} | daily=${state.daily_pnl:+,.0f} ({state.daily_trades}t) | "
+                      f"conn={'OK' if connected else 'DOWN'} | "
+                      f"ticks={total_ticks} | "
+                      f"{' '.join(tick_syms) if tick_syms else 'no symbols'}",
                       flush=True)
 
             # Let ib_insync process events (sleep longer during dead zone)
