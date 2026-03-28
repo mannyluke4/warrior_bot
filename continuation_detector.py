@@ -49,6 +49,9 @@ class ContinuationDetector:
         self._cooldown_remaining: int = 0
         self._reentry_count: int = 0
 
+        # Deferred activation (queued until SQ is confirmed idle)
+        self._pending_activation: Optional[dict] = None
+
         # Squeeze trade context
         self._squeeze_entry: Optional[float] = None
         self._squeeze_exit: Optional[float] = None
@@ -84,7 +87,15 @@ class ContinuationDetector:
     def notify_squeeze_closed(self, symbol: str, pnl: float,
                               entry: float = 0, exit_price: float = 0,
                               hod: float = 0, avg_squeeze_vol: float = 0):
-        """Called when a squeeze trade closes. Activates CT if profitable."""
+        """Called when a squeeze trade closes. Stages CT activation.
+        
+        On cascading stocks (VERO, ROLR), SQ fires multiple trades in rapid
+        succession. Each close re-calls this method. We DON'T activate CT
+        immediately — we stage the data and reset the cooldown. CT only
+        actually starts processing bars after the cooldown expires AND
+        the SQ-IDLE gate passes in the bar-close caller. This ensures
+        CT never interferes with SQ cascades.
+        """
         if not self.enabled:
             return
         if pnl <= 0:
@@ -92,16 +103,18 @@ class ContinuationDetector:
         if self._reentry_count >= self._max_reentries:
             return  # Already used all re-entries this session
 
-        self._state = "SQ_CONFIRMED"
-        self._squeeze_entry = entry
-        self._squeeze_exit = exit_price
-        self._squeeze_high = hod
-        self._squeeze_vol = avg_squeeze_vol
-        self._cooldown_remaining = self._cooldown_bars
-        self._pullback_bars = []
-        self._pullback_low = None
-        self._pullback_high = None
-        self.armed = None
+        # DON'T activate immediately — queue it. On cascading stocks (VERO,
+        # ROLR), SQ fires multiple trades in quick succession. Each close
+        # re-queues here. The actual activation only happens when the caller
+        # (simulate.py / bot_ibkr.py) calls check_pending_activation() during
+        # a confirmed SQ IDLE period. This ensures zero CT processing during
+        # SQ cascades — no butterfly effects.
+        self._pending_activation = {
+            "entry": entry,
+            "exit_price": exit_price,
+            "hod": hod,
+            "avg_squeeze_vol": avg_squeeze_vol,
+        }
 
     def notify_continuation_closed(self, pnl: float):
         """Called when a continuation trade closes."""
@@ -122,6 +135,27 @@ class ContinuationDetector:
     # ──────────────────────────────────────────────────────────────
     # 1-minute bar processing
     # ──────────────────────────────────────────────────────────────
+
+    def check_pending_activation(self) -> Optional[str]:
+        """Called ONLY when SQ is confirmed IDLE. Activates CT from queued data.
+        Returns status message or None."""
+        if not self._pending_activation:
+            return None
+        
+        data = self._pending_activation
+        self._pending_activation = None
+        
+        self._state = "SQ_CONFIRMED"
+        self._squeeze_entry = data["entry"]
+        self._squeeze_exit = data["exit_price"]
+        self._squeeze_high = data["hod"]
+        self._squeeze_vol = data["avg_squeeze_vol"]
+        self._cooldown_remaining = self._cooldown_bars
+        self._pullback_bars = []
+        self._pullback_low = None
+        self._pullback_high = None
+        self.armed = None
+        return "CT_ACTIVATED — SQ confirmed idle, starting cooldown"
 
     def on_bar_close_1m(self, bar, vwap: Optional[float] = None) -> Optional[str]:
         """Process each 1-minute bar close. Returns status message or None."""
@@ -287,6 +321,7 @@ class ContinuationDetector:
         self._state = "IDLE"
         self._cooldown_remaining = 0
         self._reentry_count = 0
+        self._pending_activation = None
         self._squeeze_entry = None
         self._squeeze_exit = None
         self._squeeze_high = None

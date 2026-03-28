@@ -2200,6 +2200,10 @@ def run_simulation(
             ct_msg = None
             _ct_sq_idle = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
             if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle:
+                # Check for pending activation (deferred from squeeze close)
+                _ct_act = ct_det.check_pending_activation()
+                if _ct_act and verbose:
+                    print(f"  [{time_str}] {_ct_act}", flush=True)
                 ct_msg = ct_det.on_bar_close_1m(bar, vwap=vwap)
                 if ct_msg and verbose:
                     print(f"  [{time_str}] {ct_msg}", flush=True)
@@ -2873,6 +2877,9 @@ def run_simulation(
             # Feed continuation detector (bar mode — only when SQ is fully idle)
             _ct_sq_idle_bar = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
             if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle_bar:
+                _ct_act_bar = ct_det.check_pending_activation()
+                if _ct_act_bar and verbose:
+                    print(f"  [{time_str}] {_ct_act_bar}", flush=True)
                 ct_msg_bar = ct_det.on_bar_close_1m(bar_obj, vwap=vwap)
                 if verbose and ct_msg_bar:
                     print(f"  [{time_str}] {ct_msg_bar}", flush=True)

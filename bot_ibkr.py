@@ -405,6 +405,10 @@ def on_bar_close_1m(bar):
                        (state.sq_detectors[symbol]._state != "IDLE" or state.sq_detectors[symbol]._in_trade))
     if CT_ENABLED and _ct_sq_idle and symbol in state.ct_detectors:
         ct = state.ct_detectors[symbol]
+        # Check for pending activation (deferred from squeeze close)
+        _ct_act = ct.check_pending_activation()
+        if _ct_act:
+            print(f"[{now_str} ET] {symbol} CT | {_ct_act}", flush=True)
         ct_msg = ct.on_bar_close_1m(bar, vwap=vwap)
         if ct_msg:
             if "CT_ARMED" in ct_msg or "CT_REJECT" in ct_msg or "CT_RESET" in ct_msg:
