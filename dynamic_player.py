@@ -335,13 +335,24 @@ class DipScorecard:
             details.append(f"vol_ratio={vol_ratio:.2f}:RED")
 
         # 6. Prior up-wave made new HOD?
+        # For first 3 waves after SQ exit, use SQ exit price as reference
+        # (cold-start: actual HOD was set during squeeze, not yet reclaimed)
+        _hod_ref = hod
+        _hod_label = "hod"
+        if hasattr(self, '_waves_since_exit') and self._waves_since_exit <= 3 and self.sq_exit_price > 0:
+            _hod_ref = self.sq_exit_price
+            _hod_label = "sq_exit"
+
         if prior_up_wave:
             if prior_up_wave.made_new_hod:
                 green += 1
                 details.append("prior_hod=yes:GREEN")
-            elif hod > 0 and prior_up_wave.end_price > hod * 0.97:
+            elif _hod_ref > 0 and prior_up_wave.end_price > _hod_ref * 0.97:
+                green += 1  # Close to SQ exit price counts as GREEN for early waves
+                details.append(f"prior_hod=near_{_hod_label}:GREEN")
+            elif _hod_ref > 0 and prior_up_wave.end_price > _hod_ref * 0.90:
                 yellow += 1
-                details.append("prior_hod=near:YELLOW")
+                details.append(f"prior_hod=approaching_{_hod_label}:YELLOW")
             else:
                 red += 1
                 details.append("prior_hod=no:RED")
@@ -445,6 +456,7 @@ class DynamicPlayer:
 
         self.sq_exit_price = exit_price
         self.sq_exit_time = exit_time
+        self._waves_since_exit = 0  # Track waves for cold-start HOD reference
         self.state = "WATCHING"
         self.wave_tracker.start_tracking(exit_price, exit_time)
         self.wave_tracker.hod = hod
@@ -469,7 +481,7 @@ class DynamicPlayer:
         # ── Halt detection: 10%+ gap between bars ──
         if last_bar_close > 0 and bar_close > 0:
             gap_pct = abs(bar_close - last_bar_close) / last_bar_close
-            if gap_pct >= 0.10:
+            if gap_pct >= 0.25:  # 25% — real circuit breaker, not normal volatility
                 return self._handle_halt(bar_time, vwap)
 
         # ── If in halt pause, check for recovery ──
@@ -542,6 +554,10 @@ class DynamicPlayer:
         """Handle a completed down-wave (dip). Score it and maybe BUY."""
         prior_up = self.wave_tracker.get_prior_up_wave()
 
+        # Track waves since SQ exit for cold-start HOD reference
+        if hasattr(self, '_waves_since_exit'):
+            self._waves_since_exit += 1
+
         # Score the dip
         green, yellow, red, details = self.scorecard.score(
             dip_wave, prior_up, vwap, ema, hod
@@ -559,22 +575,22 @@ class DynamicPlayer:
 
             if dip_wave.duration > 5:
                 self._consecutive_dip_fails += 1
-                if self._consecutive_dip_fails >= 3:
-                    self._go_done("3_consecutive_dip_fails")
+                if self._consecutive_dip_fails >= 5:
+                    self._go_done("5_consecutive_dip_fails")
                     return None
                 self.log.append(f"[{bar_time}] DP_SKIP: dip too slow ({dip_wave.duration}m), waiting for next")
                 return None
             if bar_close < vwap:
                 self._consecutive_dip_fails += 1
-                if self._consecutive_dip_fails >= 3:
-                    self._go_done("3_consecutive_below_vwap")
+                if self._consecutive_dip_fails >= 5:
+                    self._go_done("5_consecutive_below_vwap")
                     return None
                 self.log.append(f"[{bar_time}] DP_SKIP: below VWAP, waiting for next")
                 return None
             if red > self.max_red_signals:
                 self._consecutive_dip_fails += 1
-                if self._consecutive_dip_fails >= 3:
-                    self._go_done(f"3_consecutive_red_signals")
+                if self._consecutive_dip_fails >= 5:
+                    self._go_done(f"5_consecutive_red_signals")
                     return None
                 self.log.append(f"[{bar_time}] DP_SKIP: {red}R signals, waiting for next dip")
                 return None
@@ -587,8 +603,8 @@ class DynamicPlayer:
                 return self._generate_buy(dip_wave, bar_close, bar_time, green, vwap, ema)
             else:
                 self._consecutive_dip_fails += 1
-                if self._consecutive_dip_fails >= 3:
-                    self._go_done(f"3_consecutive_insufficient_greens")
+                if self._consecutive_dip_fails >= 5:
+                    self._go_done(f"5_consecutive_insufficient_greens")
                     return None
                 self.log.append(f"[{bar_time}] DP_SKIP: {green}G not enough, waiting for next")
                 return None
