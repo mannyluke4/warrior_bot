@@ -301,11 +301,12 @@ class ContinuationDetector:
                 self._state = "WATCHING"  # Keep pullback bars
                 return f"CT_PAUSE: below EMA (${bar.close:.2f} < ${self.ema:.2f}), re-checking"
 
-            # HARD GATES — these truly disqualify the setup
-
-            # Gate 4: MACD negative (HARD — dump signal)
+            # SOFT GATE: MACD negative (pause — normal post-squeeze digestion)
             if self._require_macd and not self.macd_state.bullish():
-                return self._reset("CT_REJECT: MACD negative — likely dump, not dip")
+                self._state = "WATCHING"  # Keep pullback context
+                return "CT_PAUSE: MACD negative, re-checking next bar"
+
+            # HARD GATES — these truly disqualify the setup
 
             # All gates passed — ARM the trade
             if self._pullback_high is None or self._pullback_low is None:
