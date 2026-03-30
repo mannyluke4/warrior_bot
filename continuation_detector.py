@@ -24,7 +24,7 @@ class ContinuationDetector:
         self.enabled = os.getenv("WB_CT_ENABLED", "0") == "1"
 
         # Timing
-        self._cooldown_bars = int(os.getenv("WB_CT_COOLDOWN_BARS", "3"))
+        self._cooldown_bars = int(os.getenv("WB_CT_COOLDOWN_BARS", "2"))
         self._max_reentries = int(os.getenv("WB_CT_MAX_REENTRIES", "2"))
         self._min_pullback_bars = int(os.getenv("WB_CT_MIN_PULLBACK_BARS", "1"))
         self._max_pullback_bars = int(os.getenv("WB_CT_MAX_PULLBACK_BARS", "5"))
@@ -42,10 +42,10 @@ class ContinuationDetector:
         self._full_size = float(os.getenv("WB_CT_FULL_SIZE", "1.0"))
 
         # Cascade lockout (Item 1)
-        self._cascade_lockout_min = float(os.getenv("WB_CT_CASCADE_LOCKOUT_MIN", "60"))
+        self._cascade_lockout_min = float(os.getenv("WB_CT_CASCADE_LOCKOUT_MIN", "10"))
         self._lockout_until_minutes: Optional[int] = None  # minutes since midnight
         self._sq_trade_count: int = 0  # Number of SQ trades on this symbol this session
-        self._max_sq_for_ct = int(os.getenv("WB_CT_MAX_SQ_TRADES", "1"))  # CT only fires after single-SQ stocks
+        self._max_sq_for_ct = int(os.getenv("WB_CT_MAX_SQ_TRADES", "2"))  # CT only fires after single-SQ stocks
 
         # Wider CT target (Item 4 — gated OFF by default)
         self._ct_wider_target = os.getenv("WB_CT_WIDER_TARGET", "0") == "1"
