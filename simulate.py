@@ -389,7 +389,12 @@ class SimTradeManager:
         if qty <= 0:
             return None
 
-        if setup_type in ("squeeze", "mp_reentry", "continuation"):
+        if setup_type == "dp_dip_entry":
+            # Dynamic Player: full position, no split (exits managed by DP on 1m bars)
+            qty_core = qty
+            qty_t2 = 0
+            qty_runner = 0
+        elif setup_type in ("squeeze", "mp_reentry", "continuation"):
             # Squeeze / MP V2 re-entry / CT: core + runner split for partial exits
             # Fix 1: when partial exit enabled, use sq_partial_pct instead of sq_core_pct
             _sq_split_pct = self.sq_partial_pct if self.sq_partial_exit_enabled else self.sq_core_pct
@@ -452,7 +457,7 @@ class SimTradeManager:
         # Track re-entry count and start cooldown when cap is reached
         # Squeeze trades use their own counter (detector._attempts), don't count against MP
         # MP V2 re-entry trades use mp_det._reentry_count, don't count against standard MP cooldown
-        if setup_type not in ("squeeze", "mp_reentry", "continuation"):
+        if setup_type not in ("squeeze", "mp_reentry", "continuation", "dp_dip_entry"):
             entry_count = self._symbol_entry_count.get(symbol, 0) + 1
             self._symbol_entry_count[symbol] = entry_count
             if entry_count >= self.max_entries_per_symbol:
@@ -475,7 +480,8 @@ class SimTradeManager:
                 self._vr_bars_no_new_high = 0
 
         # --- Bail timer: exit if unprofitable after N minutes ---
-        if self.bail_timer_enabled and t.entry_time:
+        # Skip for DP trades (DP has its own time stop managed on 1m bars)
+        if self.bail_timer_enabled and t.entry_time and t.setup_type != "dp_dip_entry":
             entry_min = int(t.entry_time.split(":")[0]) * 60 + int(t.entry_time.split(":")[1])
             now_min = int(time_str.split(":")[0]) * 60 + int(time_str.split(":")[1])
             if (now_min - entry_min) >= self.bail_timer_minutes:
@@ -503,6 +509,20 @@ class SimTradeManager:
         # --- Route continuation exits through squeeze exit system ---
         if t.setup_type == "continuation":
             self._squeeze_tick_exits(t, price, time_str)
+            return
+
+        # --- Route Dynamic Player exits (hard stop only — all other exits on 1m bars) ---
+        if t.setup_type == "dp_dip_entry":
+            # Only check hard stop on ticks — wave/time/VWAP exits handled in DP on_bar
+            if price <= t.stop:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = "dp_hard_stop"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = "dp_hard_stop"
+                self._close(t)
             return
 
         # --- Route VWAP Reclaim exits ---
@@ -1836,6 +1856,15 @@ def run_simulation(
     ct_det = ContinuationDetector()
     ct_enabled = ct_det.enabled
 
+    # Dynamic Player (Strategy 5 — post-squeeze dip-buying)
+    dp_enabled = os.getenv("WB_DYNAMIC_PLAYER_ENABLED", "0") == "1"
+    dp = None
+    if dp_enabled:
+        from dynamic_player import DynamicPlayer
+        dp = DynamicPlayer()
+        if verbose:
+            print("  DYNAMIC_PLAYER: ENABLED", flush=True)
+
     # Pass gap_pct for conviction floor gate
     if _sim_stock_info is not None and hasattr(_sim_stock_info, 'gap_pct'):
         det.gap_pct = _sim_stock_info.gap_pct
@@ -1891,8 +1920,8 @@ def run_simulation(
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
-        # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry have own tracking)
-        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation"):
+        # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry/dp have own tracking)
+        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
@@ -1919,6 +1948,23 @@ def run_simulation(
         # CT: track re-entry count when continuation trade closes
         if t.setup_type == "continuation" and ct_enabled:
             ct_det.notify_continuation_closed(t.pnl())
+        # Dynamic Player: notify when SQ trade closes → activate DP
+        if dp_enabled and dp is not None and t.setup_type == "squeeze":
+            _dp_exit_price = t.core_exit_price or t.entry
+            _dp_exit_time = t.core_exit_time or t.entry_time
+            _dp_vwap = bar_builder.get_vwap(symbol) or 0
+            _dp_ema = det.ema or 0
+            _dp_hod = bar_builder.get_hod(symbol) or 0
+            dp.on_sq_exit(_dp_exit_price, _dp_exit_time, _dp_vwap, _dp_ema, _dp_hod)
+            if verbose:
+                for _log_line in dp.log[-3:]:
+                    print(f"  {_log_line}", flush=True)
+        # Dynamic Player: track DP trade close
+        if dp_enabled and dp is not None and t.setup_type == "dp_dip_entry":
+            dp.on_trade_closed(t.pnl(), t.core_exit_reason)
+            if verbose:
+                for _log_line in dp.log[-3:]:
+                    print(f"  {_log_line}", flush=True)
     sim_mgr.on_trade_close = _on_sim_trade_close
 
     # Ross exit manager — only active when WB_ROSS_EXIT_ENABLED=1
@@ -2167,7 +2213,7 @@ def run_simulation(
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
             # Also skip for MP trades when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
-                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation"):
+                if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry"):
                     return
                 if _ross_exit_enabled:
                     return  # Ross handles all trade types via 1m signals
@@ -2351,6 +2397,98 @@ def run_simulation(
                                     flush=True,
                                 )
 
+            # --- Dynamic Player: SQ priority gate + bar feed + signal handling ---
+            if dp_enabled and dp is not None and dp.state not in ("IDLE", "DONE"):
+                # SQ priority: only yield to SQ when it has an active armed entry ready to trigger
+                # When SQ is armed, pause DP (go to IDLE, not DONE) so it can re-activate after the next SQ exit
+                if sq_enabled and sq_det.armed is not None:
+                    if dp.in_position and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                        if sim_mgr.open_trade.setup_type == "dp_dip_entry":
+                            sim_mgr.open_trade.core_exit_price = bar.close
+                            sim_mgr.open_trade.core_exit_time = time_str
+                            sim_mgr.open_trade.core_exit_reason = "dp_sq_priority"
+                            if sim_mgr.open_trade.qty_runner > 0:
+                                sim_mgr.open_trade.runner_exit_price = bar.close
+                                sim_mgr.open_trade.runner_exit_time = time_str
+                                sim_mgr.open_trade.runner_exit_reason = "dp_sq_priority"
+                            sim_mgr._close(sim_mgr.open_trade)
+                            if verbose:
+                                print(f"  [{time_str}] DP_SQ_PRIORITY: forced close @ ${bar.close:.2f}", flush=True)
+                    # Reset to IDLE (not DONE) so DP can re-activate after next SQ exit
+                    dp.state = "IDLE"
+                    dp.in_position = False
+                    dp._wave_tracker = None
+                    if verbose:
+                        print(f"  [{time_str}] DP: → IDLE (SQ armed, pausing)", flush=True)
+                # Feed 1m bar to DP (only when no open trade OR DP has its own position)
+                elif sim_mgr.open_trade is None or (
+                    sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed
+                    and sim_mgr.open_trade.setup_type == "dp_dip_entry"
+                ):
+                    _dp_last_close = getattr(dp.wave_tracker, '_last_bar_close', 0.0)
+                    _dp_ema = det.ema or 0
+                    _dp_hod = bb_1m.get_hod(symbol) or 0
+                    dp_signal = dp.on_bar(
+                        bar_close=bar.close, bar_high=bar.high, bar_low=bar.low,
+                        bar_volume=int(bar.volume), bar_time=time_str,
+                        vwap=vwap, ema=_dp_ema,
+                        hod=_dp_hod or 0,
+                        last_bar_close=_dp_last_close,
+                    )
+                    if verbose and dp.log:
+                        for _log_line in dp.log[-3:]:
+                            if _log_line not in getattr(dp, '_printed_logs', set()):
+                                print(f"  {_log_line}", flush=True)
+                                if not hasattr(dp, '_printed_logs'):
+                                    dp._printed_logs = set()
+                                dp._printed_logs.add(_log_line)
+
+                    if dp_signal == "BUY" and sim_mgr.open_trade is None:
+                        # Execute DP entry through SimTradeManager
+                        _dp_entry_price = dp.entry_price
+                        _dp_stop = dp.stop_price
+                        _dp_r = _dp_entry_price - _dp_stop
+                        if _dp_r > 0:
+                            _dp_trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_dp_entry_price,
+                                stop=_dp_stop,
+                                r=_dp_r,
+                                score=0.0,
+                                detail=f"dp_dip_entry size_mult={dp.position_size_mult:.1f}",
+                                time_str=time_str,
+                                setup_type="dp_dip_entry",
+                                size_mult=dp.position_size_mult,
+                            )
+                            if _dp_trade and verbose:
+                                print(
+                                    f"  [{time_str}] DP_ENTRY: ${_dp_trade.entry:.2f} "
+                                    f"stop=${_dp_trade.stop:.2f} R=${_dp_trade.r:.4f} "
+                                    f"qty={_dp_trade.qty_total} setup_type=dp_dip_entry",
+                                    flush=True,
+                                )
+
+                    elif dp_signal == "SELL" and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
+                        if sim_mgr.open_trade.setup_type == "dp_dip_entry":
+                            # Determine exit reason
+                            _dp_exit_reason = dp.get_exit_reason(bar.close, bar.low, vwap)
+                            sim_mgr.open_trade.core_exit_price = bar.close
+                            sim_mgr.open_trade.core_exit_time = time_str
+                            sim_mgr.open_trade.core_exit_reason = _dp_exit_reason
+                            if sim_mgr.open_trade.qty_runner > 0:
+                                sim_mgr.open_trade.runner_exit_price = bar.close
+                                sim_mgr.open_trade.runner_exit_time = time_str
+                                sim_mgr.open_trade.runner_exit_reason = _dp_exit_reason
+                            sim_mgr._close(sim_mgr.open_trade)
+                            if verbose:
+                                _dp_closed = sim_mgr.closed_trades[-1] if sim_mgr.closed_trades else None
+                                if _dp_closed:
+                                    print(
+                                        f"  [{time_str}] DP_EXIT: {_dp_exit_reason} "
+                                        f"P&L=${_dp_closed.pnl():+,.0f}",
+                                        flush=True,
+                                    )
+
             # Feed behavior metrics
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
@@ -2406,7 +2544,7 @@ def run_simulation(
             # Skip when Ross exit mode is ON (Ross 1m signals handle all trade types)
             if (sim_mgr.open_trade is not None
                 and not sim_mgr.open_trade.closed
-                and sim_mgr.open_trade.setup_type not in ("squeeze", "mp_reentry", "continuation")
+                and sim_mgr.open_trade.setup_type not in ("squeeze", "mp_reentry", "continuation", "dp_dip_entry")
                 and not _ross_exit_enabled
                 and not getattr(sim_mgr.open_trade, '_cont_hold_1m_mode', False)
                 and not getattr(sim_mgr.open_trade, '_cont_hold_5m_mode', False)
