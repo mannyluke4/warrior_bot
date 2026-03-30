@@ -28,6 +28,46 @@ trap cleanup EXIT
 
 BOT_PID=""
 
+# ── Step 0: Wake the screen and ensure active desktop ────────────────
+# IB Gateway needs a display context. Wake the Mac, unlock if needed.
+echo "=== Waking screen and ensuring active desktop ==="
+
+# 1. Force wake the display
+caffeinate -u -t 30 &
+WAKE_PID=$!
+echo "Display wake signal sent"
+sleep 3
+
+# 2. Send escape key + click to dismiss screensaver/lock screen
+# Requires: System Settings → Privacy & Security → Accessibility → add cron/bash/osascript
+osascript -e 'tell application "System Events" to key code 53' 2>/dev/null || true
+sleep 2
+
+# 3. Type password to unlock (password in ~/.mac_unlock_pw, chmod 600)
+if [ -f ~/.mac_unlock_pw ]; then
+    MAC_PW=$(cat ~/.mac_unlock_pw)
+    osascript -e "tell application \"System Events\"
+        keystroke \"${MAC_PW}\"
+        delay 1
+        keystroke return
+    end tell" 2>/dev/null || echo "WARN: keystroke failed — check Accessibility permissions"
+else
+    echo "WARN: ~/.mac_unlock_pw not found"
+    echo "  Create: echo 'yourpassword' > ~/.mac_unlock_pw && chmod 600 ~/.mac_unlock_pw"
+fi
+
+echo "Waiting 10s for desktop session..."
+sleep 10
+
+# 4. Verify display is active
+if osascript -e 'tell application "Finder" to activate' 2>/dev/null; then
+    echo "Desktop session: ACTIVE"
+else
+    echo "WARN: Desktop may not be active — Gateway might fail"
+fi
+
+kill $WAKE_PID 2>/dev/null || true
+
 # Keep Mac awake for the entire trading session
 caffeinate -dims -w $$ &
 CAFFEINE_PID=$!
