@@ -424,20 +424,20 @@ def on_bar_close_1m(bar):
         if mp_msg and ("ARMED" in mp_msg or "MP_V2" in mp_msg):
             print(f"[{now_str} ET] {symbol} MP | {mp_msg}", flush=True)
 
-    # Continuation detection (post-squeeze — only when SQ is fully idle)
+    # Continuation detection (post-squeeze — only when SQ is fully idle + lockout clear)
     _ct_sq_idle = not (SQ_ENABLED and symbol in state.sq_detectors and
                        (state.sq_detectors[symbol]._state != "IDLE" or state.sq_detectors[symbol]._in_trade))
     if CT_ENABLED and _ct_sq_idle and symbol in state.ct_detectors:
         ct = state.ct_detectors[symbol]
         # Check for pending activation (deferred from squeeze close)
-        _ct_act = ct.check_pending_activation()
+        _ct_act = ct.check_pending_activation(bar_time=now_str)
         if _ct_act:
             print(f"[{now_str} ET] {symbol} CT | {_ct_act}", flush=True)
-        ct_msg = ct.on_bar_close_1m(bar, vwap=vwap)
+        ct_msg = ct.on_bar_close_1m(bar, vwap=vwap, bar_time=now_str)
         if ct_msg:
             if "CT_ARMED" in ct_msg or "CT_REJECT" in ct_msg or "CT_RESET" in ct_msg:
                 print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
-            elif "CT_WATCHING" in ct_msg or "CT_PULLBACK" in ct_msg:
+            elif "CT_WATCHING" in ct_msg or "CT_PULLBACK" in ct_msg or "CT_PAUSE" in ct_msg:
                 print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
 
 
@@ -750,10 +750,12 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         if sq and hasattr(sq, 'bars_1m') and sq.bars_1m:
             avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
                           for b in sq.bars_1m) / len(sq.bars_1m)
+        _ct_now_str = datetime.now(ET).strftime("%H:%M")
         state.ct_detectors[symbol].notify_squeeze_closed(
             symbol, pnl,
             entry=pos["entry"], exit_price=price,
             hod=hod or 0, avg_squeeze_vol=avg_vol,
+            bar_time=_ct_now_str,
         )
 
     # CT: track re-entry count when continuation trade closes

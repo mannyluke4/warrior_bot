@@ -41,6 +41,16 @@ class ContinuationDetector:
         self._probe_size = float(os.getenv("WB_CT_PROBE_SIZE", "0.5"))
         self._full_size = float(os.getenv("WB_CT_FULL_SIZE", "1.0"))
 
+        # Cascade lockout (Item 1)
+        self._cascade_lockout_min = float(os.getenv("WB_CT_CASCADE_LOCKOUT_MIN", "60"))
+        self._lockout_until_minutes: Optional[int] = None  # minutes since midnight
+        self._sq_trade_count: int = 0  # Number of SQ trades on this symbol this session
+        self._max_sq_for_ct = int(os.getenv("WB_CT_MAX_SQ_TRADES", "1"))  # CT only fires after single-SQ stocks
+
+        # Wider CT target (Item 4 — gated OFF by default)
+        self._ct_wider_target = os.getenv("WB_CT_WIDER_TARGET", "0") == "1"
+        self._ct_target_r = float(os.getenv("WB_CT_TARGET_R", "3.0"))
+
         # EMA length (matches squeeze/MP)
         self._ema_len = 9
 
@@ -86,20 +96,36 @@ class ContinuationDetector:
 
     def notify_squeeze_closed(self, symbol: str, pnl: float,
                               entry: float = 0, exit_price: float = 0,
-                              hod: float = 0, avg_squeeze_vol: float = 0):
-        """Called when a squeeze trade closes. Stages CT activation.
-        
+                              hod: float = 0, avg_squeeze_vol: float = 0,
+                              bar_time: str = ""):
+        """Called when a squeeze trade closes. ALWAYS resets lockout timer.
+        Only stages CT activation on winning SQ trades.
+
         On cascading stocks (VERO, ROLR), SQ fires multiple trades in rapid
-        succession. Each close re-calls this method. We DON'T activate CT
-        immediately — we stage the data and reset the cooldown. CT only
-        actually starts processing bars after the cooldown expires AND
-        the SQ-IDLE gate passes in the bar-close caller. This ensures
-        CT never interferes with SQ cascades.
+        succession. Each close re-calls this method and pushes the lockout
+        forward. CT only actually starts processing bars after the lockout
+        expires AND the SQ-IDLE gate passes. This ensures CT never interferes
+        with SQ cascades.
         """
         if not self.enabled:
             return
+
+        # Count SQ trades on this symbol
+        self._sq_trade_count += 1
+
+        # ALWAYS reset the lockout timer — even losing SQ trades mean SQ is
+        # still active on this stock. Cascade stocks keep pushing it forward.
+        if bar_time and ":" in bar_time:
+            h, m = int(bar_time.split(":")[0]), int(bar_time.split(":")[1])
+            lockout_min = h * 60 + m + int(self._cascade_lockout_min)
+            self._lockout_until_minutes = lockout_min
+
+        # Block CT on cascade stocks (2+ SQ trades = cascade, CT stays locked all session)
+        if self._sq_trade_count > self._max_sq_for_ct:
+            return  # This is a cascade stock — CT not appropriate
+
         if pnl <= 0:
-            return  # Only activate on winning squeezes
+            return  # Only stage activation on winning squeezes
         if self._reentry_count >= self._max_reentries:
             return  # Already used all re-entries this session
 
@@ -107,8 +133,8 @@ class ContinuationDetector:
         # ROLR), SQ fires multiple trades in quick succession. Each close
         # re-queues here. The actual activation only happens when the caller
         # (simulate.py / bot_ibkr.py) calls check_pending_activation() during
-        # a confirmed SQ IDLE period. This ensures zero CT processing during
-        # SQ cascades — no butterfly effects.
+        # a confirmed SQ IDLE period AND lockout has expired. This ensures
+        # zero CT processing during SQ cascades — no butterfly effects.
         self._pending_activation = {
             "entry": entry,
             "exit_price": exit_price,
@@ -136,12 +162,24 @@ class ContinuationDetector:
     # 1-minute bar processing
     # ──────────────────────────────────────────────────────────────
 
-    def check_pending_activation(self) -> Optional[str]:
-        """Called ONLY when SQ is confirmed IDLE. Activates CT from queued data.
-        Returns status message or None."""
+    def check_pending_activation(self, bar_time: str = "") -> Optional[str]:
+        """Called ONLY when SQ is confirmed IDLE and lockout expired.
+        Activates CT from queued data. Returns status message or None."""
         if not self._pending_activation:
             return None
-        
+
+        # Block on cascade stocks — if SQ fired 2+ trades, CT is not appropriate
+        if self._sq_trade_count > self._max_sq_for_ct:
+            self._pending_activation = None
+            return f"CT BLOCKED: cascade stock ({self._sq_trade_count} SQ trades > max {self._max_sq_for_ct})"
+
+        # Don't activate during lockout
+        if self._lockout_until_minutes is not None and bar_time and ":" in bar_time:
+            h, m = int(bar_time.split(":")[0]), int(bar_time.split(":")[1])
+            current_min = h * 60 + m
+            if current_min < self._lockout_until_minutes:
+                return None  # Still locked out
+
         data = self._pending_activation
         self._pending_activation = None
         
@@ -157,10 +195,18 @@ class ContinuationDetector:
         self.armed = None
         return "CT_ACTIVATED — SQ confirmed idle, starting cooldown"
 
-    def on_bar_close_1m(self, bar, vwap: Optional[float] = None) -> Optional[str]:
+    def on_bar_close_1m(self, bar, vwap: Optional[float] = None,
+                        bar_time: str = "") -> Optional[str]:
         """Process each 1-minute bar close. Returns status message or None."""
         if not self.enabled:
             return None
+
+        # Check lockout — ZERO processing during lockout period
+        if self._lockout_until_minutes is not None and bar_time and ":" in bar_time:
+            h, m = int(bar_time.split(":")[0]), int(bar_time.split(":")[1])
+            current_min = h * 60 + m
+            if current_min < self._lockout_until_minutes:
+                return None  # LOCKED — zero processing
 
         # Always update EMA + MACD
         c = bar.close
@@ -232,25 +278,32 @@ class ContinuationDetector:
 
         # --- CT_PRIMED: validate pullback quality ---
         if self._state == "CT_PRIMED":
-            # Gate 1: Volume decay
+            # SOFT GATES — pause and re-check next bar, keep pullback context
+            # On soft gate fail: go back to WATCHING but do NOT clear
+            # pullback_bars/pullback_low/pullback_high. On next green bar,
+            # CT re-enters CT_PRIMED and re-checks with full context preserved.
+
+            # Gate 1: Volume decay (SOFT — can recover)
             if self._squeeze_vol and self._squeeze_vol > 0 and self._pullback_bars:
                 pb_avg_vol = sum(b["v"] for b in self._pullback_bars) / len(self._pullback_bars)
                 vol_ratio = pb_avg_vol / self._squeeze_vol
                 if vol_ratio > self._min_vol_decay:
-                    return self._reset(
-                        f"CT_REJECT: pullback volume too high "
-                        f"({vol_ratio:.1f}x squeeze avg)"
-                    )
+                    self._state = "WATCHING"  # Keep pullback bars
+                    return f"CT_PAUSE: volume high ({vol_ratio:.1f}x), re-checking"
 
-            # Gate 2: Price above VWAP
+            # Gate 2: Price above VWAP (SOFT — stock can reclaim on next bar)
             if self._require_vwap and vwap and bar.close < vwap:
-                return self._reset("CT_REJECT: price below VWAP on confirmation")
+                self._state = "WATCHING"  # Keep pullback bars
+                return f"CT_PAUSE: below VWAP (${bar.close:.2f} < ${vwap:.2f}), re-checking"
 
-            # Gate 3: Price above 9 EMA
+            # Gate 3: Price above 9 EMA (SOFT — same logic)
             if self._require_ema and self.ema and bar.close < self.ema:
-                return self._reset("CT_REJECT: price below 9 EMA on confirmation")
+                self._state = "WATCHING"  # Keep pullback bars
+                return f"CT_PAUSE: below EMA (${bar.close:.2f} < ${self.ema:.2f}), re-checking"
 
-            # Gate 4: MACD positive (Ross's #1 dip-vs-dump filter)
+            # HARD GATES — these truly disqualify the setup
+
+            # Gate 4: MACD negative (HARD — dump signal)
             if self._require_macd and not self.macd_state.bullish():
                 return self._reset("CT_REJECT: MACD negative — likely dump, not dip")
 
@@ -322,6 +375,7 @@ class ContinuationDetector:
         self._cooldown_remaining = 0
         self._reentry_count = 0
         self._pending_activation = None
+        self._lockout_until_minutes = None
         self._squeeze_entry = None
         self._squeeze_exit = None
         self._squeeze_high = None

@@ -719,7 +719,13 @@ class SimTradeManager:
                     return
 
             # 4) Target hit — exit core (partial or full), keep runner
-            if t.r > 0 and price >= t.entry + (self.sq_target_r * t.r):
+            # Item 4: CT wider target — when enabled and trade is continuation,
+            # use ct_target_r instead of sq_target_r
+            _eff_target_r = self.sq_target_r
+            if (t.setup_type == "continuation"
+                    and os.getenv("WB_CT_WIDER_TARGET", "0") == "1"):
+                _eff_target_r = float(os.getenv("WB_CT_TARGET_R", "3.0"))
+            if t.r > 0 and price >= t.entry + (_eff_target_r * t.r):
                 t.tp_hit = True
                 t.core_exit_price = price
                 t.core_exit_time = time_str
@@ -745,7 +751,11 @@ class SimTradeManager:
                 if (self.sq_runner_detect_enabled and self._sq_target_hit_min is not None):
                     now_min = self._time_to_minutes(time_str)
                     minutes_since_target = now_min - self._sq_target_hit_min
-                    if minutes_since_target <= 5 and price >= t.entry + (self.sq_target_r * t.r):
+                    _eff_target_r2 = self.sq_target_r
+                    if (t.setup_type == "continuation"
+                            and os.getenv("WB_CT_WIDER_TARGET", "0") == "1"):
+                        _eff_target_r2 = float(os.getenv("WB_CT_TARGET_R", "3.0"))
+                    if minutes_since_target <= 5 and price >= t.entry + (_eff_target_r2 * t.r):
                         eff_runner_trail_r = self.sq_runner_trail_r * 3.0
                 runner_trail = t.peak - (eff_runner_trail_r * t.r)
                 t.runner_stop = max(t.runner_stop, runner_trail)
@@ -1843,6 +1853,7 @@ def run_simulation(
                     symbol, t.pnl(),
                     entry=t.entry, exit_price=t.core_exit_price or t.entry,
                     hod=_sq_hod, avg_squeeze_vol=_sq_avg_vol,
+                    bar_time=t.core_exit_time,
                 )
         if vr_enabled and t.setup_type == "vwap_reclaim":
             vr_det.notify_trade_closed(symbol, t.pnl())
@@ -2201,10 +2212,10 @@ def run_simulation(
             _ct_sq_idle = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
             if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle:
                 # Check for pending activation (deferred from squeeze close)
-                _ct_act = ct_det.check_pending_activation()
+                _ct_act = ct_det.check_pending_activation(bar_time=time_str)
                 if _ct_act and verbose:
                     print(f"  [{time_str}] {_ct_act}", flush=True)
-                ct_msg = ct_det.on_bar_close_1m(bar, vwap=vwap)
+                ct_msg = ct_det.on_bar_close_1m(bar, vwap=vwap, bar_time=time_str)
                 if ct_msg and verbose:
                     print(f"  [{time_str}] {ct_msg}", flush=True)
                 if ct_msg and "CT_ARMED" in ct_msg:
@@ -2237,6 +2248,7 @@ def run_simulation(
                                         symbol, closed_t.pnl(),
                                         entry=closed_t.entry, exit_price=closed_t.core_exit_price or closed_t.entry,
                                         hod=_sq_hod, avg_squeeze_vol=_sq_avg_vol,
+                                        bar_time=time_str,
                                     )
                             elif closed_t.setup_type == "mp_reentry":
                                 det.notify_reentry_closed()
@@ -2877,10 +2889,10 @@ def run_simulation(
             # Feed continuation detector (bar mode — only when SQ is fully idle)
             _ct_sq_idle_bar = (not sq_enabled) or (sq_det._state == "IDLE" and not sq_det._in_trade)
             if ct_enabled and sim_mgr.open_trade is None and _ct_sq_idle_bar:
-                _ct_act_bar = ct_det.check_pending_activation()
+                _ct_act_bar = ct_det.check_pending_activation(bar_time=time_str)
                 if _ct_act_bar and verbose:
                     print(f"  [{time_str}] {_ct_act_bar}", flush=True)
-                ct_msg_bar = ct_det.on_bar_close_1m(bar_obj, vwap=vwap)
+                ct_msg_bar = ct_det.on_bar_close_1m(bar_obj, vwap=vwap, bar_time=time_str)
                 if verbose and ct_msg_bar:
                     print(f"  [{time_str}] {ct_msg_bar}", flush=True)
 
