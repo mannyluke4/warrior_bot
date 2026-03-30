@@ -610,25 +610,53 @@ class DynamicPlayer:
                 return None
 
         elif self.state == "PLAYING":
-            # Check terminal conditions
-            if red > 0:
-                self._go_done(f"playing_red_signal ({red}R: {detail_str})")
-                return None
+            if not hasattr(self, '_playing_skip_count'):
+                self._playing_skip_count = 0
 
-            # 1m bar below VWAP check
+            _max_red_playing = int(os.getenv("WB_DP_MAX_RED_SIGNALS_PLAYING", "1"))
+            _playing_patience = int(os.getenv("WB_DP_PLAYING_PATIENCE", "5"))
+
+            # STRUCTURAL DONE triggers (run is genuinely over)
+
+            # 1m bar below VWAP = breakdown
             if bar_close < vwap:
                 self._go_done("playing_below_vwap")
                 return None
 
-            # Dip retrace >100% is terminal
+            # Dip retrace >100% = exhaustion
             if prior_up and abs(prior_up.move_pct) > 0:
                 retrace_pct = abs(dip_wave.move_pct) / abs(prior_up.move_pct) * 100
                 if retrace_pct > 100:
                     self._go_done(f"playing_deep_retrace ({retrace_pct:.0f}%)")
                     return None
 
+            # Too many reds on a single dip = trouble (but allow up to max_red_playing)
+            if red > _max_red_playing:
+                self._playing_skip_count += 1
+                if self._playing_skip_count >= _playing_patience:
+                    self._go_done(f"playing_{_playing_patience}_consecutive_skips")
+                    return None
+                self.log.append(
+                    f"[{bar_time}] DP_PLAYING_SKIP: {green}G/{yellow}Y/{red}R "
+                    f"({red}R > {_max_red_playing} max, skip {self._playing_skip_count}/{_playing_patience})"
+                )
+                return None
+
+            # Scorecard passes — enter if enough greens
             if green >= self.min_green_signals:
+                self._playing_skip_count = 0  # Reset on successful entry
                 return self._generate_buy(dip_wave, bar_close, bar_time, green, vwap, ema)
+            else:
+                # Not enough greens but within red tolerance — skip, don't die
+                self._playing_skip_count += 1
+                if self._playing_skip_count >= _playing_patience:
+                    self._go_done(f"playing_{_playing_patience}_consecutive_skips")
+                    return None
+                self.log.append(
+                    f"[{bar_time}] DP_PLAYING_SKIP: {green}G/{yellow}Y/{red}R "
+                    f"(need {self.min_green_signals}G, skip {self._playing_skip_count}/{_playing_patience})"
+                )
+                return None
 
         return None
 
