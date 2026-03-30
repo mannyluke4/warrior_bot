@@ -36,7 +36,7 @@ load_dotenv()
 from squeeze_detector import SqueezeDetector
 from micro_pullback import MicroPullbackDetector
 from continuation_detector import ContinuationDetector
-from ibkr_scanner import scan_premarket_live, rank_score
+from ibkr_scanner import scan_premarket_live, scan_catchup, rank_score
 from bars import TradeBarBuilder, Bar
 
 ET = pytz.timezone("US/Eastern")
@@ -320,7 +320,12 @@ def seed_symbol(symbol: str):
 # ══════════════════════════════════════════════════════════════════════
 
 def run_scanner():
-    """Run the IBKR scanner and subscribe to top candidates."""
+    """Run the IBKR scanner and subscribe to top candidates.
+
+    First scan of a session runs a WIDE catchup scan (multiple scanner codes)
+    to find everything that moved today, even if we started late.
+    Subsequent scans use the normal TOP_PERC_GAIN to catch new arrivals.
+    """
     now = datetime.now(ET)
 
     # Only scan during active trading windows
@@ -331,13 +336,23 @@ def run_scanner():
     if state.last_scan_time and (now - state.last_scan_time).total_seconds() < 300:
         return
 
-    print(f"\n🔄 Running scanner at {now.strftime('%H:%M:%S')} ET...", flush=True)
-    state.candidates = scan_premarket_live(state.ib)
+    is_first_scan = state.last_scan_time is None
+
+    if is_first_scan:
+        # First scan of session: wide catchup to find everything that moved today
+        print(f"\n🔄 CATCHUP SCAN at {now.strftime('%H:%M:%S')} ET (first scan — casting wide net)...", flush=True)
+        state.candidates = scan_catchup(state.ib)
+    else:
+        # Subsequent scans: just check for new arrivals
+        print(f"\n🔄 Running scanner at {now.strftime('%H:%M:%S')} ET...", flush=True)
+        state.candidates = scan_premarket_live(state.ib)
+
     state.last_scan_time = now
 
-    # Subscribe to new candidates (top 5)
+    # Subscribe to new candidates (top 5 from catchup, or all new from rescan)
+    max_new = 5 if is_first_scan else 5
     new_subs = 0
-    for c in state.candidates[:5]:
+    for c in state.candidates[:max_new]:
         sym = c["symbol"]
         if sym not in state.active_symbols:
             subscribe_symbol(sym)

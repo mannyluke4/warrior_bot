@@ -231,6 +231,130 @@ def scan_premarket_live(ib: IB, top_n: int = 20) -> list[dict]:
     return candidates
 
 
+def scan_catchup(ib: IB, top_n: int = 20) -> list[dict]:
+    """Catchup scan: cast a WIDE net to find everything that moved today.
+
+    Called on startup (especially late starts) to find stocks that gapped
+    earlier but may not be in the current TOP_PERC_GAIN scanner anymore.
+    Uses multiple scanner codes to catch different types of movers.
+
+    Returns same format as scan_premarket_live().
+    """
+    scan_codes = [
+        'TOP_PERC_GAIN',     # Current top % gainers
+        'MOST_ACTIVE',       # Highest volume today
+        'HOT_BY_VOLUME',     # Unusual volume vs average
+    ]
+
+    all_symbols = set()
+    all_contracts = {}
+
+    for code in scan_codes:
+        try:
+            sub = ScannerSubscription(
+                instrument='STK',
+                locationCode='STK.US.MAJOR',
+                scanCode=code,
+                abovePrice=MIN_PRICE,
+                belowPrice=MAX_PRICE,
+                aboveVolume=int(MIN_PM_VOLUME),
+                marketCapBelow=MAX_MARKET_CAP,
+                numberOfRows=50,  # Cast wide
+            )
+            results = ib.reqScannerData(sub)
+            if results:
+                for r in results:
+                    sym = r.contractDetails.contract.symbol
+                    if sym not in all_symbols:
+                        all_symbols.add(sym)
+                        all_contracts[sym] = r.contractDetails.contract
+            time.sleep(0.5)  # IBKR pacing
+        except Exception as e:
+            print(f"  Catchup scan ({code}) failed: {e}", flush=True)
+
+    print(f"  Catchup: {len(all_symbols)} unique symbols from {len(scan_codes)} scanners", flush=True)
+
+    if not all_symbols:
+        return []
+
+    # Now filter each candidate
+    candidates = []
+    float_cache = load_float_cache()
+
+    for symbol in sorted(all_symbols):
+        contract = all_contracts[symbol]
+        try:
+            ib.qualifyContracts(contract)
+            ticker = ib.reqMktData(contract, '', True, False)  # snapshot
+            ib.sleep(1.5)
+        except Exception:
+            continue
+
+        price = ticker.last or ticker.close or 0
+        prev_close = ticker.close or 0
+        volume = ticker.volume or 0
+
+        if price <= 0 or prev_close <= 0:
+            continue
+
+        gap_pct = (price - prev_close) / prev_close * 100
+
+        # For catchup, also accept stocks where the HIGH of day shows they gapped
+        # even if current price has pulled back
+        high = ticker.high if hasattr(ticker, 'high') and ticker.high and not math.isnan(ticker.high) else price
+        gap_from_high = (high - prev_close) / prev_close * 100 if prev_close > 0 else 0
+
+        # Use the better of current gap or high-based gap
+        effective_gap = max(gap_pct, gap_from_high)
+
+        # ADV and RVOL
+        adv = compute_adv(ib, symbol)
+        rvol = compute_rvol(volume, adv) if adv > 0 else 0
+
+        # Float
+        float_shares = get_float(symbol, float_cache)
+        float_m = round(float_shares / 1e6, 2) if float_shares else None
+        profile = classify_profile(float_shares)
+
+        # Apply filters (using effective_gap for stocks that pulled back from HOD)
+        if effective_gap < MIN_GAP_PCT or effective_gap > MAX_GAP_PCT:
+            continue
+        if price < MIN_PRICE or price > MAX_PRICE:
+            continue
+        if rvol < MIN_RVOL and rvol > 0:
+            continue
+        if volume < MIN_PM_VOLUME:
+            continue
+        if profile == "skip":
+            continue
+
+        now_et = datetime.now(ET)
+        discovery_time = f"{now_et.hour:02d}:{now_et.minute:02d}"
+
+        candidates.append({
+            "symbol": symbol,
+            "prev_close": round(prev_close, 4),
+            "pm_price": round(price, 4),
+            "gap_pct": round(effective_gap, 2),
+            "pm_volume": volume,
+            "first_seen_et": discovery_time,
+            "sim_start": "07:00",  # Catchup always seeds from market open
+            "discovery_time": discovery_time,
+            "discovery_method": "ibkr_catchup",
+            "avg_daily_volume": round(adv, 0),
+            "relative_volume": round(rvol, 2),
+            "float_shares": float_shares,
+            "float_millions": float_m,
+            "profile": profile,
+        })
+
+    candidates.sort(key=rank_score, reverse=True)
+    save_float_cache(float_cache)
+
+    print(f"  Catchup: {len(candidates)} candidates after filters", flush=True)
+    return candidates
+
+
 # ── Historical Scanner (Backtest Mode) ───────────────────────────────
 
 def scan_historical(ib: IB, date_str: str, top_n: int = 20) -> list[dict]:
