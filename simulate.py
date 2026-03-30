@@ -208,6 +208,11 @@ class SimTradeManager:
         self.sq_runner_detect_enabled = os.getenv("WB_SQ_RUNNER_DETECT_ENABLED", "0") == "1"
         self._sq_target_hit_min: Optional[int] = None  # minutes since midnight when target was hit
 
+        # Runner trail mode: "r_multiple" (default/existing) | "5m_low" | "vwap"
+        self.sq_runner_trail_mode = os.getenv("WB_SQ_RUNNER_TRAIL_MODE", "r_multiple")
+        # Track completed 1m bars for 5m_low trail mode
+        self._sq_completed_1m_bars: list[dict] = []  # {time_str, o, h, l, c, v, minute}
+
         # --- VWAP Reclaim exit parameters (Strategy 4) ---
         self.vr_stall_bars = int(os.getenv("WB_VR_STALL_BARS", "5"))
         self.vr_target_r = float(os.getenv("WB_VR_TARGET_R", "1.5"))
@@ -438,6 +443,7 @@ class SimTradeManager:
         self.open_trade = t
         if setup_type in ("squeeze", "mp_reentry", "continuation"):
             self._sq_target_hit_min = None  # reset runner detection state
+            self._sq_completed_1m_bars = []  # reset 1m bar history for runner trail
 
         # Track open notional for buying power
         if self.account_equity > 0:
@@ -634,6 +640,29 @@ class SimTradeManager:
                 self._close(t)
 
     # ------------------------------------------------------------------
+    # Helper: 5-minute low from completed 1m bars
+    # ------------------------------------------------------------------
+    def _get_last_completed_5m_low(self, current_time_str: str) -> float:
+        """Get the low of the most recently completed 5-minute candle.
+
+        Uses completed 1m bars grouped by 5-min boundaries.
+        E.g., at 08:13, last completed 5m bar is 08:05-08:09 (minutes 485-489).
+        """
+        if not self._sq_completed_1m_bars:
+            return 0.0
+        current_minute = self._time_to_minutes(current_time_str)
+        # Find the most recent 5-min boundary that's already closed
+        last_5m_boundary = (current_minute // 5) * 5
+        # Get the bars from the COMPLETED 5m candle: [boundary-5, boundary)
+        start_min = last_5m_boundary - 5
+        end_min = last_5m_boundary
+        relevant_bars = [b for b in self._sq_completed_1m_bars
+                         if start_min <= b["minute"] < end_min]
+        if not relevant_bars:
+            return 0.0
+        return min(b["l"] for b in relevant_bars)
+
+    # ------------------------------------------------------------------
     # Squeeze exit logic
     # ------------------------------------------------------------------
     def _squeeze_tick_exits(self, t: SimTrade, price: float, time_str: str):
@@ -742,30 +771,50 @@ class SimTradeManager:
         if t.tp_hit and t.qty_runner > 0 and t.runner_exit_price == 0 and (not self.ross_exit_enabled or self.sq_ross_coexist):
             # Runner trailing stop
             # Halt-through: skip trail update/check during halt/grace
-            if t.r > 0 and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
-                eff_runner_trail_r = self.sq_runner_trail_r
-                # Fix 2: apply multiplier to runner trail too
-                if self.sq_wide_trail_enabled:
-                    eff_runner_trail_r *= self.sq_trail_multiplier
-                # Fix 3: runner detection — target hit within 5 minutes → 3x trail
-                if (self.sq_runner_detect_enabled and self._sq_target_hit_min is not None):
-                    now_min = self._time_to_minutes(time_str)
-                    minutes_since_target = now_min - self._sq_target_hit_min
-                    _eff_target_r2 = self.sq_target_r
-                    if (t.setup_type == "continuation"
-                            and os.getenv("WB_CT_WIDER_TARGET", "0") == "1"):
-                        _eff_target_r2 = float(os.getenv("WB_CT_TARGET_R", "3.0"))
-                    if minutes_since_target <= 5 and price >= t.entry + (_eff_target_r2 * t.r):
-                        eff_runner_trail_r = self.sq_runner_trail_r * 3.0
-                runner_trail = t.peak - (eff_runner_trail_r * t.r)
-                t.runner_stop = max(t.runner_stop, runner_trail)
+            if not (self._halt_through_enabled and self._is_sim_halt_active(t)):
+                _runner_exit_reason = "sq_runner_trail"
 
-            if price <= t.runner_stop and not (self._halt_through_enabled and self._is_sim_halt_active(t)):
-                t.runner_exit_price = price
-                t.runner_exit_time = time_str
-                t.runner_exit_reason = "sq_runner_trail"
-                self._close(t)
-                return
+                if self.sq_runner_trail_mode == "5m_low":
+                    # Trail stop = low of most recently COMPLETED 5-minute candle, floor at entry
+                    five_m_low = self._get_last_completed_5m_low(time_str)
+                    if five_m_low > 0:
+                        runner_stop_candidate = max(t.entry, five_m_low)
+                        t.runner_stop = max(t.runner_stop, runner_stop_candidate)
+                    _runner_exit_reason = "runner_5m_trail"
+
+                elif self.sq_runner_trail_mode == "vwap":
+                    # Trail stop = VWAP, floor at entry price
+                    if self._sq_last_vwap is not None and self._sq_last_vwap > 0:
+                        runner_stop_candidate = max(t.entry, self._sq_last_vwap)
+                        t.runner_stop = max(t.runner_stop, runner_stop_candidate)
+                    _runner_exit_reason = "runner_vwap_trail"
+
+                else:
+                    # Default: r_multiple — existing behavior
+                    if t.r > 0:
+                        eff_runner_trail_r = self.sq_runner_trail_r
+                        # Fix 2: apply multiplier to runner trail too
+                        if self.sq_wide_trail_enabled:
+                            eff_runner_trail_r *= self.sq_trail_multiplier
+                        # Fix 3: runner detection — target hit within 5 minutes → 3x trail
+                        if (self.sq_runner_detect_enabled and self._sq_target_hit_min is not None):
+                            now_min = self._time_to_minutes(time_str)
+                            minutes_since_target = now_min - self._sq_target_hit_min
+                            _eff_target_r2 = self.sq_target_r
+                            if (t.setup_type == "continuation"
+                                    and os.getenv("WB_CT_WIDER_TARGET", "0") == "1"):
+                                _eff_target_r2 = float(os.getenv("WB_CT_TARGET_R", "3.0"))
+                            if minutes_since_target <= 5 and price >= t.entry + (_eff_target_r2 * t.r):
+                                eff_runner_trail_r = self.sq_runner_trail_r * 3.0
+                        runner_trail = t.peak - (eff_runner_trail_r * t.r)
+                        t.runner_stop = max(t.runner_stop, runner_trail)
+
+                if price <= t.runner_stop:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = _runner_exit_reason
+                    self._close(t)
+                    return
 
     def on_1m_bar_close_squeeze(self, t: SimTrade, o: float, h: float, l: float,
                                 c: float, v: float, vwap: Optional[float],
@@ -775,6 +824,13 @@ class SimTradeManager:
             return
 
         self._sq_last_vwap = vwap
+
+        # Track completed 1m bars for runner trail modes (5m_low)
+        bar_minute = self._time_to_minutes(time_str)
+        self._sq_completed_1m_bars.append({
+            "time_str": time_str, "o": o, "h": h, "l": l, "c": c, "v": v,
+            "minute": bar_minute,
+        })
 
         # Stall counter: increment if no new high on this bar
         if h <= t.peak:
