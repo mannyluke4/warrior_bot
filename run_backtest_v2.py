@@ -149,22 +149,37 @@ def write_status(label, dates, current_idx, equity, all_trades, daily_results, s
         json.dump(state, f, indent=2)
 
 
-def run_backtest(dates, label, windows=None, status_file=None, state_file=None, max_stocks=5):
+def run_backtest(dates, label, windows=None, status_file=None, state_file=None, max_stocks=5,
+                 salary_cap=None, pdt_mode=False):
     """
     Run backtest across dates.
     windows: list of (start_time, end_time) tuples, e.g. [("07:00","12:00"), ("16:00","20:00")]
              If None, uses scanner sim_start to 12:00 (original behavior).
+    salary_cap: if set, withdraw profits above this amount at end of each day.
+    pdt_mode: if True, enforce 3 day trades per 5 business days until equity >= $25K.
     """
     equity = STARTING_EQUITY
     all_trades = []
     daily_results = []
+    total_withdrawn = 0
+    withdrawal_log = []
     start_time = time.time()
     sf = status_file or STATUS_FILE
     stf = state_file or STATE_FILE
 
+    # PDT tracking: rolling 5-day window of day trade counts
+    PDT_THRESHOLD = 25_000
+    PDT_MAX_DAY_TRADES = 3  # per 5 business days
+    pdt_trade_history = []  # list of (date_index, num_trades) for rolling window
+    pdt_crossed = False  # True once equity >= $25K
+
     window_desc = ""
     if windows:
         window_desc = " | Windows: " + ", ".join(f"{w[0]}-{w[1]}" for w in windows)
+    if salary_cap:
+        window_desc += f" | Salary mode: cap ${salary_cap:,}"
+    if pdt_mode:
+        window_desc += f" | PDT mode: 3 trades/5 days until ${PDT_THRESHOLD:,}"
 
     print(f"{'='*60}")
     print(f"  {label}{window_desc}")
@@ -186,10 +201,27 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
             write_status(label, dates, i + 1, equity, all_trades, daily_results, start_time, sf, stf)
             continue
 
-        risk = max(int(equity * RISK_PCT), 50)
+        # PDT mode: use full buying power (4x margin) for each trade
+        if pdt_mode and not pdt_crossed:
+            buying_power = equity * 4  # 4x margin
+            risk = max(int(buying_power * RISK_PCT), 50)
+        else:
+            risk = max(int(equity * RISK_PCT), 50)
+
         day_pnl = 0
         day_trades = 0
         day_symbols = []
+
+        # PDT: calculate how many trades we're allowed today
+        if pdt_mode and not pdt_crossed:
+            # Rolling 5-day window: count trades in last 5 business days
+            recent_trades = sum(nt for di, nt in pdt_trade_history if di > i - 5)
+            pdt_remaining = max(0, PDT_MAX_DAY_TRADES - recent_trades)
+            max_trades_today = min(pdt_remaining, 1)  # Take at most 1 per day to spread trades
+            if pdt_remaining == 0:
+                max_trades_today = 0
+        else:
+            max_trades_today = MAX_TRADES_PER_DAY
 
         # Determine which time windows to simulate
         if windows:
@@ -198,11 +230,14 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
             sim_windows = None  # use per-candidate sim_start
 
         for c in (cands[:max_stocks] if max_stocks else cands):
-            if day_trades >= MAX_TRADES_PER_DAY or day_pnl <= DAILY_LOSS_LIMIT:
+            if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
                 break
             sym = c["symbol"]
             env = dict(os.environ)
             env.update(ENV_BASE)
+            # PDT mode: override MAX_NOTIONAL to full buying power
+            if pdt_mode and not pdt_crossed:
+                env["WB_MAX_NOTIONAL"] = str(int(equity * 4))
             env["WB_SCANNER_GAP_PCT"] = str(c.get("gap_pct", 0))
             env["WB_SCANNER_RVOL"] = str(c.get("relative_volume", 0))
             env["WB_SCANNER_FLOAT_M"] = str(c.get("float_millions", 20) or 20)
@@ -215,7 +250,7 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                 window_list = [(ss, "12:00")]
 
             for win_start, win_end in window_list:
-                if day_trades >= MAX_TRADES_PER_DAY or day_pnl <= DAILY_LOSS_LIMIT:
+                if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
                     break
                 cmd = [sys.executable, "simulate.py", sym, date, win_start, win_end,
                        "--ticks", "--risk", str(risk), "--no-fundamentals",
@@ -227,6 +262,8 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                 except:
                     continue
                 for m in TRADE_PAT.finditer(output):
+                    if day_trades >= max_trades_today:
+                        break
                     pnl = int(float(m.group(9)))
                     day_pnl += pnl
                     day_trades += 1
@@ -237,20 +274,49 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                 time.sleep(0.3)
 
         equity += day_pnl
+
+        # PDT: record today's trades and check for $25K crossover
+        if pdt_mode:
+            if day_trades > 0:
+                pdt_trade_history.append((i, day_trades))
+            # Clean old entries outside 5-day window
+            pdt_trade_history = [(di, nt) for di, nt in pdt_trade_history if di > i - 5]
+            if not pdt_crossed and equity >= PDT_THRESHOLD:
+                pdt_crossed = True
+                print(f"  🎉 PDT CLEARED! Equity ${equity:,.0f} >= ${PDT_THRESHOLD:,} — normal trading unlocked", flush=True)
+
+        # Salary mode: withdraw profits above cap at end of day
+        day_withdrawal = 0
+        if salary_cap and equity > salary_cap:
+            day_withdrawal = equity - salary_cap
+            total_withdrawn += day_withdrawal
+            equity = salary_cap
+            withdrawal_log.append({"date": date, "amount": day_withdrawal, "total": total_withdrawn})
+
         daily_results.append({
             "date": date, "trades": day_trades, "pnl": day_pnl,
             "equity": equity, "symbols": " ".join(day_symbols),
+            "withdrawal": day_withdrawal, "total_withdrawn": total_withdrawn,
         })
 
         if day_trades > 0:
-            print(f"[{i+1}/{len(dates)}] {date}: {day_trades} trades, ${day_pnl:+,}, eq=${equity:,.0f}")
+            wd_str = f" | withdrew ${day_withdrawal:,.0f} (total ${total_withdrawn:,.0f})" if day_withdrawal > 0 else ""
+            pdt_str = ""
+            if pdt_mode and not pdt_crossed:
+                recent = sum(nt for di, nt in pdt_trade_history if di > i - 5)
+                pdt_str = f" [PDT: {recent}/{PDT_MAX_DAY_TRADES} used]"
+            print(f"[{i+1}/{len(dates)}] {date}: {day_trades} trades, ${day_pnl:+,}, eq=${equity:,.0f}{wd_str}{pdt_str}")
         else:
-            print(f"[{i+1}/{len(dates)}] {date}: —")
+            pdt_str = ""
+            if pdt_mode and not pdt_crossed:
+                recent = sum(nt for di, nt in pdt_trade_history if di > i - 5)
+                pdt_str = f" [PDT: {recent}/{PDT_MAX_DAY_TRADES} used]"
+            print(f"[{i+1}/{len(dates)}] {date}: —{pdt_str}")
 
         write_status(label, dates, i + 1, equity, all_trades, daily_results, start_time, sf, stf)
 
     # Final summary
-    total_pnl = equity - STARTING_EQUITY
+    total_pnl = equity - STARTING_EQUITY + total_withdrawn
     wins = sum(1 for t in all_trades if t["pnl"] > 0)
     losses = sum(1 for t in all_trades if t["pnl"] < 0)
     wr = "%d%%" % (wins * 100 // (wins + losses)) if wins + losses else "N/A"
@@ -258,14 +324,20 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
     print(f"\n{'='*60}")
     print(f"  FINAL: {label}")
     print(f"  Trades: {len(all_trades)}, WR: {wr} ({wins}W/{losses}L)")
-    print(f"  P&L: ${total_pnl:+,} ({total_pnl/STARTING_EQUITY*100:+.1f}%)")
-    print(f"  Equity: ${equity:,}")
+    if salary_cap:
+        print(f"  Total Earned: ${total_pnl:+,}")
+        print(f"  Withdrawn: ${total_withdrawn:,} ({len(withdrawal_log)} withdrawals)")
+        print(f"  Account: ${equity:,}")
+    else:
+        print(f"  P&L: ${total_pnl:+,} ({total_pnl/STARTING_EQUITY*100:+.1f}%)")
+        print(f"  Equity: ${equity:,}")
     print(f"{'='*60}")
 
     write_status(label, dates, len(dates), equity, all_trades, daily_results, start_time, sf, stf)
 
 
 def main():
+    global STARTING_EQUITY
     parser = argparse.ArgumentParser(description="V2 Backtest Runner with Progress Reporting")
     parser.add_argument("--start", required=True, help="Start date (YYYY-MM-DD)")
     parser.add_argument("--end", required=True, help="End date (YYYY-MM-DD)")
@@ -278,7 +350,16 @@ def main():
                         help="Max scanner candidates per day (0 = unlimited, default 5)")
     parser.add_argument("--ab-mp-v2", action="store_true",
                         help="Run A/B comparison: Config A (SQ-only) vs Config B (SQ + MP V2)")
+    parser.add_argument("--salary", type=int, default=None,
+                        help="Salary mode: withdraw profits above this amount daily (e.g., --salary 100000)")
+    parser.add_argument("--pdt", action="store_true",
+                        help="PDT mode: 3 day trades per 5 business days until equity >= $25K")
+    parser.add_argument("--equity", type=int, default=None,
+                        help="Override starting equity (e.g., --equity 5000)")
     args = parser.parse_args()
+
+    if args.equity:
+        STARTING_EQUITY = args.equity
 
     # Find all dates with scanner data in range
     all_files = sorted(glob.glob(os.path.join(WORKDIR, "scanner_results", "20??-??-??.json")))
@@ -362,7 +443,7 @@ def main():
     else:
         label = args.label or f"Backtest {args.start} to {args.end}"
         run_backtest(dates, label, windows=windows, status_file=status_file, state_file=state_file,
-                     max_stocks=max_stocks)
+                     max_stocks=max_stocks, salary_cap=args.salary, pdt_mode=args.pdt)
 
 
 if __name__ == "__main__":
