@@ -335,12 +335,21 @@ def run_scanner():
     state.candidates = scan_premarket_live(state.ib)
     state.last_scan_time = now
 
-    # Subscribe to top 5 (or all if fewer)
+    # Subscribe to new candidates (top 5)
+    new_subs = 0
     for c in state.candidates[:5]:
-        subscribe_symbol(c["symbol"])
+        sym = c["symbol"]
+        if sym not in state.active_symbols:
+            subscribe_symbol(sym)
+            new_subs += 1
 
-    print(f"📊 Scanner: {len(state.candidates)} candidates, "
-          f"{len(state.active_symbols)} subscribed", flush=True)
+    # NOTE: We NEVER unsubscribe symbols during a session. Once subscribed,
+    # a stock stays on the watchlist until the trading window closes.
+    # This prevents losing coverage when a stock temporarily drops from
+    # the scanner (e.g., RVOL dips below threshold between volume spikes).
+
+    print(f"📊 Scanner: {len(state.candidates)} new candidates, "
+          f"{new_subs} new subs, {len(state.active_symbols)} total watching", flush=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -367,7 +376,7 @@ def on_bar_close_1m(bar):
             ema = f"{sq.ema:.2f}" if (sq and sq.ema) else "none"
             macd_hist = f"{sq.macd_state.histogram:.3f}" if (sq and hasattr(sq, 'macd_state') and sq.macd_state.histogram is not None) else "N/A"
             bar_count = len(sq.bars_1m) if (sq and hasattr(sq, 'bars_1m')) else 0
-            avg_vol = sq._avg_vol if (sq and hasattr(sq, '_avg_vol') and sq._avg_vol) else 0
+            avg_vol = sq._avg_prior_vol() if (sq and hasattr(sq, '_avg_prior_vol')) else 0
             vol_ratio = bar.volume / avg_vol if avg_vol > 0 else 0
             vwap_dist = ((bar.close - vwap) / vwap * 100) if vwap and vwap > 0 else 0
             print(f"[{now_str} ET] {symbol} CHART | "
@@ -993,14 +1002,26 @@ def main():
                 if state.in_dead_zone:
                     state.in_dead_zone = False
                     state.last_scan_time = None  # Force immediate rescan
-                    # Reset detectors — morning PM highs and EMAs are stale for evening
+                    # Reset everything for fresh evening session
+                    # Cancel morning subscriptions (evening stocks will be different)
+                    for sym in list(state.active_symbols):
+                        c = state.contracts.get(sym)
+                        if c:
+                            try:
+                                state.ib.cancelMktData(c)
+                            except Exception:
+                                pass
+                    state.active_symbols.clear()
+                    state.contracts.clear()
+                    state.tickers.clear()
+                    state.tick_counts.clear()
                     state.sq_detectors.clear()
                     state.mp_detectors.clear()
                     state.ct_detectors.clear()
                     # Reset bar builders so evening bars start fresh
                     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
                     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
-                    print(f"\n🟢 Evening session started ({now.strftime('%H:%M')} ET). Detectors reset. Resuming trading.", flush=True)
+                    print(f"\n🟢 Evening session started ({now.strftime('%H:%M')} ET). Full reset. Resuming trading.", flush=True)
 
                 # Periodic rescan
                 run_scanner()
