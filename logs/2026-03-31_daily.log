@@ -1,17 +1,22 @@
-caffeinate started (PID: 89658)
-=== V2 Daily run started: Mon Mar 30 02:00:00 MDT 2026 ===
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+WARN: keystroke failed — check Accessibility permissions
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+caffeinate started (PID: 25167)
+=== V2 Daily run started: Tue Mar 31 02:04:18 MDT 2026 ===
 From github.com:mannyluke4/warrior_bot
  * branch            v2-ibkr-migration -> FETCH_HEAD
 Already up to date.
-Code version: 6de66a2 (Add --pdt, --salary, --equity flags to backtest runner)
-/Users/duffy/warrior_bot_v2/daily_run.sh: line 43: md5: command not found
+Code version: 21ec451 (DP V1.2 YTD: -$30K vs SQ-only. Jan 2025: -$2K. DP is net negative.)
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 83: md5: command not found
 daily_run.sh hash: 
-/Users/duffy/warrior_bot_v2/daily_run.sh: line 44: md5: command not found
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 84: md5: command not found
 bot_ibkr.py hash: 
 sntp: clock_settime: Operation not permitted
-+0.020268 +/- 0.040437 time.apple.com 17.253.26.123
++0.019651 +/- 0.040596 time.apple.com 17.253.26.123
 NTP sync skipped (non-root)
-System time: Mon Mar 30 08:00:02 UTC 2026
+System time: Tue Mar 31 08:04:20 UTC 2026
 Pre-flight: checking Python imports...
 V2 Imports OK
 Killing stale processes...
@@ -26,7 +31,7 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Tuesday.txt
 +
 +[0m
   attempt 1/36: port 4002 not ready yet, waiting 5s...
@@ -66,29 +71,4 @@ Waiting for IB Gateway on port 4002...
   attempt 35/36: port 4002 not ready yet, waiting 5s...
   attempt 36/36: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
-=== TRAP: cleanup at Mon Mar 30 02:03:16 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run.sh: line 16: 89658 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration 232ebcc] auto: daily logs 2026-03-30
- 10 files changed, 10895 insertions(+)
- create mode 100644 logs/2026-03-27_morning.log
- create mode 100644 logs/2026-03-30_daily.log
- create mode 100644 logs/cron_2026-03-30.log
- create mode 100644 logs/definitive_ytd.log
- create mode 100644 logs/ibkr_tick_rebuild.log
- create mode 100644 logs/mar26_tick_refetch.log
- create mode 100644 logs/pdt_ytd.log
- create mode 100644 logs/salary_ytd.log
- create mode 100644 logs/ytd_ab_mp_v2.log
- create mode 100644 logs/ytd_mp_detailed.log
-=== Cleanup complete: Mon Mar 30 02:03:17 MDT 2026 ===
-/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 75: 89699 Killed: 9               "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Tue Mar 31 02:07:33 MDT 2026 ===

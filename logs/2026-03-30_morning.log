@@ -1,0 +1,950 @@
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000
+  Windows: 07:00-12:00,16:00-20:00
+  SQ Target R: 2.0
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Connected: True
+Account: ['DUQ143444']
+Account equity: $32,077
+
+🔄 Running scanner at 09:31:41 ET...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+  [FMP] GLND: 26.55M
+  [FMP] ETHT: 7.33M
+  [FMP] ATHE: 11.61M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (1 snapshots)
+🔥 Seeded ASTC: 333 bars, EMA=3.0951
+✅ Subscribed: ASTC
+📊 Scanner: 1 candidates, 1 subscribed
+
+Bot running. Windows: 07:00-12:00, 16:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: ASTC: 0 ticks in last 60s, last_price=$2.92, last_tick_time=09:32:46
+⚠️ TICK DROUGHT: ASTC — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[09:33:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=203 | ASTC:135t/IDLE
+[09:33:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=213 | ASTC:145t/IDLE
+  TICK AUDIT: ASTC: 498 ticks in last 60s, last_price=$2.97, last_tick_time=09:33:46
+[09:34 ET] ASTC SQ | SQ_REJECT: not_new_hod (bar_high=$2.9700 < HOD=$3.8800)
+[09:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=147 | ASTC:79t/IDLE
+[09:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=151 | ASTC:83t/IDLE
+  TICK AUDIT: ASTC: 368 ticks in last 60s, last_price=$2.87, last_tick_time=09:34:46
+[09:35 ET] ASTC CHART | O=2.96 H=2.97 L=2.80 C=2.91 V=34,475 | EMA9=3.04 VWAP=2.91 (-0.1%) HOD=3.10 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=50 | sq=IDLE armed=none
+[09:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=137 | ASTC:69t/IDLE
+[09:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=153 | ASTC:85t/IDLE
+  TICK AUDIT: ASTC: 287 ticks in last 60s, last_price=$2.91, last_tick_time=09:35:45
+[09:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=142 | ASTC:74t/IDLE
+[09:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=146 | ASTC:78t/IDLE
+
+🔄 Running scanner at 09:36:41 ET...
+Error 162, reqId 88: Historical Market Data Service error message:API scanner subscription cancelled: 88
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 88 (reqId=88, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (2 snapshots)
+📊 Scanner: 1 candidates, 1 subscribed
+  TICK AUDIT: ASTC: 386 ticks in last 60s, last_price=$2.91, last_tick_time=09:37:39
+[09:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=175 | ASTC:45t/IDLE
+[09:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=176 | ASTC:46t/IDLE
+  TICK AUDIT: ASTC: 160 ticks in last 60s, last_price=$2.91, last_tick_time=09:38:39
+[09:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=181 | ASTC:51t/IDLE
+[09:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=183 | ASTC:53t/IDLE
+  TICK AUDIT: ASTC: 114 ticks in last 60s, last_price=$2.91, last_tick_time=09:39:39
+[09:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=206 | ASTC:76t/IDLE
+[09:40 ET] ASTC CHART | O=2.91 H=2.92 L=2.88 C=2.89 V=21,654 | EMA9=2.95 VWAP=2.91 (-0.6%) HOD=3.10 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=50 | sq=IDLE armed=none
+[09:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | ASTC:79t/IDLE
+  TICK AUDIT: ASTC: 174 ticks in last 60s, last_price=$2.95, last_tick_time=09:40:39
+[09:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=185 | ASTC:55t/IDLE
+[09:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=185 | ASTC:55t/IDLE
+  TICK AUDIT: ASTC: 121 ticks in last 60s, last_price=$2.93, last_tick_time=09:41:38
+
+🔄 Running scanner at 09:41:42 ET...
+Error 162, reqId 169: Historical Market Data Service error message:API scanner subscription cancelled: 169
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 169 (reqId=169, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (3 snapshots)
+📊 Scanner: 1 candidates, 1 subscribed
+  TICK AUDIT: ASTC: 96 ticks in last 60s, last_price=$2.92, last_tick_time=09:42:38
+[09:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=212 | ASTC:37t/IDLE
+[09:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=212 | ASTC:37t/IDLE
+  TICK AUDIT: ASTC: 209 ticks in last 60s, last_price=$3.03, last_tick_time=09:43:40
+[09:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=301 | ASTC:126t/IDLE
+[09:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=310 | ASTC:135t/IDLE
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000
+  Windows: 07:00-12:00,16:00-20:00
+  SQ Target R: 2.0
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Connected: True
+Account: ['DUQ143444']
+Account equity: $32,077
+
+🔄 Running scanner at 09:44:42 ET...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+  Scanner: ASTC DROPPED (was present in previous scan)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (4 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+
+Bot running. Windows: 07:00-12:00, 16:00-20:00 ET. Ctrl+C to stop.
+[09:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:48:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+[09:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=44 | no symbols
+
+🔄 Running scanner at 09:49:42 ET...
+Error 162, reqId 84: Historical Market Data Service error message:API scanner subscription cancelled: 84
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 84 (reqId=84, symbol=?)
+[09:50 ET] GLND CHART | O=9.29 H=9.29 L=9.29 C=9.29 V=200 | EMA9=none VWAP=9.82 (-5.4%) HOD=10.18 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] GOAI CHART | O=4.16 H=4.16 L=4.16 C=4.16 V=200 | EMA9=none VWAP=4.20 (-0.9%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] KZR CHART | O=7.33 H=7.33 L=7.33 C=7.33 V=600 | EMA9=none VWAP=7.33 (+0.1%) HOD=7.33 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] VATE CHART | O=5.24 H=5.24 L=5.24 C=5.24 V=600 | EMA9=none VWAP=5.26 (-0.5%) HOD=5.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] QNTM CHART | O=5.56 H=5.56 L=5.56 C=5.56 V=2,000 | EMA9=none VWAP=5.55 (+0.1%) HOD=5.56 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] HOLO CHART | O=2.24 H=2.24 L=2.24 C=2.24 V=400 | EMA9=none VWAP=2.22 (+0.8%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:50 ET] CODI CHART | O=7.46 H=7.46 L=7.46 C=7.46 V=200 | EMA9=none VWAP=7.58 (-1.6%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] IONR: 47.94M
+  [FMP] PANG: 0.24M
+[09:50 ET] JFBR CHART | O=2.43 H=2.43 L=2.43 C=2.43 V=600 | EMA9=none VWAP=2.43 (+0.0%) HOD=2.43 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (5 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[09:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+[09:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=88 | no symbols
+
+🔄 Running scanner at 09:54:43 ET...
+Error 162, reqId 165: Historical Market Data Service error message:API scanner subscription cancelled: 165
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 165 (reqId=165, symbol=?)
+[09:55 ET] GLND CHART | O=10.18 H=10.18 L=10.18 C=10.18 V=600 | EMA9=none VWAP=9.96 (+2.2%) HOD=10.81 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] SST CHART | O=4.07 H=4.07 L=4.07 C=4.07 V=200 | EMA9=none VWAP=4.15 (-1.9%) HOD=4.18 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] NXTT CHART | O=2.69 H=2.69 L=2.69 C=2.69 V=400 | EMA9=none VWAP=2.57 (+4.8%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] QNTM CHART | O=5.53 H=5.53 L=5.53 C=5.53 V=1,000 | EMA9=none VWAP=5.57 (-0.7%) HOD=5.70 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] KZR CHART | O=7.30 H=7.30 L=7.30 C=7.30 V=200 | EMA9=none VWAP=7.33 (-0.5%) HOD=7.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] VATE CHART | O=5.41 H=5.41 L=5.41 C=5.41 V=200 | EMA9=none VWAP=5.33 (+1.5%) HOD=5.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] SONM CHART | O=3.77 H=3.77 L=3.77 C=3.77 V=200 | EMA9=none VWAP=3.84 (-1.7%) HOD=3.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] HOLO CHART | O=2.15 H=2.15 L=2.15 C=2.15 V=200 | EMA9=none VWAP=2.20 (-2.3%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] IONR CHART | O=4.05 H=4.05 L=4.05 C=4.05 V=200 | EMA9=none VWAP=4.10 (-1.3%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] GOAI CHART | O=4.22 H=4.22 L=4.22 C=4.22 V=600 | EMA9=none VWAP=4.19 (+0.7%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] CODI CHART | O=7.62 H=7.62 L=7.62 C=7.62 V=600 | EMA9=none VWAP=7.59 (+0.4%) HOD=7.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[09:55 ET] PANG CHART | O=7.29 H=7.29 L=7.29 C=7.29 V=600 | EMA9=none VWAP=7.29 (-0.0%) HOD=7.31 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (6 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[09:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+[09:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=130 | no symbols
+
+🔄 Running scanner at 09:59:43 ET...
+Error 162, reqId 246: Historical Market Data Service error message:API scanner subscription cancelled: 246
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 246 (reqId=246, symbol=?)
+[10:00 ET] SST CHART | O=4.12 H=4.12 L=4.12 C=4.12 V=400 | EMA9=none VWAP=4.15 (-0.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] NXTT CHART | O=2.72 H=2.72 L=2.72 C=2.72 V=200 | EMA9=none VWAP=2.58 (+5.3%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] SVRN CHART | O=9.49 H=9.49 L=9.49 C=9.49 V=0 | EMA9=none VWAP=8.75 (+8.5%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] QNTM CHART | O=5.70 H=5.70 L=5.70 C=5.70 V=800 | EMA9=none VWAP=5.64 (+1.0%) HOD=5.98 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] SONM CHART | O=3.90 H=3.90 L=3.90 C=3.90 V=400 | EMA9=none VWAP=3.90 (+0.0%) HOD=3.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] KZR CHART | O=7.42 H=7.42 L=7.42 C=7.42 V=200 | EMA9=none VWAP=7.35 (+1.0%) HOD=7.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] VATE CHART | O=5.42 H=5.42 L=5.42 C=5.42 V=800 | EMA9=none VWAP=5.35 (+1.4%) HOD=5.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] CODI CHART | O=7.64 H=7.64 L=7.64 C=7.64 V=400 | EMA9=none VWAP=7.60 (+0.5%) HOD=7.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] HOLO CHART | O=2.18 H=2.18 L=2.18 C=2.18 V=600 | EMA9=none VWAP=2.20 (-0.9%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] IONR CHART | O=4.21 H=4.21 L=4.21 C=4.21 V=200 | EMA9=none VWAP=4.12 (+2.2%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:00 ET] PANG CHART | O=7.31 H=7.31 L=7.31 C=7.31 V=200 | EMA9=none VWAP=7.31 (+0.1%) HOD=7.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (7 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:03:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:03:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+[10:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=170 | no symbols
+
+🔄 Running scanner at 10:04:44 ET...
+Error 162, reqId 327: Historical Market Data Service error message:API scanner subscription cancelled: 327
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 327 (reqId=327, symbol=?)
+[10:05 ET] SST CHART | O=4.27 H=4.27 L=4.27 C=4.27 V=200 | EMA9=none VWAP=4.16 (+2.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] SGML CHART | O=13.71 H=13.71 L=13.71 C=13.71 V=1,000 | EMA9=none VWAP=13.90 (-1.4%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] SONM CHART | O=3.95 H=3.95 L=3.95 C=3.95 V=1,000 | EMA9=none VWAP=3.92 (+0.9%) HOD=3.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] NXTT CHART | O=2.73 H=2.73 L=2.73 C=2.73 V=200 | EMA9=none VWAP=2.60 (+4.9%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] QNTM CHART | O=5.98 H=5.98 L=5.98 C=5.98 V=1,400 | EMA9=none VWAP=5.70 (+4.9%) HOD=5.98 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] KZR CHART | O=7.40 H=7.40 L=7.40 C=7.40 V=200 | EMA9=none VWAP=7.36 (+0.6%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] CODI CHART | O=7.61 H=7.61 L=7.61 C=7.61 V=400 | EMA9=none VWAP=7.62 (-0.1%) HOD=7.82 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] HOLO CHART | O=2.21 H=2.21 L=2.21 C=2.21 V=800 | EMA9=none VWAP=2.20 (+0.3%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] AVD CHART | O=2.35 H=2.35 L=2.35 C=2.35 V=400 | EMA9=none VWAP=2.36 (-0.4%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] VATE CHART | O=5.29 H=5.29 L=5.29 C=5.29 V=200 | EMA9=none VWAP=5.34 (-1.0%) HOD=5.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] TURB CHART | O=2.79 H=2.79 L=2.79 C=2.79 V=400 | EMA9=none VWAP=2.81 (-0.8%) HOD=2.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] IONR CHART | O=4.07 H=4.07 L=4.07 C=4.07 V=200 | EMA9=none VWAP=4.11 (-0.9%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] GOAI CHART | O=4.08 H=4.08 L=4.08 C=4.08 V=200 | EMA9=none VWAP=4.17 (-2.2%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:05 ET] SAGT CHART | O=2.65 H=2.65 L=2.65 C=2.65 V=400 | EMA9=none VWAP=2.65 (+0.2%) HOD=2.65 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (8 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:08:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:08:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+[10:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=209 | no symbols
+
+🔄 Running scanner at 10:09:44 ET...
+Error 162, reqId 408: Historical Market Data Service error message:API scanner subscription cancelled: 408
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 408 (reqId=408, symbol=?)
+[10:10 ET] SST CHART | O=4.13 H=4.13 L=4.13 C=4.13 V=100 | EMA9=none VWAP=4.16 (-0.7%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] SVRN CHART | O=8.80 H=8.80 L=8.80 C=8.80 V=200 | EMA9=none VWAP=8.75 (+0.6%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] SONM CHART | O=3.93 H=3.93 L=3.93 C=3.93 V=200 | EMA9=none VWAP=3.92 (+0.1%) HOD=4.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] QNTM CHART | O=5.75 H=5.75 L=5.75 C=5.75 V=3,000 | EMA9=none VWAP=5.71 (+0.6%) HOD=6.00 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] NXTT CHART | O=2.68 H=2.68 L=2.68 C=2.68 V=600 | EMA9=none VWAP=2.65 (+1.3%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] KZR CHART | O=7.44 H=7.44 L=7.44 C=7.44 V=200 | EMA9=none VWAP=7.37 (+0.9%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] TURB CHART | O=2.90 H=2.90 L=2.90 C=2.90 V=200 | EMA9=none VWAP=2.89 (+0.4%) HOD=2.91 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] CODI CHART | O=7.82 H=7.82 L=7.82 C=7.82 V=200 | EMA9=none VWAP=7.65 (+2.3%) HOD=8.00 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] HOLO CHART | O=2.22 H=2.22 L=2.22 C=2.22 V=600 | EMA9=none VWAP=2.21 (+0.5%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] VATE CHART | O=5.29 H=5.29 L=5.29 C=5.29 V=200 | EMA9=none VWAP=5.32 (-0.5%) HOD=5.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] IONR CHART | O=4.09 H=4.09 L=4.09 C=4.09 V=200 | EMA9=none VWAP=4.10 (-0.3%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] AVD CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=200 | EMA9=none VWAP=2.34 (+2.7%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:10 ET] GOAI CHART | O=4.09 H=4.09 L=4.09 C=4.09 V=200 | EMA9=none VWAP=4.16 (-1.6%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] PALU: 0.47M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (9 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:13:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:13:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+[10:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=249 | no symbols
+
+🔄 Running scanner at 10:14:44 ET...
+Error 162, reqId 489: Historical Market Data Service error message:API scanner subscription cancelled: 489
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 489 (reqId=489, symbol=?)
+[10:15 ET] SONM CHART | O=4.06 H=4.06 L=4.06 C=4.06 V=200 | EMA9=none VWAP=3.94 (+3.0%) HOD=4.12 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] SGML CHART | O=13.23 H=13.23 L=13.23 C=13.23 V=1,600 | EMA9=none VWAP=13.66 (-3.2%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] NXTT CHART | O=2.73 H=2.73 L=2.73 C=2.73 V=2,200 | EMA9=none VWAP=2.67 (+2.3%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] SST CHART | O=4.19 H=4.19 L=4.19 C=4.19 V=200 | EMA9=none VWAP=4.15 (+0.9%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] CODI CHART | O=8.00 H=8.00 L=8.00 C=8.00 V=200 | EMA9=none VWAP=7.77 (+2.9%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] KZR CHART | O=7.42 H=7.42 L=7.42 C=7.42 V=400 | EMA9=none VWAP=7.39 (+0.4%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] SVRN CHART | O=8.65 H=8.65 L=8.65 C=8.65 V=200 | EMA9=none VWAP=8.40 (+3.0%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] VATE CHART | O=5.29 H=5.29 L=5.29 C=5.29 V=3,000 | EMA9=none VWAP=5.32 (-0.6%) HOD=5.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] JFBR CHART | O=2.43 H=2.43 L=2.43 C=2.43 V=600 | EMA9=none VWAP=2.44 (-0.4%) HOD=2.55 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] TURB CHART | O=2.91 H=2.91 L=2.91 C=2.91 V=3,600 | EMA9=none VWAP=2.90 (+0.4%) HOD=2.91 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] RBNE CHART | O=2.72 H=2.72 L=2.72 C=2.72 V=200 | EMA9=none VWAP=2.76 (-1.3%) HOD=2.83 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] IONR CHART | O=4.10 H=4.10 L=4.10 C=4.10 V=600 | EMA9=none VWAP=4.11 (-0.2%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] HOLO CHART | O=2.24 H=2.24 L=2.24 C=2.24 V=200 | EMA9=none VWAP=2.20 (+1.8%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:15 ET] AVD CHART | O=2.33 H=2.33 L=2.33 C=2.33 V=5,800 | EMA9=none VWAP=2.33 (-0.2%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (10 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:18:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:18:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+[10:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | no symbols
+
+🔄 Running scanner at 10:19:45 ET...
+Error 162, reqId 570: Historical Market Data Service error message:API scanner subscription cancelled: 570
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 570 (reqId=570, symbol=?)
+[10:20 ET] SGML CHART | O=13.15 H=13.15 L=13.15 C=13.15 V=200 | EMA9=none VWAP=13.62 (-3.5%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] SVRN CHART | O=8.32 H=8.32 L=8.32 C=8.32 V=2,500 | EMA9=none VWAP=8.40 (-0.9%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] IONR CHART | O=4.17 H=4.17 L=4.17 C=4.17 V=200 | EMA9=none VWAP=4.12 (+1.1%) HOD=4.34 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] JFBR CHART | O=2.55 H=2.55 L=2.55 C=2.55 V=200 | EMA9=none VWAP=2.48 (+2.8%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] CODI CHART | O=8.02 H=8.02 L=8.02 C=8.02 V=900 | EMA9=none VWAP=7.78 (+3.1%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] NXTT CHART | O=2.73 H=2.73 L=2.73 C=2.73 V=800 | EMA9=none VWAP=2.67 (+2.0%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] KZR CHART | O=7.39 H=7.39 L=7.39 C=7.39 V=16,400 | EMA9=none VWAP=7.39 (+0.0%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] VATE CHART | O=5.45 H=5.45 L=5.45 C=5.45 V=1,000 | EMA9=none VWAP=5.34 (+2.2%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] SST CHART | O=3.98 H=3.98 L=3.98 C=3.98 V=200 | EMA9=none VWAP=4.13 (-3.7%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] MKDW CHART | O=6.66 H=6.66 L=6.66 C=6.66 V=200 | EMA9=none VWAP=7.21 (-7.7%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] RBNE CHART | O=2.83 H=2.83 L=2.83 C=2.83 V=200 | EMA9=none VWAP=2.79 (+1.5%) HOD=2.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] AVD CHART | O=2.34 H=2.34 L=2.34 C=2.34 V=1,400 | EMA9=none VWAP=2.34 (+0.2%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] HOLO CHART | O=2.17 H=2.17 L=2.17 C=2.17 V=1,400 | EMA9=none VWAP=2.19 (-1.1%) HOD=2.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:20 ET] CORD CHART | O=19.32 H=19.32 L=19.32 C=19.32 V=200 | EMA9=none VWAP=19.37 (-0.3%) HOD=19.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (11 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:23:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:23:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+[10:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=331 | no symbols
+
+🔄 Running scanner at 10:24:45 ET...
+Error 162, reqId 651: Historical Market Data Service error message:API scanner subscription cancelled: 651
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 651 (reqId=651, symbol=?)
+[10:25 ET] SONM CHART | O=4.20 H=4.20 L=4.20 C=4.20 V=200 | EMA9=none VWAP=3.98 (+5.6%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] MKDW CHART | O=5.57 H=5.57 L=5.57 C=5.57 V=0 | EMA9=none VWAP=6.95 (-19.9%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] SGML CHART | O=13.03 H=13.03 L=13.03 C=13.03 V=800 | EMA9=none VWAP=13.55 (-3.8%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] SVRN CHART | O=8.38 H=8.38 L=8.38 C=8.38 V=200 | EMA9=none VWAP=8.40 (-0.3%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] SST CHART | O=3.91 H=3.91 L=3.91 C=3.91 V=200 | EMA9=none VWAP=4.11 (-4.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] KZR CHART | O=7.41 H=7.41 L=7.41 C=7.41 V=100 | EMA9=none VWAP=7.39 (+0.3%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] VATE CHART | O=5.46 H=5.46 L=5.46 C=5.46 V=200 | EMA9=none VWAP=5.34 (+2.3%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] JFBR CHART | O=2.64 H=2.64 L=2.64 C=2.64 V=600 | EMA9=none VWAP=2.53 (+4.5%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] NXTT CHART | O=2.64 H=2.64 L=2.64 C=2.64 V=400 | EMA9=none VWAP=2.67 (-1.1%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] CODI CHART | O=8.00 H=8.00 L=8.00 C=8.00 V=200 | EMA9=none VWAP=7.78 (+2.8%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] GOAI CHART | O=4.08 H=4.08 L=4.08 C=4.08 V=200 | EMA9=none VWAP=4.15 (-1.8%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] AVD CHART | O=2.36 H=2.36 L=2.36 C=2.36 V=1,000 | EMA9=none VWAP=2.34 (+0.9%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] IONR CHART | O=4.34 H=4.34 L=4.34 C=4.34 V=200 | EMA9=none VWAP=4.14 (+4.8%) HOD=4.34 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] CORD CHART | O=19.48 H=19.48 L=19.48 C=19.48 V=200 | EMA9=none VWAP=19.45 (+0.2%) HOD=19.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:25 ET] RBNE CHART | O=2.84 H=2.84 L=2.84 C=2.84 V=200 | EMA9=none VWAP=2.79 (+1.6%) HOD=2.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (12 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:28:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:28:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+[10:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | no symbols
+
+🔄 Running scanner at 10:29:46 ET...
+Error 162, reqId 732: Historical Market Data Service error message:API scanner subscription cancelled: 732
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 732 (reqId=732, symbol=?)
+[10:30 ET] SONM CHART | O=4.21 H=4.21 L=4.21 C=4.21 V=200 | EMA9=none VWAP=4.00 (+5.4%) HOD=4.21 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] QNTM CHART | O=6.30 H=6.30 L=6.30 C=6.30 V=1,800 | EMA9=none VWAP=5.89 (+7.0%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] IONR CHART | O=4.22 H=4.22 L=4.22 C=4.22 V=200 | EMA9=none VWAP=4.15 (+1.6%) HOD=4.34 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] KZR CHART | O=7.40 H=7.40 L=7.40 C=7.40 V=200 | EMA9=none VWAP=7.39 (+0.2%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] SGML CHART | O=12.91 H=12.91 L=12.91 C=12.91 V=1,000 | EMA9=none VWAP=13.49 (-4.3%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=2,000 | EMA9=none VWAP=2.54 (+1.2%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] VATE CHART | O=5.36 H=5.36 L=5.36 C=5.36 V=200 | EMA9=none VWAP=5.34 (+0.4%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] SVRN CHART | O=8.50 H=8.50 L=8.50 C=8.50 V=200 | EMA9=none VWAP=8.39 (+1.3%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] NXTT CHART | O=2.65 H=2.65 L=2.65 C=2.65 V=800 | EMA9=none VWAP=2.67 (-0.7%) HOD=2.73 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] AVD CHART | O=2.37 H=2.37 L=2.37 C=2.37 V=200 | EMA9=none VWAP=2.34 (+1.3%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] CORD CHART | O=19.49 H=19.49 L=19.49 C=19.49 V=800 | EMA9=none VWAP=19.49 (+0.0%) HOD=19.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] RBNE CHART | O=2.79 H=2.79 L=2.79 C=2.79 V=400 | EMA9=none VWAP=2.80 (-0.5%) HOD=2.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] SST CHART | O=3.99 H=3.99 L=3.99 C=3.99 V=200 | EMA9=none VWAP=4.07 (-2.0%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] PALU CHART | O=12.03 H=12.03 L=12.03 C=12.03 V=200 | EMA9=none VWAP=12.03 (+0.0%) HOD=12.03 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:30 ET] NBIZ CHART | O=13.15 H=13.15 L=13.15 C=13.15 V=200 | EMA9=none VWAP=13.43 (-2.1%) HOD=13.51 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (13 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:33:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:33:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+[10:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=413 | no symbols
+
+🔄 Running scanner at 10:34:46 ET...
+Error 162, reqId 813: Historical Market Data Service error message:API scanner subscription cancelled: 813
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 813 (reqId=813, symbol=?)
+[10:35 ET] SONM CHART | O=4.19 H=4.19 L=4.19 C=4.19 V=200 | EMA9=none VWAP=4.07 (+3.0%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] MKDW CHART | O=6.15 H=6.15 L=6.15 C=6.15 V=100 | EMA9=none VWAP=6.52 (-5.6%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] IONR CHART | O=4.30 H=4.30 L=4.30 C=4.30 V=200 | EMA9=none VWAP=4.17 (+3.1%) HOD=4.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] KZR CHART | O=7.38 H=7.38 L=7.38 C=7.38 V=600 | EMA9=none VWAP=7.39 (-0.1%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] SGML CHART | O=12.40 H=12.40 L=12.40 C=12.40 V=200 | EMA9=none VWAP=13.47 (-7.9%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] VATE CHART | O=5.36 H=5.36 L=5.36 C=5.36 V=2,000 | EMA9=none VWAP=5.34 (+0.3%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] RBNE CHART | O=2.90 H=2.90 L=2.90 C=2.90 V=200 | EMA9=none VWAP=2.82 (+2.8%) HOD=2.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=300 | EMA9=none VWAP=2.54 (+1.3%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] AVD CHART | O=2.37 H=2.37 L=2.37 C=2.37 V=200 | EMA9=none VWAP=2.35 (+1.1%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] SVRN CHART | O=8.15 H=8.15 L=8.15 C=8.15 V=400 | EMA9=none VWAP=8.37 (-2.6%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] CORD CHART | O=19.64 H=19.64 L=19.64 C=19.64 V=400 | EMA9=none VWAP=19.52 (+0.6%) HOD=19.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] TURB CHART | O=2.90 H=2.90 L=2.90 C=2.90 V=200 | EMA9=none VWAP=2.90 (-0.0%) HOD=2.94 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] CODI CHART | O=7.61 H=7.61 L=7.61 C=7.61 V=100 | EMA9=none VWAP=7.78 (-2.2%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:35 ET] NBIZ CHART | O=13.51 H=13.51 L=13.51 C=13.51 V=1,400 | EMA9=none VWAP=13.49 (+0.1%) HOD=13.61 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (14 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+[10:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=454 | no symbols
+
+🔄 Running scanner at 10:39:47 ET...
+Error 162, reqId 894: Historical Market Data Service error message:API scanner subscription cancelled: 894
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 894 (reqId=894, symbol=?)
+[10:40 ET] SONM CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=2,000 | EMA9=none VWAP=4.10 (+3.5%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] IONR CHART | O=4.44 H=4.44 L=4.44 C=4.44 V=200 | EMA9=none VWAP=4.19 (+5.9%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] MKDW CHART | O=5.91 H=5.91 L=5.91 C=5.91 V=400 | EMA9=none VWAP=6.23 (-5.2%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] KZR CHART | O=7.38 H=7.38 L=7.38 C=7.38 V=4,000 | EMA9=none VWAP=7.39 (-0.1%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] SVRN CHART | O=8.15 H=8.15 L=8.15 C=8.15 V=400 | EMA9=none VWAP=8.36 (-2.5%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] RBNE CHART | O=2.92 H=2.92 L=2.92 C=2.92 V=200 | EMA9=none VWAP=2.86 (+2.1%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] VATE CHART | O=5.44 H=5.44 L=5.44 C=5.44 V=200 | EMA9=none VWAP=5.35 (+1.8%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] SGML CHART | O=12.34 H=12.34 L=12.34 C=12.34 V=200 | EMA9=none VWAP=13.44 (-8.2%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] ICU CHART | O=3.09 H=3.09 L=3.09 C=3.09 V=200 | EMA9=none VWAP=3.13 (-1.3%) HOD=3.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] CORD CHART | O=19.84 H=19.84 L=19.84 C=19.84 V=200 | EMA9=none VWAP=19.60 (+1.2%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] AVD CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=2,000 | EMA9=none VWAP=2.35 (+2.2%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] GOAI CHART | O=4.17 H=4.17 L=4.17 C=4.17 V=200 | EMA9=none VWAP=4.15 (+0.5%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] NBIZ CHART | O=13.61 H=13.61 L=13.61 C=13.61 V=800 | EMA9=none VWAP=13.52 (+0.7%) HOD=13.71 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.53 (-1.3%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:40 ET] SST CHART | O=3.80 H=3.80 L=3.80 C=3.80 V=600 | EMA9=none VWAP=4.03 (-5.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (15 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+[10:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | no symbols
+
+🔄 Running scanner at 10:44:48 ET...
+Error 162, reqId 975: Historical Market Data Service error message:API scanner subscription cancelled: 975
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 975 (reqId=975, symbol=?)
+[10:45 ET] GLND CHART | O=11.09 H=11.09 L=11.09 C=11.09 V=2,000 | EMA9=none VWAP=10.93 (+1.4%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] IONR CHART | O=4.46 H=4.46 L=4.46 C=4.46 V=200 | EMA9=none VWAP=4.21 (+5.9%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] SONM CHART | O=4.08 H=4.08 L=4.08 C=4.08 V=100 | EMA9=none VWAP=4.09 (-0.4%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] KZR CHART | O=7.39 H=7.39 L=7.39 C=7.39 V=100 | EMA9=none VWAP=7.39 (+0.0%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] RBNE CHART | O=2.95 H=2.95 L=2.95 C=2.95 V=500 | EMA9=none VWAP=2.87 (+2.8%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] SST CHART | O=3.82 H=3.82 L=3.82 C=3.82 V=200 | EMA9=none VWAP=4.01 (-4.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] VATE CHART | O=5.44 H=5.44 L=5.44 C=5.44 V=200 | EMA9=none VWAP=5.35 (+1.7%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] SVRN CHART | O=8.32 H=8.32 L=8.32 C=8.32 V=200 | EMA9=none VWAP=8.35 (-0.4%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] NBIZ CHART | O=13.71 H=13.71 L=13.71 C=13.71 V=200 | EMA9=none VWAP=13.54 (+1.2%) HOD=13.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] ICU CHART | O=3.17 H=3.17 L=3.17 C=3.17 V=400 | EMA9=none VWAP=3.15 (+0.6%) HOD=3.19 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] AVD CHART | O=2.37 H=2.37 L=2.37 C=2.37 V=1,400 | EMA9=none VWAP=2.35 (+0.7%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] QNTM CHART | O=6.30 H=6.30 L=6.30 C=6.30 V=200 | EMA9=none VWAP=5.93 (+6.2%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] SGML CHART | O=12.23 H=12.23 L=12.23 C=12.23 V=200 | EMA9=none VWAP=13.41 (-8.8%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.53 (-1.2%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] CODI CHART | O=7.58 H=7.58 L=7.58 C=7.58 V=100 | EMA9=none VWAP=7.77 (-2.5%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:45 ET] TURB CHART | O=2.94 H=2.94 L=2.94 C=2.94 V=400 | EMA9=none VWAP=2.90 (+1.4%) HOD=2.94 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (16 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:48:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+[10:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=529 | no symbols
+
+🔄 Running scanner at 10:49:48 ET...
+Error 162, reqId 1056: Historical Market Data Service error message:API scanner subscription cancelled: 1056
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1056 (reqId=1056, symbol=?)
+[10:50 ET] MKDW CHART | O=6.00 H=6.00 L=6.00 C=6.00 V=200 | EMA9=none VWAP=6.13 (-2.1%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] SONM CHART | O=3.96 H=3.96 L=3.96 C=3.96 V=500 | EMA9=none VWAP=4.09 (-3.2%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] SST CHART | O=3.85 H=3.85 L=3.85 C=3.85 V=300 | EMA9=none VWAP=4.02 (-4.2%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] GLND CHART | O=10.20 H=10.20 L=10.20 C=10.20 V=300 | EMA9=none VWAP=10.92 (-6.6%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] ICU CHART | O=3.19 H=3.19 L=3.19 C=3.19 V=200 | EMA9=none VWAP=3.23 (-1.1%) HOD=3.37 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] SVRN CHART | O=8.16 H=8.16 L=8.16 C=8.16 V=200 | EMA9=none VWAP=8.35 (-2.3%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] KZR CHART | O=7.41 H=7.41 L=7.41 C=7.41 V=200 | EMA9=none VWAP=7.39 (+0.3%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] VATE CHART | O=5.37 H=5.37 L=5.37 C=5.37 V=200 | EMA9=none VWAP=5.35 (+0.4%) HOD=5.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] QNTM CHART | O=5.60 H=5.60 L=5.60 C=5.60 V=200 | EMA9=none VWAP=5.92 (-5.4%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] AVD CHART | O=2.36 H=2.36 L=2.36 C=2.36 V=200 | EMA9=none VWAP=2.35 (+0.2%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] CODI CHART | O=7.58 H=7.58 L=7.58 C=7.58 V=200 | EMA9=none VWAP=7.76 (-2.4%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] RBNE CHART | O=2.93 H=2.93 L=2.93 C=2.93 V=600 | EMA9=none VWAP=2.87 (+2.1%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] CORD CHART | O=19.92 H=19.92 L=19.92 C=19.92 V=600 | EMA9=none VWAP=19.65 (+1.4%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] NBIZ CHART | O=13.90 H=13.90 L=13.90 C=13.90 V=200 | EMA9=none VWAP=13.56 (+2.5%) HOD=13.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.53 (-1.1%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:50 ET] SGML CHART | O=11.90 H=11.90 L=11.90 C=11.90 V=100 | EMA9=none VWAP=13.30 (-10.5%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (18 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+[10:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=571 | no symbols
+
+🔄 Running scanner at 10:54:49 ET...
+Error 162, reqId 1137: Historical Market Data Service error message:API scanner subscription cancelled: 1137
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1137 (reqId=1137, symbol=?)
+[10:55 ET] SST CHART | O=4.07 H=4.07 L=4.07 C=4.07 V=100 | EMA9=none VWAP=4.02 (+1.2%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] QNTM CHART | O=5.69 H=5.69 L=5.69 C=5.69 V=1,000 | EMA9=none VWAP=5.91 (-3.8%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] ICU CHART | O=3.37 H=3.37 L=3.37 C=3.37 V=800 | EMA9=none VWAP=3.27 (+3.1%) HOD=3.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] IONR CHART | O=4.42 H=4.42 L=4.42 C=4.42 V=200 | EMA9=none VWAP=4.23 (+4.4%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] SVRN CHART | O=8.40 H=8.40 L=8.40 C=8.40 V=200 | EMA9=none VWAP=8.35 (+0.6%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] VATE CHART | O=5.41 H=5.41 L=5.41 C=5.41 V=200 | EMA9=none VWAP=5.36 (+1.0%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] GLND CHART | O=9.84 H=9.84 L=9.84 C=9.84 V=200 | EMA9=none VWAP=10.89 (-9.6%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] CODI CHART | O=7.66 H=7.66 L=7.66 C=7.66 V=100 | EMA9=none VWAP=7.77 (-1.4%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] AVD CHART | O=2.37 H=2.37 L=2.37 C=2.37 V=1,200 | EMA9=none VWAP=2.35 (+0.7%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] KZR CHART | O=7.30 H=7.30 L=7.30 C=7.30 V=200 | EMA9=none VWAP=7.39 (-1.2%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] SONM CHART | O=4.05 H=4.05 L=4.05 C=4.05 V=200 | EMA9=none VWAP=4.09 (-0.9%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] CORD CHART | O=19.83 H=19.83 L=19.83 C=19.83 V=400 | EMA9=none VWAP=19.67 (+0.8%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.52 (-1.0%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[10:55 ET] NBIZ CHART | O=13.76 H=13.76 L=13.76 C=13.76 V=200 | EMA9=none VWAP=13.58 (+1.3%) HOD=13.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] BZUN: 53.58M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (19 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[10:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+[10:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=610 | no symbols
+
+🔄 Running scanner at 10:59:49 ET...
+Error 162, reqId 1218: Historical Market Data Service error message:API scanner subscription cancelled: 1218
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1218 (reqId=1218, symbol=?)
+[11:00 ET] MKDW CHART | O=6.17 H=6.17 L=6.17 C=6.17 V=600 | EMA9=none VWAP=6.13 (+0.7%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] QNTM CHART | O=5.92 H=5.92 L=5.92 C=5.92 V=200 | EMA9=none VWAP=5.91 (+0.1%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] IONR CHART | O=4.42 H=4.42 L=4.42 C=4.42 V=100 | EMA9=none VWAP=4.24 (+4.2%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] ICU CHART | O=3.38 H=3.38 L=3.38 C=3.38 V=100 | EMA9=none VWAP=3.27 (+3.2%) HOD=3.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] SVRN CHART | O=8.37 H=8.37 L=8.37 C=8.37 V=500 | EMA9=none VWAP=8.35 (+0.2%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] KZR CHART | O=7.25 H=7.25 L=7.25 C=7.25 V=200 | EMA9=none VWAP=7.39 (-1.8%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] CODI CHART | O=7.85 H=7.85 L=7.85 C=7.85 V=400 | EMA9=none VWAP=7.78 (+0.9%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] AVD CHART | O=2.42 H=2.42 L=2.42 C=2.42 V=200 | EMA9=none VWAP=2.36 (+2.7%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=1,000 | EMA9=none VWAP=5.36 (+2.2%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] SGML CHART | O=11.84 H=11.84 L=11.84 C=11.84 V=1,400 | EMA9=none VWAP=13.19 (-10.3%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] SONM CHART | O=3.81 H=3.81 L=3.81 C=3.81 V=100 | EMA9=none VWAP=4.08 (-6.5%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] CORD CHART | O=19.79 H=19.79 L=19.79 C=19.79 V=200 | EMA9=none VWAP=19.66 (+0.6%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] NBIZ CHART | O=13.67 H=13.67 L=13.67 C=13.67 V=600 | EMA9=none VWAP=13.59 (+0.6%) HOD=13.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] BZUN CHART | O=2.38 H=2.38 L=2.38 C=2.38 V=300 | EMA9=none VWAP=2.38 (-0.2%) HOD=2.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=300 | EMA9=none VWAP=2.52 (-0.9%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:00 ET] PANG CHART | O=7.35 H=7.35 L=7.35 C=7.35 V=400 | EMA9=none VWAP=7.32 (+0.4%) HOD=7.43 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (20 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:03:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:03:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+[11:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=646 | no symbols
+
+🔄 Running scanner at 11:04:49 ET...
+Error 162, reqId 1299: Historical Market Data Service error message:API scanner subscription cancelled: 1299
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1299 (reqId=1299, symbol=?)
+[11:05 ET] SST CHART | O=4.23 H=4.23 L=4.23 C=4.23 V=100 | EMA9=none VWAP=4.04 (+4.9%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] IONR CHART | O=4.42 H=4.42 L=4.42 C=4.42 V=100 | EMA9=none VWAP=4.25 (+4.1%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] QNTM CHART | O=5.83 H=5.83 L=5.83 C=5.83 V=200 | EMA9=none VWAP=5.91 (-1.4%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] ICU CHART | O=3.35 H=3.35 L=3.35 C=3.35 V=200 | EMA9=none VWAP=3.28 (+2.1%) HOD=3.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] KZR CHART | O=7.37 H=7.37 L=7.37 C=7.37 V=200 | EMA9=none VWAP=7.39 (-0.3%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] SVRN CHART | O=8.37 H=8.37 L=8.37 C=8.37 V=100 | EMA9=none VWAP=8.35 (+0.2%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] GLND CHART | O=9.77 H=9.77 L=9.77 C=9.77 V=200 | EMA9=none VWAP=10.86 (-10.0%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] CODI CHART | O=7.97 H=7.97 L=7.97 C=7.97 V=100 | EMA9=none VWAP=7.78 (+2.4%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] VATE CHART | O=5.41 H=5.41 L=5.41 C=5.41 V=100 | EMA9=none VWAP=5.36 (+0.9%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] AVD CHART | O=2.42 H=2.42 L=2.42 C=2.42 V=400 | EMA9=none VWAP=2.36 (+2.9%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] SGML CHART | O=12.26 H=12.26 L=12.26 C=12.26 V=100 | EMA9=none VWAP=13.18 (-7.0%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] BZUN CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=200 | EMA9=none VWAP=2.42 (-0.9%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] IDN CHART | O=5.77 H=5.77 L=5.77 C=5.77 V=1,000 | EMA9=none VWAP=5.79 (-0.4%) HOD=5.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] PALU CHART | O=12.02 H=12.02 L=12.02 C=12.02 V=400 | EMA9=none VWAP=12.05 (-0.2%) HOD=12.18 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:05 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.52 (-0.9%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (21 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:08:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:08:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+[11:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=684 | no symbols
+
+🔄 Running scanner at 11:09:49 ET...
+Error 162, reqId 1380: Historical Market Data Service error message:API scanner subscription cancelled: 1380
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1380 (reqId=1380, symbol=?)
+[11:10 ET] IONR CHART | O=4.44 H=4.44 L=4.44 C=4.44 V=100 | EMA9=none VWAP=4.25 (+4.4%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] SST CHART | O=4.13 H=4.13 L=4.13 C=4.13 V=200 | EMA9=none VWAP=4.04 (+2.3%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] ICU CHART | O=3.35 H=3.35 L=3.35 C=3.35 V=200 | EMA9=none VWAP=3.29 (+1.9%) HOD=3.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] GLND CHART | O=9.96 H=9.96 L=9.96 C=9.96 V=200 | EMA9=none VWAP=10.83 (-8.1%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] SVRN CHART | O=8.43 H=8.43 L=8.43 C=8.43 V=200 | EMA9=none VWAP=8.36 (+0.8%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] QNTM CHART | O=5.84 H=5.84 L=5.84 C=5.84 V=200 | EMA9=none VWAP=5.91 (-1.2%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] KZR CHART | O=7.50 H=7.50 L=7.50 C=7.50 V=3,200 | EMA9=none VWAP=7.40 (+1.4%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] VATE CHART | O=5.46 H=5.46 L=5.46 C=5.46 V=200 | EMA9=none VWAP=5.37 (+1.7%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] CODI CHART | O=7.96 H=7.96 L=7.96 C=7.96 V=100 | EMA9=none VWAP=7.79 (+2.2%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] AVD CHART | O=2.42 H=2.42 L=2.42 C=2.42 V=200 | EMA9=none VWAP=2.36 (+2.6%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] IDN CHART | O=5.90 H=5.90 L=5.90 C=5.90 V=200 | EMA9=none VWAP=5.80 (+1.7%) HOD=5.91 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] SGML CHART | O=12.18 H=12.18 L=12.18 C=12.18 V=200 | EMA9=none VWAP=13.16 (-7.5%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] BZUN CHART | O=2.42 H=2.42 L=2.42 C=2.42 V=3,000 | EMA9=none VWAP=2.42 (+0.3%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] PALU CHART | O=12.18 H=12.18 L=12.18 C=12.18 V=100 | EMA9=none VWAP=12.06 (+1.0%) HOD=12.18 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.52 (-0.8%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:10 ET] NBIZ CHART | O=13.70 H=13.70 L=13.70 C=13.70 V=200 | EMA9=none VWAP=13.59 (+0.8%) HOD=13.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (22 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:13:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:13:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+[11:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | no symbols
+
+🔄 Running scanner at 11:14:50 ET...
+Error 162, reqId 1461: Historical Market Data Service error message:API scanner subscription cancelled: 1461
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1461 (reqId=1461, symbol=?)
+[11:15 ET] ICU CHART | O=3.33 H=3.33 L=3.33 C=3.33 V=100 | EMA9=none VWAP=3.29 (+1.1%) HOD=3.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] IONR CHART | O=4.45 H=4.45 L=4.45 C=4.45 V=100 | EMA9=none VWAP=4.26 (+4.6%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] SST CHART | O=4.20 H=4.20 L=4.20 C=4.20 V=100 | EMA9=none VWAP=4.04 (+3.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] GLND CHART | O=9.93 H=9.93 L=9.93 C=9.93 V=200 | EMA9=none VWAP=10.81 (-8.2%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] QNTM CHART | O=5.77 H=5.77 L=5.77 C=5.77 V=200 | EMA9=none VWAP=5.91 (-2.3%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] SVRN CHART | O=8.51 H=8.51 L=8.51 C=8.51 V=200 | EMA9=none VWAP=8.37 (+1.7%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] KZR CHART | O=7.42 H=7.42 L=7.42 C=7.42 V=200 | EMA9=none VWAP=7.40 (+0.3%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=400 | EMA9=none VWAP=5.37 (+2.0%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] AVD CHART | O=2.41 H=2.41 L=2.41 C=2.41 V=100 | EMA9=none VWAP=2.36 (+2.2%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] CODI CHART | O=7.88 H=7.88 L=7.88 C=7.88 V=200 | EMA9=none VWAP=7.79 (+1.1%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] SONM CHART | O=3.74 H=3.74 L=3.74 C=3.74 V=200 | EMA9=none VWAP=4.07 (-8.1%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] SGML CHART | O=12.02 H=12.02 L=12.02 C=12.02 V=100 | EMA9=none VWAP=13.15 (-8.6%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] IDN CHART | O=5.91 H=5.91 L=5.91 C=5.91 V=200 | EMA9=none VWAP=5.85 (+1.0%) HOD=5.91 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] NBIZ CHART | O=13.61 H=13.61 L=13.61 C=13.61 V=200 | EMA9=none VWAP=13.60 (+0.1%) HOD=13.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] GOAI CHART | O=4.07 H=4.07 L=4.07 C=4.07 V=100 | EMA9=none VWAP=4.15 (-1.8%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:15 ET] BZUN CHART | O=2.39 H=2.39 L=2.39 C=2.39 V=200 | EMA9=none VWAP=2.41 (-1.0%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (23 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:18:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:18:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+[11:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=757 | no symbols
+
+🔄 Running scanner at 11:19:50 ET...
+Error 162, reqId 1542: Historical Market Data Service error message:API scanner subscription cancelled: 1542
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1542 (reqId=1542, symbol=?)
+[11:20 ET] ICU CHART | O=3.45 H=3.45 L=3.45 C=3.45 V=200 | EMA9=none VWAP=3.33 (+3.6%) HOD=3.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] SST CHART | O=4.07 H=4.07 L=4.07 C=4.07 V=400 | EMA9=none VWAP=4.04 (+0.7%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] IONR CHART | O=4.37 H=4.37 L=4.37 C=4.37 V=200 | EMA9=none VWAP=4.26 (+2.5%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] KZR CHART | O=7.42 H=7.42 L=7.42 C=7.42 V=400 | EMA9=none VWAP=7.40 (+0.3%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] QNTM CHART | O=5.76 H=5.76 L=5.76 C=5.76 V=300 | EMA9=none VWAP=5.91 (-2.5%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] GLND CHART | O=9.95 H=9.95 L=9.95 C=9.95 V=200 | EMA9=none VWAP=10.79 (-7.8%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=200 | EMA9=none VWAP=5.37 (+2.0%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] CODI CHART | O=7.84 H=7.84 L=7.84 C=7.84 V=500 | EMA9=none VWAP=7.79 (+0.6%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] AVD CHART | O=2.42 H=2.42 L=2.42 C=2.42 V=100 | EMA9=none VWAP=2.36 (+2.6%) HOD=2.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] SVRN CHART | O=8.45 H=8.45 L=8.45 C=8.45 V=500 | EMA9=none VWAP=8.37 (+1.0%) HOD=9.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] SONM CHART | O=3.81 H=3.81 L=3.81 C=3.81 V=100 | EMA9=none VWAP=4.06 (-6.3%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] SGML CHART | O=12.15 H=12.15 L=12.15 C=12.15 V=200 | EMA9=none VWAP=13.12 (-7.4%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] NBIZ CHART | O=13.99 H=13.99 L=13.99 C=13.99 V=200 | EMA9=none VWAP=13.62 (+2.7%) HOD=13.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] IDN CHART | O=5.90 H=5.90 L=5.90 C=5.90 V=2,400 | EMA9=none VWAP=5.87 (+0.5%) HOD=5.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] CORD CHART | O=19.60 H=19.60 L=19.60 C=19.60 V=1,000 | EMA9=none VWAP=19.66 (-0.3%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:20 ET] GOAI CHART | O=4.14 H=4.14 L=4.14 C=4.14 V=1,000 | EMA9=none VWAP=4.14 (-0.1%) HOD=4.22 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (24 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:23:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:23:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+[11:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=791 | no symbols
+
+🔄 Running scanner at 11:24:51 ET...
+Error 162, reqId 1623: Historical Market Data Service error message:API scanner subscription cancelled: 1623
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1623 (reqId=1623, symbol=?)
+[11:25 ET] MKDW CHART | O=6.44 H=6.44 L=6.44 C=6.44 V=200 | EMA9=none VWAP=6.23 (+3.4%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] EEIQ CHART | O=9.54 H=9.54 L=9.54 C=9.54 V=100 | EMA9=none VWAP=9.55 (-0.1%) HOD=10.07 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] IONR CHART | O=4.44 H=4.44 L=4.44 C=4.44 V=200 | EMA9=none VWAP=4.27 (+3.9%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] QNTM CHART | O=5.88 H=5.88 L=5.88 C=5.88 V=100 | EMA9=none VWAP=5.91 (-0.4%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] KZR CHART | O=7.48 H=7.48 L=7.48 C=7.48 V=400 | EMA9=none VWAP=7.40 (+1.1%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=400 | EMA9=none VWAP=5.38 (+1.9%) HOD=5.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] AVD CHART | O=2.45 H=2.45 L=2.45 C=2.45 V=200 | EMA9=none VWAP=2.36 (+3.7%) HOD=2.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] GLND CHART | O=9.88 H=9.88 L=9.88 C=9.88 V=200 | EMA9=none VWAP=10.77 (-8.2%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] CODI CHART | O=7.98 H=7.98 L=7.98 C=7.98 V=200 | EMA9=none VWAP=7.80 (+2.3%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] IDN CHART | O=5.93 H=5.93 L=5.93 C=5.93 V=400 | EMA9=none VWAP=5.88 (+0.9%) HOD=5.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] SONM CHART | O=3.81 H=3.81 L=3.81 C=3.81 V=200 | EMA9=none VWAP=4.06 (-6.1%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] SST CHART | O=3.88 H=3.88 L=3.88 C=3.88 V=100 | EMA9=none VWAP=4.04 (-3.8%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] NBIZ CHART | O=13.94 H=13.94 L=13.94 C=13.94 V=200 | EMA9=none VWAP=13.66 (+2.1%) HOD=13.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] SGML CHART | O=12.18 H=12.18 L=12.18 C=12.18 V=300 | EMA9=none VWAP=13.11 (-7.1%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] PANG CHART | O=7.43 H=7.43 L=7.43 C=7.43 V=200 | EMA9=none VWAP=7.40 (+0.4%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] CORD CHART | O=19.78 H=19.78 L=19.78 C=19.78 V=200 | EMA9=none VWAP=19.66 (+0.6%) HOD=19.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:25 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.52 (-0.7%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (25 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:28:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:28:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+[11:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=830 | no symbols
+
+🔄 Running scanner at 11:29:52 ET...
+Error 162, reqId 1704: Historical Market Data Service error message:API scanner subscription cancelled: 1704
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1704 (reqId=1704, symbol=?)
+[11:30 ET] ICU CHART | O=3.77 H=3.77 L=3.77 C=3.77 V=1,000 | EMA9=none VWAP=3.45 (+9.2%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] IONR CHART | O=4.38 H=4.38 L=4.38 C=4.38 V=400 | EMA9=none VWAP=4.28 (+2.2%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] QNTM CHART | O=5.84 H=5.84 L=5.84 C=5.84 V=100 | EMA9=none VWAP=5.91 (-1.1%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=400 | EMA9=none VWAP=5.38 (+1.8%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] GLND CHART | O=9.74 H=9.74 L=9.74 C=9.74 V=200 | EMA9=none VWAP=10.74 (-9.3%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] KZR CHART | O=7.43 H=7.43 L=7.43 C=7.43 V=200 | EMA9=none VWAP=7.40 (+0.4%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] AVD CHART | O=2.46 H=2.46 L=2.46 C=2.46 V=1,000 | EMA9=none VWAP=2.37 (+3.9%) HOD=2.47 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] EEIQ CHART | O=9.23 H=9.23 L=9.23 C=9.23 V=100 | EMA9=none VWAP=9.54 (-3.3%) HOD=10.07 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] CODI CHART | O=8.01 H=8.01 L=8.01 C=8.01 V=100 | EMA9=none VWAP=7.81 (+2.6%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] SGML CHART | O=12.12 H=12.12 L=12.12 C=12.12 V=200 | EMA9=none VWAP=13.10 (-7.5%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] JFBR CHART | O=2.50 H=2.50 L=2.50 C=2.50 V=600 | EMA9=none VWAP=2.52 (-0.8%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] IDN CHART | O=5.95 H=5.95 L=5.95 C=5.95 V=300 | EMA9=none VWAP=5.88 (+1.2%) HOD=5.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] SST CHART | O=3.88 H=3.88 L=3.88 C=3.88 V=200 | EMA9=none VWAP=4.02 (-3.5%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] SONM CHART | O=3.81 H=3.81 L=3.81 C=3.81 V=200 | EMA9=none VWAP=4.05 (-5.9%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] NBIZ CHART | O=13.91 H=13.91 L=13.91 C=13.91 V=1,000 | EMA9=none VWAP=13.68 (+1.7%) HOD=13.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] PANG CHART | O=7.50 H=7.50 L=7.50 C=7.50 V=2,000 | EMA9=none VWAP=7.45 (+0.7%) HOD=7.52 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:30 ET] PALU CHART | O=12.13 H=12.13 L=12.13 C=12.13 V=200 | EMA9=none VWAP=12.07 (+0.5%) HOD=12.18 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (26 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:33:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:33:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+[11:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=863 | no symbols
+
+🔄 Running scanner at 11:34:52 ET...
+Error 162, reqId 1785: Historical Market Data Service error message:API scanner subscription cancelled: 1785
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1785 (reqId=1785, symbol=?)
+[11:35 ET] ICU CHART | O=3.52 H=3.52 L=3.52 C=3.52 V=400 | EMA9=none VWAP=3.47 (+1.5%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] IONR CHART | O=4.46 H=4.46 L=4.46 C=4.46 V=100 | EMA9=none VWAP=4.29 (+4.0%) HOD=4.46 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] AVD CHART | O=2.47 H=2.47 L=2.47 C=2.47 V=2,000 | EMA9=none VWAP=2.38 (+3.7%) HOD=2.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] QNTM CHART | O=5.78 H=5.78 L=5.78 C=5.78 V=200 | EMA9=none VWAP=5.90 (-2.1%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] KZR CHART | O=7.45 H=7.45 L=7.45 C=7.45 V=100 | EMA9=none VWAP=7.40 (+0.7%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] GLND CHART | O=9.85 H=9.85 L=9.85 C=9.85 V=200 | EMA9=none VWAP=10.69 (-7.9%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] CODI CHART | O=7.94 H=7.94 L=7.94 C=7.94 V=200 | EMA9=none VWAP=7.81 (+1.7%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] VATE CHART | O=5.54 H=5.54 L=5.54 C=5.54 V=200 | EMA9=none VWAP=5.38 (+2.9%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] IDN CHART | O=5.99 H=5.99 L=5.99 C=5.99 V=200 | EMA9=none VWAP=5.91 (+1.4%) HOD=6.04 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] EEIQ CHART | O=8.44 H=8.44 L=8.44 C=8.44 V=100 | EMA9=none VWAP=9.53 (-11.4%) HOD=10.07 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=600 | EMA9=none VWAP=2.52 (+1.9%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] SONM CHART | O=3.80 H=3.80 L=3.80 C=3.80 V=100 | EMA9=none VWAP=4.05 (-6.1%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] SST CHART | O=3.76 H=3.76 L=3.76 C=3.76 V=600 | EMA9=none VWAP=3.99 (-5.7%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] SGML CHART | O=12.25 H=12.25 L=12.25 C=12.25 V=100 | EMA9=none VWAP=13.08 (-6.3%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] BZUN CHART | O=2.38 H=2.38 L=2.38 C=2.38 V=100 | EMA9=none VWAP=2.41 (-1.4%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:35 ET] PANG CHART | O=7.52 H=7.52 L=7.52 C=7.52 V=1,800 | EMA9=none VWAP=7.46 (+0.8%) HOD=7.56 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (27 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+[11:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=900 | no symbols
+
+🔄 Running scanner at 11:39:52 ET...
+Error 162, reqId 1866: Historical Market Data Service error message:API scanner subscription cancelled: 1866
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1866 (reqId=1866, symbol=?)
+[11:40 ET] ICU CHART | O=3.64 H=3.64 L=3.64 C=3.64 V=800 | EMA9=none VWAP=3.48 (+4.5%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] IONR CHART | O=4.46 H=4.46 L=4.46 C=4.46 V=200 | EMA9=none VWAP=4.30 (+3.8%) HOD=4.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] AVD CHART | O=2.49 H=2.49 L=2.49 C=2.49 V=200 | EMA9=none VWAP=2.38 (+4.4%) HOD=2.52 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] SGML CHART | O=12.18 H=12.18 L=12.18 C=12.18 V=200 | EMA9=none VWAP=13.08 (-6.8%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] CODI CHART | O=7.94 H=7.94 L=7.94 C=7.94 V=200 | EMA9=none VWAP=7.82 (+1.6%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] KZR CHART | O=7.44 H=7.44 L=7.44 C=7.44 V=200 | EMA9=none VWAP=7.40 (+0.5%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] VATE CHART | O=5.43 H=5.43 L=5.43 C=5.43 V=1,200 | EMA9=none VWAP=5.39 (+0.8%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] GLND CHART | O=9.91 H=9.91 L=9.91 C=9.91 V=800 | EMA9=none VWAP=10.65 (-7.0%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] IDN CHART | O=6.04 H=6.04 L=6.04 C=6.04 V=1,800 | EMA9=none VWAP=5.93 (+1.9%) HOD=6.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] QNTM CHART | O=5.74 H=5.74 L=5.74 C=5.74 V=200 | EMA9=none VWAP=5.89 (-2.6%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] HTCO CHART | O=9.26 H=9.26 L=9.26 C=9.26 V=200 | EMA9=none VWAP=9.18 (+0.9%) HOD=9.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] SST CHART | O=3.83 H=3.83 L=3.83 C=3.83 V=1,200 | EMA9=none VWAP=3.97 (-3.5%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=600 | EMA9=none VWAP=2.53 (+1.8%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] SONM CHART | O=3.80 H=3.80 L=3.80 C=3.80 V=200 | EMA9=none VWAP=4.04 (-5.9%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] PALU CHART | O=12.17 H=12.17 L=12.17 C=12.17 V=100 | EMA9=none VWAP=12.09 (+0.6%) HOD=12.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] BZUN CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=100 | EMA9=none VWAP=2.41 (-0.3%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:40 ET] EEIQ CHART | O=8.18 H=8.18 L=8.18 C=8.18 V=100 | EMA9=none VWAP=9.38 (-12.8%) HOD=10.07 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (28 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+[11:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | no symbols
+
+🔄 Running scanner at 11:44:52 ET...
+Error 162, reqId 1947: Historical Market Data Service error message:API scanner subscription cancelled: 1947
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1947 (reqId=1947, symbol=?)
+[11:45 ET] ICU CHART | O=3.62 H=3.62 L=3.62 C=3.62 V=200 | EMA9=none VWAP=3.49 (+3.7%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] IONR CHART | O=4.48 H=4.48 L=4.48 C=4.48 V=200 | EMA9=none VWAP=4.30 (+4.1%) HOD=4.49 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] AVD CHART | O=2.52 H=2.52 L=2.52 C=2.52 V=800 | EMA9=none VWAP=2.39 (+5.7%) HOD=2.53 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] KZR CHART | O=7.44 H=7.44 L=7.44 C=7.44 V=200 | EMA9=none VWAP=7.40 (+0.5%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] SST CHART | O=3.89 H=3.89 L=3.89 C=3.89 V=400 | EMA9=none VWAP=3.97 (-2.1%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] SGML CHART | O=12.53 H=12.53 L=12.53 C=12.53 V=100 | EMA9=none VWAP=13.06 (-4.1%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] CODI CHART | O=7.97 H=7.97 L=7.97 C=7.97 V=200 | EMA9=none VWAP=7.82 (+1.9%) HOD=8.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] VATE CHART | O=5.48 H=5.48 L=5.48 C=5.48 V=200 | EMA9=none VWAP=5.39 (+1.7%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] GLND CHART | O=9.70 H=9.70 L=9.70 C=9.70 V=200 | EMA9=none VWAP=10.63 (-8.8%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] IDN CHART | O=6.06 H=6.06 L=6.06 C=6.06 V=200 | EMA9=none VWAP=5.93 (+2.2%) HOD=6.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] HTCO CHART | O=9.01 H=9.01 L=9.01 C=9.01 V=200 | EMA9=none VWAP=9.09 (-0.9%) HOD=9.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=300 | EMA9=none VWAP=2.53 (+1.7%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] QNTM CHART | O=5.61 H=5.61 L=5.61 C=5.61 V=1,000 | EMA9=none VWAP=5.88 (-4.7%) HOD=6.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] BZUN CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=1,600 | EMA9=none VWAP=2.41 (-0.4%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] SONM CHART | O=3.81 H=3.81 L=3.81 C=3.81 V=100 | EMA9=none VWAP=4.03 (-5.4%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:45 ET] PALU CHART | O=12.27 H=12.27 L=12.27 C=12.27 V=100 | EMA9=none VWAP=12.16 (+0.9%) HOD=12.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (29 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:48:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+[11:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | no symbols
+
+🔄 Running scanner at 11:49:53 ET...
+Error 162, reqId 2028: Historical Market Data Service error message:API scanner subscription cancelled: 2028
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2028 (reqId=2028, symbol=?)
+[11:50 ET] ICU CHART | O=3.61 H=3.61 L=3.61 C=3.61 V=600 | EMA9=none VWAP=3.50 (+3.1%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] MKDW CHART | O=6.41 H=6.41 L=6.41 C=6.41 V=200 | EMA9=none VWAP=6.30 (+1.7%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] IONR CHART | O=4.49 H=4.49 L=4.49 C=4.49 V=100 | EMA9=none VWAP=4.31 (+4.2%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] SST CHART | O=4.03 H=4.03 L=4.03 C=4.03 V=800 | EMA9=none VWAP=3.98 (+1.4%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] AVD CHART | O=2.53 H=2.53 L=2.53 C=2.53 V=200 | EMA9=none VWAP=2.39 (+6.0%) HOD=2.53 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] GLND CHART | O=9.80 H=9.80 L=9.80 C=9.80 V=200 | EMA9=none VWAP=10.56 (-7.2%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] CODI CHART | O=7.99 H=7.99 L=7.99 C=7.99 V=200 | EMA9=none VWAP=7.83 (+2.1%) HOD=8.04 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] KZR CHART | O=7.44 H=7.44 L=7.44 C=7.44 V=100 | EMA9=none VWAP=7.40 (+0.5%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] SGML CHART | O=12.57 H=12.57 L=12.57 C=12.57 V=800 | EMA9=none VWAP=13.04 (-3.6%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] VATE CHART | O=5.46 H=5.46 L=5.46 C=5.46 V=600 | EMA9=none VWAP=5.39 (+1.3%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] HTCO CHART | O=9.01 H=9.01 L=9.01 C=9.01 V=400 | EMA9=none VWAP=9.02 (-0.1%) HOD=9.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] IDN CHART | O=6.04 H=6.04 L=6.04 C=6.04 V=100 | EMA9=none VWAP=5.93 (+1.7%) HOD=6.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=600 | EMA9=none VWAP=2.53 (+1.6%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] RZLV CHART | O=2.75 H=2.75 L=2.75 C=2.75 V=200 | EMA9=none VWAP=2.78 (-1.0%) HOD=2.79 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] BZUN CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=400 | EMA9=none VWAP=2.41 (-0.2%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] PANG CHART | O=7.56 H=7.56 L=7.56 C=7.56 V=200 | EMA9=none VWAP=7.47 (+1.2%) HOD=7.56 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:50 ET] PALU CHART | O=12.20 H=12.20 L=12.20 C=12.20 V=2,000 | EMA9=none VWAP=12.18 (+0.2%) HOD=12.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (30 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+[11:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1004 | no symbols
+
+🔄 Running scanner at 11:54:53 ET...
+Error 162, reqId 2109: Historical Market Data Service error message:API scanner subscription cancelled: 2109
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2109 (reqId=2109, symbol=?)
+[11:55 ET] ICU CHART | O=3.65 H=3.65 L=3.65 C=3.65 V=400 | EMA9=none VWAP=3.51 (+4.0%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] MKDW CHART | O=6.00 H=6.00 L=6.00 C=6.00 V=100 | EMA9=none VWAP=6.30 (-4.8%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] IONR CHART | O=4.50 H=4.50 L=4.50 C=4.50 V=200 | EMA9=none VWAP=4.32 (+4.2%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] AVD CHART | O=2.51 H=2.51 L=2.51 C=2.51 V=200 | EMA9=none VWAP=2.39 (+5.1%) HOD=2.53 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] GLND CHART | O=9.91 H=9.91 L=9.91 C=9.91 V=2,000 | EMA9=none VWAP=10.49 (-5.6%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] SGML CHART | O=12.51 H=12.51 L=12.51 C=12.51 V=200 | EMA9=none VWAP=13.03 (-4.0%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] KZR CHART | O=7.46 H=7.46 L=7.46 C=7.46 V=100 | EMA9=none VWAP=7.40 (+0.8%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] CODI CHART | O=8.04 H=8.04 L=8.04 C=8.04 V=200 | EMA9=none VWAP=7.83 (+2.6%) HOD=8.04 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] VATE CHART | O=5.45 H=5.45 L=5.45 C=5.45 V=200 | EMA9=none VWAP=5.39 (+1.1%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] IDN CHART | O=6.00 H=6.00 L=6.00 C=6.00 V=100 | EMA9=none VWAP=5.94 (+1.1%) HOD=6.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] SST CHART | O=4.14 H=4.14 L=4.14 C=4.14 V=200 | EMA9=none VWAP=3.98 (+4.1%) HOD=4.27 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] RZLV CHART | O=2.79 H=2.79 L=2.79 C=2.79 V=1,600 | EMA9=none VWAP=2.79 (-0.2%) HOD=2.81 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=600 | EMA9=none VWAP=2.53 (+1.6%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] PALU CHART | O=12.20 H=12.20 L=12.20 C=12.20 V=4,000 | EMA9=none VWAP=12.19 (+0.1%) HOD=12.28 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] PANG CHART | O=7.53 H=7.53 L=7.53 C=7.53 V=500 | EMA9=none VWAP=7.47 (+0.8%) HOD=7.57 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] HTCO CHART | O=8.96 H=8.96 L=8.96 C=8.96 V=1,800 | EMA9=none VWAP=8.99 (-0.3%) HOD=9.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] BZUN CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=200 | EMA9=none VWAP=2.41 (-0.4%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[11:55 ET] SONM CHART | O=3.76 H=3.76 L=3.76 C=3.76 V=100 | EMA9=none VWAP=4.03 (-6.7%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (31 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+[11:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+[11:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1036 | no symbols
+
+🔄 Running scanner at 11:59:54 ET...
+Error 162, reqId 2190: Historical Market Data Service error message:API scanner subscription cancelled: 2190
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2190 (reqId=2190, symbol=?)
+[12:00 ET] ICU CHART | O=3.75 H=3.75 L=3.75 C=3.75 V=200 | EMA9=none VWAP=3.52 (+6.7%) HOD=3.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] MKDW CHART | O=6.24 H=6.24 L=6.24 C=6.24 V=200 | EMA9=none VWAP=6.30 (-0.9%) HOD=7.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] IONR CHART | O=4.47 H=4.47 L=4.47 C=4.47 V=200 | EMA9=none VWAP=4.32 (+3.4%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] HTCO CHART | O=8.82 H=8.82 L=8.82 C=8.82 V=200 | EMA9=none VWAP=9.03 (-2.3%) HOD=9.33 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] GLND CHART | O=9.98 H=9.98 L=9.98 C=9.98 V=400 | EMA9=none VWAP=10.43 (-4.3%) HOD=12.25 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] AVD CHART | O=2.51 H=2.51 L=2.51 C=2.51 V=100 | EMA9=none VWAP=2.39 (+5.1%) HOD=2.53 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] CODI CHART | O=8.03 H=8.03 L=8.03 C=8.03 V=200 | EMA9=none VWAP=7.84 (+2.4%) HOD=8.04 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] KZR CHART | O=7.46 H=7.46 L=7.46 C=7.46 V=200 | EMA9=none VWAP=7.40 (+0.8%) HOD=7.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] SGML CHART | O=12.64 H=12.64 L=12.64 C=12.64 V=100 | EMA9=none VWAP=13.03 (-3.0%) HOD=14.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] VATE CHART | O=5.41 H=5.41 L=5.41 C=5.41 V=200 | EMA9=none VWAP=5.39 (+0.4%) HOD=5.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] IDN CHART | O=6.01 H=6.01 L=6.01 C=6.01 V=400 | EMA9=none VWAP=5.94 (+1.2%) HOD=6.06 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] JFBR CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=600 | EMA9=none VWAP=2.53 (+1.5%) HOD=2.64 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] PALU CHART | O=12.28 H=12.28 L=12.28 C=12.28 V=200 | EMA9=none VWAP=12.19 (+0.8%) HOD=12.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] PANG CHART | O=7.57 H=7.57 L=7.57 C=7.57 V=200 | EMA9=none VWAP=7.48 (+1.2%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] NBIZ CHART | O=13.82 H=13.82 L=13.82 C=13.82 V=200 | EMA9=none VWAP=13.69 (+0.9%) HOD=13.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] RZLV CHART | O=2.81 H=2.81 L=2.81 C=2.81 V=2,000 | EMA9=none VWAP=2.79 (+0.5%) HOD=2.81 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:00 ET] BZUN CHART | O=2.41 H=2.41 L=2.41 C=2.41 V=200 | EMA9=none VWAP=2.41 (-0.0%) HOD=2.42 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json (32 snapshots)
+📊 Scanner: 0 candidates, 0 subscribed
+  Tick cache: ELAB → +48 ticks (total 48)
+  Tick cache: MKDW → +50 ticks (total 50)
+  Tick cache: EEIQ → +41 ticks (total 41)
+  Tick cache: SGML → +45 ticks (total 45)
+  Tick cache: ASTC → +47 ticks (total 534,595)
+  Tick cache: SST → +43 ticks (total 43)
+  Tick cache: QNTM → +47 ticks (total 47)
+  Tick cache: KZR → +48 ticks (total 48)
+  Tick cache: ACXP → +2 ticks (total 2)
+  Tick cache: NXTT → +20 ticks (total 20)
+  Tick cache: MNTS → +2 ticks (total 2)
+  Tick cache: HOLO → +16 ticks (total 16)
+  Tick cache: GOAI → +16 ticks (total 16)
+  Tick cache: TURB → +12 ticks (total 12)
+  Tick cache: GLND → +53 ticks (total 53)
+  Tick cache: VATE → +54 ticks (total 54)
+  Tick cache: CODI → +41 ticks (total 41)
+  Tick cache: JFBR → +40 ticks (total 40)
+  Tick cache: NTRP → +2 ticks (total 2)
+  Tick cache: INSE → +2 ticks (total 2)
+  Tick cache: SONM → +38 ticks (total 38)
+  Tick cache: IONR → +46 ticks (total 46)
+  Tick cache: PANG → +19 ticks (total 19)
+  Tick cache: RBNE → +17 ticks (total 17)
+  Tick cache: NBIZ → +28 ticks (total 28)
+  Tick cache: SVRN → +30 ticks (total 30)
+  Tick cache: TRON → +1 ticks (total 1)
+  Tick cache: ATLX → +2 ticks (total 2)
+  Tick cache: AVD → +44 ticks (total 44)
+  Tick cache: SAGT → +4 ticks (total 4)
+  Tick cache: CORD → +21 ticks (total 21)
+  Tick cache: PALU → +15 ticks (total 15)
+  Tick cache: ICU → +34 ticks (total 34)
+  Tick cache: IDN → +20 ticks (total 20)
+  Tick cache: BZUN → +20 ticks (total 20)
+  Tick cache: GITS → +2 ticks (total 2)
+  Tick cache: HTCO → +12 ticks (total 12)
+  Tick cache: RZLV → +8 ticks (total 8)
+  Tick cache: ARTV → +2 ticks (total 2)
+  Tick cache: QVCGA → +2 ticks (total 2)
+📦 Tick cache saved: 40 symbols → tick_cache/2026-03-30/
+
+💤 Dead zone (12:01 ET). Sleeping until next window...
+[12:01:00 ET] SLEEP | flat | daily=$+0 (0t) | conn=OK | ticks=1072 | no symbols
