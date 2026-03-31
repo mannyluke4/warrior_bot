@@ -259,7 +259,7 @@ def scan_catchup(ib: IB, top_n: int = 20) -> list[dict]:
                 belowPrice=MAX_PRICE,
                 aboveVolume=int(MIN_PM_VOLUME),
                 marketCapBelow=MAX_MARKET_CAP,
-                numberOfRows=50,  # Cast wide
+                numberOfRows=20,  # Reduced from 50 — too many causes API timeout
             )
             results = ib.reqScannerData(sub)
             if results:
@@ -281,7 +281,10 @@ def scan_catchup(ib: IB, top_n: int = 20) -> list[dict]:
     candidates = []
     float_cache = load_float_cache()
 
-    for symbol in sorted(all_symbols):
+    sorted_symbols = sorted(all_symbols)
+    total_syms = len(sorted_symbols)
+    for idx, symbol in enumerate(sorted_symbols, 1):
+        print(f"    Catchup: processing {idx}/{total_syms} — {symbol}...", flush=True)
         contract = all_contracts[symbol]
         try:
             ib.qualifyContracts(contract)
@@ -307,11 +310,12 @@ def scan_catchup(ib: IB, top_n: int = 20) -> list[dict]:
         # Use the better of current gap or high-based gap
         effective_gap = max(gap_pct, gap_from_high)
 
-        # ADV and RVOL
-        adv = compute_adv(ib, symbol)
-        rvol = compute_rvol(volume, adv) if adv > 0 else 0
+        # Skip ADV/RVOL in catchup — too slow (reqHistoricalData per symbol hangs)
+        # Use absolute volume + gap% as proxy. RVOL will be checked on next normal scan.
+        adv = 0
+        rvol = 0
 
-        # Float
+        # Float — use cache only, don't fetch (fast)
         float_shares = get_float(symbol, float_cache)
         float_m = round(float_shares / 1e6, 2) if float_shares else None
         profile = classify_profile(float_shares)
