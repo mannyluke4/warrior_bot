@@ -325,7 +325,7 @@ def fetch_prev_close_and_adv(client, date_str: str) -> tuple[dict, dict]:
     # Insert symbology so to_df() maps instrument IDs to ticker symbols
     symbology_json = data.request_symbology(client)
     data.insert_symbology_json(symbology_json)
-    df = data.to_df(pretty_px=True)
+    df = data.to_df(price_type="float")
 
     if "symbol" not in df.columns:
         print("  WARNING: 'symbol' column missing — check Databento symbology")
@@ -405,7 +405,7 @@ def run_backtest_single(date_str: str, client=None):
     except Exception as e:
         print(f"  WARNING: Symbology insertion failed: {e}")
 
-    df = bars_data.to_df(pretty_px=True)
+    df = bars_data.to_df(price_type="float")
 
     if df.empty:
         print(f"  No bars returned for {date_str}. Market holiday?")
@@ -585,7 +585,7 @@ class LiveScannerV3:
 
         symbology_json = data.request_symbology(client)
         data.insert_symbology_json(symbology_json)
-        df = data.to_df(pretty_px=True)
+        df = data.to_df(price_type="float")
 
         if "symbol" not in df.columns:
             raise RuntimeError("'symbol' column missing — check Databento symbology")
