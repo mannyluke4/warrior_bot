@@ -41,6 +41,10 @@ from bars import TradeBarBuilder, Bar
 
 ET = pytz.timezone("US/Eastern")
 
+# ── Databento bridge ────────────────────────────────────────────────
+WATCHLIST_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "watchlist.txt")
+DATABENTO_BRIDGE = os.getenv("WB_DATABENTO_BRIDGE_ENABLED", "1") == "1"
+
 # ── Strategy gates ───────────────────────────────────────────────────
 SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
@@ -365,6 +369,32 @@ def run_scanner():
 
     print(f"📊 Scanner: {len(state.candidates)} new candidates, "
           f"{new_subs} new subs, {len(state.active_symbols)} total watching", flush=True)
+
+
+def poll_watchlist():
+    """Read watchlist.txt (written by live_scanner.py / Databento) and subscribe to new symbols."""
+    if not DATABENTO_BRIDGE:
+        return
+    if not os.path.exists(WATCHLIST_FILE):
+        return
+
+    try:
+        with open(WATCHLIST_FILE, "r") as f:
+            lines = [l.strip() for l in f if l.strip() and not l.strip().startswith("#")]
+    except Exception:
+        return
+
+    new_syms = []
+    for line in lines:
+        sym = line.split(":")[0].strip().upper()
+        if sym and sym.isalpha() and 1 <= len(sym) <= 5:
+            if sym not in state.active_symbols:
+                new_syms.append(sym)
+
+    if new_syms:
+        print(f"\n📡 Databento bridge: {len(new_syms)} new symbols from watchlist.txt: {sorted(new_syms)}", flush=True)
+        for sym in new_syms:
+            subscribe_symbol(sym)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -998,6 +1028,7 @@ def main():
 
     # Initial scan
     run_scanner()
+    poll_watchlist()
 
     # Main event loop
     windows_str = ", ".join(f"{s.strftime('%H:%M')}-{e.strftime('%H:%M')}" for s, e in TRADING_WINDOWS)
@@ -1042,6 +1073,7 @@ def main():
 
                 # Periodic rescan
                 run_scanner()
+                poll_watchlist()
 
                 # Check halts
                 check_halts()
