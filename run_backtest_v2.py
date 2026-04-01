@@ -188,14 +188,57 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
     print(f"{'='*60}")
 
     for i, date in enumerate(dates):
+        # Load candidates from V3 scanner (primary — Databento, correct discovery times)
         scanner_file = os.path.join(WORKDIR, "scanner_results", f"{date}.json")
-        if not os.path.exists(scanner_file):
-            daily_results.append({"date": date, "trades": 0, "pnl": 0, "equity": equity})
-            write_status(label, dates, i + 1, equity, all_trades, daily_results, start_time, sf, stf)
-            continue
+        cands = []
+        if os.path.exists(scanner_file):
+            with open(scanner_file) as f:
+                data = json.load(f)
+            # Handle both V3 format (flat list) and old snapshot format
+            if data and isinstance(data, list):
+                if isinstance(data[0], dict) and "timestamp" in data[0]:
+                    # Old snapshot format — extract unique candidates across all snapshots
+                    seen = set()
+                    for snap in data:
+                        for c in snap.get("candidates", []):
+                            if c["symbol"] not in seen:
+                                seen.add(c["symbol"])
+                                cands.append(c)
+                else:
+                    cands = data
 
-        with open(scanner_file) as f:
-            cands = json.load(f)
+        # Also load IBKR scanner results if available (secondary source)
+        ibkr_file = os.path.join(WORKDIR, "scanner_results_ibkr", f"{date}.json")
+        if os.path.exists(ibkr_file):
+            with open(ibkr_file) as f:
+                ibkr_data = json.load(f)
+            ibkr_cands = []
+            if ibkr_data and isinstance(ibkr_data, list):
+                if isinstance(ibkr_data[0], dict) and "timestamp" in ibkr_data[0]:
+                    seen_ibkr = set()
+                    for snap in ibkr_data:
+                        for c in snap.get("candidates", []):
+                            if c["symbol"] not in seen_ibkr:
+                                seen_ibkr.add(c["symbol"])
+                                ibkr_cands.append(c)
+                else:
+                    ibkr_cands = ibkr_data
+
+            # Merge: for stocks in both, use EARLIER sim_start. Add IBKR-only stocks.
+            v3_by_sym = {c["symbol"]: c for c in cands}
+            for c in ibkr_cands:
+                sym = c["symbol"]
+                if sym in v3_by_sym:
+                    # Both have it — use the EARLIER discovery/sim_start
+                    v3_start = v3_by_sym[sym].get("sim_start", "12:00")
+                    ibkr_start = c.get("sim_start", "12:00")
+                    if ibkr_start < v3_start:
+                        # IBKR found it earlier — replace V3 entry
+                        v3_by_sym[sym]["sim_start"] = ibkr_start
+                        v3_by_sym[sym]["discovery_time"] = ibkr_start
+                else:
+                    cands.append(c)
+
         if not cands:
             daily_results.append({"date": date, "trades": 0, "pnl": 0, "equity": equity})
             write_status(label, dates, i + 1, equity, all_trades, daily_results, start_time, sf, stf)
@@ -229,7 +272,9 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
         else:
             sim_windows = None  # use per-candidate sim_start
 
-        for c in (cands[:max_stocks] if max_stocks else cands):
+        traded_syms_today = set()  # Track which symbols already traded (prevent evening dupes)
+
+        for c in cands:  # No cap — run all candidates from both scanners
             if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
                 break
             sym = c["symbol"]
@@ -252,6 +297,9 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
             for win_start, win_end in window_list:
                 if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
                     break
+                # Skip if this stock already traded in an earlier window today
+                if sym in traded_syms_today and win_start != window_list[0][0]:
+                    continue
                 cmd = [sys.executable, "simulate.py", sym, date, win_start, win_end,
                        "--ticks", "--risk", str(risk), "--no-fundamentals",
                        "--tick-cache", "tick_cache/"]
@@ -271,6 +319,7 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                                        "reason": m.group(8), "window": f"{win_start}-{win_end}"})
                     if sym not in day_symbols:
                         day_symbols.append(sym)
+                    traded_syms_today.add(sym)
                 time.sleep(0.3)
 
         equity += day_pnl
