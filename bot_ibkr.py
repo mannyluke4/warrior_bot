@@ -33,7 +33,10 @@ from ib_insync import IB, Stock, LimitOrder, MarketOrder, util
 # Load .env if present (same as simulate.py — ensures env vars are set)
 load_dotenv()
 
-from squeeze_detector import SqueezeDetector
+if os.getenv("WB_SQUEEZE_VERSION", "1") == "2":
+    from squeeze_detector_v2 import SqueezeDetectorV2 as SqueezeDetector
+else:
+    from squeeze_detector import SqueezeDetector
 from micro_pullback import MicroPullbackDetector
 from continuation_detector import ContinuationDetector
 from ibkr_scanner import scan_premarket_live, scan_catchup, rank_score

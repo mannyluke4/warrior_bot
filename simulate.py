@@ -1839,8 +1839,11 @@ def run_simulation(
     # MP V2 SQ-priority gate (default ON — SQ always has priority over MP V2 re-entries)
     _mp_v2_sq_priority = os.getenv("WB_MP_V2_SQ_PRIORITY", "1") == "1"
 
-    # Squeeze detector (Strategy 2)
-    from squeeze_detector import SqueezeDetector
+    # Squeeze detector (Strategy 2) — V1 or V2 via env var
+    if os.getenv("WB_SQUEEZE_VERSION", "1") == "2":
+        from squeeze_detector_v2 import SqueezeDetectorV2 as SqueezeDetector
+    else:
+        from squeeze_detector import SqueezeDetector
     sq_det = SqueezeDetector()
     sq_det.symbol = symbol
     sq_enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
