@@ -17,6 +17,7 @@ cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
     kill "$BOT_PID" 2>/dev/null || true
     pkill -f "bot_ibkr.py" 2>/dev/null || true
+    kill "$GW_WATCHDOG_PID" 2>/dev/null || true
     kill "$CAFFEINE_PID" 2>/dev/null || true
     cd ~/warrior_bot_v2
     git add -f logs/ 2>/dev/null || true
@@ -27,6 +28,7 @@ cleanup() {
 trap cleanup EXIT
 
 BOT_PID=""
+GW_WATCHDOG_PID=""
 
 # ── Step 0: Wake the screen and ensure active desktop ────────────────
 # IB Gateway needs a display context. Wake the Mac, unlock if needed.
@@ -158,6 +160,20 @@ if ! kill -0 "$BOT_PID" 2>/dev/null; then
     exit 1
 fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
+echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+# 8b. Gateway watchdog — detect if Gateway port drops during session
+(
+    while true; do
+        sleep 60
+        if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2>/dev/null; then
+            echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"
+            echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        fi
+    done
+) &
+GW_WATCHDOG_PID=$!
+echo "Gateway watchdog started (PID: $GW_WATCHDOG_PID)"
 
 # 9. Watchdog loop: wait until 6:05 PM MT (8:05 PM ET) — 5 min after evening window closes
 # Bot handles its own dual-window schedule (morning 7-12 ET, evening 4-8 PM ET)

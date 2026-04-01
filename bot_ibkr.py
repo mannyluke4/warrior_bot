@@ -38,6 +38,8 @@ from micro_pullback import MicroPullbackDetector
 from continuation_detector import ContinuationDetector
 from ibkr_scanner import scan_premarket_live, scan_catchup, rank_score
 from bars import TradeBarBuilder, Bar
+from candles import is_bearish_engulfing
+from patterns import PatternDetector
 
 ET = pytz.timezone("US/Eastern")
 
@@ -74,6 +76,19 @@ SQ_PARA_TRAIL_R = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
 SQ_RUNNER_TRAIL_R = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
 SQ_MAX_LOSS_DOLLARS = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
 SQ_CORE_PCT = int(os.getenv("WB_SQ_CORE_PCT", "75"))
+
+# ── Candle-based exit params (parity with simulate.py) ──────────────
+SQ_CANDLE_EXITS_ENABLED = os.getenv("WB_SQ_CANDLE_EXITS_ENABLED", "1") == "1"
+EXIT_ON_TOPPING_WICKY = os.getenv("WB_EXIT_ON_TOPPING_WICKY", "1") == "1"
+EXIT_ON_BEAR_ENGULF = os.getenv("WB_EXIT_ON_BEAR_ENGULF", "1") == "1"
+TW_GRACE_MIN = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3"))
+TW_MIN_PROFIT_R = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.5"))
+BE_GRACE_MIN = int(os.getenv("WB_BE_GRACE_MIN", "0"))
+BE_MIN_PROFIT_R = float(os.getenv("WB_BE_MIN_PROFIT_R", "0.5"))
+BE_PARABOLIC_GRACE = os.getenv("WB_BE_PARABOLIC_GRACE", "1") == "1"
+BE_GRACE_MIN_R = float(os.getenv("WB_BE_GRACE_MIN_R", "1.0"))
+BE_GRACE_MIN_NEW_HIGHS = int(os.getenv("WB_BE_GRACE_MIN_NEW_HIGHS", "3"))
+BE_GRACE_LOOKBACK = int(os.getenv("WB_BE_GRACE_LOOKBACK_BARS", "6"))
 
 # ── Trading windows (ET) ─────────────────────────────────────────────
 # Two sessions: morning and evening, with a dead zone 12:00-16:00.
@@ -147,6 +162,11 @@ class BotState:
 
         # Tick recording for backtest cache
         self.tick_buffer: dict[str, list] = {}  # symbol -> [{p, s, t}, ...]
+
+        # Candle exit state (per-symbol)
+        self.pattern_dets: dict[str, PatternDetector] = {}  # symbol -> PatternDetector (10s bars)
+        self.prev_10s_bar: dict[str, dict] = {}  # symbol -> {o, h, l, c}
+        self.recent_10s_highs: dict[str, list] = {}  # symbol -> [highs] for BE parabolic grace
 
 
 state = BotState()
@@ -471,10 +491,115 @@ def on_bar_close_1m(bar):
                 print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
 
 
+def _in_tw_grace() -> bool:
+    """True if the open trade is within the topping wicky grace period."""
+    pos = state.open_position
+    if pos is None or TW_GRACE_MIN <= 0:
+        return False
+    minutes_in = (datetime.now(ET) - pos["entry_time"]).total_seconds() / 60
+    return minutes_in < TW_GRACE_MIN
+
+
+def _in_be_grace() -> bool:
+    """True if the open trade is within the BE time-based grace period."""
+    pos = state.open_position
+    if pos is None or BE_GRACE_MIN <= 0:
+        return False
+    minutes_in = (datetime.now(ET) - pos["entry_time"]).total_seconds() / 60
+    return minutes_in < BE_GRACE_MIN
+
+
+def _in_parabolic_grace(symbol: str, bar_close: float) -> bool:
+    """Suppress BE exits during genuine parabolic ramps (not flash spikes)."""
+    if not BE_PARABOLIC_GRACE:
+        return False
+    pos = state.open_position
+    if pos is None or pos["symbol"] != symbol:
+        return False
+    if pos["r"] <= 0 or bar_close < pos["entry"] + (BE_GRACE_MIN_R * pos["r"]):
+        return False
+    highs = state.recent_10s_highs.get(symbol, [])
+    if len(highs) < 2:
+        return False
+    window = highs[-BE_GRACE_LOOKBACK:]
+    new_high_count = 0
+    running = window[0]
+    for bh in window[1:]:
+        if bh > running:
+            new_high_count += 1
+            running = bh
+    return new_high_count >= BE_GRACE_MIN_NEW_HIGHS
+
+
 def on_bar_close_10s(bar):
-    """10-second bar close: exit detection (for MP trades only)."""
-    # Squeeze trades use _squeeze_manage_exits on every tick, not 10s patterns
-    pass
+    """10-second bar close: candle pattern exit detection (parity with simulate.py)."""
+    if not SQ_CANDLE_EXITS_ENABLED:
+        return
+
+    symbol = bar.symbol
+    pos = state.open_position
+    if pos is None or pos["symbol"] != symbol:
+        return
+    if not pos.get("fill_confirmed", False):
+        return
+    if pos["setup_type"] not in ("squeeze", "mp_reentry", "continuation"):
+        return
+
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+
+    # Ensure PatternDetector exists for this symbol
+    if symbol not in state.pattern_dets:
+        state.pattern_dets[symbol] = PatternDetector()
+
+    det = state.pattern_dets[symbol]
+    signals = det.update(bar.open, bar.high, bar.low, bar.close, bar.volume)
+    signal_names = [s.name for s in signals]
+
+    # Track prev 10s bar for bearish engulfing
+    prev = state.prev_10s_bar.get(symbol)
+    state.prev_10s_bar[symbol] = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close}
+
+    # Track 10s highs for parabolic grace
+    highs = state.recent_10s_highs.setdefault(symbol, [])
+    highs.append(bar.high)
+    if len(highs) > BE_GRACE_LOOKBACK + 5:
+        state.recent_10s_highs[symbol] = highs[-(BE_GRACE_LOOKBACK + 5):]
+
+    entry = pos["entry"]
+    r = pos["r"]
+    qty = pos["qty"]
+
+    # ── Topping Wicky exit ──
+    if EXIT_ON_TOPPING_WICKY and "TOPPING_WICKY" in signal_names:
+        if not _in_tw_grace():
+            # Profit gate: suppress TW on confirmed runners (profit >= min R)
+            tw_ok = True
+            if TW_MIN_PROFIT_R > 0 and r > 0:
+                unrealized = bar.close - entry
+                if unrealized >= TW_MIN_PROFIT_R * r:
+                    tw_ok = False
+                    print(f"[{now_str} ET] {symbol} TW_SUPPRESSED (profit_gate: "
+                          f"${unrealized:.2f} >= {TW_MIN_PROFIT_R}R=${TW_MIN_PROFIT_R * r:.2f})", flush=True)
+            if tw_ok:
+                print(f"[{now_str} ET] {symbol} TOPPING_WICKY_EXIT @ {bar.close:.4f}", flush=True)
+                exit_trade(symbol, bar.close, qty, "topping_wicky_exit")
+                return
+        else:
+            print(f"[{now_str} ET] {symbol} TW_SUPPRESSED (grace period)", flush=True)
+
+    # ── Bearish Engulfing exit ──
+    if EXIT_ON_BEAR_ENGULF and prev is not None:
+        if is_bearish_engulfing(bar.open, bar.high, bar.low, bar.close,
+                                prev["o"], prev["h"], prev["l"], prev["c"]):
+            if _in_be_grace():
+                print(f"[{now_str} ET] {symbol} BE_SUPPRESSED (time grace)", flush=True)
+            elif _in_parabolic_grace(symbol, bar.close):
+                print(f"[{now_str} ET] {symbol} BE_SUPPRESSED (parabolic grace)", flush=True)
+            else:
+                # In signal mode (exit_mode=signal), BE exits are part of cascading strategy — no profit gate
+                print(f"[{now_str} ET] {symbol} BEARISH_ENGULFING_EXIT @ {bar.close:.4f}", flush=True)
+                exit_trade(symbol, bar.close, qty, "bearish_engulfing_exit")
+                return
 
 
 def check_triggers(symbol: str, price: float):

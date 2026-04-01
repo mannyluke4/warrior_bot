@@ -296,7 +296,7 @@ class LiveScanner:
             client = db.Historical()
             today_ts = pd.Timestamp.now(tz="US/Eastern").normalize()
             start_day = (today_ts - pd.offsets.BusinessDay(21)).date()
-            end_day = today_ts.date()
+            end_day = (today_ts - pd.offsets.BusinessDay(1)).date()
 
             self.log.info(f"      Requesting OHLCV from {start_day} to {end_day}...")
             data = client.timeseries.get_range(
