@@ -1,0 +1,1302 @@
+/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+  warnings.warn(  # deprecated in 14.0 - 2024-11-09
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded), 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2025-12-15 (degraded), 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:390: BentoWarning: No data found for the request you submitted.
+  bars_data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+
+  Unified Scanner V3 — Backtest Range
+  2026-01-02 to 2026-03-31 (63 business days)
+============================================================
+
+  [1/63] 2026-01-02
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-02
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-03 to 2026-01-02 (EQUS.SUMMARY)...
+         12,279 symbols with avg daily volume
+         12,279 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-02T04:00:00-05:00 to 2026-01-02T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         81,432 bars across 6,316 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-02.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-02.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [2/63] 2026-01-05
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-05
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-06 to 2026-01-05 (EQUS.SUMMARY)...
+         12,277 symbols with avg daily volume
+         12,277 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-05T04:00:00-05:00 to 2026-01-05T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         91,713 bars across 6,568 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-05.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-05.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [3/63] 2026-01-06
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-06
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-07 to 2026-01-06 (EQUS.SUMMARY)...
+         12,279 symbols with avg daily volume
+         12,279 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-06T04:00:00-05:00 to 2026-01-06T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,419 bars across 6,373 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-06.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-06.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [4/63] 2026-01-07
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-07
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-08 to 2026-01-07 (EQUS.SUMMARY)...
+         12,286 symbols with avg daily volume
+         12,286 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-07T04:00:00-05:00 to 2026-01-07T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         83,899 bars across 6,277 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-07.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-07.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  CDIO   gap=+29.9% $3.84 float=1.7M rvol=2.1x disc=07:01 score=0.436
+
+
+  [5/63] 2026-01-08
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-08
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-09 to 2026-01-08 (EQUS.SUMMARY)...
+         12,291 symbols with avg daily volume
+         12,291 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-08T04:00:00-05:00 to 2026-01-08T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         86,123 bars across 6,317 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-08.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-08.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  ACON   gap=+43.8% $8.27 float=0.7M rvol=2.0x disc=09:30 score=0.494
+
+
+  [6/63] 2026-01-09
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-09
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-10 to 2026-01-09 (EQUS.SUMMARY)...
+         12,289 symbols with avg daily volume
+         12,289 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-09T04:00:00-05:00 to 2026-01-09T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         84,565 bars across 6,330 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-09.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-09.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [7/63] 2026-01-12
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-12
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-13 to 2026-01-12 (EQUS.SUMMARY)...
+         12,271 symbols with avg daily volume
+         12,271 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-12T04:00:00-05:00 to 2026-01-12T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,509 bars across 6,556 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-12.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-12.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  BDSX   gap=+30.0% $7.10 float=3.7M rvol=2.0x disc=09:30 score=0.429
+
+
+  [8/63] 2026-01-13
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-13
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-14 to 2026-01-13 (EQUS.SUMMARY)...
+         12,281 symbols with avg daily volume
+         12,281 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-13T04:00:00-05:00 to 2026-01-13T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         86,236 bars across 6,384 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-13.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-13.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  AHMA   gap=+146.2% $13.00 float=2.02M rvol=2.1x disc=08:23 score=0.598
+  IOTR   gap=+100.4% $5.23 float=0.73M rvol=2.3x disc=05:25 score=0.591
+
+
+  [9/63] 2026-01-14
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-14
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-15 to 2026-01-14 (EQUS.SUMMARY)...
+         12,299 symbols with avg daily volume
+         12,299 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-14T04:00:00-05:00 to 2026-01-14T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         87,309 bars across 6,355 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-14.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-14.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  BEEM   gap=+32.8% $2.35 float=14.11M rvol=2.0x disc=06:47 score=0.389
+
+
+  [10/63] 2026-01-15
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-15
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-16 to 2026-01-15 (EQUS.SUMMARY)...
+         12,294 symbols with avg daily volume
+         12,294 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-15T04:00:00-05:00 to 2026-01-15T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         83,503 bars across 6,435 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-15.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-15.txt
+
+  ============================================================
+  RESULTS: 3 candidates
+  ============================================================
+  AUID   gap=+110.6% $2.09 float=11.81M rvol=9.3x disc=08:58 score=0.675
+  CJMB   gap=+154.5% $2.85 float=1.39M rvol=2.2x disc=09:02 score=0.597
+  BNKK   gap=+76.6% $4.91 float=2.88M rvol=2.1x disc=08:24 score=0.550
+
+
+  [11/63] 2026-01-16
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-16
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-17 to 2026-01-16 (EQUS.SUMMARY)...
+         12,297 symbols with avg daily volume
+         12,297 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-16T04:00:00-05:00 to 2026-01-16T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         83,298 bars across 6,328 symbols
+  [3/3] Processing bars through ScanEngine...
+  [FMP] SVRE: 2.38M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-16.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-16.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  LCFY   gap=+78.9% $5.60 float=1.4M rvol=5.3x disc=08:36 score=0.609
+  SVRE   gap=+50.7% $2.17 float=2.38M rvol=2.0x disc=07:02 score=0.487
+
+
+  [12/63] 2026-01-19
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-19
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-20 to 2026-01-19 (EQUS.SUMMARY)...
+         12,285 symbols with avg daily volume
+         12,285 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-19T04:00:00-05:00 to 2026-01-19T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+  No bars returned for 2026-01-19. Market holiday?
+
+  [13/63] 2026-01-20
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-20
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-21 to 2026-01-20 (EQUS.SUMMARY)...
+         12,285 symbols with avg daily volume
+         12,285 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-20T04:00:00-05:00 to 2026-01-20T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         97,304 bars across 6,795 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-20.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-20.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  BTTC   gap=+60.6% $2.73 float=1.27M rvol=2.0x disc=07:25 score=0.524
+
+
+  [14/63] 2026-01-21
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-21
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-22 to 2026-01-21 (EQUS.SUMMARY)...
+         12,292 symbols with avg daily volume
+         12,292 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-21T04:00:00-05:00 to 2026-01-21T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         89,364 bars across 6,442 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-21.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-21.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [15/63] 2026-01-22
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-22
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-23 to 2026-01-22 (EQUS.SUMMARY)...
+         12,296 symbols with avg daily volume
+         12,296 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-22T04:00:00-05:00 to 2026-01-22T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,252 bars across 6,414 symbols
+  [3/3] Processing bars through ScanEngine...
+  [FMP] NITO: 0.57M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-22.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-22.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  SXTP   gap=+155.5% $5.11 float=0.9M rvol=2.0x disc=08:35 score=0.632
+  NITO   gap=+33.9% $2.21 float=0.57M rvol=2.0x disc=08:04 score=0.479
+
+
+  [16/63] 2026-01-23
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-23
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-24 to 2026-01-23 (EQUS.SUMMARY)...
+         12,304 symbols with avg daily volume
+         12,304 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-23T04:00:00-05:00 to 2026-01-23T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         82,944 bars across 6,399 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-23.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-23.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [17/63] 2026-01-26
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-26
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-27 to 2026-01-26 (EQUS.SUMMARY)...
+         12,308 symbols with avg daily volume
+         12,308 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-26T04:00:00-05:00 to 2026-01-26T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         86,829 bars across 6,548 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-26.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-26.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  BATL   gap=+385.2% $6.21 float=7.23M rvol=2.0x disc=09:26 score=0.575
+  GXAI   gap=+104.5% $2.29 float=6.5M rvol=2.0x disc=08:11 score=0.567
+
+
+  [18/63] 2026-01-27
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-27
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-28 to 2026-01-27 (EQUS.SUMMARY)...
+         12,323 symbols with avg daily volume
+         12,323 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-27T04:00:00-05:00 to 2026-01-27T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         85,992 bars across 6,432 symbols
+  [3/3] Processing bars through ScanEngine...
+  [FMP] GNTA: 13.49M
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-27.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-27.txt
+
+  ============================================================
+  RESULTS: 4 candidates
+  ============================================================
+  NUWE   gap=+123.3% $4.80 float=0.88M rvol=2.0x disc=08:09 score=0.627
+  HIND   gap=+108.0% $6.47 float=1.5M rvol=2.0x disc=08:10 score=0.577
+  CYN    gap=+41.4% $2.94 float=7.97M rvol=2.0x disc=08:03 score=0.431
+  GNTA   gap=+54.6% $2.01 float=13.49M rvol=2.1x disc=05:31 score=0.416
+
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:317: BentoWarning: The streaming request contained one or more days which have reduced quality: 2026-01-12 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  data = client.timeseries.get_range(
+/Users/duffy/warrior_bot_v2/unified_scanner.py:390: BentoWarning: No data found for the request you submitted.
+  bars_data = client.timeseries.get_range(
+
+  [19/63] 2026-01-28
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-28
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-29 to 2026-01-28 (EQUS.SUMMARY)...
+         12,339 symbols with avg daily volume
+         12,339 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-28T04:00:00-05:00 to 2026-01-28T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         84,644 bars across 6,414 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-28.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-28.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  AIMD   gap=+39.0% $2.39 float=1.69M rvol=2.0x disc=05:38 score=0.467
+
+
+  [20/63] 2026-01-29
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-29
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-30 to 2026-01-29 (EQUS.SUMMARY)...
+         12,345 symbols with avg daily volume
+         12,345 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-29T04:00:00-05:00 to 2026-01-29T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,940 bars across 6,610 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-29.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-29.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  SER    gap=+40.3% $3.81 float=3.58M rvol=2.0x disc=09:46 score=0.481
+
+
+  [21/63] 2026-01-30
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-01-30
+============================================================
+  [1/3] Fetching OHLCV-1d from 2025-12-31 to 2026-01-30 (EQUS.SUMMARY)...
+         12,353 symbols with avg daily volume
+         12,353 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-01-30T04:00:00-05:00 to 2026-01-30T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         86,881 bars across 6,505 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-30.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-01-30.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  PMN    gap=+48.3% $17.80 float=1.27M rvol=2.4x disc=09:07 score=0.486
+
+
+  [22/63] 2026-02-02
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-02
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-03 to 2026-02-02 (EQUS.SUMMARY)...
+         12,344 symbols with avg daily volume
+         12,344 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-02T04:00:00-05:00 to 2026-02-02T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         91,794 bars across 6,698 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-02.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-02.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  SWVL   gap=+49.2% $2.70 float=5.46M rvol=2.1x disc=07:27 score=0.443
+  FUSE   gap=+36.1% $2.15 float=14.97M rvol=2.0x disc=08:09 score=0.369
+
+
+  [23/63] 2026-02-03
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-03
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-04 to 2026-02-03 (EQUS.SUMMARY)...
+         12,360 symbols with avg daily volume
+         12,360 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-03T04:00:00-05:00 to 2026-02-03T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         92,150 bars across 6,603 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-03.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-03.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [24/63] 2026-02-04
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-04
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-05 to 2026-02-04 (EQUS.SUMMARY)...
+         12,370 symbols with avg daily volume
+         12,370 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-04T04:00:00-05:00 to 2026-02-04T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         92,923 bars across 6,596 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-04.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-04.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [25/63] 2026-02-05
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-05
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-06 to 2026-02-05 (EQUS.SUMMARY)...
+         12,378 symbols with avg daily volume
+         12,378 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-05T04:00:00-05:00 to 2026-02-05T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         97,916 bars across 6,637 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-05.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-05.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [26/63] 2026-02-06
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-06
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-07 to 2026-02-06 (EQUS.SUMMARY)...
+         12,385 symbols with avg daily volume
+         12,385 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-06T04:00:00-05:00 to 2026-02-06T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         91,607 bars across 6,523 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-06.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-06.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  FLYE   gap=+39.7% $6.02 float=1.46M rvol=2.7x disc=09:13 score=0.474
+
+
+  [27/63] 2026-02-09
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-09
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-10 to 2026-02-09 (EQUS.SUMMARY)...
+         12,385 symbols with avg daily volume
+         12,385 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-09T04:00:00-05:00 to 2026-02-09T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         89,060 bars across 6,525 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-09.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-09.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  UOKA   gap=+94.1% $2.31 float=1.06M rvol=2.0x disc=08:42 score=0.616
+
+
+  [28/63] 2026-02-10
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-10
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-11 to 2026-02-10 (EQUS.SUMMARY)...
+         12,397 symbols with avg daily volume
+         12,397 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-10T04:00:00-05:00 to 2026-02-10T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         87,357 bars across 6,379 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-10.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-10.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [29/63] 2026-02-11
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-11
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-12 to 2026-02-11 (EQUS.SUMMARY)...
+         12,406 symbols with avg daily volume
+         12,406 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-11T04:00:00-05:00 to 2026-02-11T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         90,261 bars across 6,491 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-11.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-11.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [30/63] 2026-02-12
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-12
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-13 to 2026-02-12 (EQUS.SUMMARY)...
+         12,424 symbols with avg daily volume
+         12,424 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-12T04:00:00-05:00 to 2026-02-12T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         87,264 bars across 6,349 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-12.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-12.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [31/63] 2026-02-13
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-13
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-14 to 2026-02-13 (EQUS.SUMMARY)...
+         12,436 symbols with avg daily volume
+         12,436 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-13T04:00:00-05:00 to 2026-02-13T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         90,041 bars across 6,480 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-13.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-13.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [32/63] 2026-02-16
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-16
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-17 to 2026-02-16 (EQUS.SUMMARY)...
+         12,429 symbols with avg daily volume
+         12,429 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-16T04:00:00-05:00 to 2026-02-16T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+  No bars returned for 2026-02-16. Market holiday?
+
+  [33/63] 2026-02-17
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-17
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-18 to 2026-02-17 (EQUS.SUMMARY)...
+         12,429 symbols with avg daily volume
+         12,429 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-17T04:00:00-05:00 to 2026-02-17T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         89,246 bars across 6,578 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-17.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-17.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [34/63] 2026-02-18
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-18
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-19 to 2026-02-18 (EQUS.SUMMARY)...
+         12,432 symbols with avg daily volume
+         12,432 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-18T04:00:00-05:00 to 2026-02-18T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         86,433 bars across 6,348 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-18.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-18.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [35/63] 2026-02-19
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-19
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-20 to 2026-02-19 (EQUS.SUMMARY)...
+         12,448 symbols with avg daily volume
+         12,448 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-19T04:00:00-05:00 to 2026-02-19T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         83,495 bars across 6,338 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-19.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-19.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  ENVB   gap=+12.5% $2.52 float=0.5M rvol=2.1x disc=08:14 score=0.427
+
+
+  [36/63] 2026-02-20
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-20
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-21 to 2026-02-20 (EQUS.SUMMARY)...
+         12,465 symbols with avg daily volume
+         12,465 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-20T04:00:00-05:00 to 2026-02-20T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         83,577 bars across 6,201 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-20.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-20.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [37/63] 2026-02-23
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-23
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-24 to 2026-02-23 (EQUS.SUMMARY)...
+         12,455 symbols with avg daily volume
+         12,455 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-23T04:00:00-05:00 to 2026-02-23T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         90,068 bars across 6,525 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-23.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-23.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [38/63] 2026-02-24
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-24
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-25 to 2026-02-24 (EQUS.SUMMARY)...
+         12,467 symbols with avg daily volume
+         12,467 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-24T04:00:00-05:00 to 2026-02-24T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,594 bars across 6,340 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-24.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-24.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [39/63] 2026-02-25
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-25
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-26 to 2026-02-25 (EQUS.SUMMARY)...
+         12,481 symbols with avg daily volume
+         12,481 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-25T04:00:00-05:00 to 2026-02-25T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         89,869 bars across 6,334 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-25.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-25.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [40/63] 2026-02-26
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-26
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-27 to 2026-02-26 (EQUS.SUMMARY)...
+         12,488 symbols with avg daily volume
+         12,488 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-26T04:00:00-05:00 to 2026-02-26T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         90,319 bars across 6,392 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-26.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-26.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [41/63] 2026-02-27
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-02-27
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-28 to 2026-02-27 (EQUS.SUMMARY)...
+         12,503 symbols with avg daily volume
+         12,503 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-02-27T04:00:00-05:00 to 2026-02-27T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         88,073 bars across 6,447 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-27.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-02-27.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [42/63] 2026-03-02
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-02
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-01-31 to 2026-03-02 (EQUS.SUMMARY)...
+         12,497 symbols with avg daily volume
+         12,497 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-02T04:00:00-05:00 to 2026-03-02T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         97,333 bars across 6,778 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-02.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-02.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [43/63] 2026-03-03
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-03
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-01 to 2026-03-03 (EQUS.SUMMARY)...
+         12,507 symbols with avg daily volume
+         12,507 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-03T04:00:00-05:00 to 2026-03-03T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         100,727 bars across 6,872 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-03.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-03.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [44/63] 2026-03-04
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-04
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-02 to 2026-03-04 (EQUS.SUMMARY)...
+         12,513 symbols with avg daily volume
+         12,513 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-04T04:00:00-05:00 to 2026-03-04T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         95,127 bars across 6,519 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-04.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-04.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  CANF   gap=+127.0% $11.35 float=1.32M rvol=2.0x disc=07:32 score=0.588
+
+
+  [45/63] 2026-03-05
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-05
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-03 to 2026-03-05 (EQUS.SUMMARY)...
+         12,514 symbols with avg daily volume
+         12,514 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-05T04:00:00-05:00 to 2026-03-05T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         91,058 bars across 6,562 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-05.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-05.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  MTEK   gap=+53.0% $2.80 float=4.58M rvol=2.6x disc=09:26 score=0.493
+  HTOO   gap=+20.9% $3.94 float=0.58M rvol=2.3x disc=07:57 score=0.435
+
+
+  [46/63] 2026-03-06
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-06
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-04 to 2026-03-06 (EQUS.SUMMARY)...
+         12,511 symbols with avg daily volume
+         12,511 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-06T04:00:00-05:00 to 2026-03-06T10:00:00-05:00 (EQUS.MINI ohlcv-1m)...
+         96,508 bars across 6,634 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-06.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-06.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [47/63] 2026-03-09
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-09
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-07 to 2026-03-09 (EQUS.SUMMARY)...
+         12,500 symbols with avg daily volume
+         12,500 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-09T04:00:00-04:00 to 2026-03-09T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         101,394 bars across 6,940 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-09.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-09.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  AGH    gap=+33.4% $6.51 float=4.6M rvol=2.0x disc=07:22 score=0.416
+
+
+  [48/63] 2026-03-10
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-10
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-08 to 2026-03-10 (EQUS.SUMMARY)...
+         12,504 symbols with avg daily volume
+         12,504 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-10T04:00:00-04:00 to 2026-03-10T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         91,970 bars across 6,392 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-10.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-10.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  INKT   gap=+62.7% $17.00 float=1.68M rvol=10.2x disc=08:14 score=0.630
+  VTAK   gap=+85.4% $2.54 float=1.28M rvol=2.0x disc=08:20 score=0.580
+
+
+  [49/63] 2026-03-11
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-11
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-09 to 2026-03-11 (EQUS.SUMMARY)...
+         12,515 symbols with avg daily volume
+         12,515 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-11T04:00:00-04:00 to 2026-03-11T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         86,703 bars across 6,273 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-11.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-11.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  SXTP   gap=+12.8% $2.12 float=0.9M rvol=2.0x disc=08:11 score=0.416
+
+
+  [50/63] 2026-03-12
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-12
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-10 to 2026-03-12 (EQUS.SUMMARY)...
+         12,515 symbols with avg daily volume
+         12,515 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-12T04:00:00-04:00 to 2026-03-12T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         89,194 bars across 6,429 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-12.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-12.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  POLA   gap=+22.7% $2.38 float=1.85M rvol=2.0x disc=08:28 score=0.452
+
+
+  [51/63] 2026-03-13
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-13
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-11 to 2026-03-13 (EQUS.SUMMARY)...
+         12,531 symbols with avg daily volume
+         12,531 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-13T04:00:00-04:00 to 2026-03-13T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         90,015 bars across 6,385 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-13.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-13.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  BIAF   gap=+90.7% $2.04 float=4.35M rvol=3.3x disc=09:36 score=0.635
+
+
+  [52/63] 2026-03-16
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-16
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-14 to 2026-03-16 (EQUS.SUMMARY)...
+         12,518 symbols with avg daily volume
+         12,518 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-16T04:00:00-04:00 to 2026-03-16T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         90,424 bars across 6,537 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-16.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-16.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  WNW    gap=+52.5% $2.75 float=1.66M rvol=3.4x disc=09:41 score=0.517
+
+
+  [53/63] 2026-03-17
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-17
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-15 to 2026-03-17 (EQUS.SUMMARY)...
+         12,534 symbols with avg daily volume
+         12,534 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-17T04:00:00-04:00 to 2026-03-17T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         85,282 bars across 6,240 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-17.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-17.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [54/63] 2026-03-18
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-18
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-16 to 2026-03-18 (EQUS.SUMMARY)...
+         12,537 symbols with avg daily volume
+         12,537 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-18T04:00:00-04:00 to 2026-03-18T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         92,699 bars across 6,312 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-18.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-18.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  ARTL   gap=+53.8% $7.46 float=2.12M rvol=2.1x disc=09:39 score=0.498
+
+
+  [55/63] 2026-03-19
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-19
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-17 to 2026-03-19 (EQUS.SUMMARY)...
+         12,545 symbols with avg daily volume
+         12,545 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-19T04:00:00-04:00 to 2026-03-19T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         94,188 bars across 6,460 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-19.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-19.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  CHNR   gap=+85.2% $6.11 float=0.52M rvol=2.2x disc=07:47 score=0.569
+  SER    gap=+57.8% $2.02 float=3.58M rvol=2.1x disc=09:01 score=0.517
+
+
+  [56/63] 2026-03-20
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-20
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-18 to 2026-03-20 (EQUS.SUMMARY)...
+         12,556 symbols with avg daily volume
+         12,556 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-20T04:00:00-04:00 to 2026-03-20T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         88,953 bars across 6,364 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-20.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-20.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [57/63] 2026-03-23
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-23
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-21 to 2026-03-23 (EQUS.SUMMARY)...
+         12,539 symbols with avg daily volume
+         12,539 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-23T04:00:00-04:00 to 2026-03-23T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         104,193 bars across 6,771 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-23.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-23.txt
+
+  ============================================================
+  RESULTS: 2 candidates
+  ============================================================
+  UGRO   gap=+74.3% $3.80 float=0.67M rvol=2.0x disc=07:50 score=0.549
+  AHMA   gap=+46.3% $6.65 float=2.02M rvol=2.3x disc=09:30 score=0.476
+
+
+  [58/63] 2026-03-24
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-24
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-22 to 2026-03-24 (EQUS.SUMMARY)...
+         12,546 symbols with avg daily volume
+         12,546 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-24T04:00:00-04:00 to 2026-03-24T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         86,553 bars across 6,355 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-24.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-24.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  FEED   gap=+47.5% $2.11 float=0.85M rvol=2.1x disc=08:24 score=0.522
+
+
+  [59/63] 2026-03-25
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-25
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-23 to 2026-03-25 (EQUS.SUMMARY)...
+         12,552 symbols with avg daily volume
+         12,552 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-25T04:00:00-04:00 to 2026-03-25T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         87,161 bars across 6,267 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-25.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-25.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [60/63] 2026-03-26
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-26
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-24 to 2026-03-26 (EQUS.SUMMARY)...
+         12,549 symbols with avg daily volume
+         12,549 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-26T04:00:00-04:00 to 2026-03-26T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         84,440 bars across 6,334 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-26.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  EEIQ   gap=+188.6% $7.88 float=0.84M rvol=2.1x disc=09:44 score=0.605
+
+
+  [61/63] 2026-03-27
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-27
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-25 to 2026-03-27 (EQUS.SUMMARY)...
+         12,568 symbols with avg daily volume
+         12,568 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-27T04:00:00-04:00 to 2026-03-27T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         86,311 bars across 6,443 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-27.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-27.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+  [62/63] 2026-03-30
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-30
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-02-28 to 2026-03-30 (EQUS.SUMMARY)...
+         12,562 symbols with avg daily volume
+         12,562 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-30T04:00:00-04:00 to 2026-03-30T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         88,083 bars across 6,566 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-30.txt
+
+  ============================================================
+  RESULTS: 1 candidates
+  ============================================================
+  ASTC   gap=+31.0% $3.10 float=1.32M rvol=3.2x disc=09:30 score=0.471
+
+
+  [63/63] 2026-03-31
+
+============================================================
+  UNIFIED SCANNER V3 — BACKTEST — 2026-03-31
+============================================================
+  [1/3] Fetching OHLCV-1d from 2026-03-01 to 2026-03-31 (EQUS.SUMMARY)...
+         12,569 symbols with avg daily volume
+         12,569 symbols with prev close
+  [2/3] Fetching 1-min bars 2026-03-31T04:00:00-04:00 to 2026-03-31T10:00:00-04:00 (EQUS.MINI ohlcv-1m)...
+         88,413 bars across 6,428 symbols
+  [3/3] Processing bars through ScanEngine...
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-31.json
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-03-31.txt
+
+  ============================================================
+  RESULTS: 0 candidates
+  ============================================================
+
+
+============================================================
+  Backtest range complete: 63 dates processed
+============================================================

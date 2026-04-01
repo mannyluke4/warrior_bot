@@ -1,0 +1,31 @@
+00:38:30  Live Scanner starting — 2026-04-01 
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+00:38:30  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+00:38:30  Initialized Historical(gateway=https://hist.databento.com)
+00:38:30        Requesting OHLCV from 2026-03-03 to 2026-04-01...
+00:38:33        FAILED to load prev close: 422 data_end_after_available_end
+The dataset EQUS.SUMMARY has data available up to '2026-03-31 00:00:00+00:00'. The `end` in the query ('2026-04-01 00:00:00+00:00') is after the available range. Try requesting with an earlier `end`.
+documentation: https://databento.com/docs/api-reference-historical/basics/datasets
+00:38:33        If EQUS.SUMMARY is not in your plan, confirm dataset access
+00:38:33        at https://databento.com/platform/datasets
+00:38:33        Scanner cannot run without prev close data — aborting
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 717, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 713, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 625, in run
+    self.load_prev_close()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 302, in load_prev_close
+    data = client.timeseries.get_range(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/historical/api/timeseries.py", line 127, in get_range
+    return self._stream(
+           ^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 134, in _stream
+    check_http_error(response)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 249, in check_http_error
+    raise BentoClientError(
+databento.common.error.BentoClientError: 422 data_end_after_available_end
+The dataset EQUS.SUMMARY has data available up to '2026-03-31 00:00:00+00:00'. The `end` in the query ('2026-04-01 00:00:00+00:00') is after the available range. Try requesting with an earlier `end`.
+documentation: https://databento.com/docs/api-reference-historical/basics/datasets

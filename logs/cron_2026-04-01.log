@@ -3,26 +3,27 @@ Display wake signal sent
 WARN: keystroke failed — check Accessibility permissions
 Waiting 10s for desktop session...
 Desktop session: ACTIVE
-caffeinate started (PID: 25167)
-=== V2 Daily run started: Tue Mar 31 02:04:18 MDT 2026 ===
+caffeinate started (PID: 70952)
+=== V2 Daily run started: Wed Apr  1 02:04:18 MDT 2026 ===
 From github.com:mannyluke4/warrior_bot
  * branch            v2-ibkr-migration -> FETCH_HEAD
 Already up to date.
-Code version: 21ec451 (DP V1.2 YTD: -$30K vs SQ-only. Jan 2025: -$2K. DP is net negative.)
+Code version: 2dd2c16 (Audit answers: 5/7 clean, 2 bugs found (evening window + scanner merge))
 /Users/duffy/warrior_bot_v2/daily_run.sh: line 83: md5: command not found
 daily_run.sh hash: 
 /Users/duffy/warrior_bot_v2/daily_run.sh: line 84: md5: command not found
 bot_ibkr.py hash: 
 sntp: clock_settime: Operation not permitted
-+0.019651 +/- 0.040596 time.apple.com 17.253.26.123
++0.021608 +/- 0.038742 time.apple.com 17.253.26.251
 NTP sync skipped (non-root)
-System time: Tue Mar 31 08:04:20 UTC 2026
+System time: Wed Apr  1 08:04:19 UTC 2026
 Pre-flight: checking Python imports...
 V2 Imports OK
 Killing stale processes...
 All stale processes cleared.
 Starting IB Gateway via IBC...
 Waiting for IB Gateway on port 4002...
+  attempt 1/36: port 4002 not ready yet, waiting 5s...
 [1;32m+==============================================================================
 +
 + IBC version 3.23.0
@@ -31,10 +32,9 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Tuesday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
 +
 +[0m
-  attempt 1/36: port 4002 not ready yet, waiting 5s...
   attempt 2/36: port 4002 not ready yet, waiting 5s...
   attempt 3/36: port 4002 not ready yet, waiting 5s...
   attempt 4/36: port 4002 not ready yet, waiting 5s...
@@ -71,29 +71,4 @@ Waiting for IB Gateway on port 4002...
   attempt 35/36: port 4002 not ready yet, waiting 5s...
   attempt 36/36: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
-=== TRAP: cleanup at Tue Mar 31 02:07:33 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run.sh: line 16: 25167 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration f31029b] auto: daily logs 2026-03-31
- 12 files changed, 3362 insertions(+)
- create mode 100644 logs/2026-03-30_evening.log
- create mode 100644 logs/2026-03-30_morning.log
- create mode 100644 logs/2026-03-31_daily.log
- create mode 100644 logs/cron_2026-03-31.log
- create mode 100644 logs/ibkr_tick_rebuild_2025.log
- create mode 100644 logs/ibkr_tick_rebuild_feb2025.log
- create mode 100644 logs/ibkr_tick_rebuild_jan2025.log
- create mode 100644 logs/jan2025_sq.log
- create mode 100644 logs/jan2025_sq_dp.log
- create mode 100644 logs/ytd_sq_dp.log
-=== Cleanup complete: Tue Mar 31 02:07:35 MDT 2026 ===
-/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 75: 25208 Killed: 9               "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Wed Apr  1 02:07:32 MDT 2026 ===

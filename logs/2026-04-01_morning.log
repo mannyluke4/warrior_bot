@@ -1,0 +1,79 @@
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 2.0
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Connected: True
+Account: ['DUQ143444']
+Account equity: $32,084
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 955 bars, EMA=3.0810
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+  Tick cache: KIDZ → +2 ticks (total 2)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-01/
+
+💤 Dead zone (02:34 ET). Sleeping until next window...
+[02:35 ET] KIDZ CHART | O=2.92 H=2.92 L=2.92 C=2.92 V=300 | EMA9=3.08 VWAP=2.92 (+0.0%) HOD=2.92 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,200 bars=50 | sq=IDLE armed=none
+[02:40 ET] KIDZ CHART | O=2.92 H=2.94 L=2.92 C=2.94 V=800 | EMA9=2.99 VWAP=2.93 (+0.4%) HOD=2.94 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=1,510 bars=50 | sq=IDLE armed=none
+IBKR ERROR 2107: HMDS data farm connection is inactive but should be available upon demand.ushmds (reqId=-1, symbol=?)
+[02:45 ET] KIDZ CHART | O=2.94 H=2.94 L=2.94 C=2.94 V=1,400 | EMA9=2.96 VWAP=2.94 (+0.1%) HOD=2.94 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=1,532 bars=50 | sq=IDLE armed=none
+[02:50 ET] KIDZ CHART | O=2.94 H=2.95 L=2.94 C=2.95 V=500 | EMA9=2.95 VWAP=2.94 (+0.4%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=1,505 bars=50 | sq=IDLE armed=none
+[02:55 ET] KIDZ CHART | O=2.91 H=2.91 L=2.91 C=2.91 V=1,400 | EMA9=2.93 VWAP=2.93 (-0.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=1,510 bars=50 | sq=IDLE armed=none
+[03:00 ET] KIDZ CHART | O=2.91 H=2.91 L=2.91 C=2.91 V=300 | EMA9=2.92 VWAP=2.92 (-0.5%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,496 bars=50 | sq=IDLE armed=none
+[03:05 ET] KIDZ CHART | O=2.91 H=2.91 L=2.91 C=2.91 V=800 | EMA9=2.91 VWAP=2.92 (-0.4%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=1,461 bars=50 | sq=IDLE armed=none
+[03:10 ET] KIDZ CHART | O=2.90 H=2.90 L=2.90 C=2.90 V=1,000 | EMA9=2.91 VWAP=2.92 (-0.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=1,371 bars=50 | sq=IDLE armed=none
+[03:15 ET] KIDZ CHART | O=2.90 H=2.90 L=2.90 C=2.90 V=200 | EMA9=2.90 VWAP=2.92 (-0.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=1,351 bars=50 | sq=IDLE armed=none
+[03:20 ET] KIDZ CHART | O=2.89 H=2.89 L=2.88 C=2.88 V=1,700 | EMA9=2.90 VWAP=2.91 (-1.1%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=1,240 bars=50 | sq=IDLE armed=none
+[03:25 ET] KIDZ CHART | O=2.83 H=2.83 L=2.83 C=2.83 V=1,200 | EMA9=2.86 VWAP=2.89 (-2.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=1,505 bars=50 | sq=IDLE armed=none
+[03:30 ET] KIDZ CHART | O=2.83 H=2.83 L=2.83 C=2.83 V=1,600 | EMA9=2.84 VWAP=2.88 (-1.8%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=1,614 bars=50 | sq=IDLE armed=none
+[03:35 ET] KIDZ CHART | O=2.83 H=2.86 L=2.83 C=2.86 V=1,100 | EMA9=2.84 VWAP=2.88 (-0.7%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=1,674 bars=50 | sq=IDLE armed=none
+[03:45 ET] KIDZ CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=600 | EMA9=2.85 VWAP=2.88 (-1.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=1,345 bars=50 | sq=IDLE armed=none
+[03:50 ET] KIDZ CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=100 | EMA9=2.85 VWAP=2.88 (-1.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=1,327 bars=50 | sq=IDLE armed=none
+[04:00 ET] KIDZ CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=200 | EMA9=2.85 VWAP=2.88 (-1.0%) HOD=3.10 PM_H=3.10 | MACD=N/A vol_ratio=0.2x avg_vol=1,327 bars=50 | sq=IDLE armed=none
+
+🟢 Evening session started (04:00 ET). Full reset. Resuming trading.
+
+🔄 CATCHUP SCAN at 04:00:20 ET (first scan — casting wide net)...
+⚠️ IBKR ERROR 2106: HMDS data farm connection is OK:ushmds (symbol=?)
+IBKR ERROR 165: Historical Market Data Service query message:no items retrieved (reqId=6, symbol=?)
+Error 162, reqId 6: Historical Market Data Service error message:API scanner subscription cancelled: 6
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 6 (reqId=6, symbol=?)
+IBKR ERROR 165: Historical Market Data Service query message:no items retrieved (reqId=7, symbol=?)
+Error 162, reqId 7: Historical Market Data Service error message:API scanner subscription cancelled: 7
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 7 (reqId=7, symbol=?)
+IBKR ERROR 165: Historical Market Data Service query message:no items retrieved (reqId=8, symbol=?)
+  Catchup: 0 unique symbols from 3 scanners
+📊 Scanner: 0 new candidates, 0 new subs, 0 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+Error 162, reqId 8: Historical Market Data Service error message:API scanner subscription cancelled: 8
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 8 (reqId=8, symbol=?)
+🔥 Seeded KIDZ: 1 bars, EMA=2.9200
+✅ Subscribed: KIDZ
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.92, last_tick_time=04:00:25
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[04:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 23 ticks in last 60s, last_price=$2.94, last_tick_time=04:01:24
+[04:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=29 | KIDZ:29t/IDLE
+[04:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=29 | KIDZ:29t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$3.00, last_tick_time=04:02:20
+[04:03:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+[04:03:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+  TICK AUDIT: KIDZ: 33 ticks in last 60s, last_price=$2.97, last_tick_time=04:03:24
+[04:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[04:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=11 | KIDZ:11t/IDLE
