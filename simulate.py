@@ -196,6 +196,9 @@ class SimTradeManager:
         self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
         self.bail_timer_minutes = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
 
+        # --- EPL graduation callback (set by caller) ---
+        self._on_target_hit_cb = None
+
         # Fix 1: partial exit on sq_target_hit — take only N% at target, let rest run
         self.sq_partial_exit_enabled = os.getenv("WB_SQ_PARTIAL_EXIT_ENABLED", "0") == "1"
         self.sq_partial_pct = int(os.getenv("WB_SQ_PARTIAL_PCT", "50"))
@@ -788,6 +791,9 @@ class SimTradeManager:
                 t.core_exit_price = price
                 t.core_exit_time = time_str
                 t.core_exit_reason = "sq_target_hit"
+                # EPL graduation hook
+                if self._on_target_hit_cb:
+                    self._on_target_hit_cb(t, price, time_str)
                 return
 
         # --- Post-target phase (runner only) ---
@@ -1925,6 +1931,41 @@ def run_simulation(
         t2_stop_lock_r=_t2_stop_lock_r,
         reentry_cooldown_bars=_reentry_cooldown_bars,
     )
+
+    # ── EPL Framework (Extended Play List) ──
+    from epl_framework import (
+        EPL_ENABLED, EPL_MIN_GRADUATION_R,
+        GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
+    )
+    _epl_watchlist = EPLWatchlist()
+    _epl_registry = StrategyRegistry()
+    _epl_arbitrator = PositionArbitrator(_epl_registry, _epl_watchlist)
+
+    if EPL_ENABLED:
+        def _on_epl_graduation(t, price, time_str):
+            realized_r = (price - t.entry) / t.r if t.r > 0 else 0
+            if realized_r >= EPL_MIN_GRADUATION_R:
+                from datetime import datetime as dt
+                import pytz as _tz
+                _et = _tz.timezone("US/Eastern")
+                ctx = GraduationContext(
+                    symbol=symbol,
+                    graduation_time=dt.now(_et),
+                    graduation_price=price,
+                    sq_entry_price=t.entry,
+                    sq_stop_price=t.stop,
+                    hod_at_graduation=bar_builder.get_hod(symbol) or 0,
+                    vwap_at_graduation=bar_builder.get_vwap(symbol) or 0,
+                    pm_high=bar_builder.get_premarket_high(symbol) or 0,
+                    avg_volume_at_graduation=0,
+                    sq_trade_count=1,
+                    r_value=t.r,
+                )
+                _epl_watchlist.add(ctx)
+                _epl_registry.notify_graduation(ctx)
+                if verbose:
+                    print(f"  [{time_str}] [EPL] {symbol} graduated at ${price:.4f} (R={realized_r:.1f})", flush=True)
+        sim_mgr._on_target_hit_cb = _on_epl_graduation
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
