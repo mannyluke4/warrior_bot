@@ -63,6 +63,14 @@ class SqueezeDetectorV2:
         self.cuc_exit = os.getenv("WB_SQV2_CUC_EXIT", "0") == "1"
         self.intrabar_shape = os.getenv("WB_SQV2_INTRABAR_SHAPE", "0") == "1"
 
+        # --- Candle Exit V2: tiered 1m exits with volume confirmation ---
+        self._candle_exit_v2 = os.getenv("WB_SQV2_CANDLE_EXIT_V2", "0") == "1"
+        self._target_is_exit = os.getenv("WB_SQV2_TARGET_IS_EXIT", "0") == "1"
+        self._t1_min_bars = int(os.getenv("WB_SQV2_T1_MIN_BARS", "2"))
+        self._t1_threshold = float(os.getenv("WB_SQV2_T1_THRESHOLD_R", "1.0"))
+        self._t3_threshold = float(os.getenv("WB_SQV2_T2_THRESHOLD_R", "3.0"))
+        self._t2_vol_mult = float(os.getenv("WB_SQV2_T2_VOL_MULT", "1.5"))
+
         # --- V2 Exit params (from .env, same as V1 candle exits) ---
         self._tw_grace_min = int(os.getenv("WB_TOPPING_WICKY_GRACE_MIN", "3"))
         self._tw_min_profit_r = float(os.getenv("WB_TW_MIN_PROFIT_R", "1.5"))
@@ -127,6 +135,13 @@ class SqueezeDetectorV2:
         self._prev_10s_bar: Optional[dict] = None
         self._recent_10s_highs: list = []
         self._prev_1m_bar: Optional[dict] = None
+
+        # --- Candle Exit V2 state ---
+        self._exit_vol_history: list = []
+        self._session_max_vol: float = 0
+        self._tight_trail_price: Optional[float] = None
+        self._bars_in_trade: int = 0
+        self._prior_1m_exit_bar: Optional[dict] = None  # {o, h, l, c, v}
 
         # --- MACD state (V1 compat — V1 uses it for gating in sim) ---
         self.macd_state = type('obj', (object,), {'histogram': None})()
@@ -346,6 +361,15 @@ class SqueezeDetectorV2:
         # Update peak
         if price > self._trade_peak:
             self._trade_peak = price
+            # New high clears any tight trail warning
+            if self._tight_trail_price is not None:
+                self._tight_trail_price = None
+
+        # ── Tight trail check (Candle Exit V2 warning trail) ──
+        if self._candle_exit_v2 and self._tight_trail_price is not None:
+            if price < self._tight_trail_price:
+                self._tight_trail_price = None
+                return "candle_warning_trail"
 
         # ── 0) Dollar loss cap ──
         if self._sq_max_loss_dollars > 0:
@@ -365,11 +389,15 @@ class SqueezeDetectorV2:
             if price <= trail_price:
                 return "sq_para_trail_exit" if self._trade_is_parabolic else "sq_trail_exit"
 
-            # 3) Target hit — signal partial exit
+            # 3) Target hit
             if price >= entry + (self._sq_target_r * r):
                 self._trade_tp_hit = True
                 self._trade_runner_stop = max(stop, entry + 0.01)
-                return "sq_target_hit"
+                # Candle Exit V2: target is a tier promotion, not an exit
+                if self._candle_exit_v2 and not self._target_is_exit:
+                    pass  # Stay in trade, Tier 3 candle exits manage the exit
+                else:
+                    return "sq_target_hit"
 
         # ── Post-target (runner) ──
         if self._trade_tp_hit:
@@ -378,16 +406,22 @@ class SqueezeDetectorV2:
             if price <= runner_stop:
                 return "sq_runner_trail"
 
-        # ── Candle pattern exits on 10s bar close ──
-        if self.candle_exits and bar_10s is not None:
-            reason = self._check_candle_exit_10s(bar_10s, time_str)
+        # ── Candle Exit V2: tiered 1m exits (replaces 10s exits when active) ──
+        if self._candle_exit_v2 and bar_1m is not None:
+            unrealized_r = (price - entry) / r if r > 0 else 0
+            reason = self._check_candle_exit_v2(bar_1m, unrealized_r)
             if reason:
                 return reason
-
-        # ── CUC exit on 1m bar close ──
-        if self.cuc_exit and bar_1m is not None and self._trade_tp_hit:
-            if self._prev_1m_bar is not None and bar_1m.low < self._prev_1m_bar["l"]:
-                return "sq_candle_under_candle_exit"
+        elif not self._candle_exit_v2:
+            # Legacy: 10s candle exits
+            if self.candle_exits and bar_10s is not None:
+                reason = self._check_candle_exit_10s(bar_10s, time_str)
+                if reason:
+                    return reason
+            # Legacy: CUC exit on 1m bar close
+            if self.cuc_exit and bar_1m is not None and self._trade_tp_hit:
+                if self._prev_1m_bar is not None and bar_1m.low < self._prev_1m_bar["l"]:
+                    return "sq_candle_under_candle_exit"
 
         return None
 
@@ -477,6 +511,113 @@ class SqueezeDetectorV2:
     # ------------------------------------------------------------------
     # Trade lifecycle — V2 manages its own exit state
     # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Candle Exit V2: tiered 1m exits with volume confirmation
+    # ------------------------------------------------------------------
+    def on_1m_bar_close_exit(self, bar_1m):
+        """Called on every 1m bar close while in trade. Updates exit state."""
+        if not self._in_trade or bar_1m is None:
+            return
+        o = bar_1m.open if hasattr(bar_1m, 'open') else bar_1m.get("o", 0)
+        h = bar_1m.high if hasattr(bar_1m, 'high') else bar_1m.get("h", 0)
+        l = bar_1m.low if hasattr(bar_1m, 'low') else bar_1m.get("l", 0)
+        c = bar_1m.close if hasattr(bar_1m, 'close') else bar_1m.get("c", 0)
+        v = bar_1m.volume if hasattr(bar_1m, 'volume') else bar_1m.get("v", 0)
+        self._bars_in_trade += 1
+        self._exit_vol_history.append(v)
+        if len(self._exit_vol_history) > 10:
+            self._exit_vol_history.pop(0)
+        self._session_max_vol = max(self._session_max_vol, v)
+        self._prior_1m_exit_bar = {"o": o, "h": h, "l": l, "c": c, "v": v}
+
+    def _avg_recent_volume(self, n: int = 5) -> float:
+        if len(self._exit_vol_history) < n:
+            return 0
+        return sum(self._exit_vol_history[-n:]) / n
+
+    def _is_volume_confirmed(self, bar_volume: float, mult: float = 1.5) -> bool:
+        avg = self._avg_recent_volume()
+        if avg <= 0:
+            return False
+        return bar_volume >= mult * avg
+
+    def _is_climax_volume(self, bar_volume: float) -> bool:
+        return bar_volume >= self._session_max_vol and self._session_max_vol > 0
+
+    def _check_candle_exit_v2(self, bar_1m, unrealized_r: float) -> Optional[str]:
+        """Volume-confirmed 1m candle exit signals, tiered by profit level."""
+        if self._bars_in_trade < self._t1_min_bars:
+            return None
+
+        o = bar_1m.open if hasattr(bar_1m, 'open') else bar_1m.get("o", 0)
+        h = bar_1m.high if hasattr(bar_1m, 'high') else bar_1m.get("h", 0)
+        l = bar_1m.low if hasattr(bar_1m, 'low') else bar_1m.get("l", 0)
+        c = bar_1m.close if hasattr(bar_1m, 'close') else bar_1m.get("c", 0)
+        v = bar_1m.volume if hasattr(bar_1m, 'volume') else bar_1m.get("v", 0)
+        rng = h - l
+        if rng <= 0:
+            return None
+
+        body = abs(c - o)
+        upper_wick = h - max(o, c)
+
+        prev = self._prior_1m_exit_bar
+        if prev is None:
+            return None
+
+        prev_o, prev_h, prev_l, prev_c = prev["o"], prev["h"], prev["l"], prev["c"]
+        vol_confirmed = self._is_volume_confirmed(v, self._t2_vol_mult)
+
+        # ── Detect patterns ──
+        _is_shooting_star = (body > 0 and upper_wick >= 2 * body
+                             and (min(o, c) - l) <= 0.3 * rng)
+        _is_gravestone = (body <= 0.12 * rng and rng > 0.001
+                          and body > 0 and upper_wick >= 3 * body)
+        _is_bearish_engulf = (c < o  # red
+                              and prev_c > prev_o  # prev green
+                              and c < prev_o and o > prev_c)
+        _is_doji = body <= 0.12 * rng and rng > 0.001
+        _is_cuc = (l < prev_l and c < prev_c)
+        _is_climax_reversal = (h >= self._trade_peak
+                               and (c - l) <= 0.25 * rng
+                               and self._is_climax_volume(v))
+
+        # ── TIER 1: Capital Protection (< 1.0R) ──
+        if unrealized_r < self._t1_threshold:
+            if _is_bearish_engulf:
+                return "t1_bearish_engulfing_exit"
+            if _is_shooting_star:
+                return "t1_shooting_star_exit"
+            if _is_gravestone:
+                return "t1_gravestone_exit"
+            return None
+
+        # ── TIER 2: Momentum Protection (1.0R - 3.0R) ──
+        if unrealized_r < self._t3_threshold:
+            if _is_gravestone and vol_confirmed:
+                return "t2_gravestone_vol_exit"
+            if _is_shooting_star and vol_confirmed:
+                return "t2_shooting_star_vol_exit"
+            # Warnings (trail tighten)
+            if _is_bearish_engulf:
+                self._tight_trail_price = l
+            if _is_doji:
+                self._tight_trail_price = l
+            return None
+
+        # ── TIER 3: Runner Protection (≥ 3.0R) ──
+        if _is_cuc:
+            return "t3_candle_under_candle_exit"
+        if _is_climax_reversal:
+            return "t3_climax_reversal_exit"
+        # Warnings
+        if _is_shooting_star or _is_gravestone:
+            self._tight_trail_price = l
+        return None
+
+    # ------------------------------------------------------------------
+    # Trade lifecycle — V2 manages its own exit state
+    # ------------------------------------------------------------------
     def notify_trade_opened(self, entry: float = 0, stop: float = 0,
                             r: float = 0, qty: int = 0,
                             time_str: str = "", is_parabolic: bool = False):
@@ -494,6 +635,12 @@ class SqueezeDetectorV2:
         self._pattern_det_10s = PatternDetector()
         self._prev_10s_bar = None
         self._recent_10s_highs = []
+        # Reset Candle Exit V2 state
+        self._exit_vol_history = []
+        self._session_max_vol = 0
+        self._tight_trail_price = None
+        self._bars_in_trade = 0
+        self._prior_1m_exit_bar = None
 
     def notify_trade_closed(self, symbol: str, pnl: float):
         if pnl > 0:
@@ -538,6 +685,11 @@ class SqueezeDetectorV2:
         self._recent_10s_highs = []
         self._prev_1m_bar = None
         self._pattern_det_10s = PatternDetector()
+        self._exit_vol_history = []
+        self._session_max_vol = 0
+        self._tight_trail_price = None
+        self._bars_in_trade = 0
+        self._prior_1m_exit_bar = None
 
     # ------------------------------------------------------------------
     # Internal helpers (V1 logic preserved)

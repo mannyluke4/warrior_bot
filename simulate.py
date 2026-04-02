@@ -776,14 +776,18 @@ class SimTradeManager:
                 _eff_target_r = float(os.getenv("WB_CT_TARGET_R", "3.0"))
             if t.r > 0 and price >= t.entry + (_eff_target_r * t.r):
                 t.tp_hit = True
-                t.core_exit_price = price
-                t.core_exit_time = time_str
-                t.core_exit_reason = "sq_target_hit"
-                # Move runner stop to breakeven
                 t.runner_stop = max(t.stop, t.entry + 0.01)
                 # Fix 3: record when target was hit for runner detection
                 if self.sq_runner_detect_enabled:
                     self._sq_target_hit_min = self._time_to_minutes(time_str)
+                # Candle Exit V2: target hit promotes to Tier 3, not an exit
+                if (os.getenv("WB_SQV2_CANDLE_EXIT_V2", "0") == "1"
+                        and os.getenv("WB_SQV2_TARGET_IS_EXIT", "0") == "0"
+                        and os.getenv("WB_SQUEEZE_VERSION", "1") == "2"):
+                    return  # Stay in trade — candle exits manage from here
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = "sq_target_hit"
                 return
 
         # --- Post-target phase (runner only) ---
@@ -2343,6 +2347,18 @@ def run_simulation(
             # Skip when Ross exit is ON — Ross 1m signals handle exits instead
             if not _ross_exit_enabled and sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
                 if sim_mgr.open_trade.setup_type in ("squeeze", "mp_reentry", "continuation"):
+                    # V2 Candle Exit: update bar counter + check 1m exits
+                    if _sq_v2 and hasattr(sq_det, 'on_1m_bar_close_exit'):
+                        sq_det.on_1m_bar_close_exit(bar)
+                        t = sim_mgr.open_trade
+                        exit_reason = sq_det.check_exit(
+                            price=bar.close, qty=t.qty_total,
+                            bar_1m=bar, time_str=time_str,
+                        )
+                        if exit_reason:
+                            sim_mgr.on_exit_signal(exit_reason, bar.close, time_str)
+                            if verbose:
+                                print(f"  [{time_str}] V2_1M_{exit_reason.upper()} @ {bar.close:.4f}", flush=True)
                     sim_mgr.on_1m_bar_close_squeeze(
                         sim_mgr.open_trade,
                         bar.open, bar.high, bar.low, bar.close, bar.volume,
