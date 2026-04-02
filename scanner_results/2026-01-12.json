@@ -1,34 +1,20 @@
 [
   {
-    "symbol": "OM",
-    "prev_close": 4.67,
-    "pm_price": 6.5,
-    "gap_pct": 39.19,
-    "pm_volume": 9559536.0,
-    "first_seen_et": "08:30",
-    "sim_start": "08:30",
-    "discovery_time": "08:30",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 898710.0,
-    "relative_volume": 10.64,
-    "float_shares": 13062782,
-    "float_millions": 13.06,
-    "profile": "B"
-  },
-  {
     "symbol": "BDSX",
-    "prev_close": 5.58,
-    "pm_price": 7.0,
-    "gap_pct": 25.45,
-    "pm_volume": 6603568.0,
-    "first_seen_et": "06:03",
-    "sim_start": "06:03",
-    "discovery_time": "06:03",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 2829335.0,
-    "relative_volume": 2.33,
+    "prev_close": 5.46,
+    "pm_price": 6.74,
+    "gap_pct": 23.44,
+    "pm_volume": 99815,
+    "cumulative_volume_at_discovery": 99815,
+    "avg_daily_volume": 66473.0,
+    "relative_volume": 1.5,
     "float_shares": 3700000,
     "float_millions": 3.7,
-    "profile": "A"
+    "profile": "A",
+    "discovery_time": "08:02",
+    "sim_start": "08:02",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "08:02",
+    "rank_score": 0.3906
   }
 ]

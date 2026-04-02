@@ -1,0 +1,28 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: NUWE  |  Date: 2026-02-05  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching NUWE bars for 2026-02-05...
+  Total bars: 138  |  Seed: 3  |  Sim: 135
+  Seed complete: EMA9=3.0300
+  Fetching tick data from Alpaca...
+  Tick replay: 1394 trades for sim window
+
+  === VWAP BLOCKED ARMS (1) ===
+  BLOCKED: time=07:22 1M RESET (lost VWAP) VWAP_BLOCKED_ARM score=2.1 entry=3.0500 stop=3.0100 R=0.0400 detail=macd=3.5*0.6 close=3.0300 vwap=3.0328
+    post_block: max_5m=3.1300 max_10m=3.1797 max_30m=3.1797
+
+======================================================================
+  BACKTEST REPORT: NUWE -- 2026-02-05 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1394 sim + 3 seed  |  EMA9=2.7541  VWAP=2.8522
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

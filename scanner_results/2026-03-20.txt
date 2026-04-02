@@ -1,10 +1,7 @@
-Scanner Results — 2026-03-20
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-ANNA       +21.4%    4.60    9.39M       B    07:00 1,506,902.0      04:00  premarket
-RDGT       +16.9%    2.56    5.14M       B    10:03   52,226.0      10:03    precise
+Scanner Results — 2026-03-20 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
 
-Total candidates: 2
-  Premarket (7:15 AM): 1
-  Continuous rescan:   0
+Total candidates: 0
+Discovery method: unified_v3

@@ -1,11 +1,7 @@
-Scanner Results — 2026-02-04
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-ELPW      +128.3%    2.06    0.45M       A    09:46 31,138,608.0      09:46    precise
-CIGL       +49.3%    4.03    1.24M       A    04:01 5,720,243.0      04:01    precise
-BOXL       +57.4%    2.03    0.66M       A    07:00 23,869,470.0      04:00  premarket
+Scanner Results — 2026-02-04 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
 
-Total candidates: 3
-  Premarket (7:15 AM): 1
-  Continuous rescan:   0
+Total candidates: 0
+Discovery method: unified_v3

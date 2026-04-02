@@ -1,34 +1,20 @@
 [
   {
     "symbol": "MTEK",
-    "prev_close": 1.79,
-    "pm_price": 2.73,
-    "gap_pct": 52.51,
-    "pm_volume": 12603353.0,
-    "first_seen_et": "09:13",
-    "sim_start": "09:13",
-    "discovery_time": "09:13",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 1161418.0,
-    "relative_volume": 10.85,
+    "prev_close": 1.83,
+    "pm_price": 2.79,
+    "gap_pct": 52.46,
+    "pm_volume": 165427,
+    "cumulative_volume_at_discovery": 165427,
+    "avg_daily_volume": 88752.0,
+    "relative_volume": 1.86,
     "float_shares": 4579471,
     "float_millions": 4.58,
-    "profile": "A"
-  },
-  {
-    "symbol": "GXAI",
-    "prev_close": 1.32,
-    "pm_price": 2.0,
-    "gap_pct": 51.52,
-    "pm_volume": 63122380.0,
-    "first_seen_et": "04:00",
-    "sim_start": "04:00",
-    "discovery_time": "04:00",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 10837096.0,
-    "relative_volume": 5.82,
-    "float_shares": 6497529,
-    "float_millions": 6.5,
-    "profile": "B"
+    "profile": "A",
+    "discovery_time": "09:25",
+    "sim_start": "09:25",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "09:25",
+    "rank_score": 0.4617
   }
 ]

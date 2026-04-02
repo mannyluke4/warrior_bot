@@ -103,22 +103,40 @@ Per-stock analysis of every profitable missed stock. 5 root cause categories: fl
 
 ---
 
-## 🔴 CRITICAL — Live Bot Reliability (IBKR V2)
+## 🔴🔴🔴 #1 ABSOLUTE PRIORITY — Live Bot Must Take Trades (IBKR V2)
 
-V2 migrated to IBKR on 2026-03-25. First 3 live sessions (March 25–27) produced **zero trades** across 3 days.
+**V2 has NEVER taken a trade.** Not one. Zero trades across all live sessions (March 25 → April 1). On April 1, CYCN ran 300-400% (Ross made $7,400) and the bot sat at IDLE watching it. This is priority #1 above everything else.
 
+### Three Layers of Failure (April 1, 2026)
+
+**Layer 1 — Bot Can't Stay Running:**
 | Issue | Status | Notes |
 |-------|--------|-------|
-| TWS startup failure (port 7497 timeout) | **PARTIALLY FIXED** | daily_run.sh upgraded to 36 retries/180s, but March 27 still failed. Gateway/headless switch pending for Monday. |
-| Volume=0 bug (lastSize not read) | **✅ FIXED** | Was the #1 blocker for March 26. All bars had vol=0, detector could never prime. |
-| Competing live session (Error 10197) | **RESOLVED** | Caused by IBKR mobile login. Operational rule: no mobile/web during bot hours. |
-| Runner position destroyed on target hit | **✅ FIXED** | pos["qty"] set before exit_trade() caused negative remaining. The $1.6K EEIQ bug. |
-| Exit orders were market orders | **✅ FIXED** | Now limit orders with outsideRth=True for extended hours. |
-| Halt detection spam | **✅ FIXED** | Debounced — prints once on halt, once on resume. |
-| Bar-mode squeeze trigger wiring | **✅ FIXED** | simulate.py bar mode wasn't feeding sq_det at all. Now wired. |
-| Scanner cutoff (legacy V1) | **✅ FIXED** | Replaced with dual-window support. |
-| Stale detector state for evening | **✅ FIXED** | Detectors cleared on window transition. |
-| **March 27 validation: still 0 trades** | **NEEDS INVESTIGATION** | Bot started at 09:07 ET (late), watched ONCO (halted 2x) and ARTL. Zero squeeze signals fired. Need backtest to determine if this is expected (no setups) or another bug. |
+| IB Gateway auto-start failure (April 1) | **BROKEN** | 36 retries, 180s timeout, FATAL abort at 04:07 ET. Even with manual start at 2:30 AM. |
+| live_scanner.py date boundary crash | **BUG** | Databento EQUS.SUMMARY end=today fails if dataset not yet available. Fix: use end=today-1. |
+| Gateway timeout too short (180s) | **NEEDS FIX** | Increase to 300s, add kill+retry loop, add health-check alert if not connected by 04:15 ET |
+| Volume=0 bug (lastSize not read) | **✅ FIXED** | |
+| Competing live session (Error 10197) | **✅ RESOLVED** | |
+| All other prior fixes | **✅ FIXED** | See completed fixes below |
+
+**Layer 2 — Scanner Can't Find Stocks Early Enough:**
+| Issue | Status | Notes |
+|-------|--------|-------|
+| IBKR STK.US.MAJOR misses micro-caps | **KNOWN** | KIDZ ($2M cap) completely invisible to IBKR scanner |
+| Databento bridge crashed (date bug) | **BUG** | See Layer 1 |
+| Bot started at 08:38 ET (should be 04:00) | **CAUSED BY LAYER 1** | Missed entire premarket golden window |
+| Unified Scanner V3 directive | **DIRECTIVE WRITTEN** | `DIRECTIVE_UNIFIED_SCANNER_V3.md` — fixes all scanner issues long-term |
+
+**Layer 3 — Squeeze Detector Doesn't Fire on Gradual Runners:**
+| Issue | Status | Notes |
+|-------|--------|-------|
+| CYCN stayed IDLE all session ($4.22→$8.47) | **CRITICAL GAP** | vol_ratio never hit 3.0x on any single bar — volume distributed evenly across bars |
+| Squeeze requires single explosive bar | **DESIGN LIMITATION** | Works for VERO/ROLR-style spikes, misses CYCN-style stair-steps |
+| RENX SQ_NO_ARM: para_invalid_r | **NEEDS INVESTIGATION** | Primed twice but entry/stop too close for valid R ratio |
+| **Options for CYCN-type stocks** | **NEEDS DISCUSSION** | (1) Lower VOL_MULT to 2.0x, (2) cumulative vol prime, (3) consolidation-breakout detector, (4) re-enable MP V2 |
+
+### Previously Fixed (for reference)
+- Volume=0 bug, competing sessions, runner position bug, exit order type, halt spam, bar-mode wiring, scanner cutoff, stale detector state — all fixed
 
 **Reports:** `cowork_reports/2026-03-26_morning_issues_and_fixes.md`, `cowork_reports/2026-03-26_morning_backtest.md`
 

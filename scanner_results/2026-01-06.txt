@@ -1,11 +1,8 @@
-Scanner Results — 2026-01-06
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-NOMA       +17.1%    4.39    3.96M       A    07:00 2,704,087.0      07:00    precise
-RNAZ       +17.6%    8.60    0.83M       A    08:15 1,259,908.0      08:15    precise
-CYCN       +55.8%    2.15    2.71M       A    07:00 8,666,636.0      07:00    precise
+Scanner Results — 2026-01-06 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+CYCN       +53.6%    2.12    2.71M       A    09:44  1,019,115   1.5x      09:44  0.500
 
-Total candidates: 3
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 1
+Discovery method: unified_v3

@@ -1,13 +1,9 @@
-Scanner Results — 2026-01-15
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-AUID      +107.5%    2.06   11.81M       B    09:00 60,809,966.0      09:00    precise
-SPHL       +91.1%    4.30    0.47M       A    07:00 5,016,154.0      07:00    precise
-BNKK       +77.2%    4.92    2.88M       A    08:15 12,750,815.0      08:15    precise
-CJMB       +85.7%    2.08    1.39M       A    08:45  439,588.0      08:45    precise
-AGPU       +17.4%    8.05    1.82M       A    07:00  237,778.0      07:00    precise
+Scanner Results — 2026-01-15 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+AUID      +110.6%    2.09   11.81M       B    08:58  2,137,642   9.3x      08:58  0.675
+BNKK      +105.4%    5.71    2.88M       A    08:19    275,268   1.5x      08:19  0.570
 
-Total candidates: 5
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 2
+Discovery method: unified_v3

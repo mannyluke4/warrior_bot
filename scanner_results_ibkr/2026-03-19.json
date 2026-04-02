@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "SER",
+    "prev_close": 1.28,
+    "pm_price": 2.25,
+    "gap_pct": 75.78,
+    "pm_volume": 9246294.0,
+    "first_seen_et": "09:30",
+    "sim_start": "08:17",
+    "discovery_time": "08:17",
+    "discovery_method": "precise",
+    "avg_daily_volume": 413207.0,
+    "relative_volume": 22.38,
+    "precise_discovery": "08:17",
+    "float_shares": 3575301,
+    "float_millions": 3.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "SUNE",
+    "prev_close": 1.44,
+    "pm_price": 2.125,
+    "gap_pct": 47.57,
+    "pm_volume": 6725233.0,
+    "first_seen_et": "09:30",
+    "sim_start": "08:02",
+    "discovery_time": "08:02",
+    "discovery_method": "precise",
+    "avg_daily_volume": 441018.0,
+    "relative_volume": 15.25,
+    "precise_discovery": "08:02",
+    "float_shares": 3406273,
+    "float_millions": 3.41,
+    "profile": "A"
+  },
+  {
+    "symbol": "DLTH",
+    "prev_close": 2.17,
+    "pm_price": 2.49,
+    "gap_pct": 14.75,
+    "pm_volume": 53994.0,
+    "first_seen_et": "06:25",
+    "sim_start": "07:04",
+    "discovery_time": "07:04",
+    "discovery_method": "premarket",
+    "avg_daily_volume": 32260.0,
+    "relative_volume": 1.67,
+    "precise_discovery": "07:04",
+    "float_shares": 9825358,
+    "float_millions": 9.83,
+    "profile": "B"
+  }
+]

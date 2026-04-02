@@ -1,12 +1,8 @@
-Scanner Results — 2026-01-29
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-SER        +61.8%    4.40    3.58M       A    07:00 26,039,627.0      07:00    precise
-GCTK       +28.4%    4.38    0.77M       A    08:15 8,389,088.0      08:15    precise
-DCX        +63.7%    5.01      N/A       A    07:30 2,499,013.0      07:30    precise
-ZSTK       +30.6%   11.69    2.32M       A    07:00  409,368.0      07:00    precise
+Scanner Results — 2026-01-29 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+SER        +30.5%    3.55    3.58M       A    08:58    727,350   1.5x      08:58  0.438
 
-Total candidates: 4
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 1
+Discovery method: unified_v3

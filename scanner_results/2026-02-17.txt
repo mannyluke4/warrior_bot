@@ -1,10 +1,8 @@
-Scanner Results — 2026-02-17
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-OBAI       +94.2%    6.08    3.17M       A    04:05 9,878,007.0      04:05    precise
-PLYX       +72.2%    4.15    1.34M       A    05:27 5,456,965.0      05:27    precise
+Scanner Results — 2026-02-17 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+OBAI       +58.5%    4.96    3.17M       A    09:43    249,020   1.5x      09:43  0.481
 
-Total candidates: 2
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 1
+Discovery method: unified_v3

@@ -1,0 +1,24 @@
+# V4 risk=750 sqs=5 tier=A
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: HUBC  |  Date: 2026-01-26  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching HUBC bars for 2026-01-26...
+  Total bars: 80  |  Seed: 1  |  Sim: 79
+  Seed complete: EMA9=3.6800
+  Fetching tick data from Alpaca...
+  Tick replay: 1116 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: HUBC -- 2026-01-26 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$750  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 1116 sim + 1 seed  |  EMA9=3.2379  VWAP=3.5083
+======================================================================
+
+  No trades taken.
+
+  Armed: 1  |  Signals: 0
+======================================================================

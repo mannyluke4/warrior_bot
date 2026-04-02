@@ -1,0 +1,25 @@
+{
+  "label": "Mar 26 V3",
+  "last_date": "2026-03-26",
+  "equity": 31705,
+  "trades": [
+    {
+      "date": "2026-03-26",
+      "symbol": "EEIQ",
+      "pnl": 1705,
+      "reason": "sq_target_hit",
+      "window": "04:00-11:00"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-03-26",
+      "trades": 1,
+      "pnl": 1705,
+      "equity": 31705,
+      "symbols": "EEIQ",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    }
+  ]
+}

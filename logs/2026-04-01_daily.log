@@ -72,3 +72,1420 @@ Waiting for IB Gateway on port 4002...
   attempt 36/36: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
 === TRAP: cleanup at Wed Apr  1 02:07:32 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run.sh: line 16: 70952 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 50dd8f1] auto: daily logs 2026-04-01
+ 14 files changed, 6043 insertions(+)
+ create mode 100644 logs/2026-03-31_morning.log
+ create mode 100644 logs/2026-04-01_daily.log
+ create mode 100644 logs/2026-04-01_morning.log
+ create mode 100644 logs/2026-04-01_scanner.log
+ create mode 100644 logs/cron_2026-04-01.log
+ create mode 100644 logs/definitive_ytd_v3.log
+ create mode 100644 logs/v3_scanner_backfill.log
+ create mode 100644 logs/ytd_1_5x.log
+ create mode 100644 logs/ytd_fixed.log
+ create mode 100644 logs/ytd_honest.log
+ create mode 100644 logs/ytd_honest_v2.log
+ create mode 100644 logs/ytd_v3_merged.log
+=== Cleanup complete: Wed Apr  1 02:07:34 MDT 2026 ===
+/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 75: 70994 Killed: 9               "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
+============================================================
+  WARRIOR BOT V2 — IBKR Edition
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 2.0
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Connected: True
+Account: ['DUQ143444']
+Account equity: $32,084
+
+🔄 CATCHUP SCAN at 17:57:25 ET (first scan — casting wide net)...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 4 (reqId=4, symbol=?)
+  Catchup: 50 unique symbols from 3 scanners
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+    Catchup: processing 1/50 — AAL...
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5 (reqId=5, symbol=?)
+    Catchup: processing 2/50 — AGL...
+    Catchup: processing 3/50 — AGPU...
+    Catchup: processing 4/50 — BCG...
+    Catchup: processing 5/50 — BITO...
+    Catchup: processing 6/50 — BIXIU...
+    Catchup: processing 7/50 — CHSN...
+    Catchup: processing 8/50 — CYCN...
+    Catchup: processing 9/50 — DDFD...
+    Catchup: processing 10/50 — DRIP...
+    Catchup: processing 11/50 — ELAB...
+    Catchup: processing 12/50 — FGI...
+    Catchup: processing 13/50 — GPAT...
+    Catchup: processing 14/50 — GRDX...
+    Catchup: processing 15/50 — GURE...
+    Catchup: processing 16/50 — HCAC...
+    Catchup: processing 17/50 — HTT...
+    Catchup: processing 18/50 — LICN...
+    Catchup: processing 19/50 — MGRT...
+    Catchup: processing 20/50 — MLGO...
+    Catchup: processing 21/50 — MPTI RT...
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+    Catchup: processing 22/50 — NIO...
+    Catchup: processing 23/50 — NOK...
+    Catchup: processing 24/50 — NPT...
+    Catchup: processing 25/50 — NU...
+    Catchup: processing 26/50 — NVD...
+    Catchup: processing 27/50 — ONDS...
+    Catchup: processing 28/50 — OOSP...
+    Catchup: processing 29/50 — ORIC...
+    Catchup: processing 30/50 — OTH...
+    Catchup: processing 31/50 — POAS...
+    Catchup: processing 32/50 — QVCGP...
+    Catchup: processing 33/50 — RENX...
+    Catchup: processing 34/50 — RTACU...
+    Catchup: processing 35/50 — RZLV...
+    Catchup: processing 36/50 — SCO...
+    Catchup: processing 37/50 — SIMA...
+    Catchup: processing 38/50 — SNAP...
+    Catchup: processing 39/50 — SOFI...
+    Catchup: processing 40/50 — SPDN...
+    Catchup: processing 41/50 — SST...
+    Catchup: processing 42/50 — TH...
+    Catchup: processing 43/50 — TSLG...
+    Catchup: processing 44/50 — TSLL...
+    Catchup: processing 45/50 — TWI...
+    Catchup: processing 46/50 — TZA...
+    Catchup: processing 47/50 — UVIX...
+    Catchup: processing 48/50 — VATE...
+    Catchup: processing 49/50 — WBX...
+    Catchup: processing 50/50 — XOMZ...
+  Catchup: 9 candidates after filters
+🔥 Seeded CYCN: 665 bars, EMA=6.0414
+✅ Subscribed: CYCN
+🔥 Seeded AGPU: 599 bars, EMA=3.8197
+✅ Subscribed: AGPU
+🔥 Seeded ELAB: 839 bars, EMA=7.4807
+✅ Subscribed: ELAB
+🔥 Seeded RENX: 839 bars, EMA=2.8384
+✅ Subscribed: RENX
+🔥 Seeded SST: 838 bars, EMA=4.9864
+✅ Subscribed: SST
+📊 Scanner: 9 new candidates, 5 new subs, 5 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 839 bars, EMA=3.6154
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: AGPU: 0 ticks in last 60s, last_price=$3.81, last_tick_time=17:58:51
+  TICK AUDIT: CYCN: 20 ticks in last 60s, last_price=$6.13, last_tick_time=17:58:54
+  TICK AUDIT: ELAB: 10 ticks in last 60s, last_price=$7.39, last_tick_time=17:58:53
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.62, last_tick_time=17:58:54
+  TICK AUDIT: RENX: 0 ticks in last 60s, last_price=$2.85, last_tick_time=17:58:52
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.90, last_tick_time=17:58:53
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: RENX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  TICK AUDIT: AGPU: 63 ticks in last 60s, last_price=$3.80, last_tick_time=17:59:55
+  TICK AUDIT: CYCN: 200 ticks in last 60s, last_price=$6.16, last_tick_time=17:59:55
+  TICK AUDIT: ELAB: 252 ticks in last 60s, last_price=$7.32, last_tick_time=17:59:54
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$3.64, last_tick_time=17:59:48
+  TICK AUDIT: RENX: 17 ticks in last 60s, last_price=$2.86, last_tick_time=17:59:37
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.86, last_tick_time=17:59:30
+[18:00 ET] CYCN CHART | O=6.13 H=6.18 L=6.08 C=6.17 V=21,073 | EMA9=6.06 VWAP=6.14 (+0.5%) HOD=6.18 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=28,067 bars=50 | sq=IDLE armed=none
+[18:00:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=101 | AGPU:6t/IDLE CYCN:6t/IDLE ELAB:11t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:2t/IDLE
+[18:00 ET] ELAB CHART | O=7.37 H=7.39 L=7.22 C=7.32 V=32,617 | EMA9=7.46 VWAP=7.32 (-0.0%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=44,832 bars=50 | sq=IDLE armed=none
+[18:00 ET] AGPU CHART | O=3.80 H=3.81 L=3.80 C=3.81 V=7,276 | EMA9=3.82 VWAP=3.81 (+0.1%) HOD=3.82 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=23,917 bars=50 | sq=IDLE armed=none
+[18:00 ET] RENX CHART | O=2.86 H=2.86 L=2.86 C=2.86 V=1,626 | EMA9=2.84 VWAP=2.85 (+0.2%) HOD=2.86 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=7,790 bars=50 | sq=IDLE armed=none
+[18:00:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=112 | AGPU:7t/IDLE CYCN:8t/IDLE ELAB:18t/IDLE KIDZ:1t/IDLE RENX:2t/IDLE SST:2t/IDLE
+[18:00 ET] KIDZ CHART | O=3.62 H=3.64 L=3.62 C=3.64 V=2,107 | EMA9=3.62 VWAP=3.64 (+0.1%) HOD=3.64 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=3,805 bars=50 | sq=IDLE armed=none
+[18:00 ET] SST CHART | O=4.89 H=4.89 L=4.85 C=4.85 V=515 | EMA9=4.97 VWAP=4.88 (-0.7%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=1,076 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 120 ticks in last 60s, last_price=$3.88, last_tick_time=18:00:54
+  TICK AUDIT: CYCN: 296 ticks in last 60s, last_price=$6.22, last_tick_time=18:00:54
+  TICK AUDIT: ELAB: 405 ticks in last 60s, last_price=$7.17, last_tick_time=18:00:55
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$3.64, last_tick_time=18:00:53
+  TICK AUDIT: RENX: 50 ticks in last 60s, last_price=$2.90, last_tick_time=18:00:54
+  TICK AUDIT: SST: 17 ticks in last 60s, last_price=$4.81, last_tick_time=18:00:52
+[18:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=136 | AGPU:10t/IDLE CYCN:19t/IDLE ELAB:20t/IDLE KIDZ:0t/IDLE RENX:7t/IDLE SST:6t/IDLE
+[18:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=149 | AGPU:11t/IDLE CYCN:23t/IDLE ELAB:27t/IDLE KIDZ:0t/IDLE RENX:8t/IDLE SST:6t/IDLE
+  TICK AUDIT: AGPU: 172 ticks in last 60s, last_price=$3.85, last_tick_time=18:01:55
+  TICK AUDIT: CYCN: 268 ticks in last 60s, last_price=$6.30, last_tick_time=18:01:55
+  TICK AUDIT: ELAB: 261 ticks in last 60s, last_price=$7.06, last_tick_time=18:01:55
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$3.64, last_tick_time=18:01:47
+  TICK AUDIT: RENX: 154 ticks in last 60s, last_price=$2.92, last_tick_time=18:01:55
+  TICK AUDIT: SST: 35 ticks in last 60s, last_price=$4.67, last_tick_time=18:01:54
+[18:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=151 | AGPU:5t/IDLE CYCN:32t/IDLE ELAB:25t/IDLE KIDZ:0t/IDLE RENX:11t/IDLE SST:4t/IDLE
+[18:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=169 | AGPU:5t/IDLE CYCN:38t/IDLE ELAB:36t/IDLE KIDZ:0t/IDLE RENX:12t/IDLE SST:4t/IDLE
+
+🔄 Running scanner at 18:02:26 ET...
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+Error 162, reqId 127: Historical Market Data Service error message:API scanner subscription cancelled: 127
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 127 (reqId=127, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (25 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 179 ticks in last 60s, last_price=$3.82, last_tick_time=18:03:23
+  TICK AUDIT: CYCN: 400 ticks in last 60s, last_price=$6.23, last_tick_time=18:03:24
+  TICK AUDIT: ELAB: 372 ticks in last 60s, last_price=$7.20, last_tick_time=18:03:24
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.62, last_tick_time=18:03:24
+  TICK AUDIT: RENX: 164 ticks in last 60s, last_price=$2.95, last_tick_time=18:03:24
+  TICK AUDIT: SST: 69 ticks in last 60s, last_price=$4.56, last_tick_time=18:03:21
+[18:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=487 | AGPU:60t/IDLE CYCN:90t/IDLE ELAB:130t/IDLE KIDZ:15t/IDLE RENX:60t/IDLE SST:16t/IDLE
+[18:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=498 | AGPU:62t/IDLE CYCN:91t/IDLE ELAB:134t/IDLE KIDZ:15t/IDLE RENX:60t/IDLE SST:20t/IDLE
+  TICK AUDIT: AGPU: 84 ticks in last 60s, last_price=$3.81, last_tick_time=18:04:24
+  TICK AUDIT: CYCN: 200 ticks in last 60s, last_price=$6.17, last_tick_time=18:04:24
+  TICK AUDIT: ELAB: 229 ticks in last 60s, last_price=$7.17, last_tick_time=18:04:23
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$3.63, last_tick_time=18:04:14
+  TICK AUDIT: RENX: 83 ticks in last 60s, last_price=$2.90, last_tick_time=18:04:21
+  TICK AUDIT: SST: 29 ticks in last 60s, last_price=$4.54, last_tick_time=18:04:23
+[18:05 ET] ELAB CHART | O=7.15 H=7.30 L=7.11 C=7.21 V=21,933 | EMA9=7.27 VWAP=7.18 (+0.4%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=46,271 bars=50 | sq=IDLE armed=none
+[18:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=540 | AGPU:85t/IDLE CYCN:116t/IDLE ELAB:146t/IDLE KIDZ:15t/IDLE RENX:47t/IDLE SST:15t/IDLE
+[18:05 ET] AGPU CHART | O=3.82 H=3.82 L=3.80 C=3.81 V=12,775 | EMA9=3.83 VWAP=3.84 (-0.7%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=19,824 bars=50 | sq=IDLE armed=none
+[18:05 ET] RENX CHART | O=2.89 H=2.91 L=2.88 C=2.90 V=6,999 | EMA9=2.89 VWAP=2.91 (-0.4%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=7,435 bars=50 | sq=IDLE armed=none
+[18:05 ET] SST CHART | O=4.56 H=4.58 L=4.54 C=4.58 V=10,256 | EMA9=4.76 VWAP=4.65 (-1.5%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=7.6x avg_vol=1,348 bars=50 | sq=IDLE armed=none
+[18:05 ET] CYCN CHART | O=6.20 H=6.21 L=6.15 C=6.15 V=18,008 | EMA9=6.16 VWAP=6.21 (-1.0%) HOD=6.37 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=23,523 bars=50 | sq=IDLE armed=none
+[18:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=552 | AGPU:89t/IDLE CYCN:117t/IDLE ELAB:151t/IDLE KIDZ:15t/IDLE RENX:48t/IDLE SST:16t/IDLE
+[18:05 ET] KIDZ CHART | O=3.63 H=3.64 L=3.63 C=3.64 V=2,654 | EMA9=3.63 VWAP=3.64 (+0.1%) HOD=3.64 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=3,320 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 124 ticks in last 60s, last_price=$3.82, last_tick_time=18:05:24
+  TICK AUDIT: CYCN: 197 ticks in last 60s, last_price=$6.15, last_tick_time=18:05:25
+  TICK AUDIT: ELAB: 196 ticks in last 60s, last_price=$7.22, last_tick_time=18:05:23
+  TICK AUDIT: KIDZ: 45 ticks in last 60s, last_price=$3.67, last_tick_time=18:05:19
+  TICK AUDIT: RENX: 69 ticks in last 60s, last_price=$2.88, last_tick_time=18:05:24
+  TICK AUDIT: SST: 27 ticks in last 60s, last_price=$4.58, last_tick_time=18:05:18
+[18:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=419 | AGPU:36t/IDLE CYCN:135t/IDLE ELAB:93t/IDLE KIDZ:22t/IDLE RENX:16t/IDLE SST:1t/IDLE
+[18:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=428 | AGPU:37t/IDLE CYCN:140t/IDLE ELAB:96t/IDLE KIDZ:22t/IDLE RENX:16t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 60 ticks in last 60s, last_price=$3.82, last_tick_time=18:06:23
+  TICK AUDIT: CYCN: 234 ticks in last 60s, last_price=$6.24, last_tick_time=18:06:22
+  TICK AUDIT: ELAB: 168 ticks in last 60s, last_price=$7.14, last_tick_time=18:06:24
+  TICK AUDIT: KIDZ: 49 ticks in last 60s, last_price=$3.74, last_tick_time=18:06:24
+  TICK AUDIT: RENX: 50 ticks in last 60s, last_price=$2.88, last_tick_time=18:06:24
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.53, last_tick_time=18:06:24
+[18:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=416 | AGPU:32t/IDLE CYCN:85t/IDLE ELAB:125t/IDLE KIDZ:25t/IDLE RENX:22t/IDLE SST:11t/IDLE
+[18:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=421 | AGPU:32t/IDLE CYCN:86t/IDLE ELAB:128t/IDLE KIDZ:25t/IDLE RENX:22t/IDLE SST:12t/IDLE
+  TICK AUDIT: AGPU: 69 ticks in last 60s, last_price=$3.84, last_tick_time=18:07:24
+  TICK AUDIT: CYCN: 129 ticks in last 60s, last_price=$6.19, last_tick_time=18:07:25
+  TICK AUDIT: ELAB: 161 ticks in last 60s, last_price=$7.13, last_tick_time=18:07:25
+  TICK AUDIT: KIDZ: 43 ticks in last 60s, last_price=$3.75, last_tick_time=18:07:13
+  TICK AUDIT: RENX: 27 ticks in last 60s, last_price=$2.87, last_tick_time=18:07:22
+  TICK AUDIT: SST: 22 ticks in last 60s, last_price=$4.57, last_tick_time=18:07:08
+
+🔄 Running scanner at 18:07:27 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 208: Historical Market Data Service error message:API scanner subscription cancelled: 208
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 208 (reqId=208, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (26 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 64 ticks in last 60s, last_price=$3.81, last_tick_time=18:08:24
+  TICK AUDIT: CYCN: 253 ticks in last 60s, last_price=$6.05, last_tick_time=18:08:25
+  TICK AUDIT: ELAB: 105 ticks in last 60s, last_price=$7.17, last_tick_time=18:08:22
+  TICK AUDIT: KIDZ: 43 ticks in last 60s, last_price=$3.66, last_tick_time=18:08:20
+  TICK AUDIT: RENX: 47 ticks in last 60s, last_price=$2.84, last_tick_time=18:08:25
+  TICK AUDIT: SST: 40 ticks in last 60s, last_price=$4.58, last_tick_time=18:08:25
+[18:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=427 | AGPU:40t/IDLE CYCN:118t/IDLE ELAB:86t/IDLE KIDZ:5t/IDLE RENX:17t/IDLE SST:7t/IDLE
+[18:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=436 | AGPU:40t/IDLE CYCN:123t/IDLE ELAB:87t/IDLE KIDZ:5t/IDLE RENX:20t/IDLE SST:7t/IDLE
+  TICK AUDIT: AGPU: 77 ticks in last 60s, last_price=$3.84, last_tick_time=18:09:24
+  TICK AUDIT: CYCN: 167 ticks in last 60s, last_price=$6.18, last_tick_time=18:09:25
+  TICK AUDIT: ELAB: 125 ticks in last 60s, last_price=$7.15, last_tick_time=18:09:23
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$3.70, last_tick_time=18:09:25
+  TICK AUDIT: RENX: 35 ticks in last 60s, last_price=$2.85, last_tick_time=18:09:16
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.58, last_tick_time=18:09:18
+[18:10 ET] AGPU CHART | O=3.83 H=3.85 L=3.71 C=3.73 V=18,580 | EMA9=3.83 VWAP=3.82 (-2.4%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=18,753 bars=50 | sq=IDLE armed=none
+[18:10 ET] CYCN CHART | O=6.18 H=6.18 L=6.13 C=6.13 V=17,672 | EMA9=6.16 VWAP=6.19 (-1.0%) HOD=6.37 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=20,354 bars=50 | sq=IDLE armed=none
+[18:10 ET] ELAB CHART | O=7.16 H=7.16 L=7.10 C=7.13 V=8,908 | EMA9=7.20 VWAP=7.18 (-0.6%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=46,058 bars=50 | sq=IDLE armed=none
+[18:10 ET] SST CHART | O=4.58 H=4.66 L=4.58 C=4.65 V=406 | EMA9=4.63 VWAP=4.62 (+0.7%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,710 bars=50 | sq=IDLE armed=none
+[18:10 ET] KIDZ CHART | O=3.67 H=3.70 L=3.67 C=3.70 V=2,114 | EMA9=3.68 VWAP=3.69 (+0.4%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=3,085 bars=50 | sq=IDLE armed=none
+[18:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=426 | AGPU:126t/IDLE CYCN:55t/IDLE ELAB:72t/IDLE KIDZ:5t/IDLE RENX:7t/IDLE SST:7t/IDLE
+[18:10 ET] RENX CHART | O=2.83 H=2.86 L=2.82 C=2.85 V=635 | EMA9=2.87 VWAP=2.90 (-1.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=7,802 bars=50 | sq=IDLE armed=none
+[18:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=430 | AGPU:128t/IDLE CYCN:55t/IDLE ELAB:73t/IDLE KIDZ:5t/IDLE RENX:8t/IDLE SST:7t/IDLE
+  TICK AUDIT: AGPU: 244 ticks in last 60s, last_price=$3.70, last_tick_time=18:10:25
+  TICK AUDIT: CYCN: 88 ticks in last 60s, last_price=$6.16, last_tick_time=18:10:25
+  TICK AUDIT: ELAB: 122 ticks in last 60s, last_price=$7.15, last_tick_time=18:10:25
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.70, last_tick_time=18:10:13
+  TICK AUDIT: RENX: 21 ticks in last 60s, last_price=$2.87, last_tick_time=18:10:25
+  TICK AUDIT: SST: 14 ticks in last 60s, last_price=$4.65, last_tick_time=18:10:23
+[18:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=439 | AGPU:147t/IDLE CYCN:24t/IDLE ELAB:93t/IDLE KIDZ:12t/IDLE RENX:5t/IDLE SST:4t/IDLE
+[18:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=447 | AGPU:151t/IDLE CYCN:25t/IDLE ELAB:94t/IDLE KIDZ:14t/IDLE RENX:5t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 250 ticks in last 60s, last_price=$3.63, last_tick_time=18:11:25
+  TICK AUDIT: CYCN: 66 ticks in last 60s, last_price=$6.14, last_tick_time=18:11:25
+  TICK AUDIT: ELAB: 182 ticks in last 60s, last_price=$7.23, last_tick_time=18:11:25
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$3.69, last_tick_time=18:11:13
+  TICK AUDIT: RENX: 18 ticks in last 60s, last_price=$2.85, last_tick_time=18:11:23
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.61, last_tick_time=18:11:19
+[18:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=513 | AGPU:107t/IDLE CYCN:75t/IDLE ELAB:119t/IDLE KIDZ:16t/IDLE RENX:38t/IDLE SST:4t/IDLE
+[18:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=524 | AGPU:111t/IDLE CYCN:76t/IDLE ELAB:125t/IDLE KIDZ:16t/IDLE RENX:38t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 172 ticks in last 60s, last_price=$3.70, last_tick_time=18:12:25
+  TICK AUDIT: CYCN: 173 ticks in last 60s, last_price=$6.26, last_tick_time=18:12:25
+  TICK AUDIT: ELAB: 228 ticks in last 60s, last_price=$7.29, last_tick_time=18:12:25
+  TICK AUDIT: KIDZ: 26 ticks in last 60s, last_price=$3.65, last_tick_time=18:12:25
+  TICK AUDIT: RENX: 55 ticks in last 60s, last_price=$2.82, last_tick_time=18:12:19
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$4.60, last_tick_time=18:12:23
+
+🔄 Running scanner at 18:12:28 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 289: Historical Market Data Service error message:API scanner subscription cancelled: 289
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 289 (reqId=289, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (27 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 98 ticks in last 60s, last_price=$3.67, last_tick_time=18:13:25
+  TICK AUDIT: CYCN: 249 ticks in last 60s, last_price=$6.27, last_tick_time=18:13:26
+  TICK AUDIT: ELAB: 242 ticks in last 60s, last_price=$7.36, last_tick_time=18:13:26
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$3.65, last_tick_time=18:13:24
+  TICK AUDIT: RENX: 27 ticks in last 60s, last_price=$2.82, last_tick_time=18:13:25
+  TICK AUDIT: SST: 27 ticks in last 60s, last_price=$4.58, last_tick_time=18:13:23
+[18:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=514 | AGPU:78t/IDLE CYCN:67t/IDLE ELAB:149t/IDLE KIDZ:2t/IDLE RENX:17t/IDLE SST:11t/IDLE
+[18:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=526 | AGPU:80t/IDLE CYCN:67t/IDLE ELAB:156t/IDLE KIDZ:2t/IDLE RENX:17t/IDLE SST:14t/IDLE
+  TICK AUDIT: AGPU: 121 ticks in last 60s, last_price=$3.71, last_tick_time=18:14:26
+  TICK AUDIT: CYCN: 99 ticks in last 60s, last_price=$6.23, last_tick_time=18:14:26
+  TICK AUDIT: ELAB: 232 ticks in last 60s, last_price=$7.29, last_tick_time=18:14:27
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.65, last_tick_time=18:14:20
+  TICK AUDIT: RENX: 33 ticks in last 60s, last_price=$2.82, last_tick_time=18:14:26
+  TICK AUDIT: SST: 30 ticks in last 60s, last_price=$4.53, last_tick_time=18:14:24
+[18:15 ET] CYCN CHART | O=6.24 H=6.26 L=6.23 C=6.24 V=7,800 | EMA9=6.19 VWAP=6.20 (+0.7%) HOD=6.37 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=18,284 bars=50 | sq=IDLE armed=none
+[18:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=383 | AGPU:54t/IDLE CYCN:57t/IDLE ELAB:55t/IDLE KIDZ:4t/IDLE RENX:13t/IDLE SST:10t/IDLE
+[18:15 ET] RENX CHART | O=2.83 H=2.83 L=2.81 C=2.81 V=2,463 | EMA9=2.85 VWAP=2.89 (-2.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=7,905 bars=50 | sq=IDLE armed=none
+[18:15 ET] ELAB CHART | O=7.26 H=7.30 L=7.24 C=7.29 V=15,868 | EMA9=7.23 VWAP=7.21 (+1.1%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=37,040 bars=50 | sq=IDLE armed=none
+[18:15 ET] AGPU CHART | O=3.72 H=3.73 L=3.70 C=3.71 V=5,643 | EMA9=3.74 VWAP=3.76 (-1.4%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=17,585 bars=50 | sq=IDLE armed=none
+[18:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=389 | AGPU:57t/IDLE CYCN:57t/IDLE ELAB:57t/IDLE KIDZ:4t/IDLE RENX:14t/IDLE SST:10t/IDLE
+[18:15 ET] SST CHART | O=4.53 H=4.54 L=4.53 C=4.53 V=4,303 | EMA9=4.60 VWAP=4.61 (-1.7%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=2.5x avg_vol=1,689 bars=50 | sq=IDLE armed=none
+[18:15 ET] KIDZ CHART | O=3.65 H=3.65 L=3.65 C=3.65 V=814 | EMA9=3.68 VWAP=3.69 (-1.0%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=2,821 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 105 ticks in last 60s, last_price=$3.73, last_tick_time=18:15:27
+  TICK AUDIT: CYCN: 102 ticks in last 60s, last_price=$6.25, last_tick_time=18:15:26
+  TICK AUDIT: ELAB: 100 ticks in last 60s, last_price=$7.28, last_tick_time=18:15:26
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$3.69, last_tick_time=18:15:13
+  TICK AUDIT: RENX: 31 ticks in last 60s, last_price=$2.81, last_tick_time=18:15:22
+  TICK AUDIT: SST: 21 ticks in last 60s, last_price=$4.54, last_tick_time=18:15:26
+[18:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=474 | AGPU:54t/IDLE CYCN:102t/IDLE ELAB:101t/IDLE KIDZ:6t/IDLE RENX:13t/IDLE SST:8t/IDLE
+[18:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=488 | AGPU:54t/IDLE CYCN:108t/IDLE ELAB:105t/IDLE KIDZ:10t/IDLE RENX:13t/IDLE SST:8t/IDLE
+  TICK AUDIT: AGPU: 77 ticks in last 60s, last_price=$3.71, last_tick_time=18:16:27
+  TICK AUDIT: CYCN: 194 ticks in last 60s, last_price=$6.32, last_tick_time=18:16:27
+  TICK AUDIT: ELAB: 180 ticks in last 60s, last_price=$7.25, last_tick_time=18:16:27
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$3.69, last_tick_time=18:16:11
+  TICK AUDIT: RENX: 51 ticks in last 60s, last_price=$2.78, last_tick_time=18:16:22
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.56, last_tick_time=18:16:21
+[18:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=418 | AGPU:59t/IDLE CYCN:86t/IDLE ELAB:56t/IDLE KIDZ:7t/IDLE RENX:12t/IDLE SST:8t/IDLE
+[18:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=424 | AGPU:59t/IDLE CYCN:89t/IDLE ELAB:58t/IDLE KIDZ:7t/IDLE RENX:12t/IDLE SST:9t/IDLE
+  TICK AUDIT: AGPU: 87 ticks in last 60s, last_price=$3.73, last_tick_time=18:17:26
+  TICK AUDIT: CYCN: 146 ticks in last 60s, last_price=$6.28, last_tick_time=18:17:27
+  TICK AUDIT: ELAB: 111 ticks in last 60s, last_price=$7.21, last_tick_time=18:17:27
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$3.67, last_tick_time=18:17:22
+  TICK AUDIT: RENX: 29 ticks in last 60s, last_price=$2.80, last_tick_time=18:17:14
+  TICK AUDIT: SST: 19 ticks in last 60s, last_price=$4.62, last_tick_time=18:17:25
+
+🔄 Running scanner at 18:17:28 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 370: Historical Market Data Service error message:API scanner subscription cancelled: 370
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 370 (reqId=370, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (28 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 85 ticks in last 60s, last_price=$3.74, last_tick_time=18:18:23
+  TICK AUDIT: CYCN: 122 ticks in last 60s, last_price=$6.31, last_tick_time=18:18:27
+  TICK AUDIT: ELAB: 113 ticks in last 60s, last_price=$7.19, last_tick_time=18:18:24
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$3.66, last_tick_time=18:18:18
+  TICK AUDIT: RENX: 42 ticks in last 60s, last_price=$2.82, last_tick_time=18:18:27
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.62, last_tick_time=18:18:19
+[18:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=456 | AGPU:82t/IDLE CYCN:57t/IDLE ELAB:83t/IDLE KIDZ:5t/IDLE RENX:5t/IDLE SST:2t/IDLE
+[18:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=465 | AGPU:84t/IDLE CYCN:60t/IDLE ELAB:84t/IDLE KIDZ:8t/IDLE RENX:5t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 115 ticks in last 60s, last_price=$3.71, last_tick_time=18:19:27
+  TICK AUDIT: CYCN: 144 ticks in last 60s, last_price=$6.20, last_tick_time=18:19:27
+  TICK AUDIT: ELAB: 142 ticks in last 60s, last_price=$7.21, last_tick_time=18:19:27
+  TICK AUDIT: KIDZ: 18 ticks in last 60s, last_price=$3.67, last_tick_time=18:19:22
+  TICK AUDIT: RENX: 5 ticks in last 60s, last_price=$2.82, last_tick_time=18:18:59
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.62, last_tick_time=18:19:24
+[18:20 ET] ELAB CHART | O=7.19 H=7.23 L=7.19 C=7.23 V=9,364 | EMA9=7.22 VWAP=7.21 (+0.3%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=32,331 bars=50 | sq=IDLE armed=none
+[18:20 ET] CYCN CHART | O=6.23 H=6.26 L=6.13 C=6.16 V=27,472 | EMA9=6.25 VWAP=6.22 (-0.9%) HOD=6.37 PM_H=-inf | MACD=N/A vol_ratio=1.6x avg_vol=17,204 bars=50 | sq=IDLE armed=none
+[18:20 ET] AGPU CHART | O=3.71 H=3.72 L=3.70 C=3.72 V=6,177 | EMA9=3.73 VWAP=3.75 (-0.9%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=15,197 bars=50 | sq=IDLE armed=none
+[18:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=518 | AGPU:46t/IDLE CYCN:147t/IDLE ELAB:76t/IDLE KIDZ:9t/IDLE RENX:17t/IDLE SST:1t/IDLE
+[18:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=524 | AGPU:49t/IDLE CYCN:148t/IDLE ELAB:78t/IDLE KIDZ:9t/IDLE RENX:17t/IDLE SST:1t/IDLE
+[18:20 ET] RENX CHART | O=2.82 H=2.82 L=2.81 C=2.82 V=1,922 | EMA9=2.82 VWAP=2.88 (-2.2%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=7,291 bars=50 | sq=IDLE armed=none
+[18:20 ET] SST CHART | O=4.62 H=4.62 L=4.62 C=4.62 V=1,734 | EMA9=4.59 VWAP=4.61 (+0.3%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=1,663 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 85 ticks in last 60s, last_price=$3.72, last_tick_time=18:20:25
+  TICK AUDIT: CYCN: 211 ticks in last 60s, last_price=$6.25, last_tick_time=18:20:22
+  TICK AUDIT: ELAB: 122 ticks in last 60s, last_price=$7.24, last_tick_time=18:20:27
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$3.67, last_tick_time=18:19:52
+  TICK AUDIT: RENX: 28 ticks in last 60s, last_price=$2.82, last_tick_time=18:20:25
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.62, last_tick_time=18:20:20
+[18:20 ET] KIDZ CHART | O=3.66 H=3.67 L=3.66 C=3.67 V=2,724 | EMA9=3.67 VWAP=3.69 (-0.4%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=2,739 bars=50 | sq=IDLE armed=none
+[18:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=428 | AGPU:56t/IDLE CYCN:66t/IDLE ELAB:53t/IDLE KIDZ:5t/IDLE RENX:13t/IDLE SST:13t/IDLE
+[18:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=435 | AGPU:59t/IDLE CYCN:67t/IDLE ELAB:55t/IDLE KIDZ:6t/IDLE RENX:13t/IDLE SST:13t/IDLE
+  TICK AUDIT: AGPU: 121 ticks in last 60s, last_price=$3.81, last_tick_time=18:21:27
+  TICK AUDIT: CYCN: 121 ticks in last 60s, last_price=$6.30, last_tick_time=18:21:26
+  TICK AUDIT: ELAB: 100 ticks in last 60s, last_price=$7.21, last_tick_time=18:21:27
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$3.67, last_tick_time=18:21:24
+  TICK AUDIT: RENX: 31 ticks in last 60s, last_price=$2.83, last_tick_time=18:21:23
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.62, last_tick_time=18:21:19
+[18:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=401 | AGPU:76t/IDLE CYCN:33t/IDLE ELAB:52t/IDLE KIDZ:15t/IDLE RENX:0t/IDLE SST:3t/IDLE
+[18:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=414 | AGPU:83t/IDLE CYCN:33t/IDLE ELAB:58t/IDLE KIDZ:15t/IDLE RENX:0t/IDLE SST:3t/IDLE
+  TICK AUDIT: AGPU: 141 ticks in last 60s, last_price=$3.77, last_tick_time=18:22:26
+  TICK AUDIT: CYCN: 77 ticks in last 60s, last_price=$6.20, last_tick_time=18:22:28
+  TICK AUDIT: ELAB: 222 ticks in last 60s, last_price=$7.00, last_tick_time=18:22:28
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$3.70, last_tick_time=18:22:24
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.83, last_tick_time=18:22:20
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.71, last_tick_time=18:22:20
+
+🔄 Running scanner at 18:22:29 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 451: Historical Market Data Service error message:API scanner subscription cancelled: 451
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 451 (reqId=451, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (29 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 141 ticks in last 60s, last_price=$3.81, last_tick_time=18:23:28
+  TICK AUDIT: CYCN: 129 ticks in last 60s, last_price=$6.20, last_tick_time=18:23:28
+  TICK AUDIT: ELAB: 367 ticks in last 60s, last_price=$6.92, last_tick_time=18:23:28
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$3.69, last_tick_time=18:23:25
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.83, last_tick_time=18:23:07
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.71, last_tick_time=18:23:17
+[18:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=535 | AGPU:50t/IDLE CYCN:72t/IDLE ELAB:133t/IDLE KIDZ:8t/IDLE RENX:7t/IDLE SST:10t/IDLE
+[18:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=547 | AGPU:54t/IDLE CYCN:73t/IDLE ELAB:139t/IDLE KIDZ:9t/IDLE RENX:7t/IDLE SST:10t/IDLE
+  TICK AUDIT: AGPU: 114 ticks in last 60s, last_price=$3.85, last_tick_time=18:24:29
+  TICK AUDIT: CYCN: 126 ticks in last 60s, last_price=$6.28, last_tick_time=18:24:28
+  TICK AUDIT: ELAB: 240 ticks in last 60s, last_price=$6.93, last_tick_time=18:24:28
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$3.69, last_tick_time=18:24:12
+  TICK AUDIT: RENX: 24 ticks in last 60s, last_price=$2.85, last_tick_time=18:24:25
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.65, last_tick_time=18:24:21
+[18:25 ET] CYCN CHART | O=6.30 H=6.34 L=6.26 C=6.30 V=22,658 | EMA9=6.25 VWAP=6.22 (+1.2%) HOD=6.37 PM_H=-inf | MACD=N/A vol_ratio=1.3x avg_vol=17,340 bars=50 | sq=IDLE armed=none
+[18:25 ET] ELAB CHART | O=6.91 H=6.98 L=6.78 C=6.81 V=38,184 | EMA9=7.09 VWAP=7.14 (-4.7%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=26,774 bars=50 | sq=IDLE armed=none
+[18:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=569 | AGPU:83t/IDLE CYCN:69t/IDLE ELAB:138t/IDLE KIDZ:2t/IDLE RENX:15t/IDLE SST:7t/IDLE
+[18:25 ET] AGPU CHART | O=3.82 H=3.86 L=3.82 C=3.85 V=22,582 | EMA9=3.77 VWAP=3.77 (+2.2%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.5x avg_vol=14,811 bars=50 | sq=IDLE armed=none
+[18:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=586 | AGPU:86t/IDLE CYCN:73t/IDLE ELAB:148t/IDLE KIDZ:2t/IDLE RENX:15t/IDLE SST:7t/IDLE
+[18:25 ET] RENX CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=529 | EMA9=2.83 VWAP=2.88 (-1.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=7,385 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 174 ticks in last 60s, last_price=$3.84, last_tick_time=18:25:27
+  TICK AUDIT: CYCN: 161 ticks in last 60s, last_price=$6.37, last_tick_time=18:25:29
+  TICK AUDIT: ELAB: 227 ticks in last 60s, last_price=$6.92, last_tick_time=18:25:29
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.69, last_tick_time=18:24:42
+  TICK AUDIT: RENX: 30 ticks in last 60s, last_price=$2.82, last_tick_time=18:25:27
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$4.65, last_tick_time=18:24:54
+[18:25 ET] SST CHART | O=4.65 H=4.65 L=4.65 C=4.65 V=12 | EMA9=4.63 VWAP=4.61 (+0.8%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=1,704 bars=50 | sq=IDLE armed=none
+[18:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=570 | AGPU:87t/IDLE CYCN:130t/IDLE ELAB:84t/IDLE KIDZ:0t/IDLE RENX:9t/IDLE SST:5t/IDLE
+[18:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=579 | AGPU:90t/IDLE CYCN:132t/IDLE ELAB:88t/IDLE KIDZ:0t/IDLE RENX:9t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 153 ticks in last 60s, last_price=$3.81, last_tick_time=18:26:29
+  TICK AUDIT: CYCN: 275 ticks in last 60s, last_price=$6.51, last_tick_time=18:26:29
+  TICK AUDIT: ELAB: 171 ticks in last 60s, last_price=$6.90, last_tick_time=18:26:29
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.67, last_tick_time=18:26:22
+  TICK AUDIT: RENX: 14 ticks in last 60s, last_price=$2.83, last_tick_time=18:26:19
+  TICK AUDIT: SST: 11 ticks in last 60s, last_price=$4.68, last_tick_time=18:26:22
+[18:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=577 | AGPU:60t/IDLE CYCN:189t/IDLE ELAB:53t/IDLE KIDZ:2t/IDLE RENX:9t/IDLE SST:9t/IDLE
+[18:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=585 | AGPU:61t/IDLE CYCN:190t/IDLE ELAB:57t/IDLE KIDZ:4t/IDLE RENX:9t/IDLE SST:9t/IDLE
+
+🔄 Running scanner at 18:27:29 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 532: Historical Market Data Service error message:API scanner subscription cancelled: 532
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 532 (reqId=532, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (30 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 223 ticks in last 60s, last_price=$3.79, last_tick_time=18:28:25
+  TICK AUDIT: CYCN: 617 ticks in last 60s, last_price=$6.64, last_tick_time=18:28:27
+  TICK AUDIT: ELAB: 270 ticks in last 60s, last_price=$6.92, last_tick_time=18:28:27
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$3.67, last_tick_time=18:28:23
+  TICK AUDIT: RENX: 46 ticks in last 60s, last_price=$2.83, last_tick_time=18:28:26
+  TICK AUDIT: SST: 30 ticks in last 60s, last_price=$4.72, last_tick_time=18:28:14
+[18:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=629 | AGPU:50t/IDLE CYCN:216t/IDLE ELAB:49t/IDLE KIDZ:16t/IDLE RENX:6t/IDLE SST:5t/IDLE
+[18:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=640 | AGPU:51t/IDLE CYCN:223t/IDLE ELAB:52t/IDLE KIDZ:16t/IDLE RENX:6t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 109 ticks in last 60s, last_price=$3.84, last_tick_time=18:29:27
+  TICK AUDIT: CYCN: 406 ticks in last 60s, last_price=$6.75, last_tick_time=18:29:27
+  TICK AUDIT: ELAB: 108 ticks in last 60s, last_price=$6.90, last_tick_time=18:29:27
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$3.60, last_tick_time=18:29:28
+  TICK AUDIT: RENX: 16 ticks in last 60s, last_price=$2.82, last_tick_time=18:29:17
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$4.69, last_tick_time=18:29:20
+[18:30 ET] CYCN CHART | O=6.70 H=6.80 L=6.61 C=6.61 V=30,439 | EMA9=6.45 VWAP=6.30 (+4.9%) HOD=6.80 PM_H=-inf | MACD=N/A vol_ratio=1.6x avg_vol=18,863 bars=50 | sq=IDLE armed=none
+[18:30 ET] SST CHART | O=4.69 H=4.69 L=4.69 C=4.69 V=2 | EMA9=4.68 VWAP=4.62 (+1.5%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=1,776 bars=50 | sq=IDLE armed=none
+[18:30 ET] ELAB CHART | O=6.93 H=6.98 L=6.90 C=6.96 V=5,309 | EMA9=6.96 VWAP=7.12 (-2.2%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=24,865 bars=50 | sq=IDLE armed=none
+[18:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=636 | AGPU:72t/IDLE CYCN:211t/IDLE ELAB:52t/IDLE KIDZ:8t/IDLE RENX:5t/IDLE SST:1t/IDLE
+[18:30 ET] AGPU CHART | O=3.83 H=3.86 L=3.82 C=3.86 V=18,575 | EMA9=3.79 VWAP=3.78 (+2.2%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=13,045 bars=50 | sq=IDLE armed=none
+[18:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=652 | AGPU:76t/IDLE CYCN:220t/IDLE ELAB:55t/IDLE KIDZ:8t/IDLE RENX:5t/IDLE SST:1t/IDLE
+[18:30 ET] RENX CHART | O=2.83 H=2.83 L=2.82 C=2.83 V=2,031 | EMA9=2.83 VWAP=2.88 (-1.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=7,417 bars=50 | sq=IDLE armed=none
+[18:30 ET] KIDZ CHART | O=3.67 H=3.68 L=3.60 C=3.61 V=2,130 | EMA9=3.67 VWAP=3.68 (-2.0%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=2,937 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 166 ticks in last 60s, last_price=$3.87, last_tick_time=18:30:28
+  TICK AUDIT: CYCN: 353 ticks in last 60s, last_price=$6.68, last_tick_time=18:30:28
+  TICK AUDIT: ELAB: 71 ticks in last 60s, last_price=$6.95, last_tick_time=18:30:27
+  TICK AUDIT: KIDZ: 23 ticks in last 60s, last_price=$3.62, last_tick_time=18:30:26
+  TICK AUDIT: RENX: 9 ticks in last 60s, last_price=$2.83, last_tick_time=18:30:07
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.72, last_tick_time=18:30:20
+[18:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=542 | AGPU:61t/IDLE CYCN:121t/IDLE ELAB:60t/IDLE KIDZ:8t/IDLE RENX:0t/IDLE SST:5t/IDLE
+[18:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=564 | AGPU:65t/IDLE CYCN:128t/IDLE ELAB:71t/IDLE KIDZ:8t/IDLE RENX:0t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 94 ticks in last 60s, last_price=$3.87, last_tick_time=18:31:28
+  TICK AUDIT: CYCN: 296 ticks in last 60s, last_price=$6.85, last_tick_time=18:31:28
+  TICK AUDIT: ELAB: 138 ticks in last 60s, last_price=$7.00, last_tick_time=18:31:28
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$3.63, last_tick_time=18:31:26
+  TICK AUDIT: RENX: 5 ticks in last 60s, last_price=$2.83, last_tick_time=18:31:14
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.79, last_tick_time=18:31:01
+[18:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=654 | AGPU:47t/IDLE CYCN:242t/IDLE ELAB:59t/IDLE KIDZ:15t/IDLE RENX:3t/IDLE SST:1t/IDLE
+[18:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=672 | AGPU:50t/IDLE CYCN:250t/IDLE ELAB:64t/IDLE KIDZ:16t/IDLE RENX:4t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 65 ticks in last 60s, last_price=$3.84, last_tick_time=18:32:28
+  TICK AUDIT: CYCN: 421 ticks in last 60s, last_price=$6.69, last_tick_time=18:32:28
+  TICK AUDIT: ELAB: 127 ticks in last 60s, last_price=$7.01, last_tick_time=18:32:26
+  TICK AUDIT: KIDZ: 24 ticks in last 60s, last_price=$3.60, last_tick_time=18:32:24
+  TICK AUDIT: RENX: 11 ticks in last 60s, last_price=$2.85, last_tick_time=18:32:26
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.77, last_tick_time=18:32:19
+
+🔄 Running scanner at 18:32:30 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 613: Historical Market Data Service error message:API scanner subscription cancelled: 613
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 613 (reqId=613, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (31 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 61 ticks in last 60s, last_price=$3.86, last_tick_time=18:33:29
+  TICK AUDIT: CYCN: 287 ticks in last 60s, last_price=$6.62, last_tick_time=18:33:28
+  TICK AUDIT: ELAB: 86 ticks in last 60s, last_price=$6.97, last_tick_time=18:33:29
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.60, last_tick_time=18:32:56
+  TICK AUDIT: RENX: 10 ticks in last 60s, last_price=$2.85, last_tick_time=18:33:15
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.79, last_tick_time=18:33:03
+[18:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=549 | AGPU:37t/IDLE CYCN:128t/IDLE ELAB:37t/IDLE KIDZ:9t/IDLE RENX:22t/IDLE SST:0t/IDLE
+[18:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=552 | AGPU:39t/IDLE CYCN:128t/IDLE ELAB:38t/IDLE KIDZ:9t/IDLE RENX:22t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 55 ticks in last 60s, last_price=$3.85, last_tick_time=18:34:23
+  TICK AUDIT: CYCN: 267 ticks in last 60s, last_price=$6.55, last_tick_time=18:34:29
+  TICK AUDIT: ELAB: 60 ticks in last 60s, last_price=$7.00, last_tick_time=18:34:28
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$3.61, last_tick_time=18:34:28
+  TICK AUDIT: RENX: 24 ticks in last 60s, last_price=$2.85, last_tick_time=18:34:03
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.79, last_tick_time=18:33:03
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[18:35 ET] ELAB CHART | O=6.98 H=7.26 L=6.98 C=7.13 V=9,671 | EMA9=6.98 VWAP=7.11 (+0.3%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=23,114 bars=50 | sq=IDLE armed=none
+[18:35 ET] KIDZ CHART | O=3.61 H=3.61 L=3.61 C=3.61 V=5,427 | EMA9=3.63 VWAP=3.68 (-1.8%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=2.2x avg_vol=2,504 bars=50 | sq=IDLE armed=none
+[18:35 ET] AGPU CHART | O=3.85 H=3.85 L=3.85 C=3.85 V=1,835 | EMA9=3.83 VWAP=3.79 (+1.7%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=12,390 bars=50 | sq=IDLE armed=none
+[18:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=583 | AGPU:12t/IDLE CYCN:140t/IDLE ELAB:106t/IDLE KIDZ:5t/IDLE RENX:1t/IDLE SST:3t/IDLE
+[18:35 ET] CYCN CHART | O=6.65 H=6.65 L=6.53 C=6.61 V=29,965 | EMA9=6.60 VWAP=6.39 (+3.5%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=21,219 bars=50 | sq=IDLE armed=none
+[18:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=594 | AGPU:12t/IDLE CYCN:143t/IDLE ELAB:114t/IDLE KIDZ:5t/IDLE RENX:1t/IDLE SST:3t/IDLE
+[18:35 ET] RENX CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=3 | EMA9=2.84 VWAP=2.88 (-0.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=7,416 bars=50 | sq=IDLE armed=none
+[18:35 ET] SST CHART | O=4.79 H=4.79 L=4.79 C=4.79 V=300 | EMA9=4.74 VWAP=4.62 (+3.6%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,732 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 38 ticks in last 60s, last_price=$3.85, last_tick_time=18:35:28
+  TICK AUDIT: CYCN: 240 ticks in last 60s, last_price=$6.57, last_tick_time=18:35:29
+  TICK AUDIT: ELAB: 197 ticks in last 60s, last_price=$7.17, last_tick_time=18:35:28
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$3.63, last_tick_time=18:35:20
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.83, last_tick_time=18:35:29
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.79, last_tick_time=18:35:19
+[18:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=553 | AGPU:31t/IDLE CYCN:96t/IDLE ELAB:86t/IDLE KIDZ:3t/IDLE RENX:8t/IDLE SST:13t/IDLE
+[18:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=556 | AGPU:31t/IDLE CYCN:98t/IDLE ELAB:87t/IDLE KIDZ:3t/IDLE RENX:8t/IDLE SST:13t/IDLE
+  TICK AUDIT: AGPU: 47 ticks in last 60s, last_price=$3.86, last_tick_time=18:36:28
+  TICK AUDIT: CYCN: 234 ticks in last 60s, last_price=$6.59, last_tick_time=18:36:29
+  TICK AUDIT: ELAB: 127 ticks in last 60s, last_price=$7.14, last_tick_time=18:36:28
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.60, last_tick_time=18:36:29
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.84, last_tick_time=18:36:27
+  TICK AUDIT: SST: 18 ticks in last 60s, last_price=$4.83, last_tick_time=18:36:29
+[18:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=505 | AGPU:34t/IDLE CYCN:70t/IDLE ELAB:67t/IDLE KIDZ:4t/IDLE RENX:2t/IDLE SST:12t/IDLE
+[18:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=517 | AGPU:34t/IDLE CYCN:77t/IDLE ELAB:72t/IDLE KIDZ:4t/IDLE RENX:2t/IDLE SST:12t/IDLE
+  TICK AUDIT: AGPU: 56 ticks in last 60s, last_price=$3.85, last_tick_time=18:37:29
+  TICK AUDIT: CYCN: 202 ticks in last 60s, last_price=$6.45, last_tick_time=18:37:29
+  TICK AUDIT: ELAB: 129 ticks in last 60s, last_price=$7.02, last_tick_time=18:37:29
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.60, last_tick_time=18:37:26
+  TICK AUDIT: RENX: 5 ticks in last 60s, last_price=$2.84, last_tick_time=18:37:27
+  TICK AUDIT: SST: 23 ticks in last 60s, last_price=$4.76, last_tick_time=18:37:27
+
+🔄 Running scanner at 18:37:31 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 695: Historical Market Data Service error message:API scanner subscription cancelled: 695
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 695 (reqId=695, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (32 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 66 ticks in last 60s, last_price=$3.85, last_tick_time=18:38:30
+  TICK AUDIT: CYCN: 357 ticks in last 60s, last_price=$6.46, last_tick_time=18:38:29
+  TICK AUDIT: ELAB: 76 ticks in last 60s, last_price=$7.05, last_tick_time=18:38:30
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$3.57, last_tick_time=18:38:20
+  TICK AUDIT: RENX: 24 ticks in last 60s, last_price=$2.83, last_tick_time=18:38:30
+  TICK AUDIT: SST: 16 ticks in last 60s, last_price=$4.70, last_tick_time=18:38:28
+[18:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=496 | AGPU:12t/IDLE CYCN:80t/IDLE ELAB:34t/IDLE KIDZ:8t/IDLE RENX:14t/IDLE SST:1t/IDLE
+[18:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=510 | AGPU:12t/IDLE CYCN:90t/IDLE ELAB:37t/IDLE KIDZ:8t/IDLE RENX:15t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 22 ticks in last 60s, last_price=$3.83, last_tick_time=18:39:24
+  TICK AUDIT: CYCN: 187 ticks in last 60s, last_price=$6.40, last_tick_time=18:39:30
+  TICK AUDIT: ELAB: 53 ticks in last 60s, last_price=$7.06, last_tick_time=18:39:30
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$3.59, last_tick_time=18:39:20
+  TICK AUDIT: RENX: 21 ticks in last 60s, last_price=$2.84, last_tick_time=18:39:25
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.70, last_tick_time=18:39:27
+[18:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=467 | AGPU:25t/IDLE CYCN:62t/IDLE ELAB:29t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:3t/IDLE
+[18:40 ET] CYCN CHART | O=6.44 H=6.45 L=6.38 C=6.38 V=25,820 | EMA9=6.52 VWAP=6.40 (-0.3%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=24,058 bars=50 | sq=IDLE armed=none
+[18:40 ET] ELAB CHART | O=7.05 H=7.06 L=7.04 C=7.04 V=1,541 | EMA9=7.05 VWAP=7.11 (-1.0%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=19,683 bars=50 | sq=IDLE armed=none
+[18:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=471 | AGPU:25t/IDLE CYCN:65t/IDLE ELAB:30t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:3t/IDLE
+[18:40 ET] AGPU CHART | O=3.84 H=3.84 L=3.83 C=3.84 V=8,463 | EMA9=3.84 VWAP=3.79 (+1.3%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=11,304 bars=50 | sq=IDLE armed=none
+[18:40 ET] RENX CHART | O=2.83 H=2.84 L=2.83 C=2.84 V=208 | EMA9=2.84 VWAP=2.87 (-1.1%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=7,877 bars=50 | sq=IDLE armed=none
+[18:40 ET] SST CHART | O=4.70 H=4.70 L=4.70 C=4.70 V=6 | EMA9=4.76 VWAP=4.65 (+1.0%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=2,019 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 48 ticks in last 60s, last_price=$3.83, last_tick_time=18:40:28
+  TICK AUDIT: CYCN: 153 ticks in last 60s, last_price=$6.40, last_tick_time=18:40:30
+  TICK AUDIT: ELAB: 55 ticks in last 60s, last_price=$7.05, last_tick_time=18:40:30
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.59, last_tick_time=18:39:20
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.83, last_tick_time=18:40:15
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.76, last_tick_time=18:40:25
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[18:40 ET] KIDZ CHART | O=3.59 H=3.59 L=3.59 C=3.59 V=4,244 | EMA9=3.61 VWAP=3.67 (-2.1%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=1.7x avg_vol=2,518 bars=50 | sq=IDLE armed=none
+[18:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=550 | AGPU:35t/IDLE CYCN:126t/IDLE ELAB:29t/IDLE KIDZ:4t/IDLE RENX:7t/IDLE SST:2t/IDLE
+[18:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=557 | AGPU:36t/IDLE CYCN:130t/IDLE ELAB:31t/IDLE KIDZ:4t/IDLE RENX:7t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 65 ticks in last 60s, last_price=$3.80, last_tick_time=18:41:30
+  TICK AUDIT: CYCN: 226 ticks in last 60s, last_price=$6.44, last_tick_time=18:41:30
+  TICK AUDIT: ELAB: 83 ticks in last 60s, last_price=$7.06, last_tick_time=18:41:30
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.59, last_tick_time=18:41:30
+  TICK AUDIT: RENX: 17 ticks in last 60s, last_price=$2.82, last_tick_time=18:41:20
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.76, last_tick_time=18:40:40
+[18:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=483 | AGPU:42t/IDLE CYCN:57t/IDLE ELAB:17t/IDLE KIDZ:0t/IDLE RENX:18t/IDLE SST:2t/IDLE
+[18:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=492 | AGPU:44t/IDLE CYCN:59t/IDLE ELAB:22t/IDLE KIDZ:0t/IDLE RENX:18t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 58 ticks in last 60s, last_price=$3.82, last_tick_time=18:42:23
+  TICK AUDIT: CYCN: 106 ticks in last 60s, last_price=$6.42, last_tick_time=18:42:30
+  TICK AUDIT: ELAB: 46 ticks in last 60s, last_price=$7.07, last_tick_time=18:42:31
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.57, last_tick_time=18:42:20
+  TICK AUDIT: RENX: 23 ticks in last 60s, last_price=$2.82, last_tick_time=18:42:22
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$4.83, last_tick_time=18:42:27
+
+🔄 Running scanner at 18:42:32 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 777: Historical Market Data Service error message:API scanner subscription cancelled: 777
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 777 (reqId=777, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (33 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 42 ticks in last 60s, last_price=$3.76, last_tick_time=18:43:30
+  TICK AUDIT: CYCN: 143 ticks in last 60s, last_price=$6.48, last_tick_time=18:43:30
+  TICK AUDIT: ELAB: 103 ticks in last 60s, last_price=$7.01, last_tick_time=18:43:31
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.59, last_tick_time=18:43:27
+  TICK AUDIT: RENX: 4 ticks in last 60s, last_price=$2.82, last_tick_time=18:42:46
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$4.83, last_tick_time=18:43:13
+[18:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=625 | AGPU:57t/IDLE CYCN:119t/IDLE ELAB:61t/IDLE KIDZ:1t/IDLE RENX:5t/IDLE SST:1t/IDLE
+[18:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=636 | AGPU:61t/IDLE CYCN:124t/IDLE ELAB:63t/IDLE KIDZ:1t/IDLE RENX:5t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 175 ticks in last 60s, last_price=$3.67, last_tick_time=18:44:31
+  TICK AUDIT: CYCN: 221 ticks in last 60s, last_price=$6.46, last_tick_time=18:44:28
+  TICK AUDIT: ELAB: 115 ticks in last 60s, last_price=$7.02, last_tick_time=18:44:31
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.59, last_tick_time=18:44:04
+  TICK AUDIT: RENX: 6 ticks in last 60s, last_price=$2.82, last_tick_time=18:44:08
+  TICK AUDIT: SST: 1 ticks in last 60s, last_price=$4.83, last_tick_time=18:43:41
+[18:45 ET] AGPU CHART | O=3.71 H=3.73 L=3.65 C=3.72 V=22,624 | EMA9=3.81 VWAP=3.79 (-1.7%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=2.3x avg_vol=9,994 bars=50 | sq=IDLE armed=none
+[18:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=550 | AGPU:54t/IDLE CYCN:64t/IDLE ELAB:36t/IDLE KIDZ:2t/IDLE RENX:12t/IDLE SST:1t/IDLE
+[18:45 ET] CYCN CHART | O=6.53 H=6.58 L=6.45 C=6.53 V=15,877 | EMA9=6.48 VWAP=6.41 (+1.9%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=24,048 bars=50 | sq=IDLE armed=none
+[18:45 ET] ELAB CHART | O=7.01 H=7.03 L=7.01 C=7.01 V=14,437 | EMA9=7.05 VWAP=7.10 (-1.3%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=16,204 bars=50 | sq=IDLE armed=none
+[18:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=555 | AGPU:55t/IDLE CYCN:66t/IDLE ELAB:38t/IDLE KIDZ:2t/IDLE RENX:12t/IDLE SST:1t/IDLE
+[18:45 ET] SST CHART | O=4.83 H=4.83 L=4.83 C=4.83 V=100 | EMA9=4.78 VWAP=4.66 (+3.7%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=1,973 bars=50 | sq=IDLE armed=none
+[18:45 ET] RENX CHART | O=2.82 H=2.83 L=2.82 C=2.82 V=530 | EMA9=2.83 VWAP=2.87 (-1.7%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=5,372 bars=50 | sq=IDLE armed=none
+[18:45 ET] KIDZ CHART | O=3.59 H=3.59 L=3.59 C=3.59 V=4,010 | EMA9=3.59 VWAP=3.66 (-1.9%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=2,858 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 88 ticks in last 60s, last_price=$3.73, last_tick_time=18:45:31
+  TICK AUDIT: CYCN: 120 ticks in last 60s, last_price=$6.49, last_tick_time=18:45:31
+  TICK AUDIT: ELAB: 82 ticks in last 60s, last_price=$7.01, last_tick_time=18:45:31
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$3.57, last_tick_time=18:45:21
+  TICK AUDIT: RENX: 16 ticks in last 60s, last_price=$2.82, last_tick_time=18:45:26
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.80, last_tick_time=18:45:29
+[18:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=541 | AGPU:33t/IDLE CYCN:41t/IDLE ELAB:60t/IDLE KIDZ:4t/IDLE RENX:21t/IDLE SST:1t/IDLE
+[18:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=548 | AGPU:34t/IDLE CYCN:42t/IDLE ELAB:65t/IDLE KIDZ:4t/IDLE RENX:21t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 65 ticks in last 60s, last_price=$3.73, last_tick_time=18:46:31
+  TICK AUDIT: CYCN: 143 ticks in last 60s, last_price=$6.49, last_tick_time=18:46:31
+  TICK AUDIT: ELAB: 92 ticks in last 60s, last_price=$7.05, last_tick_time=18:46:31
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.57, last_tick_time=18:46:07
+  TICK AUDIT: RENX: 26 ticks in last 60s, last_price=$2.80, last_tick_time=18:46:29
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$4.80, last_tick_time=18:46:15
+[18:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=533 | AGPU:26t/IDLE CYCN:77t/IDLE ELAB:31t/IDLE KIDZ:0t/IDLE RENX:18t/IDLE SST:0t/IDLE
+[18:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=538 | AGPU:30t/IDLE CYCN:77t/IDLE ELAB:32t/IDLE KIDZ:0t/IDLE RENX:18t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 53 ticks in last 60s, last_price=$3.72, last_tick_time=18:47:28
+  TICK AUDIT: CYCN: 148 ticks in last 60s, last_price=$6.49, last_tick_time=18:47:31
+  TICK AUDIT: ELAB: 70 ticks in last 60s, last_price=$7.06, last_tick_time=18:47:30
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.57, last_tick_time=18:47:09
+  TICK AUDIT: RENX: 84 ticks in last 60s, last_price=$2.78, last_tick_time=18:47:30
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.80, last_tick_time=18:47:29
+
+🔄 Running scanner at 18:47:32 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 858: Historical Market Data Service error message:API scanner subscription cancelled: 858
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 858 (reqId=858, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (34 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 110 ticks in last 60s, last_price=$3.66, last_tick_time=18:48:32
+  TICK AUDIT: CYCN: 146 ticks in last 60s, last_price=$6.46, last_tick_time=18:48:32
+  TICK AUDIT: ELAB: 69 ticks in last 60s, last_price=$7.10, last_tick_time=18:48:32
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.57, last_tick_time=18:47:09
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.77, last_tick_time=18:48:30
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$4.80, last_tick_time=18:48:28
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[18:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=562 | AGPU:40t/IDLE CYCN:60t/IDLE ELAB:34t/IDLE KIDZ:3t/IDLE RENX:15t/IDLE SST:1t/IDLE
+[18:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=568 | AGPU:41t/IDLE CYCN:64t/IDLE ELAB:35t/IDLE KIDZ:3t/IDLE RENX:15t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 79 ticks in last 60s, last_price=$3.67, last_tick_time=18:49:32
+  TICK AUDIT: CYCN: 186 ticks in last 60s, last_price=$6.43, last_tick_time=18:49:32
+  TICK AUDIT: ELAB: 84 ticks in last 60s, last_price=$7.14, last_tick_time=18:49:32
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.57, last_tick_time=18:48:40
+  TICK AUDIT: RENX: 28 ticks in last 60s, last_price=$2.77, last_tick_time=18:49:28
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.80, last_tick_time=18:49:29
+[18:50 ET] ELAB CHART | O=7.13 H=7.14 L=7.11 C=7.12 V=15,212 | EMA9=7.06 VWAP=7.10 (+0.2%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=15,260 bars=50 | sq=IDLE armed=none
+[18:50:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=525 | AGPU:26t/IDLE CYCN:38t/IDLE ELAB:30t/IDLE KIDZ:2t/IDLE RENX:16t/IDLE SST:4t/IDLE
+[18:50:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=525 | AGPU:26t/IDLE CYCN:38t/IDLE ELAB:30t/IDLE KIDZ:2t/IDLE RENX:16t/IDLE SST:4t/IDLE
+[18:50 ET] CYCN CHART | O=6.44 H=6.44 L=6.40 C=6.43 V=27,792 | EMA9=6.47 VWAP=6.41 (+0.3%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=24,675 bars=50 | sq=IDLE armed=none
+[18:50 ET] AGPU CHART | O=3.65 H=3.68 L=3.65 C=3.68 V=8,123 | EMA9=3.73 VWAP=3.78 (-2.6%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=10,679 bars=50 | sq=IDLE armed=none
+[18:50 ET] KIDZ CHART | O=3.57 H=3.57 L=3.57 C=3.57 V=2 | EMA9=3.58 VWAP=3.66 (-2.4%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=2,877 bars=50 | sq=IDLE armed=none
+[18:50 ET] SST CHART | O=4.80 H=4.80 L=4.80 C=4.80 V=8 | EMA9=4.80 VWAP=4.66 (+3.1%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=1,823 bars=50 | sq=IDLE armed=none
+[18:50 ET] RENX CHART | O=2.77 H=2.77 L=2.74 C=2.74 V=10,337 | EMA9=2.80 VWAP=2.86 (-4.2%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=1.9x avg_vol=5,396 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 43 ticks in last 60s, last_price=$3.69, last_tick_time=18:50:31
+  TICK AUDIT: CYCN: 113 ticks in last 60s, last_price=$6.44, last_tick_time=18:50:30
+  TICK AUDIT: ELAB: 64 ticks in last 60s, last_price=$7.12, last_tick_time=18:50:30
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.57, last_tick_time=18:50:06
+  TICK AUDIT: RENX: 17 ticks in last 60s, last_price=$2.74, last_tick_time=18:50:20
+  TICK AUDIT: SST: 11 ticks in last 60s, last_price=$4.67, last_tick_time=18:50:27
+[18:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=535 | AGPU:16t/IDLE CYCN:35t/IDLE ELAB:60t/IDLE KIDZ:1t/IDLE RENX:10t/IDLE SST:4t/IDLE
+[18:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=540 | AGPU:16t/IDLE CYCN:37t/IDLE ELAB:63t/IDLE KIDZ:1t/IDLE RENX:10t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 37 ticks in last 60s, last_price=$3.67, last_tick_time=18:51:30
+  TICK AUDIT: CYCN: 83 ticks in last 60s, last_price=$6.43, last_tick_time=18:51:31
+  TICK AUDIT: ELAB: 113 ticks in last 60s, last_price=$7.16, last_tick_time=18:51:32
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.57, last_tick_time=18:51:11
+  TICK AUDIT: RENX: 18 ticks in last 60s, last_price=$2.73, last_tick_time=18:51:18
+  TICK AUDIT: SST: 11 ticks in last 60s, last_price=$4.77, last_tick_time=18:51:30
+[18:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=612 | AGPU:21t/IDLE CYCN:95t/IDLE ELAB:76t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:6t/IDLE
+[18:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=622 | AGPU:25t/IDLE CYCN:95t/IDLE ELAB:82t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:6t/IDLE
+
+🔄 Running scanner at 18:52:33 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 940: Historical Market Data Service error message:API scanner subscription cancelled: 940
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 940 (reqId=940, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (35 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 97 ticks in last 60s, last_price=$3.66, last_tick_time=18:53:31
+  TICK AUDIT: CYCN: 517 ticks in last 60s, last_price=$6.20, last_tick_time=18:53:31
+  TICK AUDIT: ELAB: 256 ticks in last 60s, last_price=$7.18, last_tick_time=18:53:31
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.57, last_tick_time=18:52:25
+  TICK AUDIT: RENX: 21 ticks in last 60s, last_price=$2.74, last_tick_time=18:53:29
+  TICK AUDIT: SST: 27 ticks in last 60s, last_price=$4.67, last_tick_time=18:53:16
+[18:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=665 | AGPU:20t/IDLE CYCN:169t/IDLE ELAB:30t/IDLE KIDZ:0t/IDLE RENX:7t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 44 ticks in last 60s, last_price=$3.67, last_tick_time=18:54:28
+  TICK AUDIT: CYCN: 278 ticks in last 60s, last_price=$6.22, last_tick_time=18:54:31
+  TICK AUDIT: ELAB: 66 ticks in last 60s, last_price=$7.20, last_tick_time=18:54:31
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.57, last_tick_time=18:54:29
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.78, last_tick_time=18:54:20
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$4.67, last_tick_time=18:54:29
+[18:55:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=617 | AGPU:23t/IDLE CYCN:75t/IDLE ELAB:64t/IDLE KIDZ:2t/IDLE RENX:13t/IDLE SST:2t/IDLE
+[18:55 ET] AGPU CHART | O=3.67 H=3.68 L=3.66 C=3.66 V=9,166 | EMA9=3.69 VWAP=3.77 (-2.9%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=10,714 bars=50 | sq=IDLE armed=none
+[18:55 ET] ELAB CHART | O=7.20 H=7.20 L=7.10 C=7.12 V=15,152 | EMA9=7.14 VWAP=7.11 (+0.1%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=14,098 bars=50 | sq=IDLE armed=none
+[18:55 ET] CYCN CHART | O=6.20 H=6.24 L=6.19 C=6.24 V=21,312 | EMA9=6.38 VWAP=6.40 (-2.5%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=24,202 bars=50 | sq=IDLE armed=none
+[18:55 ET] RENX CHART | O=2.76 H=2.78 L=2.74 C=2.74 V=2,834 | EMA9=2.77 VWAP=2.86 (-4.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=3,730 bars=50 | sq=IDLE armed=none
+[18:55:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=626 | AGPU:29t/IDLE CYCN:76t/IDLE ELAB:65t/IDLE KIDZ:2t/IDLE RENX:14t/IDLE SST:2t/IDLE
+[18:55 ET] KIDZ CHART | O=3.57 H=3.57 L=3.57 C=3.57 V=205 | EMA9=3.57 VWAP=3.66 (-2.4%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=2,738 bars=50 | sq=IDLE armed=none
+[18:55 ET] SST CHART | O=4.67 H=4.67 L=4.67 C=4.67 V=103 | EMA9=4.73 VWAP=4.66 (+0.3%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=1,493 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 49 ticks in last 60s, last_price=$3.67, last_tick_time=18:55:31
+  TICK AUDIT: CYCN: 170 ticks in last 60s, last_price=$6.15, last_tick_time=18:55:32
+  TICK AUDIT: ELAB: 81 ticks in last 60s, last_price=$7.12, last_tick_time=18:55:31
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$3.57, last_tick_time=18:55:25
+  TICK AUDIT: RENX: 14 ticks in last 60s, last_price=$2.74, last_tick_time=18:55:01
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.67, last_tick_time=18:55:27
+[18:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=582 | AGPU:8t/IDLE CYCN:81t/IDLE ELAB:49t/IDLE KIDZ:3t/IDLE RENX:0t/IDLE SST:3t/IDLE
+[18:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=587 | AGPU:8t/IDLE CYCN:82t/IDLE ELAB:50t/IDLE KIDZ:6t/IDLE RENX:0t/IDLE SST:3t/IDLE
+  TICK AUDIT: AGPU: 31 ticks in last 60s, last_price=$3.69, last_tick_time=18:56:32
+  TICK AUDIT: CYCN: 143 ticks in last 60s, last_price=$6.15, last_tick_time=18:56:32
+  TICK AUDIT: ELAB: 77 ticks in last 60s, last_price=$7.13, last_tick_time=18:56:31
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$3.59, last_tick_time=18:56:25
+  TICK AUDIT: RENX: 1 ticks in last 60s, last_price=$2.74, last_tick_time=18:56:21
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$4.67, last_tick_time=18:56:15
+[18:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=589 | AGPU:19t/IDLE CYCN:86t/IDLE ELAB:27t/IDLE KIDZ:1t/IDLE RENX:7t/IDLE SST:11t/IDLE
+[18:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=593 | AGPU:19t/IDLE CYCN:89t/IDLE ELAB:28t/IDLE KIDZ:1t/IDLE RENX:7t/IDLE SST:11t/IDLE
+  TICK AUDIT: AGPU: 45 ticks in last 60s, last_price=$3.68, last_tick_time=18:57:30
+  TICK AUDIT: CYCN: 258 ticks in last 60s, last_price=$6.03, last_tick_time=18:57:32
+  TICK AUDIT: ELAB: 89 ticks in last 60s, last_price=$7.16, last_tick_time=18:57:32
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.59, last_tick_time=18:57:08
+  TICK AUDIT: RENX: 10 ticks in last 60s, last_price=$2.74, last_tick_time=18:57:20
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.70, last_tick_time=18:57:25
+
+🔄 Running scanner at 18:57:33 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1021: Historical Market Data Service error message:API scanner subscription cancelled: 1021
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1021 (reqId=1021, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (36 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 43 ticks in last 60s, last_price=$3.70, last_tick_time=18:58:29
+  TICK AUDIT: CYCN: 230 ticks in last 60s, last_price=$6.14, last_tick_time=18:58:32
+  TICK AUDIT: ELAB: 62 ticks in last 60s, last_price=$7.13, last_tick_time=18:58:32
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.59, last_tick_time=18:58:08
+  TICK AUDIT: RENX: 5 ticks in last 60s, last_price=$2.74, last_tick_time=18:58:20
+  TICK AUDIT: SST: 21 ticks in last 60s, last_price=$4.70, last_tick_time=18:58:23
+[18:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=570 | AGPU:18t/IDLE CYCN:59t/IDLE ELAB:17t/IDLE KIDZ:0t/IDLE RENX:2t/IDLE SST:5t/IDLE
+[18:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=572 | AGPU:19t/IDLE CYCN:59t/IDLE ELAB:18t/IDLE KIDZ:0t/IDLE RENX:2t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 53 ticks in last 60s, last_price=$3.67, last_tick_time=18:59:31
+  TICK AUDIT: CYCN: 175 ticks in last 60s, last_price=$6.18, last_tick_time=18:59:32
+  TICK AUDIT: ELAB: 51 ticks in last 60s, last_price=$7.13, last_tick_time=18:59:31
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.58, last_tick_time=18:59:26
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.71, last_tick_time=18:59:32
+  TICK AUDIT: SST: 13 ticks in last 60s, last_price=$4.66, last_tick_time=18:59:28
+[19:00:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=615 | AGPU:15t/IDLE CYCN:86t/IDLE ELAB:16t/IDLE KIDZ:7t/IDLE RENX:18t/IDLE SST:4t/IDLE
+[19:00 ET] CYCN CHART | O=6.11 H=6.22 L=6.11 C=6.22 V=31,966 | EMA9=6.21 VWAP=6.37 (-2.4%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.3x avg_vol=24,732 bars=50 | sq=IDLE armed=none
+[19:00 ET] AGPU CHART | O=3.69 H=3.70 L=3.67 C=3.68 V=20,816 | EMA9=3.68 VWAP=3.77 (-2.3%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=2.0x avg_vol=10,375 bars=50 | sq=IDLE armed=none
+[19:00 ET] ELAB CHART | O=7.14 H=7.14 L=7.10 C=7.11 V=4,806 | EMA9=7.14 VWAP=7.11 (-0.0%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=13,711 bars=50 | sq=IDLE armed=none
+[19:00:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=621 | AGPU:19t/IDLE CYCN:87t/IDLE ELAB:17t/IDLE KIDZ:7t/IDLE RENX:18t/IDLE SST:4t/IDLE
+[19:00 ET] RENX CHART | O=2.74 H=2.75 L=2.71 C=2.72 V=10,765 | EMA9=2.75 VWAP=2.85 (-4.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=3.5x avg_vol=3,085 bars=50 | sq=IDLE armed=none
+[19:00 ET] SST CHART | O=4.70 H=4.70 L=4.66 C=4.66 V=648 | EMA9=4.71 VWAP=4.66 (+0.0%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=950 bars=50 | sq=IDLE armed=none
+[19:00 ET] KIDZ CHART | O=3.58 H=3.58 L=3.56 C=3.56 V=615 | EMA9=3.58 VWAP=3.66 (-2.6%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=2,045 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 49 ticks in last 60s, last_price=$3.68, last_tick_time=19:00:28
+  TICK AUDIT: CYCN: 149 ticks in last 60s, last_price=$6.17, last_tick_time=19:00:28
+  TICK AUDIT: ELAB: 34 ticks in last 60s, last_price=$7.10, last_tick_time=19:00:33
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.56, last_tick_time=19:00:29
+  TICK AUDIT: RENX: 42 ticks in last 60s, last_price=$2.72, last_tick_time=19:00:20
+  TICK AUDIT: SST: 11 ticks in last 60s, last_price=$4.66, last_tick_time=19:00:27
+[19:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=587 | AGPU:17t/IDLE CYCN:44t/IDLE ELAB:48t/IDLE KIDZ:3t/IDLE RENX:2t/IDLE SST:4t/IDLE
+[19:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=595 | AGPU:17t/IDLE CYCN:50t/IDLE ELAB:49t/IDLE KIDZ:4t/IDLE RENX:2t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 34 ticks in last 60s, last_price=$3.68, last_tick_time=19:01:28
+  TICK AUDIT: CYCN: 103 ticks in last 60s, last_price=$6.15, last_tick_time=19:01:33
+  TICK AUDIT: ELAB: 82 ticks in last 60s, last_price=$7.10, last_tick_time=19:01:31
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.54, last_tick_time=19:01:28
+  TICK AUDIT: RENX: 10 ticks in last 60s, last_price=$2.75, last_tick_time=19:01:31
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.70, last_tick_time=19:01:19
+[19:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=599 | AGPU:19t/IDLE CYCN:65t/IDLE ELAB:31t/IDLE KIDZ:0t/IDLE RENX:9t/IDLE SST:6t/IDLE
+[19:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=600 | AGPU:19t/IDLE CYCN:65t/IDLE ELAB:32t/IDLE KIDZ:0t/IDLE RENX:9t/IDLE SST:6t/IDLE
+
+🔄 Running scanner at 19:02:33 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1102: Historical Market Data Service error message:API scanner subscription cancelled: 1102
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1102 (reqId=1102, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (37 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 89 ticks in last 60s, last_price=$3.66, last_tick_time=19:03:31
+  TICK AUDIT: CYCN: 323 ticks in last 60s, last_price=$6.32, last_tick_time=19:03:31
+  TICK AUDIT: ELAB: 127 ticks in last 60s, last_price=$7.10, last_tick_time=19:03:31
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.54, last_tick_time=19:03:02
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.72, last_tick_time=19:03:13
+  TICK AUDIT: SST: 25 ticks in last 60s, last_price=$4.66, last_tick_time=19:03:29
+[19:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=630 | AGPU:17t/IDLE CYCN:90t/IDLE ELAB:11t/IDLE KIDZ:3t/IDLE RENX:6t/IDLE SST:3t/IDLE
+[19:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=638 | AGPU:17t/IDLE CYCN:96t/IDLE ELAB:13t/IDLE KIDZ:3t/IDLE RENX:6t/IDLE SST:3t/IDLE
+  TICK AUDIT: AGPU: 58 ticks in last 60s, last_price=$3.62, last_tick_time=19:04:30
+  TICK AUDIT: CYCN: 203 ticks in last 60s, last_price=$6.37, last_tick_time=19:04:30
+  TICK AUDIT: ELAB: 47 ticks in last 60s, last_price=$7.12, last_tick_time=19:04:30
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.54, last_tick_time=19:04:21
+  TICK AUDIT: RENX: 16 ticks in last 60s, last_price=$2.79, last_tick_time=19:04:13
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.65, last_tick_time=19:04:25
+[19:05 ET] CYCN CHART | O=6.34 H=6.42 L=6.34 C=6.35 V=23,915 | EMA9=6.24 VWAP=6.37 (-0.3%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=25,314 bars=50 | sq=IDLE armed=none
+[19:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=682 | AGPU:30t/IDLE CYCN:117t/IDLE ELAB:24t/IDLE KIDZ:9t/IDLE RENX:0t/IDLE SST:2t/IDLE
+[19:05 ET] ELAB CHART | O=7.10 H=7.12 L=7.10 C=7.11 V=5,681 | EMA9=7.12 VWAP=7.11 (-0.0%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=12,083 bars=50 | sq=IDLE armed=none
+[19:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=685 | AGPU:30t/IDLE CYCN:118t/IDLE ELAB:26t/IDLE KIDZ:9t/IDLE RENX:0t/IDLE SST:2t/IDLE
+[19:05 ET] AGPU CHART | O=3.63 H=3.63 L=3.60 C=3.61 V=15,765 | EMA9=3.67 VWAP=3.76 (-4.0%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.7x avg_vol=9,332 bars=50 | sq=IDLE armed=none
+[19:05 ET] KIDZ CHART | O=3.54 H=3.54 L=3.53 C=3.53 V=7,204 | EMA9=3.55 VWAP=3.65 (-3.2%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=4.0x avg_vol=1,796 bars=50 | sq=IDLE armed=none
+[19:05 ET] SST CHART | O=4.66 H=4.66 L=4.65 C=4.65 V=206 | EMA9=4.68 VWAP=4.66 (-0.2%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=953 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 84 ticks in last 60s, last_price=$3.59, last_tick_time=19:05:31
+  TICK AUDIT: CYCN: 172 ticks in last 60s, last_price=$6.35, last_tick_time=19:05:32
+  TICK AUDIT: ELAB: 51 ticks in last 60s, last_price=$7.13, last_tick_time=19:05:31
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.53, last_tick_time=19:05:17
+  TICK AUDIT: RENX: 0 ticks in last 60s, last_price=$2.79, last_tick_time=19:04:13
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.65, last_tick_time=19:05:32
+⚠️ TICK DROUGHT: RENX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:05 ET] RENX CHART | O=2.76 H=2.79 L=2.76 C=2.79 V=1,131 | EMA9=2.74 VWAP=2.81 (-0.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=5,255 bars=50 | sq=IDLE armed=none
+[19:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=630 | AGPU:46t/IDLE CYCN:42t/IDLE ELAB:37t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:0t/IDLE
+[19:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=634 | AGPU:49t/IDLE CYCN:42t/IDLE ELAB:38t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 111 ticks in last 60s, last_price=$3.53, last_tick_time=19:06:31
+  TICK AUDIT: CYCN: 99 ticks in last 60s, last_price=$6.34, last_tick_time=19:06:31
+  TICK AUDIT: ELAB: 59 ticks in last 60s, last_price=$7.16, last_tick_time=19:06:32
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.53, last_tick_time=19:05:17
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.73, last_tick_time=19:06:25
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.66, last_tick_time=19:05:32
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=631 | AGPU:64t/IDLE CYCN:34t/IDLE ELAB:18t/IDLE KIDZ:1t/IDLE RENX:8t/IDLE SST:6t/IDLE
+[19:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=636 | AGPU:64t/IDLE CYCN:35t/IDLE ELAB:22t/IDLE KIDZ:1t/IDLE RENX:8t/IDLE SST:6t/IDLE
+  TICK AUDIT: AGPU: 104 ticks in last 60s, last_price=$3.60, last_tick_time=19:07:31
+  TICK AUDIT: CYCN: 147 ticks in last 60s, last_price=$6.22, last_tick_time=19:07:32
+  TICK AUDIT: ELAB: 58 ticks in last 60s, last_price=$7.19, last_tick_time=19:07:32
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.55, last_tick_time=19:07:26
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.69, last_tick_time=19:07:17
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.66, last_tick_time=19:06:58
+
+🔄 Running scanner at 19:07:34 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1186: Historical Market Data Service error message:API scanner subscription cancelled: 1186
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1186 (reqId=1186, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (38 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 60 ticks in last 60s, last_price=$3.63, last_tick_time=19:08:34
+  TICK AUDIT: CYCN: 103 ticks in last 60s, last_price=$6.24, last_tick_time=19:08:30
+  TICK AUDIT: ELAB: 60 ticks in last 60s, last_price=$7.19, last_tick_time=19:08:32
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.55, last_tick_time=19:07:56
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.65, last_tick_time=19:08:30
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$4.66, last_tick_time=19:08:03
+[19:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=641 | AGPU:20t/IDLE CYCN:35t/IDLE ELAB:40t/IDLE KIDZ:0t/IDLE RENX:17t/IDLE SST:0t/IDLE
+[19:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=645 | AGPU:20t/IDLE CYCN:35t/IDLE ELAB:44t/IDLE KIDZ:0t/IDLE RENX:17t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 43 ticks in last 60s, last_price=$3.61, last_tick_time=19:09:31
+  TICK AUDIT: CYCN: 71 ticks in last 60s, last_price=$6.30, last_tick_time=19:09:32
+  TICK AUDIT: ELAB: 79 ticks in last 60s, last_price=$7.14, last_tick_time=19:09:34
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.56, last_tick_time=19:09:25
+  TICK AUDIT: RENX: 26 ticks in last 60s, last_price=$2.69, last_tick_time=19:09:20
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.66, last_tick_time=19:08:03
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:10 ET] ELAB CHART | O=7.16 H=7.16 L=7.12 C=7.12 V=9,930 | EMA9=7.14 VWAP=7.11 (+0.1%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=11,283 bars=50 | sq=IDLE armed=none
+[19:10 ET] CYCN CHART | O=6.25 H=6.32 L=6.25 C=6.29 V=11,096 | EMA9=6.28 VWAP=6.37 (-1.2%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=25,287 bars=50 | sq=IDLE armed=none
+[19:10 ET] AGPU CHART | O=3.61 H=3.61 L=3.61 C=3.61 V=4,749 | EMA9=3.63 VWAP=3.75 (-3.6%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=9,747 bars=50 | sq=IDLE armed=none
+[19:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=622 | AGPU:9t/IDLE CYCN:44t/IDLE ELAB:32t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:3t/IDLE
+[19:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=623 | AGPU:9t/IDLE CYCN:44t/IDLE ELAB:33t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:3t/IDLE
+[19:10 ET] KIDZ CHART | O=3.55 H=3.56 L=3.55 C=3.56 V=302 | EMA9=3.54 VWAP=3.65 (-2.4%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,879 bars=50 | sq=IDLE armed=none
+[19:10 ET] RENX CHART | O=2.69 H=2.69 L=2.69 C=2.69 V=1,415 | EMA9=2.71 VWAP=2.80 (-3.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=5,262 bars=50 | sq=IDLE armed=none
+[19:10 ET] SST CHART | O=4.66 H=4.66 L=4.66 C=4.66 V=202 | EMA9=4.67 VWAP=4.66 (+0.0%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=816 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 51 ticks in last 60s, last_price=$3.59, last_tick_time=19:10:34
+  TICK AUDIT: CYCN: 111 ticks in last 60s, last_price=$6.35, last_tick_time=19:10:34
+  TICK AUDIT: ELAB: 65 ticks in last 60s, last_price=$7.10, last_tick_time=19:10:31
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.56, last_tick_time=19:10:18
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.68, last_tick_time=19:10:27
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.66, last_tick_time=19:10:29
+[19:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=664 | AGPU:11t/IDLE CYCN:95t/IDLE ELAB:15t/IDLE KIDZ:0t/IDLE RENX:8t/IDLE SST:6t/IDLE
+[19:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=666 | AGPU:12t/IDLE CYCN:96t/IDLE ELAB:15t/IDLE KIDZ:0t/IDLE RENX:8t/IDLE SST:6t/IDLE
+  TICK AUDIT: AGPU: 19 ticks in last 60s, last_price=$3.60, last_tick_time=19:11:29
+  TICK AUDIT: CYCN: 204 ticks in last 60s, last_price=$6.44, last_tick_time=19:11:33
+  TICK AUDIT: ELAB: 41 ticks in last 60s, last_price=$7.12, last_tick_time=19:11:34
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.56, last_tick_time=19:11:32
+  TICK AUDIT: RENX: 9 ticks in last 60s, last_price=$2.66, last_tick_time=19:11:04
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.66, last_tick_time=19:11:09
+[19:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=635 | AGPU:32t/IDLE CYCN:42t/IDLE ELAB:25t/IDLE KIDZ:1t/IDLE RENX:0t/IDLE SST:6t/IDLE
+[19:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=637 | AGPU:32t/IDLE CYCN:42t/IDLE ELAB:26t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:6t/IDLE
+
+🔄 Running scanner at 19:12:35 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1268: Historical Market Data Service error message:API scanner subscription cancelled: 1268
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1268 (reqId=1268, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (39 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 63 ticks in last 60s, last_price=$3.63, last_tick_time=19:13:25
+  TICK AUDIT: CYCN: 244 ticks in last 60s, last_price=$6.41, last_tick_time=19:13:33
+  TICK AUDIT: ELAB: 73 ticks in last 60s, last_price=$7.09, last_tick_time=19:13:31
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.54, last_tick_time=19:12:41
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.67, last_tick_time=19:13:30
+  TICK AUDIT: SST: 23 ticks in last 60s, last_price=$4.63, last_tick_time=19:13:26
+[19:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=658 | AGPU:11t/IDLE CYCN:42t/IDLE ELAB:34t/IDLE KIDZ:6t/IDLE RENX:2t/IDLE SST:5t/IDLE
+[19:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=663 | AGPU:11t/IDLE CYCN:46t/IDLE ELAB:35t/IDLE KIDZ:6t/IDLE RENX:2t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 26 ticks in last 60s, last_price=$3.61, last_tick_time=19:14:31
+  TICK AUDIT: CYCN: 93 ticks in last 60s, last_price=$6.35, last_tick_time=19:14:33
+  TICK AUDIT: ELAB: 73 ticks in last 60s, last_price=$7.05, last_tick_time=19:14:32
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$3.56, last_tick_time=19:14:26
+  TICK AUDIT: RENX: 2 ticks in last 60s, last_price=$2.67, last_tick_time=19:13:50
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.60, last_tick_time=19:13:34
+[19:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=643 | AGPU:7t/IDLE CYCN:36t/IDLE ELAB:30t/IDLE KIDZ:9t/IDLE RENX:2t/IDLE SST:1t/IDLE
+[19:15 ET] ELAB CHART | O=7.05 H=7.07 L=7.05 C=7.05 V=7,617 | EMA9=7.11 VWAP=7.11 (-0.9%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=9,987 bars=50 | sq=IDLE armed=none
+[19:15 ET] AGPU CHART | O=3.61 H=3.61 L=3.61 C=3.61 V=1,421 | EMA9=3.62 VWAP=3.74 (-3.6%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=9,321 bars=50 | sq=IDLE armed=none
+[19:15 ET] KIDZ CHART | O=3.56 H=3.56 L=3.56 C=3.56 V=612 | EMA9=3.55 VWAP=3.64 (-2.3%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=1,587 bars=50 | sq=IDLE armed=none
+[19:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=651 | AGPU:8t/IDLE CYCN:36t/IDLE ELAB:34t/IDLE KIDZ:12t/IDLE RENX:2t/IDLE SST:1t/IDLE
+[19:15 ET] SST CHART | O=4.60 H=4.60 L=4.60 C=4.60 V=100 | EMA9=4.64 VWAP=4.66 (-1.2%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=687 bars=50 | sq=IDLE armed=none
+[19:15 ET] CYCN CHART | O=6.38 H=6.38 L=6.35 C=6.38 V=6,332 | EMA9=6.35 VWAP=6.37 (+0.2%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=25,425 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 28 ticks in last 60s, last_price=$3.61, last_tick_time=19:15:32
+  TICK AUDIT: CYCN: 56 ticks in last 60s, last_price=$6.38, last_tick_time=19:15:29
+  TICK AUDIT: ELAB: 48 ticks in last 60s, last_price=$7.05, last_tick_time=19:15:31
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.56, last_tick_time=19:15:01
+  TICK AUDIT: RENX: 2 ticks in last 60s, last_price=$2.67, last_tick_time=19:14:59
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.60, last_tick_time=19:15:02
+[19:15 ET] RENX CHART | O=2.67 H=2.67 L=2.67 C=2.67 V=2 | EMA9=2.68 VWAP=2.80 (-4.5%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=6,023 bars=50 | sq=IDLE armed=none
+[19:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=663 | AGPU:43t/IDLE CYCN:35t/IDLE ELAB:11t/IDLE KIDZ:1t/IDLE RENX:14t/IDLE SST:1t/IDLE
+[19:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=671 | AGPU:45t/IDLE CYCN:35t/IDLE ELAB:13t/IDLE KIDZ:1t/IDLE RENX:14t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 60 ticks in last 60s, last_price=$3.59, last_tick_time=19:16:33
+  TICK AUDIT: CYCN: 53 ticks in last 60s, last_price=$6.35, last_tick_time=19:16:33
+  TICK AUDIT: ELAB: 38 ticks in last 60s, last_price=$7.09, last_tick_time=19:16:31
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.59, last_tick_time=19:16:11
+  TICK AUDIT: RENX: 18 ticks in last 60s, last_price=$2.64, last_tick_time=19:16:24
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.52, last_tick_time=19:16:30
+[19:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=693 | AGPU:20t/IDLE CYCN:73t/IDLE ELAB:23t/IDLE KIDZ:1t/IDLE RENX:14t/IDLE SST:4t/IDLE
+[19:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=704 | AGPU:23t/IDLE CYCN:77t/IDLE ELAB:25t/IDLE KIDZ:1t/IDLE RENX:15t/IDLE SST:5t/IDLE
+  TICK AUDIT: AGPU: 52 ticks in last 60s, last_price=$3.59, last_tick_time=19:17:33
+  TICK AUDIT: CYCN: 101 ticks in last 60s, last_price=$6.35, last_tick_time=19:17:26
+  TICK AUDIT: ELAB: 48 ticks in last 60s, last_price=$7.12, last_tick_time=19:17:34
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.58, last_tick_time=19:17:31
+  TICK AUDIT: RENX: 19 ticks in last 60s, last_price=$2.65, last_tick_time=19:17:18
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.52, last_tick_time=19:17:01
+
+🔄 Running scanner at 19:17:35 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1349: Historical Market Data Service error message:API scanner subscription cancelled: 1349
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1349 (reqId=1349, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (40 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 78 ticks in last 60s, last_price=$3.60, last_tick_time=19:18:34
+  TICK AUDIT: CYCN: 112 ticks in last 60s, last_price=$6.28, last_tick_time=19:18:34
+  TICK AUDIT: ELAB: 42 ticks in last 60s, last_price=$7.14, last_tick_time=19:18:33
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.58, last_tick_time=19:17:31
+  TICK AUDIT: RENX: 61 ticks in last 60s, last_price=$2.58, last_tick_time=19:18:34
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.52, last_tick_time=19:18:13
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=717 | AGPU:28t/IDLE CYCN:49t/IDLE ELAB:16t/IDLE KIDZ:4t/IDLE RENX:26t/IDLE SST:0t/IDLE
+[19:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=727 | AGPU:32t/IDLE CYCN:53t/IDLE ELAB:18t/IDLE KIDZ:4t/IDLE RENX:26t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 118 ticks in last 60s, last_price=$3.71, last_tick_time=19:19:35
+  TICK AUDIT: CYCN: 95 ticks in last 60s, last_price=$6.26, last_tick_time=19:19:34
+  TICK AUDIT: ELAB: 48 ticks in last 60s, last_price=$7.14, last_tick_time=19:19:31
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.58, last_tick_time=19:19:29
+  TICK AUDIT: RENX: 40 ticks in last 60s, last_price=$2.52, last_tick_time=19:19:30
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.52, last_tick_time=19:18:13
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:20 ET] ELAB CHART | O=7.13 H=7.15 L=7.13 C=7.15 V=5,195 | EMA9=7.11 VWAP=7.11 (+0.5%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=8,613 bars=50 | sq=IDLE armed=none
+[19:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=713 | AGPU:45t/IDLE CYCN:32t/IDLE ELAB:22t/IDLE KIDZ:6t/IDLE RENX:11t/IDLE SST:3t/IDLE
+[19:20 ET] CYCN CHART | O=6.28 H=6.29 L=6.25 C=6.26 V=25,944 | EMA9=6.33 VWAP=6.37 (-1.6%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=23,110 bars=50 | sq=IDLE armed=none
+[19:20 ET] AGPU CHART | O=3.65 H=3.71 L=3.61 C=3.63 V=18,913 | EMA9=3.61 VWAP=3.73 (-2.8%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=2.2x avg_vol=8,467 bars=50 | sq=IDLE armed=none
+[19:20 ET] RENX CHART | O=2.57 H=2.57 L=2.52 C=2.55 V=200,422 | EMA9=2.65 VWAP=2.71 (-6.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=33.7x avg_vol=5,950 bars=50 | sq=IDLE armed=none
+[19:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=720 | AGPU:48t/IDLE CYCN:33t/IDLE ELAB:24t/IDLE KIDZ:6t/IDLE RENX:12t/IDLE SST:3t/IDLE
+[19:20 ET] SST CHART | O=4.52 H=4.52 L=4.52 C=4.52 V=600 | EMA9=4.57 VWAP=4.65 (-2.8%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=688 bars=50 | sq=IDLE armed=none
+[19:20 ET] KIDZ CHART | O=3.58 H=3.58 L=3.55 C=3.55 V=405 | EMA9=3.57 VWAP=3.64 (-2.6%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=1,362 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 117 ticks in last 60s, last_price=$3.63, last_tick_time=19:20:34
+  TICK AUDIT: CYCN: 104 ticks in last 60s, last_price=$6.27, last_tick_time=19:20:35
+  TICK AUDIT: ELAB: 51 ticks in last 60s, last_price=$7.15, last_tick_time=19:20:33
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.58, last_tick_time=19:20:22
+  TICK AUDIT: RENX: 23 ticks in last 60s, last_price=$2.55, last_tick_time=19:20:35
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$4.55, last_tick_time=19:20:12
+[19:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=677 | AGPU:38t/IDLE CYCN:19t/IDLE ELAB:12t/IDLE KIDZ:0t/IDLE RENX:11t/IDLE SST:3t/IDLE
+[19:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=681 | AGPU:38t/IDLE CYCN:22t/IDLE ELAB:13t/IDLE KIDZ:0t/IDLE RENX:11t/IDLE SST:3t/IDLE
+  TICK AUDIT: AGPU: 91 ticks in last 60s, last_price=$3.60, last_tick_time=19:21:33
+  TICK AUDIT: CYCN: 74 ticks in last 60s, last_price=$6.36, last_tick_time=19:21:35
+  TICK AUDIT: ELAB: 35 ticks in last 60s, last_price=$7.17, last_tick_time=19:21:31
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.58, last_tick_time=19:21:22
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.58, last_tick_time=19:21:31
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.57, last_tick_time=19:21:18
+[19:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=649 | AGPU:19t/IDLE CYCN:22t/IDLE ELAB:11t/IDLE KIDZ:0t/IDLE RENX:3t/IDLE SST:0t/IDLE
+[19:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=660 | AGPU:23t/IDLE CYCN:27t/IDLE ELAB:13t/IDLE KIDZ:0t/IDLE RENX:3t/IDLE SST:0t/IDLE
+
+🔄 Running scanner at 19:22:35 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1432: Historical Market Data Service error message:API scanner subscription cancelled: 1432
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1432 (reqId=1432, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (41 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 95 ticks in last 60s, last_price=$3.60, last_tick_time=19:23:33
+  TICK AUDIT: CYCN: 165 ticks in last 60s, last_price=$6.32, last_tick_time=19:23:31
+  TICK AUDIT: ELAB: 68 ticks in last 60s, last_price=$7.17, last_tick_time=19:23:33
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.54, last_tick_time=19:22:53
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.59, last_tick_time=19:23:29
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$4.52, last_tick_time=19:23:21
+[19:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=711 | AGPU:11t/IDLE CYCN:19t/IDLE ELAB:44t/IDLE KIDZ:5t/IDLE RENX:4t/IDLE SST:1t/IDLE
+[19:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=717 | AGPU:12t/IDLE CYCN:21t/IDLE ELAB:47t/IDLE KIDZ:5t/IDLE RENX:4t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 26 ticks in last 60s, last_price=$3.59, last_tick_time=19:24:32
+  TICK AUDIT: CYCN: 53 ticks in last 60s, last_price=$6.31, last_tick_time=19:24:34
+  TICK AUDIT: ELAB: 75 ticks in last 60s, last_price=$7.18, last_tick_time=19:24:33
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$3.56, last_tick_time=19:24:05
+  TICK AUDIT: RENX: 8 ticks in last 60s, last_price=$2.58, last_tick_time=19:24:32
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.61, last_tick_time=19:24:29
+[19:25 ET] AGPU CHART | O=3.60 H=3.61 L=3.57 C=3.58 V=7,600 | EMA9=3.61 VWAP=3.72 (-3.8%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=9,096 bars=50 | sq=IDLE armed=none
+[19:25 ET] KIDZ CHART | O=3.56 H=3.56 L=3.56 C=3.56 V=2 | EMA9=3.56 VWAP=3.64 (-2.3%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=1,299 bars=50 | sq=IDLE armed=none
+[19:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=711 | AGPU:32t/IDLE CYCN:23t/IDLE ELAB:12t/IDLE KIDZ:4t/IDLE RENX:12t/IDLE SST:1t/IDLE
+[19:25 ET] ELAB CHART | O=7.16 H=7.18 L=7.14 C=7.18 V=4,067 | EMA9=7.14 VWAP=7.11 (+0.9%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=7,907 bars=50 | sq=IDLE armed=none
+[19:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=718 | AGPU:38t/IDLE CYCN:23t/IDLE ELAB:13t/IDLE KIDZ:4t/IDLE RENX:12t/IDLE SST:1t/IDLE
+[19:25 ET] CYCN CHART | O=6.32 H=6.32 L=6.29 C=6.30 V=4,655 | EMA9=6.33 VWAP=6.36 (-1.0%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=20,546 bars=50 | sq=IDLE armed=none
+[19:25 ET] SST CHART | O=4.53 H=4.61 L=4.53 C=4.61 V=504 | EMA9=4.55 VWAP=4.65 (-0.9%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=702 bars=50 | sq=IDLE armed=none
+[19:25 ET] RENX CHART | O=2.59 H=2.59 L=2.57 C=2.57 V=1,022 | EMA9=2.60 VWAP=2.71 (-5.2%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=10,399 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 67 ticks in last 60s, last_price=$3.53, last_tick_time=19:25:26
+  TICK AUDIT: CYCN: 91 ticks in last 60s, last_price=$6.29, last_tick_time=19:25:33
+  TICK AUDIT: ELAB: 32 ticks in last 60s, last_price=$7.17, last_tick_time=19:25:31
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.57, last_tick_time=19:25:14
+  TICK AUDIT: RENX: 16 ticks in last 60s, last_price=$2.57, last_tick_time=19:25:29
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$4.61, last_tick_time=19:25:27
+[19:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=703 | AGPU:11t/IDLE CYCN:36t/IDLE ELAB:20t/IDLE KIDZ:0t/IDLE RENX:7t/IDLE SST:2t/IDLE
+[19:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=703 | AGPU:11t/IDLE CYCN:36t/IDLE ELAB:20t/IDLE KIDZ:0t/IDLE RENX:7t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 28 ticks in last 60s, last_price=$3.62, last_tick_time=19:26:34
+  TICK AUDIT: CYCN: 80 ticks in last 60s, last_price=$6.28, last_tick_time=19:26:34
+  TICK AUDIT: ELAB: 41 ticks in last 60s, last_price=$7.18, last_tick_time=19:26:31
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.57, last_tick_time=19:26:14
+  TICK AUDIT: RENX: 11 ticks in last 60s, last_price=$2.57, last_tick_time=19:26:27
+  TICK AUDIT: SST: 11 ticks in last 60s, last_price=$4.56, last_tick_time=19:26:33
+[19:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=703 | AGPU:21t/IDLE CYCN:40t/IDLE ELAB:5t/IDLE KIDZ:2t/IDLE RENX:7t/IDLE SST:1t/IDLE
+[19:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=710 | AGPU:21t/IDLE CYCN:46t/IDLE ELAB:6t/IDLE KIDZ:2t/IDLE RENX:7t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 61 ticks in last 60s, last_price=$3.63, last_tick_time=19:27:32
+  TICK AUDIT: CYCN: 89 ticks in last 60s, last_price=$6.35, last_tick_time=19:27:34
+  TICK AUDIT: ELAB: 112 ticks in last 60s, last_price=$7.23, last_tick_time=19:27:35
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.56, last_tick_time=19:27:26
+  TICK AUDIT: RENX: 13 ticks in last 60s, last_price=$2.56, last_tick_time=19:27:31
+  TICK AUDIT: SST: 1 ticks in last 60s, last_price=$4.56, last_tick_time=19:26:44
+
+🔄 Running scanner at 19:27:36 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1513: Historical Market Data Service error message:API scanner subscription cancelled: 1513
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1513 (reqId=1513, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (42 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 47 ticks in last 60s, last_price=$3.63, last_tick_time=19:28:31
+  TICK AUDIT: CYCN: 56 ticks in last 60s, last_price=$6.27, last_tick_time=19:28:34
+  TICK AUDIT: ELAB: 170 ticks in last 60s, last_price=$7.34, last_tick_time=19:28:33
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.56, last_tick_time=19:27:26
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.56, last_tick_time=19:28:32
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.56, last_tick_time=19:28:09
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=782 | AGPU:4t/IDLE CYCN:46t/IDLE ELAB:61t/IDLE KIDZ:4t/IDLE RENX:8t/IDLE SST:0t/IDLE
+[19:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=790 | AGPU:4t/IDLE CYCN:51t/IDLE ELAB:64t/IDLE KIDZ:4t/IDLE RENX:8t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 23 ticks in last 60s, last_price=$3.62, last_tick_time=19:29:34
+  TICK AUDIT: CYCN: 166 ticks in last 60s, last_price=$6.21, last_tick_time=19:29:35
+  TICK AUDIT: ELAB: 150 ticks in last 60s, last_price=$7.27, last_tick_time=19:29:35
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.56, last_tick_time=19:29:31
+  TICK AUDIT: RENX: 14 ticks in last 60s, last_price=$2.55, last_tick_time=19:29:28
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.56, last_tick_time=19:28:09
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:30 ET] CYCN CHART | O=6.25 H=6.25 L=6.20 C=6.21 V=20,846 | EMA9=6.30 VWAP=6.36 (-2.4%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=19,138 bars=50 | sq=IDLE armed=none
+[19:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=787 | AGPU:32t/IDLE CYCN:47t/IDLE ELAB:35t/IDLE KIDZ:1t/IDLE RENX:6t/IDLE SST:7t/IDLE
+[19:30 ET] ELAB CHART | O=7.30 H=7.31 L=7.21 C=7.25 V=18,619 | EMA9=7.21 VWAP=7.13 (+1.8%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=2.3x avg_vol=8,113 bars=50 | sq=IDLE armed=none
+[19:30 ET] SST CHART | O=4.56 H=4.58 L=4.56 C=4.58 V=3,704 | EMA9=4.56 VWAP=4.64 (-1.3%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=6.9x avg_vol=534 bars=50 | sq=IDLE armed=none
+[19:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=792 | AGPU:32t/IDLE CYCN:48t/IDLE ELAB:38t/IDLE KIDZ:1t/IDLE RENX:6t/IDLE SST:8t/IDLE
+[19:30 ET] KIDZ CHART | O=3.56 H=3.56 L=3.56 C=3.56 V=1,010 | EMA9=3.56 VWAP=3.64 (-2.2%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=1,079 bars=50 | sq=IDLE armed=none
+[19:30 ET] AGPU CHART | O=3.63 H=3.63 L=3.61 C=3.62 V=26,108 | EMA9=3.61 VWAP=3.71 (-2.4%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=2.4x avg_vol=11,028 bars=50 | sq=IDLE armed=none
+[19:30 ET] RENX CHART | O=2.56 H=2.56 L=2.55 C=2.55 V=2,026 | EMA9=2.57 VWAP=2.71 (-5.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=10,029 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 47 ticks in last 60s, last_price=$3.63, last_tick_time=19:30:21
+  TICK AUDIT: CYCN: 127 ticks in last 60s, last_price=$6.27, last_tick_time=19:30:35
+  TICK AUDIT: ELAB: 89 ticks in last 60s, last_price=$7.20, last_tick_time=19:30:34
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$3.56, last_tick_time=19:30:03
+  TICK AUDIT: RENX: 16 ticks in last 60s, last_price=$2.55, last_tick_time=19:30:35
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$4.58, last_tick_time=19:30:01
+[19:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=732 | AGPU:4t/IDLE CYCN:34t/IDLE ELAB:12t/IDLE KIDZ:0t/IDLE RENX:23t/IDLE SST:0t/IDLE
+[19:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=733 | AGPU:4t/IDLE CYCN:34t/IDLE ELAB:13t/IDLE KIDZ:0t/IDLE RENX:23t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 24 ticks in last 60s, last_price=$3.62, last_tick_time=19:31:32
+  TICK AUDIT: CYCN: 90 ticks in last 60s, last_price=$6.21, last_tick_time=19:31:35
+  TICK AUDIT: ELAB: 43 ticks in last 60s, last_price=$7.20, last_tick_time=19:31:31
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.56, last_tick_time=19:30:03
+  TICK AUDIT: RENX: 33 ticks in last 60s, last_price=$2.55, last_tick_time=19:31:31
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.57, last_tick_time=19:31:33
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=719 | AGPU:12t/IDLE CYCN:13t/IDLE ELAB:14t/IDLE KIDZ:3t/IDLE RENX:18t/IDLE SST:0t/IDLE
+[19:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=725 | AGPU:12t/IDLE CYCN:14t/IDLE ELAB:15t/IDLE KIDZ:3t/IDLE RENX:22t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 33 ticks in last 60s, last_price=$3.55, last_tick_time=19:32:31
+  TICK AUDIT: CYCN: 80 ticks in last 60s, last_price=$6.15, last_tick_time=19:32:35
+  TICK AUDIT: ELAB: 41 ticks in last 60s, last_price=$7.22, last_tick_time=19:32:34
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.56, last_tick_time=19:31:54
+  TICK AUDIT: RENX: 41 ticks in last 60s, last_price=$2.54, last_tick_time=19:32:33
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.57, last_tick_time=19:32:27
+
+🔄 Running scanner at 19:32:37 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1597: Historical Market Data Service error message:API scanner subscription cancelled: 1597
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1597 (reqId=1597, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (43 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 50 ticks in last 60s, last_price=$3.58, last_tick_time=19:33:35
+  TICK AUDIT: CYCN: 93 ticks in last 60s, last_price=$6.15, last_tick_time=19:33:35
+  TICK AUDIT: ELAB: 50 ticks in last 60s, last_price=$7.21, last_tick_time=19:33:31
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.58, last_tick_time=19:32:54
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.53, last_tick_time=19:33:23
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$4.57, last_tick_time=19:33:27
+[19:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=777 | AGPU:27t/IDLE CYCN:38t/IDLE ELAB:16t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:1t/IDLE
+[19:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=783 | AGPU:28t/IDLE CYCN:40t/IDLE ELAB:19t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 55 ticks in last 60s, last_price=$3.54, last_tick_time=19:34:30
+  TICK AUDIT: CYCN: 148 ticks in last 60s, last_price=$6.05, last_tick_time=19:34:36
+  TICK AUDIT: ELAB: 54 ticks in last 60s, last_price=$7.21, last_tick_time=19:34:36
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.58, last_tick_time=19:32:54
+  TICK AUDIT: RENX: 10 ticks in last 60s, last_price=$2.53, last_tick_time=19:34:31
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.57, last_tick_time=19:34:27
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=786 | AGPU:31t/IDLE CYCN:41t/IDLE ELAB:15t/IDLE KIDZ:2t/IDLE RENX:6t/IDLE SST:1t/IDLE
+[19:35 ET] SST CHART | O=4.57 H=4.57 L=4.57 C=4.57 V=5 | EMA9=4.57 VWAP=4.64 (-1.5%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=595 bars=50 | sq=IDLE armed=none
+[19:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=787 | AGPU:31t/IDLE CYCN:41t/IDLE ELAB:15t/IDLE KIDZ:2t/IDLE RENX:6t/IDLE SST:2t/IDLE
+[19:35 ET] ELAB CHART | O=7.21 H=7.22 L=7.20 C=7.22 V=7,311 | EMA9=7.21 VWAP=7.13 (+1.3%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=8,748 bars=50 | sq=IDLE armed=none
+[19:35 ET] CYCN CHART | O=6.09 H=6.13 L=6.00 C=6.08 V=22,156 | EMA9=6.21 VWAP=6.35 (-4.3%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=1.2x avg_vol=18,289 bars=50 | sq=IDLE armed=none
+[19:35 ET] AGPU CHART | O=3.55 H=3.57 L=3.53 C=3.55 V=14,753 | EMA9=3.59 VWAP=3.70 (-4.1%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.3x avg_vol=11,421 bars=50 | sq=IDLE armed=none
+[19:35 ET] RENX CHART | O=2.54 H=2.54 L=2.52 C=2.52 V=1,113 | EMA9=2.55 VWAP=2.71 (-6.9%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=10,244 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 52 ticks in last 60s, last_price=$3.56, last_tick_time=19:35:34
+  TICK AUDIT: CYCN: 71 ticks in last 60s, last_price=$6.10, last_tick_time=19:35:37
+  TICK AUDIT: ELAB: 47 ticks in last 60s, last_price=$7.22, last_tick_time=19:35:36
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.58, last_tick_time=19:34:39
+  TICK AUDIT: RENX: 11 ticks in last 60s, last_price=$2.52, last_tick_time=19:35:35
+  TICK AUDIT: SST: 13 ticks in last 60s, last_price=$4.55, last_tick_time=19:35:24
+[19:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=749 | AGPU:10t/IDLE CYCN:23t/IDLE ELAB:19t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:2t/IDLE
+[19:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=753 | AGPU:10t/IDLE CYCN:26t/IDLE ELAB:20t/IDLE KIDZ:0t/IDLE RENX:5t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 64 ticks in last 60s, last_price=$3.65, last_tick_time=19:36:36
+  TICK AUDIT: CYCN: 74 ticks in last 60s, last_price=$6.13, last_tick_time=19:36:34
+  TICK AUDIT: ELAB: 45 ticks in last 60s, last_price=$7.23, last_tick_time=19:36:37
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.58, last_tick_time=19:36:37
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.54, last_tick_time=19:36:11
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$4.65, last_tick_time=19:36:34
+[19:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=763 | AGPU:15t/IDLE CYCN:36t/IDLE ELAB:21t/IDLE KIDZ:1t/IDLE RENX:0t/IDLE SST:0t/IDLE
+[19:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=764 | AGPU:15t/IDLE CYCN:36t/IDLE ELAB:22t/IDLE KIDZ:1t/IDLE RENX:0t/IDLE SST:0t/IDLE
+
+🔄 Running scanner at 19:37:37 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1679: Historical Market Data Service error message:API scanner subscription cancelled: 1679
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1679 (reqId=1679, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (44 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 94 ticks in last 60s, last_price=$3.63, last_tick_time=19:38:32
+  TICK AUDIT: CYCN: 138 ticks in last 60s, last_price=$6.12, last_tick_time=19:38:36
+  TICK AUDIT: ELAB: 104 ticks in last 60s, last_price=$7.29, last_tick_time=19:38:35
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.58, last_tick_time=19:38:35
+  TICK AUDIT: RENX: 20 ticks in last 60s, last_price=$2.54, last_tick_time=19:38:29
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.70, last_tick_time=19:38:13
+[19:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=797 | AGPU:17t/IDLE CYCN:22t/IDLE ELAB:31t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:4t/IDLE
+[19:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=798 | AGPU:17t/IDLE CYCN:22t/IDLE ELAB:32t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 65 ticks in last 60s, last_price=$3.67, last_tick_time=19:39:35
+  TICK AUDIT: CYCN: 58 ticks in last 60s, last_price=$6.16, last_tick_time=19:39:35
+  TICK AUDIT: ELAB: 52 ticks in last 60s, last_price=$7.28, last_tick_time=19:39:35
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.58, last_tick_time=19:39:26
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.54, last_tick_time=19:39:32
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.60, last_tick_time=19:39:30
+[19:40 ET] AGPU CHART | O=3.65 H=3.68 L=3.64 C=3.65 V=12,175 | EMA9=3.61 VWAP=3.70 (-1.3%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=11,050 bars=50 | sq=IDLE armed=none
+[19:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=814 | AGPU:21t/IDLE CYCN:10t/IDLE ELAB:20t/IDLE KIDZ:5t/IDLE RENX:31t/IDLE SST:5t/IDLE
+[19:40 ET] ELAB CHART | O=7.29 H=7.29 L=7.24 C=7.24 V=5,053 | EMA9=7.24 VWAP=7.13 (+1.5%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=8,570 bars=50 | sq=IDLE armed=none
+[19:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=815 | AGPU:21t/IDLE CYCN:10t/IDLE ELAB:21t/IDLE KIDZ:5t/IDLE RENX:31t/IDLE SST:5t/IDLE
+[19:40 ET] RENX CHART | O=2.52 H=2.54 L=2.52 C=2.52 V=12,491 | EMA9=2.54 VWAP=2.70 (-6.8%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=1.3x avg_vol=9,916 bars=50 | sq=IDLE armed=none
+[19:40 ET] CYCN CHART | O=6.15 H=6.17 L=6.15 C=6.15 V=2,151 | EMA9=6.15 VWAP=6.35 (-3.1%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=17,910 bars=50 | sq=IDLE armed=none
+[19:40 ET] SST CHART | O=4.60 H=4.60 L=4.54 C=4.54 V=718 | EMA9=4.61 VWAP=4.64 (-2.1%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=719 bars=50 | sq=IDLE armed=none
+[19:40 ET] KIDZ CHART | O=3.58 H=3.60 L=3.58 C=3.60 V=1,632 | EMA9=3.58 VWAP=3.64 (-1.0%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=2.1x avg_vol=776 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 76 ticks in last 60s, last_price=$3.67, last_tick_time=19:40:34
+  TICK AUDIT: CYCN: 54 ticks in last 60s, last_price=$6.20, last_tick_time=19:40:32
+  TICK AUDIT: ELAB: 64 ticks in last 60s, last_price=$7.20, last_tick_time=19:40:35
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.60, last_tick_time=19:40:21
+  TICK AUDIT: RENX: 43 ticks in last 60s, last_price=$2.52, last_tick_time=19:40:34
+  TICK AUDIT: SST: 24 ticks in last 60s, last_price=$4.62, last_tick_time=19:40:33
+[19:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=783 | AGPU:10t/IDLE CYCN:18t/IDLE ELAB:26t/IDLE KIDZ:0t/IDLE RENX:3t/IDLE SST:4t/IDLE
+[19:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=789 | AGPU:14t/IDLE CYCN:18t/IDLE ELAB:27t/IDLE KIDZ:1t/IDLE RENX:3t/IDLE SST:4t/IDLE
+  TICK AUDIT: AGPU: 52 ticks in last 60s, last_price=$3.67, last_tick_time=19:41:29
+  TICK AUDIT: CYCN: 36 ticks in last 60s, last_price=$6.18, last_tick_time=19:41:33
+  TICK AUDIT: ELAB: 42 ticks in last 60s, last_price=$7.21, last_tick_time=19:41:36
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.59, last_tick_time=19:41:25
+  TICK AUDIT: RENX: 9 ticks in last 60s, last_price=$2.54, last_tick_time=19:41:36
+  TICK AUDIT: SST: 5 ticks in last 60s, last_price=$4.53, last_tick_time=19:41:29
+[19:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=768 | AGPU:21t/IDLE CYCN:9t/IDLE ELAB:14t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:0t/IDLE
+[19:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=774 | AGPU:25t/IDLE CYCN:9t/IDLE ELAB:16t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 57 ticks in last 60s, last_price=$3.69, last_tick_time=19:42:32
+  TICK AUDIT: CYCN: 25 ticks in last 60s, last_price=$6.16, last_tick_time=19:42:33
+  TICK AUDIT: ELAB: 61 ticks in last 60s, last_price=$7.20, last_tick_time=19:42:36
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.59, last_tick_time=19:42:24
+  TICK AUDIT: RENX: 8 ticks in last 60s, last_price=$2.52, last_tick_time=19:42:32
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$4.62, last_tick_time=19:42:13
+
+🔄 Running scanner at 19:42:37 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1760: Historical Market Data Service error message:API scanner subscription cancelled: 1760
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1760 (reqId=1760, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (45 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 123 ticks in last 60s, last_price=$3.71, last_tick_time=19:43:36
+  TICK AUDIT: CYCN: 67 ticks in last 60s, last_price=$6.17, last_tick_time=19:43:36
+  TICK AUDIT: ELAB: 56 ticks in last 60s, last_price=$7.23, last_tick_time=19:43:33
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$3.61, last_tick_time=19:43:35
+  TICK AUDIT: RENX: 5 ticks in last 60s, last_price=$2.53, last_tick_time=19:43:16
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$4.62, last_tick_time=19:43:34
+[19:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=848 | AGPU:64t/IDLE CYCN:7t/IDLE ELAB:22t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:0t/IDLE
+[19:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=859 | AGPU:74t/IDLE CYCN:7t/IDLE ELAB:23t/IDLE KIDZ:1t/IDLE RENX:1t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 150 ticks in last 60s, last_price=$3.72, last_tick_time=19:44:35
+  TICK AUDIT: CYCN: 25 ticks in last 60s, last_price=$6.14, last_tick_time=19:44:33
+  TICK AUDIT: ELAB: 43 ticks in last 60s, last_price=$7.22, last_tick_time=19:44:36
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.61, last_tick_time=19:44:31
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.54, last_tick_time=19:44:33
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$4.55, last_tick_time=19:44:21
+[19:45 ET] ELAB CHART | O=7.22 H=7.27 L=7.22 C=7.27 V=2,938 | EMA9=7.23 VWAP=7.13 (+1.9%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=7,624 bars=50 | sq=IDLE armed=none
+[19:45 ET] AGPU CHART | O=3.75 H=3.79 L=3.71 C=3.71 V=29,968 | EMA9=3.67 VWAP=3.70 (+0.3%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=2.5x avg_vol=11,959 bars=50 | sq=IDLE armed=none
+[19:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=850 | AGPU:30t/IDLE CYCN:32t/IDLE ELAB:30t/IDLE KIDZ:1t/IDLE RENX:3t/IDLE SST:1t/IDLE
+[19:45 ET] RENX CHART | O=2.53 H=2.54 L=2.53 C=2.54 V=510 | EMA9=2.53 VWAP=2.70 (-6.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=9,886 bars=50 | sq=IDLE armed=none
+[19:45 ET] CYCN CHART | O=6.17 H=6.17 L=6.13 C=6.13 V=9,901 | EMA9=6.16 VWAP=6.35 (-3.4%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=15,600 bars=50 | sq=IDLE armed=none
+[19:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=857 | AGPU:30t/IDLE CYCN:37t/IDLE ELAB:31t/IDLE KIDZ:1t/IDLE RENX:4t/IDLE SST:1t/IDLE
+[19:45 ET] SST CHART | O=4.56 H=4.56 L=4.55 C=4.55 V=1,422 | EMA9=4.59 VWAP=4.63 (-1.8%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=1.6x avg_vol=910 bars=50 | sq=IDLE armed=none
+[19:45 ET] KIDZ CHART | O=3.61 H=3.61 L=3.61 C=3.61 V=900 | EMA9=3.59 VWAP=3.63 (-0.7%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=958 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 82 ticks in last 60s, last_price=$3.71, last_tick_time=19:45:35
+  TICK AUDIT: CYCN: 75 ticks in last 60s, last_price=$6.16, last_tick_time=19:45:37
+  TICK AUDIT: ELAB: 92 ticks in last 60s, last_price=$7.30, last_tick_time=19:45:34
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.61, last_tick_time=19:45:14
+  TICK AUDIT: RENX: 15 ticks in last 60s, last_price=$2.53, last_tick_time=19:45:33
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$4.55, last_tick_time=19:45:34
+[19:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=817 | AGPU:16t/IDLE CYCN:22t/IDLE ELAB:23t/IDLE KIDZ:1t/IDLE RENX:0t/IDLE SST:2t/IDLE
+[19:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=818 | AGPU:16t/IDLE CYCN:22t/IDLE ELAB:24t/IDLE KIDZ:1t/IDLE RENX:0t/IDLE SST:2t/IDLE
+  TICK AUDIT: AGPU: 50 ticks in last 60s, last_price=$3.73, last_tick_time=19:46:37
+  TICK AUDIT: CYCN: 52 ticks in last 60s, last_price=$6.17, last_tick_time=19:46:34
+  TICK AUDIT: ELAB: 58 ticks in last 60s, last_price=$7.26, last_tick_time=19:46:37
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.61, last_tick_time=19:46:13
+  TICK AUDIT: RENX: 21 ticks in last 60s, last_price=$2.55, last_tick_time=19:46:36
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.55, last_tick_time=19:45:46
+[19:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=824 | AGPU:13t/IDLE CYCN:22t/IDLE ELAB:35t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:0t/IDLE
+[19:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=838 | AGPU:13t/IDLE CYCN:28t/IDLE ELAB:40t/IDLE KIDZ:3t/IDLE RENX:1t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 33 ticks in last 60s, last_price=$3.74, last_tick_time=19:47:37
+  TICK AUDIT: CYCN: 65 ticks in last 60s, last_price=$6.13, last_tick_time=19:47:37
+  TICK AUDIT: ELAB: 73 ticks in last 60s, last_price=$7.25, last_tick_time=19:47:36
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.58, last_tick_time=19:47:23
+  TICK AUDIT: RENX: 2 ticks in last 60s, last_price=$2.55, last_tick_time=19:47:06
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.73, last_tick_time=19:47:34
+
+🔄 Running scanner at 19:47:38 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1841: Historical Market Data Service error message:API scanner subscription cancelled: 1841
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1841 (reqId=1841, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (46 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 95 ticks in last 60s, last_price=$3.77, last_tick_time=19:48:37
+  TICK AUDIT: CYCN: 63 ticks in last 60s, last_price=$6.13, last_tick_time=19:48:36
+  TICK AUDIT: ELAB: 43 ticks in last 60s, last_price=$7.26, last_tick_time=19:48:35
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.58, last_tick_time=19:48:06
+  TICK AUDIT: RENX: 7 ticks in last 60s, last_price=$2.54, last_tick_time=19:48:30
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$4.73, last_tick_time=19:48:11
+[19:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=893 | AGPU:48t/IDLE CYCN:32t/IDLE ELAB:15t/IDLE KIDZ:1t/IDLE RENX:8t/IDLE SST:3t/IDLE
+[19:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=899 | AGPU:51t/IDLE CYCN:32t/IDLE ELAB:18t/IDLE KIDZ:1t/IDLE RENX:8t/IDLE SST:3t/IDLE
+  TICK AUDIT: AGPU: 121 ticks in last 60s, last_price=$3.83, last_tick_time=19:49:37
+  TICK AUDIT: CYCN: 79 ticks in last 60s, last_price=$6.13, last_tick_time=19:49:38
+  TICK AUDIT: ELAB: 46 ticks in last 60s, last_price=$7.26, last_tick_time=19:49:35
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.61, last_tick_time=19:49:24
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.55, last_tick_time=19:49:16
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$4.60, last_tick_time=19:49:36
+[19:50 ET] AGPU CHART | O=3.78 H=3.85 L=3.74 C=3.83 V=19,297 | EMA9=3.72 VWAP=3.70 (+3.5%) HOD=3.93 PM_H=-inf | MACD=N/A vol_ratio=1.5x avg_vol=13,049 bars=50 | sq=IDLE armed=none
+[19:50 ET] CYCN CHART | O=6.15 H=6.15 L=6.12 C=6.14 V=2,641 | EMA9=6.16 VWAP=6.34 (-3.2%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=13,731 bars=50 | sq=IDLE armed=none
+[19:50:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=888 | AGPU:47t/IDLE CYCN:25t/IDLE ELAB:28t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:1t/IDLE
+[19:50 ET] ELAB CHART | O=7.26 H=7.26 L=7.23 C=7.26 V=8,311 | EMA9=7.25 VWAP=7.14 (+1.7%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.1x avg_vol=7,905 bars=50 | sq=IDLE armed=none
+[19:50:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=895 | AGPU:49t/IDLE CYCN:29t/IDLE ELAB:29t/IDLE KIDZ:0t/IDLE RENX:1t/IDLE SST:1t/IDLE
+[19:50 ET] KIDZ CHART | O=3.58 H=3.61 L=3.58 C=3.61 V=408 | EMA9=3.59 VWAP=3.63 (-0.6%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=1,163 bars=50 | sq=IDLE armed=none
+[19:50 ET] RENX CHART | O=2.54 H=2.55 L=2.54 C=2.55 V=1,006 | EMA9=2.54 VWAP=2.70 (-5.6%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=9,918 bars=50 | sq=IDLE armed=none
+[19:50 ET] SST CHART | O=4.59 H=4.60 L=4.59 C=4.60 V=2,503 | EMA9=4.60 VWAP=4.63 (-0.6%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=2.5x avg_vol=992 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 86 ticks in last 60s, last_price=$3.80, last_tick_time=19:50:35
+  TICK AUDIT: CYCN: 64 ticks in last 60s, last_price=$6.13, last_tick_time=19:50:34
+  TICK AUDIT: ELAB: 48 ticks in last 60s, last_price=$7.25, last_tick_time=19:50:37
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.61, last_tick_time=19:50:12
+  TICK AUDIT: RENX: 8 ticks in last 60s, last_price=$2.54, last_tick_time=19:50:30
+  TICK AUDIT: SST: 2 ticks in last 60s, last_price=$4.60, last_tick_time=19:50:33
+[19:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=857 | AGPU:18t/IDLE CYCN:33t/IDLE ELAB:9t/IDLE KIDZ:0t/IDLE RENX:11t/IDLE SST:0t/IDLE
+[19:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=858 | AGPU:18t/IDLE CYCN:33t/IDLE ELAB:10t/IDLE KIDZ:0t/IDLE RENX:11t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 57 ticks in last 60s, last_price=$3.82, last_tick_time=19:51:34
+  TICK AUDIT: CYCN: 55 ticks in last 60s, last_price=$6.12, last_tick_time=19:51:37
+  TICK AUDIT: ELAB: 40 ticks in last 60s, last_price=$7.25, last_tick_time=19:51:36
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$3.61, last_tick_time=19:51:35
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.56, last_tick_time=19:51:02
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$4.60, last_tick_time=19:50:33
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=868 | AGPU:22t/IDLE CYCN:30t/IDLE ELAB:25t/IDLE KIDZ:0t/IDLE RENX:2t/IDLE SST:3t/IDLE
+[19:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=878 | AGPU:23t/IDLE CYCN:34t/IDLE ELAB:29t/IDLE KIDZ:0t/IDLE RENX:2t/IDLE SST:4t/IDLE
+
+🔄 Running scanner at 19:52:39 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 1923: Historical Market Data Service error message:API scanner subscription cancelled: 1923
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1923 (reqId=1923, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (47 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 305 ticks in last 60s, last_price=$4.13, last_tick_time=19:53:37
+  TICK AUDIT: CYCN: 136 ticks in last 60s, last_price=$6.12, last_tick_time=19:53:37
+  TICK AUDIT: ELAB: 99 ticks in last 60s, last_price=$7.13, last_tick_time=19:53:34
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$3.59, last_tick_time=19:53:34
+  TICK AUDIT: RENX: 21 ticks in last 60s, last_price=$2.56, last_tick_time=19:53:28
+  TICK AUDIT: SST: 21 ticks in last 60s, last_price=$4.73, last_tick_time=19:53:32
+[19:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=970 | AGPU:73t/IDLE CYCN:33t/IDLE ELAB:31t/IDLE KIDZ:4t/IDLE RENX:8t/IDLE SST:0t/IDLE
+[19:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=982 | AGPU:81t/IDLE CYCN:35t/IDLE ELAB:33t/IDLE KIDZ:4t/IDLE RENX:8t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 179 ticks in last 60s, last_price=$4.17, last_tick_time=19:54:37
+  TICK AUDIT: CYCN: 75 ticks in last 60s, last_price=$6.16, last_tick_time=19:54:35
+  TICK AUDIT: ELAB: 52 ticks in last 60s, last_price=$7.13, last_tick_time=19:54:32
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$3.58, last_tick_time=19:54:05
+  TICK AUDIT: RENX: 19 ticks in last 60s, last_price=$2.55, last_tick_time=19:54:36
+  TICK AUDIT: SST: 1 ticks in last 60s, last_price=$4.73, last_tick_time=19:54:09
+[19:55 ET] AGPU CHART | O=4.20 H=4.25 L=4.14 C=4.25 V=27,511 | EMA9=3.89 VWAP=3.73 (+14.0%) HOD=4.25 PM_H=-inf | MACD=N/A vol_ratio=1.9x avg_vol=14,145 bars=50 | sq=IDLE armed=none
+[19:55:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=914 | AGPU:73t/IDLE CYCN:10t/IDLE ELAB:6t/IDLE KIDZ:2t/IDLE RENX:2t/IDLE SST:0t/IDLE
+[19:55 ET] SST CHART | O=4.73 H=4.73 L=4.73 C=4.73 V=1 | EMA9=4.65 VWAP=4.63 (+2.1%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=1,058 bars=50 | sq=IDLE armed=none
+[19:55 ET] ELAB CHART | O=7.13 H=7.15 L=7.13 C=7.14 V=9,911 | EMA9=7.21 VWAP=7.14 (-0.0%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.2x avg_vol=8,000 bars=50 | sq=IDLE armed=none
+[19:55:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=923 | AGPU:75t/IDLE CYCN:10t/IDLE ELAB:9t/IDLE KIDZ:2t/IDLE RENX:2t/IDLE SST:4t/IDLE
+[19:55 ET] CYCN CHART | O=6.15 H=6.20 L=6.15 C=6.18 V=5,082 | EMA9=6.15 VWAP=6.34 (-2.5%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=12,677 bars=50 | sq=IDLE armed=none
+[19:55 ET] KIDZ CHART | O=3.59 H=3.59 L=3.58 C=3.58 V=914 | EMA9=3.60 VWAP=3.63 (-1.5%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=1,130 bars=50 | sq=IDLE armed=none
+[19:55 ET] RENX CHART | O=2.56 H=2.56 L=2.54 C=2.55 V=2,518 | EMA9=2.55 VWAP=2.70 (-5.5%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=7,399 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: AGPU: 213 ticks in last 60s, last_price=$4.25, last_tick_time=19:55:37
+  TICK AUDIT: CYCN: 35 ticks in last 60s, last_price=$6.13, last_tick_time=19:55:34
+  TICK AUDIT: ELAB: 35 ticks in last 60s, last_price=$7.13, last_tick_time=19:55:37
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$3.58, last_tick_time=19:55:37
+  TICK AUDIT: RENX: 19 ticks in last 60s, last_price=$2.56, last_tick_time=19:55:26
+  TICK AUDIT: SST: 14 ticks in last 60s, last_price=$4.62, last_tick_time=19:55:34
+[19:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=940 | AGPU:43t/IDLE CYCN:26t/IDLE ELAB:42t/IDLE KIDZ:5t/IDLE RENX:2t/IDLE SST:1t/IDLE
+[19:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=950 | AGPU:44t/IDLE CYCN:29t/IDLE ELAB:48t/IDLE KIDZ:5t/IDLE RENX:2t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 96 ticks in last 60s, last_price=$4.16, last_tick_time=19:56:37
+  TICK AUDIT: CYCN: 109 ticks in last 60s, last_price=$6.05, last_tick_time=19:56:38
+  TICK AUDIT: ELAB: 90 ticks in last 60s, last_price=$6.95, last_tick_time=19:56:35
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$3.54, last_tick_time=19:56:32
+  TICK AUDIT: RENX: 22 ticks in last 60s, last_price=$2.59, last_tick_time=19:56:33
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$4.63, last_tick_time=19:56:36
+[19:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=944 | AGPU:36t/IDLE CYCN:40t/IDLE ELAB:44t/IDLE KIDZ:0t/IDLE RENX:2t/IDLE SST:1t/IDLE
+[19:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=952 | AGPU:36t/IDLE CYCN:44t/IDLE ELAB:47t/IDLE KIDZ:0t/IDLE RENX:3t/IDLE SST:1t/IDLE
+  TICK AUDIT: AGPU: 108 ticks in last 60s, last_price=$4.10, last_tick_time=19:57:38
+  TICK AUDIT: CYCN: 136 ticks in last 60s, last_price=$5.85, last_tick_time=19:57:37
+  TICK AUDIT: ELAB: 101 ticks in last 60s, last_price=$6.98, last_tick_time=19:57:37
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.54, last_tick_time=19:57:19
+  TICK AUDIT: RENX: 12 ticks in last 60s, last_price=$2.58, last_tick_time=19:57:31
+  TICK AUDIT: SST: 14 ticks in last 60s, last_price=$4.60, last_tick_time=19:57:33
+
+🔄 Running scanner at 19:57:39 ET...
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+Error 162, reqId 2004: Historical Market Data Service error message:API scanner subscription cancelled: 2004
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2004 (reqId=2004, symbol=?)
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: MPTI RT"}}}
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-01.json (48 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: AGPU: 111 ticks in last 60s, last_price=$4.10, last_tick_time=19:58:39
+  TICK AUDIT: CYCN: 121 ticks in last 60s, last_price=$5.82, last_tick_time=19:58:38
+  TICK AUDIT: ELAB: 123 ticks in last 60s, last_price=$7.02, last_tick_time=19:58:38
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$3.51, last_tick_time=19:58:25
+  TICK AUDIT: RENX: 19 ticks in last 60s, last_price=$2.63, last_tick_time=19:58:30
+  TICK AUDIT: SST: 16 ticks in last 60s, last_price=$4.55, last_tick_time=19:58:34
+[19:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1011 | AGPU:45t/IDLE CYCN:61t/IDLE ELAB:36t/IDLE KIDZ:12t/IDLE RENX:2t/IDLE SST:0t/IDLE
+[19:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1013 | AGPU:45t/IDLE CYCN:62t/IDLE ELAB:37t/IDLE KIDZ:12t/IDLE RENX:2t/IDLE SST:0t/IDLE
+  TICK AUDIT: AGPU: 145 ticks in last 60s, last_price=$4.04, last_tick_time=19:59:36
+  TICK AUDIT: CYCN: 189 ticks in last 60s, last_price=$5.79, last_tick_time=19:59:38
+  TICK AUDIT: ELAB: 106 ticks in last 60s, last_price=$7.06, last_tick_time=19:59:39
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$3.48, last_tick_time=19:59:28
+  TICK AUDIT: RENX: 24 ticks in last 60s, last_price=$2.59, last_tick_time=19:59:39
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$4.55, last_tick_time=19:59:36
+[20:00 ET] ELAB CHART | O=7.02 H=7.06 L=7.00 C=7.00 V=15,204 | EMA9=7.08 VWAP=7.13 (-1.9%) HOD=7.47 PM_H=-inf | MACD=N/A vol_ratio=1.8x avg_vol=8,667 bars=50 | sq=IDLE armed=none
+[20:00 ET] KIDZ CHART | O=3.43 H=3.48 L=3.43 C=3.48 V=207 | EMA9=3.55 VWAP=3.63 (-4.1%) HOD=3.75 PM_H=-inf | MACD=N/A vol_ratio=0.2x avg_vol=1,027 bars=50 | sq=IDLE armed=none
+[20:00 ET] RENX CHART | O=2.63 H=2.63 L=2.56 C=2.56 V=12,261 | EMA9=2.58 VWAP=2.69 (-5.0%) HOD=2.95 PM_H=-inf | MACD=N/A vol_ratio=1.9x avg_vol=6,363 bars=50 | sq=IDLE armed=none
+[20:00 ET] AGPU CHART | O=4.11 H=4.14 L=4.00 C=4.01 V=47,412 | EMA9=4.06 VWAP=3.75 (+6.9%) HOD=4.28 PM_H=-inf | MACD=N/A vol_ratio=3.2x avg_vol=14,970 bars=50 | sq=IDLE armed=none
+[20:00 ET] CYCN CHART | O=5.81 H=5.84 L=5.75 C=5.83 V=26,607 | EMA9=6.01 VWAP=6.32 (-7.7%) HOD=6.88 PM_H=-inf | MACD=N/A vol_ratio=2.1x avg_vol=12,701 bars=50 | sq=IDLE armed=none
+[20:00 ET] SST CHART | O=4.55 H=4.55 L=4.55 C=4.55 V=3,382 | EMA9=4.62 VWAP=4.63 (-1.6%) HOD=4.93 PM_H=-inf | MACD=N/A vol_ratio=2.4x avg_vol=1,438 bars=50 | sq=IDLE armed=none
+
+🛑 All trading windows closed. Shutting down.
+  Tick cache: AAL → +2 ticks (total 2)
+  Tick cache: AGL → +51 ticks (total 51)
+  Tick cache: AGPU → +9,928 ticks (total 9,953)
+  Tick cache: BCG → +2 ticks (total 25,170)
+  Tick cache: BITO → +2 ticks (total 2)
+  Tick cache: BIXIU → +2 ticks (total 2)
+  Tick cache: CHSN → +2 ticks (total 2)
+  Tick cache: CYCN → +18,095 ticks (total 110,901)
+  Tick cache: DDFD → +2 ticks (total 2)
+  Tick cache: DRIP → +1 ticks (total 1)
+  Tick cache: ELAB → +12,178 ticks (total 40,282)
+  Tick cache: FGI → +36 ticks (total 36)
+  Tick cache: GPAT → +2 ticks (total 2)
+  Tick cache: GRDX → +57 ticks (total 59)
+  Tick cache: GURE → +50 ticks (total 56)
+  Tick cache: HCAC → +1 ticks (total 1)
+  Tick cache: HTT → +51 ticks (total 73)
+  Tick cache: LICN → +1 ticks (total 1)
+  Tick cache: MGRT → +54 ticks (total 75)
+  Tick cache: MLGO → +1 ticks (total 23)
+  Tick cache: MPTI RT → +25 ticks (total 25)
+  Tick cache: NIO → +1 ticks (total 4)
+  Tick cache: NOK → +2 ticks (total 5)
+  Tick cache: NPT → +83 ticks (total 1,881)
+  Tick cache: NU → +2 ticks (total 2)
+  Tick cache: NVD → +1 ticks (total 1)
+  Tick cache: ONDS → +1 ticks (total 4)
+  Tick cache: OOSP → +1 ticks (total 1)
+  Tick cache: ORIC → +2 ticks (total 2)
+  Tick cache: OTH → +37 ticks (total 37)
+  Tick cache: POAS → +58 ticks (total 58)
+  Tick cache: QVCGP → +35 ticks (total 35)
+  Tick cache: RENX → +2,648 ticks (total 57,621)
+  Tick cache: RTACU → +1 ticks (total 1)
+  Tick cache: RZLV → +48 ticks (total 55)
+  Tick cache: SCO → +1 ticks (total 4)
+  Tick cache: SIMA → +1 ticks (total 1)
+  Tick cache: SNAP → +2 ticks (total 2)
+  Tick cache: SOFI → +2 ticks (total 2)
+  Tick cache: SPDN → +2 ticks (total 2)
+  Tick cache: SST → +1,250 ticks (total 1,272)
+  Tick cache: TH → +58 ticks (total 116)
+  Tick cache: TSLG → +2 ticks (total 2)
+  Tick cache: TSLL → +2 ticks (total 3)
+  Tick cache: TWI → +2 ticks (total 2)
+  Tick cache: TZA → +1 ticks (total 4)
+  Tick cache: UVIX → +1 ticks (total 3)
+  Tick cache: VATE → +55 ticks (total 55)
+  Tick cache: WBX → +37 ticks (total 37)
+  Tick cache: XOMZ → +1 ticks (total 1)
+  Tick cache: KIDZ → +1,119 ticks (total 4,828)
+📦 Tick cache saved: 51 symbols → tick_cache/2026-04-01/
+
+============================================================
+  SESSION SUMMARY
+  Trades: 0
+  Daily P&L: $+0
+============================================================

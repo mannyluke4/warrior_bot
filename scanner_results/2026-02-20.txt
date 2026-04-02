@@ -1,13 +1,7 @@
-Scanner Results — 2026-02-20
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-HTLM       +48.1%    2.71      N/A       X    09:45 5,144,294.0      09:45    precise
-ANPA       +25.1%   14.00     0.7M       A    04:48 1,545,342.0      04:48    precise
-BJDX       +10.1%    2.19    0.39M       A    07:33 2,812,762.0      07:33    precise
-CDIO       +33.5%    2.99     1.7M       A    04:01 9,818,698.0      04:01    precise
-BIYA       +18.8%    2.40     0.1M       A    10:18  240,927.0      10:18    precise
+Scanner Results — 2026-02-20 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
 
-Total candidates: 5
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 0
+Discovery method: unified_v3

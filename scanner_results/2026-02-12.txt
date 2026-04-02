@@ -1,9 +1,8 @@
-Scanner Results — 2026-02-12
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-VTAK       +25.8%    2.39    1.28M       A    07:15   84,170.0      07:15  premarket
+Scanner Results — 2026-02-12 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+JDZG       +56.1%    2.06    2.81M       A    08:52    690,927   1.5x      08:52  0.496
 
 Total candidates: 1
-  Premarket (7:15 AM): 1
-  Continuous rescan:   0
+Discovery method: unified_v3

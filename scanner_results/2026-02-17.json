@@ -1,34 +1,20 @@
 [
   {
     "symbol": "OBAI",
-    "prev_close": 4.25,
-    "pm_price": 5.82,
-    "gap_pct": 36.94,
-    "pm_volume": 12123021.0,
-    "first_seen_et": "04:00",
-    "sim_start": "04:00",
-    "discovery_time": "04:00",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 1179375.0,
-    "relative_volume": 10.28,
+    "prev_close": 3.13,
+    "pm_price": 4.96,
+    "gap_pct": 58.47,
+    "pm_volume": 249020,
+    "cumulative_volume_at_discovery": 249020,
+    "avg_daily_volume": 164551.0,
+    "relative_volume": 1.51,
     "float_shares": 3169421,
     "float_millions": 3.17,
-    "profile": "A"
-  },
-  {
-    "symbol": "PLYX",
-    "prev_close": 2.92,
-    "pm_price": 3.46,
-    "gap_pct": 18.49,
-    "pm_volume": 7806455.0,
-    "first_seen_et": "04:13",
-    "sim_start": "04:13",
-    "discovery_time": "04:13",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 3415559.0,
-    "relative_volume": 2.29,
-    "float_shares": 1336588,
-    "float_millions": 1.34,
-    "profile": "A"
+    "profile": "A",
+    "discovery_time": "09:43",
+    "sim_start": "09:43",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "09:43",
+    "rank_score": 0.4812
   }
 ]

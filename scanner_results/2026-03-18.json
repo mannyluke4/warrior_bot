@@ -1,34 +1,20 @@
 [
   {
     "symbol": "ARTL",
-    "prev_close": 4.15,
-    "pm_price": 6.14,
-    "gap_pct": 47.95,
-    "pm_volume": 12379125.0,
-    "first_seen_et": "04:01",
-    "sim_start": "04:01",
-    "discovery_time": "04:01",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 1693207.0,
-    "relative_volume": 7.31,
+    "prev_close": 4.85,
+    "pm_price": 6.64,
+    "gap_pct": 36.91,
+    "pm_volume": 124107,
+    "cumulative_volume_at_discovery": 124107,
+    "avg_daily_volume": 78917.0,
+    "relative_volume": 1.57,
     "float_shares": 2115211,
     "float_millions": 2.12,
-    "profile": "A"
-  },
-  {
-    "symbol": "ZENA",
-    "prev_close": 2.15,
-    "pm_price": 2.39,
-    "gap_pct": 11.16,
-    "pm_volume": 4680843.0,
-    "first_seen_et": "04:00",
-    "sim_start": "04:00",
-    "discovery_time": "04:00",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 1056521.0,
-    "relative_volume": 4.43,
-    "float_shares": 8361614,
-    "float_millions": 8.36,
-    "profile": "B"
+    "profile": "A",
+    "discovery_time": "09:34",
+    "sim_start": "09:34",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "09:34",
+    "rank_score": 0.4397
   }
 ]

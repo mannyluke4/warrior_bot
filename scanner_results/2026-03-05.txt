@@ -1,13 +1,8 @@
-Scanner Results — 2026-03-05
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-MTEK       +51.9%    2.78    4.58M       A    09:14 16,314,662.0      09:14    precise
-HTOO       +16.3%    3.79    0.58M       A    07:48 4,026,558.0      07:48    precise
-GXAI       +71.0%    2.12      N/A       X    08:13 21,416,474.0      08:13    precise
-OKTG       +21.1%   11.98      N/A       X    09:38   93,396.0      09:38    precise
-MSGM       +10.6%    4.48    2.51M       A    10:00  108,060.0      10:00     rescan
+Scanner Results — 2026-03-05 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+MTEK       +52.5%    2.79    4.58M       A    09:25    165,427   1.9x      09:25  0.462
 
-Total candidates: 5
-  Premarket (7:15 AM): 0
-  Continuous rescan:   1
+Total candidates: 1
+Discovery method: unified_v3

@@ -1,0 +1,34 @@
+[
+  {
+    "symbol": "LSTA",
+    "prev_close": 2.16,
+    "pm_price": 3.98,
+    "gap_pct": 84.26,
+    "pm_volume": 254618.0,
+    "first_seen_et": "07:30",
+    "sim_start": "07:31",
+    "discovery_time": "07:31",
+    "discovery_method": "ibkr_historical",
+    "avg_daily_volume": 137005.0,
+    "relative_volume": 1.86,
+    "float_shares": 7064172,
+    "float_millions": 7.06,
+    "profile": "B"
+  },
+  {
+    "symbol": "AQMS",
+    "prev_close": 6.15,
+    "pm_price": 6.96,
+    "gap_pct": 13.17,
+    "pm_volume": 517900.0,
+    "first_seen_et": "07:00",
+    "sim_start": "08:01",
+    "discovery_time": "08:01",
+    "discovery_method": "ibkr_historical",
+    "avg_daily_volume": 231481.0,
+    "relative_volume": 2.24,
+    "float_shares": 2659141,
+    "float_millions": 2.66,
+    "profile": "A"
+  }
+]

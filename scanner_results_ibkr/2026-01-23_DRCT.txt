@@ -1,0 +1,34 @@
+# V4 risk=250 sqs=7 tier=Shelved
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: DRCT  |  Date: 2026-01-23  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Fetching DRCT bars for 2026-01-23...
+  Total bars: 481  |  Seed: 180  |  Sim: 301
+  Seed complete: EMA9=4.2432
+  Fetching tick data from Alpaca...
+  Tick replay: 710821 trades for sim window
+
+======================================================================
+  BACKTEST REPORT: DRCT -- 2026-01-23 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$250  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 710821 sim + 180 seed  |  EMA9=4.1808  VWAP=4.8340
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────
+    1   07:20   5.4100   5.2600  0.1500   10.5   5.2600  stop_hit                  -250    -1.0R
+    2   08:31   5.6400   5.4700  0.1700   11.0   5.7100  bearish_engulfing_exit_full      +103    +0.4R
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 2  |  Wins: 1  |  Losses: 1  |  Win Rate: 50.0%
+  Gross P&L: $-147  |  Avg R-Multiple: -0.3R
+  Largest Win: $+103  |  Largest Loss: $-250
+  Armed: 3  |  Signals: 2  |  Entered: 2
+======================================================================
+

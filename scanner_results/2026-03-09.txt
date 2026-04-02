@@ -1,10 +1,8 @@
-Scanner Results — 2026-03-09
-================================================================================
-Symbol      Gap%   Price    Float Profile SimStart     PM Vol  Discovery     Method
-──────── ─────── ─────── ──────── ─────── ──────── ────────── ────────── ──────────
-AGH        +46.5%    7.15     4.6M       A    06:08 8,225,206.0      06:08    precise
-OPTX       +10.8%    7.08    5.98M       B    08:25 1,294,570.0      08:25    precise
+Scanner Results — 2026-03-09 (Unified V3)
+==========================================================================================
+Symbol      Gap%   Price    Float Profile SimStart     PM Vol   RVOL  Discovery  Score
+──────── ─────── ─────── ──────── ─────── ──────── ────────── ────── ────────── ──────
+AGH        +51.0%    7.37     4.6M       A    07:09     53,495   1.5x      07:09  0.427
 
-Total candidates: 2
-  Premarket (7:15 AM): 0
-  Continuous rescan:   0
+Total candidates: 1
+Discovery method: unified_v3

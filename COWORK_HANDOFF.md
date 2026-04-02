@@ -1,7 +1,110 @@
-# Claude Cowork Handoff — Warrior Bot Project
-## Updated: 2026-03-23 (post-directive)
+# CC Handoff — April 1, 2026
 
-**Your role**: Strategy analyst and coordinator for a multi-machine trading bot project. You have **full read access to the GitHub repo** — use it to read data, analyze reports, and write directives. The master task list is in `MASTER_TODO.md`. Read it first.
+## SITUATION: V2 has never taken a trade. This is priority #1.
+
+Today was the clearest demonstration yet. CYCN ran 300-400% on a merger catalyst. Ross made $7,400 on it. Our bot watched it go from $4.22 to $8.47 and did nothing. The squeeze detector sat at IDLE the entire session.
+
+On top of that:
+- IB Gateway failed to auto-start (36 retries, 180s timeout) despite CC manually starting at 2:30 AM ET
+- live_scanner.py crashed on a Databento date boundary bug (EQUS.SUMMARY not available for current date)
+- Bot was manually restarted at 08:38 ET, missing the entire premarket golden window
+
+**Manny's words: "The fact that we haven't taken a single winning trade since project start, and v2 hasn't taken a trade period don't inspire confidence right now."**
+
+---
+
+## TODAY'S LOG ANALYSIS (2026-04-01)
+
+### Infrastructure Failures
+1. **daily_run.sh**: IB Gateway port 4002 never came up. 36 attempts over 180 seconds -> FATAL abort at 02:07 MT (04:07 ET). The bot didn't auto-start.
+2. **live_scanner.py**: Databento EQUS.SUMMARY dataset only available through March 31. Scanner requested end=2026-04-01, got 422 data_end_after_available_end, crashed immediately.
+3. **Manual restart at 08:38 ET**: Bot came up, IBKR catchup scan found 44 symbols, 4 passed filters (CYCN, BCG, RENX, ELAB). KIDZ re-subscribed via Databento bridge.
+
+### What Happened With Each Stock
+- **CYCN** ($4.22 -> $8.47, +100%): Squeeze detector stayed IDLE entire session. Never primed, never armed. Stock stair-stepped up gradually — no single explosive volume bar to trigger squeeze prime. Ross made $7,400.
+- **RENX** ($2.30 -> $3.48 -> $2.40): SQ_PRIMED twice but SQ_NO_ARM: para_invalid_r (entry/stop too close). Ross made ~$600 then gave it back.
+- **ELAB** ($7.19 -> $8.44 -> $7.00): Multiple SQ_REJECT: not_new_hod. Never primed.
+- **BCG** ($3.08 -> $3.24 -> $2.59): Quiet. No squeeze activity.
+- **KIDZ** ($2.85 -> $3.41): Low volume, no setup.
+
+### Zero trades. Zero P&L.
+
+---
+
+## PRIORITY REWRITE
+
+### P0-A: IB Gateway Startup Reliability
+The bot must start reliably every single day without manual intervention.
+
+1. Increase Gateway timeout from 180s to 300s (or exponential backoff)
+2. Add retry loop: kill Gateway + IBC and try fresh launch if first attempt fails
+3. Add health-check heartbeat: log loudly if bot isn't connected by 04:15 ET
+4. Investigate WHY Gateway took >180s today — check ibc/logs/ on Mac Mini
+
+### P0-B: Databento Scanner Date Bug
+Trivial fix. In live_scanner.py load_prev_close(), request end = today - 1 day instead of end = today. Previous close data is always from the prior trading day.
+
+### P0-C: CYCN Pattern Gap → L2 / Tape Reading Integration
+CYCN stair-stepped $4.22→$8.47 with no single explosive bar (vol_ratio max 1.8x vs 3.0x required). The squeeze detector correctly classified this as "not a squeeze" — this is a tape-reading trade, the kind Ross makes using Level 2 and Time & Sales.
+
+**Manny's direction:** "If it's a choppy stock that the bot isn't tuned to capture, then that's what it is. Ross himself reads the tape and uses level 2, two things that the bot does not utilize, even though we are paying for level 2 access."
+
+**Critical discovery: L2 infrastructure ALREADY EXISTS in archive.**
+
+The bot already did a full 137-stock L2 study (March 2, 2026) — see `archive/docs/L2_FULL_STUDY_RESULTS.md`. Key findings:
+- Raw L2 v3: -$7,575 overall, BUT +$6,526 excluding 2 micro-float outliers (GWAV, BNAI)
+- **L2 helps:** float ≥5M (+$172/stock avg), stocks discovered after 8am, positive gap stocks
+- **L2 hurts:** float <5M (-$168/stock avg), pre-8am stocks, negative gap stocks
+- **Recommendation:** `WB_L2_MIN_FLOAT_M=5` would flip L2 from -$7,575 to ~+$5,000 net
+- `l2_bearish_exit` is the dominant mechanism (fired on 36 stocks)
+
+**Archived code (ready to revive):**
+- `archive/scripts/l2_signals.py` — L2SignalDetector: imbalance, bid stacking, large orders, ask thinning
+- `archive/scripts/l2_entry.py` — L2EntryDetector: enters when book shows buyers stacking BEFORE breakout
+- `databento_feed.py` — Already fetches MBP-10 (10 bid/ask levels) from Databento, caches as .dbn.zst
+- `trade_manager.py` lines 2821-2860 — Already handles `l2_bearish` and `l2_ask_wall` signals (plumbing exists!)
+- `bot_ibkr.py` — Missing link: no `reqMktDepth()` call, no L2 subscription
+
+**The gap:** The March 2 study ran L2 against the **micro-pullback** detector. Squeeze V1 became primary March 24. L2 has NOT been evaluated against squeeze trades yet.
+
+**Recommended path (discuss with Manny):**
+1. P1: Re-run L2 study against squeeze V1 config with float ≥5M gate
+2. If positive: Wire `reqMktDepth()` into bot_ibkr.py → feed L2SignalDetector → generate signals for trade_manager.py
+3. Separately evaluate L2EntryDetector for CYCN-type "stair-step" stocks
+
+**Manny also confirmed:** Premium Databento subscription has historical L2 data — L2 strategies CAN be backtested (not just observed live).
+
+---
+
+## P1: SQUEEZE V2 PLANNING (Build After P0 Ships)
+
+Full plan in `SQUEEZE_V2_PLAN.md`. Summary:
+
+**Entry improvements:** candle-over-candle confirmation, doji/exhaustion gate, intra-bar ARM, trend filter
+**Exit improvements:** intra-bar candle shape reading, candle-under-candle, L2 bearish exits (float ≥5M gate)
+**L2 integration:** Re-evaluate March 2 L2 study against squeeze V1, wire reqMktDepth into bot_ibkr if positive
+
+Every feature is individually gated (OFF by default), backtested against V1 baseline (+$19,832), and only combined after independent validation. See plan for full backtest methodology.
+
+---
+
+## SECONDARY PRIORITIES
+- Unified Scanner V3: Directive in DIRECTIVE_UNIFIED_SCANNER_V3.md
+- Scaling In/Out: Biggest multiplier but requires bot to take trades first
+
+## REGRESSION TARGETS
+```bash
+WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
+# Expected: +$15,692
+
+WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
+# Expected: +$6,444
+```
+
+## GIT
+- git pull first
+- git push after regression passes
+- Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
 ---
 
@@ -286,4 +389,4 @@ See `MASTER_TODO.md` for detailed task lists per strategy.
 
 ---
 
-*Handoff updated: 2026-03-23 | Scanner Fixes V1 directive FULLY EXECUTED (6/6 items). Float chain: KNOWN→cache→FMP→yfinance→EDGAR→AlphaVantage. Unknown-float trading ON. Rescan fixed. Regression passed. OTC deferred. Live bot audit pending on Mac Mini.*
+*Handoff updated: 2026-04-01 | P0 directive: Gateway retry + Databento date fix + candle exits port. SQUEEZE_V2_PLAN.md created with full entry/exit/L2 improvement roadmap. V1 baseline = +$19,832. All V2 features gated OFF by default, backtest-first.*

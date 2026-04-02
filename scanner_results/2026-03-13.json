@@ -1,18 +1,20 @@
 [
   {
-    "symbol": "EDHL",
-    "prev_close": 3.09,
-    "pm_price": 3.84,
-    "gap_pct": 24.27,
-    "pm_volume": 2414053.0,
-    "first_seen_et": "04:30",
-    "sim_start": "04:30",
-    "discovery_time": "04:30",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 75951.0,
-    "relative_volume": 31.78,
-    "float_shares": 541248,
-    "float_millions": 0.54,
-    "profile": "A"
+    "symbol": "BIAF",
+    "prev_close": 1.07,
+    "pm_price": 2.04,
+    "gap_pct": 90.65,
+    "pm_volume": 4196633,
+    "cumulative_volume_at_discovery": 4196633,
+    "avg_daily_volume": 1261762.0,
+    "relative_volume": 3.33,
+    "float_shares": 4346571,
+    "float_millions": 4.35,
+    "profile": "A",
+    "discovery_time": "09:36",
+    "sim_start": "09:36",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "09:36",
+    "rank_score": 0.6353
   }
 ]

@@ -1,0 +1,307 @@
+{
+  "label": "Jan 2025 SQ-Only (IBKR Ticks)",
+  "last_date": "2025-01-31",
+  "equity": 45395,
+  "trades": [
+    {
+      "date": "2025-01-06",
+      "symbol": "GDTC",
+      "pnl": 3187,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-06",
+      "symbol": "GDTC",
+      "pnl": 1165,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-13",
+      "symbol": "PHIO",
+      "pnl": -337,
+      "reason": "sq_max_loss_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-13",
+      "symbol": "PHIO",
+      "pnl": 184,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-13",
+      "symbol": "PHIO",
+      "pnl": 1595,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "INM",
+      "pnl": 2506,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "INM",
+      "pnl": -383,
+      "reason": "sq_max_loss_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "LEDS",
+      "pnl": -255,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "LEDS",
+      "pnl": -319,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "VNCE",
+      "pnl": 67,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "VNCE",
+      "pnl": -133,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "VNCE",
+      "pnl": 1791,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-23",
+      "symbol": "HKPD",
+      "pnl": 233,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-24",
+      "symbol": "ALUR",
+      "pnl": 1990,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-24",
+      "symbol": "ALUR",
+      "pnl": -35,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-24",
+      "symbol": "ALUR",
+      "pnl": 351,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-30",
+      "symbol": "AMOD",
+      "pnl": 1634,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-30",
+      "symbol": "AMOD",
+      "pnl": 149,
+      "reason": "sq_para_trail_exit",
+      "window": "07:00-12:00"
+    },
+    {
+      "date": "2025-01-30",
+      "symbol": "AMOD",
+      "pnl": 2005,
+      "reason": "sq_target_hit",
+      "window": "07:00-12:00"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2025-01-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2025-01-06",
+      "trades": 2,
+      "pnl": 4352,
+      "equity": 34352,
+      "symbols": "GDTC",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 34352,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 34352
+    },
+    {
+      "date": "2025-01-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 34352
+    },
+    {
+      "date": "2025-01-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 34352
+    },
+    {
+      "date": "2025-01-13",
+      "trades": 3,
+      "pnl": 1442,
+      "equity": 35794,
+      "symbols": "PHIO",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-14",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 35794
+    },
+    {
+      "date": "2025-01-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 35794
+    },
+    {
+      "date": "2025-01-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 35794,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 35794,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-21",
+      "trades": 4,
+      "pnl": 1549,
+      "equity": 37343,
+      "symbols": "INM LEDS",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 37343,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-23",
+      "trades": 4,
+      "pnl": 1958,
+      "equity": 39301,
+      "symbols": "VNCE HKPD",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-24",
+      "trades": 3,
+      "pnl": 2306,
+      "equity": 41607,
+      "symbols": "ALUR",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 41607,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 41607,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 41607
+    },
+    {
+      "date": "2025-01-30",
+      "trades": 3,
+      "pnl": 3788,
+      "equity": 45395,
+      "symbols": "AMOD",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2025-01-31",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 45395
+    }
+  ]
+}

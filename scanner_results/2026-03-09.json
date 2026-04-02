@@ -1,18 +1,20 @@
 [
   {
     "symbol": "AGH",
-    "prev_close": 5.03,
-    "pm_price": 5.99,
-    "gap_pct": 19.09,
-    "pm_volume": 13109263.0,
-    "first_seen_et": "06:05",
-    "sim_start": "06:05",
-    "discovery_time": "06:05",
-    "discovery_method": "ibkr_historical",
-    "avg_daily_volume": 414824.0,
-    "relative_volume": 31.6,
+    "prev_close": 4.88,
+    "pm_price": 7.37,
+    "gap_pct": 51.02,
+    "pm_volume": 53495,
+    "cumulative_volume_at_discovery": 53495,
+    "avg_daily_volume": 35409.0,
+    "relative_volume": 1.51,
     "float_shares": 4597139,
     "float_millions": 4.6,
-    "profile": "A"
+    "profile": "A",
+    "discovery_time": "07:09",
+    "sim_start": "07:09",
+    "discovery_method": "unified_v3",
+    "first_seen_et": "07:09",
+    "rank_score": 0.427
   }
 ]

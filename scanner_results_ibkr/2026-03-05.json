@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "MTEK",
+    "prev_close": 1.83,
+    "pm_price": 2.7803,
+    "gap_pct": 51.93,
+    "pm_volume": 249881.0,
+    "first_seen_et": "09:30",
+    "sim_start": "09:15",
+    "discovery_time": "09:15",
+    "discovery_method": "precise",
+    "avg_daily_volume": 85220.0,
+    "relative_volume": 2.93,
+    "precise_discovery": "09:14",
+    "float_shares": 4579471,
+    "float_millions": 4.58,
+    "profile": "A"
+  },
+  {
+    "symbol": "GXAI",
+    "prev_close": 1.24,
+    "pm_price": 2.12,
+    "gap_pct": 70.97,
+    "pm_volume": 20022927.0,
+    "first_seen_et": "08:30",
+    "sim_start": "08:30",
+    "discovery_time": "08:30",
+    "discovery_method": "precise",
+    "avg_daily_volume": 7599330.0,
+    "relative_volume": 2.63,
+    "precise_discovery": "08:13",
+    "float_shares": null,
+    "float_millions": null,
+    "profile": "X"
+  },
+  {
+    "symbol": "MSGM",
+    "prev_close": 4.05,
+    "pm_price": 4.48,
+    "gap_pct": 10.62,
+    "pm_volume": 79677.0,
+    "first_seen_et": "10:00",
+    "sim_start": "09:59",
+    "discovery_time": "09:59",
+    "discovery_method": "rescan",
+    "avg_daily_volume": 52102.0,
+    "relative_volume": 1.53,
+    "precise_discovery": "10:00",
+    "float_shares": 2510633,
+    "float_millions": 2.51,
+    "profile": "A"
+  }
+]
