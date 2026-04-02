@@ -197,6 +197,146 @@ def get_account_equity() -> float:
     return STARTING_EQUITY  # Fallback
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Position Safety (Fixes 1-5 from DIRECTIVE_V3_POSITION_SYNC.md)
+# ══════════════════════════════════════════════════════════════════════
+
+def reconcile_positions_on_startup():
+    """Fix 1: Check Alpaca for positions the bot doesn't know about."""
+    try:
+        positions = state.alpaca.get_all_positions()
+    except Exception as e:
+        print(f"  Position sync error: {e}", flush=True)
+        return
+
+    if not positions:
+        print("  Position sync: No open positions on Alpaca. Clean start.", flush=True)
+        return
+
+    for pos in positions:
+        symbol = pos.symbol
+        qty = int(pos.qty)
+        avg_entry = float(pos.avg_entry_price)
+        unrealized_pnl = float(pos.unrealized_pl)
+        market_value = float(pos.market_value)
+
+        print(f"  ⚠️ ORPHAN POSITION FOUND: {symbol} qty={qty} "
+              f"entry=${avg_entry:.2f} unrealized=${unrealized_pnl:+,.2f} "
+              f"value=${market_value:,.2f}", flush=True)
+
+        if state.open_position is None:
+            state.open_position = {
+                "symbol": symbol,
+                "entry": avg_entry,
+                "qty": qty,
+                "r": avg_entry * 0.03,
+                "stop": avg_entry * 0.97,
+                "score": 0.0,
+                "setup_type": "orphan_adopted",
+                "peak": avg_entry,
+                "tp_hit": False,
+                "entry_time": datetime.now(ET),
+                "order_id": "adopted",
+                "is_parabolic": False,
+                "fill_confirmed": True,
+            }
+            print(f"  → Adopted {symbol} into bot state. Exit management active.", flush=True)
+        else:
+            print(f"  → Bot already has position in {state.open_position['symbol']}. "
+                  f"CLOSING orphan {symbol}.", flush=True)
+            try:
+                from alpaca.trading.requests import MarketOrderRequest
+                req = MarketOrderRequest(
+                    symbol=symbol, qty=qty,
+                    side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
+                )
+                state.alpaca.submit_order(req)
+                print(f"  → Orphan {symbol} close order submitted.", flush=True)
+            except Exception as e:
+                print(f"  → FAILED to close orphan {symbol}: {e}", flush=True)
+
+
+def periodic_position_sync():
+    """Fix 3: Every 60s, verify bot state matches Alpaca reality."""
+    try:
+        positions = state.alpaca.get_all_positions()
+    except Exception as e:
+        print(f"  Position sync error: {e}", flush=True)
+        return
+
+    alpaca_symbols = {pos.symbol: pos for pos in positions}
+
+    # Case 1: Bot thinks it has a position, but Alpaca doesn't
+    if state.open_position and state.open_position.get("fill_confirmed"):
+        bot_symbol = state.open_position["symbol"]
+        if bot_symbol not in alpaca_symbols:
+            print(f"  ⚠️ POSITION DESYNC: Bot thinks it holds {bot_symbol}, "
+                  f"but Alpaca shows no position. Clearing bot state.", flush=True)
+            state.open_position = None
+
+    # Case 2: Alpaca has a position the bot doesn't know about
+    if not state.open_position:
+        for symbol, pos in alpaca_symbols.items():
+            qty = int(pos.qty)
+            avg_entry = float(pos.avg_entry_price)
+            print(f"  ⚠️ ORPHAN DETECTED: Alpaca holds {symbol} qty={qty} "
+                  f"entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
+            state.open_position = {
+                "symbol": symbol,
+                "entry": avg_entry,
+                "qty": qty,
+                "r": avg_entry * 0.03,
+                "stop": avg_entry * 0.97,
+                "score": 0.0,
+                "setup_type": "orphan_adopted",
+                "peak": avg_entry,
+                "tp_hit": False,
+                "entry_time": datetime.now(ET),
+                "order_id": "adopted",
+                "is_parabolic": False,
+                "fill_confirmed": True,
+            }
+            break  # Single-position bot
+
+    # Case 3: Quantities mismatch
+    if state.open_position and state.open_position.get("fill_confirmed"):
+        bot_symbol = state.open_position["symbol"]
+        if bot_symbol in alpaca_symbols:
+            alp_qty = int(alpaca_symbols[bot_symbol].qty)
+            bot_qty = state.open_position["qty"]
+            if alp_qty != bot_qty:
+                print(f"  ⚠️ QTY MISMATCH: Bot thinks {bot_qty} shares, "
+                      f"Alpaca shows {alp_qty}. Updating bot.", flush=True)
+                state.open_position["qty"] = alp_qty
+
+
+def wait_for_fill(order_id: str, timeout: int = 15):
+    """Fix 2: Wait for Alpaca order fill with timeout. Returns (price, qty) or (None, 0)."""
+    for _ in range(timeout * 2):
+        try:
+            o = state.alpaca.get_order_by_id(order_id)
+            if o.status == 'filled':
+                return float(o.filled_avg_price), int(float(o.filled_qty))
+            if o.status in ('cancelled', 'expired', 'rejected'):
+                return None, 0
+        except Exception:
+            pass
+        time.sleep(0.5)
+    # Timeout — cancel
+    try:
+        state.alpaca.cancel_order_by_id(order_id)
+    except Exception:
+        pass
+    # Final check — order may have filled between cancel and check
+    try:
+        o = state.alpaca.get_order_by_id(order_id)
+        if o.status == 'filled':
+            return float(o.filled_avg_price), int(float(o.filled_qty))
+    except Exception:
+        pass
+    return None, 0
+
+
 def connect():
     """Connect to IBKR with retry logic."""
     state.ib = IB()
@@ -1207,16 +1347,27 @@ def main():
     state.alpaca = TradingClient(apca_key, apca_secret, paper=apca_paper)
     print(f"Alpaca connected ({'PAPER' if apca_paper else 'LIVE'})", flush=True)
 
-    # Check for existing Alpaca positions
-    try:
-        positions = state.alpaca.get_all_positions()
-        if positions:
-            for pos in positions:
-                print(f"  EXISTING POSITION: {pos.symbol} qty={pos.qty} avg_entry=${pos.avg_entry_price}", flush=True)
-        else:
-            print("  No existing Alpaca positions", flush=True)
-    except Exception as e:
-        print(f"  Position check failed: {e}", flush=True)
+    # Fix 1: Startup position reconciliation
+    reconcile_positions_on_startup()
+
+    # Fix 5: Graceful shutdown — check for orphan positions
+    import signal as signal_mod
+    def graceful_shutdown(signum, frame):
+        print("\n🛑 SHUTDOWN SIGNAL RECEIVED", flush=True)
+        try:
+            positions = state.alpaca.get_all_positions()
+            if positions:
+                for pos in positions:
+                    print(f"  ⚠️ POSITION OPEN AT SHUTDOWN: {pos.symbol} "
+                          f"qty={pos.qty} P&L=${float(pos.unrealized_pl):+,.2f}", flush=True)
+                print("  *** POSITIONS LEFT OPEN — WILL NEED MANUAL MANAGEMENT ***", flush=True)
+            else:
+                print("  All positions flat. Clean shutdown.", flush=True)
+        except Exception as e:
+            print(f"  Could not check positions at shutdown: {e}", flush=True)
+        sys.exit(0)
+    signal_mod.signal(signal_mod.SIGTERM, graceful_shutdown)
+    signal_mod.signal(signal_mod.SIGINT, graceful_shutdown)
 
     # Connect to IBKR (data only)
     ib = connect()
@@ -1291,6 +1442,9 @@ def main():
 
                 # Tick health audit (every 60s)
                 audit_tick_health()
+
+                # Fix 3: Periodic position sync with Alpaca (every 60s)
+                periodic_position_sync()
             else:
                 # In dead zone between windows
                 if not state.in_dead_zone:
