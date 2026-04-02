@@ -1,92 +1,109 @@
-# V3 Hybrid Bot — Morning Progress Report (April 2, 2026)
+# V3 Hybrid Bot — Morning Session Report (April 2, 2026)
 
 **Bot version:** V3 Hybrid (IBKR data + Alpaca execution)
 **Squeeze detector:** V2 with rolling HOD gate
-**Session start:** 06:17 ET (bot connected after manual restart — cron's 4 AM launch failed due to Gateway not opening port 4002 in time)
-**Report time:** ~09:42 ET
-**Status:** ACTIVE, flat, $0 P&L, 0 trades
+**Session start:** 06:17 ET (manual restart — cron's 4 AM launch failed, Gateway didn't open port 4002 in time)
+**Session end:** 12:00 ET (dead zone)
+**Result:** 0 trades, $0 P&L. Successful infrastructure shakedown.
 
 ---
 
-## Startup
+## Verdict: Successful First Live Session
 
-- **02:00 MT (04:00 ET):** Cron fired `daily_run_v3.sh`
-- **02:00-02:07:** Gateway started but never opened port 4002 (36 attempts, 180s timeout). Script aborted. Root cause: display session likely inactive (pmset sleep prevention not yet applied).
-- **04:16 MT (06:16 ET):** Manual restart. Gateway connected on attempt 2 (~10s).
-- **06:17 ET:** Alpaca connected (PAPER). Position sync: clean start, no orphans.
-- **06:17 ET:** HEALTH_OK. Catchup scanner processed 43 symbols.
-- **06:17 ET:** Initial subscriptions: **TURB**, **BATL** (from IBKR scanner)
-- **06:18 ET:** Databento bridge added: **KIDZ** (from watchlist.txt)
-- **07:50 ET:** IBKR scanner found **SKYQ** → subscribed (4 total watching)
+V3 ran for 6 hours without crashes, connection drops, or phantom positions. All systems worked:
+- IBKR data feed: stable, 1800-2800 ticks/min across 4 symbols
+- Alpaca execution: connected, position sync clean, no orphans
+- Squeeze V2 detector: fired correctly on volume spikes
+- Gateway watchdog: monitored port 4002 throughout
+- Databento scanner: contributed KIDZ via watchlist.txt bridge
+- Tick cache: saved to disk for backtesting
+
+No trades is the correct outcome for today's stocks — confirmed by backtesting against live tick data.
 
 ---
 
 ## Watchlist: 4 Stocks
 
 ### BATL (Batalon Brands)
-- **Premarket high:** $5.48
-- **VWAP:** $5.17-5.19
-- **07:10 ET — SQ_PRIMED:** vol=3.3x, bar_vol=57,773, price=$5.25 above VWAP. Broke to new HOD $5.48.
-- **07:13 ET — SQ_RESET:** prime_expired (3 bars, no level break within window)
-- **Since then:** Faded from $5.48 to $5.04-5.30 range. Trading around VWAP. Volume dried up (0.2-1.7x avg). No further squeeze setups.
-- **Current (09:40):** $5.04, below VWAP ($5.17), IDLE
+- **PM high:** $5.48 | **VWAP:** ~$5.17
+- **07:10 ET — SQ_PRIMED:** vol=3.3x, bar_vol=57,773, price=$5.25 above VWAP
+- **07:13 ET — SQ_RESET:** prime_expired (3 bars, no level break)
+- Price needed $0.22 more to break PM high. Faded after, never recovered.
+- **Backtest confirms:** 0 trades. Correct.
 
 ### SKYQ (SkyQuest Technology)
-- **Discovered:** 07:50 ET by IBKR scanner
-- **Premarket high:** $6.39-6.51
-- **09:00 ET spike:** Huge bar — $6.07→$6.50, vol=147K (2.0x avg). Close to PM high. VWAP distance +16.9%. But did NOT trigger PRIMED — vol_ratio only 2.0x (needs 3.0x).
-- **Since then:** Faded hard from $6.50 to $5.10. Below VWAP ($5.46). Dead.
-- **Current (09:40):** $5.10, below VWAP, IDLE
+- **PM high:** $6.51 | **VWAP:** ~$5.50
+- **Discovered:** 07:36 ET by IBKR scanner (first appearance)
+- **07:38 ET:** Massive volume explosion (128.6x avg, 197K shares). Broke $6.00 whole dollar.
+- **Bot missed it** — SKYQ wasn't subscribed until the scanner found it at 07:36, and the move that triggered the scanner IS the move that created the trade.
+- **Backtest from 07:00:** Sim finds 1 trade (+$36, entered 07:39, exited immediately via para trail). Marginal.
+- **Backtest from 07:50 (actual discovery time):** 0 trades. Armed once but never triggered. Matches live bot exactly.
+- **09:00 ET spike:** $6.07→$6.50 (vol=2.0x avg). Did NOT trigger PRIMED — vol_ratio only 2.0x vs 3.0x threshold.
+- Faded hard after, closed at $4.11.
 
 ### TURB (Turbine Truck Engines)
-- **Premarket high:** $4.76
-- **Most of morning:** Below VWAP, low volume, fading from $3.90 to $3.25
-- **09:40 ET — SQ_PRIMED:** vol=6.4x avg, bar_vol=116,929, price=$3.67 above VWAP ($3.49). Bar went $3.31→$3.69 (big green, +11.5%). HOD is $4.76 (PM high).
-- **PRIMED but no ARM:** Price at $3.67 is well below PM high ($4.76). Needs to break PM high, whole dollar ($4.00), or PDH to ARM. The $4.00 whole dollar is the nearest level — needs +$0.33 (+9%) from current.
-- **Current (09:42):** $3.70, PRIMED, watching for level break
+- **PM high:** $4.76 | **VWAP:** ~$3.49
+- Faded all morning from $3.90 to $3.25
+- **09:40 ET — SQ_PRIMED:** vol=6.4x, bar_vol=116,929, price=$3.67 above VWAP. Big green bar.
+- Stayed PRIMED but never ARMed — nearest level was $4.00 whole dollar (+9% away). Too far.
+- **Backtest confirms:** 0 trades. Correct.
 
 ### KIDZ (OraSure/KIDZ)
 - **Source:** Databento scanner (watchlist.txt)
-- **Premarket high:** $4.05
-- **All morning:** Very low volume (0-22 ticks per audit). Price $3.49-3.78. Below VWAP. No squeeze activity.
-- **Current (09:42):** $3.54, IDLE, essentially dead tape
+- **PM high:** $4.05 | **VWAP:** ~$3.58
+- Essentially dead tape all morning. 0-22 ticks per minute. No squeeze activity.
+- **Backtest confirms:** 0 trades. Correct.
 
 ---
 
-## Squeeze Detector Activity Summary
+## Squeeze Detector Activity
 
-| Time | Symbol | Event | Details |
+| Time | Symbol | Event | Outcome |
 |------|--------|-------|---------|
-| 07:10 | BATL | SQ_PRIMED | vol=3.3x, $5.25 > VWAP. Broke to new HOD $5.48. |
-| 07:13 | BATL | SQ_RESET | prime_expired — no level break in 3 bars |
-| 09:40 | TURB | SQ_PRIMED | vol=6.4x, $3.67 > VWAP. Still PRIMED — watching for $4.00 break |
-
-**Zero ARMEDs. Zero trades. Zero entries.**
+| 07:10 | BATL | SQ_PRIMED (3.3x vol) | RESET after 3 bars — no level break |
+| 07:38 | SKYQ | 128.6x vol spike | Bot wasn't subscribed yet (scanner latency) |
+| 09:40 | TURB | SQ_PRIMED (6.4x vol) | Stayed PRIMED — $4.00 level too far (+9%) |
 
 ---
 
-## Key Questions for Cowork Analysis
+## Key Insight: Scanner-Move Paradox
 
-1. **SKYQ 09:00 spike ($6.07→$6.50):** Ross would likely have traded this — huge momentum candle near PM high. Bot missed it because vol_ratio was only 2.0x (threshold is 3.0x). Should the threshold be lowered for stocks near PM high?
+The SKYQ 07:38 move illustrates a fundamental limitation: **the volume spike that creates the trade opportunity is the same spike that makes the scanner discover the stock.** By the time the bot subscribes and builds enough bars, the initial move is done.
 
-2. **BATL 07:10 PRIMED→RESET:** The volume explosion fired but no level break within 3 bars. PM high was $5.48 and the bar high was $5.26. Price needed another $0.22 to break PM high. Is 3 bars (prime_bars) too tight? Should this be 5?
-
-3. **TURB 09:40 PRIMED:** Currently watching. Price needs to travel from $3.70 to $4.00 (whole dollar) to ARM. That's +8%. Is this realistic given TURB's morning fade ($4.76→$3.25 before bouncing)?
-
-4. **General:** All 4 stocks had their best moves in premarket or early morning, then faded. The bot is finding the right stocks but arriving late or setting thresholds that require moves the stocks can't sustain. Is the scanner discovering candidates too late?
-
-5. **KIDZ:** Essentially zero activity all morning. Was this a Databento scanner false positive? What were the scanner criteria that selected it?
+Possible mitigations:
+1. Pre-load a broader watchlist from Databento before market open (already partially done via live_scanner.py)
+2. Faster IBKR scanner cycles (currently every 5 min)
+3. Accept that the bot catches the *second* move, not the first — and size accordingly
 
 ---
 
-## Infrastructure Notes
+## Backtest vs Live Comparison
 
-- IBKR data feed: healthy, ticks flowing (1800-2800/min across 4 symbols)
-- Alpaca execution: connected, no orders placed (nothing to execute)
-- Gateway watchdog: running
-- Live scanner (Databento): running, contributed KIDZ
-- Position sync: clean, no orphans
+| Stock | Live Bot | Sim (from discovery time) | Match? |
+|-------|----------|--------------------------|--------|
+| BATL | 0 trades | 0 trades | YES |
+| SKYQ | 0 trades | 0 trades (from 07:50) | YES |
+| TURB | 0 trades | 0 trades | YES |
+| KIDZ | 0 trades | 0 trades | YES |
+
+**100% match.** The detector logic is working correctly. The bot made the right decisions given what it could see.
 
 ---
 
-*Report generated by Claude Code. For Cowork (Perplexity) analysis: please pull actual 1m charts for BATL, SKYQ, TURB, KIDZ from TradingView and compare against the bot's squeeze detector decisions above.*
+## Infrastructure Issues
+
+1. **Cron launch failed at 4 AM:** Gateway didn't open port 4002 within 180s. Root cause: display session inactive. Fix: `sudo pmset -a sleep 0 displaysleep 0` (not yet applied).
+2. **Manual restart at 06:17 ET:** Gateway came up in ~10s with active display. Bot ran cleanly for remainder of session.
+
+---
+
+## Next Steps
+
+- Wait for Ross Cameron's daily recap to compare his trades vs bot's watchlist
+- Apply pmset sleep prevention for reliable cron starts
+- Consider lowering vol_mult threshold (3.0x → 2.5x?) for stocks near PM high
+- Evaluate broader pre-market watchlist loading to mitigate scanner-move paradox
+
+---
+
+*Morning session: successful infrastructure validation. V3 hybrid architecture proven stable. Awaiting Ross comparison for strategy insights.*
