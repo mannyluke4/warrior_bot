@@ -277,12 +277,15 @@ class SqueezeDetectorV2:
             f"price=${c:.4f} above VWAP (${vwap:.4f})"
         )
 
-        # Check if level already broken on this bar
+        # Check if level already broken on this bar (same-bar PRIMED+ARMED)
+        # This handles fast movers where the volume explosion IS the level break,
+        # AND stocks that gapped above PM high before the volume bar fired.
         level_name, level_price = self._find_broken_level(h)
         if level_name is not None:
             arm_msg = self._try_arm(level_name, level_price, info, vwap)
             if arm_msg:
                 return f"{prime_msg}\n  {arm_msg}"
+            # _try_arm failed (likely R too large) — log it but stay PRIMED
             return prime_msg
 
         return prime_msg
