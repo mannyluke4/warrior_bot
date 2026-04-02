@@ -156,7 +156,7 @@ echo "Bot started (PID: $BOT_PID)"
 # 8. Post-launch health check
 sleep 15
 if ! kill -0 "$BOT_PID" 2>/dev/null; then
-    echo "FATAL: bot_ibkr.py crashed within 15s of launch. Check $LOG_FILE for details."
+    echo "FATAL: bot_v3_hybrid.py crashed within 15s of launch. Check $LOG_FILE for details."
     exit 1
 fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
@@ -191,7 +191,7 @@ while true; do
         break
     fi
     if ! kill -0 "$BOT_PID" 2>/dev/null; then
-        echo "ALERT: bot_ibkr.py died at $(date)! Session ended early. Check $LOG_FILE."
+        echo "ALERT: bot_v3_hybrid.py died at $(date)! Session ended early. Check $LOG_FILE."
         break
     fi
     sleep 60 || true

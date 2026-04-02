@@ -168,6 +168,7 @@ class BotState:
         self.last_tick_time: dict[str, datetime] = {}  # symbol -> last tick timestamp
         self.last_tick_price: dict[str, float] = {}  # symbol -> last tick price
         self.last_tick_audit: datetime = None
+        self._last_position_sync: datetime = None
         self.sub_retry_counts: dict[str, int] = {}  # symbol -> resubscription attempts
         self.last_on_ticker_fire: datetime = None  # track when on_ticker_update last fired
 
@@ -258,6 +259,12 @@ def reconcile_positions_on_startup():
 
 def periodic_position_sync():
     """Fix 3: Every 60s, verify bot state matches Alpaca reality."""
+    now = datetime.now(ET)
+    if hasattr(state, '_last_position_sync') and state._last_position_sync and \
+       (now - state._last_position_sync).total_seconds() < 60:
+        return
+    state._last_position_sync = now
+
     try:
         positions = state.alpaca.get_all_positions()
     except Exception as e:
