@@ -1934,12 +1934,16 @@ def run_simulation(
 
     # ── EPL Framework (Extended Play List) ──
     from epl_framework import (
-        EPL_ENABLED, EPL_MIN_GRADUATION_R,
+        EPL_ENABLED, EPL_MAX_NOTIONAL, EPL_MIN_GRADUATION_R,
         GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
     )
+    from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
     _epl_watchlist = EPLWatchlist()
     _epl_registry = StrategyRegistry()
     _epl_arbitrator = PositionArbitrator(_epl_registry, _epl_watchlist)
+    _epl_mp = EPLMPReentry()
+    if EPL_ENABLED and EPL_MP_ENABLED:
+        _epl_registry.register(_epl_mp)
 
     if EPL_ENABLED:
         def _on_epl_graduation(t, price, time_str):
@@ -2566,6 +2570,78 @@ def run_simulation(
             if _bm is not None:
                 _bm.on_1m_bar(bar.open, bar.high, bar.low, bar.close, bar.volume, time_str, vwap)
 
+            # --- EPL: 1m bar processing (expiry + entry signals + exit management) ---
+            if EPL_ENABLED and _epl_registry.strategy_count > 0:
+                # Check expiry
+                _epl_now = bar.start_utc.astimezone(ET) if hasattr(bar, 'start_utc') else None
+                if _epl_now:
+                    _expired = _epl_watchlist.check_expiry(_epl_now)
+                    for _esym in _expired:
+                        _epl_registry.notify_expiry(_esym)
+                        _epl_watchlist.remove(_esym)
+                        if verbose:
+                            print(f"  [{time_str}] [EPL] {_esym} expired from watchlist", flush=True)
+
+                # EPL exit management (1m bar) for open EPL trades
+                if (sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed
+                        and sim_mgr.open_trade.setup_type.startswith("epl_")):
+                    _epl_strat = _epl_registry.get_strategy(sim_mgr.open_trade.setup_type)
+                    if _epl_strat:
+                        _bar_dict = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                                     "v": bar.volume, "green": bar.close >= bar.open, "vwap": vwap}
+                        _epl_exit = _epl_strat.manage_exit(symbol, bar.close, _bar_dict)
+                        if _epl_exit:
+                            _epl_pnl = (_epl_exit.exit_price - sim_mgr.open_trade.entry) * sim_mgr.open_trade.qty_total
+                            _epl_arbitrator.record_epl_trade_result(symbol, _epl_pnl)
+                            sim_mgr.open_trade.core_exit_price = _epl_exit.exit_price
+                            sim_mgr.open_trade.core_exit_time = time_str
+                            sim_mgr.open_trade.core_exit_reason = _epl_exit.exit_reason
+                            if sim_mgr.open_trade.qty_runner > 0:
+                                sim_mgr.open_trade.runner_exit_price = _epl_exit.exit_price
+                                sim_mgr.open_trade.runner_exit_time = time_str
+                                sim_mgr.open_trade.runner_exit_reason = _epl_exit.exit_reason
+                            sim_mgr._close(sim_mgr.open_trade)
+                            _epl_registry.reset_all(symbol)
+                            if verbose:
+                                print(f"  [{time_str}] [EPL] {_epl_exit.strategy} EXIT {symbol} @ ${_epl_exit.exit_price:.2f} "
+                                      f"reason={_epl_exit.exit_reason} P&L=${_epl_pnl:+,.0f}", flush=True)
+
+                # EPL entry signals (1m bar) — only when no open position
+                if sim_mgr.open_trade is None and _epl_watchlist.is_graduated(symbol):
+                    _sq_state = sq_det._state if sq_enabled else "IDLE"
+                    if _epl_now and _epl_arbitrator.can_epl_enter(symbol, _sq_state, False, _epl_now):
+                        _bar_dict = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                                     "v": bar.volume, "green": bar.close >= bar.open}
+                        _epl_signals = _epl_registry.collect_entry_signals(symbol, _bar_dict, None, None)
+                        _epl_best = _epl_arbitrator.get_best_signal(_epl_signals)
+                        if _epl_best:
+                            _epl_shares = int((EPL_MAX_NOTIONAL * _epl_best.position_size_pct) / max(_epl_best.entry_price, 0.01))
+                            if _epl_shares >= 1:
+                                _epl_r = _epl_best.entry_price - _epl_best.stop_price
+                                _epl_t = SimTrade(
+                                    symbol=symbol,
+                                    entry=_epl_best.entry_price + slippage,
+                                    stop=_epl_best.stop_price,
+                                    r=_epl_r,
+                                    qty_total=_epl_shares,
+                                    qty_core=_epl_shares,
+                                    qty_runner=0,
+                                    score=_epl_best.confidence * 10,
+                                    score_detail=_epl_best.reason,
+                                    setup_type=_epl_best.strategy,
+                                    entry_time=time_str,
+                                    peak=_epl_best.entry_price + slippage,
+                                    runner_stop=_epl_best.stop_price,
+                                )
+                                sim_mgr.open_trade = _epl_t
+                                _epl_strat = _epl_registry.get_strategy(_epl_best.strategy)
+                                if _epl_strat and hasattr(_epl_strat, 'mark_in_trade'):
+                                    _epl_strat.mark_in_trade(symbol)
+                                if verbose:
+                                    print(f"  [{time_str}] [EPL] {_epl_best.strategy} ENTRY {symbol} "
+                                          f"@ ${_epl_t.entry:.2f} stop=${_epl_best.stop_price:.2f} "
+                                          f"R=${_epl_r:.4f} shares={_epl_shares} reason={_epl_best.reason}", flush=True)
+
             # --- Continuation Hold: 1m bar exit detection ---
             # Skip when in 5m guard mode (5m guard supersedes 1m exits)
             if _cont_hold_use_1m_exits and _continuation_hold_enabled and not (
@@ -2970,6 +3046,65 @@ def run_simulation(
                             # Ross exit: reset per-trade state on new VR entry
                             if _ross_exit_mgr is not None:
                                 _ross_exit_mgr.reset()
+
+                # --- EPL tick processing (entry trigger + exit management) ---
+                if EPL_ENABLED and _epl_registry.strategy_count > 0:
+                    # EPL tick-level exit management
+                    if (sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed
+                            and sim_mgr.open_trade.setup_type.startswith("epl_")):
+                        _epl_strat = _epl_registry.get_strategy(sim_mgr.open_trade.setup_type)
+                        if _epl_strat:
+                            _epl_exit = _epl_strat.manage_exit(symbol, price, None)
+                            if _epl_exit:
+                                _epl_pnl = (_epl_exit.exit_price - sim_mgr.open_trade.entry) * sim_mgr.open_trade.qty_total
+                                _epl_arbitrator.record_epl_trade_result(symbol, _epl_pnl)
+                                sim_mgr.open_trade.core_exit_price = _epl_exit.exit_price
+                                sim_mgr.open_trade.core_exit_time = time_str
+                                sim_mgr.open_trade.core_exit_reason = _epl_exit.exit_reason
+                                if sim_mgr.open_trade.qty_runner > 0:
+                                    sim_mgr.open_trade.runner_exit_price = _epl_exit.exit_price
+                                    sim_mgr.open_trade.runner_exit_time = time_str
+                                    sim_mgr.open_trade.runner_exit_reason = _epl_exit.exit_reason
+                                sim_mgr._close(sim_mgr.open_trade)
+                                _epl_registry.reset_all(symbol)
+                                if verbose:
+                                    print(f"  [{time_str}] [EPL] {_epl_exit.strategy} EXIT {symbol} "
+                                          f"@ ${_epl_exit.exit_price:.2f} reason={_epl_exit.exit_reason} "
+                                          f"P&L=${_epl_pnl:+,.0f}", flush=True)
+
+                    # EPL tick-level entry trigger (ARMED → entry)
+                    if sim_mgr.open_trade is None and _epl_watchlist.is_graduated(symbol):
+                        _sq_state = sq_det._state if sq_enabled else "IDLE"
+                        if _epl_arbitrator.can_epl_enter(symbol, _sq_state, False, ts_et):
+                            _epl_signals = _epl_registry.collect_entry_signals(symbol, None, price, size)
+                            _epl_best = _epl_arbitrator.get_best_signal(_epl_signals)
+                            if _epl_best:
+                                _epl_shares = int((EPL_MAX_NOTIONAL * _epl_best.position_size_pct) / max(_epl_best.entry_price, 0.01))
+                                if _epl_shares >= 1:
+                                    _epl_r = _epl_best.entry_price - _epl_best.stop_price
+                                    _epl_t = SimTrade(
+                                        symbol=symbol,
+                                        entry=_epl_best.entry_price + slippage,
+                                        stop=_epl_best.stop_price,
+                                        r=_epl_r,
+                                        qty_total=_epl_shares,
+                                        qty_core=_epl_shares,
+                                        qty_runner=0,
+                                        score=_epl_best.confidence * 10,
+                                        score_detail=_epl_best.reason,
+                                        setup_type=_epl_best.strategy,
+                                        entry_time=time_str,
+                                        peak=_epl_best.entry_price + slippage,
+                                        runner_stop=_epl_best.stop_price,
+                                    )
+                                    sim_mgr.open_trade = _epl_t
+                                    _epl_strat = _epl_registry.get_strategy(_epl_best.strategy)
+                                    if _epl_strat and hasattr(_epl_strat, 'mark_in_trade'):
+                                        _epl_strat.mark_in_trade(symbol)
+                                    if verbose:
+                                        print(f"  [{time_str}] [EPL] {_epl_best.strategy} ENTRY {symbol} "
+                                              f"@ ${_epl_t.entry:.2f} stop=${_epl_best.stop_price:.2f} "
+                                              f"R=${_epl_r:.4f} shares={_epl_shares}", flush=True)
 
                 armed_before = det.armed
                 trigger_msg = det.on_trade_price(price, is_premarket=is_premarket)
