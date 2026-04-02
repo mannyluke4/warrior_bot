@@ -1,0 +1,72 @@
+[
+  {
+    "scan_time_et": "10:00",
+    "date": "2026-04-01",
+    "candidate_count": 0,
+    "candidates": []
+  },
+  {
+    "scan_time_et": "10:00",
+    "date": "2026-04-01",
+    "candidate_count": 0,
+    "candidates": []
+  },
+  {
+    "scan_time_et": "10:00",
+    "date": "2026-04-01",
+    "candidate_count": 3,
+    "candidates": [
+      {
+        "symbol": "LI",
+        "price": 18.65,
+        "hod": 19.04,
+        "lod": 18.56,
+        "range_pct": 2.59,
+        "adr_20d": 0.467,
+        "adr_util": 1.028,
+        "vwap": 18.8176,
+        "vwap_dist_pct": 0.89,
+        "session_volume": 1029282.0,
+        "vol_decline_ratio": 0.292,
+        "stability": 0.804,
+        "hod_age_min": 21,
+        "lod_age_min": 29,
+        "box_score": 7.31
+      },
+      {
+        "symbol": "W",
+        "price": 75.01,
+        "hod": 76.21,
+        "lod": 73.0,
+        "range_pct": 4.4,
+        "adr_20d": 4.4435,
+        "adr_util": 0.722,
+        "vwap": 74.2606,
+        "vwap_dist_pct": 1.01,
+        "session_volume": 354171.0,
+        "vol_decline_ratio": 0.245,
+        "stability": 0.807,
+        "hod_age_min": 29,
+        "lod_age_min": 22,
+        "box_score": 6.54
+      },
+      {
+        "symbol": "DKNG",
+        "price": 22.3,
+        "hod": 22.47,
+        "lod": 21.75,
+        "range_pct": 3.31,
+        "adr_20d": 1.071,
+        "adr_util": 0.672,
+        "vwap": 22.2354,
+        "vwap_dist_pct": 0.29,
+        "session_volume": 1250202.0,
+        "vol_decline_ratio": 0.524,
+        "stability": 0.882,
+        "hod_age_min": 20,
+        "lod_age_min": 29,
+        "box_score": 6.28
+      }
+    ]
+  }
+]
