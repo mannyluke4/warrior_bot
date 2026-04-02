@@ -17,6 +17,8 @@ cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
     kill "$BOT_PID" 2>/dev/null || true
     pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
+    kill "$SCANNER_PID" 2>/dev/null || true
+    pkill -f "live_scanner.py" 2>/dev/null || true
     kill "$GW_WATCHDOG_PID" 2>/dev/null || true
     kill "$CAFFEINE_PID" 2>/dev/null || true
     cd ~/warrior_bot_v2
@@ -28,6 +30,7 @@ cleanup() {
 trap cleanup EXIT
 
 BOT_PID=""
+SCANNER_PID=""
 GW_WATCHDOG_PID=""
 
 # ── Step 0: Wake the screen and ensure active desktop ────────────────
@@ -145,6 +148,14 @@ fi
 echo "Cleaning up stale connections..."
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
 sleep 2
+
+# 6b. Start Databento live scanner (writes watchlist.txt for the bot)
+echo "Starting live_scanner.py..."
+cd ~/warrior_bot_v2
+python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1 &
+SCANNER_PID=$!
+echo "Live scanner started (PID: $SCANNER_PID)"
+sleep 5
 
 # 7. Start the V3 hybrid bot
 echo "Starting bot_v3_hybrid.py..."
