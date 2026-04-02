@@ -238,19 +238,24 @@ def compute_box_score_v2(high_tests, low_tests, range_position_pct,
 
 ```
 ┌─────────────── 5-Day High ($47.50) ──── SELL ZONE (tested 3x)
+│                                          Big seller lives here.
+│                                          We sell BEFORE they do.
 │
-│         Today's price action lives HERE
-│         (much smaller range than 5-day box)
-│
-│                   VWAP (~$45.05)
+│                   VWAP (~$45.05)          Optional partial exit
 │
 │
 └─────────────── 5-Day Low ($43.00) ──── BUY ZONE (tested 2x)
+                                          Big buyer lives here.
+                                          We buy BEFORE they do.
 ```
 
-The strategy (Phase 2) will buy when price dips toward the 5-day low zone that has been tested and held multiple times. The target is VWAP or the middle of the range — NOT the 5-day high. The high is where you get out, not where you target initially.
+The mental model: institutional order flow is stacked at these multi-day levels. A big buyer sits at the 5-day low (tested 2-3x and held every time). A big seller sits at the 5-day high (tested 2-3x and rejected every time). We front-run both:
 
-This is realistic: the stock drifts toward proven support, bounces to the mean (VWAP), you take profit. No need for it to oscillate all the way from bottom to top.
+- **Buy** in the lower 25% of the box, just above the big buyer's level
+- **Target** the upper 25% of the box, just below the big seller's level
+- **VWAP** is an optional partial profit point (take 50% at VWAP, let 50% ride to the top)
+
+The key insight from the V1 failure: V1's levels were morning noise with no real orders behind them. Multi-day levels that have been tested and held multiple times DO have real institutional flow — that's WHY they held. The stock should genuinely oscillate between these levels because the orders are real.
 
 ---
 
