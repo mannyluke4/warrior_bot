@@ -1847,6 +1847,7 @@ def run_simulation(
     sq_det = SqueezeDetector()
     sq_det.symbol = symbol
     sq_enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
+    _sq_v2 = os.getenv("WB_SQUEEZE_VERSION", "1") == "2"
 
     # VWAP Reclaim detector (Strategy 4)
     from vwap_reclaim_detector import VwapReclaimDetector
@@ -2214,9 +2215,21 @@ def run_simulation(
 
             # Skip ALL pattern exit detection on 10s bars for squeeze/VR trades
             # (squeeze/VR have their own exit logic — TW/BE are too sensitive)
+            # EXCEPT: V2 squeeze trades use check_exit() for candle intelligence
             # Also skip for MP trades when Ross exit is ON (1m signals take over)
             if sim_mgr.open_trade is not None and not sim_mgr.open_trade.closed:
                 if sim_mgr.open_trade.setup_type in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry"):
+                    # V2: route squeeze candle exits through check_exit()
+                    if _sq_v2 and sim_mgr.open_trade.setup_type in ("squeeze", "mp_reentry", "continuation"):
+                        t = sim_mgr.open_trade
+                        exit_reason = sq_det.check_exit(
+                            price=bar.close, qty=t.qty_total,
+                            bar_10s=bar, time_str=time_str,
+                        )
+                        if exit_reason:
+                            sim_mgr.on_exit_signal(exit_reason, bar.close, time_str)
+                            if verbose:
+                                print(f"  [{time_str}] V2_{exit_reason.upper()} @ {bar.close:.4f}", flush=True)
                     return
                 if _ross_exit_enabled:
                     return  # Ross handles all trade types via 1m signals
@@ -2821,7 +2834,14 @@ def run_simulation(
                             size_mult=_sq_armed_before.size_mult,
                         )
                         if trade:
-                            sq_det.notify_trade_opened()
+                            if _sq_v2:
+                                sq_det.notify_trade_opened(
+                                    entry=trade.entry, stop=trade.stop, r=trade.r,
+                                    qty=trade.qty_total, time_str=time_str,
+                                    is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
+                                )
+                            else:
+                                sq_det.notify_trade_opened()
                             if verbose:
                                 print(
                                     f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
@@ -3186,7 +3206,14 @@ def run_simulation(
                             if _sq_saved_risk is not None:
                                 sim_mgr.risk_dollars = _sq_saved_risk
                             if trade:
-                                sq_det.notify_trade_opened()
+                                if _sq_v2:
+                                    sq_det.notify_trade_opened(
+                                        entry=trade.entry, stop=trade.stop, r=trade.r,
+                                        qty=trade.qty_total, time_str=time_str,
+                                        is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
+                                    )
+                                else:
+                                    sq_det.notify_trade_opened()
                                 if verbose:
                                     print(
                                         f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "

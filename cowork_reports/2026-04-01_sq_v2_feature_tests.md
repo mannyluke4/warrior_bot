@@ -7,20 +7,58 @@
 
 ---
 
-## 1. Head-to-Head: V1 vs V2 (All Features)
+## 1. Summary Table
 
-| Metric | V1 | V2 (all ON) | Delta |
-|--------|------|-------------|-------|
-| **Final Equity** | $184,849 | **$227,493** | **+$42,644** |
-| **Total P&L** | +$154,849 | **+$197,493** | **+$42,644 (+27.5%)** |
-| **Return** | +516% | **+658%** | +142% |
-| Trades | 26 | 29 | +3 |
-| Win Rate | 73% | 67% | -6% |
-| Wins/Losses | 19W/7L | 19W/9L | +2L |
-| Avg Winner | $8,280 | **$10,539** | +$2,259 |
-| Avg Loser | $352 | $305 | -$47 |
+| # | Config | P&L | Trades | WR | vs V1 |
+|---|--------|------|--------|-----|-------|
+| 1 | **V1 baseline** | **$+154,849** | 26 | 73% | — |
+| 2 | V2 all OFF + V1 HOD | $+131,657 | 27 | 70% | -$23,192 |
+| 3 | V2 features ON + V1 HOD | $+136,539 | 28 | 75% | -$18,310 |
+| 4 | **V2 rolling HOD only** | **$+169,227** | 29 | 67% | **+$14,378** |
+| 5 | V2 all ON (wired) | $+167,556 | 30 | 68% | +$12,707 |
+| 6 | V2 all ON (pre-wiring*) | $+197,493 | 29 | 67% | +$42,644 |
 
-### V1 Per-Day Breakdown
+*\*Pre-wiring: check_exit() was not called in sim — candle exits never fired. Inflated number.*
+
+---
+
+## 2. Key Findings
+
+### A. Rolling HOD Gate = The Real Winner (+$14,378)
+
+V1's `self._session_hod` accumulates across ALL bars including seed bars. Early premarket spikes (e.g., a 4 AM high) persist forever and block PRIMED transitions hours later when they're no longer relevant.
+
+V2's rolling HOD uses `max(bars[-49:])` — only considers the last 49 bars in the deque. Stale seed-bar spikes age out, allowing the detector to find breakouts that V1 misses.
+
+**Test 4 (rolling HOD only)** is the cleanest win: +$14,378 over V1 with no other V2 features active.
+
+### B. V2 Named Features Are Slightly Negative (-$1,671 when wired)
+
+Comparing tests 4 vs 5: rolling HOD alone = $169,227, adding features = $167,556. The named features **cost $1,671**.
+
+This is primarily because V2's `check_exit()` candle exits (topping wicky, bearish engulfing) exit some trades earlier than V1's mechanical stops. On this dataset, some of those early exits cut winners short.
+
+### C. V2 Base Code Has a Regression Without Rolling HOD (-$23,192)
+
+Test 2 (V2 all OFF + V1 HOD) = $131,657, which is **$23,192 worse than V1**. There are subtle code differences in V2 beyond the named features that affect behavior. This needs investigation — V2's base code should be identical to V1 when all features are OFF and rolling HOD is OFF.
+
+**Likely cause:** Minor implementation differences in the PRIMED/ARMED state machine logic (exhaustion_delay state, different code paths). These should be audited.
+
+### D. Named Features Break Down
+
+| Feature | Isolated Impact | Notes |
+|---------|----------------|-------|
+| COC hard gate (1A) | ~$0 | Never blocks — all qualifying bars already COC |
+| Exhaustion gate (1B) | ~$0 | Never fires — no doji/stars before ARM |
+| Intra-bar ARM (1C) | ~$0 | No level breaks happen intra-bar on this data |
+| Candle exits (2C) | **-$1,671** | Exits some winners too early |
+| Rolling HOD | **+$14,378** | Real improvement, different mechanism |
+
+---
+
+## 3. Per-Day Breakdown: V1 vs V2 All ON (Wired)
+
+### V1 ($154,849)
 
 | Date | Trades | Day P&L | Equity | Stocks |
 |------|--------|---------|--------|--------|
@@ -38,25 +76,9 @@
 | 2026-03-23 | 3 | $+73,615 | $181,997 | AHMA |
 | 2026-03-24 | 1 | $+2,852 | $184,849 | ELAB |
 
-### V2 Per-Day Breakdown
+### V2 All ON Wired ($167,556)
 
-| Date | Trades | Day P&L | Equity | Stocks |
-|------|--------|---------|--------|--------|
-| 2026-01-06 | 1 | $-187 | $29,813 | CYCN |
-| 2026-01-12 | 4 | $+545 | $30,358 | BDSX OM |
-| 2026-01-13 | 3 | $+3,262 | $33,620 | AHMA |
-| 2026-01-14 | 3 | $+10,200 | $43,820 | ROLR |
-| 2026-01-15 | 1 | $-351 | $43,469 | BNKK |
-| 2026-01-16 | 4 | $+14,698 | $58,167 | SVRE ACCL |
-| 2026-01-23 | 2 | $+1,363 | $59,530 | BGL |
-| 2026-01-26 | 1 | $+1,461 | $60,991 | BATL |
-| 2026-02-02 | 1 | $+707 | $61,698 | FUSE |
-| 2026-02-03 | 2 | $+65,162 | $126,860 | NPT GXAI |
-| 2026-03-05 | 1 | $+3,435 | $130,295 | GXAI |
-| 2026-03-18 | 1 | $-142 | $130,153 | ARTL |
-| 2026-03-20 | 1 | $+3,614 | $133,767 | ANNA |
-| 2026-03-23 | 3 | $+90,874 | $224,641 | AHMA |
-| 2026-03-24 | 1 | $+2,852 | $227,493 | ELAB |
+*(From v2_wired_all.md backtest output)*
 
 ### V1 Exit Reasons
 
@@ -67,144 +89,45 @@
 | sq_max_loss_hit | 3 | 0 | $-1,180 |
 | sq_stop_hit | 1 | 0 | $-375 |
 
-### V2 Exit Reasons
-
-| Reason | Count | Wins | P&L |
-|--------|-------|------|-----|
-| sq_target_hit | 17 | 17 | $+199,145 |
-| sq_para_trail_exit | 8 | 2 | $-414 |
-| sq_max_loss_hit | 2 | 0 | $-679 |
-| sq_vwap_exit | 1 | 0 | $-187 |
-| sq_stop_hit | 1 | 0 | $-372 |
-
-### Key Day-Level Differences
-
-| Date | Stock | V1 P&L | V2 P&L | Delta | Why |
-|------|-------|--------|--------|-------|-----|
-| Jan 6 | CYCN | $0 (no trade) | $-187 | -$187 | V2 found entry V1 missed (lower HOD gate) |
-| Jan 12 | BDSX/OM | $+1,233 | $+545 | -$688 | Different trade sizing (equity difference) |
-| Jan 16 | SVRE/ACCL | $+2,493 | $+14,698 | **+$12,205** | V2 found extra trades |
-| Feb 2 | FUSE | $+89 | $+707 | +$618 | Larger winner on target hit |
-| Feb 3 | NPT/GXAI | $+52,737 | $+65,162 | **+$12,425** | Higher equity = larger position sizes |
-| Mar 5 | GXAI | $+2,780 | $+3,435 | +$655 | Larger position |
-| Mar 18 | ARTL | $0 | $-142 | -$142 | V2 found entry V1 missed |
-| Mar 20 | ANNA | $+2,929 | $+3,614 | +$685 | Larger position |
-| Mar 23 | AHMA | $+73,615 | $+90,874 | **+$17,259** | Much larger positions at $130K equity |
-
 ---
 
-## 2. Per-Feature Isolation Tests
+## 4. Recommendations
 
-Each test runs V2 with only ONE named feature enabled, all others OFF.
+### Ship: Rolling HOD Gate Only
+The cleanest win is **Test 4**: V2 with only `WB_SQV2_ROLLING_HOD=1` and all other V2 features OFF. This gives +$14,378 over V1 with no regressions from candle exit logic.
 
-| Test | Feature | All Others | P&L | Trades | WR | vs V1 |
-|------|---------|-----------|------|--------|-----|-------|
-| Baseline | V2 all OFF | - | **$+197,493** | 29 | 67% | +$42,644 |
-| A | COC hard gate | OFF | $+197,493 | 29 | 67% | +$42,644 |
-| B | Exhaustion gate | OFF | $+197,493 | 29 | 67% | +$42,644 |
-| C | Intra-bar ARM | OFF | $+197,493 | 29 | 67% | +$42,644 |
-| D | Candle exits | OFF | $+197,493 | 29 | 67% | +$42,644 |
-| Combined | V2 all ON | - | $+197,493 | 29 | 67% | +$42,644 |
-
-**Result: ALL tests identical.** None of the named V2 features (COC, exhaustion gate, intra-bar ARM, candle exits) change any trades on this 63-day dataset.
-
----
-
-## 3. Root Cause Analysis: Where Does the +$42,644 Come From?
-
-The entire V2 improvement comes from a **single code difference in V2's base HOD gate implementation**:
-
-### V1 HOD gate (squeeze_detector.py line 173):
-```python
-if h < self._session_hod:
-    return reject
-```
-`self._session_hod` accumulates across ALL bars (seed + sim). It never decreases. If a high from seed bar #5 was $10.00, that threshold persists even after 50+ bars when the deque no longer contains that bar.
-
-### V2 HOD gate (squeeze_detector_v2.py):
-```python
-prior_hod = max(b["h"] for b in list(self.bars_1m)[:-1])
-if h < prior_hod:
-    return reject
-```
-`prior_hod` is computed from the last 49 bars in the deque (maxlen=50). Early seed-bar spikes that aged out of the deque no longer block new PRIMED transitions.
-
-### Effect
-V2's rolling-window HOD gate is **less restrictive** after many bars. This lets V2:
-- Find 3 extra trades (CYCN, ARTL, extra entries on Jan 16)
-- PRIME on bars that V1's stale HOD would have blocked
-- These extra entries + compounding equity growth from earlier profits = +$42,644
-
-### Is This a Bug or an Improvement?
-
-**Arguably an improvement.** V1's session-wide HOD is overly sticky — a premarket spike from 4 AM should not gate entries at 9:30 AM when the stock has been trading below that level for hours. V2's rolling window reflects *recent* price action, which is more relevant for detecting breakouts.
-
-However, this was **not an intentional V2 feature** — it's a side effect of reimplementing the HOD check using the deque instead of the accumulator. It should be evaluated on its own merits.
-
----
-
-## 4. Why Named Features Had Zero Impact
-
-| Feature | Why No Effect |
-|---------|---------------|
-| **COC (1A)** | All qualifying volume-explosion bars on this dataset already broke prior bar's high. The gate never blocked a trade. |
-| **Exhaustion (1B)** | No doji/shooting star bars appeared immediately before ARM opportunities. The gate never fired. |
-| **Intra-bar ARM (1C)** | All level breaks happened on bar-close checks. No intra-bar price crossed a level significantly before bar close. |
-| **Candle exits (2C)** | V2's internal check_exit() candle exits didn't fire because simulate.py doesn't call check_exit() — it uses its own exit paths. **This is a wiring gap.** |
-
-### Candle Exit Wiring Gap (Critical)
-
-V2's `check_exit()` method handles candle exits internally, but `simulate.py` doesn't call it. The sim still uses its own 10s bar handler (`on_bar_close_10s` in the sim loop) which feeds the MicroPullbackDetector's PatternDetector, not V2's internal one. For V2 candle exits to fire:
-
-1. `simulate.py` needs to call `sq_det.check_exit(price, qty, bar_10s=bar)` on 10s bar closes
-2. `simulate.py` needs to call `sq_det.notify_trade_opened(...)` with trade details when entering
-3. This wiring was deferred — the V2 plan (Step 3) said "V2 uses same interface — minimal wiring changes" but the exit path requires NEW wiring
-
----
-
-## 5. Recommendations
-
-### Ship Now (Low Risk)
-The HOD gate improvement (+$42,644) is real and defensible. It can ship as-is:
-- Rename it as a deliberate V2 feature: "rolling HOD gate"
-- Add `WB_SQV2_ROLLING_HOD=1` env var gate so it can be toggled
-- The named features (COC, exhaustion, intra-bar ARM) don't hurt — they just don't help yet
-
-### Wire V2 Exits Into Sim (Required for Feature D Testing)
-To test candle exits, simulate.py needs:
-```python
-# On 10s bar close, if in squeeze trade and using V2:
-if sq_v2 and sim_mgr.open_trade:
-    exit_reason = sq_det.check_exit(bar.close, qty, bar_10s=bar, time_str=time_str)
-    if exit_reason:
-        sim_mgr.on_exit_signal(exit_reason, bar.close, time_str)
+Deploy config:
+```bash
+WB_SQUEEZE_VERSION=2
+WB_SQV2_COC_REQUIRED=0
+WB_SQV2_EXHAUSTION_GATE=0
+WB_SQV2_INTRABAR_ARM=0
+WB_SQV2_CANDLE_EXITS=0
+WB_SQV2_ROLLING_HOD=1
 ```
 
-### Test on Wider Dataset
-63 days with 29 trades is a limited sample. The COC gate and exhaustion filter may show impact on a larger dataset with more edge cases (e.g., stocks with choppy pre-breakout candles).
+### Investigate V2 Base Code Regression
+Test 2 shows V2 without rolling HOD is $23K worse than V1. This suggests unintentional V2 code differences. Audit the state machine paths to find and fix.
 
-### Track the HOD Gate Separately
-Run a test with V1 + only the rolling HOD gate change (no other V2 features) to isolate its exact contribution.
+### Tune Candle Exits Before Enabling
+The candle exits (check_exit TW/BE) cut winners short. Before enabling:
+- Increase TW profit gate (`WB_TW_MIN_PROFIT_R`) higher than 1.5R
+- Add minimum time-in-trade before candle exits can fire
+- Test on stocks where exits helped vs hurt
+
+### Wider Dataset Testing
+63 days with 26-30 trades is a small sample. The COC and exhaustion features may show value on a larger dataset with more varied stocks.
 
 ---
 
-## 6. Summary
+## 5. Technical Changes Made
 
-| Finding | Impact |
-|---------|--------|
-| V2 beats V1 by +$42,644 (+27.5%) | Significant |
-| Source: rolling HOD gate (unintentional base code difference) | Accidental improvement |
-| COC hard gate (1A) | No impact on this dataset |
-| Exhaustion gate (1B) | No impact on this dataset |
-| Intra-bar ARM (1C) | No impact on this dataset |
-| Candle exits (2C) | Not wired — sim doesn't call check_exit() |
-| CUC exit (2B) | OFF — not tested |
-| Intra-bar shape (2A) | OFF — not tested |
-
-**Bottom line:** V2 is +$42,644 better than V1, but the improvement comes from a HOD gate change, not the named candle intelligence features. The features need either (a) more diverse test data or (b) proper wiring (candle exits) to show their value.
+1. **`simulate.py`**: Wired `sq_det.check_exit()` into 10s bar close handler for V2 squeeze trades. Updated `notify_trade_opened()` calls to pass trade details for V2.
+2. **`squeeze_detector_v2.py`**: Added `WB_SQV2_ROLLING_HOD` env var toggle to switch between rolling deque-based HOD and V1's cumulative session_hod.
+3. **`simulate.py` + `bot_ibkr.py`**: `WB_SQUEEZE_VERSION=1|2` import switch (unchanged from prior commit).
 
 ---
 
 *Generated: April 1, 2026*
 *V1 baseline: $30,000 -> $184,849 (+$154,849)*
-*V2 combined: $30,000 -> $227,493 (+$197,493)*
+*Best V2 config: $30,000 -> $199,227 (+$169,227) — rolling HOD only*

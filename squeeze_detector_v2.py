@@ -56,6 +56,7 @@ class SqueezeDetectorV2:
         self.exhaustion_gate = os.getenv("WB_SQV2_EXHAUSTION_GATE", "1") == "1"
         self.intrabar_arm = os.getenv("WB_SQV2_INTRABAR_ARM", "1") == "1"
         self.trend_required = os.getenv("WB_SQV2_TREND_REQUIRED", "0") == "1"
+        self.rolling_hod = os.getenv("WB_SQV2_ROLLING_HOD", "1") == "1"
 
         # --- V2 Exit features ---
         self.candle_exits = os.getenv("WB_SQV2_CANDLE_EXITS", "1") == "1"
@@ -254,11 +255,15 @@ class SqueezeDetectorV2:
                         f"SQ_REJECT: not_above_pm_high (bar_high=${h:.4f} < PM_HIGH=${self.premarket_high:.4f})"
                     )
             elif self._session_hod > 0:
-                # Note: HOD was already updated above, so h == _session_hod means this IS the new HOD
-                prior_hod = max(b["h"] for b in list(self.bars_1m)[:-1]) if len(self.bars_1m) > 1 else 0.0
-                if h < prior_hod:
+                if self.rolling_hod:
+                    # V2 rolling HOD: only consider bars still in deque (avoids stale seed-bar spikes)
+                    hod_threshold = max(b["h"] for b in list(self.bars_1m)[:-1]) if len(self.bars_1m) > 1 else 0.0
+                else:
+                    # V1 cumulative HOD: session_hod includes all bars ever seen
+                    hod_threshold = self._session_hod
+                if h < hod_threshold:
                     return (
-                        f"SQ_REJECT: not_new_hod (bar_high=${h:.4f} < HOD=${prior_hod:.4f})"
+                        f"SQ_REJECT: not_new_hod (bar_high=${h:.4f} < HOD=${hod_threshold:.4f})"
                     )
 
         # --- Transition to PRIMED ---
