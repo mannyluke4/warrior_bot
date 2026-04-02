@@ -1,5 +1,5 @@
 # Warrior Bot — Master Task Tracker
-## Last Updated: 2026-03-27 (Cowork session — EEIQ comparison, execution gap analysis)
+## Last Updated: 2026-04-02 (Cowork session — V3 hybrid live, SQ V2 feature tests complete)
 
 This document tracks ALL open work items across every strategy and system. Updated by Cowork after each session. Lives in the repo so nothing gets lost.
 
@@ -103,59 +103,31 @@ Per-stock analysis of every profitable missed stock. 5 root cause categories: fl
 
 ---
 
-## 🔴🔴🔴 #1 ABSOLUTE PRIORITY — Live Bot Must Take Trades (IBKR V2)
+## 🟢 RESOLVED — V3 Hybrid Bot Live (Replaces V2 IBKR-only)
 
-**V2 has NEVER taken a trade.** Not one. Zero trades across all live sessions (March 25 → April 1). On April 1, CYCN ran 300-400% (Ross made $7,400) and the bot sat at IDLE watching it. This is priority #1 above everything else.
+**V2 pure-IBKR bot never took a trade** in 8 live sessions (March 25 → April 1). Root cause: PRIMED→ARMED gap — volume explosion and level break happen on the SAME bar on fast movers, but V1/V2 require them on SEPARATE bars.
 
-### Three Layers of Failure (April 1, 2026)
+**Solution: V3 Hybrid** (`bot_v3_hybrid.py`, 1576 lines) — IBKR for data (scanner, ticks, RTVolume) + Alpaca for execution (orders, paper account). First live session April 2: 0 trades (correct outcome, 100% backtest match), infrastructure stable 6 hours.
 
-**Layer 1 — Bot Can't Stay Running:**
+**V1 phantom position bug also fixed:** VOR April 1 had cancel-replace race condition. V3 has: startup position reconciliation, fill verification (no cancel-replace), 60s heartbeat sync, exit verification with market fallback, graceful shutdown check.
+
+### Remaining Infrastructure Issues
+
 | Issue | Status | Notes |
 |-------|--------|-------|
-| IB Gateway auto-start failure (April 1) | **BROKEN** | 36 retries, 180s timeout, FATAL abort at 04:07 ET. Even with manual start at 2:30 AM. |
-| live_scanner.py date boundary crash | **BUG** | Databento EQUS.SUMMARY end=today fails if dataset not yet available. Fix: use end=today-1. |
-| Gateway timeout too short (180s) | **NEEDS FIX** | Increase to 300s, add kill+retry loop, add health-check alert if not connected by 04:15 ET |
-| Volume=0 bug (lastSize not read) | **✅ FIXED** | |
-| Competing live session (Error 10197) | **✅ RESOLVED** | |
-| All other prior fixes | **✅ FIXED** | See completed fixes below |
+| Mac Mini pmset sleep prevention | **NOT APPLIED** | `sudo pmset -a sleep 0 displaysleep 0` + `caffeinate -dims`. Cron 4 AM fails daily. |
+| Scanner-move paradox | **KNOWN LIMITATION** | Volume spike that creates opportunity = spike that triggers scanner discovery. Accept catching 2nd move. |
+| IBKR STK.US.MAJOR misses micro-caps | **KNOWN** | Databento bridge helps (KIDZ found via watchlist.txt) |
 
-**Layer 2 — Scanner Can't Find Stocks Early Enough:**
-| Issue | Status | Notes |
-|-------|--------|-------|
-| IBKR STK.US.MAJOR misses micro-caps | **KNOWN** | KIDZ ($2M cap) completely invisible to IBKR scanner |
-| Databento bridge crashed (date bug) | **BUG** | See Layer 1 |
-| Bot started at 08:38 ET (should be 04:00) | **CAUSED BY LAYER 1** | Missed entire premarket golden window |
-| Unified Scanner V3 directive | **DIRECTIVE WRITTEN** | `DIRECTIVE_UNIFIED_SCANNER_V3.md` — fixes all scanner issues long-term |
-
-**Layer 3 — Squeeze Detector Doesn't Fire on Gradual Runners:**
-| Issue | Status | Notes |
-|-------|--------|-------|
-| CYCN stayed IDLE all session ($4.22→$8.47) | **CRITICAL GAP** | vol_ratio never hit 3.0x on any single bar — volume distributed evenly across bars |
-| Squeeze requires single explosive bar | **DESIGN LIMITATION** | Works for VERO/ROLR-style spikes, misses CYCN-style stair-steps |
-| RENX SQ_NO_ARM: para_invalid_r | **NEEDS INVESTIGATION** | Primed twice but entry/stop too close for valid R ratio |
-| **Options for CYCN-type stocks** | **NEEDS DISCUSSION** | (1) Lower VOL_MULT to 2.0x, (2) cumulative vol prime, (3) consolidation-breakout detector, (4) re-enable MP V2 |
-
-### Previously Fixed (for reference)
-- Volume=0 bug, competing sessions, runner position bug, exit order type, halt spam, bar-mode wiring, scanner cutoff, stale detector state — all fixed
-
-**Reports:** `cowork_reports/2026-03-26_morning_issues_and_fixes.md`, `cowork_reports/2026-03-26_morning_backtest.md`
+**Reports:** `cowork_reports/2026-04-02_morning_progress.md`, `cowork_reports/2026-04-01_v1_investigation.md`
 
 ---
 
-## 🔴 CRITICAL — Live Bot Audit (Mac Mini) [SUPERSEDED by IBKR V2 section above]
+## 🟢 COMPLETED — Live Bot Migration to V3 Hybrid
 
-Mac Mini was running stale code (v6-dynamic-sizing, 22 commits behind main). daily_run.sh updated to pull main. Additional issues: Alpaca websocket failures, scanner divergence.
+Mac Mini now runs `bot_v3_hybrid.py` via `daily_run_v3.sh`. V1 Alpaca websocket issues and V2 zero-trade problem both resolved by V3 architecture. Cron at 4 AM MT (2 AM was old schedule).
 
-**Directive**: `DIRECTIVE_LIVE_BOT_AUDIT_2026_03_23.md`
-
-| Task | Status | Owner | Notes |
-|------|--------|-------|-------|
-| Switch Mac Mini to `main` branch | **daily_run.sh UPDATED** | CC | v6 had 0 unique commits vs main |
-| Verify .env on Mac Mini | **PENDING** | CC | WB_ROSS_EXIT_ENABLED=0, WB_MP_ENABLED=0 |
-| Smoke test bot.py on Mac Mini | **PENDING** | CC | Pre-flight import check + 10s health check |
-| Verify cron schedule | **PENDING** | CC | 0 2 * * 1-5 (2 AM MT weekdays) |
-| Investigate Alpaca websocket failures | **NOTED** | MEDIUM | 99,934 retries on 2026-03-23, 0 trades |
-| Databento migration for live data | **NOT STARTED** | HIGH | Scanner divergence = 0 overlap between live and sim |
+**Remaining:** pmset sleep prevention not yet applied — Gateway requires active display session. Manual startup still needed daily.
 
 ---
 
@@ -217,39 +189,38 @@ Redesign MP as a re-entry module that only activates AFTER the squeeze detector 
 
 ---
 
-## 🟢 Strategy 2: Squeeze / Breakout Entry (V2 IMPLEMENTED — Validation Phase)
+## 🟢 Strategy 2: Squeeze / Breakout — V2 Detector Built + Feature Tested
 
-Squeeze/breakout detector captures first-leg momentum moves that MP misses. V1 implemented 2026-03-19, parabolic mode added same day, V2 conflict fixes (HOD gate, separate counters, dollar cap) landed same day.
+Squeeze is the primary strategy. V1 detector in `squeeze_detector.py` (FROZEN). V2 detector in `squeeze_detector_v2.py` (714 lines, separate module). V3 hybrid bot uses V2 detector with rolling HOD gate live.
 
-**Files**: `squeeze_detector.py` (~420 lines), `simulate.py` (+340 lines exit/wiring)
-**Design Doc**: `STRATEGY_2_SQUEEZE_DESIGN.md` — All 5 decisions locked
-**Directives**: `DIRECTIVE_SQUEEZE_V1.md`, `DIRECTIVE_SQUEEZE_PARABOLIC.md`, `DIRECTIVE_SQUEEZE_FIXES_V2.md`
+**Files**: `squeeze_detector.py` (V1, ~420 lines, FROZEN), `squeeze_detector_v2.py` (V2, 714 lines), `bot_v3_hybrid.py` (live bot)
+**Import switch**: `WB_SQUEEZE_VERSION=1|2`
 
-### V2 Results (4-stock validation, squeeze + parabolic + all fixes)
-| Stock | MP-Only | Squeeze V2 | Delta | Trades |
-|-------|---------|-----------|-------|--------|
-| ARTL | +$922 | +$5,275 | +$4,353 | 2 squeeze (1W 1L) |
-| VERO | +$18,583 | +$20,922 | +$2,339 | 1 MP + 3 squeeze (4W 0L) |
-| ROLR | +$6,444 | +$16,195 | +$9,751 | 2 squeeze + 1 MP (3W 0L) |
-| SXTC | +$2,213 | +$2,213 | $0 | No squeeze activity |
-| **Total** | **$28,162** | **$44,605** | **+$16,443 (+58%)** | |
+### SQ V2 Feature Test Results (63-Day Backtest, April 1 2026)
 
-### Task Status
+| Config | P&L | Trades | WR | Delta vs V1 |
+|--------|-----|--------|-----|------------|
+| V1 baseline | +$154,849 | 26 | 73% | — |
+| **V2 rolling HOD only** | **+$169,227** | **29** | **67%** | **+$14,378** |
+| V2 all features ON | +$167,556 | 29 | 67% | +$12,707 |
+| V2 base, rolling HOD OFF | +$131,657 | — | — | **-$23,192 (REGRESSION)** |
+
+**Rolling HOD is the single improvement that matters.** V1's `_session_hod` never expires; V2's `max(bars[-49:])` lets stale premarket highs age out. Named features (COC, exhaustion gate, intra-bar ARM) had ~$0 impact individually. Candle exits cost $1,671 — OFF for now.
+
+### Current Live Config (V3 bot)
+- `WB_SQUEEZE_VERSION=2` with rolling HOD ON, candle exits OFF
+- All other V2 features available but currently OFF
+
+### Open Tasks
+
 | Task | Status | Priority | Notes |
 |------|--------|----------|-------|
-| Define squeeze entry criteria | **✅ DONE** | — | Volume explosion (3x avg) + VWAP + green bar + body % + key level break |
-| Design squeeze detector module | **✅ DONE** | — | IDLE → PRIMED → ARMED state machine, same interface as MP |
-| Define squeeze exit rules | **✅ DONE** | — | Trail (1.5R), time stop (5 bars), VWAP loss, core+runner partial (75/25 at 2R) |
-| Implement squeeze_detector.py | **✅ DONE** | — | All env vars gated, probe sizing, max attempts, PM confidence scoring |
-| Wire into simulate.py | **✅ DONE** | — | Dual detector feed, squeeze priority, conflict resolution, TW/BE skip |
-| Parabolic mode | **✅ DONE** | — | Level-based stop when consolidation R > cap. ARTL went from 0 entries to +$6,963 first trade |
-| V2 Fix 1: HOD gate | **✅ DONE** | — | `WB_SQ_NEW_HOD_REQUIRED=1` — bar must make new session high. Blocks VERO bounce entry |
-| V2 Fix 2: Separate entry counters | **✅ DONE** | — | Squeeze trades don't consume MP's max_entries slots. ROLR gets both strategies |
-| V2 Fix 3: Dollar loss cap | **✅ DONE** | — | `WB_SQ_MAX_LOSS_DOLLARS=500` — catches gap-throughs on tight parabolic stops |
-| Backtest regression | **✅ PASS** | — | VERO +$15,692, ROLR +$6,444 (baseline shifted 3/27 — system-wide optimization) |
-| **Add squeeze env vars to YTD runner** | **NOT STARTED** | **HIGH** | `run_ytd_v2_backtest.py` needs squeeze V2 env vars in ENV_BASE + setup_type parsing |
-| **Run full 55-day YTD with squeeze ON** | **NOT STARTED** | **HIGH** | The definitive test — how many squeeze opportunities across full dataset |
-| Port squeeze exits to trade_manager.py | **NOT STARTED** | LOW | For live bot. SimTradeManager has the logic — port after backtest validation |
+| All V1/V2 core implementation | **✅ DONE** | — | Both detectors working, V3 bot live |
+| Feature testing (63-day backtest) | **✅ DONE** | — | Rolling HOD = +$14,378, everything else ~$0 |
+| **V2 base code regression audit** | **NOT STARTED** | **P1** | V2 without rolling HOD is -$23K worse than V1. Unexplained code path differences need audit. |
+| **Candle exit tuning** | **NOT STARTED** | **P2** | Currently OFF (cost $1,671). Need higher profit gates or min time-in-trade. |
+| Run full 55-day YTD with squeeze V2 | **NOT STARTED** | **HIGH** | The definitive test across full dataset |
+| Port squeeze exits to trade_manager.py | **✅ DONE** | — | V3 hybrid bot handles this directly |
 
 ### Squeeze V2 Env Vars (all gated, defaults = OFF or conservative)
 ```
@@ -362,14 +333,13 @@ The "extended candles" reset and TW resets during pullback phase are too aggress
 
 | Metric | Value | Date |
 |--------|-------|------|
-| YTD 2026 morning (IBKR data) | **+$120,221** (36 trades, 97% WR, $30K → $150K) | 2026-03-26 |
-| Full megatest Jan 2025–Mar 2026 | **+$1,348,605** (321 trades, 90% WR, $30K → $1.38M) | 2026-03-26 |
-| Realistic megatest (slippage adj) | **$350K–$550K** estimated | 2026-03-25 |
-| EEIQ execution gap vs Ross | Bot ~$1.5–3K vs Ross $37.8K (12–25x) | 2026-03-27 |
+| SQ V1 (63-day backtest) | **+$154,849** (26 trades, 73% WR) | 2026-04-01 |
+| SQ V2 rolling HOD (63-day backtest) | **+$169,227** (29 trades, 67% WR) | 2026-04-01 |
 | Jan 2025 missed stocks potential | **+$42,818** (7.7x vs actual $5,543) | 2026-03-23 |
 | VERO regression | **+$15,692** (requires `WB_MP_ENABLED=1`) | 2026-03-27 |
 | ROLR regression | **+$6,444** (requires `WB_MP_ENABLED=1`) | 2026-03-18 |
-| Live bot status | **0 trades across 3 days** (Mar 25–27, IBKR V2) | 2026-03-27 |
+| V1 live (April 1) | **4 trades, -$671** + VOR phantom | 2026-04-01 |
+| V3 live (April 2) | **0 trades, $0** (correct — 100% backtest match) | 2026-04-02 |
 
 ---
 
