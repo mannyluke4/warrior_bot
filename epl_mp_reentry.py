@@ -28,6 +28,7 @@ EPL_MP_COOLDOWN_BARS = int(os.getenv("WB_EPL_MP_COOLDOWN_BARS", "3"))
 EPL_MP_MAX_PULLBACK_BARS = int(os.getenv("WB_EPL_MP_MAX_PULLBACK_BARS", "3"))
 EPL_MP_MIN_R = float(os.getenv("WB_EPL_MP_MIN_R", "0.06"))
 EPL_MP_STOP_PAD = float(os.getenv("WB_EPL_MP_STOP_PAD", "0.01"))
+EPL_MP_VWAP_FLOOR = os.getenv("WB_EPL_MP_VWAP_FLOOR", "1") == "1"
 
 
 # ── Per-symbol state ─────────────────────────────────────────────────
@@ -138,6 +139,12 @@ class EPLMPReentry(EPLStrategy):
             if self._is_pullback_bar(bar, state.prev_bar):
                 state.pullback_count += 1
                 state.pullback_low = min(state.pullback_low, bar["l"])
+                # VWAP floor: pullback breaching VWAP = breakdown, not pullback
+                if EPL_MP_VWAP_FLOOR and bar.get("vwap") and state.pullback_low < bar["vwap"]:
+                    state.phase = "WATCHING"
+                    state.pullback_count = 0
+                    state.pullback_low = float('inf')
+                    return None
                 if state.pullback_count > EPL_MP_MAX_PULLBACK_BARS:
                     state.phase = "WATCHING"
                     state.pullback_count = 0
@@ -152,6 +159,12 @@ class EPLMPReentry(EPLStrategy):
                     stop = state.pullback_low - EPL_MP_STOP_PAD
                     r = entry - stop
                     if r < EPL_MP_MIN_R:
+                        state.phase = "WATCHING"
+                        state.pullback_count = 0
+                        state.pullback_low = float('inf')
+                        return None
+                    # VWAP floor: block ARM if pullback low is below VWAP
+                    if EPL_MP_VWAP_FLOOR and bar.get("vwap") and state.pullback_low < bar["vwap"]:
                         state.phase = "WATCHING"
                         state.pullback_count = 0
                         state.pullback_low = float('inf')

@@ -2611,7 +2611,7 @@ def run_simulation(
                     _sq_state = sq_det._state if sq_enabled else "IDLE"
                     if _epl_now and _epl_arbitrator.can_epl_enter(symbol, _sq_state, False, _epl_now):
                         _bar_dict = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
-                                     "v": bar.volume, "green": bar.close >= bar.open}
+                                     "v": bar.volume, "green": bar.close >= bar.open, "vwap": vwap}
                         _epl_signals = _epl_registry.collect_entry_signals(symbol, _bar_dict, None, None)
                         _epl_best = _epl_arbitrator.get_best_signal(_epl_signals)
                         if _epl_best:
