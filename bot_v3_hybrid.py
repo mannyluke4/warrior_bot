@@ -50,6 +50,11 @@ from ibkr_scanner import scan_premarket_live, scan_catchup, rank_score
 from bars import TradeBarBuilder, Bar
 from candles import is_bearish_engulfing
 from patterns import PatternDetector
+from epl_framework import (
+    EPL_ENABLED, EPL_MAX_NOTIONAL, EPL_MIN_GRADUATION_R,
+    GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
+)
+from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
 
 ET = pytz.timezone("US/Eastern")
 
@@ -174,6 +179,11 @@ class BotState:
 
         # Tick recording for backtest cache
         self.tick_buffer: dict[str, list] = {}  # symbol -> [{p, s, t}, ...]
+
+        # EPL (Extended Play List) — post-2R re-entry system
+        self.epl_watchlist: EPLWatchlist = None
+        self.epl_registry: StrategyRegistry = None
+        self.epl_arbitrator: PositionArbitrator = None
 
         # Candle exit state (per-symbol)
         self.pattern_dets: dict[str, PatternDetector] = {}  # symbol -> PatternDetector (10s bars)
@@ -646,6 +656,44 @@ def on_bar_close_1m(bar):
             elif "CT_WATCHING" in ct_msg or "CT_PULLBACK" in ct_msg or "CT_PAUSE" in ct_msg:
                 print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
 
+    # ── EPL: 1m bar processing ──
+    if EPL_ENABLED and state.epl_registry and state.epl_registry.strategy_count > 0:
+        now_et = datetime.now(ET)
+        # Expiry check
+        expired = state.epl_watchlist.check_expiry(now_et)
+        for esym in expired:
+            state.epl_registry.notify_expiry(esym)
+            state.epl_watchlist.remove(esym)
+            print(f"[{now_str} ET] [EPL] {esym} expired from watchlist", flush=True)
+
+        # EPL exit management (1m bar)
+        pos = state.open_position
+        if pos and pos.get("setup_type", "").startswith("epl_") and pos["symbol"] == symbol:
+            epl_strat = state.epl_registry.get_strategy(pos["setup_type"])
+            if epl_strat:
+                bar_dict = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                            "v": bar.volume, "green": bar.close >= bar.open, "vwap": vwap}
+                epl_exit = epl_strat.manage_exit(symbol, bar.close, bar_dict)
+                if epl_exit:
+                    print(f"[{now_str} ET] [EPL] {epl_exit.strategy} EXIT {symbol} "
+                          f"@ ${epl_exit.exit_price:.2f} reason={epl_exit.exit_reason}", flush=True)
+                    exit_trade(symbol, epl_exit.exit_price, pos["qty"], epl_exit.exit_reason)
+                    if state.epl_arbitrator:
+                        epl_pnl = (epl_exit.exit_price - pos["entry"]) * pos["qty"]
+                        state.epl_arbitrator.record_epl_trade_result(symbol, epl_pnl)
+                    state.epl_registry.reset_all(symbol)
+
+        # EPL entry signals (1m bar)
+        if state.open_position is None and state.epl_watchlist.is_graduated(symbol):
+            sq_state = state.sq_detectors[symbol]._state if (SQ_ENABLED and symbol in state.sq_detectors) else "IDLE"
+            if state.epl_arbitrator.can_epl_enter(symbol, sq_state, False, now_et):
+                bar_dict = {"o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+                            "v": bar.volume, "green": bar.close >= bar.open, "vwap": vwap}
+                signals = state.epl_registry.collect_entry_signals(symbol, bar_dict, None, None)
+                best = state.epl_arbitrator.get_best_signal(signals)
+                if best:
+                    _enter_epl_trade(symbol, best)
+
 
 def _in_tw_grace() -> bool:
     """True if the open trade is within the topping wicky grace period."""
@@ -946,6 +994,84 @@ def enter_trade(symbol: str, armed, setup_type: str):
     threading.Thread(target=verify_alpaca_fill, daemon=True).start()
 
 
+def _enter_epl_trade(symbol: str, signal):
+    """Place EPL entry order via Alpaca."""
+    entry = signal.entry_price
+    stop = signal.stop_price
+    r = entry - stop
+    if r <= 0 or r < MIN_R:
+        return
+
+    qty = int(math.floor(EPL_MAX_NOTIONAL * signal.position_size_pct / max(entry, 0.01)))
+    qty = min(qty, MAX_SHARES)
+    if qty <= 0:
+        return
+
+    limit_price = round(entry + 0.02, 2)
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+    print(f"[{now_str} ET] [EPL] 🟩 ENTRY: {symbol} strategy={signal.strategy} "
+          f"qty={qty} limit=${limit_price:.2f} stop=${stop:.4f} R=${r:.4f} "
+          f"reason={signal.reason}", flush=True)
+
+    try:
+        req = LimitOrderRequest(
+            symbol=symbol, qty=qty, side=OrderSide.BUY,
+            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
+        )
+        alpaca_order = state.alpaca.submit_order(req)
+        order_id = str(alpaca_order.id)
+        print(f"  [EPL] ALPACA ORDER: {order_id}", flush=True)
+    except Exception as e:
+        print(f"  [EPL] ORDER FAILED: {e}", flush=True)
+        return
+
+    state.open_position = {
+        "symbol": symbol, "qty": qty, "entry": limit_price, "stop": stop,
+        "r": r, "score": signal.confidence * 10, "setup_type": signal.strategy,
+        "peak": limit_price, "tp_hit": False, "entry_time": datetime.now(ET),
+        "order_id": order_id, "is_parabolic": False, "fill_confirmed": False,
+    }
+    state.pending_order = {"order_id": order_id, "placed_time": datetime.now(ET), "timeout_seconds": 15}
+
+    epl_strat = state.epl_registry.get_strategy(signal.strategy)
+    if epl_strat and hasattr(epl_strat, 'mark_in_trade'):
+        epl_strat.mark_in_trade(symbol)
+
+    import threading
+    def verify_epl_fill():
+        for _ in range(30):
+            try:
+                o = state.alpaca.get_order_by_id(order_id)
+                if o.status == 'filled':
+                    actual_price = float(o.filled_avg_price)
+                    actual_qty = int(float(o.filled_qty))
+                    if state.open_position and state.open_position.get("order_id") == order_id:
+                        state.open_position["entry"] = actual_price
+                        state.open_position["qty"] = actual_qty
+                        state.open_position["peak"] = max(state.open_position["peak"], actual_price)
+                        state.open_position["stop"] = actual_price - r
+                        state.open_position["fill_confirmed"] = True
+                        state.pending_order = None
+                        print(f"  [EPL] FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}", flush=True)
+                    return
+                if o.status in ('cancelled', 'expired', 'rejected'):
+                    if state.open_position and state.open_position.get("order_id") == order_id:
+                        state.open_position = None
+                        state.pending_order = None
+                    return
+            except Exception:
+                pass
+            time.sleep(0.5)
+        try:
+            state.alpaca.cancel_order_by_id(order_id)
+        except Exception:
+            pass
+        if state.open_position and state.open_position.get("order_id") == order_id:
+            state.open_position = None
+            state.pending_order = None
+    threading.Thread(target=verify_epl_fill, daemon=True).start()
+
+
 def manage_exit(symbol: str, price: float):
     """Manage exit for open position."""
     pos = state.open_position
@@ -973,7 +1099,9 @@ def manage_exit(symbol: str, price: float):
             exit_trade(symbol, price, qty, "bail_timer")
             return
 
-    if setup_type in ("squeeze", "mp_reentry", "continuation"):
+    if setup_type.startswith("epl_"):
+        return  # EPL exits handled via strategy.manage_exit() in tick/bar processing
+    elif setup_type in ("squeeze", "mp_reentry", "continuation"):
         _squeeze_exit(symbol, price, pos)
     else:
         _mp_exit(symbol, price, pos)
@@ -1012,6 +1140,25 @@ def _squeeze_exit(symbol: str, price: float, pos: dict):
         # 3) Target hit — exit core, keep runner
         if r > 0 and price >= entry + (SQ_TARGET_R * r):
             pos["tp_hit"] = True
+            # EPL graduation: stock hit 2R, add to watchlist for re-entry
+            if EPL_ENABLED and state.epl_watchlist is not None:
+                realized_r = (price - entry) / r if r > 0 else 0
+                if realized_r >= EPL_MIN_GRADUATION_R:
+                    _vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else 0
+                    _hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else 0
+                    _pm_h = state.bar_builder_1m.get_premarket_high(symbol) if state.bar_builder_1m else 0
+                    ctx = GraduationContext(
+                        symbol=symbol, graduation_time=datetime.now(ET),
+                        graduation_price=price, sq_entry_price=entry, sq_stop_price=stop,
+                        hod_at_graduation=_hod or 0, vwap_at_graduation=_vwap or 0,
+                        pm_high=_pm_h or 0, avg_volume_at_graduation=0,
+                        sq_trade_count=1, r_value=r,
+                    )
+                    state.epl_watchlist.add(ctx)
+                    state.epl_registry.notify_graduation(ctx)
+                    _now = datetime.now(ET).strftime("%H:%M:%S")
+                    print(f"[{_now} ET] [EPL] {symbol} GRADUATED @ ${price:.2f} "
+                          f"(R={realized_r:.1f})", flush=True)
             qty_core = max(1, int(qty * SQ_CORE_PCT / 100))
             qty_runner = qty - qty_core
             if qty_runner > 0:
@@ -1226,6 +1373,34 @@ def _process_ticker(ticker):
     # Check triggers
     check_triggers(symbol, price)
 
+    # ── EPL tick processing ──
+    if EPL_ENABLED and state.epl_registry and state.epl_registry.strategy_count > 0:
+        pos = state.open_position
+        # EPL tick-level exit
+        if pos and pos.get("setup_type", "").startswith("epl_") and pos["symbol"] == symbol:
+            epl_strat = state.epl_registry.get_strategy(pos["setup_type"])
+            if epl_strat:
+                epl_exit = epl_strat.manage_exit(symbol, price, None)
+                if epl_exit:
+                    _now = datetime.now(ET).strftime("%H:%M:%S")
+                    print(f"[{_now} ET] [EPL] {epl_exit.strategy} EXIT {symbol} "
+                          f"@ ${epl_exit.exit_price:.2f} reason={epl_exit.exit_reason}", flush=True)
+                    exit_trade(symbol, epl_exit.exit_price, pos["qty"], epl_exit.exit_reason)
+                    if state.epl_arbitrator:
+                        epl_pnl = (epl_exit.exit_price - pos["entry"]) * pos["qty"]
+                        state.epl_arbitrator.record_epl_trade_result(symbol, epl_pnl)
+                    state.epl_registry.reset_all(symbol)
+                    return
+        # EPL tick-level entry trigger
+        if state.open_position is None and state.epl_watchlist and state.epl_watchlist.is_graduated(symbol):
+            sq_state = state.sq_detectors[symbol]._state if (SQ_ENABLED and symbol in state.sq_detectors) else "IDLE"
+            if state.epl_arbitrator.can_epl_enter(symbol, sq_state, False, datetime.now(ET)):
+                signals = state.epl_registry.collect_entry_signals(symbol, None, price, size)
+                best = state.epl_arbitrator.get_best_signal(signals)
+                if best:
+                    _enter_epl_trade(symbol, best)
+                    return
+
     # Manage exits
     if state.open_position and state.open_position["symbol"] == symbol:
         manage_exit(symbol, price)
@@ -1386,6 +1561,18 @@ def main():
     actual_equity = get_account_equity()
     print(f"Account equity: ${actual_equity:,.0f}", flush=True)
     STARTING_EQUITY = actual_equity
+
+    # ── EPL Framework ──
+    if EPL_ENABLED:
+        state.epl_watchlist = EPLWatchlist()
+        state.epl_registry = StrategyRegistry()
+        state.epl_arbitrator = PositionArbitrator(state.epl_registry, state.epl_watchlist)
+        _epl_mp = EPLMPReentry()
+        if EPL_MP_ENABLED:
+            state.epl_registry.register(_epl_mp)
+        print(f"EPL initialized: {state.epl_registry.strategy_count} strategies registered", flush=True)
+    else:
+        print("EPL disabled (WB_EPL_ENABLED=0)", flush=True)
 
     # Bar builders
     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
