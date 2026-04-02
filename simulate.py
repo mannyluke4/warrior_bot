@@ -1938,12 +1938,16 @@ def run_simulation(
         GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
     )
     from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
+    from epl_vwap_reclaim import EPLVwapReclaim, EPL_VR_ENABLED
     _epl_watchlist = EPLWatchlist()
     _epl_registry = StrategyRegistry()
     _epl_arbitrator = PositionArbitrator(_epl_registry, _epl_watchlist)
     _epl_mp = EPLMPReentry()
     if EPL_ENABLED and EPL_MP_ENABLED:
         _epl_registry.register(_epl_mp)
+    _epl_vr = EPLVwapReclaim()
+    if EPL_ENABLED and EPL_VR_ENABLED:
+        _epl_registry.register(_epl_vr)
 
     if EPL_ENABLED:
         def _on_epl_graduation(t, price, time_str):
