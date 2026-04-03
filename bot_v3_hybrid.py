@@ -58,6 +58,13 @@ from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
 
 ET = pytz.timezone("US/Eastern")
 
+# Box strategy (conditional import — gated by WB_BOX_ENABLED)
+BOX_ENABLED = os.getenv("WB_BOX_ENABLED", "0") == "1"
+BOX_SIMULTANEOUS = os.getenv("WB_BOX_SIMULTANEOUS", "0") == "1"
+if BOX_ENABLED:
+    from box_scanner import scan_box_candidates
+    from box_strategy import BoxStrategyEngine
+
 # ── Databento bridge ────────────────────────────────────────────────
 WATCHLIST_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "watchlist.txt")
 DATABENTO_BRIDGE = os.getenv("WB_DATABENTO_BRIDGE_ENABLED", "1") == "1"
@@ -128,7 +135,39 @@ def past_all_windows(now_et: datetime) -> bool:
     if not TRADING_WINDOWS:
         return True
     last_end = max(end for _, end in TRADING_WINDOWS)
+    # If box is enabled, also need to be past box window
+    if BOX_ENABLED:
+        last_end = max(last_end, BOX_WINDOW_END)
     return t >= last_end
+
+# ── Box trading windows ─────────────────────────────────────────────
+BOX_WINDOW_START = time_cls(int(os.getenv("WB_BOX_START_ET", "10:00").split(":")[0]),
+                            int(os.getenv("WB_BOX_START_ET", "10:00").split(":")[1]))
+BOX_WINDOW_END = time_cls(int(os.getenv("WB_BOX_HARD_CLOSE_ET", "15:45").split(":")[0]),
+                          int(os.getenv("WB_BOX_HARD_CLOSE_ET", "15:45").split(":")[1]))
+BOX_LAST_ENTRY = time_cls(int(os.getenv("WB_BOX_LAST_ENTRY_ET", "14:30").split(":")[0]),
+                          int(os.getenv("WB_BOX_LAST_ENTRY_ET", "14:30").split(":")[1]))
+BOX_SKIP_FRIDAY = os.getenv("WB_BOX_SKIP_FRIDAY", "1") == "1"
+BOX_MAX_LOSS_SESSION = float(os.getenv("WB_BOX_MAX_LOSS_SESSION", "500"))
+BOX_SCAN_CHECKPOINTS = [time_cls(10, 0), time_cls(11, 0)]
+
+# Vol Sweet Spot filter thresholds (from Phase 2B)
+BOX_FILTER_MIN_RANGE_PCT = float(os.getenv("WB_BOX_MIN_RANGE_PCT", "2.0"))
+BOX_FILTER_MAX_RANGE_PCT = float(os.getenv("WB_BOX_MAX_RANGE_PCT", "6.0"))
+BOX_FILTER_MIN_TOTAL_TESTS = int(os.getenv("WB_BOX_MIN_TOTAL_TESTS", "5"))
+BOX_FILTER_MIN_PRICE = float(os.getenv("WB_BOX_MIN_PRICE", "15.0"))
+BOX_FILTER_MAX_ADR_UTIL = float(os.getenv("WB_BOX_MAX_ADR_UTIL", "0.80"))
+
+def in_box_window(now_et: datetime) -> bool:
+    """True if box is enabled and we're in the box window."""
+    if not BOX_ENABLED:
+        return False
+    t = now_et.time()
+    return BOX_WINDOW_START <= t <= BOX_WINDOW_END
+
+def in_any_active_window(now_et: datetime) -> bool:
+    """True if either momentum or box is active."""
+    return in_trading_window(now_et) or in_box_window(now_et)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -189,6 +228,17 @@ class BotState:
         self.pattern_dets: dict[str, PatternDetector] = {}  # symbol -> PatternDetector (10s bars)
         self.prev_10s_bar: dict[str, dict] = {}  # symbol -> {o, h, l, c}
         self.recent_10s_highs: dict[str, list] = {}  # symbol -> [highs] for BE parabolic grace
+
+        # Box strategy state
+        self.box_position: dict = None        # {symbol, qty, entry, engine, ...}
+        self.box_engine: object = None        # active BoxStrategyEngine
+        self.box_candidates: list = []        # filtered box scanner candidates
+        self.box_active_symbol: str = None    # symbol subscribed for box
+        self.box_bar_builder_1m: TradeBarBuilder = None
+        self.box_daily_pnl: float = 0.0
+        self.box_daily_trades: int = 0
+        self.box_closed_trades: list = []
+        self.last_box_scan_time: datetime = None
 
 
 state = BotState()
@@ -815,6 +865,10 @@ def check_triggers(symbol: str, price: float):
     if state.open_position is not None:
         return
 
+    # Box position blocks momentum entry (unless simultaneous allowed)
+    if BOX_ENABLED and not BOX_SIMULTANEOUS and state.box_position is not None:
+        return
+
     # Daily risk check
     if state.daily_pnl <= -MAX_DAILY_LOSS:
         return
@@ -1370,6 +1424,10 @@ def _process_ticker(ticker):
     if state.bar_builder_10s:
         state.bar_builder_10s.on_trade(symbol, price, size, ts)
 
+    # Feed to box bar builder (separate from momentum)
+    if BOX_ENABLED and state.box_bar_builder_1m and symbol == state.box_active_symbol:
+        state.box_bar_builder_1m.on_trade(symbol, price, size, ts)
+
     # Check triggers
     check_triggers(symbol, price)
 
@@ -1496,6 +1554,214 @@ def on_pending_tickers_backup(tickers):
               f"hasn't fired in {stale_seconds:.0f}s — possible callback issue!", flush=True)
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Box Strategy — Live Integration
+# ══════════════════════════════════════════════════════════════════════
+
+def run_box_scanner():
+    """Run box scanner at checkpoint times. Applies Vol Sweet Spot filter."""
+    if not BOX_ENABLED:
+        return
+    now = datetime.now(ET)
+
+    # Skip Fridays
+    if now.weekday() == 4 and BOX_SKIP_FRIDAY:
+        return
+
+    # Don't re-scan within 5 minutes
+    if state.last_box_scan_time:
+        if (now - state.last_box_scan_time).total_seconds() < 300:
+            return
+
+    # Only scan at designated checkpoints (within 2 min window)
+    should_scan = False
+    for checkpoint in BOX_SCAN_CHECKPOINTS:
+        cp_dt = now.replace(hour=checkpoint.hour, minute=checkpoint.minute, second=0, microsecond=0)
+        if abs((cp_dt - now).total_seconds()) < 120:
+            should_scan = True
+            break
+    if not should_scan:
+        return
+
+    print(f"\n[BOX] Scanner running at {now.strftime('%H:%M')} ET...", flush=True)
+    try:
+        candidates = scan_box_candidates(state.ib)
+
+        # Apply Vol Sweet Spot filters
+        filtered = []
+        for c in candidates:
+            rp = c.get("range_pct", 0)
+            total_tests = c.get("high_tests", 0) + c.get("low_tests", 0)
+            price = c.get("price", 0)
+            adr_util = c.get("adr_util_today", 999)
+
+            if rp < BOX_FILTER_MIN_RANGE_PCT or rp > BOX_FILTER_MAX_RANGE_PCT:
+                continue
+            if total_tests < BOX_FILTER_MIN_TOTAL_TESTS:
+                continue
+            if price < BOX_FILTER_MIN_PRICE:
+                continue
+            if adr_util > BOX_FILTER_MAX_ADR_UTIL:
+                continue
+            filtered.append(c)
+
+        state.box_candidates = sorted(filtered, key=lambda x: x.get("box_score", 0), reverse=True)
+        state.last_box_scan_time = now
+
+        print(f"  [BOX] {len(state.box_candidates)} candidates passed filter "
+              f"(from {len(candidates)} raw)", flush=True)
+        for c in state.box_candidates[:5]:
+            print(f"    {c['symbol']}: score={c['box_score']:.1f}, range={c['range_pct']:.1f}%, "
+                  f"tests={c['high_tests']}H/{c['low_tests']}L, price=${c['price']:.2f}", flush=True)
+    except Exception as e:
+        print(f"  [BOX] Scanner error: {e}", flush=True)
+        traceback.print_exc()
+
+
+def subscribe_box_symbol(symbol: str):
+    """Subscribe to a box candidate for tick/bar data via IBKR."""
+    if symbol in state.active_symbols:
+        state.box_active_symbol = symbol
+        return  # Already subscribed (maybe momentum is watching it)
+
+    contract = Stock(symbol, "SMART", "USD")
+    try:
+        state.ib.qualifyContracts(contract)
+        ticker = state.ib.reqMktData(contract, "233", False, False)
+        state.contracts[symbol] = contract
+        state.tickers[symbol] = ticker
+        state.active_symbols.add(symbol)
+        state.box_active_symbol = symbol
+        state.tick_counts[symbol] = 0
+        state.tick_buffer[symbol] = []
+        print(f"  [BOX] Subscribed to {symbol} for box trading", flush=True)
+    except Exception as e:
+        print(f"  [BOX] Subscribe error {symbol}: {e}", flush=True)
+
+
+def on_box_bar_close_1m(bar):
+    """Process 1-minute bar for box strategy."""
+    if not BOX_ENABLED or not state.box_engine:
+        return
+    if bar.symbol != state.box_active_symbol:
+        return
+
+    result = state.box_engine.on_bar(bar)
+
+    if result is None:
+        # Check if engine opened a trade internally
+        if state.box_engine.active_trade and not state.box_position:
+            _enter_box_trade()
+    elif result:
+        # Exit signal from engine
+        if state.box_position:
+            _exit_box_trade(result)
+
+
+def _enter_box_trade():
+    """Enter a box trade via Alpaca."""
+    trade = state.box_engine.active_trade
+    symbol = trade.symbol
+
+    # Safety: no simultaneous positions (unless gated on)
+    if not BOX_SIMULTANEOUS and state.open_position:
+        print(f"  [BOX] Entry blocked — momentum position open ({state.open_position['symbol']})", flush=True)
+        return
+    if state.box_position:
+        return
+    if state.box_daily_pnl <= -BOX_MAX_LOSS_SESSION:
+        print(f"  [BOX] Entry blocked — session loss cap hit (${state.box_daily_pnl:.2f})", flush=True)
+        return
+
+    entry_price = trade.entry_price
+    shares = trade.shares
+    notional = entry_price * shares
+
+    print(f"\n[BOX] ENTRY: {symbol} {shares} shares @ ${entry_price:.2f} "
+          f"(notional ${notional:,.0f})", flush=True)
+    print(f"  Box: ${state.box_engine.box_bottom:.2f} - ${state.box_engine.box_top:.2f} "
+          f"(range ${state.box_engine.box_range:.2f}, mid ${state.box_engine.box_mid:.2f})", flush=True)
+    print(f"  Stop: ${state.box_engine.hard_stop_price:.2f}", flush=True)
+
+    try:
+        order = LimitOrderRequest(
+            symbol=symbol,
+            qty=shares,
+            side=OrderSide.BUY,
+            time_in_force=TimeInForce.DAY,
+            limit_price=round(entry_price + 0.02, 2),
+        )
+        result = state.alpaca.submit_order(order)
+
+        state.box_position = {
+            "symbol": symbol,
+            "qty": shares,
+            "entry": entry_price,
+            "order_id": str(result.id),
+            "fill_confirmed": False,
+            "setup_type": "box",
+        }
+        print(f"  [BOX] Order submitted: {result.id}", flush=True)
+    except Exception as e:
+        print(f"  [BOX] ORDER FAILED: {e}", flush=True)
+
+
+def _exit_box_trade(reason: str):
+    """Exit a box trade via Alpaca."""
+    if not state.box_position:
+        return
+
+    symbol = state.box_position["symbol"]
+    qty = state.box_position["qty"]
+    entry = state.box_position["entry"]
+
+    # Get exit price from engine or ticker
+    exit_price = 0
+    if state.box_engine and state.box_engine.trades:
+        last_trade = state.box_engine.trades[-1]
+        if last_trade.exit_price:
+            exit_price = last_trade.exit_price
+    if exit_price <= 0:
+        ticker = state.tickers.get(symbol)
+        if ticker and ticker.last and not math.isnan(ticker.last):
+            exit_price = ticker.last
+
+    pnl = (exit_price - entry) * qty if exit_price > 0 else 0
+
+    print(f"\n[BOX] EXIT: {symbol} {qty} shares @ ${exit_price:.2f} "
+          f"reason={reason} P&L=${pnl:+,.2f}", flush=True)
+
+    try:
+        order = LimitOrderRequest(
+            symbol=symbol,
+            qty=qty,
+            side=OrderSide.SELL,
+            time_in_force=TimeInForce.DAY,
+            limit_price=round(exit_price - 0.02, 2),
+        )
+        state.alpaca.submit_order(order)
+    except Exception as e:
+        print(f"  [BOX] EXIT ORDER FAILED: {e} — attempting market order", flush=True)
+        try:
+            from alpaca.trading.requests import MarketOrderRequest
+            order = MarketOrderRequest(
+                symbol=symbol, qty=qty,
+                side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
+            )
+            state.alpaca.submit_order(order)
+        except Exception as e2:
+            print(f"  [BOX] MARKET ORDER ALSO FAILED: {e2}", flush=True)
+            return
+
+    state.box_daily_pnl += pnl
+    state.box_daily_trades += 1
+    state.box_closed_trades.append({
+        "symbol": symbol, "setup_type": "box", "reason": reason,
+        "pnl": pnl, "entry": entry, "exit": exit_price,
+    })
+    state.box_position = None
+
+
 def main():
     global STARTING_EQUITY  # Must be at top of function before any reference
 
@@ -1577,6 +1843,8 @@ def main():
     # Bar builders
     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
+    if BOX_ENABLED:
+        state.box_bar_builder_1m = TradeBarBuilder(on_bar_close=on_box_bar_close_1m, et_tz=ET, interval_seconds=60)
 
     # Wire ticker updates + backup stale-ticker monitor
     ib.pendingTickersEvent += on_ticker_update
@@ -1599,7 +1867,9 @@ def main():
                 break
 
             # Check if we're in a trading window or the dead zone
-            active = in_trading_window(now)
+            momentum_active = in_trading_window(now)
+            box_active = in_box_window(now)
+            active = momentum_active or box_active
 
             if active:
                 # Coming back from dead zone — reset for fresh evening session
@@ -1627,18 +1897,37 @@ def main():
                     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
                     print(f"\n🟢 Evening session started ({now.strftime('%H:%M')} ET). Full reset. Resuming trading.", flush=True)
 
-                # Periodic rescan
-                run_scanner()
-                poll_watchlist()
+                # Periodic rescan (momentum)
+                if momentum_active:
+                    run_scanner()
+                    poll_watchlist()
 
-                # Check halts
-                check_halts()
+                    # Check halts
+                    check_halts()
 
                 # Tick health audit (every 60s)
                 audit_tick_health()
 
                 # Fix 3: Periodic position sync with Alpaca (every 60s)
                 periodic_position_sync()
+
+                # ── Box strategy logic ──
+                if box_active:
+                    run_box_scanner()
+
+                    # Init box engine on top candidate if we don't have one
+                    if (state.box_candidates and not state.box_engine
+                            and not state.box_position):
+                        top = state.box_candidates[0]
+                        subscribe_box_symbol(top["symbol"])
+                        state.box_engine = BoxStrategyEngine(top, exit_variant="midbox")
+                        print(f"  [BOX] Engine initialized: {top['symbol']} "
+                              f"(score {top['box_score']:.1f})", flush=True)
+
+                    # Force close box position at 3:45 PM
+                    if now.time() >= BOX_WINDOW_END and state.box_position:
+                        _exit_box_trade("time_stop")
+                        state.box_engine = None
             else:
                 # In dead zone between windows
                 if not state.in_dead_zone:
@@ -1660,6 +1949,11 @@ def main():
                             exit_trade(sym, price, state.open_position["qty"], "window_close")
                         else:
                             print(f"⚠️ Window closing — NO PRICE for {sym}, position left open!", flush=True)
+                    # Close any box position before dead zone
+                    if BOX_ENABLED and state.box_position:
+                        _exit_box_trade("window_close")
+                        state.box_engine = None
+
                     # Save tick cache from morning session
                     save_tick_cache()
                     print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
@@ -1705,7 +1999,11 @@ def main():
             # Heartbeat every ~1 minute
             if now.second < 2:
                 pos_str = f"OPEN={state.open_position['symbol']} @ ${state.open_position['entry']:.2f}" if state.open_position else "flat"
+                if BOX_ENABLED and state.box_position:
+                    pos_str += f" | BOX={state.box_position['symbol']} @ ${state.box_position['entry']:.2f}"
                 zone = "ACTIVE" if active else "SLEEP"
+                if box_active and not momentum_active:
+                    zone = "BOX"
 
                 # Tick flow summary
                 total_ticks = sum(state.tick_counts.values())
@@ -1736,12 +2034,16 @@ def main():
         print("🔥 Bot crashed:")
         traceback.print_exc()
     finally:
-        # Close any open position
+        # Close any open momentum position
         if state.open_position:
             sym = state.open_position["symbol"]
             ticker = state.tickers.get(sym)
             if ticker and ticker.last:
                 exit_trade(sym, ticker.last, state.open_position["qty"], "shutdown")
+
+        # Close any open box position
+        if BOX_ENABLED and state.box_position:
+            _exit_box_trade("shutdown")
 
         # Save tick cache for backtesting (before disconnect)
         save_tick_cache()
@@ -1752,10 +2054,16 @@ def main():
         # Print summary
         print(f"\n{'='*60}")
         print(f"  SESSION SUMMARY")
-        print(f"  Trades: {state.daily_trades}")
-        print(f"  Daily P&L: ${state.daily_pnl:+,.0f}")
+        print(f"  Momentum Trades: {state.daily_trades}")
+        print(f"  Momentum P&L: ${state.daily_pnl:+,.0f}")
         for t in state.closed_trades:
             print(f"    {t['symbol']} {t['setup_type']} {t['reason']}: ${t['pnl']:+,.0f}")
+        if BOX_ENABLED:
+            print(f"  Box Trades: {state.box_daily_trades}")
+            print(f"  Box P&L: ${state.box_daily_pnl:+,.2f}")
+            for t in state.box_closed_trades:
+                print(f"    [BOX] {t['symbol']} {t['reason']}: ${t['pnl']:+,.2f}")
+            print(f"  COMBINED P&L: ${state.daily_pnl + state.box_daily_pnl:+,.2f}")
         print(f"{'='*60}")
 
 
