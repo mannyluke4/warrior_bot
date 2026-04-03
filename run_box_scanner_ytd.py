@@ -106,7 +106,7 @@ def main():
                 # Print top 3 for each date
                 for j, c in enumerate(candidates[:3], 1):
                     print(f"  {j}. {c['symbol']:6s} score={c['box_score']:.1f} "
-                          f"adr_util={c['adr_util']:.0%} range={c['range_pct']:.1f}%",
+                          f"adr_util={c['adr_util_today']:.0%} range={c['range_pct']:.1f}%",
                           flush=True)
 
             except Exception as e:
