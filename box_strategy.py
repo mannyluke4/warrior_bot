@@ -110,15 +110,23 @@ class BoxTradeState:
 # ── Strategy Engine ─────────────────────────────────────────────────
 
 class BoxStrategyEngine:
-    """Runs the box strategy on 1-minute bars for a single candidate."""
+    """Runs the box strategy on 1-minute bars for a single candidate.
 
-    def __init__(self, candidate: dict):
+    exit_variant controls exit behavior:
+      - "baseline": sell zone target or time stop (default)
+      - "vwap": exit at VWAP if entry was below VWAP
+      - "midbox": exit at box midpoint
+      - "tiered": 75% at VWAP, trail remaining 25%
+    """
+
+    def __init__(self, candidate: dict, exit_variant: str = "baseline"):
         self.symbol = candidate["symbol"]
         self.box_top = candidate["range_high_5d"]
         self.box_bottom = candidate["range_low_5d"]
         self.box_range = self.box_top - self.box_bottom
         self.box_mid = (self.box_top + self.box_bottom) / 2
         self.scanner_vwap = candidate.get("vwap", 0)
+        self.exit_variant = exit_variant
 
         # Zones
         self.buy_zone_ceiling = self.box_bottom + self.box_range * (BOX_BUY_ZONE_PCT / 100)
@@ -131,6 +139,10 @@ class BoxStrategyEngine:
         self.session_pnl = 0.0
         self.entry_count = 0
         self.stopped_out = False  # hard stop / invalidation / session cap → no re-entry
+
+        # Tiered exit state
+        self._tiered_partial_done = False  # True after 75% taken at VWAP
+        self._original_shares = 0
 
         # Bar history for RSI + volume avg
         self.closes: List[float] = []
@@ -196,36 +208,62 @@ class BoxStrategyEngine:
         # Update peak
         t.peak_price = max(t.peak_price, bar.high)
 
-        # 1. Box invalidation
+        # 1. Box invalidation (always active)
         invalidation_threshold = self.box_range * (BOX_BREAKOUT_INVALIDATE_PCT / 100)
         if bar.high > self.box_top + invalidation_threshold:
             return "box_invalidation_high"
         if bar.low < self.box_bottom - invalidation_threshold:
             return "box_invalidation_low"
 
-        # 2. Hard stop
+        # 2. Hard stop (always active)
         if bar.low <= t.hard_stop:
             return "hard_stop"
 
-        # 3. Time stop
+        # 3. Time stop (always active)
         if bar_time >= HARD_CLOSE_TIME:
             return "time_stop"
 
-        # 4. Session loss cap
+        # 4. Session loss cap (always active)
         unrealized = (price - t.entry_price) * t.shares
         if self.session_pnl + unrealized <= -BOX_MAX_LOSS_SESSION:
             return "session_loss_cap"
 
-        # 5. Target exit (sell zone)
-        if price >= self.sell_zone_floor:
-            return "target_sell_zone"
+        # ── Variant-specific profit targets ─────────────────────────
 
-        # 6. VWAP exit (optional)
-        if BOX_VWAP_EXIT_ENABLED and self.vwap > 0:
-            if price >= self.vwap and t.entry_price < self.vwap:
-                return "vwap_target"
+        if self.exit_variant == "baseline":
+            # 5. Target exit (sell zone)
+            if price >= self.sell_zone_floor:
+                return "target_sell_zone"
+            # 6. VWAP exit (env var gated)
+            if BOX_VWAP_EXIT_ENABLED and self.vwap > 0:
+                if price >= self.vwap and t.entry_price < self.vwap:
+                    return "vwap_target"
 
-        # 7. Trailing stop
+        elif self.exit_variant == "vwap":
+            # Exit at VWAP if entry was below VWAP; otherwise sell zone
+            if self.vwap > 0 and t.entry_price < self.vwap:
+                if price >= self.vwap:
+                    return "vwap_target"
+            else:
+                if price >= self.sell_zone_floor:
+                    return "target_sell_zone"
+
+        elif self.exit_variant == "midbox":
+            # Exit at box midpoint
+            if price >= self.box_mid:
+                return "midbox_target"
+
+        elif self.exit_variant == "tiered":
+            # 75% at VWAP, trail remaining 25%
+            if not self._tiered_partial_done:
+                if self.vwap > 0 and t.entry_price < self.vwap and price >= self.vwap:
+                    return "tiered_vwap_partial"
+                # If entry above VWAP (rare), use sell zone for partial
+                if t.entry_price >= self.vwap and price >= self.sell_zone_floor:
+                    return "tiered_vwap_partial"
+            # else: runner portion — trail only (below)
+
+        # 7. Trailing stop (all variants)
         trail_activation = self.box_range * (BOX_TRAIL_ACTIVATION_PCT / 100)
         if t.peak_price - t.entry_price >= trail_activation:
             trail_distance = self.box_range * (BOX_TRAIL_PCT / 100)
@@ -314,6 +352,41 @@ class BoxStrategyEngine:
     def _close_trade(self, exit_price: float, exit_time: datetime, reason: str):
         """Close the active trade and record results."""
         t = self.active_trade
+
+        # Tiered partial: close 75%, keep 25% running
+        if reason == "tiered_vwap_partial" and not self._tiered_partial_done:
+            partial_shares = int(t.shares * 0.75)
+            remaining_shares = t.shares - partial_shares
+            if partial_shares > 0 and remaining_shares > 0:
+                # Record the partial exit as a trade
+                partial = BoxTradeState(
+                    symbol=t.symbol,
+                    entry_price=t.entry_price,
+                    entry_time=t.entry_time,
+                    shares=partial_shares,
+                    box_top=t.box_top,
+                    box_bottom=t.box_bottom,
+                    box_range=t.box_range,
+                    hard_stop=t.hard_stop,
+                    peak_price=t.peak_price,
+                    rsi_at_entry=t.rsi_at_entry,
+                    bar_volume_at_entry=t.bar_volume_at_entry,
+                    exit_price=exit_price,
+                    exit_time=exit_time,
+                    exit_reason="tiered_vwap_partial",
+                )
+                partial.pnl = (exit_price - t.entry_price) * partial_shares
+                partial.pnl_pct = ((exit_price - t.entry_price) / t.entry_price) * 100 if t.entry_price > 0 else 0
+                partial.hold_minutes = (exit_time - t.entry_time).total_seconds() / 60
+                self.session_pnl += partial.pnl
+                self.trades.append(partial)
+
+                # Reduce active trade to runner portion
+                t.shares = remaining_shares
+                self._tiered_partial_done = True
+                self._original_shares = partial_shares + remaining_shares
+                return  # Keep active_trade alive with reduced shares
+
         t.exit_price = exit_price
         t.exit_time = exit_time
         t.exit_reason = reason
@@ -324,6 +397,7 @@ class BoxStrategyEngine:
         self.session_pnl += t.pnl
         self.trades.append(t)
         self.active_trade = None
+        self._tiered_partial_done = False
 
         # Stops that prevent re-entry
         if reason in ("hard_stop", "box_invalidation_high", "box_invalidation_low", "session_loss_cap"):
