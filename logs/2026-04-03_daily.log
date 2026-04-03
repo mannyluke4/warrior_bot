@@ -1,0 +1,324 @@
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+caffeinate started (PID: 93760)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 80: 93739 Terminated: 15          caffeinate -u -t 30
+=== V3 Hybrid daily run started: Fri Apr  3 00:18:14 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 6831ac2 (auto: v3 daily logs 2026-04-02)
+daily_run_v3.sh hash: 79ca70faa396f476614224dde91d40f7
+bot_v3_hybrid.py hash: c8040963d614047fcf635cc06b69e136
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: ED79DA28.1FB05FAE (3984185896.123784999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF894312EB.F027D02900000000 (-1992092948.061892509)
+         delay: FFFFFFFF128625D7.E04FA05200000000 (-3984185896.123785019)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 17.253.6.45
+}
++0.022193 +/- 0.041617 time.apple.com 17.253.26.125
+NTP sync skipped (non-root)
+System time: Fri Apr  3 06:18:17 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/36: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Friday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 93824)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 93826)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 2.0
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,697
+EPL initialized: 1 strategies registered
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 960 bars, EMA=3.4035
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+
+💤 Dead zone (02:18 ET). Sleeping until next window...
+Bot health check passed (still running after 15s, PID: 93826)
+HEALTH_OK: Bot connected at 2026-04-03 06:18:52 UTC
+Gateway watchdog started (PID: 93845)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri Apr  3 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+IBKR ERROR 2107: HMDS data farm connection is inactive but should be available upon demand.ushmds (reqId=-1, symbol=?)
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+
+🟢 Evening session started (04:00 ET). Full reset. Resuming trading.
+
+🔄 CATCHUP SCAN at 04:00:10 ET (first scan — casting wide net)...
+⚠️ IBKR ERROR 2106: HMDS data farm connection is OK:ushmds (symbol=?)
+Error 162, reqId 6: Historical Market Data Service error message:API scanner subscription cancelled: 6
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 6 (reqId=6, symbol=?)
+Error 162, reqId 7: Historical Market Data Service error message:API scanner subscription cancelled: 7
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 7 (reqId=7, symbol=?)
+  Catchup: 54 unique symbols from 3 scanners
+    Catchup: processing 1/54 — AAL...
+Error 162, reqId 8: Historical Market Data Service error message:API scanner subscription cancelled: 8
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 8 (reqId=8, symbol=?)
+    Catchup: processing 2/54 — ADAG...
+    Catchup: processing 3/54 — ALOT...
+    Catchup: processing 4/54 — ASTN...
+    Catchup: processing 5/54 — ATPC...
+    Catchup: processing 6/54 — BATL...
+    Catchup: processing 7/54 — BITO...
+    Catchup: processing 8/54 — DAIO...
+    Catchup: processing 9/54 — DRIP...
+    Catchup: processing 10/54 — GVH...
+    Catchup: processing 11/54 — HNNA...
+    Catchup: processing 12/54 — HTCO...
+    Catchup: processing 13/54 — ICU...
+    Catchup: processing 14/54 — ILAG...
+    Catchup: processing 15/54 — KELYB...
+    Catchup: processing 16/54 — KODK...
+    Catchup: processing 17/54 — LABX...
+    Catchup: processing 18/54 — LPCN...
+    Catchup: processing 19/54 — LUD...
+    Catchup: processing 20/54 — LUNL...
+    Catchup: processing 21/54 — MAAS...
+    Catchup: processing 22/54 — MARA...
+    Catchup: processing 23/54 — MGRT...
+    Catchup: processing 24/54 — NOK...
+    Catchup: processing 25/54 — NVD...
+    Catchup: processing 26/54 — ONDS...
+    Catchup: processing 27/54 — ONDU...
+    Catchup: processing 28/54 — ORIC...
+    Catchup: processing 29/54 — OWL...
+    Catchup: processing 30/54 — PCAP...
+    Catchup: processing 31/54 — PLTD...
+    Catchup: processing 32/54 — PLUG...
+    Catchup: processing 33/54 — PTBD...
+    Catchup: processing 34/54 — SATL...
+    Catchup: processing 35/54 — SCO...
+    Catchup: processing 36/54 — SGML...
+    Catchup: processing 37/54 — SIDU...
+    Catchup: processing 38/54 — SKYQ...
+    Catchup: processing 39/54 — SNAP...
+    Catchup: processing 40/54 — SOFI...
+    Catchup: processing 41/54 — SPDN...
+    Catchup: processing 42/54 — SPIR...
+    Catchup: processing 43/54 — SPXX...
+    Catchup: processing 44/54 — SWKH...
+    Catchup: processing 45/54 — TETH...
+    Catchup: processing 46/54 — TILL...
+    Catchup: processing 47/54 — TKLF...
+    Catchup: processing 48/54 — TSLL...
+    Catchup: processing 49/54 — TURB...
+    Catchup: processing 50/54 — TZA...
+    Catchup: processing 51/54 — UVIX...
+    Catchup: processing 52/54 — VELO...
+    Catchup: processing 53/54 — VFS...
+    Catchup: processing 54/54 — VOYX...
+  Catchup: 29 candidates after filters
+🔥 Seeded ALOT: 601 bars, EMA=9.1100
+✅ Subscribed: ALOT
+🔥 Seeded ASTN: 960 bars, EMA=11.8269
+✅ Subscribed: ASTN
+🔥 Seeded ATPC: 891 bars, EMA=3.1255
+✅ Subscribed: ATPC
+🔥 Seeded BATL: 960 bars, EMA=4.3168
+✅ Subscribed: BATL
+🔥 Seeded DAIO: 618 bars, EMA=2.2800
+✅ Subscribed: DAIO
+📊 Scanner: 29 new candidates, 5 new subs, 5 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 960 bars, EMA=3.4035
+✅ Subscribed: KIDZ
+  TICK AUDIT: ALOT: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ASTN: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ATPC: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: BATL: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: DAIO: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+⚠️ TICK DROUGHT: ATPC — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: BATL — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: DAIO — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: ASTN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: ALOT — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  TICK AUDIT: ALOT: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ASTN: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ATPC: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: BATL: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: DAIO: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+⚠️ TICK DROUGHT: ATPC — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: BATL — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: DAIO — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: ASTN — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: ALOT — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+  TICK AUDIT: ALOT: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ASTN: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: ATPC: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: BATL: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: DAIO: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$0.00, last_tick_time=never
+⚠️ TICK DROUGHT: ATPC — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+⚠️ TICK DROUGHT: BATL — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+⚠️ TICK DROUGHT: DAIO — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+⚠️ TICK DROUGHT: ASTN — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+WARN: keystroke failed — check Accessibility permissions
+Waiting 10s for desktop session...
+⚠️ TICK DROUGHT: ALOT — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+Desktop session: ACTIVE
+caffeinate started (PID: 94898)
+=== V3 Hybrid daily run started: Fri Apr  3 02:04:18 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 6831ac2 (auto: v3 daily logs 2026-04-02)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 88: md5: command not found
+daily_run_v3.sh hash: 
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 89: md5: command not found
+bot_v3_hybrid.py hash: 
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: ED79F303.9E52DECA (3984192259.618451999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF8943067E.30D6909B00000000 (-1992096129.809226036)
+         delay: FFFFFFFF12860CFC.61AD213600000000 (-3984192259.618452072)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 17.253.6.37
+}
++0.023904 +/- 0.043666 time.apple.com 17.253.26.125
+NTP sync skipped (non-root)
+System time: Fri Apr  3 08:04:20 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+Peer closed connection.
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 1731, in main
+    ib.sleep(30 if state.in_dead_zone else 1)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 386, in sleep
+    run(asyncio.sleep(secs))
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 343, in run
+    raise globalErrorEvent.value() or e
+ConnectionError: Socket disconnect
+🔥 Bot crashed:
+
+============================================================
+  SESSION SUMMARY
+  Trades: 0
+  Daily P&L: $+0
+============================================================
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
+  attempt 1/36: port 4002 not ready yet, waiting 5s...
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Friday.txt
++
++[0m
+  attempt 2/36: port 4002 not ready yet, waiting 5s...
+  attempt 3/36: port 4002 not ready yet, waiting 5s...
+  attempt 4/36: port 4002 not ready yet, waiting 5s...
+  attempt 5/36: port 4002 not ready yet, waiting 5s...
+  attempt 6/36: port 4002 not ready yet, waiting 5s...
+ALERT: bot_v3_hybrid.py died at Fri Apr  3 02:04:55 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-03_daily.log.
+=== Shutting down at Fri Apr  3 02:04:55 MDT 2026 ===
+WARNING: Gateway port 4002 dropped at 2026-04-03 08:04:58 UTC
+  attempt 7/36: port 4002 not ready yet, waiting 5s...
+Pushing logs...
