@@ -197,3 +197,6 @@ HEALTH_OK: Bot connected at 2026-04-02 10:16:59 UTC
 Gateway watchdog started (PID: 81371)
 Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu Apr  2 18:05:00 MDT 2026)...
   Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Thu Apr  2 18:00:28 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-02_daily.log.
+=== Shutting down at Thu Apr  2 18:00:28 MDT 2026 ===
+Pushing logs...

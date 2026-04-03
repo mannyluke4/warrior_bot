@@ -3265,3 +3265,251 @@ IBKR ERROR 162: Historical Market Data Service error message:API scanner subscri
   TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.44, last_tick_time=16:50:48
   TICK AUDIT: SKYQ: 384 ticks in last 60s, last_price=$5.29, last_tick_time=16:51:07
   TICK AUDIT: TURB: 5 ticks in last 60s, last_price=$3.07, last_tick_time=16:51:04
+[16:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=716 | KIDZ:0t/IDLE SKYQ:246t/IDLE TURB:8t/IDLE
+[16:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=721 | KIDZ:0t/IDLE SKYQ:251t/IDLE TURB:8t/IDLE
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=16:50:48
+  TICK AUDIT: SKYQ: 285 ticks in last 60s, last_price=$5.28, last_tick_time=16:52:08
+  TICK AUDIT: TURB: 9 ticks in last 60s, last_price=$3.08, last_tick_time=16:52:04
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[16:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=707 | KIDZ:3t/IDLE SKYQ:238t/IDLE TURB:4t/IDLE
+[16:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=713 | KIDZ:3t/IDLE SKYQ:244t/IDLE TURB:4t/IDLE
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.42, last_tick_time=16:52:56
+  TICK AUDIT: SKYQ: 281 ticks in last 60s, last_price=$5.25, last_tick_time=16:53:08
+  TICK AUDIT: TURB: 8 ticks in last 60s, last_price=$3.08, last_tick_time=16:53:04
+[16:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=685 | KIDZ:1t/IDLE SKYQ:211t/IDLE TURB:11t/IDLE
+[16:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=698 | KIDZ:1t/IDLE SKYQ:224t/IDLE TURB:11t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.42, last_tick_time=16:53:19
+  TICK AUDIT: SKYQ: 258 ticks in last 60s, last_price=$5.30, last_tick_time=16:54:09
+  TICK AUDIT: TURB: 15 ticks in last 60s, last_price=$3.07, last_tick_time=16:54:07
+[16:55 ET] SKYQ CHART | O=5.32 H=5.33 L=5.25 C=5.26 V=20,920 | EMA9=5.22 VWAP=5.21 (+0.9%) HOD=5.49 PM_H=-inf | MACD=N/A vol_ratio=0.4x avg_vol=50,669 bars=50 | sq=IDLE armed=none
+[16:55 ET] KIDZ CHART | O=3.40 H=3.40 L=3.40 C=3.40 V=2,034 | EMA9=3.43 VWAP=3.41 (-0.2%) HOD=3.50 PM_H=-inf | MACD=N/A vol_ratio=1.4x avg_vol=1,406 bars=50 | sq=IDLE armed=none
+[16:55:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=699 | KIDZ:8t/IDLE SKYQ:223t/IDLE TURB:6t/IDLE
+[16:55 ET] TURB CHART | O=3.08 H=3.08 L=3.07 C=3.07 V=309 | EMA9=3.08 VWAP=3.07 (-0.1%) HOD=3.24 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=3,149 bars=50 | sq=IDLE armed=none
+[16:55:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=705 | KIDZ:9t/IDLE SKYQ:227t/IDLE TURB:7t/IDLE
+
+🔄 Running scanner at 16:55:09 ET...
+Error 162, reqId 5581: Historical Market Data Service error message:API scanner subscription cancelled: 5581
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5581 (reqId=5581, symbol=?)
+[16:55 ET] SIDU CHART | O=3.05 H=3.05 L=3.05 C=3.05 V=100 | EMA9=none VWAP=3.02 (+1.1%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] LUD CHART | O=4.45 H=4.45 L=4.45 C=4.45 V=300 | EMA9=none VWAP=4.44 (+0.3%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] GVH CHART | O=2.58 H=2.58 L=2.58 C=2.58 V=2,300 | EMA9=none VWAP=2.61 (-1.2%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] LUNL CHART | O=18.47 H=18.47 L=18.47 C=18.47 V=400 | EMA9=none VWAP=18.67 (-1.1%) HOD=18.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] VOYX CHART | O=11.41 H=11.41 L=11.41 C=11.41 V=900 | EMA9=none VWAP=11.41 (+0.0%) HOD=11.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] ATPC CHART | O=3.34 H=3.34 L=3.34 C=3.34 V=500 | EMA9=none VWAP=3.22 (+3.6%) HOD=3.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] VELO CHART | O=11.66 H=11.66 L=11.66 C=11.66 V=400 | EMA9=none VWAP=11.66 (-0.0%) HOD=11.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] MGRT CHART | O=14.87 H=14.87 L=14.87 C=14.87 V=200 | EMA9=none VWAP=14.99 (-0.8%) HOD=14.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] SGML CHART | O=14.36 H=14.36 L=14.36 C=14.36 V=100 | EMA9=none VWAP=14.33 (+0.2%) HOD=14.39 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] ICU CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=500 | EMA9=none VWAP=4.33 (-1.8%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] LABX CHART | O=16.83 H=16.83 L=16.83 C=16.83 V=200 | EMA9=none VWAP=16.85 (-0.1%) HOD=16.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] KODK CHART | O=11.25 H=11.25 L=11.25 C=11.25 V=200 | EMA9=none VWAP=11.29 (-0.4%) HOD=11.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] ILAG CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=100 | EMA9=none VWAP=3.08 (+0.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] KELYB CHART | O=15.68 H=15.68 L=15.68 C=15.68 V=2,200 | EMA9=none VWAP=15.79 (-0.7%) HOD=16.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[16:55 ET] FLYT CHART | O=19.95 H=19.95 L=19.95 C=19.95 V=800 | EMA9=none VWAP=19.93 (+0.1%) HOD=19.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-02.json (67 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$3.40, last_tick_time=16:56:01
+  TICK AUDIT: SKYQ: 459 ticks in last 60s, last_price=$5.34, last_tick_time=16:56:08
+  TICK AUDIT: TURB: 18 ticks in last 60s, last_price=$3.06, last_tick_time=16:56:05
+[16:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=762 | KIDZ:1t/IDLE SKYQ:248t/IDLE TURB:15t/IDLE
+[16:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=764 | KIDZ:2t/IDLE SKYQ:249t/IDLE TURB:15t/IDLE
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.40, last_tick_time=16:57:01
+  TICK AUDIT: SKYQ: 266 ticks in last 60s, last_price=$5.28, last_tick_time=16:57:07
+  TICK AUDIT: TURB: 20 ticks in last 60s, last_price=$3.04, last_tick_time=16:57:04
+[16:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=667 | KIDZ:7t/IDLE SKYQ:158t/IDLE TURB:4t/IDLE
+[16:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=672 | KIDZ:7t/IDLE SKYQ:163t/IDLE TURB:4t/IDLE
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.40, last_tick_time=16:58:03
+  TICK AUDIT: SKYQ: 186 ticks in last 60s, last_price=$5.25, last_tick_time=16:58:08
+  TICK AUDIT: TURB: 4 ticks in last 60s, last_price=$3.04, last_tick_time=16:57:34
+[16:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=708 | KIDZ:3t/IDLE SKYQ:187t/IDLE TURB:20t/IDLE
+[16:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=712 | KIDZ:3t/IDLE SKYQ:191t/IDLE TURB:20t/IDLE
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.44, last_tick_time=16:58:13
+  TICK AUDIT: SKYQ: 215 ticks in last 60s, last_price=$5.23, last_tick_time=16:59:08
+  TICK AUDIT: TURB: 24 ticks in last 60s, last_price=$3.10, last_tick_time=16:59:06
+[17:00:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=628 | KIDZ:0t/IDLE SKYQ:113t/IDLE TURB:17t/IDLE
+[17:00 ET] TURB CHART | O=3.04 H=3.10 L=3.04 C=3.04 V=2,249 | EMA9=3.06 VWAP=3.07 (-1.0%) HOD=3.24 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=2,823 bars=50 | sq=IDLE armed=none
+[17:00:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=629 | KIDZ:0t/IDLE SKYQ:113t/IDLE TURB:18t/IDLE
+[17:00 ET] SKYQ CHART | O=5.23 H=5.27 L=5.22 C=5.25 V=14,471 | EMA9=5.25 VWAP=5.21 (+0.7%) HOD=5.49 PM_H=-inf | MACD=N/A vol_ratio=0.3x avg_vol=43,658 bars=50 | sq=IDLE armed=none
+[17:00 ET] KIDZ CHART | O=3.40 H=3.44 L=3.40 C=3.44 V=818 | EMA9=3.41 VWAP=3.41 (+1.0%) HOD=3.50 PM_H=-inf | MACD=N/A vol_ratio=0.6x avg_vol=1,417 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.44, last_tick_time=17:00:04
+  TICK AUDIT: SKYQ: 131 ticks in last 60s, last_price=$5.24, last_tick_time=17:00:08
+  TICK AUDIT: TURB: 25 ticks in last 60s, last_price=$3.04, last_tick_time=17:00:07
+
+🔄 Running scanner at 17:00:10 ET...
+Error 162, reqId 5662: Historical Market Data Service error message:API scanner subscription cancelled: 5662
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5662 (reqId=5662, symbol=?)
+[17:00 ET] SIDU CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=100 | EMA9=none VWAP=3.02 (+1.4%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] LUD CHART | O=4.45 H=4.45 L=4.45 C=4.45 V=200 | EMA9=none VWAP=4.42 (+0.7%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] GVH CHART | O=2.58 H=2.58 L=2.58 C=2.58 V=2,300 | EMA9=none VWAP=2.61 (-1.0%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] LUNL CHART | O=18.47 H=18.47 L=18.47 C=18.47 V=200 | EMA9=none VWAP=18.67 (-1.1%) HOD=18.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] VOYX CHART | O=11.41 H=11.41 L=11.41 C=11.41 V=900 | EMA9=none VWAP=11.41 (+0.0%) HOD=11.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] ATPC CHART | O=3.24 H=3.24 L=3.24 C=3.24 V=200 | EMA9=none VWAP=3.22 (+0.6%) HOD=3.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] VELO CHART | O=11.65 H=11.65 L=11.65 C=11.65 V=400 | EMA9=none VWAP=11.66 (-0.1%) HOD=11.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] MGRT CHART | O=14.87 H=14.87 L=14.87 C=14.87 V=100 | EMA9=none VWAP=14.99 (-0.8%) HOD=14.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] SGML CHART | O=14.39 H=14.39 L=14.39 C=14.39 V=600 | EMA9=none VWAP=14.34 (+0.4%) HOD=14.39 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] ICU CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=500 | EMA9=none VWAP=4.32 (-1.7%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] LABX CHART | O=16.83 H=16.83 L=16.83 C=16.83 V=200 | EMA9=none VWAP=16.85 (-0.1%) HOD=16.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] KODK CHART | O=11.33 H=11.33 L=11.33 C=11.33 V=400 | EMA9=none VWAP=11.29 (+0.3%) HOD=11.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] ILAG CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=200 | EMA9=none VWAP=3.08 (+0.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] KELYB CHART | O=15.68 H=15.68 L=15.68 C=15.68 V=2,200 | EMA9=none VWAP=15.77 (-0.6%) HOD=16.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:00 ET] FLYT CHART | O=19.95 H=19.95 L=19.95 C=19.95 V=800 | EMA9=none VWAP=19.94 (+0.1%) HOD=19.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-02.json (68 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:00:04
+  TICK AUDIT: SKYQ: 118 ticks in last 60s, last_price=$5.27, last_tick_time=17:01:08
+  TICK AUDIT: TURB: 9 ticks in last 60s, last_price=$3.04, last_tick_time=17:01:07
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=651 | KIDZ:3t/IDLE SKYQ:117t/IDLE TURB:4t/IDLE
+[17:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=652 | KIDZ:3t/IDLE SKYQ:118t/IDLE TURB:4t/IDLE
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.44, last_tick_time=17:01:50
+  TICK AUDIT: SKYQ: 144 ticks in last 60s, last_price=$5.22, last_tick_time=17:02:09
+  TICK AUDIT: TURB: 4 ticks in last 60s, last_price=$3.04, last_tick_time=17:01:54
+[17:03:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=665 | KIDZ:0t/IDLE SKYQ:133t/IDLE TURB:5t/IDLE
+[17:03:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=665 | KIDZ:0t/IDLE SKYQ:133t/IDLE TURB:5t/IDLE
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:01:50
+  TICK AUDIT: SKYQ: 148 ticks in last 60s, last_price=$5.22, last_tick_time=17:03:10
+  TICK AUDIT: TURB: 5 ticks in last 60s, last_price=$3.04, last_tick_time=17:03:00
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=676 | KIDZ:1t/IDLE SKYQ:133t/IDLE TURB:15t/IDLE
+[17:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=679 | KIDZ:1t/IDLE SKYQ:136t/IDLE TURB:15t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.44, last_tick_time=17:03:12
+  TICK AUDIT: SKYQ: 184 ticks in last 60s, last_price=$5.22, last_tick_time=17:04:10
+  TICK AUDIT: TURB: 16 ticks in last 60s, last_price=$3.01, last_tick_time=17:04:10
+[17:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=698 | KIDZ:1t/IDLE SKYQ:152t/IDLE TURB:18t/IDLE
+[17:05 ET] SKYQ CHART | O=5.24 H=5.24 L=5.17 C=5.19 V=30,503 | EMA9=5.24 VWAP=5.22 (-0.5%) HOD=5.49 PM_H=-inf | MACD=N/A vol_ratio=0.7x avg_vol=41,504 bars=50 | sq=IDLE armed=none
+[17:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=703 | KIDZ:1t/IDLE SKYQ:157t/IDLE TURB:18t/IDLE
+[17:05 ET] TURB CHART | O=3.01 H=3.01 L=3.01 C=3.01 V=1,931 | EMA9=3.04 VWAP=3.07 (-1.9%) HOD=3.24 PM_H=-inf | MACD=N/A vol_ratio=0.8x avg_vol=2,437 bars=50 | sq=IDLE armed=none
+
+🔄 Running scanner at 17:05:11 ET...
+Error 162, reqId 5745: Historical Market Data Service error message:API scanner subscription cancelled: 5745
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5745 (reqId=5745, symbol=?)
+[17:05 ET] SIDU CHART | O=3.05 H=3.05 L=3.05 C=3.05 V=100 | EMA9=none VWAP=3.02 (+1.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] LUD CHART | O=4.23 H=4.23 L=4.23 C=4.23 V=500 | EMA9=none VWAP=4.42 (-4.3%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] GVH CHART | O=2.58 H=2.58 L=2.58 C=2.58 V=2,300 | EMA9=none VWAP=2.61 (-1.0%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] LUNL CHART | O=18.59 H=18.59 L=18.59 C=18.59 V=100 | EMA9=none VWAP=18.66 (-0.4%) HOD=18.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] VOYX CHART | O=11.41 H=11.41 L=11.41 C=11.41 V=600 | EMA9=none VWAP=11.41 (+0.0%) HOD=11.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] ATPC CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=100 | EMA9=none VWAP=3.22 (-4.4%) HOD=3.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] VELO CHART | O=11.70 H=11.70 L=11.70 C=11.70 V=200 | EMA9=none VWAP=11.66 (+0.3%) HOD=11.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] MGRT CHART | O=14.87 H=14.87 L=14.87 C=14.87 V=100 | EMA9=none VWAP=14.99 (-0.8%) HOD=14.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] SGML CHART | O=14.39 H=14.39 L=14.39 C=14.39 V=300 | EMA9=none VWAP=14.34 (+0.3%) HOD=14.39 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] ICU CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=500 | EMA9=none VWAP=4.32 (-1.5%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] LABX CHART | O=16.83 H=16.83 L=16.83 C=16.83 V=200 | EMA9=none VWAP=16.85 (-0.1%) HOD=16.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] KODK CHART | O=11.33 H=11.33 L=11.33 C=11.33 V=600 | EMA9=none VWAP=11.30 (+0.3%) HOD=11.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] ILAG CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=100 | EMA9=none VWAP=3.08 (+0.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] KELYB CHART | O=15.68 H=15.68 L=15.68 C=15.68 V=2,200 | EMA9=none VWAP=15.75 (-0.5%) HOD=16.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:05 ET] FLYT CHART | O=19.95 H=19.95 L=19.95 C=19.95 V=400 | EMA9=none VWAP=19.94 (+0.1%) HOD=19.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-02.json (69 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.44, last_tick_time=17:04:36
+  TICK AUDIT: SKYQ: 378 ticks in last 60s, last_price=$5.18, last_tick_time=17:06:09
+  TICK AUDIT: TURB: 42 ticks in last 60s, last_price=$3.02, last_tick_time=17:05:57
+[17:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=701 | KIDZ:0t/IDLE SKYQ:132t/IDLE TURB:9t/IDLE
+[17:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=702 | KIDZ:0t/IDLE SKYQ:133t/IDLE TURB:9t/IDLE
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:04:36
+  TICK AUDIT: SKYQ: 152 ticks in last 60s, last_price=$5.19, last_tick_time=17:07:10
+  TICK AUDIT: TURB: 13 ticks in last 60s, last_price=$3.01, last_tick_time=17:07:10
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:08:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=649 | KIDZ:2t/IDLE SKYQ:69t/IDLE TURB:18t/IDLE
+[17:08:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=652 | KIDZ:2t/IDLE SKYQ:72t/IDLE TURB:18t/IDLE
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.44, last_tick_time=17:08:04
+  TICK AUDIT: SKYQ: 96 ticks in last 60s, last_price=$5.16, last_tick_time=17:08:09
+  TICK AUDIT: TURB: 21 ticks in last 60s, last_price=$3.01, last_tick_time=17:08:08
+[17:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=636 | KIDZ:1t/IDLE SKYQ:64t/IDLE TURB:11t/IDLE
+[17:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=638 | KIDZ:1t/IDLE SKYQ:65t/IDLE TURB:12t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.44, last_tick_time=17:08:16
+  TICK AUDIT: SKYQ: 78 ticks in last 60s, last_price=$5.15, last_tick_time=17:09:10
+  TICK AUDIT: TURB: 16 ticks in last 60s, last_price=$3.02, last_tick_time=17:09:05
+[17:10 ET] SKYQ CHART | O=5.15 H=5.23 L=5.15 C=5.22 V=21,770 | EMA9=5.19 VWAP=5.21 (+0.1%) HOD=5.49 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=39,879 bars=50 | sq=IDLE armed=none
+[17:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=713 | KIDZ:0t/IDLE SKYQ:134t/IDLE TURB:19t/IDLE
+[17:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=718 | KIDZ:0t/IDLE SKYQ:139t/IDLE TURB:19t/IDLE
+[17:10 ET] TURB CHART | O=3.02 H=3.02 L=3.01 C=3.02 V=1,732 | EMA9=3.02 VWAP=3.06 (-1.5%) HOD=3.24 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=1,900 bars=50 | sq=IDLE armed=none
+
+🔄 Running scanner at 17:10:11 ET...
+Error 162, reqId 5827: Historical Market Data Service error message:API scanner subscription cancelled: 5827
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5827 (reqId=5827, symbol=?)
+[17:10 ET] SIDU CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=200 | EMA9=none VWAP=3.03 (+1.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] LUD CHART | O=4.30 H=4.30 L=4.30 C=4.30 V=100 | EMA9=none VWAP=4.42 (-2.7%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] GVH CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=200 | EMA9=none VWAP=2.60 (-1.3%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] LUNL CHART | O=18.59 H=18.59 L=18.59 C=18.59 V=200 | EMA9=none VWAP=18.66 (-0.4%) HOD=18.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] VOYX CHART | O=11.41 H=11.41 L=11.41 C=11.41 V=1,200 | EMA9=none VWAP=11.41 (+0.0%) HOD=11.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] ATPC CHART | O=3.23 H=3.23 L=3.23 C=3.23 V=100 | EMA9=none VWAP=3.22 (+0.3%) HOD=3.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] VELO CHART | O=11.70 H=11.70 L=11.70 C=11.70 V=100 | EMA9=none VWAP=11.66 (+0.4%) HOD=11.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] MGRT CHART | O=14.87 H=14.87 L=14.87 C=14.87 V=100 | EMA9=none VWAP=14.99 (-0.8%) HOD=14.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] SGML CHART | O=14.39 H=14.39 L=14.39 C=14.39 V=600 | EMA9=none VWAP=14.35 (+0.3%) HOD=14.43 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] ICU CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=500 | EMA9=none VWAP=4.31 (-1.4%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] LABX CHART | O=16.83 H=16.83 L=16.83 C=16.83 V=400 | EMA9=none VWAP=16.85 (-0.1%) HOD=16.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] KODK CHART | O=11.33 H=11.33 L=11.33 C=11.33 V=400 | EMA9=none VWAP=11.30 (+0.3%) HOD=11.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] ILAG CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=100 | EMA9=none VWAP=3.08 (+0.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] KELYB CHART | O=15.68 H=15.68 L=15.68 C=15.68 V=1,100 | EMA9=none VWAP=15.75 (-0.4%) HOD=16.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:10 ET] FLYT CHART | O=19.95 H=19.95 L=19.95 C=19.95 V=400 | EMA9=none VWAP=19.94 (+0.1%) HOD=19.95 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-02.json (70 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:08:16
+  TICK AUDIT: SKYQ: 294 ticks in last 60s, last_price=$5.18, last_tick_time=17:11:03
+  TICK AUDIT: TURB: 24 ticks in last 60s, last_price=$3.02, last_tick_time=17:11:07
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=824 | KIDZ:2t/IDLE SKYQ:222t/IDLE TURB:7t/IDLE
+[17:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=828 | KIDZ:2t/IDLE SKYQ:225t/IDLE TURB:8t/IDLE
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.44, last_tick_time=17:11:12
+  TICK AUDIT: SKYQ: 253 ticks in last 60s, last_price=$5.14, last_tick_time=17:12:10
+  TICK AUDIT: TURB: 10 ticks in last 60s, last_price=$3.02, last_tick_time=17:12:10
+[17:13:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=706 | KIDZ:0t/IDLE SKYQ:97t/IDLE TURB:16t/IDLE
+[17:13:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=707 | KIDZ:0t/IDLE SKYQ:98t/IDLE TURB:16t/IDLE
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:11:12
+  TICK AUDIT: SKYQ: 109 ticks in last 60s, last_price=$5.12, last_tick_time=17:13:09
+  TICK AUDIT: TURB: 16 ticks in last 60s, last_price=$3.02, last_tick_time=17:12:58
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=689 | KIDZ:1t/IDLE SKYQ:89t/IDLE TURB:6t/IDLE
+[17:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=689 | KIDZ:1t/IDLE SKYQ:89t/IDLE TURB:6t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.44, last_tick_time=17:13:13
+  TICK AUDIT: SKYQ: 102 ticks in last 60s, last_price=$5.16, last_tick_time=17:14:10
+  TICK AUDIT: TURB: 7 ticks in last 60s, last_price=$3.02, last_tick_time=17:14:07
+[17:15 ET] SKYQ CHART | O=5.15 H=5.16 L=5.13 C=5.13 V=5,431 | EMA9=5.17 VWAP=5.21 (-1.6%) HOD=5.49 PM_H=-inf | MACD=N/A vol_ratio=0.1x avg_vol=37,003 bars=50 | sq=IDLE armed=none
+[17:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=673 | KIDZ:0t/IDLE SKYQ:74t/IDLE TURB:6t/IDLE
+[17:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=673 | KIDZ:0t/IDLE SKYQ:74t/IDLE TURB:6t/IDLE
+[17:15 ET] TURB CHART | O=3.02 H=3.02 L=3.02 C=3.02 V=2,622 | EMA9=3.02 VWAP=3.06 (-1.4%) HOD=3.24 PM_H=-inf | MACD=N/A vol_ratio=1.6x avg_vol=1,660 bars=50 | sq=IDLE armed=none
+
+🔄 Running scanner at 17:15:11 ET...
+Error 162, reqId 5910: Historical Market Data Service error message:API scanner subscription cancelled: 5910
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5910 (reqId=5910, symbol=?)
+[17:15 ET] SIDU CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=900 | EMA9=none VWAP=3.03 (+1.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] LUD CHART | O=4.30 H=4.30 L=4.30 C=4.30 V=100 | EMA9=none VWAP=4.42 (-2.6%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] GVH CHART | O=2.57 H=2.57 L=2.57 C=2.57 V=400 | EMA9=none VWAP=2.60 (-1.3%) HOD=2.72 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] LUNL CHART | O=18.60 H=18.60 L=18.60 C=18.60 V=200 | EMA9=none VWAP=18.66 (-0.3%) HOD=18.84 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] VOYX CHART | O=11.41 H=11.41 L=11.41 C=11.41 V=900 | EMA9=none VWAP=11.41 (+0.0%) HOD=11.41 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] ATPC CHART | O=3.23 H=3.23 L=3.23 C=3.23 V=100 | EMA9=none VWAP=3.22 (+0.3%) HOD=3.40 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] VELO CHART | O=11.53 H=11.53 L=11.53 C=11.53 V=300 | EMA9=none VWAP=11.66 (-1.1%) HOD=11.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] MGRT CHART | O=14.87 H=14.87 L=14.87 C=14.87 V=100 | EMA9=none VWAP=14.99 (-0.8%) HOD=14.99 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] SGML CHART | O=14.43 H=14.43 L=14.43 C=14.43 V=200 | EMA9=none VWAP=14.35 (+0.6%) HOD=14.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] ICU CHART | O=4.25 H=4.25 L=4.25 C=4.25 V=500 | EMA9=none VWAP=4.31 (-1.4%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] LABX CHART | O=16.83 H=16.83 L=16.83 C=16.83 V=200 | EMA9=none VWAP=16.85 (-0.1%) HOD=16.90 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] KODK CHART | O=11.29 H=11.29 L=11.29 C=11.29 V=1,200 | EMA9=none VWAP=11.30 (-0.1%) HOD=11.35 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] ILAG CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=100 | EMA9=none VWAP=3.08 (+0.0%) HOD=3.08 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] KELYB CHART | O=15.68 H=15.68 L=15.68 C=15.68 V=1,100 | EMA9=none VWAP=15.74 (-0.4%) HOD=16.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[17:15 ET] ORIC CHART | O=8.78 H=8.78 L=8.78 C=8.78 V=200 | EMA9=none VWAP=8.78 (-0.0%) HOD=8.89 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-02.json (71 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.44, last_tick_time=17:13:13
+  TICK AUDIT: SKYQ: 194 ticks in last 60s, last_price=$5.17, last_tick_time=17:16:10
+  TICK AUDIT: TURB: 34 ticks in last 60s, last_price=$3.08, last_tick_time=17:16:05
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[17:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=815 | KIDZ:10t/IDLE SKYQ:169t/IDLE TURB:8t/IDLE
+[17:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=821 | KIDZ:10t/IDLE SKYQ:175t/IDLE TURB:8t/IDLE
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$3.40, last_tick_time=17:16:59
+  TICK AUDIT: SKYQ: 207 ticks in last 60s, last_price=$5.23, last_tick_time=17:17:10
+  TICK AUDIT: TURB: 20 ticks in last 60s, last_price=$3.08, last_tick_time=17:17:07
+[17:18:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=816 | KIDZ:3t/IDLE SKYQ:182t/IDLE TURB:3t/IDLE
+[17:18:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=820 | KIDZ:3t/IDLE SKYQ:186t/IDLE TURB:3t/IDLE
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.40, last_tick_time=17:17:44
+  TICK AUDIT: SKYQ: 233 ticks in last 60s, last_price=$5.27, last_tick_time=17:18:10
+  TICK AUDIT: TURB: 4 ticks in last 60s, last_price=$3.08, last_tick_time=17:18:03
+[17:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=754 | KIDZ:0t/IDLE SKYQ:113t/IDLE TURB:13t/IDLE
+[17:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=754 | KIDZ:0t/IDLE SKYQ:113t/IDLE TURB:13t/IDLE
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.40, last_tick_time=17:17:44
+  TICK AUDIT: SKYQ: 127 ticks in last 60s, last_price=$5.24, last_tick_time=17:19:10
+  TICK AUDIT: TURB: 13 ticks in last 60s, last_price=$3.05, last_tick_time=17:18:58
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
