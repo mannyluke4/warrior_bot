@@ -322,3 +322,11 @@ ALERT: bot_v3_hybrid.py died at Fri Apr  3 02:04:55 MDT 2026! Session ended earl
 WARNING: Gateway port 4002 dropped at 2026-04-03 08:04:58 UTC
   attempt 7/36: port 4002 not ready yet, waiting 5s...
 Pushing logs...
+[v2-ibkr-migration 71fceb4] auto: v3 daily logs 2026-04-03
+ 5 files changed, 502 insertions(+)
+ create mode 100644 logs/2026-04-03_daily.log
+ create mode 100644 logs/2026-04-03_scanner.log
+ create mode 100644 logs/cron_2026-04-03.log
+ create mode 100644 logs/gateway_watchdog.log
+=== V3 Hybrid daily run complete: Fri Apr  3 02:05:02 MDT 2026 ===
+=== TRAP: cleanup at Fri Apr  3 02:05:02 MDT 2026 ===
