@@ -38,3 +38,23 @@ Traceback (most recent call last):
     df = data.to_df(pretty_px=True)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: DBNStore.to_df() got an unexpected keyword argument 'pretty_px'
+05:08:30  Live Scanner starting — 2026-04-03 
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+05:08:30  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+05:08:30  Initialized Historical(gateway=https://hist.databento.com)
+05:08:30        Requesting OHLCV from 2026-03-05 to 2026-04-02...
+05:08:37        FAILED to load prev close: DBNStore.to_df() got an unexpected keyword argument 'pretty_px'
+05:08:37        If EQUS.SUMMARY is not in your plan, confirm dataset access
+05:08:37        at https://databento.com/platform/datasets
+05:08:37        Scanner cannot run without prev close data — aborting
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 717, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 713, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 625, in run
+    self.load_prev_close()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 313, in load_prev_close
+    df = data.to_df(pretty_px=True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: DBNStore.to_df() got an unexpected keyword argument 'pretty_px'
