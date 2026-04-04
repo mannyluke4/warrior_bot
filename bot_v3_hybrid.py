@@ -85,6 +85,7 @@ STARTING_EQUITY = float(os.getenv("WB_STARTING_EQUITY", "30000"))
 RISK_PCT = float(os.getenv("WB_RISK_PCT", "0.025"))  # 2.5% of equity per trade
 MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "100000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
+SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"  # 50% buying power (2x equity)
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
 MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
@@ -946,14 +947,19 @@ def enter_trade(symbol: str, armed, setup_type: str):
     current_equity = STARTING_EQUITY + state.daily_pnl  # STARTING_EQUITY is set from IBKR NetLiquidation at startup
     risk_dollars = max(50, current_equity * RISK_PCT)
 
-    # Size calculation
+    # Size calculation — scale notional with equity if enabled
+    effective_notional = MAX_NOTIONAL
+    if SCALE_NOTIONAL:
+        effective_notional = max(MAX_NOTIONAL, current_equity * 2)  # 50% buying power (2x equity)
     qty = int(math.floor(risk_dollars / r))
-    qty_notional = int(math.floor(MAX_NOTIONAL / max(entry, 0.01)))
+    qty_notional = int(math.floor(effective_notional / max(entry, 0.01)))
     qty = min(qty, qty_notional, MAX_SHARES)
 
     notional = qty * entry
     print(f"  Sizing: equity=${current_equity:,.0f} risk=${risk_dollars:,.0f} "
-          f"qty={qty} notional=${notional:,.0f}", flush=True)
+          f"qty={qty} notional=${notional:,.0f}" +
+          (f" (scaled max=${effective_notional:,.0f})" if SCALE_NOTIONAL else ""),
+          flush=True)
 
     if size_mult < 1.0:
         qty = max(1, int(math.floor(qty * size_mult)))

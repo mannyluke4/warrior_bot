@@ -25,8 +25,9 @@ import time
 import math
 import glob
 import argparse
-from datetime import datetime
+from datetime import datetime, time as time_cls
 from collections import Counter
+from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────
 STARTING_EQUITY = 30_000
@@ -149,14 +150,129 @@ def write_status(label, dates, current_idx, equity, all_trades, daily_results, s
         json.dump(state, f, indent=2)
 
 
+# ── Box Strategy Integration ────────────────────────────────────────
+
+BOX_SCANNER_DIR = os.path.join(WORKDIR, "scanner_results_box")
+BOX_CACHE_DIR = os.path.join(WORKDIR, "box_backtest_cache")
+
+# Vol Sweet Spot filter thresholds
+_BOX_MIN_RANGE_PCT = 2.0
+_BOX_MAX_RANGE_PCT = 6.0
+_BOX_MIN_TOTAL_TESTS = 5
+_BOX_MIN_PRICE = 15.0
+_BOX_MAX_ADR_UTIL = 0.80
+
+
+def _run_box_for_date(date: str, equity: float = 50000) -> dict:
+    """Run box strategy on a single date using cached bars. Returns {pnl, trades, trade_details}.
+    Box uses 50% of buying power (2x equity) as max notional."""
+    from box_strategy import BoxStrategyEngine, BOX_MAX_NOTIONAL
+    from box_backtest import BarProxy
+    import box_strategy
+    # Override box notional to 50% of buying power (2x equity), capped at MAX_NOTIONAL
+    box_strategy.BOX_MAX_NOTIONAL = min(equity * 2, MAX_NOTIONAL)
+
+    result = {"pnl": 0.0, "trades": 0, "trade_details": []}
+
+    # Load scanner candidates for this date
+    scanner_file = os.path.join(BOX_SCANNER_DIR, f"{date}.json")
+    if not os.path.exists(scanner_file):
+        return result
+
+    with open(scanner_file) as f:
+        data = json.load(f)
+
+    if isinstance(data, list):
+        candidates = []
+        for item in data:
+            if isinstance(item, dict):
+                candidates.extend(item.get("candidates", []))
+    else:
+        candidates = data.get("candidates", [])
+
+    # Apply Vol Sweet Spot filter
+    filtered = []
+    for c in candidates:
+        if "range_high_5d" not in c:
+            continue
+        rp = c.get("range_pct", 0)
+        total_tests = c.get("high_tests", 0) + c.get("low_tests", 0)
+        price = c.get("price", 0)
+        adr_util = c.get("adr_util_today", 999)
+        if rp < _BOX_MIN_RANGE_PCT or rp > _BOX_MAX_RANGE_PCT:
+            continue
+        if total_tests < _BOX_MIN_TOTAL_TESTS:
+            continue
+        if price < _BOX_MIN_PRICE:
+            continue
+        if adr_util > _BOX_MAX_ADR_UTIL:
+            continue
+        filtered.append(c)
+
+    if not filtered:
+        return result
+
+    # Run each candidate through BoxStrategyEngine using cached 1m bars
+    box_session_pnl = 0.0
+    for c in sorted(filtered, key=lambda x: x.get("box_score", 0), reverse=True):
+        symbol = c["symbol"]
+        cache_file = os.path.join(BOX_CACHE_DIR, date, f"{symbol}.json")
+        if not os.path.exists(cache_file):
+            continue
+
+        with open(cache_file) as f:
+            bar_data = json.load(f)
+        bars = [BarProxy(b) for b in bar_data]
+
+        # Check enough box window bars
+        import pytz as _pytz
+        _ET = _pytz.timezone('US/Eastern')
+        box_bar_count = 0
+        for b in bars:
+            if hasattr(b.date, 'astimezone'):
+                bt = b.date.astimezone(_ET).time()
+                if time_cls(10, 0) <= bt <= time_cls(15, 45):
+                    box_bar_count += 1
+        if box_bar_count < 60:
+            continue
+
+        engine = BoxStrategyEngine(c, exit_variant="midbox")
+        for b in bars:
+            engine.on_bar(b)
+        if engine.active_trade:
+            engine._close_trade(bars[-1].close, bars[-1].date, "end_of_data")
+
+        for t in engine.trades:
+            if t.pnl is None:
+                continue
+            # Enforce session loss cap
+            if box_session_pnl + t.pnl <= -500:
+                break
+            box_session_pnl += t.pnl
+            result["pnl"] += t.pnl
+            result["trades"] += 1
+            result["trade_details"].append({
+                "date": date,
+                "symbol": symbol,
+                "pnl": int(t.pnl),
+                "reason": f"box_{t.exit_reason}",
+                "window": "10:00-15:45",
+            })
+
+    result["pnl"] = round(result["pnl"], 2)
+    return result
+
+
 def run_backtest(dates, label, windows=None, status_file=None, state_file=None, max_stocks=5,
-                 salary_cap=None, pdt_mode=False):
+                 salary_cap=None, pdt_mode=False, box_after_pdt=False, scale_notional=False):
     """
     Run backtest across dates.
     windows: list of (start_time, end_time) tuples, e.g. [("07:00","12:00"), ("16:00","20:00")]
              If None, uses scanner sim_start to 12:00 (original behavior).
     salary_cap: if set, withdraw profits above this amount at end of each day.
     pdt_mode: if True, enforce 3 day trades per 5 business days until equity >= $25K.
+    box_after_pdt: if True, enable box strategy after PDT clears ($25K). No box in PDT mode.
+    scale_notional: if True, MAX_NOTIONAL = 50% of buying power (2x equity), scaling with account.
     """
     equity = STARTING_EQUITY
     all_trades = []
@@ -180,6 +296,10 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
         window_desc += f" | Salary mode: cap ${salary_cap:,}"
     if pdt_mode:
         window_desc += f" | PDT mode: 3 trades/5 days until ${PDT_THRESHOLD:,}"
+    if box_after_pdt:
+        window_desc += " | Box unlocks after PDT"
+    if scale_notional:
+        window_desc += " | Notional = 50% buying power (scales with equity)"
 
     print(f"{'='*60}")
     print(f"  {label}{window_desc}")
@@ -280,6 +400,9 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
             sym = c["symbol"]
             env = dict(os.environ)
             env.update(ENV_BASE)
+            # Scale notional with equity: 50% of buying power (2x equity)
+            if scale_notional:
+                env["WB_MAX_NOTIONAL"] = str(int(equity * 2))
             # PDT mode: override MAX_NOTIONAL to full buying power
             if pdt_mode and not pdt_crossed:
                 env["WB_MAX_NOTIONAL"] = str(int(equity * 4))
@@ -322,6 +445,28 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                     traded_syms_today.add(sym)
                 time.sleep(0.3)
 
+        # ── Box strategy (only after PDT cleared) ────────────────
+        box_day_pnl = 0
+        box_day_trades = 0
+        box_eligible = (box_after_pdt and pdt_crossed) or (box_after_pdt and not pdt_mode)
+        if box_eligible:
+            # Skip Fridays
+            try:
+                dt = datetime.strptime(date, "%Y-%m-%d")
+                is_friday = dt.weekday() == 4
+            except ValueError:
+                is_friday = False
+
+            if not is_friday:
+                box_results = _run_box_for_date(date, equity=equity + day_pnl)
+                box_day_pnl = box_results["pnl"]
+                box_day_trades = box_results["trades"]
+                for bt in box_results["trade_details"]:
+                    all_trades.append(bt)
+                if box_day_trades > 0:
+                    day_pnl += box_day_pnl
+                    day_trades += box_day_trades
+
         equity += day_pnl
 
         # PDT: record today's trades and check for $25K crossover
@@ -332,7 +477,8 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
             pdt_trade_history = [(di, nt) for di, nt in pdt_trade_history if di > i - 5]
             if not pdt_crossed and equity >= PDT_THRESHOLD:
                 pdt_crossed = True
-                print(f"  🎉 PDT CLEARED! Equity ${equity:,.0f} >= ${PDT_THRESHOLD:,} — normal trading unlocked", flush=True)
+                box_str = " + BOX STRATEGY" if box_after_pdt else ""
+                print(f"  🎉 PDT CLEARED! Equity ${equity:,.0f} >= ${PDT_THRESHOLD:,} — normal trading{box_str} unlocked", flush=True)
 
         # Salary mode: withdraw profits above cap at end of day
         day_withdrawal = 0
@@ -403,6 +549,10 @@ def main():
                         help="Salary mode: withdraw profits above this amount daily (e.g., --salary 100000)")
     parser.add_argument("--pdt", action="store_true",
                         help="PDT mode: 3 day trades per 5 business days until equity >= $25K")
+    parser.add_argument("--box-after-pdt", action="store_true",
+                        help="Enable box strategy after PDT clears ($25K). No box in PDT mode.")
+    parser.add_argument("--scale-notional", action="store_true",
+                        help="Scale MAX_NOTIONAL to 50%% buying power (2x equity)")
     parser.add_argument("--equity", type=int, default=None,
                         help="Override starting equity (e.g., --equity 5000)")
     args = parser.parse_args()
@@ -492,7 +642,8 @@ def main():
     else:
         label = args.label or f"Backtest {args.start} to {args.end}"
         run_backtest(dates, label, windows=windows, status_file=status_file, state_file=state_file,
-                     max_stocks=max_stocks, salary_cap=args.salary, pdt_mode=args.pdt)
+                     max_stocks=max_stocks, salary_cap=args.salary, pdt_mode=args.pdt,
+                     box_after_pdt=args.box_after_pdt, scale_notional=args.scale_notional)
 
 
 if __name__ == "__main__":
