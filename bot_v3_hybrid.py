@@ -577,8 +577,10 @@ def seed_symbol(symbol: str):
             # Feed to the MAIN bar builder — this triggers on_bar_close_1m
             # which feeds the squeeze/MP/CT detectors through the normal pipeline
             if state.bar_builder_1m:
-                prev_count = len(state.bar_builder_1m._cur)
                 state.bar_builder_1m.on_trade(symbol, price, size, ts_utc)
+            # Feed to box bar builder too — keeps box RSI/VWAP in sync
+            if BOX_ENABLED and state.box_bar_builder_1m:
+                state.box_bar_builder_1m.on_trade(symbol, price, size, ts_utc)
 
         # Count how many bars were built
         sq = state.sq_detectors.get(symbol)
