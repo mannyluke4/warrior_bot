@@ -15,6 +15,11 @@ class Bar:
     close: float
     volume: int  # sum of trade sizes in the bucket
 
+    @property
+    def date(self) -> datetime:
+        """Alias for start_utc — compatibility with ib_insync BarData and BarProxy."""
+        return self.start_utc
+
 
 class TradeBarBuilder:
     """
