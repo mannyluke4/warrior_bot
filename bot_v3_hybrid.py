@@ -518,27 +518,100 @@ def audit_tick_health():
 
 
 def seed_symbol(symbol: str):
-    """Seed detectors with historical bars from today."""
+    """Seed detectors with historical tick data from today.
+
+    Uses reqHistoricalTicks (tick-level data) replayed through TradeBarBuilder
+    to match exactly how simulate.py processes data. This ensures the squeeze
+    detector's volume averages and state machine match backtest behavior.
+    """
     contract = state.contracts.get(symbol)
     if not contract:
         return
 
     try:
-        bars = state.ib.reqHistoricalData(
-            contract,
-            endDateTime='',
-            durationStr='1 D',
-            barSizeSetting='1 min',
-            whatToShow='TRADES',
-            useRTH=False,
-            formatDate=1,
-        )
-        state.ib.sleep(0.5)
+        # Fetch tick-level historical data from 4 AM ET today
+        now_et = datetime.now(ET)
+        seed_start = now_et.replace(hour=4, minute=0, second=0, microsecond=0)
+        start_str = seed_start.strftime("%Y%m%d %H:%M:%S") + " US/Eastern"
 
-        if not bars:
-            print(f"⚠️ No seed bars for {symbol}", flush=True)
+        all_ticks = []
+        current_start = start_str
+        max_pages = 50  # safety limit
+
+        for page in range(max_pages):
+            ticks = state.ib.reqHistoricalTicks(
+                contract, current_start, '', 1000, 'TRADES', useRth=False
+            )
+            if not ticks:
+                break
+            all_ticks.extend(ticks)
+            state.ib.sleep(0.3)
+
+            if len(ticks) < 1000:
+                break  # got all ticks
+
+            # Paginate: next page starts after last tick
+            last_time = ticks[-1].time
+            current_start = last_time.strftime("%Y%m%d %H:%M:%S") + " UTC"
+
+            # Stop if we've caught up to now
+            if last_time >= now_et.astimezone(timezone.utc):
+                break
+
+        if not all_ticks:
+            # Fallback to 1m bars if tick data unavailable
+            print(f"⚠️ No tick data for {symbol}, falling back to 1m bars", flush=True)
+            _seed_symbol_bars_fallback(symbol)
             return
 
+        # Replay ticks through TradeBarBuilder (same path as live ticks and simulate.py)
+        # This builds bars organically with correct volume accumulation
+        bars_built = 0
+        for tick in all_ticks:
+            ts_utc = tick.time
+            price = tick.price
+            size = int(tick.size) if tick.size else 0
+            if price <= 0 or size <= 0:
+                continue
+
+            # Feed to the MAIN bar builder — this triggers on_bar_close_1m
+            # which feeds the squeeze/MP/CT detectors through the normal pipeline
+            if state.bar_builder_1m:
+                prev_count = len(state.bar_builder_1m._cur)
+                state.bar_builder_1m.on_trade(symbol, price, size, ts_utc)
+
+        # Count how many bars were built
+        sq = state.sq_detectors.get(symbol)
+        bar_count = len(sq.bars_1m) if sq else 0
+        ema = sq.ema if sq else None
+        armed = sq.armed if sq else None
+
+        print(f"🔥 Seeded {symbol}: {len(all_ticks)} ticks → {bar_count} bars"
+              + (f", EMA={ema:.4f}" if ema else "")
+              + (f", ARMED" if armed else "")
+              + f" ({len(all_ticks)//max(1,bar_count)} ticks/bar avg)",
+              flush=True)
+
+    except Exception as e:
+        print(f"⚠️ Tick seed failed for {symbol}: {e} — falling back to 1m bars", flush=True)
+        traceback.print_exc()
+        _seed_symbol_bars_fallback(symbol)
+
+
+def _seed_symbol_bars_fallback(symbol: str):
+    """Fallback: seed with 1m historical bars (old method). Used when tick data unavailable."""
+    contract = state.contracts.get(symbol)
+    if not contract:
+        return
+    try:
+        bars = state.ib.reqHistoricalData(
+            contract, endDateTime='', durationStr='1 D',
+            barSizeSetting='1 min', whatToShow='TRADES',
+            useRTH=False, formatDate=1,
+        )
+        state.ib.sleep(0.5)
+        if not bars:
+            return
         for b in bars:
             o, h, l, c, v = b.open, b.high, b.low, b.close, b.volume
             if SQ_ENABLED and symbol in state.sq_detectors:
@@ -547,13 +620,9 @@ def seed_symbol(symbol: str):
                 state.mp_detectors[symbol].seed_bar_close(o, h, l, c, v)
             if CT_ENABLED and symbol in state.ct_detectors:
                 state.ct_detectors[symbol].seed_bar_close(o, h, l, c, v)
-
-        ema = state.sq_detectors[symbol].ema if SQ_ENABLED and symbol in state.sq_detectors else None
-        print(f"🔥 Seeded {symbol}: {len(bars)} bars, EMA={ema:.4f}" if ema else
-              f"🔥 Seeded {symbol}: {len(bars)} bars", flush=True)
-
+        print(f"🔥 Seeded {symbol} (fallback): {len(bars)} bars", flush=True)
     except Exception as e:
-        print(f"⚠️ Seed failed for {symbol}: {e}", flush=True)
+        print(f"⚠️ Fallback seed also failed for {symbol}: {e}", flush=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
