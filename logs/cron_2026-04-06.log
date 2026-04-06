@@ -165,3 +165,18 @@ Waiting for IB Gateway on port 4002...
   attempt 36/36: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
 === TRAP: cleanup at Mon Apr  6 02:37:33 MDT 2026 ===
+daily_run_v3.sh: line 16: 27001 Terminated: 15          caffeinate -dims -w $$
+[v2-ibkr-migration e0d00e5] auto: v3 daily logs 2026-04-06
+ 3 files changed, 191 insertions(+)
+ create mode 100644 logs/healthcheck_2026-04-06.log
+=== Cleanup complete: Mon Apr  6 02:37:35 MDT 2026 ===
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m

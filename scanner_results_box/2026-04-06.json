@@ -1,0 +1,32 @@
+{
+  "scan_time_et": "10:00",
+  "date": "2026-04-06",
+  "scanner_version": "v2_multiday",
+  "candidate_count": 1,
+  "candidates": [
+    {
+      "symbol": "FHEQ",
+      "price": 29.61,
+      "range_high_5d": 29.71,
+      "range_low_5d": 28.84,
+      "range_size": 0.87,
+      "range_pct": 3.02,
+      "high_tests": 4,
+      "low_tests": 2,
+      "inside_range": true,
+      "range_intact": true,
+      "range_position_pct": 88.5,
+      "today_hod": 29.71,
+      "today_lod": 29.55,
+      "adr_20d": 0.2475,
+      "adr_util_today": 0.646,
+      "vwap": 29.561,
+      "vwap_dist_pct": 0.17,
+      "avg_daily_vol_5d": 610308,
+      "session_volume": 119383.0,
+      "sma_slope_pct": -1.0,
+      "max_gap_pct": 1.15,
+      "box_score": 5.79
+    }
+  ]
+}
