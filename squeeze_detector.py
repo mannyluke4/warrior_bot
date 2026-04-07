@@ -72,6 +72,13 @@ class SqueezeDetector:
         # --- Gap data (set by caller) ---
         self.gap_pct: Optional[float] = None
 
+        # --- Seed gate (suppress stale entries after seed replay) ---
+        self._seed_gate_enabled = os.getenv("WB_SEED_GATE_ENABLED", "1") == "1"
+        self._seed_gate_bars = int(os.getenv("WB_SEED_GATE_BARS", "2"))
+        self._seeding = False
+        self._seed_just_ended = False
+        self._live_bars_since_seed = 0
+
     # ------------------------------------------------------------------
     # Seed (warm up indicators — no signals)
     # ------------------------------------------------------------------
@@ -82,12 +89,30 @@ class SqueezeDetector:
         info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
         self.bars_1m.append(info)
 
+    def begin_seed(self):
+        """Call before replaying seed ticks/bars."""
+        self._seeding = True
+        self._seed_just_ended = False
+        self._live_bars_since_seed = 0
+
+    def end_seed(self):
+        """Call after seed replay completes, before live data starts."""
+        self._seeding = False
+        self._seed_just_ended = True
+        self._live_bars_since_seed = 0
+
     # ------------------------------------------------------------------
     # Primary detection on 1m bar closes
     # ------------------------------------------------------------------
     def on_bar_close_1m(self, bar, vwap: Optional[float] = None) -> Optional[str]:
         if not self.enabled:
             return None
+
+        # Track live bars after seed for gate
+        if not self._seeding and self._seed_just_ended:
+            self._live_bars_since_seed += 1
+            if self._live_bars_since_seed >= self._seed_gate_bars:
+                self._seed_just_ended = False  # gate cleared
 
         o, h, l, c, v = bar.open, bar.high, bar.low, bar.close, bar.volume
 
@@ -203,6 +228,15 @@ class SqueezeDetector:
             return None
 
         if price >= self.armed.trigger_high:
+            # Seed gate: suppress stale entries after seed replay
+            if self._seed_gate_enabled and self._seed_just_ended:
+                return (
+                    f"SQ_SEED_GATE: suppressed entry @ {self.armed.trigger_high:.4f} "
+                    f"— {self._live_bars_since_seed}/{self._seed_gate_bars} live bars "
+                    f"since seed (stock at ${price:.2f}, "
+                    f"armed {abs(price - self.armed.trigger_high)/self.armed.trigger_high*100:.1f}% away)"
+                )
+
             msg = (
                 f"ENTRY SIGNAL @ {self.armed.entry_price:.4f} "
                 f"(break {self.armed.trigger_high:.4f}) "

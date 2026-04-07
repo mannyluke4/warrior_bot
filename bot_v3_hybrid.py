@@ -533,6 +533,11 @@ def seed_symbol(symbol: str):
         return
 
     try:
+        # Tell detectors we're about to seed (suppresses entry signals during replay)
+        sq = state.sq_detectors.get(symbol)
+        if sq:
+            sq.begin_seed()
+
         # Fetch tick-level historical data from today.
         # Strategy: start from 4 AM ET but if too many ticks, restart from
         # 90 minutes before now. This ensures we always get RECENT volume
@@ -610,7 +615,9 @@ def seed_symbol(symbol: str):
         ema = sq.ema if sq else None
         armed = sq.armed if sq else None
 
-        # Mark seed complete — suppress stale entry signals until live ticks confirm
+        # Mark seed complete — detector gate suppresses stale entries until live bars confirm
+        if sq:
+            sq.end_seed()
         state.seed_complete_time[symbol] = datetime.now(ET)
         state.live_tick_count_since_seed[symbol] = 0
 
@@ -975,31 +982,16 @@ def check_triggers(symbol: str, price: float):
     if state.consecutive_losses >= MAX_CONSECUTIVE_LOSSES:
         return
 
-    # Stale signal suppression: after seed completes, require live data confirmation
-    # before allowing entries. This prevents entering on historical prices that have
-    # already moved far from the armed trigger level.
-    SEED_COOLDOWN_SECONDS = 30  # minimum seconds of live data after seed
-    SEED_MIN_LIVE_TICKS = 50   # minimum live ticks after seed
-    seed_time = state.seed_complete_time.get(symbol)
-    if seed_time:
-        elapsed = (datetime.now(ET) - seed_time).total_seconds()
-        live_ticks = state.live_tick_count_since_seed.get(symbol, 0)
-        if elapsed < SEED_COOLDOWN_SECONDS or live_ticks < SEED_MIN_LIVE_TICKS:
-            return  # still in cooldown, suppress all entry signals
-
     # Squeeze trigger (priority)
     if SQ_ENABLED and symbol in state.sq_detectors:
         sq = state.sq_detectors[symbol]
         armed_before = sq.armed
         sq_msg = sq.on_trade_price(price, is_premarket=is_premarket)
+        if sq_msg and "SQ_SEED_GATE" in sq_msg:
+            # Detector suppressed a stale entry from seed replay — log it
+            print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+            return
         if sq_msg and "ENTRY SIGNAL" in sq_msg and armed_before:
-            # Final stale check: is the armed price within 2% of current market?
-            trigger_price = armed_before.trigger_high
-            if abs(price - trigger_price) / trigger_price > 0.02:
-                print(f"[{now_str} ET] {symbol} SQ | STALE SIGNAL SUPPRESSED: "
-                      f"armed@${trigger_price:.2f} but market@${price:.2f} "
-                      f"({abs(price-trigger_price)/trigger_price*100:.1f}% away)", flush=True)
-                return
             print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             enter_trade(symbol, armed_before, "squeeze")
             sq.notify_trade_opened()
