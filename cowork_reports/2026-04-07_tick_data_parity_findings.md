@@ -95,22 +95,23 @@ If the gap is too large to calibrate, switch the live bot's tick feed to somethi
 
 ## Data Available for Further Testing
 
-| Date | Tick Cache Source | Live Ticks Available? |
+| Date | Tick Cache Source | Usable for comparison? |
 |------|-------------------|----------------------|
-| 2026-01-02 through 2026-04-01 | IBKR reqHistoricalTicks (via ibkr_tick_fetcher.py) | No — bot wasn't running |
-| 2026-04-02 | IBKR RTVolume (live bot) | Yes |
-| 2026-04-06 | IBKR RTVolume (live bot) | Yes |
-| 2026-04-07 | IBKR RTVolume (live bot) | Yes |
+| 2026-01-02 through 2026-03-30 | IBKR reqHistoricalTicks (via ibkr_tick_fetcher.py) | No — historical only |
+| 2026-03-31 through 2026-04-02 | V1 bot (different architecture) | No — wrong bot |
+| **2026-04-06** | **V3 bot IBKR RTVolume (confirmed live)** | **Yes** |
+| **2026-04-07** | **V3 bot IBKR RTVolume (confirmed live)** | **Yes** |
 
-April 6 and 7 are the key comparison dates — we have BOTH live RTVolume ticks AND can pull historical ticks from IBKR for the same stocks.
+**Only April 6 and 7 are confirmed V3 live dates.** All other dates in the tick cache are either from `ibkr_tick_fetcher.py` (historical API) or the V1 bot. We need more live trading days before we can draw firm conclusions about the RTVolume gap.
 
 ---
 
 ## Recommendation
 
-1. **Run Test 1 immediately** on ADVB and FCUV from April 6-7. Compare vol_ratio computations from live ticks vs historical ticks. This tells us if the detector is affected or self-consistent.
-2. **Accumulate more live days** before making threshold changes. We need to see a day where the backtest finds trades AND the live bot was running with the tick-level seed fix.
-3. **Consider `reqTickByTickData`** as an alternative to RTVolume if Test 1 shows skewed ratios. This is IBKR's newer tick-by-tick API that may provide fuller coverage.
+1. **Accumulate more live days.** We only have April 6 and 7 as confirmed V3 live data. Both were quiet days with no squeeze setups. We need a day where the backtest finds trades AND the live bot was running with the tick-level seed fix — that's the real test.
+2. **Run Test 1 (vol_ratio comparison)** once we have 5+ live dates. Compare what the squeeze detector computes from live RTVolume ticks vs IBKR historical ticks for the same stock-date. This tells us if the ratio is self-consistent.
+3. **Consider `reqTickByTickData('AllLast')`** as an alternative to RTVolume if Test 1 shows skewed ratios. This is IBKR's newer tick-by-tick API that may provide fuller coverage than RTVolume.
+4. **Keep running the comparison backtest each morning.** Every live day, run the sim on the same candidates using the live tick cache. If live and backtest keep agreeing (like April 7), the gap may be a non-issue for vol_ratio. If they diverge on a day with real setups, we know we need to calibrate.
 
 ---
 
