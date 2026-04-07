@@ -529,30 +529,43 @@ def seed_symbol(symbol: str):
         return
 
     try:
-        # Fetch tick-level historical data from 4 AM ET today
+        # Fetch tick-level historical data from today.
+        # Strategy: start from 4 AM ET but if too many ticks, restart from
+        # 90 minutes before now. This ensures we always get RECENT volume
+        # context (what matters for detector baselines) even on high-volume stocks.
         now_et = datetime.now(ET)
         seed_start = now_et.replace(hour=4, minute=0, second=0, microsecond=0)
         start_str = seed_start.strftime("%Y%m%d %H:%M:%S") + " US/Eastern"
 
         all_ticks = []
         current_start = start_str
-        max_pages = 50  # safety limit
-        max_ticks = 15000  # cap per symbol to keep startup fast (~15s per symbol)
+        max_pages = 100  # enough for full session
+        max_ticks = 50000  # first pass cap
+        ticks_per_page = 1000
 
         for page in range(max_pages):
             ticks = state.ib.reqHistoricalTicks(
-                contract, current_start, '', 1000, 'TRADES', useRth=False
+                contract, current_start, '', ticks_per_page, 'TRADES', useRth=False
             )
             if not ticks:
                 break
             all_ticks.extend(ticks)
             state.ib.sleep(0.3)
 
-            if len(ticks) < 1000:
+            if len(ticks) < ticks_per_page:
                 break  # got all ticks
 
-            # Cap total ticks to avoid multi-minute seeding on high-volume stocks
+            # If we've hit the cap, restart from 90 min ago to get recent data
             if len(all_ticks) >= max_ticks:
+                recent_start = (now_et - timedelta(minutes=90))
+                recent_str = recent_start.strftime("%Y%m%d %H:%M:%S") + " US/Eastern"
+                # Only restart if we haven't already reached recent data
+                last_time = ticks[-1].time
+                if last_time < recent_start.astimezone(timezone.utc):
+                    print(f"  [SEED] {symbol}: {len(all_ticks)} ticks so far, "
+                          f"jumping to recent 90min for full context", flush=True)
+                    current_start = recent_str
+                    continue
                 break
 
             # Paginate: next page starts after last tick
