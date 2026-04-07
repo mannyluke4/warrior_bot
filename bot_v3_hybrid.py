@@ -537,6 +537,7 @@ def seed_symbol(symbol: str):
         all_ticks = []
         current_start = start_str
         max_pages = 50  # safety limit
+        max_ticks = 15000  # cap per symbol to keep startup fast (~15s per symbol)
 
         for page in range(max_pages):
             ticks = state.ib.reqHistoricalTicks(
@@ -549,6 +550,10 @@ def seed_symbol(symbol: str):
 
             if len(ticks) < 1000:
                 break  # got all ticks
+
+            # Cap total ticks to avoid multi-minute seeding on high-volume stocks
+            if len(all_ticks) >= max_ticks:
+                break
 
             # Paginate: next page starts after last tick
             last_time = ticks[-1].time
