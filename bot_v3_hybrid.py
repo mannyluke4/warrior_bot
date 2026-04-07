@@ -208,6 +208,10 @@ class BotState:
         self.last_scan_time: datetime = None
         self.in_dead_zone: bool = False  # True while between trading windows
 
+        # Seed completion tracking (suppress stale signals after seeding)
+        self.seed_complete_time: dict[str, datetime] = {}  # symbol -> when seed finished
+        self.live_tick_count_since_seed: dict[str, int] = {}  # symbol -> live ticks received post-seed
+
         # Tick health monitoring
         self.tick_counts: dict[str, int] = {}  # symbol -> ticks since last audit
         self.last_tick_time: dict[str, datetime] = {}  # symbol -> last tick timestamp
@@ -606,6 +610,10 @@ def seed_symbol(symbol: str):
         ema = sq.ema if sq else None
         armed = sq.armed if sq else None
 
+        # Mark seed complete — suppress stale entry signals until live ticks confirm
+        state.seed_complete_time[symbol] = datetime.now(ET)
+        state.live_tick_count_since_seed[symbol] = 0
+
         print(f"🔥 Seeded {symbol}: {len(all_ticks)} ticks → {bar_count} bars"
               + (f", EMA={ema:.4f}" if ema else "")
               + (f", ARMED" if armed else "")
@@ -616,6 +624,8 @@ def seed_symbol(symbol: str):
         print(f"⚠️ Tick seed failed for {symbol}: {e} — falling back to 1m bars", flush=True)
         traceback.print_exc()
         _seed_symbol_bars_fallback(symbol)
+        state.seed_complete_time[symbol] = datetime.now(ET)
+        state.live_tick_count_since_seed[symbol] = 0
 
 
 def _seed_symbol_bars_fallback(symbol: str):
@@ -965,12 +975,31 @@ def check_triggers(symbol: str, price: float):
     if state.consecutive_losses >= MAX_CONSECUTIVE_LOSSES:
         return
 
+    # Stale signal suppression: after seed completes, require live data confirmation
+    # before allowing entries. This prevents entering on historical prices that have
+    # already moved far from the armed trigger level.
+    SEED_COOLDOWN_SECONDS = 30  # minimum seconds of live data after seed
+    SEED_MIN_LIVE_TICKS = 50   # minimum live ticks after seed
+    seed_time = state.seed_complete_time.get(symbol)
+    if seed_time:
+        elapsed = (datetime.now(ET) - seed_time).total_seconds()
+        live_ticks = state.live_tick_count_since_seed.get(symbol, 0)
+        if elapsed < SEED_COOLDOWN_SECONDS or live_ticks < SEED_MIN_LIVE_TICKS:
+            return  # still in cooldown, suppress all entry signals
+
     # Squeeze trigger (priority)
     if SQ_ENABLED and symbol in state.sq_detectors:
         sq = state.sq_detectors[symbol]
         armed_before = sq.armed
         sq_msg = sq.on_trade_price(price, is_premarket=is_premarket)
         if sq_msg and "ENTRY SIGNAL" in sq_msg and armed_before:
+            # Final stale check: is the armed price within 2% of current market?
+            trigger_price = armed_before.trigger_high
+            if abs(price - trigger_price) / trigger_price > 0.02:
+                print(f"[{now_str} ET] {symbol} SQ | STALE SIGNAL SUPPRESSED: "
+                      f"armed@${trigger_price:.2f} but market@${price:.2f} "
+                      f"({abs(price-trigger_price)/trigger_price*100:.1f}% away)", flush=True)
+                return
             print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             enter_trade(symbol, armed_before, "squeeze")
             sq.notify_trade_opened()
@@ -1512,6 +1541,10 @@ def _process_ticker(ticker):
         "s": size,
         "t": ts.astimezone(timezone.utc).isoformat(),
     })
+
+    # Track live ticks since seed (for stale signal suppression)
+    if symbol in state.live_tick_count_since_seed:
+        state.live_tick_count_since_seed[symbol] += 1
 
     # Feed to bar builders (price + volume)
     if state.bar_builder_1m:
