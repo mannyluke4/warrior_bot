@@ -85,8 +85,8 @@ cd ~/warrior_bot_v2
 git pull origin v2-ibkr-migration 2>&1 || echo "WARN: git pull failed"
 CODE_SHA=$(git rev-parse --short HEAD)
 echo "Code version: $CODE_SHA ($(git log -1 --format='%s'))"
-echo "daily_run_v3.sh hash: $(md5 -q ~/warrior_bot_v2/daily_run_v3.sh)"
-echo "bot_v3_hybrid.py hash: $(md5 -q ~/warrior_bot_v2/bot_v3_hybrid.py)"
+echo "daily_run_v3.sh hash: $(md5sum ~/warrior_bot_v2/daily_run_v3.sh 2>/dev/null || shasum ~/warrior_bot_v2/daily_run_v3.sh 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
+echo "bot_v3_hybrid.py hash: $(md5sum ~/warrior_bot_v2/bot_v3_hybrid.py 2>/dev/null || shasum ~/warrior_bot_v2/bot_v3_hybrid.py 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
 
 # 1b. NTP time sync — accurate bar timestamps depend on local clock
 # NTP sync (non-sudo — sudo hangs in cron without a password)
@@ -127,20 +127,21 @@ echo "Starting IB Gateway via IBC..."
 IBC_PID=$!
 
 # Wait for Gateway to open port 4002
+# IBC + Gateway login takes ~3 minutes typically. Allow up to 6 minutes.
 echo "Waiting for IB Gateway on port $IBKR_PORT..."
 GW_READY=0
-for i in $(seq 1 36); do
+for i in $(seq 1 72); do
     if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2>/dev/null; then
         echo "Gateway is up on port $IBKR_PORT (after ~$((i*5))s)"
         GW_READY=1
         break
     fi
-    echo "  attempt $i/36: port $IBKR_PORT not ready yet, waiting 5s..."
+    echo "  attempt $i/72: port $IBKR_PORT not ready yet, waiting 5s..."
     sleep 5
 done
 
 if [ "$GW_READY" -eq 0 ]; then
-    echo "FATAL: IB Gateway did not open port $IBKR_PORT within 180 seconds. Aborting."
+    echo "FATAL: IB Gateway did not open port $IBKR_PORT within 360 seconds. Aborting."
     exit 1
 fi
 
