@@ -31,9 +31,10 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────
 STARTING_EQUITY = 30_000
-RISK_PCT = 0.025
+RISK_PCT = float(os.environ.get("WB_BT_RISK_PCT", "0.025"))
 MAX_TRADES_PER_DAY = 5
-DAILY_LOSS_LIMIT = -3000
+DAILY_LOSS_LIMIT = float(os.environ.get("WB_BT_DAILY_LOSS_LIMIT", "-3000"))
+DAILY_LOSS_SCALE = os.environ.get("WB_BT_DAILY_LOSS_SCALE", "0") == "1"
 MAX_NOTIONAL = 100_000
 
 ENV_BASE = {
@@ -375,6 +376,9 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
         day_trades = 0
         day_symbols = []
 
+        # Scaling daily loss: 2% of equity instead of fixed cap
+        day_loss_limit = -(equity * 0.02) if DAILY_LOSS_SCALE else DAILY_LOSS_LIMIT
+
         # PDT: calculate how many trades we're allowed today
         if pdt_mode and not pdt_crossed:
             # Rolling 5-day window: count trades in last 5 business days
@@ -395,11 +399,14 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
         traded_syms_today = set()  # Track which symbols already traded (prevent evening dupes)
 
         for c in cands:  # No cap — run all candidates from both scanners
-            if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
+            if day_trades >= max_trades_today or day_pnl <= day_loss_limit:
                 break
             sym = c["symbol"]
             env = dict(os.environ)
-            env.update(ENV_BASE)
+            # ENV_BASE provides defaults, but env vars from caller take precedence
+            for k, v in ENV_BASE.items():
+                if k not in env:
+                    env[k] = v
             # Scale notional with equity: 50% of buying power (2x equity)
             if scale_notional:
                 env["WB_MAX_NOTIONAL"] = str(int(equity * 2))
@@ -418,7 +425,7 @@ def run_backtest(dates, label, windows=None, status_file=None, state_file=None, 
                 window_list = [(ss, "12:00")]
 
             for win_start, win_end in window_list:
-                if day_trades >= max_trades_today or day_pnl <= DAILY_LOSS_LIMIT:
+                if day_trades >= max_trades_today or day_pnl <= day_loss_limit:
                     break
                 # Skip if this stock already traded in an earlier window today
                 if sym in traded_syms_today and win_start != window_list[0][0]:
