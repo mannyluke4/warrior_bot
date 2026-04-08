@@ -31,7 +31,7 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────
 STARTING_EQUITY = 30_000
-RISK_PCT = float(os.environ.get("WB_BT_RISK_PCT", "0.025"))
+RISK_PCT = float(os.environ.get("WB_BT_RISK_PCT", "0.035"))   # X01: was 0.025
 MAX_TRADES_PER_DAY = 5
 DAILY_LOSS_LIMIT = float(os.environ.get("WB_BT_DAILY_LOSS_LIMIT", "-3000"))
 DAILY_LOSS_SCALE = os.environ.get("WB_BT_DAILY_LOSS_SCALE", "0") == "1"
@@ -39,14 +39,14 @@ MAX_NOTIONAL = 100_000
 
 ENV_BASE = {
     "WB_SQUEEZE_ENABLED": "1", "WB_MP_ENABLED": "0",
-    "WB_SQ_VOL_MULT": "3.0", "WB_SQ_MIN_BAR_VOL": "50000",
-    "WB_SQ_MIN_BODY_PCT": "1.5", "WB_SQ_PRIME_BARS": "3",
+    "WB_SQ_VOL_MULT": "2.5", "WB_SQ_MIN_BAR_VOL": "50000",      # X01
+    "WB_SQ_MIN_BODY_PCT": "2.0", "WB_SQ_PRIME_BARS": "4",      # X01
     "WB_SQ_MAX_R": "0.80", "WB_SQ_LEVEL_PRIORITY": "pm_high,whole_dollar,pdh",
-    "WB_SQ_PROBE_SIZE_MULT": "0.5", "WB_SQ_MAX_ATTEMPTS": "3",
+    "WB_SQ_PROBE_SIZE_MULT": "0.5", "WB_SQ_MAX_ATTEMPTS": "5",  # X01
     "WB_SQ_PARA_ENABLED": "1", "WB_SQ_PARA_STOP_OFFSET": "0.10",
     "WB_SQ_PARA_TRAIL_R": "1.0", "WB_SQ_NEW_HOD_REQUIRED": "1",
-    "WB_SQ_MAX_LOSS_DOLLARS": "500", "WB_SQ_TARGET_R": "2.0",
-    "WB_SQ_CORE_PCT": "75", "WB_SQ_RUNNER_TRAIL_R": "2.5",
+    "WB_SQ_MAX_LOSS_DOLLARS": "500", "WB_SQ_TARGET_R": "1.5",   # X01
+    "WB_SQ_CORE_PCT": "90", "WB_SQ_RUNNER_TRAIL_R": "2.5",     # X01
     "WB_SQ_TRAIL_R": "1.5", "WB_SQ_STALL_BARS": "5",
     "WB_SQ_VWAP_EXIT": "1", "WB_SQ_PM_CONFIDENCE": "1",
     "WB_BAIL_TIMER_ENABLED": "1", "WB_BAIL_TIMER_MINUTES": "5",

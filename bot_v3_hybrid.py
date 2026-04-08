@@ -88,6 +88,7 @@ MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"  # 50% buying power (2x equity)
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
 MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
+DAILY_LOSS_SCALE = os.getenv("WB_DAILY_LOSS_SCALE", "0") == "1"
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
 BAIL_TIMER_ENABLED = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
 BAIL_TIMER_MINUTES = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
@@ -977,7 +978,11 @@ def check_triggers(symbol: str, price: float):
         return
 
     # Daily risk check
-    if state.daily_pnl <= -MAX_DAILY_LOSS:
+    if DAILY_LOSS_SCALE:
+        effective_max_loss = max(MAX_DAILY_LOSS, STARTING_EQUITY * 0.02)
+    else:
+        effective_max_loss = MAX_DAILY_LOSS
+    if state.daily_pnl <= -effective_max_loss:
         return
     if state.consecutive_losses >= MAX_CONSECUTIVE_LOSSES:
         return
@@ -1893,7 +1898,11 @@ def main():
     print(f"  Port: {IBKR_PORT}")
     print(f"  Risk: {RISK_PCT*100:.1f}% per trade")
     print(f"  Starting Equity: ${STARTING_EQUITY:,.0f}")
-    print(f"  Max Daily Loss: ${MAX_DAILY_LOSS:,.0f}")
+    if DAILY_LOSS_SCALE:
+        effective_max_loss = max(MAX_DAILY_LOSS, STARTING_EQUITY * 0.02)
+        print(f"  Max Daily Loss: ${effective_max_loss:,.0f} (2% of equity, scaling)")
+    else:
+        print(f"  Max Daily Loss: ${MAX_DAILY_LOSS:,.0f} (fixed)")
     print(f"  Windows: {TRADING_WINDOWS_STR}")
     print(f"  SQ Target R: {SQ_TARGET_R}")
     print("=" * 60)
