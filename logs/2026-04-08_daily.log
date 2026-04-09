@@ -1,164 +1,651 @@
-=== Waking screen and ensuring active desktop ===
-Display wake signal sent
-WARN: keystroke failed — check Accessibility permissions
-Waiting 10s for desktop session...
-Desktop session: ACTIVE
-caffeinate started (PID: 54478)
-=== V3 Hybrid daily run started: Wed Apr  8 02:04:18 MDT 2026 ===
-From github.com:mannyluke4/warrior_bot
- * branch            v2-ibkr-migration -> FETCH_HEAD
-Already up to date.
-Code version: 64f74b0 (Seed gate: detector-level suppression of stale entries)
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 88: md5: command not found
-daily_run_v3.sh hash: 
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 89: md5: command not found
-bot_v3_hybrid.py hash: 
-sntp: clock_settime: Operation not permitted
-+0.027063 +/- 0.050312 time.apple.com 2620:149:a23:3000::1e2
-NTP sync skipped (non-root)
-System time: Wed Apr  8 08:04:20 UTC 2026
-Pre-flight: checking Python imports...
-V3 Imports OK
-Killing stale processes...
-All stale processes cleared.
-Starting IB Gateway via IBC...
-Waiting for IB Gateway on port 4002...
-  attempt 1/36: port 4002 not ready yet, waiting 5s...
-[1;32m+==============================================================================
-+
-+ IBC version 3.23.0
-+
-+ Running GATEWAY 10.37
-+
-+ Diagnostic information is logged in:
-+
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
-+
-+[0m
-  attempt 2/36: port 4002 not ready yet, waiting 5s...
-  attempt 3/36: port 4002 not ready yet, waiting 5s...
-  attempt 4/36: port 4002 not ready yet, waiting 5s...
-  attempt 5/36: port 4002 not ready yet, waiting 5s...
-  attempt 6/36: port 4002 not ready yet, waiting 5s...
-  attempt 7/36: port 4002 not ready yet, waiting 5s...
-  attempt 8/36: port 4002 not ready yet, waiting 5s...
-  attempt 9/36: port 4002 not ready yet, waiting 5s...
-  attempt 10/36: port 4002 not ready yet, waiting 5s...
-  attempt 11/36: port 4002 not ready yet, waiting 5s...
-  attempt 12/36: port 4002 not ready yet, waiting 5s...
-  attempt 13/36: port 4002 not ready yet, waiting 5s...
-  attempt 14/36: port 4002 not ready yet, waiting 5s...
-  attempt 15/36: port 4002 not ready yet, waiting 5s...
-  attempt 16/36: port 4002 not ready yet, waiting 5s...
-  attempt 17/36: port 4002 not ready yet, waiting 5s...
-  attempt 18/36: port 4002 not ready yet, waiting 5s...
-  attempt 19/36: port 4002 not ready yet, waiting 5s...
-  attempt 20/36: port 4002 not ready yet, waiting 5s...
-  attempt 21/36: port 4002 not ready yet, waiting 5s...
-  attempt 22/36: port 4002 not ready yet, waiting 5s...
-  attempt 23/36: port 4002 not ready yet, waiting 5s...
-  attempt 24/36: port 4002 not ready yet, waiting 5s...
-  attempt 25/36: port 4002 not ready yet, waiting 5s...
-  attempt 26/36: port 4002 not ready yet, waiting 5s...
-  attempt 27/36: port 4002 not ready yet, waiting 5s...
-  attempt 28/36: port 4002 not ready yet, waiting 5s...
-  attempt 29/36: port 4002 not ready yet, waiting 5s...
-  attempt 30/36: port 4002 not ready yet, waiting 5s...
-  attempt 31/36: port 4002 not ready yet, waiting 5s...
-  attempt 32/36: port 4002 not ready yet, waiting 5s...
-  attempt 33/36: port 4002 not ready yet, waiting 5s...
-  attempt 34/36: port 4002 not ready yet, waiting 5s...
-  attempt 35/36: port 4002 not ready yet, waiting 5s...
-  attempt 36/36: port 4002 not ready yet, waiting 5s...
-FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
-=== TRAP: cleanup at Wed Apr  8 02:07:34 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 16: 54478 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration ab5f5a0] auto: v3 daily logs 2026-04-08
- 4 files changed, 7097 insertions(+)
- create mode 100644 logs/2026-04-08_daily.log
- create mode 100644 logs/cron_2026-04-08.log
-=== Cleanup complete: Wed Apr  8 02:07:36 MDT 2026 ===
-=== Waking screen and ensuring active desktop ===
-Display wake signal sent
-WARN: keystroke failed — check Accessibility permissions
-Waiting 10s for desktop session...
-Desktop session: ACTIVE
-caffeinate started (PID: 54961)
-=== V3 Hybrid daily run started: Wed Apr  8 02:34:19 MDT 2026 ===
-From github.com:mannyluke4/warrior_bot
- * branch            v2-ibkr-migration -> FETCH_HEAD
-Already up to date.
-Code version: ab5f5a0 (auto: v3 daily logs 2026-04-08)
-daily_run_v3.sh: line 88: md5: command not found
-daily_run_v3.sh hash: 
-daily_run_v3.sh: line 89: md5: command not found
-bot_v3_hybrid.py hash: 
-sntp: clock_settime: Operation not permitted
-+0.028607 +/- 0.058654 time.apple.com 2620:149:a16:3000::31
-NTP sync skipped (non-root)
-System time: Wed Apr  8 08:34:20 UTC 2026
-Pre-flight: checking Python imports...
-V3 Imports OK
-Killing stale processes...
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
-All stale processes cleared.
-Starting IB Gateway via IBC...
-Waiting for IB Gateway on port 4002...
-  attempt 1/36: port 4002 not ready yet, waiting 5s...
-[1;32m+==============================================================================
-+
-+ IBC version 3.23.0
-+
-+ Running GATEWAY 10.37
-+
-+ Diagnostic information is logged in:
-+
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
-+
-+[0m
-  attempt 2/36: port 4002 not ready yet, waiting 5s...
-  attempt 3/36: port 4002 not ready yet, waiting 5s...
-  attempt 4/36: port 4002 not ready yet, waiting 5s...
-  attempt 5/36: port 4002 not ready yet, waiting 5s...
-  attempt 6/36: port 4002 not ready yet, waiting 5s...
-  attempt 7/36: port 4002 not ready yet, waiting 5s...
-  attempt 8/36: port 4002 not ready yet, waiting 5s...
-  attempt 9/36: port 4002 not ready yet, waiting 5s...
-  attempt 10/36: port 4002 not ready yet, waiting 5s...
-  attempt 11/36: port 4002 not ready yet, waiting 5s...
-  attempt 12/36: port 4002 not ready yet, waiting 5s...
-  attempt 13/36: port 4002 not ready yet, waiting 5s...
-  attempt 14/36: port 4002 not ready yet, waiting 5s...
-  attempt 15/36: port 4002 not ready yet, waiting 5s...
-  attempt 16/36: port 4002 not ready yet, waiting 5s...
-  attempt 17/36: port 4002 not ready yet, waiting 5s...
-  attempt 18/36: port 4002 not ready yet, waiting 5s...
-  attempt 19/36: port 4002 not ready yet, waiting 5s...
-  attempt 20/36: port 4002 not ready yet, waiting 5s...
-  attempt 21/36: port 4002 not ready yet, waiting 5s...
-  attempt 22/36: port 4002 not ready yet, waiting 5s...
-  attempt 23/36: port 4002 not ready yet, waiting 5s...
-  attempt 24/36: port 4002 not ready yet, waiting 5s...
-  attempt 25/36: port 4002 not ready yet, waiting 5s...
-  attempt 26/36: port 4002 not ready yet, waiting 5s...
-  attempt 27/36: port 4002 not ready yet, waiting 5s...
-  attempt 28/36: port 4002 not ready yet, waiting 5s...
-  attempt 29/36: port 4002 not ready yet, waiting 5s...
-  attempt 30/36: port 4002 not ready yet, waiting 5s...
-  attempt 31/36: port 4002 not ready yet, waiting 5s...
-  attempt 32/36: port 4002 not ready yet, waiting 5s...
-  attempt 33/36: port 4002 not ready yet, waiting 5s...
-  attempt 34/36: port 4002 not ready yet, waiting 5s...
-  attempt 35/36: port 4002 not ready yet, waiting 5s...
-  attempt 36/36: port 4002 not ready yet, waiting 5s...
-FATAL: IB Gateway did not open port 4002 within 180 seconds. Aborting.
-=== TRAP: cleanup at Wed Apr  8 02:37:34 MDT 2026 ===
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,697
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 19:25:09 ET (first scan — casting wide net)...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 4 (reqId=4, symbol=?)
+  Catchup: 54 unique symbols from 3 scanners
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+    Catchup: processing 1/54 — AAL...
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5 (reqId=5, symbol=?)
+    Catchup: processing 2/54 — ANL...
+    Catchup: processing 3/54 — APAD...
+    Catchup: processing 4/54 — BAOS...
+    Catchup: processing 5/54 — BBGI...
+    Catchup: processing 6/54 — BITO...
+    Catchup: processing 7/54 — BMNU...
+    Catchup: processing 8/54 — BNL...
+  [FMP] BNL: 189.25M
+    Catchup: processing 9/54 — CGV...
+    Catchup: processing 10/54 — CHSN...
+    Catchup: processing 11/54 — CLIK...
+    Catchup: processing 12/54 — CMU...
+    Catchup: processing 13/54 — DXR...
+    Catchup: processing 14/54 — ELAB...
+    Catchup: processing 15/54 — ELPW...
+    Catchup: processing 16/54 — F...
+    Catchup: processing 17/54 — FGNX...
+    Catchup: processing 18/54 — FGRU...
+    Catchup: processing 19/54 — FUTG...
+    Catchup: processing 20/54 — GRAB...
+    Catchup: processing 21/54 — HUTG...
+    Catchup: processing 22/54 — IFLN...
+    Catchup: processing 23/54 — INN PRF...
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: INN PRF"}}}
+    Catchup: processing 24/54 — IVOL...
+    Catchup: processing 25/54 — KPRX...
+    Catchup: processing 26/54 — MAAS...
+    Catchup: processing 27/54 — MIGI...
+    Catchup: processing 28/54 — MRLN...
+    Catchup: processing 29/54 — MTEX...
+    Catchup: processing 30/54 — MZZ...
+    Catchup: processing 31/54 — NNEX...
+    Catchup: processing 32/54 — NOK...
+    Catchup: processing 33/54 — NU...
+    Catchup: processing 34/54 — NVD...
+    Catchup: processing 35/54 — ONDS...
+    Catchup: processing 36/54 — OSCG...
+    Catchup: processing 37/54 — PCEF...
+    Catchup: processing 38/54 — PLTD...
+    Catchup: processing 39/54 — PLUG...
+    Catchup: processing 40/54 — PONX...
+    Catchup: processing 41/54 — SCO...
+    Catchup: processing 42/54 — SKIL...
+    Catchup: processing 43/54 — SNAP...
+    Catchup: processing 44/54 — SOFI...
+    Catchup: processing 45/54 — SPDN...
+    Catchup: processing 46/54 — SVRN...
+    Catchup: processing 47/54 — TSLG...
+    Catchup: processing 48/54 — TSLL...
+    Catchup: processing 49/54 — TZA...
+    Catchup: processing 50/54 — UCAR...
+    Catchup: processing 51/54 — USAX...
+    Catchup: processing 52/54 — USGG...
+    Catchup: processing 53/54 — UVIX...
+    Catchup: processing 54/54 — XRTX...
+  Catchup: 10 candidates after filters
+  [SEED] BBGI: 50607 ticks so far, jumping to recent 90min for full context
+[19:28 ET] BBGI SQ | SQ_REJECT: not_new_hod (bar_high=$5.1300 < HOD=$5.5100)
+[19:28 ET] BBGI SQ | SQ_PRIMED: vol=42.4x avg, bar_vol=452,575, price=$5.8300 above VWAP ($5.3430)
+  ARMED entry=5.0200 stop=4.9000 R=0.1200 score=11.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(9%);[PARABOLIC]
+🔥 Seeded BBGI: 51451 ticks → 50 bars, EMA=5.4621, ARMED (1029 ticks/bar avg)
+✅ Subscribed: BBGI
+[19:28:34 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:35 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:35 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:36 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:37 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:39 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:41 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:41 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:28:41 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 0/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:13 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:27 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:28 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:35 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:36 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:29:40 ET] BBGI SQ | SQ_SEED_GATE: suppressed entry @ 5.0200 — 1/2 live bars since seed (stock at $5.54, armed 10.4% away)
+[19:30 ET] UCAR CHART | O=2.82 H=2.84 L=2.82 C=2.82 V=26,753 | EMA9=2.86 VWAP=2.83 (-0.3%) HOD=2.87 PM_H=-inf | MACD=N/A vol_ratio=5.4x avg_vol=5,000 bars=2 | sq=IDLE armed=none
+  [SEED] UCAR: 51003 ticks so far, jumping to recent 90min for full context
+[19:30 ET] UCAR CHART | O=2.82 H=2.84 L=2.82 C=2.82 V=7,081 | EMA9=2.85 VWAP=2.81 (+0.3%) HOD=2.87 PM_H=0.90 | MACD=N/A vol_ratio=0.6x avg_vol=11,656 bars=3 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.98 L=0.88 C=0.91 V=279,234 | EMA9=2.85 VWAP=1.23 (-26.4%) HOD=2.87 PM_H=0.98 | MACD=N/A vol_ratio=16.7x avg_vol=16,688 bars=4 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.99 L=0.88 C=0.97 V=746,766 | EMA9=2.46 VWAP=1.03 (-6.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=52.3x avg_vol=14,286 bars=5 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.96 H=0.99 L=0.88 C=0.90 V=1,516,136 | EMA9=2.16 VWAP=0.99 (-8.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=22.5x avg_vol=67,276 bars=6 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.86 C=0.87 V=201,445 | EMA9=1.91 VWAP=0.98 (-11.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.1x avg_vol=180,524 bars=7 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.86 C=0.86 V=219,802 | EMA9=1.70 VWAP=0.97 (-11.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=371,326 bars=8 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.86 H=0.99 L=0.86 C=0.86 V=154,819 | EMA9=1.53 VWAP=0.97 (-11.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=350,091 bars=9 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.97 H=0.98 L=0.86 C=0.87 V=220,905 | EMA9=1.40 VWAP=0.96 (-9.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=335,614 bars=10 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.91 L=0.87 C=0.91 V=212,942 | EMA9=1.29 VWAP=0.96 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=317,535 bars=11 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.89 C=0.91 V=157,270 | EMA9=1.22 VWAP=0.95 (-4.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=308,750 bars=12 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.94 L=0.90 C=0.93 V=161,069 | EMA9=1.15 VWAP=0.95 (-2.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=300,766 bars=13 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.93 H=0.94 L=0.90 C=0.91 V=284,810 | EMA9=1.11 VWAP=0.95 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.0x avg_vol=289,728 bars=14 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.89 C=0.90 V=173,622 | EMA9=1.07 VWAP=0.95 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=280,538 bars=15 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.92 L=0.90 C=0.91 V=77,150 | EMA9=1.04 VWAP=0.95 (-3.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=280,823 bars=16 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.92 L=0.89 C=0.89 V=85,386 | EMA9=1.01 VWAP=0.95 (-5.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=274,123 bars=17 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.88 C=0.89 V=135,309 | EMA9=0.99 VWAP=0.95 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=262,536 bars=18 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.91 L=0.89 C=0.90 V=31,962 | EMA9=0.97 VWAP=0.95 (-4.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=252,694 bars=19 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=26,935 | EMA9=0.96 VWAP=0.95 (-4.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=246,516 bars=20 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.89 C=0.89 V=60,549 | EMA9=0.94 VWAP=0.94 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=235,789 bars=21 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.91 L=0.89 C=0.91 V=32,558 | EMA9=0.93 VWAP=0.94 (-3.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=225,843 bars=22 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.93 L=0.91 C=0.91 V=69,045 | EMA9=0.93 VWAP=0.94 (-3.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=218,330 bars=23 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.92 L=0.91 C=0.91 V=41,991 | EMA9=0.93 VWAP=0.94 (-3.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=210,253 bars=24 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.92 L=0.91 C=0.92 V=64,695 | EMA9=0.92 VWAP=0.94 (-2.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=204,369 bars=25 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.92 H=0.94 L=0.92 C=0.94 V=101,840 | EMA9=0.92 VWAP=0.94 (-0.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=197,874 bars=26 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.94 H=0.94 L=0.91 C=0.91 V=148,340 | EMA9=0.93 VWAP=0.94 (-3.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=192,752 bars=27 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.92 L=0.91 C=0.91 V=67,288 | EMA9=0.92 VWAP=0.94 (-3.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=189,385 bars=28 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.90 V=64,230 | EMA9=0.92 VWAP=0.94 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=187,919 bars=29 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.90 V=42,080 | EMA9=0.92 VWAP=0.94 (-4.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=183,759 bars=30 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.90 V=71,117 | EMA9=0.91 VWAP=0.94 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=179,775 bars=31 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=25,075 | EMA9=0.91 VWAP=0.94 (-4.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=175,333 bars=32 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.89 V=16,597 | EMA9=0.91 VWAP=0.94 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=172,076 bars=33 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.90 V=45,963 | EMA9=0.90 VWAP=0.94 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=167,622 bars=34 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.88 C=0.90 V=91,849 | EMA9=0.90 VWAP=0.94 (-4.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=163,180 bars=35 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.90 V=11,025 | EMA9=0.90 VWAP=0.94 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=159,831 bars=36 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.90 V=14,495 | EMA9=0.90 VWAP=0.94 (-4.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=157,942 bars=37 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=22,082 | EMA9=0.90 VWAP=0.94 (-3.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=153,972 bars=38 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=13,298 | EMA9=0.90 VWAP=0.94 (-3.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=150,301 bars=39 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=10,900 | EMA9=0.90 VWAP=0.94 (-4.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=147,013 bars=40 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.90 V=17,857 | EMA9=0.90 VWAP=0.94 (-4.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=143,671 bars=41 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=18,995 | EMA9=0.90 VWAP=0.94 (-3.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=140,432 bars=42 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.91 V=7,341 | EMA9=0.90 VWAP=0.94 (-3.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=137,514 bars=43 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.91 V=40,467 | EMA9=0.90 VWAP=0.94 (-3.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=134,758 bars=44 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=25,328 | EMA9=0.90 VWAP=0.94 (-4.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=131,862 bars=45 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=25,015 | EMA9=0.90 VWAP=0.94 (-4.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=129,831 bars=46 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.91 V=16,961 | EMA9=0.90 VWAP=0.94 (-3.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=127,559 bars=47 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.90 C=0.90 V=12,263 | EMA9=0.90 VWAP=0.94 (-4.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=125,377 bars=48 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=12,979 | EMA9=0.90 VWAP=0.94 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=123,118 bars=49 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.90 C=0.90 V=14,033 | EMA9=0.90 VWAP=0.94 (-4.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=120,856 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.88 C=0.88 V=76,408 | EMA9=0.90 VWAP=0.94 (-6.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=121,019 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.88 V=83,783 | EMA9=0.90 VWAP=0.94 (-6.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=120,932 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.88 V=28,869 | EMA9=0.89 VWAP=0.94 (-5.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=121,945 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=25,687 | EMA9=0.89 VWAP=0.94 (-6.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=123,510 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.88 V=41,371 | EMA9=0.89 VWAP=0.94 (-6.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=118,401 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=25,038 | EMA9=0.89 VWAP=0.94 (-6.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=103,685 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.90 L=0.88 C=0.90 V=53,171 | EMA9=0.88 VWAP=0.93 (-3.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=73,588 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=33,823 | EMA9=0.89 VWAP=0.93 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=69,988 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.89 V=14,529 | EMA9=0.89 VWAP=0.93 (-4.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=66,587 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.88 C=0.89 V=15,201 | EMA9=0.89 VWAP=0.93 (-5.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=64,118 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.88 V=26,792 | EMA9=0.89 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=59,906 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.89 V=14,784 | EMA9=0.89 VWAP=0.93 (-5.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=55,870 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.89 V=5,135 | EMA9=0.89 VWAP=0.93 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=53,208 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=24,021 | EMA9=0.89 VWAP=0.93 (-4.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=50,222 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=17,729 | EMA9=0.89 VWAP=0.93 (-4.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=44,515 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=4,843 | EMA9=0.89 VWAP=0.93 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=41,461 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.88 C=0.88 V=22,538 | EMA9=0.89 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=40,249 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=29,421 | EMA9=0.89 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=38,605 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.88 C=0.88 V=36,554 | EMA9=0.89 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.0x avg_vol=36,304 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.88 V=30,112 | EMA9=0.89 VWAP=0.93 (-6.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=36,252 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.89 V=26,385 | EMA9=0.88 VWAP=0.93 (-4.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=36,448 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.88 C=0.89 V=17,974 | EMA9=0.88 VWAP=0.93 (-4.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=35,827 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.89 V=23,027 | EMA9=0.89 VWAP=0.93 (-4.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=35,701 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.89 V=8,750 | EMA9=0.89 VWAP=0.93 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=34,659 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=45,411 | EMA9=0.89 VWAP=0.93 (-4.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.3x avg_vol=34,272 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=20,843 | EMA9=0.89 VWAP=0.93 (-4.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=33,130 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=11,629 | EMA9=0.89 VWAP=0.93 (-4.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=31,978 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=12,312 | EMA9=0.89 VWAP=0.93 (-4.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=29,376 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.88 C=0.88 V=8,332 | EMA9=0.89 VWAP=0.93 (-5.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=28,240 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=28,952 | EMA9=0.89 VWAP=0.93 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.1x avg_vol=27,181 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=29,104 | EMA9=0.89 VWAP=0.93 (-5.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.1x avg_vol=26,492 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.86 C=0.86 V=65,794 | EMA9=0.89 VWAP=0.93 (-7.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=2.6x avg_vol=25,632 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.86 H=0.87 L=0.86 C=0.87 V=60,909 | EMA9=0.88 VWAP=0.93 (-6.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=2.4x avg_vol=25,714 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.87 V=37,265 | EMA9=0.88 VWAP=0.93 (-5.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.4x avg_vol=26,718 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.87 V=17,318 | EMA9=0.88 VWAP=0.93 (-6.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=27,023 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.87 C=0.87 V=29,183 | EMA9=0.88 VWAP=0.93 (-6.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.1x avg_vol=25,909 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.86 C=0.87 V=43,151 | EMA9=0.88 VWAP=0.93 (-6.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.7x avg_vol=26,037 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.86 C=0.87 V=17,512 | EMA9=0.87 VWAP=0.93 (-6.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=26,337 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.86 C=0.87 V=18,267 | EMA9=0.87 VWAP=0.93 (-6.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=26,767 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.86 C=0.86 V=67,590 | EMA9=0.87 VWAP=0.93 (-7.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=2.5x avg_vol=26,853 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.86 H=0.87 L=0.86 C=0.86 V=34,796 | EMA9=0.87 VWAP=0.93 (-6.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.3x avg_vol=27,003 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.88 V=24,986 | EMA9=0.87 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.9x avg_vol=28,018 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=17,471 | EMA9=0.87 VWAP=0.93 (-4.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=28,341 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=13,401 | EMA9=0.87 VWAP=0.93 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=28,701 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=6,768 | EMA9=0.87 VWAP=0.93 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=28,232 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=11,005 | EMA9=0.87 VWAP=0.93 (-5.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=27,988 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=30,674 | EMA9=0.88 VWAP=0.93 (-5.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.1x avg_vol=27,616 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.86 C=0.87 V=19,930 | EMA9=0.88 VWAP=0.93 (-6.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=27,494 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.86 C=0.87 V=14,462 | EMA9=0.88 VWAP=0.93 (-6.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=27,870 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.87 C=0.87 V=14,175 | EMA9=0.87 VWAP=0.93 (-6.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=28,012 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.86 C=0.87 V=14,275 | EMA9=0.87 VWAP=0.93 (-6.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=28,021 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.87 L=0.87 C=0.87 V=11,613 | EMA9=0.87 VWAP=0.93 (-5.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=26,751 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.88 V=2,634 | EMA9=0.87 VWAP=0.93 (-5.3%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.1x avg_vol=25,332 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.88 V=4,558 | EMA9=0.87 VWAP=0.93 (-5.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=24,980 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=16,514 | EMA9=0.87 VWAP=0.93 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.7x avg_vol=24,509 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.87 C=0.87 V=39,316 | EMA9=0.88 VWAP=0.93 (-5.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.7x avg_vol=23,758 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.88 V=13,720 | EMA9=0.87 VWAP=0.93 (-5.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.6x avg_vol=23,584 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.87 V=12,304 | EMA9=0.88 VWAP=0.93 (-5.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=23,301 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.87 V=10,422 | EMA9=0.88 VWAP=0.93 (-5.8%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.5x avg_vol=22,891 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.88 V=7,832 | EMA9=0.87 VWAP=0.93 (-5.5%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.3x avg_vol=22,846 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.87 H=0.88 L=0.87 C=0.88 V=3,972 | EMA9=0.87 VWAP=0.93 (-5.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.2x avg_vol=22,748 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=8,554 | EMA9=0.87 VWAP=0.93 (-4.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.4x avg_vol=22,361 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=18,959 | EMA9=0.88 VWAP=0.93 (-4.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.9x avg_vol=22,141 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.88 V=17,941 | EMA9=0.88 VWAP=0.93 (-4.7%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=22,210 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.89 V=28,684 | EMA9=0.88 VWAP=0.93 (-4.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=1.3x avg_vol=22,107 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.88 V=17,300 | EMA9=0.88 VWAP=0.93 (-4.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=22,111 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.89 V=17,422 | EMA9=0.88 VWAP=0.93 (-4.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=22,598 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.89 L=0.89 C=0.89 V=18,051 | EMA9=0.88 VWAP=0.93 (-4.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.8x avg_vol=22,491 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.89 C=0.90 V=19,936 | EMA9=0.88 VWAP=0.92 (-2.9%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=0.9x avg_vol=22,246 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.90 H=0.92 L=0.90 C=0.91 V=82,750 | EMA9=0.89 VWAP=0.92 (-1.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=3.8x avg_vol=21,869 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.92 H=0.94 L=0.91 C=0.93 V=404,241 | EMA9=0.89 VWAP=0.93 (+0.4%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=18.7x avg_vol=21,661 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.93 H=0.93 L=0.92 C=0.92 V=119,110 | EMA9=0.90 VWAP=0.93 (-1.0%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=5.2x avg_vol=22,811 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.92 H=0.93 L=0.91 C=0.93 V=142,707 | EMA9=0.90 VWAP=0.93 (+0.6%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=4.6x avg_vol=30,694 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.93 H=0.93 L=0.91 C=0.92 V=134,928 | EMA9=0.91 VWAP=0.92 (-1.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=4.1x avg_vol=32,655 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.93 L=0.91 C=0.91 V=79,446 | EMA9=0.91 VWAP=0.92 (-1.2%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=2.2x avg_vol=35,389 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR CHART | O=0.91 H=0.97 L=0.91 C=0.95 V=345,393 | EMA9=0.91 VWAP=0.93 (+3.1%) HOD=2.87 PM_H=0.99 | MACD=N/A vol_ratio=9.3x avg_vol=37,216 bars=50 | sq=IDLE armed=none
+[19:30 ET] UCAR SQ | SQ_PRIMED: vol=9.0x avg, bar_vol=345,393, price=$0.9546 above VWAP ($0.9258)
+[19:30 ET] UCAR CHART | O=0.95 H=1.01 L=0.95 C=0.96 V=520,362 | EMA9=0.92 VWAP=0.93 (+3.6%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=13.5x avg_vol=38,412 bars=50 | sq=PRIMED armed=none
+[19:30 ET] UCAR SQ | ARMED entry=1.0200 stop=0.9510 R=0.0690 score=11.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(4%);[PARABOLIC]
+[19:30 ET] UCAR CHART | O=0.96 H=0.98 L=0.96 C=0.97 V=297,032 | EMA9=0.93 VWAP=0.93 (+4.7%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=6.6x avg_vol=45,223 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.97 H=0.97 L=0.92 C=0.94 V=317,877 | EMA9=0.94 VWAP=0.93 (+0.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=5.7x avg_vol=55,592 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.94 H=0.95 L=0.92 C=0.93 V=116,286 | EMA9=0.94 VWAP=0.93 (-0.4%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.9x avg_vol=61,483 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.93 H=0.97 L=0.93 C=0.96 V=266,274 | EMA9=0.94 VWAP=0.93 (+3.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=4.0x avg_vol=67,380 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.96 H=0.97 L=0.92 C=0.96 V=206,514 | EMA9=0.94 VWAP=0.93 (+3.5%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=3.0x avg_vol=69,159 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.97 H=0.97 L=0.94 C=0.94 V=201,600 | EMA9=0.94 VWAP=0.93 (+0.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=2.8x avg_vol=73,251 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.94 H=0.94 L=0.93 C=0.94 V=91,544 | EMA9=0.94 VWAP=0.93 (+1.1%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.2x avg_vol=76,222 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.94 H=0.95 L=0.93 C=0.95 V=121,153 | EMA9=0.94 VWAP=0.93 (+1.7%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.5x avg_vol=79,576 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.95 H=0.97 L=0.94 C=0.96 V=92,769 | EMA9=0.94 VWAP=0.93 (+3.5%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.1x avg_vol=81,091 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.96 H=0.97 L=0.95 C=0.95 V=86,419 | EMA9=0.95 VWAP=0.93 (+2.3%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.0x avg_vol=82,968 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.95 H=0.96 L=0.94 C=0.96 V=63,689 | EMA9=0.95 VWAP=0.93 (+2.5%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.8x avg_vol=83,980 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.96 H=0.96 L=0.95 C=0.95 V=45,030 | EMA9=0.95 VWAP=0.93 (+1.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.5x avg_vol=85,386 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.95 H=0.95 L=0.92 C=0.93 V=192,747 | EMA9=0.95 VWAP=0.93 (-0.5%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=2.2x avg_vol=86,313 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.93 H=0.94 L=0.91 C=0.92 V=141,252 | EMA9=0.95 VWAP=0.93 (-1.6%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.6x avg_vol=85,853 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.92 H=0.94 L=0.91 C=0.93 V=128,013 | EMA9=0.94 VWAP=0.93 (+0.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.4x avg_vol=89,077 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.93 H=0.94 L=0.93 C=0.93 V=107,784 | EMA9=0.94 VWAP=0.93 (-0.4%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.2x avg_vol=91,449 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.93 H=0.93 L=0.91 C=0.91 V=116,215 | EMA9=0.94 VWAP=0.93 (-2.3%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.2x avg_vol=93,705 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.91 H=0.92 L=0.89 C=0.89 V=295,949 | EMA9=0.93 VWAP=0.93 (-4.4%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=3.1x avg_vol=95,631 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.89 H=0.91 L=0.89 C=0.89 V=117,620 | EMA9=0.92 VWAP=0.93 (-4.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.2x avg_vol=97,865 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.89 H=0.91 L=0.89 C=0.91 V=57,187 | EMA9=0.92 VWAP=0.93 (-2.3%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.6x avg_vol=103,680 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.91 H=0.91 L=0.89 C=0.90 V=63,958 | EMA9=0.92 VWAP=0.93 (-3.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.6x avg_vol=105,455 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=50,855 | EMA9=0.91 VWAP=0.93 (-2.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.5x avg_vol=106,215 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=50,739 | EMA9=0.91 VWAP=0.93 (-3.3%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.5x avg_vol=107,225 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.88 C=0.90 V=146,734 | EMA9=0.91 VWAP=0.93 (-3.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.4x avg_vol=107,974 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.89 C=0.90 V=59,987 | EMA9=0.91 VWAP=0.93 (-3.8%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.6x avg_vol=108,718 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.90 L=0.88 C=0.88 V=240,320 | EMA9=0.90 VWAP=0.93 (-4.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=2.2x avg_vol=111,475 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=114,781 | EMA9=0.90 VWAP=0.93 (-4.8%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.0x avg_vol=112,646 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.88 V=200,131 | EMA9=0.90 VWAP=0.93 (-5.2%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=1.7x avg_vol=117,457 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.87 C=0.88 V=56,204 | EMA9=0.89 VWAP=0.93 (-5.6%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.5x avg_vol=119,463 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.88 H=0.88 L=0.88 C=0.88 V=42,001 | EMA9=0.89 VWAP=0.93 (-5.3%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.3x avg_vol=122,745 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.88 H=0.89 L=0.88 C=0.89 V=74,487 | EMA9=0.89 VWAP=0.93 (-4.1%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.6x avg_vol=123,612 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.89 H=0.90 L=0.88 C=0.90 V=99,786 | EMA9=0.89 VWAP=0.93 (-2.9%) HOD=2.87 PM_H=1.01 | MACD=N/A vol_ratio=0.8x avg_vol=124,218 bars=50 | sq=ARMED armed=$1.02
+[19:30 ET] UCAR CHART | O=0.90 H=0.91 L=0.90 C=0.90 V=11,105 | EMA9=0.89 VWAP=0.93 (-2.7%) HOD=2.89 PM_H=1.01 | MACD=N/A vol_ratio=0.1x avg_vol=125,525 bars=50 | sq=ARMED armed=$1.02
+🔥 Seeded UCAR: 52100 ticks → 50 bars, EMA=0.8929, ARMED (1042 ticks/bar avg)
+✅ Subscribed: UCAR
+[19:30 ET] UCAR CHART | O=2.89 H=3.02 L=2.86 C=2.98 V=255,139 | EMA9=0.89 VWAP=0.96 (+209.2%) HOD=3.02 PM_H=1.01 | MACD=N/A vol_ratio=2.0x avg_vol=127,402 bars=50 | sq=ARMED armed=$1.02
+[19:30:28 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30 ET] ELPW CHART | O=2.19 H=2.19 L=2.19 C=2.19 V=100 | EMA9=none VWAP=2.20 (-0.4%) HOD=2.20 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+[19:30:28 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:29 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:29 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:29 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:29 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:29 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:30 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30 ET] BBGI CHART | O=5.54 H=5.54 L=5.54 C=5.54 V=6 | EMA9=5.48 VWAP=6.24 (-11.2%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=0.0x avg_vol=495 bars=50 | sq=ARMED armed=$5.02
+[19:30:30 ET] BBGI SQ | ENTRY SIGNAL @ 5.0200 (break 5.0200) stop=4.9000 R=0.1200 score=11.0 setup_type=squeeze why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(9%);[PARABOLIC]
+  Sizing: equity=$29,697 risk=$1,039 qty=8661 notional=$43,478 (scaled max=$100,000)
+🟩 ENTRY: BBGI qty=4330 limit=$5.04 stop=$4.9000 R=$0.1200 score=11.0 type=squeeze
+  ALPACA ORDER: 1556088a-09c3-4f41-b948-0f1e43735c42 BUY 4330 BBGI @ $5.04
+  ORDER TIMEOUT: cancelling 1556088a-09c3-4f41-b948-0f1e43735c42
+[19:30:48 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:49 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:50 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:50 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:52 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:52 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:52 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:53 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:53 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:53 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.83, armed 177.5% away)
+[19:30:55 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.83, armed 177.5% away)
+[19:30:56 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.83, armed 177.5% away)
+[19:30:57 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:58 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:30:59 ET] UCAR SQ | SQ_SEED_GATE: suppressed entry @ 1.0200 — 1/2 live bars since seed (stock at $2.82, armed 176.5% away)
+[19:31:00 ET] UCAR SQ | ENTRY SIGNAL @ 1.0200 (break 1.0200) stop=0.9510 R=0.0690 score=11.0 setup_type=squeeze why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(4%);[PARABOLIC]
+  Sizing: equity=$29,697 risk=$1,039 qty=15063 notional=$15,364 (scaled max=$100,000)
+🟩 ENTRY: UCAR qty=7531 limit=$1.04 stop=$0.9510 R=$0.0690 score=11.0 type=squeeze
+  ALPACA ORDER FAILED: {"code":42210000,"message":"asset \"UCAR\" is not tradable"}
+  [SEED] ELPW: 50584 ticks so far, jumping to recent 90min for full context
+[19:32 ET] ELPW SQ | SQ_REJECT: not_new_hod (bar_high=$1.9700 < HOD=$2.0700)
+[19:32 ET] ELPW SQ | SQ_PRIMED: vol=71.8x avg, bar_vol=577,328, price=$2.4400 above VWAP ($2.1035)
+  ARMED entry=2.0200 stop=1.9500 R=0.0700 score=10.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+🔥 Seeded ELPW: 51003 ticks → 50 bars, EMA=2.1902, ARMED (1020 ticks/bar avg)
+✅ Subscribed: ELPW
+[19:33:30 ET] ELPW SQ | SQ_SEED_GATE: suppressed entry @ 2.0200 — 1/2 live bars since seed (stock at $2.19, armed 8.4% away)
+[19:33:31 ET] ELPW SQ | SQ_SEED_GATE: suppressed entry @ 2.0200 — 1/2 live bars since seed (stock at $2.19, armed 8.4% away)
+[19:33:47 ET] ELPW SQ | SQ_SEED_GATE: suppressed entry @ 2.0200 — 1/2 live bars since seed (stock at $2.19, armed 8.4% away)
+[19:33:57 ET] ELPW SQ | SQ_SEED_GATE: suppressed entry @ 2.0200 — 1/2 live bars since seed (stock at $2.19, armed 8.4% away)
+[19:34:03 ET] ELPW SQ | ENTRY SIGNAL @ 2.0200 (break 2.0200) stop=1.9500 R=0.0700 score=10.0 setup_type=squeeze why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+  Sizing: equity=$29,697 risk=$1,039 qty=14848 notional=$29,993 (scaled max=$100,000)
+🟩 ENTRY: ELPW qty=7424 limit=$2.04 stop=$1.9500 R=$0.0700 score=10.0 type=squeeze
+  ALPACA ORDER: cdc6a3e0-004d-495a-9d7a-c319e0e31a59 BUY 7424 ELPW @ $2.04
+[19:34 ET] CLIK SQ | SQ_REJECT: not_new_hod (bar_high=$2.1600 < HOD=$2.4000)
+[19:34 ET] CLIK SQ | SQ_REJECT: not_new_hod (bar_high=$2.1500 < HOD=$2.4000)
+[19:34 ET] CLIK SQ | SQ_REJECT: not_new_hod (bar_high=$2.3900 < HOD=$2.4000)
+[19:34 ET] CLIK SQ | SQ_PRIMED: vol=13.1x avg, bar_vol=487,313, price=$2.3677 above VWAP ($2.2473)
+  SQ_NO_ARM: invalid_r (entry=1.4400 stop=1.9500)
+[19:34 ET] CLIK SQ | SQ_REJECT: not_new_hod (bar_high=$2.3400 < HOD=$2.6000)
+[19:34 ET] CLIK SQ | SQ_REJECT: not_new_hod (bar_high=$2.3800 < HOD=$2.6000)
+🔥 Seeded CLIK: 45720 ticks → 50 bars, EMA=2.3636 (914 ticks/bar avg)
+✅ Subscribed: CLIK
+  ORDER TIMEOUT: cancelling cdc6a3e0-004d-495a-9d7a-c319e0e31a59
+[19:35 ET] UCAR CHART | O=2.84 H=2.84 L=2.81 C=2.83 V=11,590 | EMA9=2.21 VWAP=0.97 (+190.5%) HOD=3.02 PM_H=1.01 | MACD=N/A vol_ratio=0.1x avg_vol=132,375 bars=50 | sq=IDLE armed=none
+[19:35 ET] ELPW CHART | O=2.20 H=2.20 L=2.19 C=2.19 V=1,923 | EMA9=2.19 VWAP=2.47 (-11.3%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=3.0x avg_vol=638 bars=50 | sq=IDLE armed=none
+[19:35 ET] BBGI CHART | O=5.48 H=5.50 L=5.48 C=5.50 V=626 | EMA9=5.48 VWAP=6.24 (-11.8%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=1.3x avg_vol=483 bars=50 | sq=IDLE armed=none
+[19:35 ET] CLIK CHART | O=2.33 H=2.33 L=2.33 C=2.33 V=100 | EMA9=2.35 VWAP=2.13 (+9.5%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=0.1x avg_vol=1,043 bars=50 | sq=IDLE armed=none
+[19:35 ET] MIGI CHART | O=4.49 H=4.50 L=4.49 C=4.49 V=1,415 | EMA9=4.45 VWAP=4.48 (+0.1%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+  [SEED] MIGI: 50720 ticks so far, jumping to recent 90min for full context
+[19:36 ET] MIGI SQ | SQ_PRIMED: vol=4.3x avg, bar_vol=56,302, price=$3.9000 above VWAP ($3.3876)
+  SQ_NO_ARM: invalid_r (entry=3.0000 stop=3.7603)
+[19:36 ET] MIGI SQ | SQ_REJECT: not_new_hod (bar_high=$3.8700 < HOD=$4.0150)
+[19:36 ET] MIGI SQ | SQ_PRIMED: vol=4.6x avg, bar_vol=169,974, price=$4.3418 above VWAP ($3.7564)
+  SQ_NO_ARM: invalid_r (entry=3.0000 stop=4.0400)
+[19:36 ET] MIGI SQ | SQ_PRIMED: vol=4.4x avg, bar_vol=225,029, price=$4.3800 above VWAP ($3.8837)
+  SQ_NO_ARM: invalid_r (entry=3.0000 stop=4.1200)
+[19:36 ET] MIGI SQ | SQ_PRIMED: vol=3.7x avg, bar_vol=206,529, price=$4.4797 above VWAP ($3.9119)
+  SQ_NO_ARM: invalid_r (entry=3.0000 stop=4.1200)
+[19:36 ET] MIGI SQ | SQ_REJECT: not_new_hod (bar_high=$4.5600 < HOD=$4.5800)
+[19:36 ET] MIGI SQ | SQ_PRIMED: vol=4.0x avg, bar_vol=341,044, price=$4.8001 above VWAP ($4.1077)
+  SQ_NO_ARM: invalid_r (entry=3.0000 stop=4.4700)
+🔥 Seeded MIGI: 51204 ticks → 50 bars, EMA=4.4850 (1024 ticks/bar avg)
+✅ Subscribed: MIGI
+📊 Scanner: 10 new candidates, 5 new subs, 5 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 2544 ticks → 50 bars, EMA=3.0929 (50 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+
+🔄 Running scanner at 19:36:16 ET...
+Error 162, reqId 372: Historical Market Data Service error message:API scanner subscription cancelled: 372
+  [float_cache] Cleared 9 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 372 (reqId=372, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-08.json (87 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BBGI: 113 ticks in last 60s, last_price=$5.49, last_tick_time=19:37:17
+  TICK AUDIT: CLIK: 7 ticks in last 60s, last_price=$2.32, last_tick_time=19:36:22
+  TICK AUDIT: ELPW: 30 ticks in last 60s, last_price=$2.18, last_tick_time=19:37:13
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.08, last_tick_time=19:36:10
+  TICK AUDIT: MIGI: 22 ticks in last 60s, last_price=$4.55, last_tick_time=19:37:02
+  TICK AUDIT: UCAR: 810 ticks in last 60s, last_price=$2.91, last_tick_time=19:37:18
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=255 | BBGI:10t/IDLE CLIK:2t/IDLE ELPW:2t/IDLE KIDZ:2t/IDLE MIGI:9t/IDLE UCAR:122t/IDLE
+[19:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=258 | BBGI:10t/IDLE CLIK:3t/IDLE ELPW:2t/IDLE KIDZ:2t/IDLE MIGI:9t/IDLE UCAR:124t/IDLE
+  TICK AUDIT: BBGI: 13 ticks in last 60s, last_price=$5.49, last_tick_time=19:38:10
+  TICK AUDIT: CLIK: 6 ticks in last 60s, last_price=$2.32, last_tick_time=19:38:18
+  TICK AUDIT: ELPW: 2 ticks in last 60s, last_price=$2.18, last_tick_time=19:37:53
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.08, last_tick_time=19:37:21
+  TICK AUDIT: MIGI: 12 ticks in last 60s, last_price=$4.58, last_tick_time=19:38:18
+  TICK AUDIT: UCAR: 190 ticks in last 60s, last_price=$2.91, last_tick_time=19:38:19
+[19:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=258 | BBGI:6t/IDLE CLIK:0t/IDLE ELPW:9t/IDLE KIDZ:0t/IDLE MIGI:18t/IDLE UCAR:117t/IDLE
+[19:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=262 | BBGI:6t/IDLE CLIK:0t/IDLE ELPW:9t/IDLE KIDZ:0t/IDLE MIGI:18t/IDLE UCAR:121t/IDLE
+  TICK AUDIT: BBGI: 7 ticks in last 60s, last_price=$5.49, last_tick_time=19:39:10
+  TICK AUDIT: CLIK: 0 ticks in last 60s, last_price=$2.32, last_tick_time=19:38:18
+  TICK AUDIT: ELPW: 10 ticks in last 60s, last_price=$2.11, last_tick_time=19:39:10
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.08, last_tick_time=19:37:21
+  TICK AUDIT: MIGI: 19 ticks in last 60s, last_price=$4.59, last_tick_time=19:39:07
+  TICK AUDIT: UCAR: 154 ticks in last 60s, last_price=$2.93, last_tick_time=19:39:19
+⚠️ TICK DROUGHT: CLIK — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:40 ET] UCAR CHART | O=2.93 H=2.98 L=2.92 C=2.95 V=36,145 | EMA9=2.67 VWAP=0.99 (+196.7%) HOD=3.02 PM_H=1.01 | MACD=N/A vol_ratio=0.3x avg_vol=131,232 bars=50 | sq=IDLE armed=none
+[19:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=302 | BBGI:1t/IDLE CLIK:2t/IDLE ELPW:0t/IDLE KIDZ:3t/IDLE MIGI:12t/IDLE UCAR:176t/IDLE
+[19:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=307 | BBGI:1t/IDLE CLIK:2t/IDLE ELPW:0t/IDLE KIDZ:3t/IDLE MIGI:12t/IDLE UCAR:181t/IDLE
+[19:40 ET] MIGI CHART | O=4.59 H=4.59 L=4.48 C=4.49 V=7,008 | EMA9=4.52 VWAP=4.26 (+5.4%) HOD=4.89 PM_H=2.98 | MACD=N/A vol_ratio=8.2x avg_vol=850 bars=50 | sq=IDLE armed=none
+[19:40 ET] CLIK CHART | O=2.32 H=2.32 L=2.32 C=2.32 V=902 | EMA9=2.33 VWAP=2.13 (+9.0%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=1.0x avg_vol=859 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BBGI: 1 ticks in last 60s, last_price=$5.49, last_tick_time=19:39:57
+  TICK AUDIT: CLIK: 8 ticks in last 60s, last_price=$2.40, last_tick_time=19:40:15
+  TICK AUDIT: ELPW: 0 ticks in last 60s, last_price=$2.11, last_tick_time=19:39:10
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.08, last_tick_time=19:39:23
+  TICK AUDIT: MIGI: 14 ticks in last 60s, last_price=$4.49, last_tick_time=19:40:05
+  TICK AUDIT: UCAR: 232 ticks in last 60s, last_price=$2.94, last_tick_time=19:40:18
+⚠️ TICK DROUGHT: ELPW — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:40 ET] ELPW CHART | O=2.11 H=2.11 L=2.11 C=2.11 V=200 | EMA9=2.17 VWAP=2.47 (-14.6%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=0.3x avg_vol=651 bars=50 | sq=IDLE armed=none
+[19:40 ET] BBGI CHART | O=5.49 H=5.49 L=5.49 C=5.49 V=2 | EMA9=5.49 VWAP=6.24 (-12.0%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=0.0x avg_vol=619 bars=50 | sq=IDLE armed=none
+[19:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=217 | BBGI:5t/IDLE CLIK:2t/IDLE ELPW:2t/IDLE KIDZ:0t/IDLE MIGI:5t/IDLE UCAR:95t/IDLE
+[19:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=226 | BBGI:5t/IDLE CLIK:2t/IDLE ELPW:2t/IDLE KIDZ:0t/IDLE MIGI:5t/IDLE UCAR:104t/IDLE
+
+🔄 Running scanner at 19:41:16 ET...
+Error 162, reqId 457: Historical Market Data Service error message:API scanner subscription cancelled: 457
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 457 (reqId=457, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-08.json (88 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BBGI: 25 ticks in last 60s, last_price=$5.49, last_tick_time=19:42:05
+  TICK AUDIT: CLIK: 15 ticks in last 60s, last_price=$2.32, last_tick_time=19:41:52
+  TICK AUDIT: ELPW: 8 ticks in last 60s, last_price=$2.11, last_tick_time=19:41:56
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.08, last_tick_time=19:39:23
+  TICK AUDIT: MIGI: 15 ticks in last 60s, last_price=$4.50, last_tick_time=19:41:58
+  TICK AUDIT: UCAR: 319 ticks in last 60s, last_price=$2.90, last_tick_time=19:42:18
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=271 | BBGI:9t/IDLE CLIK:1t/IDLE ELPW:0t/IDLE KIDZ:1t/IDLE MIGI:2t/IDLE UCAR:122t/IDLE
+[19:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=278 | BBGI:9t/IDLE CLIK:1t/IDLE ELPW:0t/IDLE KIDZ:1t/IDLE MIGI:2t/IDLE UCAR:129t/IDLE
+  TICK AUDIT: BBGI: 12 ticks in last 60s, last_price=$5.48, last_tick_time=19:43:13
+  TICK AUDIT: CLIK: 3 ticks in last 60s, last_price=$2.32, last_tick_time=19:43:05
+  TICK AUDIT: ELPW: 6 ticks in last 60s, last_price=$2.14, last_tick_time=19:43:11
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$3.08, last_tick_time=19:42:21
+  TICK AUDIT: MIGI: 10 ticks in last 60s, last_price=$4.50, last_tick_time=19:43:13
+  TICK AUDIT: UCAR: 189 ticks in last 60s, last_price=$2.95, last_tick_time=19:43:17
+[19:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=292 | BBGI:18t/IDLE CLIK:8t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:0t/IDLE UCAR:129t/IDLE
+[19:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=297 | BBGI:21t/IDLE CLIK:8t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:0t/IDLE UCAR:131t/IDLE
+  TICK AUDIT: BBGI: 29 ticks in last 60s, last_price=$5.56, last_tick_time=19:44:13
+  TICK AUDIT: CLIK: 9 ticks in last 60s, last_price=$2.40, last_tick_time=19:44:09
+  TICK AUDIT: ELPW: 1 ticks in last 60s, last_price=$2.14, last_tick_time=19:43:39
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.08, last_tick_time=19:42:21
+  TICK AUDIT: MIGI: 5 ticks in last 60s, last_price=$4.55, last_tick_time=19:44:13
+  TICK AUDIT: UCAR: 206 ticks in last 60s, last_price=$2.95, last_tick_time=19:44:20
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:45 ET] UCAR CHART | O=2.95 H=2.96 L=2.94 C=2.94 V=24,646 | EMA9=2.85 VWAP=1.01 (+190.4%) HOD=3.02 PM_H=1.01 | MACD=N/A vol_ratio=0.2x avg_vol=116,080 bars=50 | sq=IDLE armed=none
+[19:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=238 | BBGI:3t/IDLE CLIK:3t/IDLE ELPW:10t/IDLE KIDZ:3t/IDLE MIGI:1t/IDLE UCAR:82t/IDLE
+[19:45 ET] MIGI CHART | O=4.50 H=4.55 L=4.50 C=4.55 V=1,807 | EMA9=4.51 VWAP=4.26 (+6.8%) HOD=4.89 PM_H=2.98 | MACD=N/A vol_ratio=1.6x avg_vol=1,127 bars=50 | sq=IDLE armed=none
+[19:45 ET] ELPW CHART | O=2.14 H=2.16 L=2.14 C=2.16 V=2,616 | EMA9=2.14 VWAP=2.47 (-12.5%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=4.6x avg_vol=566 bars=50 | sq=IDLE armed=none
+[19:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=248 | BBGI:3t/IDLE CLIK:3t/IDLE ELPW:11t/IDLE KIDZ:3t/IDLE MIGI:4t/IDLE UCAR:88t/IDLE
+[19:45 ET] BBGI CHART | O=5.55 H=5.58 L=5.55 C=5.58 V=1,726 | EMA9=5.50 VWAP=6.24 (-10.5%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=2.5x avg_vol=685 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BBGI: 9 ticks in last 60s, last_price=$5.60, last_tick_time=19:45:20
+  TICK AUDIT: CLIK: 3 ticks in last 60s, last_price=$2.40, last_tick_time=19:44:55
+  TICK AUDIT: ELPW: 17 ticks in last 60s, last_price=$2.16, last_tick_time=19:45:12
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.08, last_tick_time=19:44:22
+  TICK AUDIT: MIGI: 7 ticks in last 60s, last_price=$4.57, last_tick_time=19:45:16
+  TICK AUDIT: UCAR: 157 ticks in last 60s, last_price=$2.91, last_tick_time=19:45:19
+[19:45 ET] CLIK CHART | O=2.40 H=2.40 L=2.40 C=2.40 V=400 | EMA9=2.35 VWAP=2.13 (+12.8%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=0.5x avg_vol=731 bars=50 | sq=IDLE armed=none
+[19:45 ET] KIDZ CHART | O=3.08 H=3.08 L=3.08 C=3.08 V=300 | EMA9=3.09 VWAP=3.31 (-7.0%) HOD=3.55 PM_H=3.38 | MACD=N/A vol_ratio=1.0x avg_vol=302 bars=50 | sq=IDLE armed=none
+[19:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=253 | BBGI:33t/IDLE CLIK:3t/IDLE ELPW:5t/IDLE KIDZ:1t/IDLE MIGI:5t/IDLE UCAR:70t/IDLE
+[19:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=256 | BBGI:33t/IDLE CLIK:3t/IDLE ELPW:5t/IDLE KIDZ:1t/IDLE MIGI:5t/IDLE UCAR:73t/IDLE
+
+🔄 Running scanner at 19:46:17 ET...
+Error 162, reqId 540: Historical Market Data Service error message:API scanner subscription cancelled: 540
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 540 (reqId=540, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-08.json (89 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BBGI: 66 ticks in last 60s, last_price=$5.41, last_tick_time=19:47:19
+  TICK AUDIT: CLIK: 7 ticks in last 60s, last_price=$2.40, last_tick_time=19:47:18
+  TICK AUDIT: ELPW: 20 ticks in last 60s, last_price=$2.14, last_tick_time=19:46:31
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$3.06, last_tick_time=19:46:51
+  TICK AUDIT: MIGI: 57 ticks in last 60s, last_price=$4.57, last_tick_time=19:47:16
+  TICK AUDIT: UCAR: 240 ticks in last 60s, last_price=$2.90, last_tick_time=19:47:19
+[19:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=295 | BBGI:7t/IDLE CLIK:11t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:12t/IDLE UCAR:97t/IDLE
+[19:48:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=297 | BBGI:7t/IDLE CLIK:11t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:12t/IDLE UCAR:99t/IDLE
+  TICK AUDIT: BBGI: 12 ticks in last 60s, last_price=$5.42, last_tick_time=19:48:15
+  TICK AUDIT: CLIK: 15 ticks in last 60s, last_price=$2.32, last_tick_time=19:48:17
+  TICK AUDIT: ELPW: 6 ticks in last 60s, last_price=$2.18, last_tick_time=19:48:06
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.06, last_tick_time=19:46:51
+  TICK AUDIT: MIGI: 14 ticks in last 60s, last_price=$4.58, last_tick_time=19:48:17
+  TICK AUDIT: UCAR: 151 ticks in last 60s, last_price=$2.93, last_tick_time=19:48:18
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=284 | BBGI:6t/IDLE CLIK:4t/IDLE ELPW:7t/IDLE KIDZ:2t/IDLE MIGI:17t/IDLE UCAR:81t/IDLE
+[19:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | BBGI:6t/IDLE CLIK:4t/IDLE ELPW:7t/IDLE KIDZ:2t/IDLE MIGI:17t/IDLE UCAR:85t/IDLE
+  TICK AUDIT: BBGI: 6 ticks in last 60s, last_price=$5.40, last_tick_time=19:48:50
+  TICK AUDIT: CLIK: 8 ticks in last 60s, last_price=$2.32, last_tick_time=19:49:17
+  TICK AUDIT: ELPW: 8 ticks in last 60s, last_price=$2.13, last_tick_time=19:49:18
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.06, last_tick_time=19:48:22
+  TICK AUDIT: MIGI: 25 ticks in last 60s, last_price=$4.60, last_tick_time=19:49:19
+  TICK AUDIT: UCAR: 133 ticks in last 60s, last_price=$2.89, last_tick_time=19:49:19
+[19:50:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=289 | BBGI:4t/IDLE CLIK:7t/IDLE ELPW:6t/IDLE KIDZ:0t/IDLE MIGI:22t/IDLE UCAR:83t/IDLE
+[19:50 ET] UCAR CHART | O=2.90 H=2.91 L=2.89 C=2.90 V=24,051 | EMA9=2.89 VWAP=1.04 (+179.3%) HOD=3.02 PM_H=1.01 | MACD=N/A vol_ratio=0.3x avg_vol=87,761 bars=50 | sq=IDLE armed=none
+[19:50:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=290 | BBGI:4t/IDLE CLIK:7t/IDLE ELPW:6t/IDLE KIDZ:0t/IDLE MIGI:22t/IDLE UCAR:84t/IDLE
+[19:50 ET] CLIK CHART | O=2.32 H=2.32 L=2.32 C=2.32 V=806 | EMA9=2.36 VWAP=2.13 (+9.0%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=1.3x avg_vol=631 bars=50 | sq=IDLE armed=none
+[19:50 ET] BBGI CHART | O=5.40 H=5.52 L=5.40 C=5.52 V=202 | EMA9=5.48 VWAP=6.23 (-11.4%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=0.2x avg_vol=1,235 bars=50 | sq=IDLE armed=none
+[19:50 ET] ELPW CHART | O=2.13 H=2.17 L=2.13 C=2.17 V=1,402 | EMA9=2.14 VWAP=2.47 (-12.1%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=1.9x avg_vol=725 bars=50 | sq=IDLE armed=none
+[19:50 ET] KIDZ CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=400 | EMA9=3.08 VWAP=3.31 (-7.6%) HOD=3.55 PM_H=3.38 | MACD=N/A vol_ratio=1.5x avg_vol=274 bars=50 | sq=IDLE armed=none
+[19:50 ET] MIGI CHART | O=4.58 H=4.61 L=4.58 C=4.61 V=7,948 | EMA9=4.55 VWAP=4.26 (+8.2%) HOD=4.89 PM_H=2.98 | MACD=N/A vol_ratio=5.5x avg_vol=1,454 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BBGI: 5 ticks in last 60s, last_price=$5.52, last_tick_time=19:50:02
+  TICK AUDIT: CLIK: 11 ticks in last 60s, last_price=$2.29, last_tick_time=19:50:16
+  TICK AUDIT: ELPW: 11 ticks in last 60s, last_price=$2.16, last_tick_time=19:50:16
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$3.14, last_tick_time=19:50:06
+  TICK AUDIT: MIGI: 25 ticks in last 60s, last_price=$4.61, last_tick_time=19:50:09
+  TICK AUDIT: UCAR: 115 ticks in last 60s, last_price=$2.90, last_tick_time=19:50:19
+[19:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=238 | BBGI:5t/IDLE CLIK:2t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:13t/IDLE UCAR:50t/IDLE
+[19:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=244 | BBGI:5t/IDLE CLIK:2t/IDLE ELPW:1t/IDLE KIDZ:0t/IDLE MIGI:14t/IDLE UCAR:55t/IDLE
+
+🔄 Running scanner at 19:51:17 ET...
+Error 162, reqId 622: Historical Market Data Service error message:API scanner subscription cancelled: 622
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 622 (reqId=622, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-08.json (90 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BBGI: 15 ticks in last 60s, last_price=$5.41, last_tick_time=19:52:04
+  TICK AUDIT: CLIK: 5 ticks in last 60s, last_price=$2.29, last_tick_time=19:51:59
+  TICK AUDIT: ELPW: 5 ticks in last 60s, last_price=$2.16, last_tick_time=19:51:31
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.14, last_tick_time=19:50:06
+  TICK AUDIT: MIGI: 32 ticks in last 60s, last_price=$4.58, last_tick_time=19:52:17
+  TICK AUDIT: UCAR: 197 ticks in last 60s, last_price=$2.96, last_tick_time=19:52:19
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=305 | BBGI:10t/IDLE CLIK:2t/IDLE ELPW:3t/IDLE KIDZ:2t/IDLE MIGI:3t/IDLE UCAR:92t/IDLE
+[19:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=316 | BBGI:10t/IDLE CLIK:2t/IDLE ELPW:3t/IDLE KIDZ:2t/IDLE MIGI:7t/IDLE UCAR:99t/IDLE
+  TICK AUDIT: BBGI: 18 ticks in last 60s, last_price=$5.50, last_tick_time=19:53:19
+  TICK AUDIT: CLIK: 2 ticks in last 60s, last_price=$2.29, last_tick_time=19:53:00
+  TICK AUDIT: ELPW: 4 ticks in last 60s, last_price=$2.16, last_tick_time=19:53:01
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.14, last_tick_time=19:52:22
+  TICK AUDIT: MIGI: 12 ticks in last 60s, last_price=$4.59, last_tick_time=19:53:17
+  TICK AUDIT: UCAR: 135 ticks in last 60s, last_price=$2.95, last_tick_time=19:53:20
+[19:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=390 | BBGI:13t/IDLE CLIK:5t/IDLE ELPW:3t/IDLE KIDZ:6t/IDLE MIGI:4t/IDLE UCAR:166t/IDLE
+[19:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=394 | BBGI:13t/IDLE CLIK:5t/IDLE ELPW:3t/IDLE KIDZ:6t/IDLE MIGI:4t/IDLE UCAR:170t/IDLE
+  TICK AUDIT: BBGI: 14 ticks in last 60s, last_price=$5.52, last_tick_time=19:54:11
+  TICK AUDIT: CLIK: 5 ticks in last 60s, last_price=$2.26, last_tick_time=19:53:54
+  TICK AUDIT: ELPW: 5 ticks in last 60s, last_price=$2.15, last_tick_time=19:54:15
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$3.06, last_tick_time=19:54:20
+  TICK AUDIT: MIGI: 11 ticks in last 60s, last_price=$4.58, last_tick_time=19:54:17
+  TICK AUDIT: UCAR: 253 ticks in last 60s, last_price=$3.04, last_tick_time=19:54:20
+[19:55 ET] UCAR CHART | O=3.04 H=3.05 L=3.01 C=3.04 V=71,340 | EMA9=2.94 VWAP=1.07 (+184.6%) HOD=3.05 PM_H=1.01 | MACD=N/A vol_ratio=1.0x avg_vol=72,979 bars=50 | sq=IDLE armed=none
+[19:55:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=363 | BBGI:1t/IDLE CLIK:6t/IDLE ELPW:9t/IDLE KIDZ:0t/IDLE MIGI:2t/IDLE UCAR:152t/IDLE
+[19:55 ET] CLIK CHART | O=2.26 H=2.26 L=2.23 C=2.25 V=504 | EMA9=2.31 VWAP=2.13 (+5.7%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=0.8x avg_vol=633 bars=50 | sq=IDLE armed=none
+[19:55 ET] MIGI CHART | O=4.60 H=4.60 L=4.58 C=4.58 V=2,011 | EMA9=4.58 VWAP=4.26 (+7.4%) HOD=4.89 PM_H=2.98 | MACD=N/A vol_ratio=1.0x avg_vol=1,962 bars=50 | sq=IDLE armed=none
+[19:55:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=372 | BBGI:1t/IDLE CLIK:7t/IDLE ELPW:9t/IDLE KIDZ:0t/IDLE MIGI:3t/IDLE UCAR:159t/IDLE
+[19:55 ET] BBGI CHART | O=5.52 H=5.52 L=5.52 C=5.52 V=600 | EMA9=5.48 VWAP=6.23 (-11.4%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=0.5x avg_vol=1,282 bars=50 | sq=IDLE armed=none
+[19:55 ET] ELPW CHART | O=2.15 H=2.18 L=2.15 C=2.18 V=4,751 | EMA9=2.15 VWAP=2.47 (-11.7%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=5.7x avg_vol=836 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BBGI: 7 ticks in last 60s, last_price=$5.41, last_tick_time=19:55:18
+  TICK AUDIT: CLIK: 9 ticks in last 60s, last_price=$2.25, last_tick_time=19:55:15
+  TICK AUDIT: ELPW: 19 ticks in last 60s, last_price=$2.18, last_tick_time=19:55:19
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.06, last_tick_time=19:54:20
+  TICK AUDIT: MIGI: 15 ticks in last 60s, last_price=$4.58, last_tick_time=19:55:16
+  TICK AUDIT: UCAR: 212 ticks in last 60s, last_price=$2.98, last_tick_time=19:55:20
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[19:55 ET] KIDZ CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=200 | EMA9=3.09 VWAP=3.31 (-7.5%) HOD=3.55 PM_H=3.38 | MACD=N/A vol_ratio=0.9x avg_vol=226 bars=50 | sq=IDLE armed=none
+[19:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=305 | BBGI:8t/IDLE CLIK:6t/IDLE ELPW:6t/IDLE KIDZ:2t/IDLE MIGI:9t/IDLE UCAR:81t/IDLE
+[19:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=310 | BBGI:8t/IDLE CLIK:6t/IDLE ELPW:6t/IDLE KIDZ:2t/IDLE MIGI:9t/IDLE UCAR:86t/IDLE
+
+🔄 Running scanner at 19:56:18 ET...
+Error 162, reqId 705: Historical Market Data Service error message:API scanner subscription cancelled: 705
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 705 (reqId=705, symbol=?)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-08.json (91 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BBGI: 14 ticks in last 60s, last_price=$5.44, last_tick_time=19:56:40
+  TICK AUDIT: CLIK: 12 ticks in last 60s, last_price=$2.28, last_tick_time=19:56:50
+  TICK AUDIT: ELPW: 41 ticks in last 60s, last_price=$2.15, last_tick_time=19:57:12
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.06, last_tick_time=19:55:23
+  TICK AUDIT: MIGI: 28 ticks in last 60s, last_price=$4.53, last_tick_time=19:57:19
+  TICK AUDIT: UCAR: 275 ticks in last 60s, last_price=$2.95, last_tick_time=19:57:20
+[19:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=385 | BBGI:9t/IDLE CLIK:7t/IDLE ELPW:15t/IDLE KIDZ:0t/IDLE MIGI:15t/IDLE UCAR:118t/IDLE
+[19:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=390 | BBGI:9t/IDLE CLIK:7t/IDLE ELPW:17t/IDLE KIDZ:0t/IDLE MIGI:15t/IDLE UCAR:121t/IDLE
+  TICK AUDIT: BBGI: 10 ticks in last 60s, last_price=$5.43, last_tick_time=19:58:12
+  TICK AUDIT: CLIK: 9 ticks in last 60s, last_price=$2.42, last_tick_time=19:58:08
+  TICK AUDIT: ELPW: 30 ticks in last 60s, last_price=$2.13, last_tick_time=19:58:18
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$3.06, last_tick_time=19:58:10
+  TICK AUDIT: MIGI: 23 ticks in last 60s, last_price=$4.52, last_tick_time=19:58:09
+  TICK AUDIT: UCAR: 186 ticks in last 60s, last_price=$3.00, last_tick_time=19:58:20
+[19:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=424 | BBGI:11t/IDLE CLIK:10t/IDLE ELPW:3t/IDLE KIDZ:0t/IDLE MIGI:12t/IDLE UCAR:167t/IDLE
+[19:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=429 | BBGI:14t/IDLE CLIK:10t/IDLE ELPW:3t/IDLE KIDZ:0t/IDLE MIGI:12t/IDLE UCAR:169t/IDLE
+  TICK AUDIT: BBGI: 29 ticks in last 60s, last_price=$5.40, last_tick_time=19:59:13
+  TICK AUDIT: CLIK: 14 ticks in last 60s, last_price=$2.45, last_tick_time=19:59:11
+  TICK AUDIT: ELPW: 3 ticks in last 60s, last_price=$2.13, last_tick_time=19:58:41
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$3.06, last_tick_time=19:58:10
+  TICK AUDIT: MIGI: 23 ticks in last 60s, last_price=$4.55, last_tick_time=19:59:19
+  TICK AUDIT: UCAR: 273 ticks in last 60s, last_price=$3.02, last_tick_time=19:59:21
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[20:00 ET] UCAR CHART | O=3.01 H=3.05 L=2.99 C=3.05 V=102,280 | EMA9=2.98 VWAP=1.10 (+177.1%) HOD=3.05 PM_H=1.01 | MACD=N/A vol_ratio=1.5x avg_vol=67,125 bars=50 | sq=IDLE armed=none
+[20:00 ET] BBGI CHART | O=5.43 H=5.50 L=5.40 C=5.48 V=4,930 | EMA9=5.46 VWAP=6.23 (-12.0%) HOD=7.35 PM_H=7.35 | MACD=N/A vol_ratio=3.7x avg_vol=1,330 bars=50 | sq=IDLE armed=none
+[20:00 ET] MIGI CHART | O=4.50 H=4.57 L=4.50 C=4.50 V=12,103 | EMA9=4.55 VWAP=4.26 (+5.5%) HOD=4.89 PM_H=2.98 | MACD=N/A vol_ratio=5.5x avg_vol=2,217 bars=50 | sq=IDLE armed=none
+[20:00 ET] ELPW CHART | O=2.13 H=2.13 L=2.13 C=2.13 V=228 | EMA9=2.15 VWAP=2.47 (-13.7%) HOD=2.92 PM_H=2.92 | MACD=N/A vol_ratio=0.2x avg_vol=1,259 bars=50 | sq=IDLE armed=none
+[20:00 ET] KIDZ CHART | O=3.06 H=3.06 L=3.06 C=3.06 V=600 | EMA9=3.08 VWAP=3.31 (-7.4%) HOD=3.55 PM_H=3.38 | MACD=N/A vol_ratio=3.0x avg_vol=201 bars=50 | sq=IDLE armed=none
+[20:00 ET] CLIK CHART | O=2.45 H=2.45 L=2.45 C=2.45 V=611 | EMA9=2.35 VWAP=2.13 (+15.1%) HOD=2.60 PM_H=1.42 | MACD=N/A vol_ratio=0.8x avg_vol=762 bars=50 | sq=IDLE armed=none
+
+🛑 All trading windows closed. Shutting down.
+  Tick cache: AAL → +2 ticks (total 9)
+  Tick cache: ANL → +20 ticks (total 110)
+  Tick cache: APAD → +1 ticks (total 3)
+  Tick cache: BAOS → +2 ticks (total 2)
+  Tick cache: BBGI → +426 ticks (total 673,780)
+  Tick cache: BITO → +1 ticks (total 3)
+  Tick cache: BMNU → +2 ticks (total 78)
+  Tick cache: BNL → +2 ticks (total 2)
+  Tick cache: CGV → +1 ticks (total 3)
+  Tick cache: CHSN → +1 ticks (total 3)
+  Tick cache: CLIK → +166 ticks (total 1,800)
+  Tick cache: CMU → +1 ticks (total 2)
+  Tick cache: DXR → +1 ticks (total 2)
+  Tick cache: ELAB → +11 ticks (total 242)
+  Tick cache: ELPW → +256 ticks (total 2,853)
+  Tick cache: F → +2 ticks (total 2)
+  Tick cache: FGNX → +11 ticks (total 146)
+  Tick cache: FGRU → +7 ticks (total 69)
+  Tick cache: FUTG → +14 ticks (total 189)
+  Tick cache: GRAB → +2 ticks (total 4)
+  Tick cache: HUTG → +9 ticks (total 114)
+  Tick cache: IFLN → +2 ticks (total 4)
+  Tick cache: INN PRF → +1 ticks (total 3)
+  Tick cache: IVOL → +1 ticks (total 3)
+  Tick cache: KPRX → +14 ticks (total 104)
+  Tick cache: MAAS → +2 ticks (total 4)
+  Tick cache: MIGI → +412 ticks (total 2,534)
+  Tick cache: MRLN → +8 ticks (total 145)
+  Tick cache: MTEX → +2 ticks (total 108)
+  Tick cache: MZZ → +2 ticks (total 4)
+  Tick cache: NNEX → +9 ticks (total 67)
+  Tick cache: NOK → +2 ticks (total 10)
+  Tick cache: NU → +2 ticks (total 2)
+  Tick cache: NVD → +2 ticks (total 4)
+  Tick cache: ONDS → +2 ticks (total 13)
+  Tick cache: OSCG → +7 ticks (total 86)
+  Tick cache: PCEF → +1 ticks (total 3)
+  Tick cache: PLTD → +1 ticks (total 3)
+  Tick cache: PLUG → +2 ticks (total 10)
+  Tick cache: PONX → +11 ticks (total 137)
+  Tick cache: SCO → +2 ticks (total 198,836)
+  Tick cache: SKIL → +2 ticks (total 168)
+  Tick cache: SNAP → +1 ticks (total 7)
+  Tick cache: SOFI → +1 ticks (total 6)
+  Tick cache: SPDN → +1 ticks (total 3)
+  Tick cache: SVRN → +12 ticks (total 107)
+  Tick cache: TSLG → +1 ticks (total 3)
+  Tick cache: TSLL → +2 ticks (total 9)
+  Tick cache: TZA → +2 ticks (total 9)
+  Tick cache: UCAR → +5,017 ticks (total 85,247)
+  Tick cache: USAX → +8 ticks (total 130)
+  Tick cache: USGG → +12 ticks (total 165)
+  Tick cache: UVIX → +2 ticks (total 8)
+  Tick cache: XRTX → +8 ticks (total 75)
+  Tick cache: KIDZ → +40 ticks (total 6,138)
+📦 Tick cache saved: 55 symbols → tick_cache/2026-04-08/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+  Box Trades: 0
+  Box P&L: $+0.00
+  COMBINED P&L: $+0.00
+============================================================
