@@ -26,7 +26,9 @@ import time
 import math
 import json
 import gzip
+import threading
 import traceback
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from datetime import datetime, timedelta, timezone, time as time_cls
 from collections import deque
 
@@ -254,10 +256,59 @@ state = BotState()
 # Initialization
 # ══════════════════════════════════════════════════════════════════════
 
+# ── Hang protection (added 2026-04-10 after Alpaca SDK froze main thread) ──
+# Alpaca SDK has no default HTTP timeout. After a network blip, a stale TCP
+# socket in the keep-alive pool can cause get_all_positions() to block forever
+# on _ssl__SSLSocket_read. We wrap every Alpaca call in a thread with a hard
+# timeout so a hung HTTPS call can't freeze the main thread.
+_alpaca_executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="alpaca-call")
+
+
+def _alpaca_call(fn, *args, timeout=10, **kwargs):
+    """Run an Alpaca SDK call with a hard timeout. Raises TimeoutError if it hangs."""
+    future = _alpaca_executor.submit(fn, *args, **kwargs)
+    try:
+        return future.result(timeout=timeout)
+    except FuturesTimeoutError:
+        # We can't actually cancel a thread blocked on a kernel read, but we
+        # don't wait for it — the next call will get a fresh worker.
+        raise TimeoutError(f"Alpaca call {fn.__name__} timed out after {timeout}s")
+
+
+# ── Main-thread watchdog ──
+# If the main loop stops updating the heartbeat for >120s, the watchdog kills
+# the bot hard. Cron/check_bot.sh will then restart it. This is the safety net
+# for any hangs we don't catch with explicit timeouts.
+_last_heartbeat = time.time()
+_HEARTBEAT_TIMEOUT_SEC = 120
+
+
+def update_heartbeat():
+    global _last_heartbeat
+    _last_heartbeat = time.time()
+
+
+def _watchdog_loop():
+    while True:
+        time.sleep(15)
+        elapsed = time.time() - _last_heartbeat
+        if elapsed > _HEARTBEAT_TIMEOUT_SEC:
+            print(f"\n💀 WATCHDOG: main thread frozen for {elapsed:.0f}s — exiting hard for restart.",
+                  flush=True)
+            os._exit(1)
+
+
+def start_watchdog():
+    t = threading.Thread(target=_watchdog_loop, daemon=True, name="watchdog")
+    t.start()
+    print(f"  Watchdog: armed (kills bot if main thread frozen >{_HEARTBEAT_TIMEOUT_SEC}s)",
+          flush=True)
+
+
 def get_account_equity() -> float:
     """Get current account equity from Alpaca."""
     try:
-        account = state.alpaca.get_account()
+        account = _alpaca_call(state.alpaca.get_account)
         return float(account.equity)
     except Exception as e:
         print(f"  Failed to fetch Alpaca account equity: {e}", flush=True)
@@ -271,7 +322,7 @@ def get_account_equity() -> float:
 def reconcile_positions_on_startup():
     """Fix 1: Check Alpaca for positions the bot doesn't know about."""
     try:
-        positions = state.alpaca.get_all_positions()
+        positions = _alpaca_call(state.alpaca.get_all_positions)
     except Exception as e:
         print(f"  Position sync error: {e}", flush=True)
         return
@@ -332,7 +383,7 @@ def periodic_position_sync():
     state._last_position_sync = now
 
     try:
-        positions = state.alpaca.get_all_positions()
+        positions = _alpaca_call(state.alpaca.get_all_positions)
     except Exception as e:
         print(f"  Position sync error: {e}", flush=True)
         return
@@ -1914,6 +1965,9 @@ def main():
     print("\nPre-flight port check:")
     preflight_port_check()
 
+    # Start main-thread watchdog (kills bot if frozen >120s)
+    start_watchdog()
+
     # Connect to Alpaca (execution)
     apca_key = os.getenv("APCA_API_KEY_ID")
     apca_secret = os.getenv("APCA_API_SECRET_KEY")
@@ -1932,7 +1986,7 @@ def main():
     def graceful_shutdown(signum, frame):
         print("\n🛑 SHUTDOWN SIGNAL RECEIVED", flush=True)
         try:
-            positions = state.alpaca.get_all_positions()
+            positions = _alpaca_call(state.alpaca.get_all_positions)
             if positions:
                 for pos in positions:
                     print(f"  ⚠️ POSITION OPEN AT SHUTDOWN: {pos.symbol} "
@@ -2153,6 +2207,9 @@ def main():
                       f"ticks={total_ticks} | "
                       f"{' '.join(tick_syms) if tick_syms else 'no symbols'}",
                       flush=True)
+
+            # Heartbeat for watchdog — proves main thread is alive
+            update_heartbeat()
 
             # Let ib_insync process events (sleep longer during dead zone)
             ib.sleep(30 if state.in_dead_zone else 1)
