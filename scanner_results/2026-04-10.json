@@ -1,0 +1,53 @@
+[
+  {
+    "symbol": "SQFT",
+    "prev_close": 2.82,
+    "pm_price": 3.88,
+    "gap_pct": 37.59,
+    "pm_volume": 12237275.0,
+    "first_seen_et": "04:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 6817.0,
+    "relative_volume": 1795.07,
+    "precise_discovery": "04:02",
+    "float_shares": 691696,
+    "float_millions": 0.69,
+    "profile": "A"
+  },
+  {
+    "symbol": "BENF",
+    "prev_close": 3.7,
+    "pm_price": 4.16,
+    "gap_pct": 12.43,
+    "pm_volume": 6056869.0,
+    "first_seen_et": "07:45",
+    "sim_start": "07:45",
+    "discovery_time": "07:45",
+    "discovery_method": "precise",
+    "avg_daily_volume": 20623.0,
+    "relative_volume": 293.69,
+    "precise_discovery": "07:32",
+    "float_shares": 1182156,
+    "float_millions": 1.18,
+    "profile": "A"
+  },
+  {
+    "symbol": "IQST",
+    "prev_close": 2.24,
+    "pm_price": 2.5598,
+    "gap_pct": 14.28,
+    "pm_volume": 206456.0,
+    "first_seen_et": "07:00",
+    "sim_start": "07:00",
+    "discovery_time": "07:00",
+    "discovery_method": "precise",
+    "avg_daily_volume": 104112.0,
+    "relative_volume": 1.98,
+    "precise_discovery": "04:05",
+    "float_shares": 4070526,
+    "float_millions": 4.07,
+    "profile": "A"
+  }
+]
