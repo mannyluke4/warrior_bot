@@ -605,6 +605,9 @@ def seed_symbol(symbol: str):
         ticks_per_page = 1000
 
         for page in range(max_pages):
+            # Heartbeat each page — pagination of up to 100 pages with API
+            # latency can exceed the 120s watchdog window.
+            update_heartbeat()
             ticks = state.ib.reqHistoricalTicks(
                 contract, current_start, '', ticks_per_page, 'TRADES', useRth=False
             )
@@ -756,6 +759,10 @@ def run_scanner():
         if sym not in state.active_symbols:
             subscribe_symbol(sym)
             new_subs += 1
+            # Heartbeat between subscribes — qualifyContracts + reqMktData +
+            # seed_symbol's tick pagination can each take 10-30s; without this,
+            # 4-5 sequential subscribes blow past the 120s watchdog.
+            update_heartbeat()
 
     # NOTE: We NEVER unsubscribe symbols during a session. Once subscribed,
     # a stock stays on the watchlist until the trading window closes.
