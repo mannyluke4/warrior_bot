@@ -2935,6 +2935,8 @@ def run_simulation(
             last_price = None
             last_time_str = None
             last_ts_utc = None  # for halt-through gap detection
+            _sim_start_logged = False
+            _pre_sim_tick_count = 0
 
             for t in tick_trades:
                 price = float(t.price)
@@ -2950,6 +2952,18 @@ def run_simulation(
                 bb_10s.on_trade(symbol, price, size, ts)
                 bb_1m.on_trade(symbol, price, size, ts)
                 bb_5m.on_trade(symbol, price, size, ts)
+
+                # Discovery-time gate: builder feeds (above) still fire so VWAP,
+                # PM_HIGH, and EMA prime correctly, but detector + trade-manager
+                # paths are skipped until we cross sim_start_utc. Mirrors the
+                # bar-mode semantics (seed_bars vs sim_bars) for tick cache input.
+                if ts < sim_start_utc:
+                    _pre_sim_tick_count += 1
+                    continue
+                if not _sim_start_logged:
+                    _sim_start_logged = True
+                    print(f"  SIM_START: crossed sim_start — {_pre_sim_tick_count} pre-sim ticks used for seeding only",
+                          flush=True)
 
                 # Trigger check on every tick (like live bot's on_trade)
                 is_premarket = bb_1m.is_premarket(ts)
