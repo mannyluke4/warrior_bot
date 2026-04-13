@@ -2962,6 +2962,13 @@ def run_simulation(
                     continue
                 if not _sim_start_logged:
                     _sim_start_logged = True
+                    # Validate armed trigger vs. last pre-sim price (mirrors
+                    # live bot's validate_arm_after_seed call). See
+                    # cowork_reports/2026-04-13_directive_stale_seed_fix.md.
+                    if sq_enabled:
+                        stale_msg = sq_det.validate_arm_after_seed(price)
+                        if stale_msg:
+                            print(f"  {stale_msg}", flush=True)
                     print(f"  SIM_START: crossed sim_start — {_pre_sim_tick_count} pre-sim ticks used for seeding only",
                           flush=True)
 

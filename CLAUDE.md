@@ -103,6 +103,10 @@ WB_SQ_CORE_PCT=90            # was 75
 WB_RISK_PCT=0.035            # was 0.025
 WB_DAILY_LOSS_SCALE=1        # 2% of equity scaling
 
+# === Seed-staleness arm validation (added 2026-04-13) ===
+WB_SQ_SEED_STALE_GATE_ENABLED=1  # drops stale arms at seed end; set 0 for diff
+WB_SQ_SEED_STALE_PCT=2.0         # threshold: current_price > trigger_high * 1.02 → drop
+
 # === Scanner (all 3 scanners now read from .env — parity fix 2026-03-24) ===
 WB_MIN_GAP_PCT=10
 WB_MAX_GAP_PCT=500

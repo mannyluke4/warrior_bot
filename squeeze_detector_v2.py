@@ -128,6 +128,12 @@ class SqueezeDetectorV2:
         self._seed_just_ended = False
         self._live_bars_since_seed = 0
 
+        # --- Seed-staleness arm validation (drop arms whose trigger is already
+        # far below current price when seed replay ends). Complements the seed
+        # gate above, which only suppresses replayed signals, not stale triggers.
+        self._seed_stale_gate_enabled = os.getenv("WB_SQ_SEED_STALE_GATE_ENABLED", "1") == "1"
+        self._seed_stale_pct = float(os.getenv("WB_SQ_SEED_STALE_PCT", "2.0"))
+
         # --- V2 Exit state (managed internally) ---
         self._trade_entry: Optional[float] = None
         self._trade_stop: Optional[float] = None
@@ -174,6 +180,36 @@ class SqueezeDetectorV2:
         self._seeding = False
         self._seed_just_ended = True
         self._live_bars_since_seed = 0
+
+    def validate_arm_after_seed(self, current_price: float) -> Optional[str]:
+        """Called once, right after seed replay ends, with the most recent price.
+
+        If the armed trigger is stale (current_price is WB_SQ_SEED_STALE_PCT%
+        or more above trigger_high), reset to IDLE and return a log event.
+        Returns None if the arm is kept.
+        """
+        if not self._seed_stale_gate_enabled:
+            return None
+        if self.armed is None:
+            return None
+        if current_price <= 0:
+            return None
+
+        stale_ratio = (current_price - self.armed.trigger_high) / self.armed.trigger_high
+        threshold = self._seed_stale_pct / 100.0
+        if stale_ratio <= threshold:
+            return None  # fresh enough — keep the arm
+
+        old_trigger = self.armed.trigger_high
+        old_stop = self.armed.stop_low
+        gap_pct = stale_ratio * 100
+        self.armed = None
+        self._state = "IDLE"
+        return (
+            f"SQ_SEED_STALE_RESET: dropped arm @ ${old_trigger:.4f} "
+            f"(stop ${old_stop:.4f}) — current price ${current_price:.4f} is "
+            f"{gap_pct:.1f}% above trigger (threshold {self._seed_stale_pct:.1f}%)"
+        )
 
     # ------------------------------------------------------------------
     # Primary detection on 1m bar closes

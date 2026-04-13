@@ -670,6 +670,18 @@ def seed_symbol(symbol: str):
         ema = sq.ema if sq else None
         armed = sq.armed if sq else None
 
+        # Validate armed trigger vs. last replayed price — drops arms that are
+        # already stale (trigger_high well below current price) before live
+        # ticks can fire them. Complements the seed-gate which only suppresses
+        # replayed signals, not stale trigger values. See
+        # cowork_reports/2026-04-13_directive_stale_seed_fix.md.
+        if sq:
+            latest_price = all_ticks[-1].price if all_ticks else 0.0
+            stale_msg = sq.validate_arm_after_seed(float(latest_price))
+            if stale_msg:
+                print(f"  [{symbol}] {stale_msg}", flush=True)
+                armed = None  # refresh local summary for the Seeded log line
+
         # Mark seed complete — detector gate suppresses stale entries until live bars confirm
         if sq:
             sq.end_seed()
