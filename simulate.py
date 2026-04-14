@@ -2980,37 +2980,17 @@ def run_simulation(
                 if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:
                     sq_trigger = sq_det.on_trade_price(price, is_premarket=is_premarket)
                     if sq_trigger and "ENTRY SIGNAL" in sq_trigger:
-                        # Stale-arm re-pricing (parity with bot_v3_hybrid.enter_trade)
-                        from entry_pricing import compute_entry_limit
-                        _sq_limit, _sq_eff_R, _sq_reprice_tag = compute_entry_limit(
-                            trigger_high=_sq_armed_before.trigger_high,
-                            current_price=price,
-                            stop_low=_sq_armed_before.stop_low,
+                        trade = sim_mgr.on_signal(
+                            symbol=symbol,
+                            entry=_sq_armed_before.trigger_high,
+                            stop=_sq_armed_before.stop_low,
+                            r=_sq_armed_before.r,
+                            score=_sq_armed_before.score,
+                            detail=_sq_armed_before.score_detail,
+                            time_str=time_str,
+                            setup_type="squeeze",
+                            size_mult=_sq_armed_before.size_mult,
                         )
-                        if _sq_limit is None:
-                            if verbose:
-                                print(f"  [{time_str}] SQ_LIMIT_REFUSED: {_sq_reprice_tag} "
-                                      f"trigger=${_sq_armed_before.trigger_high:.4f} cur=${price:.4f}",
-                                      flush=True)
-                            trade = None
-                        else:
-                            if _sq_reprice_tag.startswith("repriced_"):
-                                _sq_entry = _sq_limit
-                                _sq_r = _sq_eff_R
-                            else:
-                                _sq_entry = _sq_armed_before.trigger_high
-                                _sq_r = _sq_armed_before.r  # preserve detector's R
-                            trade = sim_mgr.on_signal(
-                                symbol=symbol,
-                                entry=_sq_entry,
-                                stop=_sq_armed_before.stop_low,
-                                r=_sq_r,
-                                score=_sq_armed_before.score,
-                                detail=_sq_armed_before.score_detail,
-                                time_str=time_str,
-                                setup_type="squeeze",
-                                size_mult=_sq_armed_before.size_mult,
-                            )
                         if trade:
                             if _sq_v2:
                                 sq_det.notify_trade_opened(
@@ -3429,38 +3409,17 @@ def run_simulation(
                             if _sq_eff_mult < 1.0:
                                 _sq_saved_risk = sim_mgr.risk_dollars
                                 sim_mgr.risk_dollars = _sq_saved_risk * _sq_eff_mult
-                            # Stale-arm re-pricing (parity with bot_v3_hybrid.enter_trade)
-                            from entry_pricing import compute_entry_limit
-                            _bar_close_price = bar.close
-                            _sq_limit, _sq_eff_R, _sq_reprice_tag = compute_entry_limit(
-                                trigger_high=_sq_armed_before.trigger_high,
-                                current_price=_bar_close_price,
-                                stop_low=_sq_armed_before.stop_low,
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_sq_armed_before.trigger_high,
+                                stop=_sq_armed_before.stop_low,
+                                r=_sq_armed_before.r,
+                                score=_sq_armed_before.score,
+                                detail=_sq_armed_before.score_detail,
+                                time_str=time_str,
+                                setup_type="squeeze",
+                                size_mult=_sq_size_mult,
                             )
-                            if _sq_limit is None:
-                                if verbose:
-                                    print(f"  [{time_str}] SQ_LIMIT_REFUSED: {_sq_reprice_tag} "
-                                          f"trigger=${_sq_armed_before.trigger_high:.4f} cur=${_bar_close_price:.4f}",
-                                          flush=True)
-                                trade = None
-                            else:
-                                if _sq_reprice_tag.startswith("repriced_"):
-                                    _sq_entry = _sq_limit
-                                    _sq_r = _sq_eff_R
-                                else:
-                                    _sq_entry = _sq_armed_before.trigger_high
-                                    _sq_r = _sq_armed_before.r  # preserve detector's R
-                                trade = sim_mgr.on_signal(
-                                    symbol=symbol,
-                                    entry=_sq_entry,
-                                    stop=_sq_armed_before.stop_low,
-                                    r=_sq_r,
-                                    score=_sq_armed_before.score,
-                                    detail=_sq_armed_before.score_detail,
-                                    time_str=time_str,
-                                    setup_type="squeeze",
-                                    size_mult=_sq_size_mult,
-                                )
                             if _sq_saved_risk is not None:
                                 sim_mgr.risk_dollars = _sq_saved_risk
                             if trade:

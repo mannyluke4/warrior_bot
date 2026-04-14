@@ -1118,43 +1118,11 @@ def check_triggers(symbol: str, price: float):
 
 def enter_trade(symbol: str, armed, setup_type: str):
     """Place entry order via IBKR."""
-    trigger = armed.trigger_high
+    entry = armed.trigger_high
     stop = armed.stop_low
+    r = armed.r
     score = armed.score
     size_mult = getattr(armed, 'size_mult', 1.0)
-
-    # Stale-arm re-pricing — squeeze only per
-    # cowork_reports/2026-04-14_directive_limit_reprice_on_stale_arm.md.
-    # Other setups (continuation, mp_reentry) keep legacy + 0.02 trigger
-    # behavior until they show the same fragility pattern.
-    if setup_type == "squeeze":
-        from entry_pricing import compute_entry_limit
-        cur_price = state.last_tick_price.get(symbol, trigger) or trigger
-        repriced_limit, effective_R, reprice_tag = compute_entry_limit(
-            trigger_high=trigger, current_price=cur_price, stop_low=stop,
-        )
-        if repriced_limit is None:
-            print(f"  [{symbol}] LIMIT_REFUSED: {reprice_tag} — trigger=${trigger:.4f} "
-                  f"current=${cur_price:.4f}, skipping entry", flush=True)
-            return
-        if reprice_tag.startswith("repriced_"):
-            # Re-priced: entry, R, and limit all change together.
-            entry = repriced_limit
-            r = effective_R
-            limit_price = repriced_limit
-        else:
-            # Not stale OR feature disabled: use the arm's exact R (NOT
-            # trigger-stop). Preserves $0.02 detector slippage included in
-            # arm.r — critical for cascading-entry baseline parity.
-            entry = trigger
-            r = armed.r
-            limit_price = repriced_limit  # = trigger + 0.02
-    else:
-        # Legacy path for continuation / mp_reentry
-        entry = trigger
-        r = armed.r
-        limit_price = round(entry + 0.02, 2)
-        reprice_tag = "legacy_non_squeeze"
 
     if r <= 0 or r < MIN_R:
         print(f"  SKIP: R={r:.4f} < min {MIN_R}", flush=True)
@@ -1184,14 +1152,12 @@ def enter_trade(symbol: str, armed, setup_type: str):
     if qty <= 0:
         return
 
+    # Place limit order slightly above trigger via ALPACA
+    limit_price = round(entry + 0.02, 2)
+
     print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} "
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
           f"type={setup_type}", flush=True)
-    if reprice_tag.startswith("repriced_"):
-        print(f"  [{symbol}] LIMIT_REPRICE: trigger=${trigger:.4f} → limit=${limit_price:.2f} "
-              f"({reprice_tag}, eff_R=${r:.4f} vs arm_R=${armed.r:.4f})", flush=True)
-    elif reprice_tag == "not_stale":
-        print(f"  [{symbol}] LIMIT_LEGACY: trigger=${trigger:.4f} (current ~= trigger)", flush=True)
 
     try:
         req = LimitOrderRequest(
