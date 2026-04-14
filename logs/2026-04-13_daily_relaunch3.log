@@ -50,3 +50,14 @@ daily_run_v3.sh: line 16: 16437 Terminated: 15          ( while true; do
         echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
     fi;
 done )
+daily_run_v3.sh: line 16: 16363 Terminated: 15          caffeinate -dims -w $$
+[v2-ibkr-migration 8f3fce1] auto: v3 daily logs 2026-04-13
+ 4 files changed, 4558 insertions(+)
+ create mode 100644 logs/2026-04-13_daily_relaunch3.log
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+=== Cleanup complete: Mon Apr 13 13:06:20 MDT 2026 ===
