@@ -107,6 +107,10 @@ WB_DAILY_LOSS_SCALE=1        # 2% of equity scaling
 WB_SQ_SEED_STALE_GATE_ENABLED=1  # drops stale arms at seed end; set 0 for diff
 WB_SQ_SEED_STALE_PCT=2.0         # threshold: current_price > trigger_high * 1.02 → drop
 
+# === Vol-baseline winsorize (deployed 2026-04-15) ===
+WB_SQ_VOL_WINSORIZE_ENABLED=1    # caps avg_vol contribution per bar to prevent spike-bar poisoning
+WB_SQ_VOL_WINSORIZE_CAP=5.0      # ROLR 2026-04-14 validation: unblocked re-arms post 22.7× spike bar
+
 # === Scanner (all 3 scanners now read from .env — parity fix 2026-03-24) ===
 WB_MIN_GAP_PCT=10
 WB_MAX_GAP_PCT=500
