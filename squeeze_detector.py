@@ -75,6 +75,8 @@ class SqueezeDetector:
         # --- Seed gate (suppress stale entries after seed replay) ---
         self._seed_gate_enabled = os.getenv("WB_SEED_GATE_ENABLED", "1") == "1"
         self._seed_gate_bars = int(os.getenv("WB_SEED_GATE_BARS", "2"))
+        self._winsorize_enabled = os.getenv("WB_SQ_VOL_WINSORIZE_ENABLED", "0") == "1"
+        self._winsorize_cap = float(os.getenv("WB_SQ_VOL_WINSORIZE_CAP", "5.0"))
         self._seeding = False
         self._seed_just_ended = False
         self._live_bars_since_seed = 0
@@ -92,7 +94,8 @@ class SqueezeDetector:
         self.ema = ema_next(self.ema, c, self._ema_len)
         if h > self._session_hod:
             self._session_hod = h
-        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
+        v_baseline = self._winsorize_volume(v)
+        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "v_baseline": v_baseline, "green": c >= o}
         self.bars_1m.append(info)
 
     def begin_seed(self):
@@ -157,7 +160,8 @@ class SqueezeDetector:
         if h > self._session_hod:
             self._session_hod = h
 
-        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
+        v_baseline = self._winsorize_volume(v)
+        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "v_baseline": v_baseline, "green": c >= o}
         self.bars_1m.append(info)
 
         # Don't detect while in a trade
@@ -328,12 +332,28 @@ class SqueezeDetector:
         self.armed = None
 
     def _avg_prior_vol(self) -> float:
-        """Average volume of all 1m bars except the most recent."""
+        """Average volume of all 1m bars except the most recent.
+        Uses winsorized contribution per bar to prevent a single spike bar
+        from poisoning the baseline (see WB_SQ_VOL_WINSORIZE_*)."""
         if len(self.bars_1m) < 2:
             return 0.0
         bars = list(self.bars_1m)[:-1]
-        total = sum(b["v"] for b in bars)
+        total = sum(b.get("v_baseline", b["v"]) for b in bars)
         return total / len(bars) if bars else 0.0
+
+    def _winsorize_volume(self, v: float) -> float:
+        """Cap a bar's contribution to the rolling baseline at WINSORIZE_CAP
+        × current full-deque avg. Returns raw v if disabled or no baseline yet."""
+        if not self._winsorize_enabled:
+            return v
+        if not self.bars_1m:
+            return v
+        bars = list(self.bars_1m)
+        total = sum(b.get("v_baseline", b["v"]) for b in bars)
+        cur_avg = total / len(bars)
+        if cur_avg <= 0:
+            return v
+        return min(v, cur_avg * self._winsorize_cap)
 
     def _find_broken_level(self, bar_high: float) -> tuple[Optional[str], Optional[float]]:
         """Check if bar_high has broken any key level, in priority order."""

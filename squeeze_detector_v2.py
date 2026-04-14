@@ -128,6 +128,14 @@ class SqueezeDetectorV2:
         self._seed_just_ended = False
         self._live_bars_since_seed = 0
 
+        # --- Vol-baseline winsorization (added 2026-04-14) ---
+        # When a single extreme bar (e.g. ROLR's 22.7x spike) enters the rolling
+        # avg_vol, it poisons the baseline so subsequent bars never re-PRIME.
+        # Cap each bar's contribution to the baseline at WINSORIZE_CAP × current
+        # avg. Eligibility check (vol_ratio = bar.v / avg_vol) still uses raw v.
+        self._winsorize_enabled = os.getenv("WB_SQ_VOL_WINSORIZE_ENABLED", "0") == "1"
+        self._winsorize_cap = float(os.getenv("WB_SQ_VOL_WINSORIZE_CAP", "5.0"))
+
         # --- Seed-staleness arm validation (drop arms whose trigger is already
         # far below current price when seed replay ends). Complements the seed
         # gate above, which only suppresses replayed signals, not stale triggers.
@@ -166,7 +174,8 @@ class SqueezeDetectorV2:
         self.ema = ema_next(self.ema, c, self._ema_len)
         if h > self._session_hod:
             self._session_hod = h
-        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
+        v_baseline = self._winsorize_volume(v)
+        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "v_baseline": v_baseline, "green": c >= o}
         self.bars_1m.append(info)
 
     def begin_seed(self):
@@ -231,7 +240,8 @@ class SqueezeDetectorV2:
         if h > self._session_hod:
             self._session_hod = h
 
-        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "green": c >= o}
+        v_baseline = self._winsorize_volume(v)
+        info = {"o": o, "h": h, "l": l, "c": c, "v": v, "v_baseline": v_baseline, "green": c >= o}
         self.bars_1m.append(info)
 
         # Track prev 1m bar for CUC exit
@@ -772,12 +782,31 @@ class SqueezeDetectorV2:
         self.armed = None
 
     def _avg_prior_vol(self) -> float:
-        """Average volume of all 1m bars except the most recent."""
+        """Average volume of all 1m bars except the most recent.
+        Uses winsorized contribution per bar to prevent a single spike bar
+        from poisoning the baseline (see WB_SQ_VOL_WINSORIZE_*)."""
         if len(self.bars_1m) < 2:
             return 0.0
         bars = list(self.bars_1m)[:-1]
-        total = sum(b["v"] for b in bars)
-        return total / len(bars) if bars else 0.0
+        if not bars:
+            return 0.0
+        total = sum(b.get("v_baseline", b["v"]) for b in bars)
+        return total / len(bars)
+
+    def _winsorize_volume(self, v: float) -> float:
+        """Cap a bar's contribution to the rolling baseline at WINSORIZE_CAP
+        × the current full-deque avg. Returns raw v if disabled or no
+        baseline yet (first few bars of the day)."""
+        if not self._winsorize_enabled:
+            return v
+        if not self.bars_1m:
+            return v
+        bars = list(self.bars_1m)
+        total = sum(b.get("v_baseline", b["v"]) for b in bars)
+        cur_avg = total / len(bars)
+        if cur_avg <= 0:
+            return v
+        return min(v, cur_avg * self._winsorize_cap)
 
     def _find_broken_level(self, bar_high: float) -> tuple[Optional[str], Optional[float]]:
         """Check if bar_high has broken any key level, in priority order."""
