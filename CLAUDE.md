@@ -14,8 +14,16 @@ A Python trading bot that detects squeeze breakout and micro-pullback setups on 
   WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
   ```
   Note: `WB_MP_ENABLED=1` required since Item 1 (2026-03-22) gated MP off by default.
-- VERO target history: +$9,166 (pre-Fix 5) → +$18,583 (2026-03-18, Fix 5 TW profit gate) → +$15,692 (2026-03-27, system-wide optimization) → +$34,479 (2026-04-08, X01 tuning: 3.5% risk + 5 max attempts)
+- VERO target history: +$9,166 (pre-Fix 5) → +$18,583 (2026-03-18, Fix 5 TW profit gate) → +$15,692 (2026-03-27, system-wide optimization) → +$34,479 (2026-04-08, X01 tuning: 3.5% risk + 5 max attempts) → **+$18,516 (2026-04-14, realistic fill modeling — see banner below)**
 - GWAV and ANPA no longer produce trades in standalone mode (detector evolution)
+
+> ⚠️ **REGIME CHANGE — 2026-04-14**
+> Baselines from 2026-04-14 forward reflect realistic fill modeling (commit `a8632ab`,
+> stale-arm entry re-pricing). Pre-2026-04-14 numbers were sim-fill artifacts that assumed
+> 100% limit fill rate against ~23% empirical fill rate (3 fills / 13 entries across X01-era
+> live days). They are historical record only — **do not cite as current targets**.
+> See `cowork_reports/2026-04-14_finding_sim_fill_optimism.md` and
+> `cowork_reports/2026-04-14_finding_sim_fill_optimism_decision.md` for full context.
 
 ### Code Changes
 - **All new features gated by env vars** (OFF by default) to prevent regressions
@@ -148,13 +156,34 @@ The exhaustion filter is enabled by default and works CORRECTLY for cascading st
 - **DO NOT implement a classifier-aware bypass** — it would break VERO regression
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
-### Regression Targets (as of 2026-04-08, X01 tuning)
-Primary standalone regression (deterministic, tick mode):
-- VERO 2026-01-16: +$34,479 ✅ (shifted from +$15,692 after X01 tuning: 3.5% risk, 5 max attempts, VOL_MULT 2.5, TARGET_R 1.5, CORE_PCT 90)
-- ROLR 2026-01-14: +$54,654 ✅ (shifted from +$6,444 after X01 tuning — compounding equity amplifies gains)
+### Regression Targets (as of 2026-04-14, realistic fill modeling)
+
+> ⚠️ **All numbers below reflect post-2026-04-14 realistic fill modeling.** Pre-fix
+> baselines (VERO +$34,479, ROLR +$54,654, V1 megatest +$19,832) are sim-fill artifacts
+> and should NOT be used as targets. They appear in `cowork_reports/` as historical
+> record only.
+
+Primary standalone regression (deterministic, tick mode, no `--no-fundamentals`):
+- **VERO 2026-01-16**: **+$18,516** (4 trades, 75% WR) — was +$34,479 sim-fill
+- **ROLR 2026-01-14**: **+$6,444** (1 trade, 100% WR) — was +$54,654 sim-fill
+
+Full YTD batch (Jan 02 → Apr 14 2026, 72 trading days, V3 hybrid, X01 config):
+- **Total P&L: −$2,641 (−8.8%)** — was +$120,221 (+400%) sim-fill
+- 26 trades, 5W/19L (20% WR) — was 36 trades 97% WR sim-fill
+- Equity: $30,000 → **$27,359** — was $30,000 → $150,221 sim-fill
+- Avg winner: $+591  Avg loser: $-295
+
+The bot is **net-negative on realistic fills** with current X01 config. This is the
+truth that the inflated baselines hid for weeks. Strategy/parameter decisions made
+against the old numbers need to be re-evaluated against this honest baseline before
+shipping anything new live.
+
 Note: GWAV and ANPA no longer produce trades in standalone mode due to detector
-evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
-(run_ytd_v2_backtest.py) with tick cache produces +$19,832 (V1) across 49 days.
+evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA).
+
+V1/V2/V3 historical comparison numbers (2026-03-24 megatest) are out of date and
+out of scope for re-baselining per the 2026-04-14 decision doc — V3 hybrid is what
+runs live; V1/V2 are not active configs.
 
 ## Current Study Status (as of 2026-03-24)
 
@@ -168,11 +197,14 @@ evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
 - Scanner checkpoint optimization: 12 data-driven checkpoints in scanner_sim (2026-03-24)
 - V1/V2/V3 exit comparison: V1 confirmed best (2026-03-24)
 
-### Key Metrics
+### Key Metrics — historical, sim-fill artifacts
 - 108 stocks, 133 trades, +$4,592 total P&L, 28% win rate (MP-era study)
-- Squeeze megatest (V1, 49 days): +$19,832
+- Squeeze megatest (V1, 49 days): +$19,832 ⚠️ pre-2026-04-14, sim-fill artifact
 - Classifier gate saves $1,712 net (blocks losers, 1 false positive)
-- Cascading stocks: avg +$2,043 (VERO, BATL, MOVE, ARLO)
+- Cascading stocks: avg +$2,043 (VERO, BATL, MOVE, ARLO) ⚠️ pre-2026-04-14, sim-fill artifact
+
+> Current honest YTD (2026-04-14, V3 hybrid, X01): **−$2,641 / 26 trades / 20% WR**.
+> See "Regression Targets" section above.
 
 ### Known Gaps (research phase — no code changes yet)
 - Scaling in/out (bot is all-or-nothing, Ross scales partials)
