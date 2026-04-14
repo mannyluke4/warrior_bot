@@ -107,6 +107,12 @@ WB_DAILY_LOSS_SCALE=1        # 2% of equity scaling
 WB_SQ_SEED_STALE_GATE_ENABLED=1  # drops stale arms at seed end; set 0 for diff
 WB_SQ_SEED_STALE_PCT=2.0         # threshold: current_price > trigger_high * 1.02 → drop
 
+# === Stale-arm entry re-pricing (added 2026-04-14, squeeze-only) ===
+WB_STALE_ARM_REPRICE_ENABLED=1   # re-price limit to current market when arm is stale
+WB_STALE_ARM_REPRICE_MIN_PCT=0.5 # below this stale ratio, use legacy trigger + 0.02
+WB_STALE_ARM_REPRICE_MAX_PCT=3.0 # above this stale ratio, refuse entry
+WB_STALE_ARM_REPRICE_PAD=0.02    # added above current price for the new limit
+
 # === Scanner (all 3 scanners now read from .env — parity fix 2026-03-24) ===
 WB_MIN_GAP_PCT=10
 WB_MAX_GAP_PCT=500
