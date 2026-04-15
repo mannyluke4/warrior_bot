@@ -550,8 +550,15 @@ def subscribe_symbol(symbol: str):
     # Initialize detectors
     init_detectors(symbol)
 
-    # Seed with historical bars
-    seed_symbol(symbol)
+    # Seed — resume mode replays from tick_cache/<today>/<sym>.json.gz,
+    # cold mode fetches from IBKR. On resume-cache miss (symbol newly
+    # subscribed post-crash, or cache read error) we fall back to the cold
+    # IBKR path so the detector isn't left under-seeded.
+    seeded_from_cache = False
+    if state.boot_mode == "resume":
+        seeded_from_cache = seed_symbol_from_cache(symbol)
+    if not seeded_from_cache:
+        seed_symbol(symbol)
 
     state.active_symbols.add(symbol)
     state.tick_counts[symbol] = 0
@@ -685,6 +692,22 @@ def seed_symbol(symbol: str):
             _seed_symbol_bars_fallback(symbol)
             return
 
+        # Persist fetched historical ticks to the tick_buffer so that the
+        # 30s flush captures them to tick_cache/<today>/<sym>.json.gz.
+        # This makes the cache authoritative (04:00 ET onward) so a future
+        # resume boot can replay from disk without re-fetching from IBKR.
+        # Lock serializes against the flush swap and live tick callback.
+        with _tick_buffer_lock:
+            buf = state.tick_buffer.setdefault(symbol, [])
+            for tick in all_ticks:
+                if tick.price <= 0 or not tick.size or int(tick.size) <= 0:
+                    continue
+                buf.append({
+                    "p": float(tick.price),
+                    "s": int(tick.size),
+                    "t": tick.time.astimezone(timezone.utc).isoformat(),
+                })
+
         # Replay ticks through TradeBarBuilder (same path as live ticks and simulate.py)
         # This builds bars organically with correct volume accumulation
         bars_built = 0
@@ -739,6 +762,101 @@ def seed_symbol(symbol: str):
         _seed_symbol_bars_fallback(symbol)
         state.seed_complete_time[symbol] = datetime.now(ET)
         state.live_tick_count_since_seed[symbol] = 0
+
+
+def seed_symbol_from_cache(symbol: str) -> bool:
+    """Resume-mode seed: replay ticks from tick_cache/<today>/<sym>.json.gz
+    into fresh detectors instead of fetching from IBKR. Returns True on
+    success, False if no cache or empty (caller falls back to seed_symbol).
+
+    Mirrors seed_symbol exactly below the tick-fetch step:
+      - begin_seed on squeeze detector suppresses replayed signals
+      - bar_builder_1m.on_trade replays ticks through the normal pipeline;
+        MP/CT rebuild their state via on_bar_close_1m
+      - validate_arm_after_seed drops stale trigger values
+      - end_seed marks replay done; live ticks arriving after re-subscribe
+        start feeding signals
+
+    Crucially does NOT run ticks through on_ticker_update's downstream
+    (on_trade_price) — that would fire entries retroactively. Same
+    architectural guard the cold-path seed relies on.
+    """
+    today = datetime.now(ET).strftime("%Y-%m-%d")
+    cache_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "tick_cache", today, f"{symbol}.json.gz",
+    )
+    if not os.path.exists(cache_path):
+        return False
+
+    try:
+        with gzip.open(cache_path, "rt") as f:
+            raw_ticks = json.load(f)
+    except Exception as e:
+        print(f"⚠️ [RESUME] {symbol} cache read failed: {e} — falling back to IBKR seed", flush=True)
+        return False
+
+    if not raw_ticks:
+        return False
+
+    try:
+        sq = state.sq_detectors.get(symbol)
+        if sq:
+            sq.begin_seed()
+
+        replayed = 0
+        last_ts_utc = None
+        for t in raw_ticks:
+            try:
+                price = float(t["p"])
+                size = int(t["s"])
+                ts_utc = datetime.fromisoformat(t["t"])
+            except (KeyError, ValueError, TypeError):
+                continue
+            if price <= 0 or size <= 0:
+                continue
+
+            if state.bar_builder_1m:
+                state.bar_builder_1m.on_trade(symbol, price, size, ts_utc)
+            if BOX_ENABLED and state.box_bar_builder_1m:
+                state.box_bar_builder_1m.on_trade(symbol, price, size, ts_utc)
+            replayed += 1
+            last_ts_utc = ts_utc
+
+        sq = state.sq_detectors.get(symbol)
+        bar_count = len(sq.bars_1m) if sq else 0
+        ema = sq.ema if sq else None
+        armed = sq.armed if sq else None
+
+        if sq and raw_ticks:
+            latest_price = float(raw_ticks[-1].get("p", 0))
+            stale_msg = sq.validate_arm_after_seed(latest_price)
+            if stale_msg:
+                print(f"  [{symbol}] {stale_msg}", flush=True)
+                armed = None
+
+        if sq:
+            sq.end_seed()
+        state.seed_complete_time[symbol] = datetime.now(ET)
+        state.live_tick_count_since_seed[symbol] = 0
+
+        # Clock-drift log per Cowork ask — exposes any detector-time bugs.
+        wall_utc = datetime.now(timezone.utc)
+        drift_sec = (wall_utc - last_ts_utc).total_seconds() if last_ts_utc else None
+        drift_str = f"{drift_sec/60:.1f}m" if drift_sec else "?"
+        print(f"🔁 [RESUME] {symbol}: {replayed:,} ticks → {bar_count} bars"
+              + (f", EMA={ema:.4f}" if ema else "")
+              + (", ARMED" if armed else "")
+              + f" | drift={drift_str}",
+              flush=True)
+        return True
+    except Exception as e:
+        print(f"⚠️ [RESUME] {symbol} replay failed: {e} — falling back to IBKR seed", flush=True)
+        traceback.print_exc()
+        # Leave detector state partially built; caller will fall back to
+        # seed_symbol which does begin_seed again (idempotent) and re-seeds
+        # from IBKR. The worst case is a slightly extended boot.
+        return False
 
 
 def _seed_symbol_bars_fallback(symbol: str):
