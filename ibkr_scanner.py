@@ -21,7 +21,7 @@ import pytz
 from ib_insync import IB, Stock, ScannerSubscription
 
 # Reuse existing float lookup chain (FMP → yfinance → EDGAR → AlphaVantage)
-from scanner_sim import (
+from float_cache import (
     get_float,
     load_float_cache,
     save_float_cache,
