@@ -42,6 +42,15 @@ class SqueezeDetectorV2:
         self.max_attempts = int(os.getenv("WB_SQ_MAX_ATTEMPTS", "3"))
         self.probe_size_mult = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
 
+        # Dynamic max_attempts bonus (2026-04-15 directive, Phase 2).
+        # See design memo 2026-04-15_design_dynamic_sq_attempts.md.
+        # effective_cap = base + min(BONUS_CAP, int(max(0, cumR) / R_per_bonus))
+        # Gate OFF default — zero-diff vs legacy.
+        self.dynamic_attempts_enabled = os.getenv("WB_SQ_DYNAMIC_ATTEMPTS_ENABLED", "0") == "1"
+        self.attempts_r_per_bonus = float(os.getenv("WB_SQ_ATTEMPTS_R_PER_BONUS", "2.0"))
+        self.attempts_bonus_cap = int(os.getenv("WB_SQ_ATTEMPTS_BONUS_CAP", "5"))
+        self._cumulative_r: float = 0.0
+
         # --- Parabolic mode (V1) ---
         self.para_enabled = os.getenv("WB_SQ_PARA_ENABLED", "1") == "1"
         self.para_stop_offset = float(os.getenv("WB_SQ_PARA_STOP_OFFSET", "0.10"))
@@ -320,8 +329,19 @@ class SqueezeDetectorV2:
         if o > 0 and (body / o) * 100 < self.min_body_pct:
             return None
 
-        # Max attempts check
-        if self._attempts >= self.max_attempts:
+        # Max attempts check — dynamic cap if gate ON, else legacy static cap.
+        if self.dynamic_attempts_enabled:
+            bonus = min(
+                self.attempts_bonus_cap,
+                int(max(0.0, self._cumulative_r) / max(self.attempts_r_per_bonus, 0.0001)),
+            )
+            effective_cap = self.max_attempts + bonus
+            if self._attempts >= effective_cap:
+                return (
+                    f"SQ_NO_ARM: max_attempts ({self._attempts}/{effective_cap}) "
+                    f"[base={self.max_attempts} bonus=+{bonus} cumR={self._cumulative_r:+.1f}]"
+                )
+        elif self._attempts >= self.max_attempts:
             return f"SQ_NO_ARM: max_attempts ({self._attempts}/{self.max_attempts})"
 
         # 1A: Candle-over-candle hard gate
@@ -722,7 +742,9 @@ class SqueezeDetectorV2:
         self._bars_in_trade = 0
         self._prior_1m_exit_bar = None
 
-    def notify_trade_closed(self, symbol: str, pnl: float):
+    def notify_trade_closed(self, symbol: str, pnl: float, r_mult: float = 0.0):
+        # r_mult accrues into _cumulative_r when dynamic-attempts gate is ON.
+        # Backwards-compatible: callers that don't pass r_mult get +0 accrual.
         if pnl > 0:
             self._has_winner = True
         self._in_trade = False
@@ -730,6 +752,7 @@ class SqueezeDetectorV2:
         self._trade_stop = None
         self._trade_r = None
         self._trade_qty = None
+        self._cumulative_r += float(r_mult)
 
     def notify_partial_exit(self, remaining_qty: int):
         """Called after target hit partial exit to update runner qty."""
@@ -760,6 +783,7 @@ class SqueezeDetectorV2:
         self._trade_r = None
         self._trade_qty = None
         self._trade_peak = 0.0
+        self._cumulative_r = 0.0
         self._trade_tp_hit = False
         self._prev_10s_bar = None
         self._recent_10s_highs = []

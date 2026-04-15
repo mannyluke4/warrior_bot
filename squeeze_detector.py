@@ -34,6 +34,14 @@ class SqueezeDetector:
         self.max_attempts = int(os.getenv("WB_SQ_MAX_ATTEMPTS", "3"))
         self.probe_size_mult = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
 
+        # --- Dynamic max_attempts bonus (2026-04-15 directive) ---
+        # Shape: effective_cap = base + min(BONUS_CAP, int(max(0, cumR) / R_per_bonus))
+        # Gated OFF by default. Mechanism D (R-recovered gate) + Y (stateless
+        # recompute) per design memo 2026-04-15_design_dynamic_sq_attempts.md.
+        self.dynamic_attempts_enabled = os.getenv("WB_SQ_DYNAMIC_ATTEMPTS_ENABLED", "0") == "1"
+        self.attempts_r_per_bonus = float(os.getenv("WB_SQ_ATTEMPTS_R_PER_BONUS", "2.0"))
+        self.attempts_bonus_cap = int(os.getenv("WB_SQ_ATTEMPTS_BONUS_CAP", "5"))
+
         # --- Parabolic mode ---
         self.para_enabled = os.getenv("WB_SQ_PARA_ENABLED", "1") == "1"
         self.para_stop_offset = float(os.getenv("WB_SQ_PARA_STOP_OFFSET", "0.10"))
@@ -68,6 +76,7 @@ class SqueezeDetector:
         self._attempts = 0
         self._has_winner = False  # True after first winning squeeze on this symbol
         self._in_trade = False  # set by caller when squeeze trade is active
+        self._cumulative_r: float = 0.0  # running cumR for dynamic-attempts bonus
 
         # --- Gap data (set by caller) ---
         self.gap_pct: Optional[float] = None
@@ -221,8 +230,22 @@ class SqueezeDetector:
         if o > 0 and (body / o) * 100 < self.min_body_pct:
             return None
 
-        # Max attempts check
-        if self._attempts >= self.max_attempts:
+        # Max attempts check — dynamic cap if gate ON, else legacy static cap.
+        # On reject, the SQ_NO_ARM message embeds the bonus math so the
+        # post-mortem log grep captures why (no separate success log needed
+        # in v1; detector callers emit their own arm-decision log).
+        if self.dynamic_attempts_enabled:
+            bonus = min(
+                self.attempts_bonus_cap,
+                int(max(0.0, self._cumulative_r) / max(self.attempts_r_per_bonus, 0.0001)),
+            )
+            effective_cap = self.max_attempts + bonus
+            if self._attempts >= effective_cap:
+                return (
+                    f"SQ_NO_ARM: max_attempts ({self._attempts}/{effective_cap}) "
+                    f"[base={self.max_attempts} bonus=+{bonus} cumR={self._cumulative_r:+.1f}]"
+                )
+        elif self._attempts >= self.max_attempts:
             return f"SQ_NO_ARM: max_attempts ({self._attempts}/{self.max_attempts})"
 
         # HOD gate: bar must be at or making new highs (blocks bounces)
@@ -301,10 +324,17 @@ class SqueezeDetector:
     # ------------------------------------------------------------------
     # Trade lifecycle callbacks
     # ------------------------------------------------------------------
-    def notify_trade_closed(self, symbol: str, pnl: float):
+    def notify_trade_closed(self, symbol: str, pnl: float, r_mult: float = 0.0):
+        """Trade lifecycle callback. r_mult is the realized R-multiple
+        (signed). When WB_SQ_DYNAMIC_ATTEMPTS_ENABLED=1, it accrues into
+        self._cumulative_r, which drives the bonus-attempt calculation.
+        Backwards-compatible: callers that don't pass r_mult get +0 accrual
+        (equivalent to gate OFF for those trades).
+        """
         if pnl > 0:
             self._has_winner = True
         self._in_trade = False
+        self._cumulative_r += float(r_mult)
 
     def notify_trade_opened(self):
         self._in_trade = True
@@ -321,6 +351,7 @@ class SqueezeDetector:
         self._has_winner = False
         self._in_trade = False
         self._session_hod = 0.0
+        self._cumulative_r = 0.0
 
     # ------------------------------------------------------------------
     # Internal helpers

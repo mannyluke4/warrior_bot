@@ -251,6 +251,24 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             shares = risk
         notional = shares * entry_price
 
+        # Derive setup_type from the exit reason. simulate.py prints the
+        # reason column but not setup_type directly; inferring here keeps
+        # downstream analysis (e.g., EPL gate studies) working without
+        # rewriting the sim output format.
+        reason_str = m.group(8)
+        if reason_str.startswith("epl_mp_"):
+            setup_type = "epl_mp_reentry"
+        elif reason_str.startswith("sq_"):
+            setup_type = "squeeze"
+        elif "engulfing" in reason_str or "wicky" in reason_str or reason_str.startswith("mp_"):
+            setup_type = "micro_pullback"
+        elif reason_str.startswith("ross_"):
+            setup_type = "micro_pullback"  # legacy Ross-exit labeled trades
+        elif reason_str.startswith("ct_"):
+            setup_type = "continuation"
+        else:
+            setup_type = "unknown"
+
         trades.append({
             "num": int(m.group(1)),
             "time": m.group(2),
@@ -259,13 +277,14 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
             "r": r_val,
             "score": float(m.group(6)),
             "exit_price": float(m.group(7)),
-            "reason": m.group(8),
+            "reason": reason_str,
             "pnl": int(float(m.group(9))),
             "r_mult": m.group(10),
             "symbol": symbol,
             "date": date,
             "notional": notional,
             "profile": candidate.get("profile", "A") if candidate else "A",
+            "setup_type": setup_type,
         })
 
     trade_pnl = sum(t["pnl"] for t in trades)

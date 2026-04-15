@@ -1981,7 +1981,7 @@ def run_simulation(
         if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry", "epl_mp_reentry"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
-            sq_det.notify_trade_closed(symbol, t.pnl())
+            sq_det.notify_trade_closed(symbol, t.pnl(), r_mult=t.r_multiple())
             # MP V2: unlock re-entry detection when squeeze trade closes
             det.notify_squeeze_closed(symbol, t.pnl())
             # CT: unlock continuation detection when squeeze trade closes
@@ -2417,7 +2417,7 @@ def run_simulation(
                         closed_t = sim_mgr.closed_trades[-1] if sim_mgr.closed_trades else None
                         if closed_t:
                             if closed_t.setup_type == "squeeze":
-                                sq_det.notify_trade_closed(symbol, closed_t.pnl())
+                                sq_det.notify_trade_closed(symbol, closed_t.pnl(), r_mult=closed_t.r_multiple())
                                 # MP V2: unlock re-entry detection
                                 det.notify_squeeze_closed(symbol, closed_t.pnl())
                                 # CT: unlock continuation detection
