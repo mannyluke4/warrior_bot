@@ -106,6 +106,21 @@ ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
 def _entry_slippage_for(price: float) -> float:
     """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
     return max(ENTRY_SLIPPAGE_MIN, price * ENTRY_SLIPPAGE_PCT)
+
+# Session resume (2026-04-15 — see cowork_reports/2026-04-15_greenlight_session_resume.md)
+# WB_TICK_FLUSH_ENABLED: always-on crash-safety for the tick cache (independent
+#   of resume). Flushes state.tick_buffer to tick_cache/ every WB_SESSION_FLUSH_SEC.
+# WB_SESSION_RESUME_ENABLED: gates the resume-mode boot path only. When 0, the
+#   bot still writes durable state files (so a subsequent enabled run can resume),
+#   but always does a cold start itself.
+TICK_FLUSH_ENABLED = os.getenv("WB_TICK_FLUSH_ENABLED", "1") == "1"
+SESSION_FLUSH_SEC = int(os.getenv("WB_SESSION_FLUSH_SEC", "30"))
+SESSION_RESUME_ENABLED = os.getenv("WB_SESSION_RESUME_ENABLED", "0") == "1"
+
+# Lock serializing tick_buffer mutations between the IBKR tick callback
+# thread and the periodic flush swap. Acquisition is microseconds; contention
+# is negligible (one swap per SESSION_FLUSH_SEC vs thousands of appends).
+_tick_buffer_lock = threading.Lock()
 MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
 DAILY_LOSS_SCALE = os.getenv("WB_DAILY_LOSS_SCALE", "0") == "1"
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
@@ -243,6 +258,11 @@ class BotState:
 
         # Tick recording for backtest cache
         self.tick_buffer: dict[str, list] = {}  # symbol -> [{p, s, t}, ...]
+
+        # Session-resume (2026-04-15) — "cold" | "resume", set by main()
+        # after decide_boot_mode(). Downstream code (seed_symbol, order
+        # reconciliation) branches on this to skip expensive cold-start work.
+        self.boot_mode: str = "cold"
 
         # EPL (Extended Play List) — post-2R re-entry system
         self.epl_watchlist: EPLWatchlist = None
@@ -1683,14 +1703,16 @@ def _process_ticker(ticker):
     # Get trade size from ticker (lastSize = size of most recent trade print)
     size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
 
-    # Record tick for backtest cache (exact same data the bot sees)
-    if symbol not in state.tick_buffer:
-        state.tick_buffer[symbol] = []
-    state.tick_buffer[symbol].append({
-        "p": price,
-        "s": size,
-        "t": ts.astimezone(timezone.utc).isoformat(),
-    })
+    # Record tick for backtest cache (exact same data the bot sees).
+    # Lock serializes against the periodic flush swap — see _tick_flush_loop.
+    with _tick_buffer_lock:
+        if symbol not in state.tick_buffer:
+            state.tick_buffer[symbol] = []
+        state.tick_buffer[symbol].append({
+            "p": price,
+            "s": size,
+            "t": ts.astimezone(timezone.utc).isoformat(),
+        })
 
     # Track live ticks since seed (for stale signal suppression)
     if symbol in state.live_tick_count_since_seed:
@@ -1742,15 +1764,22 @@ def _process_ticker(ticker):
         manage_exit(symbol, price)
 
 
-def save_tick_cache():
+def save_tick_cache(source: dict | None = None):
     """Save recorded ticks to tick_cache/ for future backtesting.
-    Uses the exact same format simulate.py --ticks expects."""
+    Uses the exact same format simulate.py --ticks expects.
+
+    If source is provided, saves from that dict instead of state.tick_buffer.
+    This lets the periodic flush thread swap-and-save without racing the
+    live tick-callback thread that writes into state.tick_buffer.
+    """
+    if source is None:
+        source = state.tick_buffer
     today = datetime.now(ET).strftime("%Y-%m-%d")
     cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tick_cache", today)
     os.makedirs(cache_dir, exist_ok=True)
 
     saved = 0
-    for symbol, ticks in state.tick_buffer.items():
+    for symbol, ticks in source.items():
         if not ticks:
             continue
         out_path = os.path.join(cache_dir, f"{symbol}.json.gz")
@@ -1772,6 +1801,42 @@ def save_tick_cache():
 
     if saved:
         print(f"📦 Tick cache saved: {saved} symbols → tick_cache/{today}/", flush=True)
+
+
+def _tick_flush_loop():
+    """Background loop that flushes state.tick_buffer to tick_cache/ every
+    SESSION_FLUSH_SEC. Always-on crash-safety (see
+    cowork_reports/2026-04-15_greenlight_session_resume.md).
+
+    Atomically swaps the buffer with a fresh dict so the live tick callback
+    thread keeps writing into the fresh buffer while we flush the snapshot.
+    Under CPython the GIL makes the `snap, state.tick_buffer = ..., {}`
+    assignment atomic across threads (single bytecode store). Ticks that
+    arrive during the flush land safely in the new buffer.
+    """
+    while True:
+        time.sleep(SESSION_FLUSH_SEC)
+        try:
+            with _tick_buffer_lock:
+                if not any(state.tick_buffer.values()):
+                    continue
+                snap, state.tick_buffer = state.tick_buffer, {}
+            # Release lock before disk IO — callback thread can resume writing
+            # into the fresh state.tick_buffer while we serialize the snapshot.
+            save_tick_cache(source=snap)
+        except Exception as e:
+            print(f"⚠️  TICK FLUSH ERROR: {e}", flush=True)
+
+
+def start_tick_flush_thread():
+    """Start the periodic tick-cache flush thread. Idempotent."""
+    if not TICK_FLUSH_ENABLED:
+        print("Tick flush thread disabled (WB_TICK_FLUSH_ENABLED=0)", flush=True)
+        return
+    import threading
+    t = threading.Thread(target=_tick_flush_loop, daemon=True, name="tick-flush")
+    t.start()
+    print(f"📦 Tick flush thread started (every {SESSION_FLUSH_SEC}s)", flush=True)
 
 
 def on_ib_error(reqId, errorCode, errorString, contract):
@@ -2059,6 +2124,31 @@ def _exit_box_trade(reason: str):
 def main():
     global STARTING_EQUITY  # Must be at top of function before any reference
 
+    # Session-resume CLI flags (see cowork_reports/2026-04-15_greenlight_session_resume.md)
+    import argparse
+    parser = argparse.ArgumentParser(description="Warrior Bot V3 Hybrid")
+    parser.add_argument("--fresh", action="store_true",
+                        help="Force cold start, overwriting today's session marker")
+    parser.add_argument("--scrub", action="store_true",
+                        help="Wipe today's session_state/ and tick_cache/, then cold start")
+    args, _ = parser.parse_known_args()
+
+    # Decide boot mode BEFORE any expensive work. Resume requires the feature
+    # gate to be explicitly enabled — otherwise we always cold-start but still
+    # write durable state so a later enabled run can resume.
+    import session_state as ss
+    boot_mode, boot_reason = ss.decide_boot_mode(fresh=args.fresh, scrub=args.scrub)
+    if boot_mode == "resume" and not SESSION_RESUME_ENABLED:
+        print(f"BOOT: would RESUME (reason={boot_reason}) but WB_SESSION_RESUME_ENABLED=0 — forcing COLD", flush=True)
+        boot_mode = "cold"
+        boot_reason = "resume_gate_off"
+    if boot_mode == "resume":
+        age = ss.marker_age_seconds()
+        age_str = f"{age:.0f}s" if age is not None else "unknown"
+        print(f"BOOT: RESUME mode (marker age={age_str}, reason={boot_reason})", flush=True)
+    else:
+        print(f"BOOT: COLD start (reason={boot_reason})", flush=True)
+
     print("=" * 60)
     print("  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)")
     print(f"  Squeeze: {'ON' if SQ_ENABLED else 'OFF'}")
@@ -2095,6 +2185,17 @@ def main():
         sys.exit(1)
     state.alpaca = TradingClient(apca_key, apca_secret, paper=apca_paper)
     print(f"Alpaca connected ({'PAPER' if apca_paper else 'LIVE'})", flush=True)
+
+    # Persist boot mode on state for downstream branching (seed_symbol →
+    # tick-replay, order reconciliation, etc.). On cold boot we write/refresh
+    # the marker so a subsequent crash can resume from this session.
+    state.boot_mode = boot_mode
+    if boot_mode == "cold":
+        ss.write_marker()
+
+    # Start periodic tick-cache flush (crash-safety for backtest data).
+    # Always-on, independent of WB_SESSION_RESUME_ENABLED.
+    start_tick_flush_thread()
 
     # Fix 1: Startup position reconciliation
     reconcile_positions_on_startup()
