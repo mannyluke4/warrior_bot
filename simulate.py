@@ -28,9 +28,11 @@ from typing import Optional
 
 import pytz
 from dotenv import load_dotenv
-from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.requests import StockBarsRequest, StockTradesRequest
-from alpaca.data.timeframe import TimeFrame
+# 2026-04-15 IBKR-migration: Alpaca.data imports removed. simulate.py now
+# reads only from tick_cache/<date>/<symbol>.json.gz (populated by
+# ibkr_tick_fetcher.py) and builds 1m seed bars from those ticks via
+# TradeBarBuilder. No Alpaca data fetches anywhere. See commit 28bee64
+# on main ("DIRECTIVE: Full IBKR migration — gut Alpaca").
 
 from bars import TradeBarBuilder, Bar
 from candles import is_bearish_engulfing
@@ -42,9 +44,11 @@ load_dotenv()
 
 ET = pytz.timezone("US/Eastern")
 
+# API keys retained for any future IBKR-fundamentals integration, but
+# Alpaca historical data client is deliberately gone. If code downstream
+# needs Alpaca data (fundamentals, bars, trades), it now errors loudly.
 API_KEY = os.getenv("APCA_API_KEY_ID")
 API_SECRET = os.getenv("APCA_API_SECRET_KEY")
-hist_client = StockHistoricalDataClient(API_KEY, API_SECRET)
 
 
 # ─────────────────────────────────────────────
@@ -1201,41 +1205,73 @@ class SimTradeManager:
 
 
 # ─────────────────────────────────────────────
-# Data fetching
+# Data source — tick cache only (IBKR-sourced via ibkr_tick_fetcher.py)
 # ─────────────────────────────────────────────
 
-def fetch_bars(symbol: str, start_utc: datetime, end_utc: datetime) -> list:
-    req = StockBarsRequest(
-        symbol_or_symbols=[symbol],
-        timeframe=TimeFrame.Minute,
-        start=start_utc,
-        end=end_utc,
-        feed="sip",
-    )
-    return hist_client.get_stock_bars(req).data.get(symbol, [])
+def _read_tick_cache(symbol: str, date_str: str, tick_cache_dir: str) -> list:
+    """Read ticks for (symbol, date) from tick_cache_dir/<date>/<symbol>.json.gz.
+    Returns list of dicts: [{"p": price, "s": size, "t": iso_ts_utc}, ...].
+    Raises RuntimeError if the cache file is missing — no Alpaca fallback.
+    """
+    import gzip as _gzip
+    path = os.path.join(tick_cache_dir, date_str, f"{symbol}.json.gz")
+    if not os.path.exists(path):
+        raise RuntimeError(
+            f"Tick cache missing: {path}\n"
+            f"  Populate via: python ibkr_tick_fetcher.py {symbol} {date_str}\n"
+            f"  (Alpaca fallback was removed 2026-04-15 per IBKR migration directive.)"
+        )
+    with _gzip.open(path, "rt") as f:
+        return json.load(f)
 
 
-def fetch_trades(symbol: str, start_utc: datetime, end_utc: datetime) -> list:
-    """Fetch tick-level trade data from Alpaca for high-fidelity backtesting."""
-    import time as _time
-    req = StockTradesRequest(
-        symbol_or_symbols=[symbol],
-        start=start_utc,
-        end=end_utc,
-        feed="sip",
-    )
-    for attempt in range(3):
+def _build_bars_from_tick_cache(
+    symbol: str,
+    date_str: str,
+    start_utc: datetime,
+    end_utc: datetime,
+    tick_cache_dir: str,
+) -> list:
+    """Build 1-minute bars from the tick cache for the [start_utc, end_utc] window.
+
+    Replaces the previous Alpaca `fetch_bars()` call. Feeds ticks through a
+    bar-collector TradeBarBuilder and returns Bar objects in the same schema
+    the sim's seed/sim split expects.
+
+    No Alpaca, no network. Source is the tick cache populated by
+    ibkr_tick_fetcher.py or the live bot's reqHistoricalTicks path.
+    """
+    ticks = _read_tick_cache(symbol, date_str, tick_cache_dir)
+    collected: list = []
+
+    def _collector(bar):
+        collected.append(bar)
+
+    bb = TradeBarBuilder(on_bar_close=_collector, et_tz=ET, interval_seconds=60)
+    for t in ticks:
         try:
-            trade_set = hist_client.get_stock_trades(req)
-            return trade_set.data.get(symbol, [])
-        except Exception as e:
-            if attempt < 2:
-                wait = 2 ** attempt  # 1s, 2s
-                print(f"  [RETRY] fetch_trades {symbol}: {e} — retrying in {wait}s", flush=True)
-                _time.sleep(wait)
-            else:
-                print(f"  [FAILED] fetch_trades {symbol}: {e} — all retries exhausted", flush=True)
-                raise
+            price = float(t["p"])
+            size = int(t["s"])
+            ts_utc = datetime.fromisoformat(t["t"])
+            if ts_utc.tzinfo is None:
+                ts_utc = ts_utc.replace(tzinfo=timezone.utc)
+        except (KeyError, ValueError, TypeError):
+            continue
+        if price <= 0 or size <= 0:
+            continue
+        bb.on_trade(symbol, price, size, ts_utc)
+
+    # Flush any in-flight bucket so the final bar is emitted.
+    if hasattr(bb, "flush"):
+        bb.flush()
+
+    # Filter to the requested window (bb emits every bar that ticks touched;
+    # caller wants only bars whose start_utc is within [start_utc, end_utc)).
+    in_window = [
+        b for b in collected
+        if start_utc <= b.start_utc <= end_utc
+    ]
+    return in_window
 
 
 def synthetic_ticks(o, h, l, c):
@@ -1794,19 +1830,29 @@ def run_simulation(
     if risk_dollars is not None:
         _risk = risk_dollars
 
-    # Fetch all bars for the day
-    print(f"\nFetching {symbol} bars for {date_str}...", flush=True)
-    all_bars = fetch_bars(symbol, seed_start_utc, sim_end_utc)
+    # Build all bars from the tick cache (IBKR-sourced, no Alpaca fetch).
+    # Requires tick_cache to be set — enforced just below.
+    if not tick_cache:
+        raise RuntimeError(
+            "simulate.py now requires --tick-cache (IBKR-migration 2026-04-15).\n"
+            "  Usage: python simulate.py <SYMBOL> <DATE> <START_ET> <END_ET> --ticks --tick-cache tick_cache/"
+        )
+    print(f"\nBuilding {symbol} bars from tick cache for {date_str}...", flush=True)
+    all_bars = _build_bars_from_tick_cache(
+        symbol, date_str, seed_start_utc, sim_end_utc, tick_cache,
+    )
 
     if not all_bars:
-        print(f"  No bars returned for {symbol} on {date_str}. Skipping.", flush=True)
+        print(f"  No bars built from tick cache for {symbol} on {date_str}. Skipping.", flush=True)
         return []
 
-    # Split into seed and sim bars
+    # Split into seed and sim bars. Bar objects from TradeBarBuilder expose
+    # `start_utc`; the previous Alpaca/ib_insync dual-support (`timestamp`/`t`)
+    # is retained defensively but should no longer be needed.
     seed_bars = []
     sim_bars = []
     for b in all_bars:
-        ts = getattr(b, "timestamp", None) or getattr(b, "t", None)
+        ts = getattr(b, "start_utc", None) or getattr(b, "timestamp", None) or getattr(b, "t", None)
         if ts is None:
             continue
         if ts.tzinfo is None:
@@ -1825,19 +1871,14 @@ def run_simulation(
         print(f"  No sim bars in window {start_et_str}-{end_et_str}. Skipping.", flush=True)
         return []
 
-    # Fetch fundamentals for quality gate
+    # Fundamentals lookup removed 2026-04-15 per IBKR-migration directive.
+    # The previous path used stock_filter.StockFilter which hits Alpaca for
+    # float/gap — that's a data fetch and it's gone. Quality-gate code that
+    # references _sim_stock_info now operates on a None value (gate no-ops),
+    # matching what --no-fundamentals already did. Future: IBKR fundamentals
+    # source (own directive).
     _sim_stock_info = None
     _quality_min_float = float(os.getenv("WB_QUALITY_MIN_FLOAT", "0.5"))
-    if not no_fundamentals and os.getenv("WB_SIM_FETCH_FUNDAMENTALS", "1") == "1":
-        try:
-            from stock_filter import StockFilter
-            _sf = StockFilter(API_KEY, API_SECRET)
-            _sim_stock_info = _sf.get_stock_info(symbol)
-            if _sim_stock_info:
-                fl = f"{_sim_stock_info.float_shares:.1f}M" if _sim_stock_info.float_shares else "N/A"
-                print(f"  Fundamentals: float={fl} gap={_sim_stock_info.gap_pct:+.1f}%", flush=True)
-        except Exception as e:
-            print(f"  Fundamentals: skipped ({e})", flush=True)
 
     # Create components
     det = MicroPullbackDetector()
@@ -2849,84 +2890,30 @@ def run_simulation(
             bb_1m.seed_bar_close(symbol, o, h, l, c, v, ts)
             bb_5m.seed_bar_close(symbol, o, h, l, c, v, ts)
 
-        # Fetch actual trades for the sim window
-        _cache_file = None
-        if tick_cache:
-            import gzip as _gzip
-            _cache_file = os.path.join(tick_cache, date_str, f"{symbol}.json.gz")
-            if os.path.exists(_cache_file):
-                print(f"  Loading ticks from cache: {_cache_file}", flush=True)
-                from collections import namedtuple
-                _CachedTick = namedtuple("_CachedTick", ["price", "size", "timestamp"])
-                with _gzip.open(_cache_file, "rt") as _cf:
-                    _cached = json.load(_cf)
-                tick_trades = [
-                    _CachedTick(
-                        t["p"], t["s"],
-                        datetime.fromisoformat(t["t"])
-                    )
-                    for t in _cached
-                ]
-            else:
-                print(f"  WARNING: No cache file {_cache_file} — falling back to API", flush=True)
-                tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
-
-                # ── Write fetched ticks to cache so future runs don't re-fetch ──
-                if tick_trades:
-                    _cache_dir = os.path.join(tick_cache, date_str)
-                    os.makedirs(_cache_dir, exist_ok=True)
-                    _cache_payload = [
-                        {"p": float(t.price), "s": int(t.size),
-                         "t": t.timestamp.isoformat() if hasattr(t.timestamp, "isoformat") else str(t.timestamp)}
-                        for t in tick_trades
-                    ]
-                    with _gzip.open(_cache_file, "wt") as _cf:
-                        json.dump(_cache_payload, _cf)
-                    print(f"  Cached {len(_cache_payload)} ticks → {_cache_file}", flush=True)
-        elif feed == "databento":
-            print(f"  Fetching tick data from Databento...", flush=True)
-            from databento_feed import fetch_trades_historical
-            _db_trades_raw = fetch_trades_historical(
-                symbol, date_str,
-                start_et=start_et_str, end_et=end_et_str,
+        # Load ticks from the cache — IBKR-sourced only. Fallbacks to Alpaca
+        # and Databento were removed 2026-04-15 per the IBKR-migration
+        # directive. Missing cache files error loudly; populate via
+        # ibkr_tick_fetcher.py first.
+        if not tick_cache:
+            raise RuntimeError(
+                "simulate.py requires --tick-cache (IBKR-migration 2026-04-15)."
             )
-            # Convert dicts to simple objects with .price, .size, .timestamp
-            from collections import namedtuple
-            _DbnTick = namedtuple("_DbnTick", ["price", "size", "timestamp"])
-            tick_trades = [_DbnTick(t["price"], t["size"], t["timestamp"]) for t in _db_trades_raw]
-
-            # ── Write to tick cache if tick_cache dir was specified ──
-            if tick_cache and _db_trades_raw:
-                import gzip as _gzip
-                _cache_dir = os.path.join(tick_cache, date_str)
-                os.makedirs(_cache_dir, exist_ok=True)
-                _cache_out = os.path.join(_cache_dir, f"{symbol}.json.gz")
-                _cache_payload = [
-                    {"p": t["price"], "s": t["size"], "t": t["timestamp"].isoformat()
-                     if hasattr(t["timestamp"], "isoformat") else str(t["timestamp"])}
-                    for t in _db_trades_raw
-                ]
-                with _gzip.open(_cache_out, "wt") as _cf:
-                    json.dump(_cache_payload, _cf)
-                print(f"  Cached {len(_cache_payload)} ticks → {_cache_out}", flush=True)
-        else:
-            print(f"  Fetching tick data from Alpaca...", flush=True)
-            tick_trades = fetch_trades(symbol, sim_start_utc, sim_end_utc)
-
-            # ── Write to tick cache if tick_cache dir was specified ──
-            if tick_cache and tick_trades:
-                import gzip as _gzip
-                _cache_dir = os.path.join(tick_cache, date_str)
-                os.makedirs(_cache_dir, exist_ok=True)
-                _cache_out = os.path.join(_cache_dir, f"{symbol}.json.gz")
-                _cache_payload = [
-                    {"p": float(t.price), "s": int(t.size),
-                     "t": t.timestamp.isoformat() if hasattr(t.timestamp, "isoformat") else str(t.timestamp)}
-                    for t in tick_trades
-                ]
-                with _gzip.open(_cache_out, "wt") as _cf:
-                    json.dump(_cache_payload, _cf)
-                print(f"  Cached {len(_cache_payload)} ticks → {_cache_out}", flush=True)
+        from collections import namedtuple
+        _CachedTick = namedtuple("_CachedTick", ["price", "size", "timestamp"])
+        _cached = _read_tick_cache(symbol, date_str, tick_cache)
+        print(f"  Loaded {len(_cached):,} ticks from cache "
+              f"({tick_cache}/{date_str}/{symbol}.json.gz)", flush=True)
+        tick_trades = []
+        for t in _cached:
+            try:
+                ts = datetime.fromisoformat(t["t"])
+                if ts.tzinfo is None:
+                    ts = ts.replace(tzinfo=timezone.utc)
+                tick_trades.append(_CachedTick(t["p"], t["s"], ts))
+            except (KeyError, ValueError, TypeError):
+                continue
+        # Trim to sim window (cache often spans 04:00–20:00 ET).
+        tick_trades = [t for t in tick_trades if sim_start_utc <= t.timestamp <= sim_end_utc]
         print(f"  Tick replay: {len(tick_trades)} trades for sim window", flush=True)
 
         if not tick_trades:
