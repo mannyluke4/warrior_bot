@@ -3055,3 +3055,7 @@ Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 
 ALERT: bot_v3_hybrid.py died at Wed Apr 15 09:08:39 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
 === Shutting down at Wed Apr 15 09:08:39 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration ce4e65a] auto: v3 daily logs 2026-04-15
+ 3 files changed, 127 insertions(+)
+=== V3 Hybrid daily run complete: Wed Apr 15 09:08:45 MDT 2026 ===
+=== TRAP: cleanup at Wed Apr 15 09:08:45 MDT 2026 ===
