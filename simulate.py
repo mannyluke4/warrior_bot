@@ -1977,8 +1977,8 @@ def run_simulation(
 
     # Wire up quality gate trade-close callback
     def _on_sim_trade_close(t):
-        # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry/dp have own tracking)
-        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry"):
+        # Only count standalone MP trades against MP quality gate (squeeze/VR/mp_reentry/dp/epl_mp have own tracking)
+        if t.setup_type not in ("squeeze", "vwap_reclaim", "mp_reentry", "continuation", "dp_dip_entry", "epl_mp_reentry"):
             det.record_trade_result(t.pnl())
         if sq_enabled and t.setup_type == "squeeze":
             sq_det.notify_trade_closed(symbol, t.pnl())
