@@ -230,3 +230,931 @@ Waiting for IB Gateway on port 4002...
   attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Wed Apr 15 02:40:39 MDT 2026 ===
+daily_run_v3.sh: line 16: 48106 Terminated: 15          caffeinate -dims -w $$
+[v2-ibkr-migration 6152c64] auto: v3 daily logs 2026-04-15
+ 3 files changed, 253 insertions(+)
+ create mode 100644 logs/healthcheck_2026-04-15.log
+=== Cleanup complete: Wed Apr 15 02:40:40 MDT 2026 ===
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+caffeinate started (PID: 50059)
+=== V3 Hybrid daily run started: Wed Apr 15 04:57:28 MDT 2026 ===
+daily_run_v3.sh: line 82: 50040 Terminated: 15          caffeinate -u -t 30
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 6152c64 (auto: v3 daily logs 2026-04-15)
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 65f753798fa655a54d9d331298e3cb64  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.029536 +/- 0.055382 time.apple.com 2620:149:a23:4000::1e2
+NTP sync skipped (non-root)
+System time: Wed Apr 15 10:57:30 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 50122)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 50131)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,600
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 06:57:50 ET (first scan — casting wide net)...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 4 (reqId=4, symbol=?)
+  Catchup: 38 unique symbols from 3 scanners
+    Catchup: processing 1/38 — BEZ...
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5 (reqId=5, symbol=?)
+  [FMP] BEZ: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=BEZ&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 2/38 — BMNU...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=BMNU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 3/38 — BTQ...
+    Catchup: processing 4/38 — BULL...
+Bot health check passed (still running after 15s, PID: 50131)
+HEALTH_OK: Bot connected at 2026-04-15 10:58:03 UTC
+Gateway watchdog started (PID: 50145)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 5/38 — CIIT...
+    Catchup: processing 6/38 — CMBT...
+    Catchup: processing 7/38 — CONL...
+    Catchup: processing 8/38 — CORD...
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 9/38 — CRCD...
+  [FMP] CRCD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CRCD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 10/38 — CRCG...
+    Catchup: processing 11/38 — CRWG...
+    Catchup: processing 12/38 — HODU...
+    Catchup: processing 13/38 — IONL...
+    Catchup: processing 14/38 — IONZ...
+    Catchup: processing 15/38 — IREZ...
+    Catchup: processing 16/38 — LAES...
+    Catchup: processing 17/38 — MSTU...
+    Catchup: processing 18/38 — NBIZ...
+    Catchup: processing 19/38 — NICM...
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 20/38 — NNEX...
+  [FMP] NNEX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NNEX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 21/38 — OKLL...
+    Catchup: processing 22/38 — ORCU...
+    Catchup: processing 23/38 — QBTS...
+    Catchup: processing 24/38 — QBTX...
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 25/38 — QUBT...
+    Catchup: processing 26/38 — QUBX...
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 27/38 — RGTI...
+    Catchup: processing 28/38 — RGTZ...
+    Catchup: processing 29/38 — ROLR...
+    Catchup: processing 30/38 — SCO...
+    Catchup: processing 31/38 — SKYQ...
+    Catchup: processing 32/38 — SMR...
+    Catchup: processing 33/38 — SMU...
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 34/38 — SNAP...
+    Catchup: processing 35/38 — STNE...
+    Catchup: processing 36/38 — TSLL...
+    Catchup: processing 37/38 — UVIX...
+    Catchup: processing 38/38 — XNDU...
+  Catchup: 2 candidates after filters
+[07:00 ET] NICM CHART | O=15.15 H=15.60 L=14.86 C=15.60 V=4,447 | EMA9=15.15 VWAP=15.28 (+2.1%) HOD=15.60 PM_H=15.60 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+  [SEED] NICM: 50496 ticks so far, jumping to recent 90min for full context
+[07:00 ET] NICM CHART | O=15.60 H=16.15 L=15.50 C=15.52 V=13,529 | EMA9=15.24 VWAP=15.68 (-1.0%) HOD=16.15 PM_H=16.15 | MACD=N/A vol_ratio=45.1x avg_vol=300 bars=2 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=9.74 H=23.00 L=9.74 C=20.83 V=4,233 | EMA9=15.30 VWAP=16.08 (+29.6%) HOD=23.00 PM_H=23.00 | MACD=N/A vol_ratio=4.7x avg_vol=900 bars=3 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=20.83 H=30.99 L=16.88 C=29.68 V=18,356 | EMA9=16.40 VWAP=19.78 (+50.1%) HOD=30.99 PM_H=30.99 | MACD=N/A vol_ratio=8.7x avg_vol=2,100 bars=4 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=28.58 H=47.00 L=27.76 C=42.20 V=21,957 | EMA9=19.06 VWAP=24.51 (+72.2%) HOD=47.00 PM_H=47.00 | MACD=N/A vol_ratio=8.3x avg_vol=2,633 bars=5 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=46.45 H=46.70 L=34.00 C=39.69 V=18,435 | EMA9=23.69 VWAP=27.90 (+42.3%) HOD=47.00 PM_H=47.00 | MACD=N/A vol_ratio=3.9x avg_vol=4,740 bars=6 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=39.69 H=40.17 L=35.14 C=38.52 V=8,190 | EMA9=26.89 VWAP=28.80 (+33.7%) HOD=47.00 PM_H=47.00 | MACD=N/A vol_ratio=1.1x avg_vol=7,609 bars=7 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=38.52 H=43.88 L=38.18 C=43.00 V=14,318 | EMA9=29.21 VWAP=30.57 (+40.7%) HOD=47.00 PM_H=47.00 | MACD=N/A vol_ratio=1.6x avg_vol=9,156 bars=8 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=43.00 H=59.50 L=42.99 C=53.45 V=30,849 | EMA9=31.97 VWAP=35.82 (+49.2%) HOD=59.50 PM_H=59.50 | MACD=N/A vol_ratio=3.4x avg_vol=9,035 bars=9 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=53.00 H=60.00 L=52.07 C=57.85 V=14,707 | EMA9=36.27 VWAP=37.93 (+52.5%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.5x avg_vol=9,622 bars=10 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=57.65 H=57.99 L=53.51 C=56.03 V=8,542 | EMA9=40.58 VWAP=38.96 (+43.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.7x avg_vol=11,745 bars=11 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=56.03 H=56.18 L=32.74 C=32.74 V=23,892 | EMA9=43.67 VWAP=39.63 (-17.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=2.0x avg_vol=12,014 bars=12 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=32.74 H=35.77 L=21.00 C=26.93 V=52,425 | EMA9=41.49 VWAP=37.05 (-27.3%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=4.5x avg_vol=11,725 bars=13 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=27.75 H=32.57 L=26.11 C=31.50 V=31,476 | EMA9=38.57 VWAP=36.20 (-13.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=2.5x avg_vol=12,661 bars=14 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=31.48 H=31.63 L=19.25 C=20.47 V=52,924 | EMA9=37.16 VWAP=34.32 (-40.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=3.4x avg_vol=15,501 bars=15 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=20.89 H=24.22 L=18.00 C=21.05 V=52,648 | EMA9=33.82 VWAP=32.26 (-34.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=3.2x avg_vol=16,566 bars=16 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=21.05 H=21.43 L=17.25 C=20.20 V=32,426 | EMA9=31.27 VWAP=31.24 (-35.3%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.7x avg_vol=18,838 bars=17 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=20.20 H=23.21 L=20.00 C=22.15 V=34,804 | EMA9=29.05 VWAP=30.51 (-27.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.7x avg_vol=20,827 bars=18 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=22.15 H=23.21 L=20.48 C=22.81 V=27,751 | EMA9=27.67 VWAP=30.01 (-24.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.3x avg_vol=21,472 bars=19 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=22.81 H=22.82 L=20.25 C=21.64 V=21,753 | EMA9=26.70 VWAP=29.64 (-27.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.0x avg_vol=22,173 bars=20 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=21.64 H=22.93 L=21.28 C=21.97 V=14,691 | EMA9=25.69 VWAP=29.42 (-25.3%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.7x avg_vol=22,452 bars=21 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=21.94 H=22.69 L=21.94 C=22.40 V=9,850 | EMA9=24.94 VWAP=29.29 (-23.5%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=22,419 bars=22 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=22.41 H=26.98 L=22.40 C=26.27 V=64,318 | EMA9=24.44 VWAP=28.79 (-8.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=2.9x avg_vol=22,068 bars=23 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=26.27 H=28.00 L=25.10 C=27.40 V=52,522 | EMA9=24.80 VWAP=28.63 (-4.3%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=2.4x avg_vol=21,536 bars=24 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=27.22 H=27.68 L=19.58 C=23.99 V=79,507 | EMA9=25.32 VWAP=28.18 (-14.9%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=3.4x avg_vol=23,319 bars=25 | sq=IDLE armed=none
+[07:00 ET] NICM CHART | O=18.58 H=18.92 L=18.36 C=18.89 V=10,001 | EMA9=25.06 VWAP=28.05 (-32.6%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=24,487 bars=26 | sq=IDLE armed=none
+🔥 Seeded NICM: 51496 ticks → 27 bars, EMA=23.8226 (1907 ticks/bar avg)
+✅ Subscribed: NICM
+[07:00 ET] NICM CHART | O=18.89 H=19.06 L=18.42 C=18.62 V=18,393 | EMA9=23.82 VWAP=27.82 (-33.1%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.7x avg_vol=26,603 bars=27 | sq=IDLE armed=none
+[07:00 ET] CIIT CHART | O=2.06 H=2.06 L=2.06 C=2.06 V=600 | EMA9=none VWAP=2.06 (+0.1%) HOD=2.06 PM_H=2.06 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+  [SEED] CIIT: 50225 ticks so far, jumping to recent 90min for full context
+[07:02 ET] CIIT SQ | SQ_PRIMED: vol=78.5x avg, bar_vol=164,868, price=$2.2700 above VWAP ($2.0959)
+[07:02 ET] CIIT SQ | SQ_RESET: vwap_lost (close=1.9500 < vwap=2.3738)
+🔥 Seeded CIIT: 51225 ticks → 19 bars, EMA=1.9648 (2696 ticks/bar avg)
+✅ Subscribed: CIIT
+📊 Scanner: 2 new candidates, 2 new subs, 2 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 99 ticks → 27 bars, EMA=2.2610 (3 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+
+🔄 Running scanner at 07:02:52 ET...
+Error 162, reqId 187: Historical Market Data Service error message:API scanner subscription cancelled: 187
+  [float_cache] Cleared 9 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 187 (reqId=187, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (1 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 515 ticks in last 60s, last_price=$1.91, last_tick_time=07:04:02
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:02:47
+  TICK AUDIT: NICM: 342 ticks in last 60s, last_price=$15.36, last_tick_time=07:04:02
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:05 ET] CIIT CHART | O=1.90 H=1.92 L=1.90 C=1.91 V=36,892 | EMA9=1.94 VWAP=2.35 (-18.8%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=3.5x avg_vol=10,409 bars=22 | sq=IDLE armed=none
+[07:05 ET] NICM CHART | O=15.44 H=15.44 L=14.55 C=14.79 V=6,215 | EMA9=18.41 VWAP=27.40 (-46.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.3x avg_vol=23,762 bars=32 | sq=IDLE armed=none
+[07:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=630 | CIIT:318t/IDLE KIDZ:3t/IDLE NICM:164t/IDLE
+[07:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=640 | CIIT:324t/IDLE KIDZ:3t/IDLE NICM:168t/IDLE
+  TICK AUDIT: CIIT: 328 ticks in last 60s, last_price=$1.91, last_tick_time=07:05:02
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$2.28, last_tick_time=07:04:05
+  TICK AUDIT: NICM: 168 ticks in last 60s, last_price=$14.99, last_tick_time=07:05:01
+[07:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=572 | CIIT:249t/IDLE KIDZ:0t/IDLE NICM:178t/IDLE
+[07:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=582 | CIIT:251t/IDLE KIDZ:0t/IDLE NICM:186t/IDLE
+  TICK AUDIT: CIIT: 262 ticks in last 60s, last_price=$1.90, last_tick_time=07:06:02
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:04:05
+  TICK AUDIT: NICM: 191 ticks in last 60s, last_price=$14.81, last_tick_time=07:06:01
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=532 | CIIT:237t/IDLE KIDZ:2t/IDLE NICM:148t/IDLE
+[07:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=545 | CIIT:245t/IDLE KIDZ:2t/IDLE NICM:153t/IDLE
+  TICK AUDIT: CIIT: 257 ticks in last 60s, last_price=$1.94, last_tick_time=07:07:03
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:06:05
+  TICK AUDIT: NICM: 163 ticks in last 60s, last_price=$14.64, last_tick_time=07:07:03
+
+🔄 Running scanner at 07:07:52 ET...
+Error 162, reqId 270: Historical Market Data Service error message:API scanner subscription cancelled: 270
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 270 (reqId=270, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (2 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 452 ticks in last 60s, last_price=$1.94, last_tick_time=07:08:54
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:06:05
+  TICK AUDIT: NICM: 431 ticks in last 60s, last_price=$13.90, last_tick_time=07:08:54
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=215 | CIIT:10t/IDLE KIDZ:2t/IDLE NICM:12t/IDLE
+[07:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=218 | CIIT:12t/IDLE KIDZ:2t/IDLE NICM:13t/IDLE
+  TICK AUDIT: CIIT: 189 ticks in last 60s, last_price=$1.96, last_tick_time=07:09:55
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:08:57
+  TICK AUDIT: NICM: 265 ticks in last 60s, last_price=$13.88, last_tick_time=07:09:55
+[07:10 ET] CIIT CHART | O=1.93 H=1.97 L=1.93 C=1.97 V=27,848 | EMA9=1.94 VWAP=2.34 (-16.0%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.7x avg_vol=16,388 bars=27 | sq=IDLE armed=none
+[07:10 ET] NICM CHART | O=13.85 H=13.94 L=13.64 C=13.94 V=9,245 | EMA9=15.62 VWAP=26.50 (-47.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=21,755 bars=37 | sq=IDLE armed=none
+[07:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=225 | CIIT:10t/IDLE KIDZ:0t/IDLE NICM:24t/IDLE
+[07:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=230 | CIIT:13t/IDLE KIDZ:0t/IDLE NICM:26t/IDLE
+  TICK AUDIT: CIIT: 140 ticks in last 60s, last_price=$1.96, last_tick_time=07:10:55
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:08:57
+  TICK AUDIT: NICM: 229 ticks in last 60s, last_price=$13.79, last_tick_time=07:10:55
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:10 ET] KIDZ CHART | O=2.28 H=2.28 L=2.28 C=2.28 V=200 | EMA9=2.27 VWAP=2.28 (+0.1%) HOD=2.40 PM_H=2.40 | MACD=N/A vol_ratio=1.9x avg_vol=104 bars=30 | sq=IDLE armed=none
+[07:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=210 | CIIT:9t/IDLE KIDZ:2t/IDLE NICM:8t/IDLE
+[07:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=216 | CIIT:11t/IDLE KIDZ:2t/IDLE NICM:12t/IDLE
+  TICK AUDIT: CIIT: 164 ticks in last 60s, last_price=$1.94, last_tick_time=07:11:54
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:10:58
+  TICK AUDIT: NICM: 263 ticks in last 60s, last_price=$13.39, last_tick_time=07:11:55
+[07:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=223 | CIIT:14t/IDLE KIDZ:0t/IDLE NICM:18t/IDLE
+[07:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=236 | CIIT:18t/IDLE KIDZ:0t/IDLE NICM:27t/IDLE
+
+🔄 Running scanner at 07:12:53 ET...
+Error 162, reqId 353: Historical Market Data Service error message:API scanner subscription cancelled: 353
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 353 (reqId=353, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (3 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 425 ticks in last 60s, last_price=$1.95, last_tick_time=07:13:55
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:10:58
+  TICK AUDIT: NICM: 553 ticks in last 60s, last_price=$12.71, last_tick_time=07:13:54
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=252 | CIIT:6t/IDLE KIDZ:2t/IDLE NICM:12t/IDLE
+[07:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=265 | CIIT:12t/IDLE KIDZ:2t/IDLE NICM:19t/IDLE
+  TICK AUDIT: CIIT: 200 ticks in last 60s, last_price=$1.92, last_tick_time=07:14:54
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:13:57
+  TICK AUDIT: NICM: 226 ticks in last 60s, last_price=$12.84, last_tick_time=07:14:55
+[07:15 ET] NICM CHART | O=12.65 H=13.08 L=12.65 C=12.81 V=9,908 | EMA9=13.99 VWAP=25.54 (-49.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.5x avg_vol=20,540 bars=42 | sq=IDLE armed=none
+[07:15 ET] CIIT CHART | O=1.95 H=1.95 L=1.91 C=1.91 V=22,930 | EMA9=1.94 VWAP=2.33 (-18.0%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.3x avg_vol=18,015 bars=32 | sq=IDLE armed=none
+[07:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=279 | CIIT:21t/IDLE KIDZ:0t/IDLE NICM:26t/IDLE
+[07:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=283 | CIIT:24t/IDLE KIDZ:0t/IDLE NICM:27t/IDLE
+  TICK AUDIT: CIIT: 187 ticks in last 60s, last_price=$1.92, last_tick_time=07:15:54
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:13:57
+  TICK AUDIT: NICM: 222 ticks in last 60s, last_price=$12.96, last_tick_time=07:15:55
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:15 ET] KIDZ CHART | O=2.28 H=2.28 L=2.28 C=2.28 V=200 | EMA9=2.27 VWAP=2.28 (+0.1%) HOD=2.40 PM_H=2.40 | MACD=N/A vol_ratio=1.8x avg_vol=110 bars=32 | sq=IDLE armed=none
+[07:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=259 | CIIT:18t/IDLE KIDZ:3t/IDLE NICM:6t/IDLE
+[07:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=265 | CIIT:20t/IDLE KIDZ:3t/IDLE NICM:10t/IDLE
+  TICK AUDIT: CIIT: 137 ticks in last 60s, last_price=$1.92, last_tick_time=07:16:55
+  TICK AUDIT: KIDZ: 3 ticks in last 60s, last_price=$2.28, last_tick_time=07:15:57
+  TICK AUDIT: NICM: 290 ticks in last 60s, last_price=$12.69, last_tick_time=07:16:55
+[07:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=251 | CIIT:4t/IDLE KIDZ:0t/IDLE NICM:15t/IDLE
+[07:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=259 | CIIT:7t/IDLE KIDZ:0t/IDLE NICM:20t/IDLE
+
+🔄 Running scanner at 07:17:54 ET...
+Error 162, reqId 436: Historical Market Data Service error message:API scanner subscription cancelled: 436
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 436 (reqId=436, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (4 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 214 ticks in last 60s, last_price=$1.93, last_tick_time=07:18:56
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:15:57
+  TICK AUDIT: NICM: 612 ticks in last 60s, last_price=$12.01, last_tick_time=07:18:55
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=296 | CIIT:10t/IDLE KIDZ:2t/IDLE NICM:7t/IDLE
+[07:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=301 | CIIT:15t/IDLE KIDZ:2t/IDLE NICM:7t/IDLE
+  TICK AUDIT: CIIT: 143 ticks in last 60s, last_price=$1.94, last_tick_time=07:19:56
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:18:58
+  TICK AUDIT: NICM: 242 ticks in last 60s, last_price=$12.06, last_tick_time=07:19:56
+[07:20 ET] CIIT CHART | O=1.93 H=1.94 L=1.93 C=1.93 V=19,965 | EMA9=1.93 VWAP=2.32 (-16.9%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.1x avg_vol=18,719 bars=37 | sq=IDLE armed=none
+[07:20 ET] NICM CHART | O=12.11 H=12.33 L=12.03 C=12.09 V=8,473 | EMA9=12.96 VWAP=24.50 (-50.7%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=20,051 bars=47 | sq=IDLE armed=none
+[07:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=298 | CIIT:7t/IDLE KIDZ:0t/IDLE NICM:14t/IDLE
+[07:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=302 | CIIT:10t/IDLE KIDZ:0t/IDLE NICM:15t/IDLE
+  TICK AUDIT: CIIT: 133 ticks in last 60s, last_price=$1.92, last_tick_time=07:20:56
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:18:58
+  TICK AUDIT: NICM: 184 ticks in last 60s, last_price=$12.17, last_tick_time=07:20:55
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:20 ET] KIDZ CHART | O=2.28 H=2.28 L=2.28 C=2.28 V=200 | EMA9=2.28 VWAP=2.28 (+0.1%) HOD=2.40 PM_H=2.40 | MACD=N/A vol_ratio=1.7x avg_vol=115 bars=34 | sq=IDLE armed=none
+[07:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=284 | CIIT:1t/IDLE KIDZ:2t/IDLE NICM:4t/IDLE
+[07:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=288 | CIIT:3t/IDLE KIDZ:2t/IDLE NICM:6t/IDLE
+  TICK AUDIT: CIIT: 214 ticks in last 60s, last_price=$1.91, last_tick_time=07:21:57
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:20:59
+  TICK AUDIT: NICM: 225 ticks in last 60s, last_price=$12.32, last_tick_time=07:21:57
+[07:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=306 | CIIT:16t/IDLE KIDZ:0t/IDLE NICM:13t/IDLE
+[07:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=312 | CIIT:19t/IDLE KIDZ:0t/IDLE NICM:16t/IDLE
+
+🔄 Running scanner at 07:22:54 ET...
+Error 162, reqId 519: Historical Market Data Service error message:API scanner subscription cancelled: 519
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 519 (reqId=519, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (5 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 402 ticks in last 60s, last_price=$1.88, last_tick_time=07:23:56
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:20:59
+  TICK AUDIT: NICM: 403 ticks in last 60s, last_price=$11.93, last_tick_time=07:23:56
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=325 | CIIT:1t/IDLE KIDZ:2t/IDLE NICM:3t/IDLE
+[07:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=332 | CIIT:5t/IDLE KIDZ:2t/IDLE NICM:6t/IDLE
+  TICK AUDIT: CIIT: 201 ticks in last 60s, last_price=$1.87, last_tick_time=07:24:56
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.28, last_tick_time=07:23:59
+  TICK AUDIT: NICM: 111 ticks in last 60s, last_price=$12.00, last_tick_time=07:24:56
+[07:25 ET] CIIT CHART | O=1.88 H=1.89 L=1.86 C=1.86 V=24,500 | EMA9=1.91 VWAP=2.31 (-19.6%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.2x avg_vol=19,888 bars=42 | sq=IDLE armed=none
+[07:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=332 | CIIT:10t/IDLE KIDZ:0t/IDLE NICM:3t/IDLE
+[07:25 ET] NICM CHART | O=11.93 H=12.00 L=11.92 C=12.00 V=2,728 | EMA9=12.37 VWAP=23.97 (-49.9%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.1x avg_vol=19,802 bars=50 | sq=IDLE armed=none
+[07:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=336 | CIIT:13t/IDLE KIDZ:0t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 187 ticks in last 60s, last_price=$1.89, last_tick_time=07:25:57
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.28, last_tick_time=07:23:59
+  TICK AUDIT: NICM: 124 ticks in last 60s, last_price=$11.86, last_tick_time=07:25:57
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:25 ET] KIDZ CHART | O=2.28 H=2.28 L=2.28 C=2.28 V=200 | EMA9=2.28 VWAP=2.28 (+0.1%) HOD=2.40 PM_H=2.40 | MACD=N/A vol_ratio=1.6x avg_vol=123 bars=36 | sq=IDLE armed=none
+[07:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=327 | CIIT:3t/IDLE KIDZ:3t/IDLE NICM:2t/IDLE
+[07:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=329 | CIIT:4t/IDLE KIDZ:3t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 108 ticks in last 60s, last_price=$1.89, last_tick_time=07:26:56
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$2.20, last_tick_time=07:26:08
+  TICK AUDIT: NICM: 130 ticks in last 60s, last_price=$11.99, last_tick_time=07:26:57
+[07:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=326 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:7t/IDLE
+[07:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=330 | CIIT:1t/IDLE KIDZ:0t/IDLE NICM:10t/IDLE
+
+🔄 Running scanner at 07:27:54 ET...
+Error 162, reqId 602: Historical Market Data Service error message:API scanner subscription cancelled: 602
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 602 (reqId=602, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (6 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 289 ticks in last 60s, last_price=$1.84, last_tick_time=07:28:57
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.20, last_tick_time=07:26:08
+  TICK AUDIT: NICM: 467 ticks in last 60s, last_price=$11.46, last_tick_time=07:28:57
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=371 | CIIT:6t/IDLE KIDZ:2t/IDLE NICM:4t/IDLE
+[07:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=379 | CIIT:11t/IDLE KIDZ:2t/IDLE NICM:7t/IDLE
+  TICK AUDIT: CIIT: 189 ticks in last 60s, last_price=$1.84, last_tick_time=07:29:57
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.20, last_tick_time=07:28:59
+  TICK AUDIT: NICM: 183 ticks in last 60s, last_price=$11.49, last_tick_time=07:29:56
+[07:30 ET] NICM CHART | O=11.45 H=11.50 L=11.40 C=11.49 V=8,121 | EMA9=11.90 VWAP=23.39 (-50.9%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=19,241 bars=50 | sq=IDLE armed=none
+[07:30 ET] CIIT CHART | O=1.85 H=1.86 L=1.84 C=1.84 V=28,815 | EMA9=1.88 VWAP=2.30 (-20.2%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.5x avg_vol=19,523 bars=47 | sq=IDLE armed=none
+[07:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=373 | CIIT:8t/IDLE KIDZ:0t/IDLE NICM:6t/IDLE
+[07:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=376 | CIIT:8t/IDLE KIDZ:0t/IDLE NICM:9t/IDLE
+  TICK AUDIT: CIIT: 141 ticks in last 60s, last_price=$1.85, last_tick_time=07:30:57
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.20, last_tick_time=07:28:59
+  TICK AUDIT: NICM: 254 ticks in last 60s, last_price=$11.20, last_tick_time=07:30:58
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=368 | CIIT:3t/IDLE KIDZ:2t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 154 ticks in last 60s, last_price=$1.87, last_tick_time=07:31:58
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$2.20, last_tick_time=07:31:00
+  TICK AUDIT: NICM: 235 ticks in last 60s, last_price=$11.35, last_tick_time=07:31:58
+[07:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=365 | CIIT:2t/IDLE KIDZ:0t/IDLE NICM:4t/IDLE
+[07:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=368 | CIIT:4t/IDLE KIDZ:0t/IDLE NICM:5t/IDLE
+
+🔄 Running scanner at 07:32:55 ET...
+Error 162, reqId 685: Historical Market Data Service error message:API scanner subscription cancelled: 685
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 685 (reqId=685, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (7 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 218 ticks in last 60s, last_price=$1.88, last_tick_time=07:33:55
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$2.20, last_tick_time=07:31:00
+  TICK AUDIT: NICM: 382 ticks in last 60s, last_price=$11.70, last_tick_time=07:33:56
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=404 | CIIT:2t/IDLE KIDZ:2t/IDLE NICM:5t/IDLE
+  TICK AUDIT: CIIT: 112 ticks in last 60s, last_price=$1.86, last_tick_time=07:34:58
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$2.28, last_tick_time=07:34:58
+  TICK AUDIT: NICM: 182 ticks in last 60s, last_price=$11.85, last_tick_time=07:34:58
+[07:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=401 | CIIT:5t/IDLE KIDZ:0t/IDLE NICM:1t/IDLE
+[07:35 ET] CIIT CHART | O=1.88 H=1.88 L=1.86 C=1.86 V=8,177 | EMA9=1.87 VWAP=2.30 (-19.1%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.4x avg_vol=20,502 bars=50 | sq=IDLE armed=none
+[07:35 ET] NICM CHART | O=11.65 H=11.93 L=11.63 C=11.85 V=11,901 | EMA9=11.66 VWAP=22.65 (-47.7%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.6x avg_vol=19,275 bars=50 | sq=IDLE armed=none
+[07:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=408 | CIIT:8t/IDLE KIDZ:0t/IDLE NICM:5t/IDLE
+[07:35 ET] KIDZ CHART | O=2.20 H=2.28 L=2.20 C=2.28 V=506 | EMA9=2.24 VWAP=2.27 (+0.5%) HOD=2.40 PM_H=2.40 | MACD=N/A vol_ratio=3.8x avg_vol=133 bars=41 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 127 ticks in last 60s, last_price=$1.85, last_tick_time=07:35:58
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$2.27, last_tick_time=07:35:28
+  TICK AUDIT: NICM: 128 ticks in last 60s, last_price=$11.45, last_tick_time=07:35:57
+[07:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=402 | CIIT:7t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[07:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=409 | CIIT:8t/IDLE KIDZ:3t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 108 ticks in last 60s, last_price=$1.85, last_tick_time=07:36:59
+  TICK AUDIT: KIDZ: 538 ticks in last 60s, last_price=$2.77, last_tick_time=07:36:59
+  TICK AUDIT: NICM: 149 ticks in last 60s, last_price=$11.48, last_tick_time=07:36:59
+[07:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=414 | CIIT:5t/IDLE KIDZ:12t/IDLE NICM:2t/IDLE
+[07:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=434 | CIIT:8t/IDLE KIDZ:27t/IDLE NICM:4t/IDLE
+
+🔄 Running scanner at 07:37:55 ET...
+Error 162, reqId 767: Historical Market Data Service error message:API scanner subscription cancelled: 767
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 767 (reqId=767, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+[07:38 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.0100 < HOD=$3.1500)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (8 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 198 ticks in last 60s, last_price=$1.85, last_tick_time=07:38:57
+  TICK AUDIT: KIDZ: 1379 ticks in last 60s, last_price=$2.83, last_tick_time=07:38:58
+  TICK AUDIT: NICM: 161 ticks in last 60s, last_price=$11.60, last_tick_time=07:38:57
+[07:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=480 | CIIT:7t/IDLE KIDZ:30t/IDLE NICM:10t/IDLE
+[07:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=494 | CIIT:8t/IDLE KIDZ:43t/IDLE NICM:10t/IDLE
+  TICK AUDIT: CIIT: 131 ticks in last 60s, last_price=$1.85, last_tick_time=07:39:59
+  TICK AUDIT: KIDZ: 743 ticks in last 60s, last_price=$2.93, last_tick_time=07:39:59
+  TICK AUDIT: NICM: 129 ticks in last 60s, last_price=$11.09, last_tick_time=07:39:58
+[07:40 ET] KIDZ CHART | O=2.79 H=2.99 L=2.70 C=2.96 V=85,060 | EMA9=2.54 VWAP=2.85 (+3.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=503.0x avg_vol=169 bars=46 | sq=IDLE armed=none
+[07:40 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$2.9900 < HOD=$3.1500)
+[07:40 ET] NICM CHART | O=11.75 H=11.80 L=11.00 C=11.00 V=6,989 | EMA9=11.60 VWAP=22.30 (-50.7%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=15,869 bars=50 | sq=IDLE armed=none
+[07:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=458 | CIIT:4t/IDLE KIDZ:13t/IDLE NICM:8t/IDLE
+[07:40 ET] CIIT CHART | O=1.84 H=1.85 L=1.84 C=1.85 V=18,231 | EMA9=1.86 VWAP=2.29 (-19.3%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.9x avg_vol=21,134 bars=50 | sq=IDLE armed=none
+[07:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=471 | CIIT:7t/IDLE KIDZ:22t/IDLE NICM:9t/IDLE
+  TICK AUDIT: CIIT: 91 ticks in last 60s, last_price=$1.85, last_tick_time=07:40:57
+  TICK AUDIT: KIDZ: 665 ticks in last 60s, last_price=$2.94, last_tick_time=07:40:59
+  TICK AUDIT: NICM: 136 ticks in last 60s, last_price=$11.15, last_tick_time=07:40:57
+[07:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=446 | CIIT:2t/IDLE KIDZ:8t/IDLE NICM:3t/IDLE
+[07:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=461 | CIIT:3t/IDLE KIDZ:21t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 72 ticks in last 60s, last_price=$1.85, last_tick_time=07:41:57
+  TICK AUDIT: KIDZ: 615 ticks in last 60s, last_price=$2.92, last_tick_time=07:41:59
+  TICK AUDIT: NICM: 94 ticks in last 60s, last_price=$11.09, last_tick_time=07:41:58
+[07:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=444 | CIIT:0t/IDLE KIDZ:11t/IDLE NICM:0t/IDLE
+[07:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=457 | CIIT:5t/IDLE KIDZ:18t/IDLE NICM:1t/IDLE
+
+🔄 Running scanner at 07:42:56 ET...
+Error 162, reqId 848: Historical Market Data Service error message:API scanner subscription cancelled: 848
+  [float_cache] Cleared 4 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 848 (reqId=848, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+[07:43 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.0800 < HOD=$3.1500)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (9 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 143 ticks in last 60s, last_price=$1.85, last_tick_time=07:43:57
+  TICK AUDIT: KIDZ: 1285 ticks in last 60s, last_price=$2.91, last_tick_time=07:43:58
+  TICK AUDIT: NICM: 325 ticks in last 60s, last_price=$11.22, last_tick_time=07:43:56
+[07:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=478 | CIIT:1t/IDLE KIDZ:7t/IDLE NICM:4t/IDLE
+[07:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=490 | CIIT:6t/IDLE KIDZ:14t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 63 ticks in last 60s, last_price=$1.85, last_tick_time=07:44:58
+  TICK AUDIT: KIDZ: 665 ticks in last 60s, last_price=$2.73, last_tick_time=07:44:59
+  TICK AUDIT: NICM: 118 ticks in last 60s, last_price=$11.28, last_tick_time=07:44:58
+[07:45 ET] KIDZ CHART | O=2.92 H=2.92 L=2.72 C=2.72 V=72,446 | EMA9=2.81 VWAP=2.89 (-5.8%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=285.8x avg_vol=253 bars=50 | sq=IDLE armed=none
+[07:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=480 | CIIT:0t/IDLE KIDZ:11t/IDLE NICM:3t/IDLE
+[07:45 ET] CIIT CHART | O=1.85 H=1.86 L=1.85 C=1.85 V=8,715 | EMA9=1.85 VWAP=2.29 (-19.2%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.4x avg_vol=21,371 bars=50 | sq=IDLE armed=none
+[07:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=496 | CIIT:1t/IDLE KIDZ:26t/IDLE NICM:3t/IDLE
+[07:45 ET] NICM CHART | O=11.22 H=11.31 L=11.19 C=11.31 V=10,675 | EMA9=11.27 VWAP=21.81 (-48.1%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.8x avg_vol=14,059 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 100 ticks in last 60s, last_price=$1.84, last_tick_time=07:45:58
+  TICK AUDIT: KIDZ: 638 ticks in last 60s, last_price=$2.62, last_tick_time=07:45:59
+  TICK AUDIT: NICM: 113 ticks in last 60s, last_price=$11.14, last_tick_time=07:45:59
+[07:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=484 | CIIT:2t/IDLE KIDZ:14t/IDLE NICM:2t/IDLE
+[07:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=497 | CIIT:3t/IDLE KIDZ:25t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 107 ticks in last 60s, last_price=$1.85, last_tick_time=07:46:59
+  TICK AUDIT: KIDZ: 664 ticks in last 60s, last_price=$2.49, last_tick_time=07:46:59
+  TICK AUDIT: NICM: 89 ticks in last 60s, last_price=$11.16, last_tick_time=07:46:59
+[07:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=476 | CIIT:0t/IDLE KIDZ:9t/IDLE NICM:1t/IDLE
+[07:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=488 | CIIT:2t/IDLE KIDZ:18t/IDLE NICM:2t/IDLE
+
+🔄 Running scanner at 07:47:56 ET...
+Error 162, reqId 929: Historical Market Data Service error message:API scanner subscription cancelled: 929
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 929 (reqId=929, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (10 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 137 ticks in last 60s, last_price=$1.84, last_tick_time=07:48:58
+  TICK AUDIT: KIDZ: 1055 ticks in last 60s, last_price=$2.53, last_tick_time=07:48:58
+  TICK AUDIT: NICM: 175 ticks in last 60s, last_price=$11.14, last_tick_time=07:48:54
+[07:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=514 | CIIT:1t/IDLE KIDZ:9t/IDLE NICM:2t/IDLE
+[07:50 ET] KIDZ CHART | O=2.54 H=2.64 L=2.54 C=2.56 V=71,139 | EMA9=2.63 VWAP=2.79 (-8.2%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=182.4x avg_vol=390 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 98 ticks in last 60s, last_price=$1.85, last_tick_time=07:49:56
+  TICK AUDIT: KIDZ: 529 ticks in last 60s, last_price=$2.56, last_tick_time=07:50:00
+  TICK AUDIT: NICM: 81 ticks in last 60s, last_price=$11.30, last_tick_time=07:49:58
+[07:50:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=502 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[07:50 ET] NICM CHART | O=11.14 H=11.30 L=11.04 C=11.30 V=2,824 | EMA9=11.20 VWAP=21.61 (-47.7%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.3x avg_vol=10,382 bars=50 | sq=IDLE armed=none
+[07:50 ET] CIIT CHART | O=1.84 H=1.85 L=1.84 C=1.85 V=9,016 | EMA9=1.85 VWAP=2.28 (-19.0%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.4x avg_vol=21,119 bars=50 | sq=IDLE armed=none
+[07:50:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=516 | CIIT:2t/IDLE KIDZ:9t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 79 ticks in last 60s, last_price=$1.85, last_tick_time=07:50:59
+  TICK AUDIT: KIDZ: 495 ticks in last 60s, last_price=$2.51, last_tick_time=07:50:59
+  TICK AUDIT: NICM: 157 ticks in last 60s, last_price=$11.37, last_tick_time=07:51:00
+[07:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=502 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[07:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=515 | CIIT:1t/IDLE KIDZ:8t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 111 ticks in last 60s, last_price=$1.87, last_tick_time=07:52:00
+  TICK AUDIT: KIDZ: 321 ticks in last 60s, last_price=$2.52, last_tick_time=07:52:00
+  TICK AUDIT: NICM: 139 ticks in last 60s, last_price=$11.66, last_tick_time=07:51:59
+[07:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=502 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[07:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=514 | CIIT:2t/IDLE KIDZ:8t/IDLE NICM:2t/IDLE
+
+🔄 Running scanner at 07:52:57 ET...
+Error 162, reqId 1010: Historical Market Data Service error message:API scanner subscription cancelled: 1010
+  [float_cache] Cleared 8 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1010 (reqId=1010, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (11 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 165 ticks in last 60s, last_price=$1.87, last_tick_time=07:53:58
+  TICK AUDIT: KIDZ: 897 ticks in last 60s, last_price=$2.61, last_tick_time=07:53:58
+  TICK AUDIT: NICM: 307 ticks in last 60s, last_price=$10.96, last_tick_time=07:53:58
+[07:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=547 | CIIT:2t/IDLE KIDZ:8t/IDLE NICM:2t/IDLE
+[07:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=564 | CIIT:4t/IDLE KIDZ:19t/IDLE NICM:6t/IDLE
+  TICK AUDIT: CIIT: 76 ticks in last 60s, last_price=$1.88, last_tick_time=07:54:58
+  TICK AUDIT: KIDZ: 506 ticks in last 60s, last_price=$2.46, last_tick_time=07:54:59
+  TICK AUDIT: NICM: 133 ticks in last 60s, last_price=$11.00, last_tick_time=07:54:57
+[07:55 ET] KIDZ CHART | O=2.60 H=2.60 L=2.45 C=2.45 V=57,588 | EMA9=2.58 VWAP=2.74 (-10.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=92.6x avg_vol=622 bars=50 | sq=IDLE armed=none
+[07:55 ET] NICM CHART | O=10.96 H=11.07 L=10.89 C=11.00 V=6,298 | EMA9=11.24 VWAP=21.32 (-48.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.6x avg_vol=10,141 bars=50 | sq=IDLE armed=none
+[07:55:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=549 | CIIT:0t/IDLE KIDZ:13t/IDLE NICM:1t/IDLE
+[07:55 ET] CIIT CHART | O=1.87 H=1.88 L=1.87 C=1.88 V=21,919 | EMA9=1.86 VWAP=2.28 (-17.5%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.1x avg_vol=20,617 bars=50 | sq=IDLE armed=none
+[07:55:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=564 | CIIT:1t/IDLE KIDZ:24t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 91 ticks in last 60s, last_price=$1.88, last_tick_time=07:55:58
+  TICK AUDIT: KIDZ: 449 ticks in last 60s, last_price=$2.46, last_tick_time=07:55:59
+  TICK AUDIT: NICM: 131 ticks in last 60s, last_price=$10.99, last_tick_time=07:55:58
+[07:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=546 | CIIT:2t/IDLE KIDZ:9t/IDLE NICM:0t/IDLE
+[07:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=555 | CIIT:5t/IDLE KIDZ:14t/IDLE NICM:1t/IDLE
+  TICK AUDIT: CIIT: 91 ticks in last 60s, last_price=$1.88, last_tick_time=07:56:58
+  TICK AUDIT: KIDZ: 361 ticks in last 60s, last_price=$2.50, last_tick_time=07:56:59
+  TICK AUDIT: NICM: 133 ticks in last 60s, last_price=$11.07, last_tick_time=07:56:57
+[07:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=540 | CIIT:0t/IDLE KIDZ:4t/IDLE NICM:1t/IDLE
+[07:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=549 | CIIT:2t/IDLE KIDZ:9t/IDLE NICM:3t/IDLE
+
+🔄 Running scanner at 07:57:57 ET...
+Error 162, reqId 1091: Historical Market Data Service error message:API scanner subscription cancelled: 1091
+  [float_cache] Cleared 8 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1091 (reqId=1091, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (12 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 124 ticks in last 60s, last_price=$1.88, last_tick_time=07:58:58
+  TICK AUDIT: KIDZ: 568 ticks in last 60s, last_price=$2.43, last_tick_time=07:58:59
+  TICK AUDIT: NICM: 231 ticks in last 60s, last_price=$10.92, last_tick_time=07:58:59
+[07:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=591 | CIIT:2t/IDLE KIDZ:7t/IDLE NICM:5t/IDLE
+[08:00 ET] KIDZ CHART | O=2.42 H=2.45 L=2.40 C=2.42 V=32,761 | EMA9=2.50 VWAP=2.71 (-10.8%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=32.9x avg_vol=996 bars=50 | sq=IDLE armed=none
+[08:00 ET] NICM CHART | O=10.92 H=11.00 L=10.70 C=10.98 V=6,977 | EMA9=11.09 VWAP=21.07 (-47.9%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.7x avg_vol=9,796 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 84 ticks in last 60s, last_price=$1.87, last_tick_time=07:59:59
+  TICK AUDIT: KIDZ: 302 ticks in last 60s, last_price=$2.42, last_tick_time=08:00:00
+  TICK AUDIT: NICM: 154 ticks in last 60s, last_price=$10.98, last_tick_time=08:00:00
+[08:00:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=577 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:00 ET] CIIT CHART | O=1.88 H=1.88 L=1.87 C=1.87 V=13,236 | EMA9=1.87 VWAP=2.28 (-17.8%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.7x avg_vol=18,613 bars=50 | sq=IDLE armed=none
+[08:00:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=592 | CIIT:7t/IDLE KIDZ:5t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 116 ticks in last 60s, last_price=$1.85, last_tick_time=08:01:00
+  TICK AUDIT: KIDZ: 427 ticks in last 60s, last_price=$2.38, last_tick_time=08:01:00
+  TICK AUDIT: NICM: 81 ticks in last 60s, last_price=$10.92, last_tick_time=08:00:58
+[08:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=577 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=595 | CIIT:7t/IDLE KIDZ:7t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 86 ticks in last 60s, last_price=$1.85, last_tick_time=08:01:57
+  TICK AUDIT: KIDZ: 400 ticks in last 60s, last_price=$2.23, last_tick_time=08:02:00
+  TICK AUDIT: NICM: 148 ticks in last 60s, last_price=$11.23, last_tick_time=08:02:00
+[08:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=577 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=591 | CIIT:1t/IDLE KIDZ:12t/IDLE NICM:1t/IDLE
+
+🔄 Running scanner at 08:02:57 ET...
+Error 162, reqId 1172: Historical Market Data Service error message:API scanner subscription cancelled: 1172
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1172 (reqId=1172, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (13 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 165 ticks in last 60s, last_price=$1.86, last_tick_time=08:03:59
+  TICK AUDIT: KIDZ: 760 ticks in last 60s, last_price=$2.17, last_tick_time=08:03:59
+  TICK AUDIT: NICM: 230 ticks in last 60s, last_price=$10.94, last_tick_time=08:03:57
+[08:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=627 | CIIT:1t/IDLE KIDZ:9t/IDLE NICM:2t/IDLE
+[08:05 ET] KIDZ CHART | O=2.17 H=2.18 L=2.12 C=2.12 V=68,301 | EMA9=2.33 VWAP=2.64 (-19.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=42.9x avg_vol=1,591 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 58 ticks in last 60s, last_price=$1.86, last_tick_time=08:04:59
+  TICK AUDIT: KIDZ: 453 ticks in last 60s, last_price=$2.12, last_tick_time=08:05:00
+  TICK AUDIT: NICM: 91 ticks in last 60s, last_price=$10.94, last_tick_time=08:04:56
+[08:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=615 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:05 ET] CIIT CHART | O=1.86 H=1.87 L=1.86 C=1.86 V=5,370 | EMA9=1.86 VWAP=2.27 (-18.1%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.3x avg_vol=17,395 bars=50 | sq=IDLE armed=none
+[08:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=623 | CIIT:1t/IDLE KIDZ:7t/IDLE NICM:0t/IDLE
+[08:05 ET] NICM CHART | O=10.93 H=11.00 L=10.87 C=10.94 V=3,298 | EMA9=11.05 VWAP=20.84 (-47.5%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=9,128 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 96 ticks in last 60s, last_price=$1.88, last_tick_time=08:05:59
+  TICK AUDIT: KIDZ: 467 ticks in last 60s, last_price=$2.04, last_tick_time=08:06:00
+  TICK AUDIT: NICM: 80 ticks in last 60s, last_price=$10.99, last_tick_time=08:05:57
+[08:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=615 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=620 | CIIT:2t/IDLE KIDZ:3t/IDLE NICM:0t/IDLE
+  TICK AUDIT: CIIT: 47 ticks in last 60s, last_price=$1.87, last_tick_time=08:07:00
+  TICK AUDIT: KIDZ: 300 ticks in last 60s, last_price=$2.06, last_tick_time=08:07:00
+  TICK AUDIT: NICM: 70 ticks in last 60s, last_price=$10.91, last_tick_time=08:06:59
+[08:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=615 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=617 | CIIT:1t/IDLE KIDZ:1t/IDLE NICM:0t/IDLE
+
+🔄 Running scanner at 08:07:57 ET...
+Error 162, reqId 1253: Historical Market Data Service error message:API scanner subscription cancelled: 1253
+  [float_cache] Cleared 9 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1253 (reqId=1253, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (14 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 146 ticks in last 60s, last_price=$1.87, last_tick_time=08:09:00
+  TICK AUDIT: KIDZ: 378 ticks in last 60s, last_price=$2.11, last_tick_time=08:09:00
+  TICK AUDIT: NICM: 109 ticks in last 60s, last_price=$11.02, last_tick_time=08:09:00
+[08:10 ET] CIIT CHART | O=1.87 H=1.88 L=1.87 C=1.87 V=10,549 | EMA9=1.87 VWAP=2.27 (-17.5%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.6x avg_vol=16,319 bars=50 | sq=IDLE armed=none
+[08:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=991 | CIIT:101t/IDLE KIDZ:168t/IDLE NICM:72t/IDLE
+[08:10 ET] KIDZ CHART | O=2.11 H=2.12 L=2.07 C=2.08 V=17,529 | EMA9=2.17 VWAP=2.59 (-19.6%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=6.9x avg_vol=2,559 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 102 ticks in last 60s, last_price=$1.88, last_tick_time=08:10:01
+  TICK AUDIT: KIDZ: 170 ticks in last 60s, last_price=$2.08, last_tick_time=08:10:01
+  TICK AUDIT: NICM: 72 ticks in last 60s, last_price=$11.28, last_tick_time=08:09:59
+[08:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=650 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:10 ET] NICM CHART | O=11.02 H=11.28 L=11.02 C=11.28 V=4,881 | EMA9=11.01 VWAP=20.58 (-45.2%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.6x avg_vol=8,191 bars=50 | sq=IDLE armed=none
+[08:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1064 | CIIT:133t/IDLE KIDZ:193t/IDLE NICM:88t/IDLE
+  TICK AUDIT: CIIT: 135 ticks in last 60s, last_price=$1.87, last_tick_time=08:11:00
+  TICK AUDIT: KIDZ: 194 ticks in last 60s, last_price=$2.04, last_tick_time=08:11:00
+  TICK AUDIT: NICM: 93 ticks in last 60s, last_price=$11.20, last_tick_time=08:11:01
+[08:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=650 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:12:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1109 | CIIT:67t/IDLE KIDZ:282t/IDLE NICM:110t/IDLE
+  TICK AUDIT: CIIT: 69 ticks in last 60s, last_price=$1.87, last_tick_time=08:12:01
+  TICK AUDIT: KIDZ: 283 ticks in last 60s, last_price=$2.03, last_tick_time=08:12:01
+  TICK AUDIT: NICM: 110 ticks in last 60s, last_price=$11.07, last_tick_time=08:12:00
+[08:12:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=650 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+
+🔄 Running scanner at 08:12:58 ET...
+Error 162, reqId 1334: Historical Market Data Service error message:API scanner subscription cancelled: 1334
+  [float_cache] Cleared 8 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1334 (reqId=1334, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (15 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 185 ticks in last 60s, last_price=$1.92, last_tick_time=08:13:59
+  TICK AUDIT: KIDZ: 235 ticks in last 60s, last_price=$2.03, last_tick_time=08:13:59
+  TICK AUDIT: NICM: 144 ticks in last 60s, last_price=$11.07, last_tick_time=08:13:59
+[08:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=697 | CIIT:4t/IDLE KIDZ:3t/IDLE NICM:0t/IDLE
+[08:15 ET] KIDZ CHART | O=2.04 H=2.04 L=1.98 C=2.00 V=22,920 | EMA9=2.08 VWAP=2.56 (-21.8%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=5.8x avg_vol=3,970 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 250 ticks in last 60s, last_price=$1.92, last_tick_time=08:14:59
+  TICK AUDIT: KIDZ: 197 ticks in last 60s, last_price=$2.01, last_tick_time=08:15:00
+  TICK AUDIT: NICM: 125 ticks in last 60s, last_price=$10.93, last_tick_time=08:14:59
+[08:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=690 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:15 ET] NICM CHART | O=11.07 H=11.13 L=10.89 C=10.93 V=10,262 | EMA9=11.11 VWAP=20.24 (-46.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.2x avg_vol=8,291 bars=50 | sq=IDLE armed=none
+[08:15 ET] CIIT CHART | O=1.93 H=1.94 L=1.91 C=1.92 V=40,786 | EMA9=1.88 VWAP=2.26 (-15.3%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=2.7x avg_vol=14,984 bars=50 | sq=IDLE armed=none
+[08:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=699 | CIIT:2t/IDLE KIDZ:4t/IDLE NICM:3t/IDLE
+  TICK AUDIT: CIIT: 137 ticks in last 60s, last_price=$1.92, last_tick_time=08:16:00
+  TICK AUDIT: KIDZ: 119 ticks in last 60s, last_price=$2.04, last_tick_time=08:15:59
+  TICK AUDIT: NICM: 77 ticks in last 60s, last_price=$10.90, last_tick_time=08:16:00
+[08:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=690 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=701 | CIIT:2t/IDLE KIDZ:5t/IDLE NICM:4t/IDLE
+  TICK AUDIT: CIIT: 156 ticks in last 60s, last_price=$1.92, last_tick_time=08:17:00
+  TICK AUDIT: KIDZ: 96 ticks in last 60s, last_price=$2.02, last_tick_time=08:17:00
+  TICK AUDIT: NICM: 74 ticks in last 60s, last_price=$10.91, last_tick_time=08:17:00
+[08:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=690 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=696 | CIIT:2t/IDLE KIDZ:4t/IDLE NICM:0t/IDLE
+
+🔄 Running scanner at 08:17:58 ET...
+Error 162, reqId 1415: Historical Market Data Service error message:API scanner subscription cancelled: 1415
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1415 (reqId=1415, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (16 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 237 ticks in last 60s, last_price=$1.89, last_tick_time=08:19:00
+  TICK AUDIT: KIDZ: 280 ticks in last 60s, last_price=$1.99, last_tick_time=08:19:00
+  TICK AUDIT: NICM: 158 ticks in last 60s, last_price=$10.96, last_tick_time=08:19:00
+[08:20 ET] KIDZ CHART | O=1.98 H=2.02 L=1.98 C=2.01 V=15,691 | EMA9=2.03 VWAP=2.53 (-20.4%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=2.7x avg_vol=5,897 bars=50 | sq=IDLE armed=none
+[08:20 ET] NICM CHART | O=10.96 H=11.10 L=10.96 C=11.09 V=781 | EMA9=10.99 VWAP=20.09 (-44.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.1x avg_vol=8,039 bars=50 | sq=IDLE armed=none
+[08:20 ET] CIIT CHART | O=1.90 H=1.90 L=1.89 C=1.90 V=15,430 | EMA9=1.90 VWAP=2.26 (-15.8%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.0x avg_vol=15,460 bars=50 | sq=IDLE armed=none
+[08:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1025 | CIIT:102t/IDLE KIDZ:145t/IDLE NICM:52t/IDLE
+[08:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1038 | CIIT:105t/IDLE KIDZ:154t/IDLE NICM:53t/IDLE
+  TICK AUDIT: CIIT: 108 ticks in last 60s, last_price=$1.90, last_tick_time=08:20:02
+  TICK AUDIT: KIDZ: 156 ticks in last 60s, last_price=$2.01, last_tick_time=08:20:02
+  TICK AUDIT: NICM: 56 ticks in last 60s, last_price=$11.06, last_tick_time=08:20:01
+[08:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1017 | CIIT:85t/IDLE KIDZ:150t/IDLE NICM:56t/IDLE
+[08:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1024 | CIIT:87t/IDLE KIDZ:152t/IDLE NICM:59t/IDLE
+  TICK AUDIT: CIIT: 88 ticks in last 60s, last_price=$1.88, last_tick_time=08:21:02
+  TICK AUDIT: KIDZ: 152 ticks in last 60s, last_price=$2.00, last_tick_time=08:21:00
+  TICK AUDIT: NICM: 60 ticks in last 60s, last_price=$11.00, last_tick_time=08:21:02
+[08:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1086 | CIIT:118t/IDLE KIDZ:113t/IDLE NICM:129t/IDLE
+[08:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1094 | CIIT:122t/IDLE KIDZ:117t/IDLE NICM:129t/IDLE
+  TICK AUDIT: CIIT: 123 ticks in last 60s, last_price=$1.86, last_tick_time=08:22:02
+  TICK AUDIT: KIDZ: 117 ticks in last 60s, last_price=$2.00, last_tick_time=08:22:01
+  TICK AUDIT: NICM: 132 ticks in last 60s, last_price=$10.84, last_tick_time=08:22:02
+
+🔄 Running scanner at 08:22:59 ET...
+Error 162, reqId 1496: Historical Market Data Service error message:API scanner subscription cancelled: 1496
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1496 (reqId=1496, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (17 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 294 ticks in last 60s, last_price=$1.84, last_tick_time=08:24:01
+  TICK AUDIT: KIDZ: 143 ticks in last 60s, last_price=$2.00, last_tick_time=08:24:00
+  TICK AUDIT: NICM: 271 ticks in last 60s, last_price=$10.33, last_tick_time=08:24:01
+[08:25 ET] CIIT CHART | O=1.84 H=1.85 L=1.81 C=1.82 V=28,962 | EMA9=1.87 VWAP=2.25 (-19.1%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.9x avg_vol=15,574 bars=50 | sq=IDLE armed=none
+[08:25 ET] NICM CHART | O=10.33 H=10.49 L=10.31 C=10.49 V=8,907 | EMA9=10.83 VWAP=19.77 (-46.9%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.2x avg_vol=7,436 bars=50 | sq=IDLE armed=none
+[08:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1166 | CIIT:185t/IDLE KIDZ:72t/IDLE NICM:143t/IDLE
+[08:25 ET] KIDZ CHART | O=2.00 H=2.04 L=1.98 C=2.04 V=10,578 | EMA9=2.01 VWAP=2.51 (-18.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=1.4x avg_vol=7,675 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: CIIT: 189 ticks in last 60s, last_price=$1.83, last_tick_time=08:25:01
+  TICK AUDIT: KIDZ: 75 ticks in last 60s, last_price=$2.04, last_tick_time=08:25:01
+  TICK AUDIT: NICM: 148 ticks in last 60s, last_price=$10.51, last_tick_time=08:25:01
+[08:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=766 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1055 | CIIT:98t/IDLE KIDZ:66t/IDLE NICM:125t/IDLE
+  TICK AUDIT: CIIT: 100 ticks in last 60s, last_price=$1.84, last_tick_time=08:26:01
+  TICK AUDIT: KIDZ: 66 ticks in last 60s, last_price=$1.99, last_tick_time=08:26:00
+  TICK AUDIT: NICM: 126 ticks in last 60s, last_price=$10.54, last_tick_time=08:26:01
+[08:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=766 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1021 | CIIT:95t/IDLE KIDZ:73t/IDLE NICM:87t/IDLE
+[08:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1026 | CIIT:96t/IDLE KIDZ:76t/IDLE NICM:88t/IDLE
+  TICK AUDIT: CIIT: 96 ticks in last 60s, last_price=$1.85, last_tick_time=08:27:01
+  TICK AUDIT: KIDZ: 76 ticks in last 60s, last_price=$1.99, last_tick_time=08:27:00
+  TICK AUDIT: NICM: 88 ticks in last 60s, last_price=$10.53, last_tick_time=08:27:00
+
+🔄 Running scanner at 08:27:59 ET...
+Error 162, reqId 1577: Historical Market Data Service error message:API scanner subscription cancelled: 1577
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1577 (reqId=1577, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (18 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 335 ticks in last 60s, last_price=$1.88, last_tick_time=08:29:01
+  TICK AUDIT: KIDZ: 107 ticks in last 60s, last_price=$1.98, last_tick_time=08:29:00
+  TICK AUDIT: NICM: 181 ticks in last 60s, last_price=$10.48, last_tick_time=08:29:01
+[08:30 ET] KIDZ CHART | O=1.98 H=1.99 L=1.90 C=1.95 V=16,333 | EMA9=2.00 VWAP=2.50 (-22.0%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=1.9x avg_vol=8,616 bars=50 | sq=IDLE armed=none
+[08:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1174 | CIIT:157t/IDLE KIDZ:134t/IDLE NICM:85t/IDLE
+[08:30 ET] CIIT CHART | O=1.89 H=1.90 L=1.87 C=1.89 V=23,774 | EMA9=1.86 VWAP=2.24 (-15.8%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=1.5x avg_vol=16,189 bars=50 | sq=IDLE armed=none
+[08:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1188 | CIIT:159t/IDLE KIDZ:146t/IDLE NICM:85t/IDLE
+  TICK AUDIT: CIIT: 164 ticks in last 60s, last_price=$1.88, last_tick_time=08:30:02
+  TICK AUDIT: KIDZ: 150 ticks in last 60s, last_price=$1.94, last_tick_time=08:30:02
+  TICK AUDIT: NICM: 85 ticks in last 60s, last_price=$10.44, last_tick_time=08:29:56
+[08:30 ET] NICM CHART | O=10.48 H=10.53 L=10.40 C=10.44 V=6,683 | EMA9=10.60 VWAP=19.53 (-46.5%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.9x avg_vol=7,491 bars=50 | sq=IDLE armed=none
+[08:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1100 | CIIT:118t/IDLE KIDZ:127t/IDLE NICM:57t/IDLE
+[08:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1115 | CIIT:124t/IDLE KIDZ:134t/IDLE NICM:59t/IDLE
+  TICK AUDIT: CIIT: 128 ticks in last 60s, last_price=$1.85, last_tick_time=08:31:02
+  TICK AUDIT: KIDZ: 141 ticks in last 60s, last_price=$1.90, last_tick_time=08:31:02
+  TICK AUDIT: NICM: 60 ticks in last 60s, last_price=$10.56, last_tick_time=08:31:01
+[08:32:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1106 | CIIT:107t/IDLE KIDZ:132t/IDLE NICM:69t/IDLE
+[08:32:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1113 | CIIT:111t/IDLE KIDZ:133t/IDLE NICM:71t/IDLE
+  TICK AUDIT: CIIT: 112 ticks in last 60s, last_price=$1.86, last_tick_time=08:32:01
+  TICK AUDIT: KIDZ: 133 ticks in last 60s, last_price=$1.91, last_tick_time=08:32:00
+  TICK AUDIT: NICM: 71 ticks in last 60s, last_price=$10.41, last_tick_time=08:32:01
+
+🔄 Running scanner at 08:32:59 ET...
+Error 162, reqId 1658: Historical Market Data Service error message:API scanner subscription cancelled: 1658
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1658 (reqId=1658, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (19 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 156 ticks in last 60s, last_price=$1.83, last_tick_time=08:34:02
+  TICK AUDIT: KIDZ: 259 ticks in last 60s, last_price=$1.90, last_tick_time=08:34:01
+  TICK AUDIT: NICM: 229 ticks in last 60s, last_price=$10.21, last_tick_time=08:34:01
+[08:35 ET] NICM CHART | O=10.21 H=10.21 L=9.93 C=10.02 V=11,566 | EMA9=10.42 VWAP=19.34 (-48.2%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=1.6x avg_vol=7,052 bars=50 | sq=IDLE armed=none
+[08:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1266 | CIIT:98t/IDLE KIDZ:110t/IDLE NICM:221t/IDLE
+[08:35 ET] KIDZ CHART | O=1.89 H=1.91 L=1.88 C=1.90 V=24,020 | EMA9=1.93 VWAP=2.47 (-23.0%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=2.2x avg_vol=10,718 bars=50 | sq=IDLE armed=none
+[08:35 ET] CIIT CHART | O=1.85 H=1.85 L=1.83 C=1.84 V=10,629 | EMA9=1.86 VWAP=2.24 (-17.9%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.6x avg_vol=16,408 bars=50 | sq=IDLE armed=none
+[08:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1275 | CIIT:99t/IDLE KIDZ:116t/IDLE NICM:223t/IDLE
+  TICK AUDIT: CIIT: 104 ticks in last 60s, last_price=$1.81, last_tick_time=08:35:02
+  TICK AUDIT: KIDZ: 121 ticks in last 60s, last_price=$1.89, last_tick_time=08:35:02
+  TICK AUDIT: NICM: 224 ticks in last 60s, last_price=$9.96, last_tick_time=08:35:02
+[08:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1311 | CIIT:233t/IDLE KIDZ:66t/IDLE NICM:175t/IDLE
+[08:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1316 | CIIT:234t/IDLE KIDZ:68t/IDLE NICM:177t/IDLE
+  TICK AUDIT: CIIT: 240 ticks in last 60s, last_price=$1.82, last_tick_time=08:36:02
+  TICK AUDIT: KIDZ: 71 ticks in last 60s, last_price=$1.90, last_tick_time=08:36:02
+  TICK AUDIT: NICM: 177 ticks in last 60s, last_price=$10.15, last_tick_time=08:36:01
+[08:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1174 | CIIT:140t/IDLE KIDZ:81t/IDLE NICM:116t/IDLE
+[08:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1178 | CIIT:141t/IDLE KIDZ:82t/IDLE NICM:118t/IDLE
+  TICK AUDIT: CIIT: 145 ticks in last 60s, last_price=$1.81, last_tick_time=08:37:02
+  TICK AUDIT: KIDZ: 82 ticks in last 60s, last_price=$1.92, last_tick_time=08:37:00
+  TICK AUDIT: NICM: 118 ticks in last 60s, last_price=$10.07, last_tick_time=08:37:00
+
+🔄 Running scanner at 08:38:00 ET...
+Error 162, reqId 1739: Historical Market Data Service error message:API scanner subscription cancelled: 1739
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1739 (reqId=1739, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (20 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 231 ticks in last 60s, last_price=$1.78, last_tick_time=08:39:02
+  TICK AUDIT: KIDZ: 173 ticks in last 60s, last_price=$1.90, last_tick_time=08:39:02
+  TICK AUDIT: NICM: 222 ticks in last 60s, last_price=$9.81, last_tick_time=08:39:01
+[08:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=872 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:40 ET] NICM CHART | O=9.80 H=10.05 L=9.80 C=10.02 V=6,061 | EMA9=10.12 VWAP=19.13 (-47.6%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.8x avg_vol=7,265 bars=50 | sq=IDLE armed=none
+[08:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1309 | CIIT:273t/IDLE KIDZ:43t/IDLE NICM:121t/IDLE
+[08:40 ET] CIIT CHART | O=1.78 H=1.79 L=1.75 C=1.76 V=40,924 | EMA9=1.83 VWAP=2.23 (-21.2%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=2.4x avg_vol=16,735 bars=50 | sq=IDLE armed=none
+[08:40 ET] KIDZ CHART | O=1.90 H=1.93 L=1.90 C=1.92 V=7,162 | EMA9=1.92 VWAP=2.45 (-21.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=0.6x avg_vol=12,592 bars=50 | sq=IDLE armed=none
+[08:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1313 | CIIT:275t/IDLE KIDZ:44t/IDLE NICM:122t/IDLE
+  TICK AUDIT: CIIT: 281 ticks in last 60s, last_price=$1.76, last_tick_time=08:40:02
+  TICK AUDIT: KIDZ: 44 ticks in last 60s, last_price=$1.92, last_tick_time=08:40:00
+  TICK AUDIT: NICM: 122 ticks in last 60s, last_price=$10.02, last_tick_time=08:40:00
+[08:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1199 | CIIT:197t/IDLE KIDZ:57t/IDLE NICM:73t/IDLE
+[08:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1210 | CIIT:202t/IDLE KIDZ:58t/IDLE NICM:78t/IDLE
+  TICK AUDIT: CIIT: 213 ticks in last 60s, last_price=$1.76, last_tick_time=08:41:03
+  TICK AUDIT: KIDZ: 59 ticks in last 60s, last_price=$1.91, last_tick_time=08:41:03
+  TICK AUDIT: NICM: 79 ticks in last 60s, last_price=$9.94, last_tick_time=08:41:02
+[08:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1197 | CIIT:120t/IDLE KIDZ:115t/IDLE NICM:90t/IDLE
+[08:42:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1204 | CIIT:122t/IDLE KIDZ:116t/IDLE NICM:94t/IDLE
+  TICK AUDIT: CIIT: 126 ticks in last 60s, last_price=$1.77, last_tick_time=08:42:03
+  TICK AUDIT: KIDZ: 117 ticks in last 60s, last_price=$1.89, last_tick_time=08:42:02
+  TICK AUDIT: NICM: 97 ticks in last 60s, last_price=$9.76, last_tick_time=08:42:03
+
+🔄 Running scanner at 08:43:00 ET...
+Error 162, reqId 1820: Historical Market Data Service error message:API scanner subscription cancelled: 1820
+  [float_cache] Cleared 5 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1820 (reqId=1820, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (21 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: CIIT: 201 ticks in last 60s, last_price=$1.76, last_tick_time=08:44:02
+  TICK AUDIT: KIDZ: 135 ticks in last 60s, last_price=$1.90, last_tick_time=08:44:00
+  TICK AUDIT: NICM: 264 ticks in last 60s, last_price=$9.69, last_tick_time=08:44:02
+[08:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=913 | CIIT:0t/IDLE KIDZ:0t/IDLE NICM:0t/IDLE
+[08:45 ET] NICM CHART | O=9.69 H=9.85 L=9.66 C=9.82 V=2,247 | EMA9=9.92 VWAP=18.95 (-48.2%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.3x avg_vol=7,365 bars=50 | sq=IDLE armed=none
+[08:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1149 | CIIT:107t/IDLE KIDZ:71t/IDLE NICM:58t/IDLE
+[08:45 ET] KIDZ CHART | O=1.90 H=1.90 L=1.88 C=1.89 V=9,819 | EMA9=1.91 VWAP=2.44 (-22.7%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=0.7x avg_vol=13,316 bars=50 | sq=IDLE armed=none
+[08:45 ET] CIIT CHART | O=1.76 H=1.78 L=1.76 C=1.78 V=14,278 | EMA9=1.78 VWAP=2.23 (-20.1%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.8x avg_vol=17,887 bars=50 | sq=IDLE armed=none
+[08:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1154 | CIIT:108t/IDLE KIDZ:72t/IDLE NICM:61t/IDLE
+  TICK AUDIT: CIIT: 112 ticks in last 60s, last_price=$1.78, last_tick_time=08:45:03
+  TICK AUDIT: KIDZ: 73 ticks in last 60s, last_price=$1.89, last_tick_time=08:45:03
+  TICK AUDIT: NICM: 65 ticks in last 60s, last_price=$9.79, last_tick_time=08:45:03
+[08:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1129 | CIIT:97t/IDLE KIDZ:64t/IDLE NICM:55t/IDLE
+[08:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1139 | CIIT:101t/IDLE KIDZ:66t/IDLE NICM:59t/IDLE
+  TICK AUDIT: CIIT: 105 ticks in last 60s, last_price=$1.79, last_tick_time=08:46:03
+  TICK AUDIT: KIDZ: 70 ticks in last 60s, last_price=$1.88, last_tick_time=08:46:02
+  TICK AUDIT: NICM: 62 ticks in last 60s, last_price=$9.85, last_tick_time=08:46:02
+[08:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1154 | CIIT:89t/IDLE KIDZ:54t/IDLE NICM:98t/IDLE
+[08:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1156 | CIIT:90t/IDLE KIDZ:55t/IDLE NICM:98t/IDLE
+  TICK AUDIT: CIIT: 93 ticks in last 60s, last_price=$1.78, last_tick_time=08:47:03
+  TICK AUDIT: KIDZ: 55 ticks in last 60s, last_price=$1.89, last_tick_time=08:47:01
+  TICK AUDIT: NICM: 99 ticks in last 60s, last_price=$9.86, last_tick_time=08:47:02
+[08:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1087 | CIIT:58t/IDLE KIDZ:59t/IDLE NICM:57t/IDLE
+
+🔄 Running scanner at 08:48:01 ET...
+Error 162, reqId 1901: Historical Market Data Service error message:API scanner subscription cancelled: 1901
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1901 (reqId=1901, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+[08:50 ET] CIIT CHART | O=1.78 H=1.78 L=1.77 C=1.77 V=2,407 | EMA9=1.78 VWAP=2.22 (-20.4%) HOD=2.48 PM_H=2.48 | MACD=N/A vol_ratio=0.1x avg_vol=17,881 bars=50 | sq=IDLE armed=none
+[08:50 ET] KIDZ CHART | O=1.90 H=1.94 L=1.90 C=1.91 V=513 | EMA9=1.90 VWAP=2.44 (-21.8%) HOD=3.15 PM_H=3.15 | MACD=N/A vol_ratio=0.0x avg_vol=13,567 bars=50 | sq=IDLE armed=none
+[08:50 ET] LAES CHART | O=2.85 H=2.85 L=2.85 C=2.85 V=600 | EMA9=none VWAP=2.84 (+0.4%) HOD=2.91 PM_H=2.91 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[08:50 ET] NICM CHART | O=9.80 H=9.98 L=9.80 C=9.97 V=612 | EMA9=9.88 VWAP=18.83 (-47.1%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.1x avg_vol=7,240 bars=50 | sq=IDLE armed=none
+[08:50 ET] BTQ CHART | O=3.21 H=3.21 L=3.21 C=3.21 V=200 | EMA9=none VWAP=3.18 (+1.0%) HOD=3.22 PM_H=3.22 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+
+💀 WATCHDOG: main thread frozen for 126s — exiting hard for restart.
+ALERT: bot_v3_hybrid.py died at Wed Apr 15 06:50:07 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
+=== Shutting down at Wed Apr 15 06:50:07 MDT 2026 ===
+Pushing logs...
