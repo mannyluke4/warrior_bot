@@ -305,3 +305,33 @@ Traceback (most recent call last):
 databento.common.error.BentoClientError: 402 account_delinquent_invoice
 Unable to submit the request because there is an unpaid invoice.
 documentation: https://databento.com/docs/portal/billing
+11:42:01  Live Scanner starting — 2026-04-15 
+11:42:01  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+11:42:01  Initialized Historical(gateway=https://hist.databento.com)
+11:42:01        Requesting OHLCV from 2026-03-17 to 2026-04-14...
+11:42:02        FAILED to load prev close: 402 account_delinquent_invoice
+Unable to submit the request because there is an unpaid invoice.
+documentation: https://databento.com/docs/portal/billing
+11:42:02        If EQUS.SUMMARY is not in your plan, confirm dataset access
+11:42:02        at https://databento.com/platform/datasets
+11:42:02        Scanner cannot run without prev close data — aborting
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 717, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 713, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 625, in run
+    self.load_prev_close()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 302, in load_prev_close
+    data = client.timeseries.get_range(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/historical/api/timeseries.py", line 127, in get_range
+    return self._stream(
+           ^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 134, in _stream
+    check_http_error(response)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 249, in check_http_error
+    raise BentoClientError(
+databento.common.error.BentoClientError: 402 account_delinquent_invoice
+Unable to submit the request because there is an unpaid invoice.
+documentation: https://databento.com/docs/portal/billing
