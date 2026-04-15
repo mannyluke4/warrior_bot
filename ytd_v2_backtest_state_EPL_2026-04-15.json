@@ -1,0 +1,1052 @@
+{
+  "config_3": {
+    "equity": 40616,
+    "trades": [
+      {
+        "num": 1,
+        "time": "07:00",
+        "entry": 8.04,
+        "stop": 7.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 7.9,
+        "reason": "sq_stop_hit",
+        "pnl": -375,
+        "r_mult": "-1.0R",
+        "symbol": "BDSX",
+        "date": "2026-01-12",
+        "notional": 43071.428571428565,
+        "profile": "A"
+      },
+      {
+        "num": 1,
+        "time": "07:29",
+        "entry": 7.04,
+        "stop": 6.9,
+        "r": 0.14,
+        "score": 10.0,
+        "exit_price": 6.92,
+        "reason": "sq_max_loss_hit",
+        "pnl": -318,
+        "r_mult": "-0.9R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 37261.71428571428,
+        "profile": "A"
+      },
+      {
+        "num": 4,
+        "time": "07:49",
+        "entry": 8.8,
+        "stop": 8.81,
+        "r": 0.59,
+        "score": 8.0,
+        "exit_price": 10.34,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": 8769,
+        "r_mult": "+2.6R",
+        "symbol": "AHMA",
+        "date": "2026-01-13",
+        "notional": 11052.20338983051,
+        "profile": "A"
+      },
+      {
+        "num": 1,
+        "time": "08:03",
+        "entry": 4.04,
+        "stop": 3.9,
+        "r": 0.14,
+        "score": 11.0,
+        "exit_price": 4.0,
+        "reason": "sq_para_trail_exit",
+        "pnl": -136,
+        "r_mult": "-0.3R",
+        "symbol": "BNKK",
+        "date": "2026-01-15",
+        "notional": 27471.999999999996,
+        "profile": "A"
+      },
+      {
+        "num": 1,
+        "time": "08:11",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 10.3,
+        "exit_price": 3.02,
+        "reason": "sq_para_trail_exit",
+        "pnl": -68,
+        "r_mult": "-0.1R",
+        "symbol": "SVRE",
+        "date": "2026-01-16",
+        "notional": 20585.142857142855,
+        "profile": "A"
+      },
+      {
+        "num": 1,
+        "time": "07:01",
+        "entry": 5.04,
+        "stop": 4.9,
+        "r": 0.14,
+        "score": 6.7,
+        "exit_price": 5.25,
+        "reason": "sq_target_hit",
+        "pnl": 168,
+        "r_mult": "+1.3R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 9000.0,
+        "profile": "B"
+      },
+      {
+        "num": 2,
+        "time": "07:02",
+        "entry": 5.04,
+        "stop": 4.93,
+        "r": 0.11,
+        "score": 6.7,
+        "exit_price": 5.27,
+        "reason": "sq_target_hit_exit_full",
+        "pnl": 235,
+        "r_mult": "+1.9R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 11454.545454545454,
+        "profile": "B"
+      },
+      {
+        "num": 3,
+        "time": "07:04",
+        "entry": 6.04,
+        "stop": 5.9,
+        "r": 0.14,
+        "score": 8.4,
+        "exit_price": 6.45,
+        "reason": "sq_target_hit_exit_full",
+        "pnl": 329,
+        "r_mult": "+2.6R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 10785.714285714284,
+        "profile": "B"
+      },
+      {
+        "num": 4,
+        "time": "07:10",
+        "entry": 6.27,
+        "stop": 5.86,
+        "r": 0.39,
+        "score": 8.0,
+        "exit_price": 5.95,
+        "reason": "bearish_engulfing_exit_full",
+        "pnl": -2560,
+        "r_mult": "-0.8R",
+        "symbol": "BATL",
+        "date": "2026-01-26",
+        "notional": 4019.2307692307686,
+        "profile": "B"
+      },
+      {
+        "num": 1,
+        "time": "07:29",
+        "entry": 3.04,
+        "stop": 2.9,
+        "r": 0.14,
+        "score": 6.0,
+        "exit_price": 3.04,
+        "reason": "sq_para_trail_exit",
+        "pnl": 0,
+        "r_mult": "+0.0R",
+        "symbol": "CYN",
+        "date": "2026-01-27",
+        "notional": 5428.571428571428,
+        "profile": "B"
+      },
+      {
+        "num": 1,
+        "time": "08:36",
+        "entry": 7.04,
+        "stop": 6.88,
+        "r": 0.16,
+        "score": 7.0,
+        "exit_price": 8.6,
+        "reason": "sq_target_hit",
+        "pnl": 4572,
+        "r_mult": "+10.2R",
+        "symbol": "OBAI",
+        "date": "2026-02-17",
+        "notional": 39644.0,
+        "profile": "A"
+      }
+    ],
+    "daily": [
+      {
+        "date": "2026-01-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-05",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000
+      },
+      {
+        "date": "2026-01-07",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-08",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 30000,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-12",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -375,
+        "equity": 29625
+      },
+      {
+        "date": "2026-01-13",
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "day_pnl": 8451,
+        "equity": 38076
+      },
+      {
+        "date": "2026-01-14",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 38076,
+        "note": "no candidates (total=1, passed=0)"
+      },
+      {
+        "date": "2026-01-15",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -136,
+        "equity": 37940
+      },
+      {
+        "date": "2026-01-16",
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "day_pnl": -68,
+        "equity": 37872
+      },
+      {
+        "date": "2026-01-20",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 37872
+      },
+      {
+        "date": "2026-01-21",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 37872,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-22",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 37872,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-23",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 37872,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-26",
+        "trades": 4,
+        "wins": 3,
+        "losses": 1,
+        "day_pnl": -1828,
+        "equity": 36044
+      },
+      {
+        "date": "2026-01-27",
+        "trades": 1,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044
+      },
+      {
+        "date": "2026-01-28",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-01-29",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044
+      },
+      {
+        "date": "2026-01-30",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044
+      },
+      {
+        "date": "2026-02-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044
+      },
+      {
+        "date": "2026-02-04",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-05",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-10",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-11",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044
+      },
+      {
+        "date": "2026-02-13",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 36044,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-17",
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "day_pnl": 4572,
+        "equity": 40616
+      },
+      {
+        "date": "2026-02-18",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-19",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-20",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-23",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-24",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-25",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-26",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-02-27",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-02",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-03",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-04",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-05",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616
+      },
+      {
+        "date": "2026-03-06",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-09",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616
+      },
+      {
+        "date": "2026-03-10",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-11",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=0, passed=0)"
+      },
+      {
+        "date": "2026-03-12",
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "day_pnl": 0,
+        "equity": 40616,
+        "note": "no candidates (total=1, passed=0)"
+      }
+    ],
+    "max_equity": 40616,
+    "max_drawdown": 2032,
+    "selection_log": [
+      {
+        "date": "2026-01-02",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-03",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-05",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-06",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "CYCN",
+            "profile": "A",
+            "pm_volume": 1019115,
+            "gap_pct": 53.62,
+            "float_millions": 2.71,
+            "rank_score": 0.5
+          }
+        ]
+      },
+      {
+        "date": "2026-01-07",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-08",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-09",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-12",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "BDSX",
+            "profile": "A",
+            "pm_volume": 99815,
+            "gap_pct": 23.44,
+            "float_millions": 3.7,
+            "rank_score": 0.391
+          }
+        ]
+      },
+      {
+        "date": "2026-01-13",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "AHMA",
+            "profile": "A",
+            "pm_volume": 198132,
+            "gap_pct": 68.75,
+            "float_millions": 2.02,
+            "rank_score": 0.509
+          }
+        ]
+      },
+      {
+        "date": "2026-01-14",
+        "total_candidates": 1,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-15",
+        "total_candidates": 2,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "BNKK",
+            "profile": "A",
+            "pm_volume": 275268,
+            "gap_pct": 105.4,
+            "float_millions": 2.88,
+            "rank_score": 0.57
+          }
+        ]
+      },
+      {
+        "date": "2026-01-16",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "SVRE",
+            "profile": "A",
+            "pm_volume": 148429,
+            "gap_pct": 130.56,
+            "float_millions": 2.38,
+            "rank_score": 0.568
+          }
+        ]
+      },
+      {
+        "date": "2026-01-20",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "FRSX",
+            "profile": "A",
+            "pm_volume": 155808,
+            "gap_pct": 57.14,
+            "float_millions": 4.08,
+            "rank_score": 0.466
+          }
+        ]
+      },
+      {
+        "date": "2026-01-21",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-22",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-23",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-26",
+        "total_candidates": 2,
+        "passed_filter": 2,
+        "selected": [
+          {
+            "symbol": "BATL",
+            "profile": "B",
+            "pm_volume": 1462493,
+            "gap_pct": 326.56,
+            "float_millions": 7.23,
+            "rank_score": 0.552
+          },
+          {
+            "symbol": "GXAI",
+            "profile": "B",
+            "pm_volume": 543648,
+            "gap_pct": 108.04,
+            "float_millions": 6.5,
+            "rank_score": 0.548
+          }
+        ]
+      },
+      {
+        "date": "2026-01-27",
+        "total_candidates": 2,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "CYN",
+            "profile": "B",
+            "pm_volume": 432812,
+            "gap_pct": 63.46,
+            "float_millions": 7.97,
+            "rank_score": 0.453
+          }
+        ]
+      },
+      {
+        "date": "2026-01-28",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-01-29",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "SER",
+            "profile": "A",
+            "pm_volume": 727350,
+            "gap_pct": 30.51,
+            "float_millions": 3.58,
+            "rank_score": 0.438
+          }
+        ]
+      },
+      {
+        "date": "2026-01-30",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-02",
+        "total_candidates": 2,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "SWVL",
+            "profile": "B",
+            "pm_volume": 65741,
+            "gap_pct": 36.46,
+            "float_millions": 5.46,
+            "rank_score": 0.394
+          }
+        ]
+      },
+      {
+        "date": "2026-02-03",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "NPT",
+            "profile": "A",
+            "pm_volume": 103626,
+            "gap_pct": 12.63,
+            "float_millions": 3.51,
+            "rank_score": 0.377
+          }
+        ]
+      },
+      {
+        "date": "2026-02-04",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-05",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-06",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-09",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-10",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-11",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-12",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "JDZG",
+            "profile": "A",
+            "pm_volume": 690927,
+            "gap_pct": 56.06,
+            "float_millions": 2.81,
+            "rank_score": 0.496
+          }
+        ]
+      },
+      {
+        "date": "2026-02-13",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-17",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "OBAI",
+            "profile": "A",
+            "pm_volume": 249020,
+            "gap_pct": 58.47,
+            "float_millions": 3.17,
+            "rank_score": 0.481
+          }
+        ]
+      },
+      {
+        "date": "2026-02-18",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-19",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-20",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-23",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-24",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-25",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-26",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-02-27",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-02",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-03",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-04",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-05",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "MTEK",
+            "profile": "A",
+            "pm_volume": 165427,
+            "gap_pct": 52.46,
+            "float_millions": 4.58,
+            "rank_score": 0.462
+          }
+        ]
+      },
+      {
+        "date": "2026-03-06",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-09",
+        "total_candidates": 1,
+        "passed_filter": 1,
+        "selected": [
+          {
+            "symbol": "AGH",
+            "profile": "A",
+            "pm_volume": 53495,
+            "gap_pct": 51.02,
+            "float_millions": 4.6,
+            "rank_score": 0.427
+          }
+        ]
+      },
+      {
+        "date": "2026-03-10",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-11",
+        "total_candidates": 0,
+        "passed_filter": 0,
+        "selected": []
+      },
+      {
+        "date": "2026-03-12",
+        "total_candidates": 1,
+        "passed_filter": 0,
+        "selected": []
+      }
+    ]
+  }
+}

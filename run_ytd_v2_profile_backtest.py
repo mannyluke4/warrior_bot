@@ -107,8 +107,11 @@ DATES = [
 ]
 
 STATE_FILE = "profile_backtest_state.json"
+# Global override hooks — set by main() from --state-file / --end-time CLI flags.
+# Defaults preserved so every existing caller behaves identically.
+SIM_END_TIME = "12:00"
 SCANNER_DIR = "scanner_results"
-WORKDIR = "/Users/mannyluke/warrior_bot"
+WORKDIR = os.path.dirname(os.path.abspath(__file__))
 TICK_CACHE_DIR = os.path.join(WORKDIR, "tick_cache")
 
 
@@ -208,7 +211,7 @@ def run_sim(symbol: str, date: str, sim_start: str, risk: int, min_score: float,
         env["WB_SCANNER_FLOAT_M"] = str(candidate.get("float_millions", 20) or 20)
 
     cmd = [
-        sys.executable, "simulate.py", symbol, date, sim_start, "12:00",
+        sys.executable, "simulate.py", symbol, date, sim_start, SIM_END_TIME,
         "--ticks",
         "--risk", str(risk), "--no-fundamentals",
     ]
@@ -693,7 +696,18 @@ def main():
     parser.add_argument("--config", type=int, choices=[2, 3], help="Run specific config only")
     parser.add_argument("--report", action="store_true", help="Generate report from saved state")
     parser.add_argument("--fresh", action="store_true", help="Start fresh (delete saved state)")
+    parser.add_argument("--state-file", default=None,
+                        help="Override output state file (default: profile_backtest_state.json)")
+    parser.add_argument("--end-time", default=None,
+                        help="Override sim end time per-candidate (default: 12:00)")
     args = parser.parse_args()
+
+    # Apply overrides to module globals BEFORE load_state / run_config read them.
+    global STATE_FILE, SIM_END_TIME
+    if args.state_file:
+        STATE_FILE = args.state_file
+    if args.end_time:
+        SIM_END_TIME = args.end_time
 
     if args.fresh:
         p = os.path.join(WORKDIR, STATE_FILE)
