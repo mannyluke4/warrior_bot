@@ -89,6 +89,23 @@ MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "100000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"  # 50% buying power (2x equity)
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
+
+# Entry slippage + retry (added 2026-04-15 — was hardcoded $0.02 + single-shot)
+# Dynamic slippage: max(SLIPPAGE_MIN, price * SLIPPAGE_PCT). If initial limit
+# times out, cancel + re-read live price + re-submit at (current + slippage),
+# up to MAX_RETRIES times. Gives up if market runs past MAX_CHASE_PCT above
+# original limit (stops unbounded chasing on vertical moves).
+ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
+ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))  # 0.5% of price
+ENTRY_MAX_RETRIES = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
+ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
+ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # max % above original limit
+ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
+
+
+def _entry_slippage_for(price: float) -> float:
+    """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
+    return max(ENTRY_SLIPPAGE_MIN, price * ENTRY_SLIPPAGE_PCT)
 MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
 DAILY_LOSS_SCALE = os.getenv("WB_DAILY_LOSS_SCALE", "0") == "1"
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
@@ -1116,6 +1133,120 @@ def check_triggers(symbol: str, price: float):
 # Order Execution
 # ══════════════════════════════════════════════════════════════════════
 
+def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
+                             original_limit, position_attr, log_prefix=""):
+    """Poll Alpaca for fill. On timeout: cancel + reprice to current market +
+    resubmit, up to ENTRY_MAX_RETRIES times. Aborts if market runs above
+    original_limit × (1 + ENTRY_MAX_CHASE_PCT/100). See directive
+    2026-04-15_directive_entry_slippage_retry.md.
+    """
+    cur_order_id = initial_order_id
+    cur_limit = initial_limit
+    attempt = 0
+    while True:
+        deadline = time.time() + ENTRY_RETRY_TIMEOUT_SEC
+        filled = False
+        terminal = False
+        while time.time() < deadline:
+            try:
+                o = state.alpaca.get_order_by_id(cur_order_id)
+                if o.status == 'filled':
+                    actual_price = float(o.filled_avg_price)
+                    actual_qty = int(float(o.filled_qty))
+                    pos = getattr(state, position_attr)
+                    if pos and pos.get("order_id") == cur_order_id:
+                        pos["entry"] = actual_price
+                        pos["qty"] = actual_qty
+                        if "peak" in pos:
+                            pos["peak"] = max(pos["peak"], actual_price)
+                        if "stop" in pos and r is not None:
+                            pos["stop"] = actual_price - r
+                        pos["fill_confirmed"] = True
+                        state.pending_order = None
+                        print(f"  {log_prefix}FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}"
+                              + (f" (after {attempt} retries)" if attempt > 0 else ""),
+                              flush=True)
+                    filled = True
+                    break
+                if o.status in ('cancelled', 'expired', 'rejected'):
+                    print(f"  {log_prefix}ORDER {o.status.upper()}: {symbol} {cur_order_id}", flush=True)
+                    terminal = True
+                    break
+            except Exception as e:
+                print(f"  {log_prefix}FILL CHECK ERROR: {e}", flush=True)
+            time.sleep(0.5)
+
+        if filled:
+            return
+        if terminal:
+            pos = getattr(state, position_attr)
+            if pos and pos.get("order_id") == cur_order_id:
+                setattr(state, position_attr, None)
+                state.pending_order = None
+            return
+
+        # Timed out — decide whether to retry
+        if not ENTRY_RETRY_ENABLED or attempt >= ENTRY_MAX_RETRIES:
+            print(f"  {log_prefix}ORDER TIMEOUT: cancelling {cur_order_id}"
+                  + (f" after {attempt} retries" if attempt > 0 else ""),
+                  flush=True)
+            try: state.alpaca.cancel_order_by_id(cur_order_id)
+            except Exception: pass
+            pos = getattr(state, position_attr)
+            if pos and pos.get("order_id") == cur_order_id:
+                setattr(state, position_attr, None)
+                state.pending_order = None
+            return
+
+        # Retry: cancel current, reprice to current market, resubmit
+        try: state.alpaca.cancel_order_by_id(cur_order_id)
+        except Exception: pass
+        time.sleep(0.3)
+
+        cur_price = state.last_tick_price.get(symbol, cur_limit) or cur_limit
+        max_chase_price = original_limit * (1 + ENTRY_MAX_CHASE_PCT / 100.0)
+        if cur_price > max_chase_price:
+            print(f"  {log_prefix}ORDER TIMEOUT: {symbol} market ${cur_price:.2f} exceeds max chase "
+                  f"${max_chase_price:.2f} ({ENTRY_MAX_CHASE_PCT}% above original ${original_limit:.2f}) — giving up",
+                  flush=True)
+            pos = getattr(state, position_attr)
+            if pos and pos.get("order_id") == cur_order_id:
+                setattr(state, position_attr, None)
+                state.pending_order = None
+            return
+
+        slip = _entry_slippage_for(cur_price)
+        new_limit = round(cur_price + slip, 2)
+        attempt += 1
+        print(f"  {log_prefix}RETRY {attempt}/{ENTRY_MAX_RETRIES}: {symbol} market=${cur_price:.2f} "
+              f"new_limit=${new_limit:.2f} (slip=${slip:.3f})", flush=True)
+
+        try:
+            req = LimitOrderRequest(
+                symbol=symbol, qty=qty, side=OrderSide.BUY,
+                time_in_force=TimeInForce.DAY, limit_price=new_limit, extended_hours=True,
+            )
+            new_alpaca_order = state.alpaca.submit_order(req)
+            prev_id = cur_order_id
+            cur_order_id = str(new_alpaca_order.id)
+            cur_limit = new_limit
+            print(f"  {log_prefix}ALPACA ORDER: {cur_order_id} BUY {qty} {symbol} @ ${new_limit:.2f} (retry)", flush=True)
+            pos = getattr(state, position_attr)
+            if pos and pos.get("order_id") == prev_id:
+                pos["order_id"] = cur_order_id
+                pos["entry"] = new_limit
+            if state.pending_order:
+                state.pending_order["order_id"] = cur_order_id
+                state.pending_order["placed_time"] = datetime.now(ET)
+        except Exception as e:
+            print(f"  {log_prefix}RETRY SUBMIT FAILED: {e}", flush=True)
+            pos = getattr(state, position_attr)
+            if pos and pos.get("order_id") == cur_order_id:
+                setattr(state, position_attr, None)
+                state.pending_order = None
+            return
+
+
 def enter_trade(symbol: str, armed, setup_type: str):
     """Place entry order via IBKR."""
     entry = armed.trigger_high
@@ -1152,10 +1283,12 @@ def enter_trade(symbol: str, armed, setup_type: str):
     if qty <= 0:
         return
 
-    # Place limit order slightly above trigger via ALPACA
-    limit_price = round(entry + 0.02, 2)
+    # Place limit order with dynamic slippage (trigger + max(MIN, price × PCT))
+    initial_slip = _entry_slippage_for(entry)
+    limit_price = round(entry + initial_slip, 2)
+    original_limit = limit_price  # preserved for MAX_CHASE_PCT cap during retries
 
-    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} "
+    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}) "
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
           f"type={setup_type}", flush=True)
 
@@ -1198,42 +1331,14 @@ def enter_trade(symbol: str, armed, setup_type: str):
         "timeout_seconds": 15,
     }
 
-    # Verify fill in background
+    # Verify fill in background — dynamic slippage + retry-on-timeout via
+    # _verify_fill_with_retry (see helper docstring + directive).
     def verify_alpaca_fill():
-        """Poll Alpaca for fill confirmation."""
-        for _ in range(30):  # Check every 0.5s for 15s
-            try:
-                o = state.alpaca.get_order_by_id(order_id)
-                if o.status == 'filled':
-                    actual_price = float(o.filled_avg_price)
-                    actual_qty = int(float(o.filled_qty))
-                    if state.open_position and state.open_position.get("order_id") == order_id:
-                        state.open_position["entry"] = actual_price
-                        state.open_position["qty"] = actual_qty
-                        state.open_position["peak"] = max(state.open_position["peak"], actual_price)
-                        state.open_position["stop"] = actual_price - r
-                        state.open_position["fill_confirmed"] = True
-                        state.pending_order = None
-                        print(f"  FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}", flush=True)
-                    return
-                if o.status in ('cancelled', 'expired', 'rejected'):
-                    print(f"  ORDER {o.status.upper()}: {symbol} {order_id}", flush=True)
-                    if state.open_position and state.open_position.get("order_id") == order_id:
-                        state.open_position = None
-                        state.pending_order = None
-                    return
-            except Exception as e:
-                print(f"  FILL CHECK ERROR: {e}", flush=True)
-            time.sleep(0.5)
-        # Timeout — cancel
-        print(f"  ORDER TIMEOUT: cancelling {order_id}", flush=True)
-        try:
-            state.alpaca.cancel_order_by_id(order_id)
-        except Exception:
-            pass
-        if state.open_position and state.open_position.get("order_id") == order_id:
-            state.open_position = None
-            state.pending_order = None
+        _verify_fill_with_retry(
+            symbol=symbol, qty=qty, r=r,
+            initial_order_id=order_id, initial_limit=limit_price,
+            original_limit=original_limit, position_attr="open_position",
+        )
 
     import threading
     threading.Thread(target=verify_alpaca_fill, daemon=True).start()
@@ -1252,11 +1357,13 @@ def _enter_epl_trade(symbol: str, signal):
     if qty <= 0:
         return
 
-    limit_price = round(entry + 0.02, 2)
+    initial_slip = _entry_slippage_for(entry)
+    limit_price = round(entry + initial_slip, 2)
+    original_limit = limit_price
     now_str = datetime.now(ET).strftime("%H:%M:%S")
     print(f"[{now_str} ET] [EPL] 🟩 ENTRY: {symbol} strategy={signal.strategy} "
-          f"qty={qty} limit=${limit_price:.2f} stop=${stop:.4f} R=${r:.4f} "
-          f"reason={signal.reason}", flush=True)
+          f"qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}) "
+          f"stop=${stop:.4f} R=${r:.4f} reason={signal.reason}", flush=True)
 
     try:
         req = LimitOrderRequest(
@@ -1284,36 +1391,12 @@ def _enter_epl_trade(symbol: str, signal):
 
     import threading
     def verify_epl_fill():
-        for _ in range(30):
-            try:
-                o = state.alpaca.get_order_by_id(order_id)
-                if o.status == 'filled':
-                    actual_price = float(o.filled_avg_price)
-                    actual_qty = int(float(o.filled_qty))
-                    if state.open_position and state.open_position.get("order_id") == order_id:
-                        state.open_position["entry"] = actual_price
-                        state.open_position["qty"] = actual_qty
-                        state.open_position["peak"] = max(state.open_position["peak"], actual_price)
-                        state.open_position["stop"] = actual_price - r
-                        state.open_position["fill_confirmed"] = True
-                        state.pending_order = None
-                        print(f"  [EPL] FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}", flush=True)
-                    return
-                if o.status in ('cancelled', 'expired', 'rejected'):
-                    if state.open_position and state.open_position.get("order_id") == order_id:
-                        state.open_position = None
-                        state.pending_order = None
-                    return
-            except Exception:
-                pass
-            time.sleep(0.5)
-        try:
-            state.alpaca.cancel_order_by_id(order_id)
-        except Exception:
-            pass
-        if state.open_position and state.open_position.get("order_id") == order_id:
-            state.open_position = None
-            state.pending_order = None
+        _verify_fill_with_retry(
+            symbol=symbol, qty=qty, r=r,
+            initial_order_id=order_id, initial_limit=limit_price,
+            original_limit=original_limit, position_attr="open_position",
+            log_prefix="[EPL] ",
+        )
     threading.Thread(target=verify_epl_fill, daemon=True).start()
 
 
@@ -1878,25 +1961,41 @@ def _enter_box_trade():
           f"(range ${state.box_engine.box_range:.2f}, mid ${state.box_engine.box_mid:.2f})", flush=True)
     print(f"  Stop: ${state.box_engine.hard_stop_price:.2f}", flush=True)
 
+    initial_slip = _entry_slippage_for(entry_price)
+    limit_price = round(entry_price + initial_slip, 2)
+    original_limit = limit_price
     try:
         order = LimitOrderRequest(
             symbol=symbol,
             qty=shares,
             side=OrderSide.BUY,
             time_in_force=TimeInForce.DAY,
-            limit_price=round(entry_price + 0.02, 2),
+            limit_price=limit_price,
+            extended_hours=True,
         )
         result = state.alpaca.submit_order(order)
+        order_id = str(result.id)
 
         state.box_position = {
             "symbol": symbol,
             "qty": shares,
             "entry": entry_price,
-            "order_id": str(result.id),
+            "order_id": order_id,
             "fill_confirmed": False,
             "setup_type": "box",
         }
-        print(f"  [BOX] Order submitted: {result.id}", flush=True)
+        print(f"  [BOX] Order submitted: {order_id} @ ${limit_price:.2f} "
+              f"(slip=${initial_slip:.3f})", flush=True)
+
+        import threading
+        def verify_box_fill():
+            _verify_fill_with_retry(
+                symbol=symbol, qty=shares, r=None,
+                initial_order_id=order_id, initial_limit=limit_price,
+                original_limit=original_limit, position_attr="box_position",
+                log_prefix="[BOX] ",
+            )
+        threading.Thread(target=verify_box_fill, daemon=True).start()
     except Exception as e:
         print(f"  [BOX] ORDER FAILED: {e}", flush=True)
 

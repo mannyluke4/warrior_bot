@@ -111,6 +111,15 @@ WB_SQ_SEED_STALE_PCT=2.0         # threshold: current_price > trigger_high * 1.0
 WB_SQ_VOL_WINSORIZE_ENABLED=1    # caps avg_vol contribution per bar to prevent spike-bar poisoning
 WB_SQ_VOL_WINSORIZE_CAP=5.0      # ROLR 2026-04-14 validation: unblocked re-arms post 22.7× spike bar
 
+# === Entry slippage + retry (deployed 2026-04-15) ===
+# Replaces hardcoded +$0.02 single-shot limit. Dynamic slippage + retry-on-timeout.
+WB_ENTRY_RETRY_ENABLED=1         # master gate for retry loop
+WB_ENTRY_SLIPPAGE_MIN=0.05       # min slippage above trigger (was hardcoded $0.02)
+WB_ENTRY_SLIPPAGE_PCT=0.005      # 0.5% of price — dynamic slippage
+WB_ENTRY_MAX_RETRIES=3           # on timeout: cancel + reprice to market + resubmit, up to N times
+WB_ENTRY_RETRY_TIMEOUT_SEC=10    # wait this long before timing out each attempt
+WB_ENTRY_MAX_CHASE_PCT=2.0       # give up if price > original_limit × 1.02 (stop chasing vertical moves)
+
 # === Scanner (all 3 scanners now read from .env — parity fix 2026-03-24) ===
 WB_MIN_GAP_PCT=10
 WB_MAX_GAP_PCT=500
