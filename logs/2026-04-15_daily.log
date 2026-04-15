@@ -2112,3 +2112,853 @@ Pushing logs...
  create mode 100644 logs/2026-04-15_daily_relaunch4.log
 === V3 Hybrid daily run complete: Wed Apr 15 07:56:39 MDT 2026 ===
 === TRAP: cleanup at Wed Apr 15 07:56:39 MDT 2026 ===
+daily_run_v3.sh: line 16: 53021 Terminated: 15          caffeinate -dims -w $$
+daily_run_v3.sh: line 16: 53098 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 9743495] auto: v3 daily logs 2026-04-15
+ 2 files changed, 10 insertions(+)
+=== Cleanup complete: Wed Apr 15 07:56:40 MDT 2026 ===
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+daily_run_v3.sh: line 78: 53368 Terminated: 15          caffeinate -u -t 30
+caffeinate started (PID: 53387)
+=== V3 Hybrid daily run started: Wed Apr 15 08:05:41 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: a28db36 (float_cache: async lookup + drop yfinance (fixes recurring watchdog kills))
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 65f753798fa655a54d9d331298e3cb64  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: ED8A19B6.C22D1F1C (3985250742.758500999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF893AF324.9EE9707200000000 (-1992625371.379250526)
+         delay: FFFFFFFF1275E649.3DD2E0E400000000 (-3985250742.758501053)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:4000::31
+}
++0.029326 +/- 0.056806 time.apple.com 2620:149:a23:4000::1e2
+NTP sync skipped (non-root)
+System time: Wed Apr 15 14:05:44 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 53453)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 53460)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,600
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 10:06:03 ET (first scan — casting wide net)...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 4 (reqId=4, symbol=?)
+  Catchup: 47 unique symbols from 3 scanners
+    Catchup: processing 1/47 — ACTU...
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5 (reqId=5, symbol=?)
+    Catchup: processing 2/47 — AHG...
+    Catchup: processing 3/47 — ALMU...
+    Catchup: processing 4/47 — ARQQ...
+    Catchup: processing 5/47 — BEZ...
+    Catchup: processing 6/47 — BIRD...
+  [FMP] BEZ: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+Bot health check passed (still running after 15s, PID: 53460)
+HEALTH_OK: Bot connected at 2026-04-15 14:06:16 UTC
+Gateway watchdog started (PID: 53468)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+IBKR ERROR 2157: Sec-def data farm connection is broken:secdefil (reqId=-1, symbol=?)
+    Catchup: processing 7/47 — BMNU...
+    Catchup: processing 8/47 — BULL...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 9/47 — BULX...
+    Catchup: processing 10/47 — CRCG...
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 11/47 — CRWG...
+    Catchup: processing 12/47 — EGG...
+    Catchup: processing 13/47 — EOSE...
+    Catchup: processing 14/47 — FNWB...
+    Catchup: processing 15/47 — GLOO...
+    Catchup: processing 16/47 — HODU...
+    Catchup: processing 17/47 — IONZ...
+    Catchup: processing 18/47 — LAES...
+    Catchup: processing 19/47 — MNTS...
+    Catchup: processing 20/47 — MRLN...
+    Catchup: processing 21/47 — NBIZ...
+⚠️ IBKR ERROR 2158: Sec-def data farm connection is OK:secdefil (symbol=?)
+    Catchup: processing 22/47 — NICM...
+    Catchup: processing 23/47 — NNEX...
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 24/47 — NOK...
+  [FMP] NNEX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 25/47 — NVD...
+    Catchup: processing 26/47 — OKLL...
+    Catchup: processing 27/47 — OKTG...
+    Catchup: processing 28/47 — OWL...
+    Catchup: processing 29/47 — PDC...
+    Catchup: processing 30/47 — PLUG...
+    Catchup: processing 31/47 — QBTS...
+    Catchup: processing 32/47 — QBTX...
+    Catchup: processing 33/47 — QUBT...
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 34/47 — QUBX...
+    Catchup: processing 35/47 — RGTI...
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 36/47 — SMR...
+    Catchup: processing 37/47 — SMU...
+    Catchup: processing 38/47 — SMUP...
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 39/47 — SNAP...
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 40/47 — SNBR...
+    Catchup: processing 41/47 — SOFI...
+    Catchup: processing 42/47 — TSLL...
+    Catchup: processing 43/47 — TZA...
+    Catchup: processing 44/47 — VNCE...
+    Catchup: processing 45/47 — WATT...
+    Catchup: processing 46/47 — WTID...
+    Catchup: processing 47/47 — WULF...
+  Catchup: 6 candidates after filters
+  [SEED] BIRD: 50283 ticks so far, jumping to recent 90min for full context
+[10:08 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$3.9600 < HOD=$11.1900)
+🔥 Seeded BIRD: 51294 ticks → 49 bars, EMA=3.1871 (1046 ticks/bar avg)
+✅ Subscribed: BIRD
+[10:09 ET] MNTS SQ | SQ_PRIMED: vol=104.4x avg, bar_vol=154,509, price=$5.7500 above VWAP ($5.4374)
+  ARMED entry=5.6897 stop=5.5697 R=0.1200 score=12.0 level=pm_high setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(6%);pm_high_break=+1.0;[PARABOLIC]
+🔥 Seeded MNTS: 23400 ticks → 50 bars, EMA=5.9633, ARMED (468 ticks/bar avg)
+✅ Subscribed: MNTS
+[10:09:49 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:49 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:51 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:51 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:51 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:52 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:52 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:52 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:53 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:54 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:54 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:09:54 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:54 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:54 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:56 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:56 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:56 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:56 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:09:57 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 0/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10 ET] BIRD CHART | O=10.80 H=11.04 L=10.73 C=10.80 V=90,671 | EMA9=4.81 VWAP=3.66 (+195.2%) HOD=11.19 PM_H=4.00 | MACD=N/A vol_ratio=4.6x avg_vol=19,717 bars=50 | sq=IDLE armed=none
+[10:10 ET] OKLL CHART | O=10.05 H=10.05 L=9.96 C=9.96 V=3,938 | EMA9=9.90 VWAP=10.01 (-0.5%) HOD=10.05 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+[10:10 ET] MNTS CHART | O=5.82 H=5.85 L=5.66 C=5.68 V=57,542 | EMA9=5.96 VWAP=6.05 (-6.1%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=2.7x avg_vol=21,542 bars=50 | sq=ARMED armed=$5.69
+[10:10:00 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:00 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:01 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:01 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:01 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:01 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.69, armed 0.0% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:02 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:03 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:04 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:04 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:04 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:05 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:06 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:06 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:06 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:06 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:06 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:07 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:09 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:09 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:09 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:09 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:10 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:11 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:11 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:12 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:12 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:13 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:13 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:13 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:13 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:13 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:14 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:16 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:17 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:18 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:18 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:18 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:18 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:19 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:19 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:19 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:20 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:20 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:20 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:20 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:21 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:21 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:21 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:21 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:21 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:23 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:23 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:23 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:24 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:25 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:27 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:27 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:27 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:27 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:29 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:29 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:29 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:29 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:29 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:30 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:30 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:30 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:30 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:32 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:32 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.70, armed 0.2% away)
+[10:10:34 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:34 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:35 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:35 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:35 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:35 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:36 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:36 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:36 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:37 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:37 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:37 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:37 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:37 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:41 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:42 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.74, armed 0.9% away)
+[10:10:42 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:42 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.73, armed 0.7% away)
+[10:10:47 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:49 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.72, armed 0.5% away)
+[10:10:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:50 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:51 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:55 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:56 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:58 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:58 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:58 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.71, armed 0.4% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:10:59 ET] MNTS SQ | SQ_SEED_GATE: suppressed entry @ 5.6897 — 1/2 live bars since seed (stock at $5.75, armed 1.1% away)
+[10:11:00 ET] MNTS SQ | ENTRY SIGNAL @ 5.6897 (break 5.6897) stop=5.5697 R=0.1200 score=12.0 setup_type=squeeze why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(6%);pm_high_break=+1.0;[PARABOLIC]
+  Sizing: equity=$29,600 risk=$1,036 qty=8633 notional=$49,119 (scaled max=$100,000)
+🟩 ENTRY: MNTS qty=4316 limit=$5.71 stop=$5.5697 R=$0.1200 score=12.0 type=squeeze
+  ALPACA ORDER: 35f2b208-1240-4a1a-b360-b486799b1ea9 BUY 4316 MNTS @ $5.71
+  ORDER TIMEOUT: cancelling 35f2b208-1240-4a1a-b360-b486799b1ea9
+[10:11 ET] OKLL SQ | SQ_REJECT: not_new_hod (bar_high=$9.3100 < HOD=$9.4800)
+[10:11 ET] OKLL SQ | SQ_PRIMED: vol=7.6x avg, bar_vol=218,811, price=$9.6300 above VWAP ($9.1334)
+  ARMED entry=9.5000 stop=9.0814 R=0.4186 score=12.0 level=pm_high setup_type=squeeze [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(5%);pm_high_break=+1.0
+  [OKLL] SQ_SEED_STALE_RESET: dropped arm @ $9.5000 (stop $9.0814) — current price $9.9500 is 4.7% above trigger (threshold 2.0%)
+🔥 Seeded OKLL: 48895 ticks → 50 bars, EMA=9.9270 (977 ticks/bar avg)
+✅ Subscribed: OKLL
+[10:13 ET] BIRD SQ | SQ_PRIMED: vol=6.5x avg, bar_vol=167,859, price=$11.1200 above VWAP ($4.1364)
+  SQ_NO_ARM: invalid_r (entry=4.0200 stop=10.5300)
+  [SEED] NICM: 50496 ticks so far, jumping to recent 90min for full context
+🔥 Seeded NICM: 51504 ticks → 30 bars, EMA=17.5640 (1716 ticks/bar avg)
+✅ Subscribed: NICM
+🔥 Seeded CRCG: 16473 ticks → 50 bars, EMA=3.1194 (329 ticks/bar avg)
+✅ Subscribed: CRCG
+📊 Scanner: 6 new candidates, 5 new subs, 5 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+[10:15 ET] BIRD CHART | O=11.00 H=11.60 L=10.81 C=11.41 V=138,863 | EMA9=8.92 VWAP=4.54 (+151.2%) HOD=11.84 PM_H=4.00 | MACD=N/A vol_ratio=4.9x avg_vol=28,409 bars=50 | sq=IDLE armed=none
+[10:15 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$11.6000 < HOD=$11.8400)
+[10:15 ET] OKLL CHART | O=9.92 H=10.12 L=9.92 C=10.12 V=105,507 | EMA9=9.91 VWAP=9.47 (+6.9%) HOD=10.12 PM_H=9.48 | MACD=N/A vol_ratio=0.9x avg_vol=118,317 bars=50 | sq=IDLE armed=none
+[10:15 ET] MNTS CHART | O=5.79 H=5.85 L=5.79 C=5.81 V=27,733 | EMA9=5.82 VWAP=6.04 (-3.8%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=1.1x avg_vol=24,287 bars=50 | sq=IDLE armed=none
+[10:15 ET] CRCG CHART | O=3.15 H=3.16 L=3.12 C=3.14 V=102,950 | EMA9=3.12 VWAP=3.23 (-2.7%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=0.8x avg_vol=124,070 bars=50 | sq=IDLE armed=none
+[10:15 ET] KIDZ CHART | O=1.50 H=1.50 L=1.50 C=1.50 V=1,730 | EMA9=none VWAP=1.50 (-0.1%) HOD=1.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+[10:15 ET] NICM CHART | O=8.90 H=9.05 L=8.81 C=8.81 V=11,106 | EMA9=14.57 VWAP=26.74 (-67.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.5x avg_vol=23,964 bars=32 | sq=IDLE armed=none
+  [SEED] KIDZ: 50109 ticks so far, jumping to recent 90min for full context
+[10:16 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.0100 < HOD=$3.2000)
+[10:16 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$2.9900 < HOD=$3.2000)
+[10:16 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.1100 < HOD=$3.2000)
+🔥 Seeded KIDZ: 51146 ticks → 50 bars, EMA=1.9430 (1022 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+
+🔄 Running scanner at 10:16:29 ET...
+Error 162, reqId 345: Historical Market Data Service error message:API scanner subscription cancelled: 345
+  [float_cache] Cleared 9 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 345 (reqId=345, symbol=?)
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] USGG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (22 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 6463 ticks in last 60s, last_price=$11.03, last_tick_time=10:17:28
+  TICK AUDIT: CRCG: 464 ticks in last 60s, last_price=$3.18, last_tick_time=10:17:28
+  TICK AUDIT: KIDZ: 44 ticks in last 60s, last_price=$1.50, last_tick_time=10:17:25
+  TICK AUDIT: MNTS: 742 ticks in last 60s, last_price=$5.76, last_tick_time=10:17:26
+  TICK AUDIT: NICM: 339 ticks in last 60s, last_price=$9.14, last_tick_time=10:17:27
+  TICK AUDIT: OKLL: 1477 ticks in last 60s, last_price=$10.23, last_tick_time=10:17:27
+[10:18:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=912 | BIRD:337t/IDLE CRCG:101t/IDLE KIDZ:16t/IDLE MNTS:40t/IDLE NICM:74t/IDLE OKLL:156t/IDLE
+[10:18:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=937 | BIRD:352t/IDLE CRCG:103t/IDLE KIDZ:16t/IDLE MNTS:41t/IDLE NICM:77t/IDLE OKLL:160t/IDLE
+  TICK AUDIT: BIRD: 664 ticks in last 60s, last_price=$11.06, last_tick_time=10:18:28
+  TICK AUDIT: CRCG: 172 ticks in last 60s, last_price=$3.16, last_tick_time=10:18:28
+  TICK AUDIT: KIDZ: 27 ticks in last 60s, last_price=$1.49, last_tick_time=10:18:21
+  TICK AUDIT: MNTS: 59 ticks in last 60s, last_price=$5.78, last_tick_time=10:18:27
+  TICK AUDIT: NICM: 177 ticks in last 60s, last_price=$9.67, last_tick_time=10:18:28
+  TICK AUDIT: OKLL: 289 ticks in last 60s, last_price=$10.08, last_tick_time=10:18:28
+[10:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=918 | BIRD:305t/IDLE CRCG:78t/IDLE KIDZ:3t/IDLE MNTS:70t/IDLE NICM:128t/IDLE OKLL:146t/IDLE
+[10:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=941 | BIRD:313t/IDLE CRCG:79t/IDLE KIDZ:3t/IDLE MNTS:79t/IDLE NICM:132t/IDLE OKLL:147t/IDLE
+  TICK AUDIT: BIRD: 553 ticks in last 60s, last_price=$11.19, last_tick_time=10:19:28
+  TICK AUDIT: CRCG: 146 ticks in last 60s, last_price=$3.15, last_tick_time=10:19:28
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$1.49, last_tick_time=10:19:17
+  TICK AUDIT: MNTS: 137 ticks in last 60s, last_price=$5.65, last_tick_time=10:19:28
+  TICK AUDIT: NICM: 212 ticks in last 60s, last_price=$9.41, last_tick_time=10:19:28
+  TICK AUDIT: OKLL: 274 ticks in last 60s, last_price=$10.01, last_tick_time=10:19:28
+[10:20 ET] BIRD CHART | O=11.18 H=11.48 L=11.03 C=11.39 V=125,498 | EMA9=10.45 VWAP=5.12 (+122.4%) HOD=11.84 PM_H=4.00 | MACD=N/A vol_ratio=3.1x avg_vol=40,935 bars=50 | sq=IDLE armed=none
+[10:20 ET] OKLL CHART | O=10.05 H=10.06 L=9.99 C=10.02 V=80,294 | EMA9=10.05 VWAP=9.49 (+5.5%) HOD=10.26 PM_H=9.48 | MACD=N/A vol_ratio=0.6x avg_vol=127,148 bars=50 | sq=IDLE armed=none
+[10:20 ET] MNTS CHART | O=5.66 H=5.70 L=5.64 C=5.67 V=77,596 | EMA9=5.78 VWAP=6.03 (-6.0%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=3.0x avg_vol=25,736 bars=50 | sq=IDLE armed=none
+[10:20 ET] KIDZ CHART | O=1.49 H=1.49 L=1.48 C=1.48 V=1,113 | EMA9=1.71 VWAP=2.87 (-48.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.8x avg_vol=1,444 bars=50 | sq=IDLE armed=none
+[10:20 ET] CRCG CHART | O=3.16 H=3.16 L=3.14 C=3.14 V=266,454 | EMA9=3.14 VWAP=3.22 (-2.5%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=1.9x avg_vol=143,384 bars=50 | sq=IDLE armed=none
+[10:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=940 | BIRD:412t/IDLE CRCG:68t/IDLE KIDZ:16t/IDLE MNTS:48t/IDLE NICM:59t/IDLE OKLL:149t/IDLE
+[10:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=960 | BIRD:427t/IDLE CRCG:69t/IDLE KIDZ:16t/IDLE MNTS:48t/IDLE NICM:59t/IDLE OKLL:153t/IDLE
+[10:20 ET] NICM CHART | O=9.67 H=9.67 L=9.31 C=9.43 V=8,281 | EMA9=10.97 VWAP=25.51 (-63.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.4x avg_vol=21,805 bars=37 | sq=IDLE armed=none
+  TICK AUDIT: BIRD: 802 ticks in last 60s, last_price=$11.22, last_tick_time=10:20:29
+  TICK AUDIT: CRCG: 127 ticks in last 60s, last_price=$3.15, last_tick_time=10:20:28
+  TICK AUDIT: KIDZ: 29 ticks in last 60s, last_price=$1.48, last_tick_time=10:20:25
+  TICK AUDIT: MNTS: 74 ticks in last 60s, last_price=$5.68, last_tick_time=10:20:27
+  TICK AUDIT: NICM: 103 ticks in last 60s, last_price=$9.55, last_tick_time=10:20:27
+  TICK AUDIT: OKLL: 249 ticks in last 60s, last_price=$10.06, last_tick_time=10:20:29
+[10:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=843 | BIRD:420t/IDLE CRCG:56t/IDLE KIDZ:6t/IDLE MNTS:42t/IDLE NICM:17t/IDLE OKLL:114t/IDLE
+[10:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=859 | BIRD:434t/IDLE CRCG:56t/IDLE KIDZ:6t/IDLE MNTS:42t/IDLE NICM:17t/IDLE OKLL:116t/IDLE
+  TICK AUDIT: BIRD: 761 ticks in last 60s, last_price=$10.75, last_tick_time=10:21:29
+  TICK AUDIT: CRCG: 112 ticks in last 60s, last_price=$3.17, last_tick_time=10:21:28
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$1.49, last_tick_time=10:21:17
+  TICK AUDIT: MNTS: 81 ticks in last 60s, last_price=$5.67, last_tick_time=10:21:28
+  TICK AUDIT: NICM: 55 ticks in last 60s, last_price=$9.40, last_tick_time=10:21:28
+  TICK AUDIT: OKLL: 218 ticks in last 60s, last_price=$10.11, last_tick_time=10:21:28
+
+🔄 Running scanner at 10:21:30 ET...
+Error 162, reqId 426: Historical Market Data Service error message:API scanner subscription cancelled: 426
+  [float_cache] Cleared 7 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 426 (reqId=426, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (23 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 645 ticks in last 60s, last_price=$10.85, last_tick_time=10:22:29
+  TICK AUDIT: CRCG: 151 ticks in last 60s, last_price=$3.16, last_tick_time=10:22:29
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.49, last_tick_time=10:22:29
+  TICK AUDIT: MNTS: 91 ticks in last 60s, last_price=$5.73, last_tick_time=10:22:29
+  TICK AUDIT: NICM: 76 ticks in last 60s, last_price=$9.10, last_tick_time=10:22:29
+  TICK AUDIT: OKLL: 239 ticks in last 60s, last_price=$10.20, last_tick_time=10:22:29
+[10:23:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=818 | BIRD:315t/IDLE CRCG:54t/IDLE KIDZ:14t/IDLE MNTS:38t/IDLE NICM:32t/IDLE OKLL:140t/IDLE
+[10:23:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=835 | BIRD:325t/IDLE CRCG:55t/IDLE KIDZ:14t/IDLE MNTS:38t/IDLE NICM:32t/IDLE OKLL:146t/IDLE
+  TICK AUDIT: BIRD: 603 ticks in last 60s, last_price=$10.93, last_tick_time=10:23:30
+  TICK AUDIT: CRCG: 122 ticks in last 60s, last_price=$3.17, last_tick_time=10:23:29
+  TICK AUDIT: KIDZ: 30 ticks in last 60s, last_price=$1.49, last_tick_time=10:23:21
+  TICK AUDIT: MNTS: 67 ticks in last 60s, last_price=$5.75, last_tick_time=10:23:28
+  TICK AUDIT: NICM: 54 ticks in last 60s, last_price=$9.32, last_tick_time=10:23:27
+  TICK AUDIT: OKLL: 287 ticks in last 60s, last_price=$10.28, last_tick_time=10:23:30
+[10:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=771 | BIRD:240t/IDLE CRCG:71t/IDLE KIDZ:23t/IDLE MNTS:29t/IDLE NICM:39t/IDLE OKLL:144t/IDLE
+[10:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=796 | BIRD:251t/IDLE CRCG:73t/IDLE KIDZ:23t/IDLE MNTS:29t/IDLE NICM:44t/IDLE OKLL:151t/IDLE
+  TICK AUDIT: BIRD: 516 ticks in last 60s, last_price=$10.96, last_tick_time=10:24:30
+  TICK AUDIT: CRCG: 167 ticks in last 60s, last_price=$3.21, last_tick_time=10:24:29
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.48, last_tick_time=10:24:25
+  TICK AUDIT: MNTS: 82 ticks in last 60s, last_price=$5.79, last_tick_time=10:24:30
+  TICK AUDIT: NICM: 67 ticks in last 60s, last_price=$9.07, last_tick_time=10:24:30
+  TICK AUDIT: OKLL: 320 ticks in last 60s, last_price=$10.34, last_tick_time=10:24:30
+[10:25 ET] BIRD CHART | O=10.98 H=10.99 L=10.72 C=10.85 V=76,937 | EMA9=10.82 VWAP=5.51 (+96.8%) HOD=11.84 PM_H=4.00 | MACD=N/A vol_ratio=1.5x avg_vol=52,052 bars=50 | sq=IDLE armed=none
+[10:25 ET] OKLL CHART | O=10.29 H=10.35 L=10.25 C=10.26 V=61,571 | EMA9=10.14 VWAP=9.51 (+7.9%) HOD=10.35 PM_H=9.48 | MACD=N/A vol_ratio=0.5x avg_vol=127,456 bars=50 | sq=IDLE armed=none
+[10:25 ET] KIDZ CHART | O=1.48 H=1.49 L=1.47 C=1.48 V=3,631 | EMA9=1.56 VWAP=2.86 (-48.3%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=2.0x avg_vol=1,790 bars=50 | sq=IDLE armed=none
+[10:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=823 | BIRD:277t/IDLE CRCG:80t/IDLE KIDZ:21t/IDLE MNTS:54t/IDLE NICM:13t/IDLE OKLL:153t/IDLE
+[10:25 ET] CRCG CHART | O=3.18 H=3.21 L=3.17 C=3.21 V=153,053 | EMA9=3.16 VWAP=3.22 (-0.4%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=1.0x avg_vol=151,203 bars=50 | sq=IDLE armed=none
+[10:25 ET] MNTS CHART | O=5.76 H=5.80 L=5.72 C=5.76 V=31,202 | EMA9=5.74 VWAP=6.02 (-4.4%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=1.1x avg_vol=27,626 bars=50 | sq=IDLE armed=none
+[10:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=844 | BIRD:291t/IDLE CRCG:83t/IDLE KIDZ:21t/IDLE MNTS:55t/IDLE NICM:13t/IDLE OKLL:156t/IDLE
+[10:25 ET] NICM CHART | O=9.21 H=9.30 L=9.00 C=9.09 V=5,411 | EMA9=9.85 VWAP=25.11 (-63.8%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.3x avg_vol=20,147 bars=42 | sq=IDLE armed=none
+  TICK AUDIT: BIRD: 644 ticks in last 60s, last_price=$10.70, last_tick_time=10:25:30
+  TICK AUDIT: CRCG: 142 ticks in last 60s, last_price=$3.22, last_tick_time=10:25:30
+  TICK AUDIT: KIDZ: 27 ticks in last 60s, last_price=$1.48, last_tick_time=10:25:28
+  TICK AUDIT: MNTS: 90 ticks in last 60s, last_price=$5.79, last_tick_time=10:25:30
+  TICK AUDIT: NICM: 34 ticks in last 60s, last_price=$9.16, last_tick_time=10:25:25
+  TICK AUDIT: OKLL: 281 ticks in last 60s, last_price=$10.24, last_tick_time=10:25:30
+[10:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=907 | BIRD:404t/IDLE CRCG:71t/IDLE KIDZ:12t/IDLE MNTS:58t/IDLE NICM:26t/IDLE OKLL:111t/IDLE
+[10:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=933 | BIRD:416t/IDLE CRCG:73t/IDLE KIDZ:12t/IDLE MNTS:62t/IDLE NICM:29t/IDLE OKLL:116t/IDLE
+
+🔄 Running scanner at 10:26:30 ET...
+Error 162, reqId 507: Historical Market Data Service error message:API scanner subscription cancelled: 507
+  [float_cache] Cleared 6 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 507 (reqId=507, symbol=?)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (24 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 1268 ticks in last 60s, last_price=$10.81, last_tick_time=10:27:27
+  TICK AUDIT: CRCG: 252 ticks in last 60s, last_price=$3.22, last_tick_time=10:27:27
+  TICK AUDIT: KIDZ: 91 ticks in last 60s, last_price=$1.51, last_tick_time=10:27:27
+  TICK AUDIT: MNTS: 176 ticks in last 60s, last_price=$5.83, last_tick_time=10:27:24
+  TICK AUDIT: NICM: 112 ticks in last 60s, last_price=$9.20, last_tick_time=10:27:27
+  TICK AUDIT: OKLL: 442 ticks in last 60s, last_price=$10.12, last_tick_time=10:27:26
+[10:28:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=874 | BIRD:311t/IDLE CRCG:65t/IDLE KIDZ:29t/IDLE MNTS:54t/IDLE NICM:16t/IDLE OKLL:137t/IDLE
+[10:28:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=899 | BIRD:326t/IDLE CRCG:70t/IDLE KIDZ:29t/IDLE MNTS:55t/IDLE NICM:16t/IDLE OKLL:141t/IDLE
+  TICK AUDIT: BIRD: 645 ticks in last 60s, last_price=$10.93, last_tick_time=10:28:27
+  TICK AUDIT: CRCG: 135 ticks in last 60s, last_price=$3.20, last_tick_time=10:28:27
+  TICK AUDIT: KIDZ: 39 ticks in last 60s, last_price=$1.51, last_tick_time=10:28:27
+  TICK AUDIT: MNTS: 98 ticks in last 60s, last_price=$5.81, last_tick_time=10:28:26
+  TICK AUDIT: NICM: 46 ticks in last 60s, last_price=$9.03, last_tick_time=10:28:27
+  TICK AUDIT: OKLL: 233 ticks in last 60s, last_price=$10.21, last_tick_time=10:28:27
+[10:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=983 | BIRD:448t/IDLE CRCG:63t/IDLE KIDZ:31t/IDLE MNTS:38t/IDLE NICM:46t/IDLE OKLL:95t/IDLE
+[10:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1008 | BIRD:460t/IDLE CRCG:67t/IDLE KIDZ:31t/IDLE MNTS:39t/IDLE NICM:49t/IDLE OKLL:100t/IDLE
+  TICK AUDIT: BIRD: 793 ticks in last 60s, last_price=$10.90, last_tick_time=10:29:28
+  TICK AUDIT: CRCG: 117 ticks in last 60s, last_price=$3.20, last_tick_time=10:29:27
+  TICK AUDIT: KIDZ: 56 ticks in last 60s, last_price=$1.51, last_tick_time=10:29:28
+  TICK AUDIT: MNTS: 71 ticks in last 60s, last_price=$5.85, last_tick_time=10:29:27
+  TICK AUDIT: NICM: 61 ticks in last 60s, last_price=$9.05, last_tick_time=10:29:26
+  TICK AUDIT: OKLL: 206 ticks in last 60s, last_price=$10.17, last_tick_time=10:29:27
+[10:30 ET] BIRD CHART | O=11.10 H=11.10 L=10.54 C=10.86 V=108,498 | EMA9=10.83 VWAP=5.88 (+84.8%) HOD=11.84 PM_H=4.00 | MACD=N/A vol_ratio=1.8x avg_vol=60,773 bars=50 | sq=IDLE armed=none
+[10:30 ET] OKLL CHART | O=10.22 H=10.22 L=10.16 C=10.21 V=110,566 | EMA9=10.17 VWAP=9.53 (+7.1%) HOD=10.35 PM_H=9.48 | MACD=N/A vol_ratio=0.9x avg_vol=123,094 bars=50 | sq=IDLE armed=none
+[10:30 ET] KIDZ CHART | O=1.52 H=1.52 L=1.51 C=1.51 V=3,334 | EMA9=1.52 VWAP=2.85 (-47.0%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=1.4x avg_vol=2,462 bars=50 | sq=IDLE armed=none
+[10:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=938 | BIRD:408t/IDLE CRCG:55t/IDLE KIDZ:21t/IDLE MNTS:59t/IDLE NICM:29t/IDLE OKLL:104t/IDLE
+[10:30 ET] CRCG CHART | O=3.21 H=3.22 L=3.20 C=3.20 V=61,160 | EMA9=3.20 VWAP=3.22 (-0.4%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=0.4x avg_vol=165,589 bars=50 | sq=IDLE armed=none
+[10:30 ET] NICM CHART | O=9.02 H=9.07 L=8.98 C=8.98 V=2,284 | EMA9=9.36 VWAP=24.53 (-63.4%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.1x avg_vol=18,714 bars=47 | sq=IDLE armed=none
+[10:30 ET] MNTS CHART | O=5.84 H=5.89 L=5.80 C=5.87 V=30,167 | EMA9=5.79 VWAP=6.02 (-2.4%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=1.0x avg_vol=29,438 bars=50 | sq=IDLE armed=none
+[10:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=968 | BIRD:422t/IDLE CRCG:58t/IDLE KIDZ:22t/IDLE MNTS:60t/IDLE NICM:33t/IDLE OKLL:111t/IDLE
+  TICK AUDIT: BIRD: 773 ticks in last 60s, last_price=$11.10, last_tick_time=10:30:28
+  TICK AUDIT: CRCG: 126 ticks in last 60s, last_price=$3.18, last_tick_time=10:30:28
+  TICK AUDIT: KIDZ: 39 ticks in last 60s, last_price=$1.52, last_tick_time=10:30:25
+  TICK AUDIT: MNTS: 104 ticks in last 60s, last_price=$5.87, last_tick_time=10:30:26
+  TICK AUDIT: NICM: 66 ticks in last 60s, last_price=$8.95, last_tick_time=10:30:28
+  TICK AUDIT: OKLL: 199 ticks in last 60s, last_price=$10.21, last_tick_time=10:30:28
+[10:31 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$11.3500 < HOD=$11.8400)
+[10:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=999 | BIRD:432t/IDLE CRCG:72t/IDLE KIDZ:17t/IDLE MNTS:76t/IDLE NICM:40t/IDLE OKLL:100t/IDLE
+[10:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1021 | BIRD:447t/IDLE CRCG:74t/IDLE KIDZ:17t/IDLE MNTS:77t/IDLE NICM:41t/IDLE OKLL:103t/IDLE
+  TICK AUDIT: BIRD: 836 ticks in last 60s, last_price=$11.69, last_tick_time=10:31:28
+  TICK AUDIT: CRCG: 123 ticks in last 60s, last_price=$3.20, last_tick_time=10:31:28
+  TICK AUDIT: KIDZ: 37 ticks in last 60s, last_price=$1.53, last_tick_time=10:31:28
+  TICK AUDIT: MNTS: 126 ticks in last 60s, last_price=$5.87, last_tick_time=10:31:26
+  TICK AUDIT: NICM: 69 ticks in last 60s, last_price=$9.04, last_tick_time=10:31:28
+  TICK AUDIT: OKLL: 194 ticks in last 60s, last_price=$10.20, last_tick_time=10:31:28
+
+🔄 Running scanner at 10:31:31 ET...
+Error 162, reqId 588: Historical Market Data Service error message:API scanner subscription cancelled: 588
+  [float_cache] Cleared 10 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 588 (reqId=588, symbol=?)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] USGG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (25 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 889 ticks in last 60s, last_price=$11.67, last_tick_time=10:32:28
+  TICK AUDIT: CRCG: 125 ticks in last 60s, last_price=$3.18, last_tick_time=10:32:28
+  TICK AUDIT: KIDZ: 40 ticks in last 60s, last_price=$1.54, last_tick_time=10:32:28
+  TICK AUDIT: MNTS: 87 ticks in last 60s, last_price=$5.92, last_tick_time=10:32:28
+  TICK AUDIT: NICM: 47 ticks in last 60s, last_price=$8.92, last_tick_time=10:32:27
+  TICK AUDIT: OKLL: 185 ticks in last 60s, last_price=$10.23, last_tick_time=10:32:28
+[10:33:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=996 | BIRD:427t/IDLE CRCG:58t/IDLE KIDZ:11t/IDLE MNTS:64t/IDLE NICM:40t/IDLE OKLL:98t/IDLE
+[10:33:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1022 | BIRD:443t/IDLE CRCG:61t/IDLE KIDZ:11t/IDLE MNTS:64t/IDLE NICM:43t/IDLE OKLL:102t/IDLE
+  TICK AUDIT: BIRD: 884 ticks in last 60s, last_price=$12.81, last_tick_time=10:33:29
+  TICK AUDIT: CRCG: 119 ticks in last 60s, last_price=$3.19, last_tick_time=10:33:29
+  TICK AUDIT: KIDZ: 33 ticks in last 60s, last_price=$1.55, last_tick_time=10:33:27
+  TICK AUDIT: MNTS: 103 ticks in last 60s, last_price=$5.89, last_tick_time=10:33:29
+  TICK AUDIT: NICM: 64 ticks in last 60s, last_price=$9.00, last_tick_time=10:33:25
+  TICK AUDIT: OKLL: 217 ticks in last 60s, last_price=$10.18, last_tick_time=10:33:29
+[10:34:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1012 | BIRD:490t/IDLE CRCG:46t/IDLE KIDZ:31t/IDLE MNTS:35t/IDLE NICM:24t/IDLE OKLL:88t/IDLE
+[10:34:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1034 | BIRD:506t/IDLE CRCG:47t/IDLE KIDZ:32t/IDLE MNTS:36t/IDLE NICM:24t/IDLE OKLL:91t/IDLE
+  TICK AUDIT: BIRD: 928 ticks in last 60s, last_price=$13.41, last_tick_time=10:34:29
+  TICK AUDIT: CRCG: 92 ticks in last 60s, last_price=$3.20, last_tick_time=10:34:29
+  TICK AUDIT: KIDZ: 47 ticks in last 60s, last_price=$1.55, last_tick_time=10:34:28
+  TICK AUDIT: MNTS: 61 ticks in last 60s, last_price=$5.87, last_tick_time=10:34:29
+  TICK AUDIT: NICM: 62 ticks in last 60s, last_price=$8.84, last_tick_time=10:34:27
+  TICK AUDIT: OKLL: 216 ticks in last 60s, last_price=$10.10, last_tick_time=10:34:28
+[10:35 ET] BIRD CHART | O=13.15 H=13.74 L=13.06 C=13.38 V=140,053 | EMA9=11.72 VWAP=6.49 (+106.3%) HOD=13.88 PM_H=4.00 | MACD=N/A vol_ratio=1.8x avg_vol=75,717 bars=50 | sq=IDLE armed=none
+[10:35 ET] OKLL CHART | O=10.12 H=10.13 L=10.01 C=10.03 V=41,878 | EMA9=10.17 VWAP=9.55 (+5.1%) HOD=10.35 PM_H=9.48 | MACD=N/A vol_ratio=0.4x avg_vol=116,503 bars=50 | sq=IDLE armed=none
+[10:35:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1049 | BIRD:437t/IDLE CRCG:48t/IDLE KIDZ:21t/IDLE MNTS:48t/IDLE NICM:39t/IDLE OKLL:158t/IDLE
+[10:35 ET] NICM CHART | O=8.95 H=8.95 L=8.78 C=8.88 V=4,120 | EMA9=9.09 VWAP=23.98 (-63.0%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.2x avg_vol=18,113 bars=50 | sq=IDLE armed=none
+[10:35 ET] CRCG CHART | O=3.20 H=3.20 L=3.19 C=3.19 V=164,582 | EMA9=3.20 VWAP=3.22 (-0.8%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=1.0x avg_vol=158,773 bars=50 | sq=IDLE armed=none
+[10:35:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1071 | BIRD:451t/IDLE CRCG:49t/IDLE KIDZ:21t/IDLE MNTS:48t/IDLE NICM:42t/IDLE OKLL:162t/IDLE
+[10:35 ET] MNTS CHART | O=5.87 H=5.93 L=5.84 C=5.92 V=23,877 | EMA9=5.86 VWAP=6.01 (-1.6%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=0.8x avg_vol=30,036 bars=50 | sq=IDLE armed=none
+[10:35 ET] KIDZ CHART | O=1.55 H=1.56 L=1.55 C=1.55 V=3,541 | EMA9=1.53 VWAP=2.84 (-45.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=1.1x avg_vol=3,079 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BIRD: 879 ticks in last 60s, last_price=$13.70, last_tick_time=10:35:29
+  TICK AUDIT: CRCG: 88 ticks in last 60s, last_price=$3.19, last_tick_time=10:35:29
+  TICK AUDIT: KIDZ: 38 ticks in last 60s, last_price=$1.55, last_tick_time=10:35:28
+  TICK AUDIT: MNTS: 92 ticks in last 60s, last_price=$5.91, last_tick_time=10:35:28
+  TICK AUDIT: NICM: 70 ticks in last 60s, last_price=$9.01, last_tick_time=10:35:26
+  TICK AUDIT: OKLL: 252 ticks in last 60s, last_price=$10.04, last_tick_time=10:35:29
+[10:36:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1000 | BIRD:449t/IDLE CRCG:51t/IDLE KIDZ:16t/IDLE MNTS:41t/IDLE NICM:33t/IDLE OKLL:112t/IDLE
+[10:36:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1016 | BIRD:460t/IDLE CRCG:52t/IDLE KIDZ:16t/IDLE MNTS:41t/IDLE NICM:33t/IDLE OKLL:116t/IDLE
+  TICK AUDIT: BIRD: 848 ticks in last 60s, last_price=$13.49, last_tick_time=10:36:29
+  TICK AUDIT: CRCG: 93 ticks in last 60s, last_price=$3.22, last_tick_time=10:36:29
+  TICK AUDIT: KIDZ: 26 ticks in last 60s, last_price=$1.57, last_tick_time=10:36:29
+  TICK AUDIT: MNTS: 103 ticks in last 60s, last_price=$5.97, last_tick_time=10:36:28
+  TICK AUDIT: NICM: 65 ticks in last 60s, last_price=$8.85, last_tick_time=10:36:29
+  TICK AUDIT: OKLL: 211 ticks in last 60s, last_price=$10.04, last_tick_time=10:36:29
+
+🔄 Running scanner at 10:36:31 ET...
+Error 162, reqId 669: Historical Market Data Service error message:API scanner subscription cancelled: 669
+  [float_cache] Cleared 7 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 669 (reqId=669, symbol=?)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (26 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 920 ticks in last 60s, last_price=$11.34, last_tick_time=10:37:30
+  TICK AUDIT: CRCG: 126 ticks in last 60s, last_price=$3.23, last_tick_time=10:37:29
+  TICK AUDIT: KIDZ: 40 ticks in last 60s, last_price=$1.55, last_tick_time=10:37:28
+  TICK AUDIT: MNTS: 107 ticks in last 60s, last_price=$5.99, last_tick_time=10:37:28
+  TICK AUDIT: NICM: 63 ticks in last 60s, last_price=$8.93, last_tick_time=10:37:29
+  TICK AUDIT: OKLL: 236 ticks in last 60s, last_price=$10.03, last_tick_time=10:37:30
+[10:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1030 | BIRD:432t/IDLE CRCG:59t/IDLE KIDZ:13t/IDLE MNTS:69t/IDLE NICM:15t/IDLE OKLL:113t/IDLE
+[10:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1059 | BIRD:448t/IDLE CRCG:63t/IDLE KIDZ:14t/IDLE MNTS:71t/IDLE NICM:15t/IDLE OKLL:119t/IDLE
+  TICK AUDIT: BIRD: 859 ticks in last 60s, last_price=$11.87, last_tick_time=10:38:30
+  TICK AUDIT: CRCG: 130 ticks in last 60s, last_price=$3.21, last_tick_time=10:38:30
+  TICK AUDIT: KIDZ: 31 ticks in last 60s, last_price=$1.56, last_tick_time=10:38:30
+  TICK AUDIT: MNTS: 182 ticks in last 60s, last_price=$6.14, last_tick_time=10:38:30
+  TICK AUDIT: NICM: 33 ticks in last 60s, last_price=$8.90, last_tick_time=10:38:29
+  TICK AUDIT: OKLL: 199 ticks in last 60s, last_price=$9.98, last_tick_time=10:38:30
+[10:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1091 | BIRD:421t/IDLE CRCG:68t/IDLE KIDZ:19t/IDLE MNTS:102t/IDLE NICM:23t/IDLE OKLL:129t/IDLE
+[10:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1122 | BIRD:441t/IDLE CRCG:69t/IDLE KIDZ:20t/IDLE MNTS:103t/IDLE NICM:23t/IDLE OKLL:137t/IDLE
+  TICK AUDIT: BIRD: 817 ticks in last 60s, last_price=$11.57, last_tick_time=10:39:30
+  TICK AUDIT: CRCG: 128 ticks in last 60s, last_price=$3.19, last_tick_time=10:39:30
+  TICK AUDIT: KIDZ: 32 ticks in last 60s, last_price=$1.56, last_tick_time=10:39:25
+  TICK AUDIT: MNTS: 184 ticks in last 60s, last_price=$6.14, last_tick_time=10:39:29
+  TICK AUDIT: NICM: 42 ticks in last 60s, last_price=$8.80, last_tick_time=10:39:27
+  TICK AUDIT: OKLL: 266 ticks in last 60s, last_price=$9.83, last_tick_time=10:39:30
+[10:40 ET] CRCG CHART | O=3.20 H=3.20 L=3.17 C=3.17 V=195,250 | EMA9=3.21 VWAP=3.22 (-1.4%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=1.3x avg_vol=153,031 bars=50 | sq=IDLE armed=none
+[10:40 ET] BIRD CHART | O=11.64 H=11.68 L=11.52 C=11.62 V=86,425 | EMA9=12.19 VWAP=6.97 (+66.8%) HOD=13.93 PM_H=4.00 | MACD=N/A vol_ratio=1.0x avg_vol=90,848 bars=50 | sq=IDLE armed=none
+[10:40 ET] OKLL CHART | O=9.85 H=9.87 L=9.80 C=9.82 V=46,290 | EMA9=10.03 VWAP=9.56 (+2.8%) HOD=10.35 PM_H=9.48 | MACD=N/A vol_ratio=0.5x avg_vol=102,510 bars=50 | sq=IDLE armed=none
+[10:40 ET] MNTS CHART | O=6.10 H=6.22 L=6.10 C=6.20 V=47,066 | EMA9=5.96 VWAP=6.01 (+3.1%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=1.6x avg_vol=29,654 bars=50 | sq=IDLE armed=none
+[10:40:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1059 | BIRD:334t/IDLE CRCG:89t/IDLE KIDZ:8t/IDLE MNTS:117t/IDLE NICM:25t/IDLE OKLL:157t/IDLE
+[10:40:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1089 | BIRD:346t/IDLE CRCG:94t/IDLE KIDZ:8t/IDLE MNTS:124t/IDLE NICM:25t/IDLE OKLL:163t/IDLE
+[10:40 ET] NICM CHART | O=8.83 H=8.86 L=8.77 C=8.83 V=958 | EMA9=8.97 VWAP=23.66 (-62.7%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.1x avg_vol=17,517 bars=50 | sq=IDLE armed=none
+[10:40 ET] KIDZ CHART | O=1.55 H=1.56 L=1.55 C=1.56 V=1,914 | EMA9=1.55 VWAP=2.84 (-45.0%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.5x avg_vol=3,598 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BIRD: 754 ticks in last 60s, last_price=$11.89, last_tick_time=10:40:30
+  TICK AUDIT: CRCG: 163 ticks in last 60s, last_price=$3.19, last_tick_time=10:40:30
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.56, last_tick_time=10:40:29
+  TICK AUDIT: MNTS: 218 ticks in last 60s, last_price=$6.22, last_tick_time=10:40:30
+  TICK AUDIT: NICM: 39 ticks in last 60s, last_price=$8.81, last_tick_time=10:40:26
+  TICK AUDIT: OKLL: 292 ticks in last 60s, last_price=$9.84, last_tick_time=10:40:30
+[10:41:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1018 | BIRD:355t/IDLE CRCG:37t/IDLE KIDZ:7t/IDLE MNTS:114t/IDLE NICM:33t/IDLE OKLL:143t/IDLE
+[10:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1044 | BIRD:371t/IDLE CRCG:39t/IDLE KIDZ:7t/IDLE MNTS:116t/IDLE NICM:35t/IDLE OKLL:147t/IDLE
+  TICK AUDIT: BIRD: 777 ticks in last 60s, last_price=$12.09, last_tick_time=10:41:31
+  TICK AUDIT: CRCG: 89 ticks in last 60s, last_price=$3.18, last_tick_time=10:41:30
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.56, last_tick_time=10:41:29
+  TICK AUDIT: MNTS: 216 ticks in last 60s, last_price=$6.22, last_tick_time=10:41:31
+  TICK AUDIT: NICM: 60 ticks in last 60s, last_price=$8.68, last_tick_time=10:41:30
+  TICK AUDIT: OKLL: 310 ticks in last 60s, last_price=$9.94, last_tick_time=10:41:31
+
+🔄 Running scanner at 10:41:32 ET...
+Error 162, reqId 750: Historical Market Data Service error message:API scanner subscription cancelled: 750
+  [float_cache] Cleared 6 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 750 (reqId=750, symbol=?)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] USGG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (27 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 753 ticks in last 60s, last_price=$12.08, last_tick_time=10:42:31
+  TICK AUDIT: CRCG: 125 ticks in last 60s, last_price=$3.18, last_tick_time=10:42:31
+  TICK AUDIT: KIDZ: 54 ticks in last 60s, last_price=$1.56, last_tick_time=10:42:30
+  TICK AUDIT: MNTS: 207 ticks in last 60s, last_price=$6.24, last_tick_time=10:42:31
+  TICK AUDIT: NICM: 87 ticks in last 60s, last_price=$8.71, last_tick_time=10:42:31
+  TICK AUDIT: OKLL: 221 ticks in last 60s, last_price=$9.89, last_tick_time=10:42:31
+[10:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1034 | BIRD:344t/IDLE CRCG:63t/IDLE KIDZ:20t/IDLE MNTS:90t/IDLE NICM:31t/IDLE OKLL:121t/IDLE
+[10:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1058 | BIRD:358t/IDLE CRCG:64t/IDLE KIDZ:20t/IDLE MNTS:98t/IDLE NICM:31t/IDLE OKLL:122t/IDLE
+  TICK AUDIT: BIRD: 665 ticks in last 60s, last_price=$11.89, last_tick_time=10:43:32
+  TICK AUDIT: CRCG: 123 ticks in last 60s, last_price=$3.19, last_tick_time=10:43:31
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.56, last_tick_time=10:43:31
+  TICK AUDIT: MNTS: 214 ticks in last 60s, last_price=$6.29, last_tick_time=10:43:31
+  TICK AUDIT: NICM: 53 ticks in last 60s, last_price=$8.75, last_tick_time=10:43:32
+  TICK AUDIT: OKLL: 237 ticks in last 60s, last_price=$9.98, last_tick_time=10:43:31
+[10:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=919 | BIRD:308t/IDLE CRCG:56t/IDLE KIDZ:5t/IDLE MNTS:89t/IDLE NICM:11t/IDLE OKLL:85t/IDLE
+[10:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=945 | BIRD:319t/IDLE CRCG:61t/IDLE KIDZ:5t/IDLE MNTS:91t/IDLE NICM:11t/IDLE OKLL:93t/IDLE
+  TICK AUDIT: BIRD: 718 ticks in last 60s, last_price=$12.07, last_tick_time=10:44:32
+  TICK AUDIT: CRCG: 110 ticks in last 60s, last_price=$3.18, last_tick_time=10:44:32
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$1.56, last_tick_time=10:44:18
+  TICK AUDIT: MNTS: 176 ticks in last 60s, last_price=$6.30, last_tick_time=10:44:32
+  TICK AUDIT: NICM: 37 ticks in last 60s, last_price=$8.75, last_tick_time=10:44:31
+  TICK AUDIT: OKLL: 166 ticks in last 60s, last_price=$9.95, last_tick_time=10:44:32
+[10:45 ET] BIRD CHART | O=11.87 H=12.82 L=11.83 C=12.68 V=117,015 | EMA9=12.01 VWAP=7.26 (+74.8%) HOD=13.93 PM_H=4.00 | MACD=N/A vol_ratio=1.2x avg_vol=100,490 bars=50 | sq=IDLE armed=none
+[10:45 ET] MNTS CHART | O=6.24 H=6.39 L=6.24 C=6.37 V=74,187 | EMA9=6.14 VWAP=6.03 (+5.7%) HOD=6.70 PM_H=5.67 | MACD=N/A vol_ratio=2.5x avg_vol=29,624 bars=50 | sq=IDLE armed=none
+[10:45:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1018 | BIRD:353t/IDLE CRCG:48t/IDLE KIDZ:29t/IDLE MNTS:129t/IDLE NICM:19t/IDLE OKLL:75t/IDLE
+[10:45 ET] NICM CHART | O=8.82 H=8.82 L=8.60 C=8.60 V=5,098 | EMA9=8.84 VWAP=23.30 (-63.1%) HOD=60.00 PM_H=60.00 | MACD=N/A vol_ratio=0.3x avg_vol=16,170 bars=50 | sq=IDLE armed=none
+[10:45 ET] OKLL CHART | O=9.95 H=9.96 L=9.90 C=9.96 V=24,112 | EMA9=9.93 VWAP=9.56 (+4.1%) HOD=10.35 PM_H=9.48 | MACD=N/A vol_ratio=0.3x avg_vol=86,577 bars=50 | sq=IDLE armed=none
+[10:45 ET] CRCG CHART | O=3.18 H=3.19 L=3.16 C=3.17 V=99,551 | EMA9=3.19 VWAP=3.22 (-1.4%) HOD=3.39 PM_H=3.37 | MACD=N/A vol_ratio=0.7x avg_vol=152,755 bars=50 | sq=IDLE armed=none
+[10:45:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1042 | BIRD:366t/IDLE CRCG:51t/IDLE KIDZ:29t/IDLE MNTS:133t/IDLE NICM:20t/IDLE OKLL:78t/IDLE
+[10:45 ET] KIDZ CHART | O=1.56 H=1.56 L=1.54 C=1.55 V=1,888 | EMA9=1.56 VWAP=2.83 (-45.3%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.5x avg_vol=3,954 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: BIRD: 803 ticks in last 60s, last_price=$12.47, last_tick_time=10:45:32
+  TICK AUDIT: CRCG: 100 ticks in last 60s, last_price=$3.17, last_tick_time=10:45:32
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.55, last_tick_time=10:45:17
+  TICK AUDIT: MNTS: 252 ticks in last 60s, last_price=$6.35, last_tick_time=10:45:32
+  TICK AUDIT: NICM: 49 ticks in last 60s, last_price=$8.63, last_tick_time=10:45:31
+  TICK AUDIT: OKLL: 169 ticks in last 60s, last_price=$9.96, last_tick_time=10:45:32
+[10:46:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1009 | BIRD:370t/IDLE CRCG:62t/IDLE KIDZ:6t/IDLE MNTS:81t/IDLE NICM:39t/IDLE OKLL:86t/IDLE
+[10:46:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1039 | BIRD:386t/IDLE CRCG:62t/IDLE KIDZ:6t/IDLE MNTS:85t/IDLE NICM:43t/IDLE OKLL:92t/IDLE
+
+🔄 Running scanner at 10:46:32 ET...
+Error 162, reqId 831: Historical Market Data Service error message:API scanner subscription cancelled: 831
+  [float_cache] Cleared 7 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 831 (reqId=831, symbol=?)
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [FMP] USGG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-15.json (28 snapshots)
+📊 Scanner: 1 new candidates, 0 new subs, 6 total watching
+  TICK AUDIT: BIRD: 1613 ticks in last 60s, last_price=$13.24, last_tick_time=10:47:29
+  TICK AUDIT: CRCG: 218 ticks in last 60s, last_price=$3.19, last_tick_time=10:47:29
+  TICK AUDIT: KIDZ: 62 ticks in last 60s, last_price=$1.52, last_tick_time=10:47:27
+  TICK AUDIT: MNTS: 342 ticks in last 60s, last_price=$6.40, last_tick_time=10:47:28
+  TICK AUDIT: NICM: 177 ticks in last 60s, last_price=$8.24, last_tick_time=10:47:29
+  TICK AUDIT: OKLL: 359 ticks in last 60s, last_price=$9.99, last_tick_time=10:47:29
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+Peer closed connection.
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 2234, in main
+    p = getattr(ticker, attr, None)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 386, in sleep
+    run(asyncio.sleep(secs))
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 343, in run
+    raise globalErrorEvent.value() or e
+ConnectionError: Socket disconnect
+🔥 Bot crashed:
+  Tick cache: ACTU → +9 ticks (total 9)
+  Tick cache: AHG → +2 ticks (total 2)
+  Tick cache: ALMU → +17 ticks (total 17)
+  Tick cache: ARQQ → +17 ticks (total 17)
+  Tick cache: BEZ → +2 ticks (total 2)
+  Tick cache: BIRD → +30,743 ticks (total 30,743)
+  Tick cache: BMNU → +4 ticks (total 4)
+  Tick cache: BULL → +3 ticks (total 3)
+  Tick cache: BULX → +17 ticks (total 17)
+  Tick cache: CRCG → +4,403 ticks (total 4,403)
+  Tick cache: CRWG → +2 ticks (total 2)
+  Tick cache: EGG → +4 ticks (total 4)
+  Tick cache: EOSE → +18 ticks (total 18)
+  Tick cache: FNWB → +2 ticks (total 2)
+  Tick cache: GLOO → +2 ticks (total 2)
+  Tick cache: HODU → +10 ticks (total 10)
+  Tick cache: IONZ → +4 ticks (total 4)
+  Tick cache: LAES → +4 ticks (total 4)
+  Tick cache: MNTS → +4,878 ticks (total 4,878)
+  Tick cache: MRLN → +19 ticks (total 19)
+  Tick cache: NBIZ → +2 ticks (total 2)
+  Tick cache: NICM → +2,688 ticks (total 2,688)
+  Tick cache: NNEX → +2 ticks (total 2)
+  Tick cache: NOK → +2 ticks (total 2)
+  Tick cache: NVD → +4 ticks (total 4)
+  Tick cache: OKLL → +9,011 ticks (total 9,011)
+  Tick cache: OKTG → +2 ticks (total 2)
+  Tick cache: OWL → +1 ticks (total 1)
+  Tick cache: PDC → +9 ticks (total 9)
+  Tick cache: PLUG → +4 ticks (total 4)
+  Tick cache: QBTS → +12 ticks (total 12)
+  Tick cache: QBTX → +20 ticks (total 20)
+  Tick cache: QUBT → +1 ticks (total 1)
+  Tick cache: QUBX → +16 ticks (total 16)
+  Tick cache: RGTI → +4 ticks (total 4)
+  Tick cache: SMR → +13 ticks (total 13)
+  Tick cache: SMU → +21 ticks (total 21)
+  Tick cache: SMUP → +22 ticks (total 22)
+  Tick cache: SNAP → +4 ticks (total 4)
+  Tick cache: SNBR → +11 ticks (total 11)
+  Tick cache: SOFI → +4 ticks (total 4)
+  Tick cache: TSLL → +4 ticks (total 4)
+  Tick cache: TZA → +2 ticks (total 2)
+  Tick cache: VNCE → +4 ticks (total 4)
+  Tick cache: WATT → +4 ticks (total 4)
+  Tick cache: WTID → +2 ticks (total 2)
+  Tick cache: WULF → +4 ticks (total 4)
+  Tick cache: KIDZ → +1,080 ticks (total 1,080)
+  Tick cache: NNBR → +18 ticks (total 18)
+  Tick cache: USAX → +13 ticks (total 13)
+  Tick cache: USGG → +9 ticks (total 9)
+  Tick cache: XNDU → +10 ticks (total 10)
+  Tick cache: SOUX → +11 ticks (total 11)
+  Tick cache: SKLZ → +8 ticks (total 8)
+  Tick cache: UUUG → +9 ticks (total 9)
+📦 Tick cache saved: 55 symbols → tick_cache/2026-04-15/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+  Box Trades: 0
+  Box P&L: $+0.00
+  COMBINED P&L: $+0.00
+============================================================
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+ALERT: bot_v3_hybrid.py died at Wed Apr 15 08:48:17 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
+=== Shutting down at Wed Apr 15 08:48:17 MDT 2026 ===
+WARNING: Gateway port 4002 dropped at 2026-04-15 14:48:20 UTC
+Pushing logs...
