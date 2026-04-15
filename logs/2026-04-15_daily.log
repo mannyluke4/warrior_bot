@@ -3059,3 +3059,695 @@ Pushing logs...
  3 files changed, 127 insertions(+)
 === V3 Hybrid daily run complete: Wed Apr 15 09:08:45 MDT 2026 ===
 === TRAP: cleanup at Wed Apr 15 09:08:45 MDT 2026 ===
+daily_run_v3.sh: line 16:  1049 Terminated: 15          caffeinate -dims -w $$
+daily_run_v3.sh: line 16:  1137 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 0e14f75] auto: v3 daily logs 2026-04-15
+ 1 file changed, 4 insertions(+)
+=== Cleanup complete: Wed Apr 15 09:08:47 MDT 2026 ===
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,600
+EPL initialized: 1 strategies registered
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+IBKR ERROR 2107: HMDS data farm connection is inactive but should be available upon demand.ushmds (reqId=-1, symbol=?)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+API connection failed: TimeoutError()
+Connection attempt 1/3 failed: 
+Retrying in 10 seconds...
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+API connection failed: TimeoutError()
+Connection attempt 2/3 failed: 
+Retrying in 10 seconds...
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+API connection failed: TimeoutError()
+Connection attempt 3/3 failed: 
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 2365, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 2112, in main
+    ib = connect()
+         ^^^^^^^^^
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 486, in connect
+    state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/client.py", line 217, in connectAsync
+    await asyncio.wait_for(self.apiStart, timeout)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 519, in wait_for
+    async with timeouts.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/timeouts.py", line 115, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+caffeinate started (PID: 1240)
+=== V3 Hybrid daily run started: Wed Apr 15 09:12:27 MDT 2026 ===
+daily_run_v3.sh: line 82:  1227 Terminated: 15          caffeinate -u -t 30
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 0e14f75 (auto: v3 daily logs 2026-04-15)
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: c8a7057a9fb056e0933291925939be82  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.028884 +/- 0.058630 time.apple.com 2620:149:a23:3000::1f2
+NTP sync skipped (non-root)
+System time: Wed Apr 15 15:12:28 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+Peer closed connection.
+⚠️ Tick seed failed for KIDZ: Socket disconnect — falling back to 1m bars
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 628, in seed_symbol
+    ticks = state.ib.reqHistoricalTicks(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 1142, in reqHistoricalTicks
+    return self._run(
+           ^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+ConnectionError: Socket disconnect
+⚠️ Fallback seed also failed for KIDZ: Not connected
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$1.59, last_tick_time=11:12:29
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+cancelMktData: No reqId found for contract Stock(conId=861863554, symbol='KIDZ', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='KIDZ', tradingClass='SCM')
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
+  Resubscription failed for KIDZ: Not connected
+CONNECTION LOST — attempting reconnect...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+  Tick cache: KIDZ → +211 ticks (total 1,291)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-15/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+  Box Trades: 0
+  Box P&L: $+0.00
+  COMBINED P&L: $+0.00
+============================================================
+Starting live_scanner.py...
+Live scanner started (PID: 1319)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 1321)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,600
+EPL initialized: 1 strategies registered
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+Bot health check passed (still running after 15s, PID: 1321)
+HEALTH_OK: Bot connected at 2026-04-15 15:13:01 UTC
+Gateway watchdog started (PID: 1329)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+  [SEED] KIDZ: 50109 ticks so far, jumping to recent 90min for full context
+[11:13 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.0100 < HOD=$3.2000)
+[11:13 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$2.9900 < HOD=$3.2000)
+[11:13 ET] KIDZ SQ | SQ_REJECT: not_new_hod (bar_high=$3.1100 < HOD=$3.2000)
+🔥 Seeded KIDZ: 51142 ticks → 50 bars, EMA=1.9007 (1022 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$1.59, last_tick_time=11:13:30
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[11:14:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=16 | KIDZ:16t/IDLE
+[11:14:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=16 | KIDZ:16t/IDLE
+  TICK AUDIT: KIDZ: 41 ticks in last 60s, last_price=$1.60, last_tick_time=11:14:40
+[11:15:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+[11:15 ET] KIDZ CHART | O=1.60 H=1.61 L=1.59 C=1.61 V=4,536 | EMA9=1.77 VWAP=2.85 (-43.5%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=3.8x avg_vol=1,191 bars=50 | sq=IDLE armed=none
+[11:15:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+  TICK AUDIT: KIDZ: 58 ticks in last 60s, last_price=$1.58, last_tick_time=11:15:41
+[11:16:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[11:16:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 39 ticks in last 60s, last_price=$1.58, last_tick_time=11:16:37
+[11:17:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+[11:17:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+  TICK AUDIT: KIDZ: 37 ticks in last 60s, last_price=$1.58, last_tick_time=11:17:38
+[11:18:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[11:18:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.58, last_tick_time=11:18:42
+[11:19:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[11:19:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 48 ticks in last 60s, last_price=$1.57, last_tick_time=11:19:43
+[11:20 ET] KIDZ CHART | O=1.60 H=1.60 L=1.57 C=1.58 V=13,892 | EMA9=1.66 VWAP=2.84 (-44.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=8.9x avg_vol=1,556 bars=50 | sq=IDLE armed=none
+[11:20:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+[11:20:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=19 | KIDZ:19t/IDLE
+  TICK AUDIT: KIDZ: 51 ticks in last 60s, last_price=$1.58, last_tick_time=11:20:45
+[11:21:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=23 | KIDZ:23t/IDLE
+[11:21:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=23 | KIDZ:23t/IDLE
+  TICK AUDIT: KIDZ: 44 ticks in last 60s, last_price=$1.58, last_tick_time=11:21:45
+[11:22:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[11:22:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.59, last_tick_time=11:22:42
+[11:23:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[11:23:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.59, last_tick_time=11:23:46
+[11:24:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[11:24:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 43 ticks in last 60s, last_price=$1.58, last_tick_time=11:24:47
+[11:25:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[11:25:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[11:25 ET] KIDZ CHART | O=1.60 H=1.60 L=1.57 C=1.59 V=39,923 | EMA9=1.61 VWAP=2.83 (-43.9%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=21.3x avg_vol=1,878 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$1.59, last_tick_time=11:25:25
+[11:26:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[11:26:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.59, last_tick_time=11:26:43
+[11:27:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+[11:27:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+  TICK AUDIT: KIDZ: 37 ticks in last 60s, last_price=$1.59, last_tick_time=11:27:46
+[11:28:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[11:28:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$1.59, last_tick_time=11:28:36
+[11:29:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[11:29:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 29 ticks in last 60s, last_price=$1.59, last_tick_time=11:29:50
+[11:30:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[11:30 ET] KIDZ CHART | O=1.59 H=1.61 L=1.59 C=1.61 V=134 | EMA9=1.60 VWAP=2.83 (-43.1%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=2,256 bars=50 | sq=IDLE armed=none
+[11:30:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 60 ticks in last 60s, last_price=$1.61, last_tick_time=11:30:50
+[11:31:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+[11:31:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$1.60, last_tick_time=11:31:52
+[11:32:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:32:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 43 ticks in last 60s, last_price=$1.61, last_tick_time=11:32:52
+[11:33:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:33:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.60, last_tick_time=11:33:44
+[11:34:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:34:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.61, last_tick_time=11:34:52
+[11:35:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:35:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:35 ET] KIDZ CHART | O=1.60 H=1.61 L=1.60 C=1.61 V=1,981 | EMA9=1.60 VWAP=2.83 (-43.0%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.8x avg_vol=2,511 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 31 ticks in last 60s, last_price=$1.61, last_tick_time=11:35:53
+[11:36:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:36:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 29 ticks in last 60s, last_price=$1.60, last_tick_time=11:36:52
+[11:37:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:37:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$1.61, last_tick_time=11:37:32
+[11:38:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[11:38:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 22 ticks in last 60s, last_price=$1.62, last_tick_time=11:38:53
+[11:39:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[11:39:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 18 ticks in last 60s, last_price=$1.61, last_tick_time=11:39:52
+[11:40:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:40:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:40 ET] KIDZ CHART | O=1.61 H=1.62 L=1.61 C=1.61 V=2,365 | EMA9=1.61 VWAP=2.82 (-43.0%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.9x avg_vol=2,755 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 44 ticks in last 60s, last_price=$1.61, last_tick_time=11:40:57
+[11:41:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 29 ticks in last 60s, last_price=$1.61, last_tick_time=11:41:57
+[11:42:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[11:42:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.61, last_tick_time=11:42:52
+[11:43:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.61, last_tick_time=11:43:59
+[11:44:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[11:44:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 40 ticks in last 60s, last_price=$1.62, last_tick_time=11:44:50
+[11:45:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:45:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:45 ET] KIDZ CHART | O=1.61 H=1.62 L=1.59 C=1.62 V=3,900 | EMA9=1.61 VWAP=2.82 (-42.5%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=1.3x avg_vol=3,099 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 26 ticks in last 60s, last_price=$1.60, last_tick_time=11:45:59
+[11:46:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:46:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.60, last_tick_time=11:47:00
+[11:47:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:47:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 23 ticks in last 60s, last_price=$1.61, last_tick_time=11:47:47
+[11:48:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:48:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:49:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=43 | KIDZ:43t/IDLE
+  TICK AUDIT: KIDZ: 43 ticks in last 60s, last_price=$1.63, last_tick_time=11:48:59
+[11:49:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[11:50:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=26 | KIDZ:26t/IDLE
+[11:50 ET] KIDZ CHART | O=1.63 H=1.64 L=1.63 C=1.64 V=920 | EMA9=1.61 VWAP=2.80 (-41.6%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.2x avg_vol=3,922 bars=50 | sq=IDLE armed=none
+[11:50:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=27 | KIDZ:27t/IDLE
+  TICK AUDIT: KIDZ: 33 ticks in last 60s, last_price=$1.64, last_tick_time=11:50:01
+[11:51:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=36 | KIDZ:36t/IDLE
+[11:51:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=36 | KIDZ:36t/IDLE
+  TICK AUDIT: KIDZ: 36 ticks in last 60s, last_price=$1.63, last_tick_time=11:50:57
+[11:52:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+[11:52:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+  TICK AUDIT: KIDZ: 40 ticks in last 60s, last_price=$1.64, last_tick_time=11:51:53
+[11:53:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=46 | KIDZ:46t/IDLE
+[11:53:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=51 | KIDZ:51t/IDLE
+  TICK AUDIT: KIDZ: 53 ticks in last 60s, last_price=$1.65, last_tick_time=11:53:02
+[11:54:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+[11:54:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+  TICK AUDIT: KIDZ: 50 ticks in last 60s, last_price=$1.65, last_tick_time=11:54:03
+[11:55:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=76 | KIDZ:76t/IDLE
+[11:55:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=76 | KIDZ:76t/IDLE
+[11:55 ET] KIDZ CHART | O=1.66 H=1.67 L=1.65 C=1.67 V=4,209 | EMA9=1.63 VWAP=2.79 (-40.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.9x avg_vol=4,762 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 77 ticks in last 60s, last_price=$1.67, last_tick_time=11:55:03
+[11:56:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+[11:56:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=40 | KIDZ:40t/IDLE
+  TICK AUDIT: KIDZ: 41 ticks in last 60s, last_price=$1.66, last_tick_time=11:56:03
+[11:57:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=37 | KIDZ:37t/IDLE
+[11:57:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=38 | KIDZ:38t/IDLE
+  TICK AUDIT: KIDZ: 42 ticks in last 60s, last_price=$1.65, last_tick_time=11:57:04
+[11:58:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+[11:58:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.66, last_tick_time=11:58:03
+[11:59:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[11:59:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$1.66, last_tick_time=11:59:03
+[12:00:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=33 | KIDZ:33t/IDLE
+[12:00:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=33 | KIDZ:33t/IDLE
+  TICK AUDIT: KIDZ: 33 ticks in last 60s, last_price=$1.67, last_tick_time=11:59:52
+[12:00 ET] KIDZ CHART | O=1.66 H=1.67 L=1.66 C=1.67 V=3,869 | EMA9=1.65 VWAP=2.79 (-40.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.8x avg_vol=4,651 bars=50 | sq=IDLE armed=none
+[12:01:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=52 | KIDZ:52t/IDLE
+[12:01:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=52 | KIDZ:52t/IDLE
+  TICK AUDIT: KIDZ: 52 ticks in last 60s, last_price=$1.67, last_tick_time=12:00:54
+[12:02:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=16 | KIDZ:16t/IDLE
+[12:02:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=16 | KIDZ:16t/IDLE
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$1.65, last_tick_time=12:01:51
+[12:03:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+[12:03:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+  TICK AUDIT: KIDZ: 27 ticks in last 60s, last_price=$1.67, last_tick_time=12:03:05
+[12:04:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=31 | KIDZ:31t/IDLE
+[12:04:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=31 | KIDZ:31t/IDLE
+  TICK AUDIT: KIDZ: 32 ticks in last 60s, last_price=$1.67, last_tick_time=12:04:02
+[12:05:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[12:05:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[12:05 ET] KIDZ CHART | O=1.67 H=1.68 L=1.66 C=1.66 V=2,962 | EMA9=1.66 VWAP=2.78 (-40.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.6x avg_vol=5,114 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$1.66, last_tick_time=12:05:07
+[12:06:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=35 | KIDZ:35t/IDLE
+[12:06:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=35 | KIDZ:35t/IDLE
+  TICK AUDIT: KIDZ: 35 ticks in last 60s, last_price=$1.70, last_tick_time=12:05:58
+[12:07:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[12:07:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$1.70, last_tick_time=12:06:20
+[12:08:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[12:08:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$1.70, last_tick_time=12:08:04
+[12:09:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=30 | KIDZ:30t/IDLE
+[12:09:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=32 | KIDZ:32t/IDLE
+  TICK AUDIT: KIDZ: 44 ticks in last 60s, last_price=$1.70, last_tick_time=12:09:09
+[12:10:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=28 | KIDZ:28t/IDLE
+[12:10:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=28 | KIDZ:28t/IDLE
+[12:10 ET] KIDZ CHART | O=1.70 H=1.70 L=1.69 C=1.70 V=3,634 | EMA9=1.68 VWAP=2.77 (-38.7%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.7x avg_vol=5,018 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 36 ticks in last 60s, last_price=$1.70, last_tick_time=12:10:09
+[12:11:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=23 | KIDZ:23t/IDLE
+[12:11:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=24 | KIDZ:24t/IDLE
+  TICK AUDIT: KIDZ: 30 ticks in last 60s, last_price=$1.67, last_tick_time=12:11:07
+[12:12:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$1.68, last_tick_time=12:11:56
+[12:13:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+[12:13:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+  TICK AUDIT: KIDZ: 18 ticks in last 60s, last_price=$1.68, last_tick_time=12:13:03
+[12:14:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+[12:14:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$1.68, last_tick_time=12:14:11
+[12:15:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+[12:15:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+[12:15 ET] KIDZ CHART | O=1.68 H=1.68 L=1.67 C=1.67 V=413 | EMA9=1.68 VWAP=2.77 (-39.7%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=5,268 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.67, last_tick_time=12:15:11
+[12:16:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:16:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$1.68, last_tick_time=12:16:04
+[12:17:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+[12:17:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$1.68, last_tick_time=12:17:14
+[12:18:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[12:18:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.68, last_tick_time=12:18:04
+[12:19:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[12:19:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.68, last_tick_time=12:19:00
+[12:20:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:20:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$1.69, last_tick_time=12:19:37
+[12:20 ET] KIDZ CHART | O=1.68 H=1.69 L=1.68 C=1.69 V=207 | EMA9=1.68 VWAP=2.77 (-39.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.0x avg_vol=4,952 bars=50 | sq=IDLE armed=none
+[12:21:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[12:21:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 9 ticks in last 60s, last_price=$1.68, last_tick_time=12:21:10
+[12:22:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[12:22:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$1.69, last_tick_time=12:21:51
+[12:23:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+[12:23:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.69, last_tick_time=12:23:04
+[12:24:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=11 | KIDZ:11t/IDLE
+[12:24:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=11 | KIDZ:11t/IDLE
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$1.69, last_tick_time=12:23:38
+[12:25:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:25:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:25 ET] KIDZ CHART | O=1.69 H=1.69 L=1.68 C=1.69 V=858 | EMA9=1.68 VWAP=2.77 (-39.1%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.2x avg_vol=4,738 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.68, last_tick_time=12:25:16
+[12:26:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+[12:26:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+  TICK AUDIT: KIDZ: 35 ticks in last 60s, last_price=$1.70, last_tick_time=12:26:18
+[12:27:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+[12:27:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.70, last_tick_time=12:27:17
+[12:28:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+[12:28:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$1.70, last_tick_time=12:28:07
+[12:29:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[12:29:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$1.69, last_tick_time=12:29:20
+[12:30:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=11 | KIDZ:11t/IDLE
+[12:30:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=11 | KIDZ:11t/IDLE
+[12:30 ET] KIDZ CHART | O=1.69 H=1.69 L=1.68 C=1.68 V=818 | EMA9=1.69 VWAP=2.77 (-39.3%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.2x avg_vol=4,683 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$1.68, last_tick_time=12:30:18
+[12:31:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[12:31:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 18 ticks in last 60s, last_price=$1.68, last_tick_time=12:31:19
+[12:32:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:32:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$1.68, last_tick_time=12:32:11
+[12:33:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+[12:33:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$1.68, last_tick_time=12:33:16
+[12:34:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[12:34:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.69, last_tick_time=12:34:21
+[12:35:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[12:35:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[12:35 ET] KIDZ CHART | O=1.68 H=1.69 L=1.68 C=1.68 V=207 | EMA9=1.68 VWAP=2.77 (-39.3%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=4,128 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 18 ticks in last 60s, last_price=$1.68, last_tick_time=12:35:22
+[12:36:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+[12:36:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 25 ticks in last 60s, last_price=$1.70, last_tick_time=12:36:24
+[12:37:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:37:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$1.69, last_tick_time=12:37:05
+[12:38:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:38:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$1.69, last_tick_time=12:38:16
+[12:39:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+[12:39:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=10 | KIDZ:10t/IDLE
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.70, last_tick_time=12:39:21
+[12:40:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[12:40:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[12:40 ET] KIDZ CHART | O=1.70 H=1.70 L=1.70 C=1.70 V=8,920 | EMA9=1.69 VWAP=2.76 (-38.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=2.3x avg_vol=3,814 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.70, last_tick_time=12:40:17
+[12:41:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[12:41:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+  TICK AUDIT: KIDZ: 16 ticks in last 60s, last_price=$1.69, last_tick_time=12:41:11
+[12:42:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:42:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 40 ticks in last 60s, last_price=$1.69, last_tick_time=12:42:30
+[12:43:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=30 | KIDZ:30t/IDLE
+[12:43:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=30 | KIDZ:30t/IDLE
+  TICK AUDIT: KIDZ: 35 ticks in last 60s, last_price=$1.70, last_tick_time=12:43:22
+[12:44:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$1.70, last_tick_time=12:44:28
+[12:45:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[12:45 ET] KIDZ CHART | O=1.70 H=1.70 L=1.70 C=1.70 V=1,090 | EMA9=1.69 VWAP=2.75 (-38.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.3x avg_vol=3,663 bars=50 | sq=IDLE armed=none
+[12:45:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$1.70, last_tick_time=12:45:26
+[12:46:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[12:46:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$1.68, last_tick_time=12:46:20
+[12:47:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:47:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.69, last_tick_time=12:47:29
+[12:48:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+[12:48:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+  TICK AUDIT: KIDZ: 34 ticks in last 60s, last_price=$1.70, last_tick_time=12:48:28
+[12:49:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+[12:49:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+  TICK AUDIT: KIDZ: 29 ticks in last 60s, last_price=$1.71, last_tick_time=12:49:29
+[12:50 ET] KIDZ CHART | O=1.70 H=1.71 L=1.70 C=1.71 V=209 | EMA9=1.69 VWAP=2.75 (-37.8%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=3,987 bars=50 | sq=IDLE armed=none
+[12:50:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[12:50:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$1.71, last_tick_time=12:50:06
+[12:51:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+[12:51:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$1.71, last_tick_time=12:51:19
+[12:52:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[12:52:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.71, last_tick_time=12:52:26
+[12:53:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+[12:53:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=20 | KIDZ:20t/IDLE
+  TICK AUDIT: KIDZ: 27 ticks in last 60s, last_price=$1.71, last_tick_time=12:53:26
+[12:54:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[12:54:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.71, last_tick_time=12:54:24
+[12:55:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:55:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:55 ET] KIDZ CHART | O=1.71 H=1.72 L=1.71 C=1.72 V=324 | EMA9=1.70 VWAP=2.75 (-37.6%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=3,251 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 24 ticks in last 60s, last_price=$1.72, last_tick_time=12:55:34
+[12:56:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[12:56:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.72, last_tick_time=12:56:31
+[12:57:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[12:57:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+  TICK AUDIT: KIDZ: 15 ticks in last 60s, last_price=$1.71, last_tick_time=12:57:30
+[12:58:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[12:58:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 10 ticks in last 60s, last_price=$1.72, last_tick_time=12:58:29
+[12:59:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[12:59:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 26 ticks in last 60s, last_price=$1.72, last_tick_time=12:59:37
+[13:00:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+[13:00 ET] KIDZ CHART | O=1.72 H=1.73 L=1.71 C=1.73 V=6,450 | EMA9=1.71 VWAP=2.74 (-36.9%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=1.9x avg_vol=3,406 bars=50 | sq=IDLE armed=none
+[13:00:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.74, last_tick_time=13:00:38
+[13:01:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+[13:01:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+  TICK AUDIT: KIDZ: 54 ticks in last 60s, last_price=$1.76, last_tick_time=13:01:37
+[13:02:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+[13:02:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=18 | KIDZ:18t/IDLE
+  TICK AUDIT: KIDZ: 42 ticks in last 60s, last_price=$1.75, last_tick_time=13:02:39
+[13:03:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+[13:03:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=21 | KIDZ:21t/IDLE
+  TICK AUDIT: KIDZ: 65 ticks in last 60s, last_price=$1.69, last_tick_time=13:03:35
+[13:04:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+[13:04:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=15 | KIDZ:15t/IDLE
+  TICK AUDIT: KIDZ: 20 ticks in last 60s, last_price=$1.69, last_tick_time=13:04:25
+[13:05:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[13:05:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+[13:05 ET] KIDZ CHART | O=1.69 H=1.69 L=1.69 C=1.69 V=1,129 | EMA9=1.72 VWAP=2.74 (-38.2%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.3x avg_vol=3,548 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 22 ticks in last 60s, last_price=$1.70, last_tick_time=13:05:30
+[13:06:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+[13:06:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.70, last_tick_time=13:06:40
+[13:07:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[13:07:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 8 ticks in last 60s, last_price=$1.70, last_tick_time=13:06:59
+[13:08:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+[13:08:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=7 | KIDZ:7t/IDLE
+  TICK AUDIT: KIDZ: 11 ticks in last 60s, last_price=$1.70, last_tick_time=13:08:02
+[13:09:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:09:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=4 | KIDZ:4t/IDLE
+  TICK AUDIT: KIDZ: 37 ticks in last 60s, last_price=$1.64, last_tick_time=13:09:42
+[13:10 ET] KIDZ CHART | O=1.69 H=1.69 L=1.64 C=1.64 V=35,033 | EMA9=1.70 VWAP=2.73 (-39.9%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=9.1x avg_vol=3,850 bars=50 | sq=IDLE armed=none
+[13:10:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[13:10:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=13 | KIDZ:13t/IDLE
+  TICK AUDIT: KIDZ: 32 ticks in last 60s, last_price=$1.65, last_tick_time=13:10:37
+[13:11:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[13:11:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 22 ticks in last 60s, last_price=$1.64, last_tick_time=13:11:44
+[13:12:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=12 | KIDZ:12t/IDLE
+[13:12:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=14 | KIDZ:14t/IDLE
+  TICK AUDIT: KIDZ: 22 ticks in last 60s, last_price=$1.63, last_tick_time=13:12:39
+[13:13:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:13:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.63, last_tick_time=13:13:40
+[13:14:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:14:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 7 ticks in last 60s, last_price=$1.63, last_tick_time=13:14:25
+[13:15:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[13:15 ET] KIDZ CHART | O=1.63 H=1.63 L=1.63 C=1.63 V=407 | EMA9=1.66 VWAP=2.73 (-40.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=4,328 bars=50 | sq=IDLE armed=none
+[13:15:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+  TICK AUDIT: KIDZ: 14 ticks in last 60s, last_price=$1.64, last_tick_time=13:15:25
+[13:16:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+[13:16:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=2 | KIDZ:2t/IDLE
+  TICK AUDIT: KIDZ: 54 ticks in last 60s, last_price=$1.65, last_tick_time=13:16:47
+[13:17:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[13:17:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.65, last_tick_time=13:17:45
+[13:18:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[13:18:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 13 ticks in last 60s, last_price=$1.64, last_tick_time=13:18:42
+[13:19:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:19:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 5 ticks in last 60s, last_price=$1.65, last_tick_time=13:19:45
+[13:20 ET] KIDZ CHART | O=1.65 H=1.65 L=1.65 C=1.65 V=5 | EMA9=1.65 VWAP=2.73 (-39.5%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.0x avg_vol=4,297 bars=50 | sq=IDLE armed=none
+[13:20:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[13:20:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=3 | KIDZ:3t/IDLE
+  TICK AUDIT: KIDZ: 24 ticks in last 60s, last_price=$1.65, last_tick_time=13:20:37
+[13:21:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+[13:21:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=6 | KIDZ:6t/IDLE
+  TICK AUDIT: KIDZ: 23 ticks in last 60s, last_price=$1.65, last_tick_time=13:21:44
+[13:22:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+[13:22:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=5 | KIDZ:5t/IDLE
+  TICK AUDIT: KIDZ: 19 ticks in last 60s, last_price=$1.65, last_tick_time=13:22:39
+[13:23:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:23:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 17 ticks in last 60s, last_price=$1.65, last_tick_time=13:23:47
+[13:24:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:24:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 24 ticks in last 60s, last_price=$1.65, last_tick_time=13:24:49
+[13:25:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[13:25 ET] KIDZ CHART | O=1.65 H=1.65 L=1.63 C=1.65 V=1,245 | EMA9=1.65 VWAP=2.72 (-39.4%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.3x avg_vol=4,389 bars=50 | sq=IDLE armed=none
+[13:25:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=9 | KIDZ:9t/IDLE
+  TICK AUDIT: KIDZ: 21 ticks in last 60s, last_price=$1.66, last_tick_time=13:25:32
+[13:26:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+[13:26:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=8 | KIDZ:8t/IDLE
+  TICK AUDIT: KIDZ: 12 ticks in last 60s, last_price=$1.64, last_tick_time=13:26:44
+[13:27:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:27:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$1.64, last_tick_time=13:27:50
+[13:28:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+[13:28:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=1 | KIDZ:1t/IDLE
+  TICK AUDIT: KIDZ: 6 ticks in last 60s, last_price=$1.64, last_tick_time=13:28:50
+[13:29:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:29:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+  TICK AUDIT: KIDZ: 2 ticks in last 60s, last_price=$1.64, last_tick_time=13:29:17
+[13:30:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:30:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=0 | KIDZ:0t/IDLE
+[13:30 ET] KIDZ CHART | O=1.64 H=1.64 L=1.64 C=1.64 V=200 | EMA9=1.64 VWAP=2.72 (-40.0%) HOD=3.20 PM_H=3.20 | MACD=N/A vol_ratio=0.1x avg_vol=3,967 bars=50 | sq=IDLE armed=none
+  TICK AUDIT: KIDZ: 48 ticks in last 60s, last_price=$1.59, last_tick_time=13:30:50
+[13:31:00 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=17 | KIDZ:17t/IDLE
+[13:31:01 ET] BOX | flat | daily=$+0 (0t) | conn=OK | ticks=17 | KIDZ:17t/IDLE
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+  Tick cache: KIDZ → +3,389 ticks (total 4,680)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-15/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+  Box Trades: 0
+  Box P&L: $+0.00
+  COMBINED P&L: $+0.00
+============================================================
+ALERT: bot_v3_hybrid.py died at Wed Apr 15 11:32:04 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
+=== Shutting down at Wed Apr 15 11:32:04 MDT 2026 ===
+Pushing logs...
