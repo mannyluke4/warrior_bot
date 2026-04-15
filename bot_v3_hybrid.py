@@ -412,6 +412,166 @@ def reconcile_positions_on_startup():
                 print(f"  → FAILED to close orphan {symbol}: {e}", flush=True)
 
 
+def _trade_record_to_open_position(rec: dict) -> dict:
+    """Inverse of _open_position_to_trade_record: rehydrate an in-memory
+    open_position dict from a persisted open_trades.json entry. Used only
+    on resume boot, after qty has been reconciled against Alpaca.
+    """
+    entry_time_str = rec.get("entry_time", "")
+    try:
+        entry_time = datetime.fromisoformat(entry_time_str)
+        # Normalize to ET for manage_exit's bail-timer math
+        if entry_time.tzinfo is None:
+            entry_time = entry_time.replace(tzinfo=timezone.utc)
+        entry_time = entry_time.astimezone(ET)
+    except (ValueError, TypeError):
+        entry_time = datetime.now(ET)
+
+    return {
+        "symbol": rec["symbol"],
+        "entry": float(rec["entry_price"]),
+        "qty": int(rec["qty"]),
+        "r": float(rec["r"]),
+        "stop": float(rec["stop"]),
+        "score": float(rec.get("score", 0.0)),
+        "setup_type": rec.get("setup_type", ""),
+        "peak": float(rec.get("peak", rec["entry_price"])),
+        "tp_hit": rec.get("trail_mode") == "post_target",
+        "entry_time": entry_time,
+        "order_id": rec.get("order_id", ""),
+        "is_parabolic": bool(rec.get("is_parabolic", False)),
+        "fill_confirmed": True,
+        "partial_filled_at": rec.get("partial_filled_at"),
+        "partial_filled_qty": int(rec.get("partial_filled_qty", 0)),
+    }
+
+
+def resume_reconcile():
+    """Resume-mode order + position reconciliation. Called instead of
+    reconcile_positions_on_startup() when state.boot_mode == "resume".
+
+    Flow (Cowork-approved, see finding_no_standing_exits.md):
+      1. Cancel all pending BUY orders (entry retry state is lost).
+      2. Cancel all open SELL orders (invariant: no standing protective
+         orders during healthy operation; any found is a crash-mid-exit
+         artifact — let manage_exit re-evaluate on the next tick).
+      3. For each Alpaca position: match against open_trades.json.
+         - Match → rehydrate state.open_position, reconcile qty to Alpaca.
+         - No match → flatten_orphan_position() via session_state helper.
+      4. Restore risk counters from risk.json.
+    """
+    print("🔁 RESUME: reconciling orders + positions", flush=True)
+
+    # Step 1-2: cancel all open orders unconditionally.
+    cancelled_buy = 0
+    cancelled_sell = 0
+    try:
+        open_orders = _alpaca_call(state.alpaca.get_orders) or []
+    except Exception as e:
+        print(f"  RESUME: get_orders failed: {e}", flush=True)
+        open_orders = []
+    for o in open_orders:
+        try:
+            side = str(getattr(o, "side", "")).lower()
+            is_buy = "buy" in side
+            state.alpaca.cancel_order_by_id(o.id)
+            if is_buy:
+                cancelled_buy += 1
+                print(f"  RESUME: cancelled pending BUY {o.id} {o.symbol} "
+                      f"@ ${float(getattr(o, 'limit_price', 0) or 0):.2f}", flush=True)
+            else:
+                cancelled_sell += 1
+                print(f"  RESUME: cancelled standing SELL {o.id} {o.symbol} "
+                      f"(invariant: no standing SELLs during healthy op)", flush=True)
+        except Exception as e:
+            print(f"  RESUME: cancel {o.id} failed: {e}", flush=True)
+    if cancelled_buy or cancelled_sell:
+        print(f"  RESUME: {cancelled_buy} BUYs + {cancelled_sell} SELLs cancelled", flush=True)
+
+    # Step 3: rehydrate positions, index persisted trades by symbol.
+    persisted = ss.read_open_trades()
+    by_symbol = {r["symbol"]: r for r in persisted}
+    try:
+        positions = _alpaca_call(state.alpaca.get_all_positions) or []
+    except Exception as e:
+        print(f"  RESUME: get_all_positions failed: {e}", flush=True)
+        positions = []
+
+    rehydrated_symbols: set[str] = set()
+    for apos in positions:
+        sym = apos.symbol
+        alpaca_qty = int(apos.qty)
+        alpaca_entry = float(apos.avg_entry_price)
+
+        rec = by_symbol.get(sym)
+        if rec is None:
+            # No persisted record → orphan. Loud flatten (gated by
+            # WB_RESUME_FLATTEN_ORPHANS). No current-price estimate available
+            # pre-live-ticks; helper omits impact line when None.
+            ss.flatten_orphan_position(
+                state.alpaca, sym, alpaca_qty, alpaca_entry, current_price=None,
+            )
+            continue
+
+        # Match: rehydrate with qty drift reconciliation. Alpaca is truth.
+        persisted_qty = int(rec.get("qty", 0))
+        if persisted_qty != alpaca_qty:
+            print(f"⚠️  REHYDRATE QTY DRIFT: {sym} persisted={persisted_qty} "
+                  f"alpaca={alpaca_qty} — trusting Alpaca "
+                  f"(likely partial fill during crash)", flush=True)
+            rec = dict(rec)
+            rec["qty"] = alpaca_qty
+        # (Alpaca reporting MORE than persisted is also suspicious — we still
+        # trust Alpaca but flag for audit.)
+        if alpaca_qty > persisted_qty:
+            print(f"⚠️  REHYDRATE QTY DRIFT UP: {sym} alpaca={alpaca_qty} > "
+                  f"persisted={persisted_qty} — unexpected. Flagging for audit.",
+                  flush=True)
+
+        if state.open_position is None:
+            state.open_position = _trade_record_to_open_position(rec)
+            rehydrated_symbols.add(sym)
+            print(f"  RESUME: rehydrated {sym} qty={alpaca_qty} "
+                  f"entry=${rec['entry_price']:.2f} stop=${rec['stop']:.2f} "
+                  f"peak=${rec['peak']:.2f} mode={rec['trail_mode']}", flush=True)
+        else:
+            # Bot only tracks one momentum position at a time. A second
+            # match means the persisted file disagrees with the single-slot
+            # invariant — flatten the second one as orphan.
+            print(f"  RESUME: {sym} matched but state.open_position already "
+                  f"filled by {state.open_position['symbol']} — flattening {sym}",
+                  flush=True)
+            ss.flatten_orphan_position(
+                state.alpaca, sym, alpaca_qty, alpaca_entry, current_price=None,
+            )
+
+    # Step 4: restore risk counters.
+    risk = ss.read_risk()
+    state.daily_pnl = float(risk.get("daily_pnl", 0.0))
+    state.daily_trades = int(risk.get("daily_trades", 0))
+    state.consecutive_losses = int(risk.get("consecutive_losses", 0))
+    state.closed_trades = list(risk.get("closed_trades", []))
+    print(f"  RESUME: risk restored — daily_pnl=${state.daily_pnl:+,.2f} "
+          f"trades={state.daily_trades} losses={state.consecutive_losses} "
+          f"(closed_trades={len(state.closed_trades)} cached)", flush=True)
+
+    # Persist-after-rehydrate: the qty-reconciled records should be written
+    # back so the on-disk state matches the live in-memory state.
+    persist_open_trades()
+
+    # Sanity: stale persisted records for positions that no longer exist on
+    # Alpaca (closed during crash window) would linger without this sync.
+    # persist_open_trades already wrote state.open_position (or []) — if the
+    # previous open_trades.json had a symbol that Alpaca no longer reports,
+    # that record is now dropped from disk. Log the drop for post-mortem.
+    dropped = set(by_symbol.keys()) - rehydrated_symbols
+    for sym in dropped:
+        print(f"  RESUME: persisted record for {sym} has no live Alpaca position "
+              f"— dropping (likely closed during crash window)", flush=True)
+
+    print("🔁 RESUME: reconcile complete", flush=True)
+
+
 def periodic_position_sync():
     """Fix 3: Every 60s, verify bot state matches Alpaca reality."""
     now = datetime.now(ET)
@@ -843,7 +1003,7 @@ def seed_symbol_from_cache(symbol: str) -> bool:
         # Clock-drift log per Cowork ask — exposes any detector-time bugs.
         wall_utc = datetime.now(timezone.utc)
         drift_sec = (wall_utc - last_ts_utc).total_seconds() if last_ts_utc else None
-        drift_str = f"{drift_sec/60:.1f}m" if drift_sec else "?"
+        drift_str = f"{drift_sec/60:.1f}m" if drift_sec is not None else "?"
         print(f"🔁 [RESUME] {symbol}: {replayed:,} ticks → {bar_count} bars"
               + (f", EMA={ema:.4f}" if ema else "")
               + (", ARMED" if armed else "")
@@ -2456,8 +2616,13 @@ def main():
     start_tick_flush_thread()
     start_risk_flush_thread()
 
-    # Fix 1: Startup position reconciliation
-    reconcile_positions_on_startup()
+    # Startup position reconciliation. Resume mode rehydrates trade state
+    # from open_trades.json + reconciles qty/orders against Alpaca; cold
+    # mode adopts any unexpected Alpaca position with conservative defaults.
+    if boot_mode == "resume":
+        resume_reconcile()
+    else:
+        reconcile_positions_on_startup()
 
     # Fix 5: Graceful shutdown — check for orphan positions
     import signal as signal_mod
