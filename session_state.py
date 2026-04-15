@@ -43,13 +43,16 @@ CLOSED_TRADES_CAP = 50
 # Required fields for an open_trades.json entry. Schema is strict so a
 # downstream bug that drops a field fails fast instead of producing an
 # unmanaged position on resume.
+#
+# Note: the bot uses reactive exits (see 2026-04-15_finding_no_standing_exits.md)
+# — no standing stop/target orders exist, so no stop_order_id/target_order_id
+# fields. `order_id` is the ENTRY order ID, retained for crash-window
+# cross-check against Alpaca position history.
 OPEN_TRADE_REQUIRED_FIELDS = {
     "symbol", "setup_type", "entry_price", "entry_time", "qty", "r",
     "stop", "target_r", "target_price", "peak", "trail_mode",
     "partial_filled_at", "partial_filled_qty", "bail_timer_start",
     "exit_mode", "order_id", "fill_confirmed", "score", "is_parabolic",
-    # Order IDs for rehydrate — Cowork's Gap 2 clarification
-    "stop_order_id", "target_order_id", "partial_target_order_id",
 }
 
 
@@ -218,11 +221,15 @@ def read_open_trades(date_str: str | None = None) -> list[dict]:
     valid = []
     for entry in data:
         if not isinstance(entry, dict):
+            print(f"⚠️  read_open_trades: dropped non-dict entry ({type(entry).__name__})", flush=True)
             continue
         try:
             _validate_open_trade(entry)
-        except ValueError:
-            # Skip malformed entries on read — safer than crashing the boot
+        except ValueError as e:
+            # Skip malformed entries on read — safer than crashing the boot,
+            # but log loudly so a real writer bug doesn't hide behind it.
+            sym = entry.get("symbol", "?")
+            print(f"⚠️  read_open_trades: dropped malformed entry for {sym} ({e})", flush=True)
             continue
         valid.append(entry)
     return valid

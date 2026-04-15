@@ -57,6 +57,7 @@ from epl_framework import (
     GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
 )
 from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
+import session_state as ss
 
 ET = pytz.timezone("US/Eastern")
 
@@ -556,6 +557,7 @@ def subscribe_symbol(symbol: str):
     state.tick_counts[symbol] = 0
     state.sub_retry_counts[symbol] = 0
     print(f"✅ Subscribed: {symbol}", flush=True)
+    persist_watchlist()
 
 
 def check_subscription_health():
@@ -1186,6 +1188,12 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
                         print(f"  {log_prefix}FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}"
                               + (f" (after {attempt} retries)" if attempt > 0 else ""),
                               flush=True)
+                        # Persist managed-trade state on fill confirmation.
+                        # Reactive-exit architecture: manage_exit() is the
+                        # protection layer, so fill-confirmed = protected.
+                        # Box positions are not persisted in v1 (deferred).
+                        if position_attr == "open_position":
+                            persist_open_trades()
                     filled = True
                     break
                 if o.status in ('cancelled', 'expired', 'rejected'):
@@ -1430,9 +1438,12 @@ def manage_exit(symbol: str, price: float):
     if not pos.get('fill_confirmed', False):
         return
 
-    # Update peak
+    # Update peak (persist on advance — see cowork review note on write
+    # frequency: peaks advance only on new highs, not every tick, so ~10–50
+    # writes per active trade is the realistic upper bound).
     if price > pos["peak"]:
         pos["peak"] = price
+        persist_open_trades()
 
     entry = pos["entry"]
     stop = pos["stop"]
@@ -1488,6 +1499,8 @@ def _squeeze_exit(symbol: str, price: float, pos: dict):
         # 3) Target hit — exit core, keep runner
         if r > 0 and price >= entry + (SQ_TARGET_R * r):
             pos["tp_hit"] = True
+            # Stamp partial-fill state for resume rehydrate schema.
+            pos["partial_filled_at"] = datetime.now(timezone.utc).isoformat()
             # EPL graduation: stock hit 2R, add to watchlist for re-entry
             if EPL_ENABLED and state.epl_watchlist is not None:
                 realized_r = (price - entry) / r if r > 0 else 0
@@ -1509,10 +1522,16 @@ def _squeeze_exit(symbol: str, price: float, pos: dict):
                           f"(R={realized_r:.1f})", flush=True)
             qty_core = max(1, int(qty * SQ_CORE_PCT / 100))
             qty_runner = qty - qty_core
+            pos["partial_filled_qty"] = qty_core
             if qty_runner > 0:
                 pos["runner_stop"] = max(stop, entry + 0.01)
                 exit_trade(symbol, price, qty_core, "sq_target_hit")
                 pos["qty"] = qty_runner  # Set AFTER exit_trade so remaining calc is correct
+                # tp_hit + trail_mode change + qty shift all need persisting;
+                # exit_trade already persisted (full exit case) or we persist
+                # the runner state here.
+                if state.open_position:
+                    persist_open_trades()
             else:
                 exit_trade(symbol, price, qty, "sq_target_hit")
             return
@@ -1630,6 +1649,11 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         state.open_position = None
     else:
         pos["qty"] = remaining
+
+    # Persist post-exit state: open_trades shrinks (empty on full exit, or
+    # updated with new qty on partial), risk picks up the closed trade.
+    persist_open_trades()
+    persist_risk()
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -1828,15 +1852,130 @@ def _tick_flush_loop():
             print(f"⚠️  TICK FLUSH ERROR: {e}", flush=True)
 
 
+def _open_position_to_trade_record(pos: dict) -> dict:
+    """Map in-memory open_position dict → open_trades.json schema (19 fields).
+
+    Schema fields that aren't first-class on open_position are derived here:
+      - target_r / target_price: derived from SQ_TARGET_R + r (squeeze-only;
+        for other setup_types we use 0 as a neutral placeholder since their
+        exit paths don't use a target-R concept).
+      - trail_mode: "pre_target" until pos["tp_hit"] goes True, then "post_target".
+      - partial_filled_at / partial_filled_qty: stamped onto pos at the tp_hit
+        transition in _squeeze_exit (see write points below). Default None/0.
+      - bail_timer_start: identical to entry_time today (bail timer is a
+        duration-from-entry check, not a separate countdown we ever restart).
+      - exit_mode: env-derived. "signal" is the default today; see CLAUDE.md.
+    """
+    entry = float(pos["entry"])
+    r = float(pos.get("r", 0.0))
+    target_r = float(SQ_TARGET_R) if pos.get("setup_type") in ("squeeze", "mp_reentry", "continuation") else 0.0
+    target_price = entry + target_r * r if target_r > 0 else 0.0
+    trail_mode = "post_target" if pos.get("tp_hit") else "pre_target"
+    entry_time = pos.get("entry_time")
+    entry_iso = entry_time.isoformat() if hasattr(entry_time, "isoformat") else str(entry_time)
+    return {
+        "symbol": pos["symbol"],
+        "setup_type": pos.get("setup_type", ""),
+        "entry_price": entry,
+        "entry_time": entry_iso,
+        "qty": int(pos.get("qty", 0)),
+        "r": r,
+        "stop": float(pos.get("stop", 0.0)),
+        "target_r": target_r,
+        "target_price": target_price,
+        "peak": float(pos.get("peak", entry)),
+        "trail_mode": trail_mode,
+        "partial_filled_at": pos.get("partial_filled_at"),
+        "partial_filled_qty": int(pos.get("partial_filled_qty", 0)),
+        "bail_timer_start": entry_iso,
+        "exit_mode": os.getenv("WB_EXIT_MODE", "signal"),
+        "order_id": pos.get("order_id", ""),
+        "fill_confirmed": bool(pos.get("fill_confirmed", False)),
+        "score": float(pos.get("score", 0.0)),
+        "is_parabolic": bool(pos.get("is_parabolic", False)),
+    }
+
+
+def persist_open_trades():
+    """Sync state.open_position to open_trades.json. Called on every state
+    transition (fill confirmation, peak advance, trail-mode change, partial
+    fill, bail arm) and on position close. Box positions are not persisted
+    in v1 (see plan — deferred, MASTER_TODO follow-up).
+
+    Only persists fully-confirmed trades per Cowork's write-on-fill rule:
+    the moment fill_confirmed=True, manage_exit() is the protection layer,
+    so that's the durable state to persist. Pre-fill positions would persist
+    as "filled but unmanaged" from a resume perspective, which is worse than
+    flattening as orphan.
+    """
+    try:
+        pos = state.open_position
+        if pos and pos.get("fill_confirmed"):
+            ss.write_open_trades([_open_position_to_trade_record(pos)])
+        else:
+            ss.write_open_trades([])
+    except Exception as e:
+        print(f"⚠️  persist_open_trades error: {e}", flush=True)
+
+
+def persist_risk():
+    """Sync daily risk counters to risk.json. Cheap — ≤3KB file, no validation."""
+    try:
+        ss.write_risk(
+            daily_pnl=state.daily_pnl,
+            daily_trades=state.daily_trades,
+            consecutive_losses=state.consecutive_losses,
+            closed_trades=state.closed_trades,
+        )
+    except Exception as e:
+        print(f"⚠️  persist_risk error: {e}", flush=True)
+
+
+def persist_watchlist():
+    """Sync state.active_symbols to watchlist.json with subscription timestamps.
+    Called on every subscribe_symbol() success."""
+    try:
+        now_iso = datetime.now(timezone.utc).isoformat()
+        existing = {e["symbol"]: e for e in ss.read_watchlist()}
+        entries = []
+        for sym in sorted(state.active_symbols):
+            if sym in existing:
+                entries.append(existing[sym])
+            else:
+                entries.append({"symbol": sym, "subscribed_at": now_iso})
+        ss.write_watchlist(entries)
+    except Exception as e:
+        print(f"⚠️  persist_watchlist error: {e}", flush=True)
+
+
+def _risk_flush_loop():
+    """Background loop persisting risk.json every 60s. Writes are cheap but
+    this is a belt-and-suspenders in case a transition-point write is missed."""
+    while True:
+        time.sleep(60)
+        try:
+            persist_risk()
+        except Exception as e:
+            print(f"⚠️  RISK FLUSH ERROR: {e}", flush=True)
+
+
 def start_tick_flush_thread():
     """Start the periodic tick-cache flush thread. Idempotent."""
     if not TICK_FLUSH_ENABLED:
         print("Tick flush thread disabled (WB_TICK_FLUSH_ENABLED=0)", flush=True)
         return
-    import threading
     t = threading.Thread(target=_tick_flush_loop, daemon=True, name="tick-flush")
     t.start()
     print(f"📦 Tick flush thread started (every {SESSION_FLUSH_SEC}s)", flush=True)
+
+
+def start_risk_flush_thread():
+    """Start the periodic risk.json flush thread. Safety net — transition
+    writes in exit_trade should keep risk.json fresh, but a background
+    flush every 60s protects against a missed write point."""
+    t = threading.Thread(target=_risk_flush_loop, daemon=True, name="risk-flush")
+    t.start()
+    print("📊 Risk flush thread started (every 60s)", flush=True)
 
 
 def on_ib_error(reqId, errorCode, errorString, contract):
@@ -1978,6 +2117,7 @@ def subscribe_box_symbol(symbol: str):
         state.tick_counts[symbol] = 0
         state.tick_buffer[symbol] = []
         print(f"  [BOX] Subscribed to {symbol} for box trading", flush=True)
+        persist_watchlist()
     except Exception as e:
         print(f"  [BOX] Subscribe error {symbol}: {e}", flush=True)
 
@@ -2196,6 +2336,7 @@ def main():
     # Start periodic tick-cache flush (crash-safety for backtest data).
     # Always-on, independent of WB_SESSION_RESUME_ENABLED.
     start_tick_flush_thread()
+    start_risk_flush_thread()
 
     # Fix 1: Startup position reconciliation
     reconcile_positions_on_startup()

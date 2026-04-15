@@ -40,9 +40,6 @@ def _sample_open_trade(symbol: str = "FCUV") -> dict:
         "fill_confirmed": True,
         "score": 7.2,
         "is_parabolic": False,
-        "stop_order_id": "xyz-456",
-        "target_order_id": "xyz-789",
-        "partial_target_order_id": None,
     }
 
 
@@ -88,13 +85,13 @@ def run():
 
         # 5. Schema validation rejects missing fields
         bad = _sample_open_trade()
-        del bad["stop_order_id"]
+        del bad["peak"]
         try:
             ss.write_open_trades([bad])
-            raise AssertionError("expected ValueError on missing stop_order_id")
+            raise AssertionError("expected ValueError on missing peak")
         except ValueError as e:
-            assert "stop_order_id" in str(e)
-        print("✓ schema rejects missing stop_order_id")
+            assert "peak" in str(e)
+        print("✓ schema rejects missing field")
 
         # 6. Corrupt-file read returns defaults
         with open(ss._path("risk.json"), "w") as f:
