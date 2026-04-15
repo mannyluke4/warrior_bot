@@ -119,6 +119,16 @@ Per-stock analysis of every profitable missed stock. 5 root cause categories: fl
 | Scanner-move paradox | **KNOWN LIMITATION** | Volume spike that creates opportunity = spike that triggers scanner discovery. Accept catching 2nd move. |
 | IBKR STK.US.MAJOR misses micro-caps | **KNOWN** | Databento bridge helps (KIDZ found via watchlist.txt) |
 
+### Session-resume follow-ups (v2 — v1 shipped 2026-04-15)
+
+Session-resume v1 is live (gated OFF by default via `WB_SESSION_RESUME_ENABLED`). v2 items deferred from the first ship:
+
+| Item | Why deferred | Notes |
+|------|-------------|-------|
+| Box strategy state persistence | Box engine has complex state (box_bottom/top, trades, RSI/VWAP cache). v1 flattens any open box position as orphan on resume. | Directive: persist `state.box_engine` fields + `state.box_position` to a `box_state.json`, rehydrate mirror of momentum path. Touches `_exit_box_trade`, `_enter_box_trade`, `box_bar_builder_1m`. |
+| OCO/bracket protection | Separate architectural shift, not bundled into session-resume. | Today's exits are reactive (`manage_exit` → `exit_trade`). OCO would make each entry a bracket order + trail-update via order modification. Removes the "crash reopens naked position briefly" window. |
+| EPL state round-trip validation | v1 loads best-effort, warns on failure. | Manually confirm graduation state survives resume once EPL sees meaningful use again. |
+
 **Reports:** `cowork_reports/2026-04-02_morning_progress.md`, `cowork_reports/2026-04-01_v1_investigation.md`
 
 ---

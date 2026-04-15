@@ -120,6 +120,32 @@ WB_ENTRY_MAX_RETRIES=3           # on timeout: cancel + reprice to market + resu
 WB_ENTRY_RETRY_TIMEOUT_SEC=10    # wait this long before timing out each attempt
 WB_ENTRY_MAX_CHASE_PCT=2.0       # give up if price > original_limit × 1.02 (stop chasing vertical moves)
 
+# === Session resume (deployed 2026-04-15) ===
+# Crash-recovery within same trading day. Persists durable state to disk;
+# on restart, replays tick_cache/<today>/<sym>.json.gz into fresh detectors
+# instead of re-fetching from IBKR. Resume boot in ~10s vs cold ~3min.
+# Validated end-to-end 2026-04-15 afternoon (KIDZ, 4,714 ticks replayed).
+WB_SESSION_RESUME_ENABLED=0      # MASTER GATE — flip to 1 to enable resume boots
+WB_TICK_FLUSH_ENABLED=1          # periodic tick-buffer flush (always-on crash-safety)
+WB_SESSION_FLUSH_SEC=30          # flush interval
+WB_RESUME_FLATTEN_ORPHANS=1      # flatten Alpaca positions w/o open_trades.json record
+#
+# CLI flags:
+#   python bot_v3_hybrid.py              # auto-decide via marker
+#   python bot_v3_hybrid.py --fresh      # force cold (preserves tick cache)
+#   python bot_v3_hybrid.py --scrub      # wipe today's session_state/ + tick_cache/
+#
+# Durable files (session_state/YYYY-MM-DD/):
+#   marker.json       — boot-mode decision
+#   watchlist.json    — subscribed symbols
+#   risk.json         — daily_pnl, counters, last 50 closed_trades
+#   open_trades.json  — full trade-management state for active position
+#
+# On resume: cancel all pending BUY + open SELL orders, rehydrate positions
+# from open_trades.json (qty from Alpaca on drift), restore risk counters,
+# replay tick cache through fresh detectors. Box strategy state deferred
+# to v2 (tracked in MASTER_TODO).
+
 # === Scanner (all 3 scanners now read from .env — parity fix 2026-03-24) ===
 WB_MIN_GAP_PCT=10
 WB_MAX_GAP_PCT=500
