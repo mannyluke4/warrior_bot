@@ -53,3 +53,18 @@ Pushing logs...
  create mode 100644 logs/2026-04-15_scanner.log
 === V3 Hybrid daily run complete: Wed Apr 15 06:50:14 MDT 2026 ===
 === TRAP: cleanup at Wed Apr 15 06:50:14 MDT 2026 ===
+daily_run_v3.sh: line 16: 50059 Terminated: 15          caffeinate -dims -w $$
+daily_run_v3.sh: line 16: 50145 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 075913f] auto: v3 daily logs 2026-04-15
+ 2 files changed, 12 insertions(+)
+=== Cleanup complete: Wed Apr 15 06:50:15 MDT 2026 ===
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m

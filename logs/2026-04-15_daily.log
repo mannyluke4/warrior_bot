@@ -1164,3 +1164,577 @@ Pushing logs...
  create mode 100644 logs/2026-04-15_scanner.log
 === V3 Hybrid daily run complete: Wed Apr 15 06:50:14 MDT 2026 ===
 === TRAP: cleanup at Wed Apr 15 06:50:14 MDT 2026 ===
+daily_run_v3.sh: line 16: 50059 Terminated: 15          caffeinate -dims -w $$
+daily_run_v3.sh: line 16: 50145 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 075913f] auto: v3 daily logs 2026-04-15
+ 2 files changed, 12 insertions(+)
+=== Cleanup complete: Wed Apr 15 06:50:15 MDT 2026 ===
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+daily_run_v3.sh: line 78: 52122 Terminated: 15          caffeinate -u -t 30
+caffeinate started (PID: 52139)
+=== V3 Hybrid daily run started: Wed Apr 15 07:33:11 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 075913f (auto: v3 daily logs 2026-04-15)
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 65f753798fa655a54d9d331298e3cb64  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: ED8A1218.67C1EFF9 (3985248792.405302999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF893AF6F3.CC1F080380000000 (-1992624396.202651501)
+         delay: FFFFFFFF1275EDE7.983E100700000000 (-3985248792.405303001)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:4000::31
+}
++0.030839 +/- 0.054944 time.apple.com 2620:149:a23:3000::1f2
+NTP sync skipped (non-root)
+System time: Wed Apr 15 13:33:13 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 52204)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 52211)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+  Position sync: No open positions on Alpaca. Clean start.
+Connected: True
+Account: ['DUQ143444']
+Account equity: $29,600
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 09:33:33 ET (first scan — casting wide net)...
+Error 162, reqId 3: Historical Market Data Service error message:API scanner subscription cancelled: 3
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 3 (reqId=3, symbol=?)
+Error 162, reqId 4: Historical Market Data Service error message:API scanner subscription cancelled: 4
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 4 (reqId=4, symbol=?)
+  Catchup: 47 unique symbols from 3 scanners
+    Catchup: processing 1/47 — ACHV...
+Error 162, reqId 5: Historical Market Data Service error message:API scanner subscription cancelled: 5
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 5 (reqId=5, symbol=?)
+    Catchup: processing 2/47 — AHG...
+    Catchup: processing 3/47 — ARQQ...
+    Catchup: processing 4/47 — BEZ...
+  [FMP] BEZ: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=BEZ&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 5/47 — BIRD...
+Bot health check passed (still running after 15s, PID: 52211)
+HEALTH_OK: Bot connected at 2026-04-15 13:33:46 UTC
+Gateway watchdog started (PID: 52222)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 6/47 — BMNU...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=BMNU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 7/47 — BTQ...
+    Catchup: processing 8/47 — BULL...
+    Catchup: processing 9/47 — BULX...
+  [FMP] BULX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=BULX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 10/47 — CORD...
+  [FMP] CORD: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=CORD&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 11/47 — CRCG...
+    Catchup: processing 12/47 — CRWG...
+    Catchup: processing 13/47 — DSP...
+    Catchup: processing 14/47 — EOSE...
+    Catchup: processing 15/47 — ET...
+    Catchup: processing 16/47 — FGMC...
+  [FMP] FGMC: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=FGMC&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [yfinance] FGMC: 10.29M
+    Catchup: processing 17/47 — GLOO...
+    Catchup: processing 18/47 — HODU...
+    Catchup: processing 19/47 — IONL...
+    Catchup: processing 20/47 — IONZ...
+    Catchup: processing 21/47 — KZR...
+    Catchup: processing 22/47 — LAES...
+    Catchup: processing 23/47 — MNTS...
+    Catchup: processing 24/47 — MSTU...
+    Catchup: processing 25/47 — NBIZ...
+    Catchup: processing 26/47 — NICM...
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 27/47 — NNEX...
+  [FMP] NNEX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NNEX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 28/47 — OKLL...
+    Catchup: processing 29/47 — PGP...
+  [FMP] PGP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=PGP&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 30/47 — PLUG...
+    Catchup: processing 31/47 — PSIG...
+    Catchup: processing 32/47 — QBTS...
+    Catchup: processing 33/47 — QBTX...
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 34/47 — QUBX...
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 35/47 — RGTI...
+    Catchup: processing 36/47 — SCO...
+    Catchup: processing 37/47 — SMR...
+    Catchup: processing 38/47 — SMU...
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 39/47 — SMUP...
+  [FMP] SMUP: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMUP&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 40/47 — SNAG...
+  [FMP] SNAG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SNAG&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+    Catchup: processing 41/47 — SNAP...
+    Catchup: processing 42/47 — SOFI...
+    Catchup: processing 43/47 — TSLL...
+    Catchup: processing 44/47 — VNCE...
+    Catchup: processing 45/47 — WATT...
+    Catchup: processing 46/47 — WULF...
+    Catchup: processing 47/47 — XNDU...
+  Catchup: 5 candidates after filters
+[09:35 ET] BIRD CHART | O=6.64 H=6.64 L=6.64 C=6.64 V=1,500 | EMA9=none VWAP=6.79 (-2.3%) HOD=7.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+[09:36 ET] BIRD SQ | SQ_PRIMED: vol=27.5x avg, bar_vol=123,884, price=$8.4200 above VWAP ($7.7298)
+  SQ_NO_ARM: invalid_r (entry=2.6200 stop=6.6400)
+[09:36 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$3.4900 < HOD=$8.4200)
+🔥 Seeded BIRD: 50283 ticks → 48 bars, EMA=3.0512 (1047 ticks/bar avg)
+✅ Subscribed: BIRD
+[09:36 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$3.9600 < HOD=$8.4200)
+[09:37 ET] OKLL SQ | SQ_REJECT: not_new_hod (bar_high=$9.3100 < HOD=$9.4800)
+🔥 Seeded OKLL: 27692 ticks → 50 bars, EMA=9.1873 (553 ticks/bar avg)
+✅ Subscribed: OKLL
+  [SEED] NICM: 50496 ticks so far, jumping to recent 90min for full context
+🔥 Seeded NICM: 51496 ticks → 31 bars, EMA=14.7761 (1661 ticks/bar avg)
+✅ Subscribed: NICM
+[09:40 ET] OKLL CHART | O=9.30 H=9.36 L=9.27 C=9.35 V=106,776 | EMA9=9.20 VWAP=9.10 (+2.7%) HOD=9.52 PM_H=9.48 | MACD=N/A vol_ratio=4.4x avg_vol=24,292 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.39 H=5.41 L=5.39 C=5.41 V=26,916 | EMA9=5.50 VWAP=5.40 (+0.0%) HOD=5.50 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+[09:40 ET] BIRD CHART | O=8.42 H=8.42 L=8.42 C=8.42 V=14,400 | EMA9=5.07 VWAP=3.51 (+139.7%) HOD=8.42 PM_H=3.96 | MACD=N/A vol_ratio=0.6x avg_vol=22,175 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.41 H=5.42 L=5.40 C=5.41 V=54,808 | EMA9=5.48 VWAP=5.41 (-0.0%) HOD=5.50 PM_H=5.08 | MACD=N/A vol_ratio=45.7x avg_vol=1,200 bars=2 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.08 H=5.13 L=4.98 C=5.00 V=13,214 | EMA9=5.47 VWAP=5.35 (-6.6%) HOD=5.50 PM_H=5.13 | MACD=N/A vol_ratio=3.7x avg_vol=3,600 bars=3 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.15 L=4.92 C=5.02 V=264,948 | EMA9=5.37 VWAP=5.10 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=31.5x avg_vol=8,400 bars=4 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.03 L=5.00 C=5.02 V=5,035 | EMA9=5.30 VWAP=5.09 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=9,604 bars=5 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=5.00 C=5.02 V=18,384 | EMA9=5.25 VWAP=5.09 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=17,286 bars=6 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.03 L=5.02 C=5.03 V=1,779 | EMA9=5.20 VWAP=5.09 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=15,244 bars=7 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.03 L=5.03 C=5.03 V=651 | EMA9=5.17 VWAP=5.09 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=15,693 bars=8 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.04 H=5.04 L=5.03 C=5.03 V=5,237 | EMA9=5.14 VWAP=5.09 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=13,954 bars=9 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.05 H=5.12 L=4.95 C=5.03 V=17,175 | EMA9=5.12 VWAP=5.09 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.4x avg_vol=12,476 bars=10 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.03 L=5.02 C=5.02 V=1,090 | EMA9=5.10 VWAP=5.09 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=11,752 bars=11 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.03 L=5.03 C=5.03 V=880 | EMA9=5.08 VWAP=5.09 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=12,245 bars=12 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.02 L=5.01 C=5.02 V=22,414 | EMA9=5.07 VWAP=5.08 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.0x avg_vol=11,315 bars=13 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.02 L=5.00 C=5.01 V=3,949 | EMA9=5.06 VWAP=5.08 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=10,512 bars=14 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=4.99 C=4.99 V=61,364 | EMA9=5.05 VWAP=5.07 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=5.4x avg_vol=11,363 bars=15 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.97 C=4.97 V=84,221 | EMA9=5.04 VWAP=5.06 (-1.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=7.7x avg_vol=10,868 bars=16 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.95 C=4.96 V=85,227 | EMA9=5.03 VWAP=5.05 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=6.3x avg_vol=13,585 bars=17 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.97 L=4.95 C=4.95 V=63,181 | EMA9=5.01 VWAP=5.04 (-1.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.8x avg_vol=16,782 bars=18 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.95 V=12,488 | EMA9=5.00 VWAP=5.04 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=20,511 bars=19 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=52,781 | EMA9=4.99 VWAP=5.03 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.3x avg_vol=22,757 bars=20 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=2,863 | EMA9=4.98 VWAP=5.03 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=22,244 bars=21 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.95 V=3,067 | EMA9=4.97 VWAP=5.03 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=23,698 bars=22 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.97 L=4.96 C=4.97 V=4,436 | EMA9=4.97 VWAP=5.03 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=22,751 bars=23 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.98 L=4.97 C=4.98 V=11,817 | EMA9=4.97 VWAP=5.03 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=21,895 bars=24 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.98 C=4.98 V=2,128 | EMA9=4.97 VWAP=5.03 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=21,168 bars=25 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.97 C=4.98 V=1,749 | EMA9=4.97 VWAP=5.03 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=20,794 bars=26 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.98 L=4.97 C=4.97 V=2,366 | EMA9=4.97 VWAP=5.03 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=20,076 bars=27 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=5.00 L=4.97 C=5.00 V=15,555 | EMA9=4.97 VWAP=5.03 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=19,397 bars=28 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=5.00 V=2,054 | EMA9=4.98 VWAP=5.03 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=18,789 bars=29 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=5.00 V=20,809 | EMA9=4.98 VWAP=5.03 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=18,677 bars=30 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.01 L=5.00 C=5.00 V=1,195 | EMA9=4.99 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=18,123 bars=31 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=5.00 C=5.00 V=3,024 | EMA9=4.99 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=18,210 bars=32 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.99 V=14,813 | EMA9=4.99 VWAP=5.03 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=17,678 bars=33 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.99 C=4.99 V=1,110 | EMA9=4.99 VWAP=5.03 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=17,234 bars=34 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.99 C=5.00 V=2,778 | EMA9=4.99 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=17,163 bars=35 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.99 C=5.00 V=5,048 | EMA9=4.99 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=16,704 bars=36 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.01 L=5.00 C=5.00 V=2,056 | EMA9=4.99 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=16,317 bars=37 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.01 L=5.00 C=5.00 V=11,962 | EMA9=5.00 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=16,013 bars=38 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.01 L=5.00 C=5.00 V=1,493 | EMA9=5.00 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=15,645 bars=39 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.01 L=5.00 C=5.00 V=20,031 | EMA9=5.00 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=15,551 bars=40 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=5.01 C=5.02 V=1,020 | EMA9=5.00 VWAP=5.03 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=15,199 bars=41 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.03 L=5.02 C=5.03 V=23,317 | EMA9=5.00 VWAP=5.03 (-0.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=15,317 bars=42 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.02 L=5.01 C=5.01 V=1,696 | EMA9=5.01 VWAP=5.03 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=14,977 bars=43 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=5.01 C=5.02 V=411 | EMA9=5.01 VWAP=5.03 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=15,171 bars=44 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.04 L=5.02 C=5.04 V=9,231 | EMA9=5.01 VWAP=5.03 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=14,865 bars=45 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.04 H=5.04 L=5.03 C=5.04 V=24,358 | EMA9=5.02 VWAP=5.03 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.7x avg_vol=14,543 bars=46 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.03 H=5.04 L=5.00 C=5.00 V=7,841 | EMA9=5.02 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=14,428 bars=47 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.01 L=5.00 C=5.00 V=15,253 | EMA9=5.02 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=14,639 bars=48 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.02 L=5.00 C=5.00 V=30,538 | EMA9=5.01 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.1x avg_vol=14,498 bars=49 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=5.00 C=5.00 V=2,923 | EMA9=5.01 VWAP=5.03 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=14,513 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=4.99 V=3,346 | EMA9=5.01 VWAP=5.03 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=15,112 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.99 C=4.99 V=1,766 | EMA9=5.00 VWAP=5.03 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=15,049 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=539 | EMA9=5.00 VWAP=5.03 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=14,750 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=909 | EMA9=5.00 VWAP=5.02 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=14,516 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.98 C=4.99 V=4,685 | EMA9=4.99 VWAP=5.02 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=13,547 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=5.00 C=5.00 V=1,010 | EMA9=4.99 VWAP=5.02 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=13,463 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=4.99 V=915 | EMA9=4.99 VWAP=5.02 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=13,183 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.01 L=5.00 C=5.01 V=3,207 | EMA9=4.99 VWAP=5.02 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=13,168 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.01 L=5.00 C=5.00 V=3,586 | EMA9=5.00 VWAP=5.02 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=13,173 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.99 C=5.00 V=2,013 | EMA9=5.00 VWAP=5.02 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=13,132 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.99 C=5.00 V=706 | EMA9=5.00 VWAP=5.02 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=12,854 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=4.99 V=134 | EMA9=5.00 VWAP=5.02 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=12,873 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=765 | EMA9=5.00 VWAP=5.02 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=12,870 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.98 C=4.98 V=10 | EMA9=4.99 VWAP=5.02 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=12,415 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.96 C=4.97 V=3,014 | EMA9=4.99 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=12,350 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.96 C=4.97 V=5,876 | EMA9=4.99 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=11,241 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.97 C=4.97 V=867 | EMA9=4.98 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=9,916 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.95 C=4.95 V=2,179 | EMA9=4.98 VWAP=5.02 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=8,324 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.95 C=4.95 V=258 | EMA9=4.97 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=7,052 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.95 C=4.95 V=6,892 | EMA9=4.97 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=6,842 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.94 V=7,501 | EMA9=4.97 VWAP=5.02 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=5,770 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=2,081 | EMA9=4.96 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,852 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.96 L=4.94 C=4.95 V=4,766 | EMA9=4.96 VWAP=5.02 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=5,943 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.94 V=3,028 | EMA9=4.96 VWAP=5.02 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=5,895 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.92 C=4.93 V=19,802 | EMA9=4.95 VWAP=5.02 (-1.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.4x avg_vol=5,751 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.96 L=4.93 C=4.96 V=3,916 | EMA9=4.95 VWAP=5.02 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=5,769 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.94 C=4.95 V=14,768 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.4x avg_vol=6,137 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.93 V=4,212 | EMA9=4.95 VWAP=5.02 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=6,169 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.95 L=4.93 C=4.95 V=1,533 | EMA9=4.95 VWAP=5.02 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=6,153 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=1,150 | EMA9=4.95 VWAP=5.02 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=6,197 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=17,878 | EMA9=4.95 VWAP=5.02 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.1x avg_vol=5,804 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=50 | EMA9=4.95 VWAP=5.02 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=5,803 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=1,314 | EMA9=4.95 VWAP=5.02 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=6,106 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.95 C=4.95 V=1,820 | EMA9=4.95 VWAP=5.02 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=5,805 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=401 | EMA9=4.95 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,809 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=1,226 | EMA9=4.95 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=5,789 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=634 | EMA9=4.96 VWAP=5.02 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,694 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.95 C=4.96 V=2,235 | EMA9=4.96 VWAP=5.02 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,677 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=1,081 | EMA9=4.96 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=5,446 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.95 C=4.95 V=372 | EMA9=4.95 VWAP=5.02 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,461 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.94 V=1,495 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=5,075 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=20 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=5,061 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.94 V=5,345 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.2x avg_vol=4,616 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.94 V=366 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=4,582 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=50 | EMA9=4.95 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=4,683 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.93 C=4.93 V=1,757 | EMA9=4.94 VWAP=5.02 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=4,502 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.94 V=1,237 | EMA9=4.94 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=4,006 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=145 | EMA9=4.94 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=3,881 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=314 | EMA9=4.94 VWAP=5.02 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=3,595 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.93 C=4.93 V=1,783 | EMA9=4.94 VWAP=5.02 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=2,975 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.91 C=4.91 V=17,247 | EMA9=4.94 VWAP=5.02 (-2.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=5.9x avg_vol=2,922 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.91 C=4.91 V=1,108 | EMA9=4.93 VWAP=5.02 (-2.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=2,890 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.89 C=4.89 V=6,231 | EMA9=4.93 VWAP=5.01 (-2.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.0x avg_vol=3,150 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.89 H=4.89 L=4.86 C=4.86 V=19,671 | EMA9=4.92 VWAP=5.01 (-3.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=6.2x avg_vol=3,161 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.87 H=4.88 L=4.86 C=4.88 V=9,103 | EMA9=4.91 VWAP=5.01 (-2.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.8x avg_vol=3,270 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.88 L=4.87 C=4.87 V=21,510 | EMA9=4.90 VWAP=5.01 (-2.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=6.1x avg_vol=3,503 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.86 H=4.88 L=4.86 C=4.88 V=3,424 | EMA9=4.90 VWAP=5.01 (-2.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=3,668 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.87 H=4.87 L=4.86 C=4.86 V=313 | EMA9=4.89 VWAP=5.01 (-3.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=4,019 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.85 H=4.86 L=4.84 C=4.85 V=9,861 | EMA9=4.89 VWAP=5.01 (-3.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.5x avg_vol=4,023 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.85 H=4.85 L=4.84 C=4.84 V=1,933 | EMA9=4.88 VWAP=5.01 (-3.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=3,956 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.84 H=4.85 L=4.84 C=4.84 V=27,405 | EMA9=4.87 VWAP=5.00 (-3.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=6.7x avg_vol=4,116 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.84 H=4.85 L=4.84 C=4.85 V=9,189 | EMA9=4.87 VWAP=5.00 (-3.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.2x avg_vol=4,142 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.86 H=4.86 L=4.85 C=4.85 V=13,898 | EMA9=4.86 VWAP=5.00 (-3.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.1x avg_vol=4,554 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.85 H=4.86 L=4.85 C=4.86 V=4,128 | EMA9=4.86 VWAP=5.00 (-2.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=4,726 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.86 H=4.86 L=4.86 C=4.86 V=3,616 | EMA9=4.86 VWAP=5.00 (-2.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=5,010 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.87 H=4.89 L=4.87 C=4.89 V=1,769 | EMA9=4.86 VWAP=5.00 (-2.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,032 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.89 H=4.89 L=4.87 C=4.88 V=25,355 | EMA9=4.87 VWAP=5.00 (-2.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=5.1x avg_vol=4,986 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.88 L=4.88 C=4.88 V=2,251 | EMA9=4.87 VWAP=5.00 (-2.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,005 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.89 H=4.89 L=4.88 C=4.89 V=1,307 | EMA9=4.87 VWAP=5.00 (-2.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=5,463 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.89 L=4.87 C=4.87 V=7,689 | EMA9=4.87 VWAP=5.00 (-2.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.4x avg_vol=5,503 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.90 L=4.88 C=4.90 V=7,040 | EMA9=4.87 VWAP=5.00 (-1.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=5,389 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.89 C=4.91 V=2,370 | EMA9=4.88 VWAP=5.00 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,393 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.91 C=4.91 V=4,460 | EMA9=4.89 VWAP=5.00 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=5,494 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.91 C=4.91 V=550 | EMA9=4.89 VWAP=5.00 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,445 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.89 C=4.90 V=6,244 | EMA9=4.89 VWAP=5.00 (-1.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=5,475 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.93 L=4.90 C=4.93 V=1,618 | EMA9=4.90 VWAP=5.00 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=5,082 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.90 C=4.92 V=7,154 | EMA9=4.90 VWAP=4.99 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.4x avg_vol=5,129 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.92 C=4.93 V=4,507 | EMA9=4.91 VWAP=4.99 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=4,861 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=3,103 | EMA9=4.91 VWAP=4.99 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=4,921 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.96 L=4.94 C=4.96 V=726 | EMA9=4.92 VWAP=4.99 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=4,982 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.94 C=4.95 V=5,475 | EMA9=4.93 VWAP=4.99 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=5,021 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=15 | EMA9=4.93 VWAP=4.99 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=4,671 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.93 V=9,180 | EMA9=4.93 VWAP=4.99 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.9x avg_vol=4,782 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.92 C=4.92 V=1,580 | EMA9=4.93 VWAP=4.99 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=4,756 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.92 L=4.91 C=4.92 V=2,084 | EMA9=4.93 VWAP=4.99 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=4,906 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.90 C=4.90 V=1,475 | EMA9=4.93 VWAP=4.99 (-1.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=4,930 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.90 C=4.91 V=5,504 | EMA9=4.92 VWAP=4.99 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=4,947 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.92 L=4.91 C=4.92 V=2,563 | EMA9=4.92 VWAP=4.99 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=4,965 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.93 C=4.93 V=1,325 | EMA9=4.92 VWAP=4.99 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=5,031 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.94 V=6,378 | EMA9=4.92 VWAP=4.99 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=5,061 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.91 C=4.92 V=23,210 | EMA9=4.93 VWAP=4.99 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=4.6x avg_vol=5,081 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.90 C=4.91 V=7,330 | EMA9=4.92 VWAP=4.99 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.4x avg_vol=5,181 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.92 L=4.91 C=4.91 V=9,027 | EMA9=4.92 VWAP=4.99 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.6x avg_vol=5,654 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.91 C=4.91 V=133 | EMA9=4.92 VWAP=4.99 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=5,694 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.93 L=4.92 C=4.92 V=3,726 | EMA9=4.92 VWAP=4.99 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=5,871 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.91 C=4.91 V=2,374 | EMA9=4.92 VWAP=4.99 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,873 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.90 C=4.91 V=9,943 | EMA9=4.92 VWAP=4.99 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.7x avg_vol=5,913 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.90 C=4.91 V=2,084 | EMA9=4.91 VWAP=4.99 (-1.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,936 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.90 C=4.90 V=8,270 | EMA9=4.91 VWAP=4.99 (-1.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=6,136 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.90 L=4.90 C=4.90 V=88 | EMA9=4.91 VWAP=4.99 (-1.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=6,172 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.89 C=4.89 V=2,623 | EMA9=4.91 VWAP=4.99 (-2.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=6,305 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.88 L=4.87 C=4.88 V=6,572 | EMA9=4.91 VWAP=4.99 (-2.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=6,011 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.88 L=4.86 C=4.86 V=2,508 | EMA9=4.90 VWAP=4.99 (-2.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=6,042 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.86 H=4.87 L=4.85 C=4.86 V=19,969 | EMA9=4.89 VWAP=4.99 (-2.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.3x avg_vol=6,048 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.87 H=4.88 L=4.87 C=4.88 V=1,247 | EMA9=4.89 VWAP=4.99 (-2.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=5,771 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.89 L=4.88 C=4.89 V=2,871 | EMA9=4.88 VWAP=4.99 (-1.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=5,993 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.88 H=4.91 L=4.88 C=4.91 V=19,435 | EMA9=4.89 VWAP=4.99 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.4x avg_vol=5,649 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.91 L=4.89 C=4.90 V=3,973 | EMA9=4.89 VWAP=4.99 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=5,638 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.90 C=4.90 V=803 | EMA9=4.89 VWAP=4.98 (-1.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=6,028 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.90 H=4.91 L=4.90 C=4.91 V=787 | EMA9=4.89 VWAP=4.98 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,908 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.92 L=4.91 C=4.92 V=1,133 | EMA9=4.90 VWAP=4.98 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=5,885 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.90 C=4.91 V=9,479 | EMA9=4.90 VWAP=4.98 (-1.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.7x avg_vol=5,485 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.93 L=4.92 C=4.93 V=18,096 | EMA9=4.90 VWAP=4.98 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.4x avg_vol=5,321 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.93 L=4.92 C=4.92 V=3,768 | EMA9=4.91 VWAP=4.98 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=5,231 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.95 L=4.93 C=4.95 V=8,603 | EMA9=4.91 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.6x avg_vol=5,516 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.95 C=4.95 V=3 | EMA9=4.92 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=5,519 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.95 V=599 | EMA9=4.93 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,658 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=414 | EMA9=4.93 VWAP=4.98 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,156 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.92 C=4.92 V=7,699 | EMA9=4.93 VWAP=4.98 (-1.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=5,122 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.95 L=4.92 C=4.95 V=2,027 | EMA9=4.93 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,104 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=115 | EMA9=4.93 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=5,104 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.95 C=4.95 V=2,117 | EMA9=4.94 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=5,002 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.94 V=2,611 | EMA9=4.94 VWAP=4.98 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=4,956 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.95 C=4.95 V=25 | EMA9=4.94 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=4,908 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.94 V=2,598 | EMA9=4.94 VWAP=4.98 (-0.9%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=4,950 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.94 C=4.95 V=442 | EMA9=4.94 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=4,823 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.96 L=4.93 C=4.95 V=39,546 | EMA9=4.94 VWAP=4.98 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=8.2x avg_vol=4,843 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.91 C=4.91 V=33,566 | EMA9=4.94 VWAP=4.98 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=7.1x avg_vol=4,706 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.92 L=4.90 C=4.91 V=13,426 | EMA9=4.94 VWAP=4.98 (-1.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.6x avg_vol=5,100 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.91 H=4.92 L=4.91 C=4.92 V=3,781 | EMA9=4.93 VWAP=4.98 (-1.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=5,556 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.92 C=4.93 V=535 | EMA9=4.93 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=5,815 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.92 C=4.93 V=7,618 | EMA9=4.93 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.3x avg_vol=5,780 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.94 L=4.92 C=4.94 V=8,866 | EMA9=4.93 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=5,791 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.94 V=9,150 | EMA9=4.93 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.6x avg_vol=5,759 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.95 L=4.93 C=4.95 V=5,079 | EMA9=4.93 VWAP=4.98 (-0.6%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=5,908 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.93 C=4.93 V=1,242 | EMA9=4.94 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.2x avg_vol=6,052 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.94 V=4,610 | EMA9=4.94 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=6,125 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.97 L=4.94 C=4.97 V=10,756 | EMA9=4.94 VWAP=4.98 (-0.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.8x avg_vol=6,038 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.99 L=4.97 C=4.98 V=6,619 | EMA9=4.94 VWAP=4.98 (+0.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=6,080 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.96 C=4.96 V=9,216 | EMA9=4.95 VWAP=4.98 (-0.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=6,273 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.94 C=4.94 V=12,553 | EMA9=4.95 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.0x avg_vol=6,278 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.93 C=4.94 V=12,726 | EMA9=4.95 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.1x avg_vol=5,992 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.93 V=12,592 | EMA9=4.95 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.1x avg_vol=6,099 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=260 | EMA9=4.94 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=6,174 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.92 C=4.93 V=11,178 | EMA9=4.94 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.7x avg_vol=6,428 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.93 L=4.93 C=4.93 V=4,358 | EMA9=4.94 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=6,358 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.93 C=4.93 V=12,905 | EMA9=4.94 VWAP=4.98 (-1.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.0x avg_vol=6,537 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.93 H=4.94 L=4.93 C=4.94 V=19,951 | EMA9=4.94 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.1x avg_vol=6,423 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.92 C=4.92 V=939 | EMA9=4.94 VWAP=4.98 (-1.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=6,644 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.92 H=4.96 L=4.91 C=4.94 V=66,527 | EMA9=4.93 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=9.7x avg_vol=6,883 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.94 C=4.94 V=3,653 | EMA9=4.94 VWAP=4.98 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=6,900 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.95 L=4.93 C=4.93 V=16,417 | EMA9=4.94 VWAP=4.98 (-0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.2x avg_vol=7,537 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.98 L=4.94 C=4.98 V=7,270 | EMA9=4.94 VWAP=4.98 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=7,477 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.01 L=4.98 C=5.01 V=16,239 | EMA9=4.94 VWAP=4.98 (+0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.1x avg_vol=7,761 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=5.00 C=5.00 V=7,851 | EMA9=4.96 VWAP=4.98 (+0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=7,502 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=4.99 V=8,062 | EMA9=4.97 VWAP=4.98 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=7,808 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.01 L=4.99 C=5.01 V=8,091 | EMA9=4.97 VWAP=4.98 (+0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=7,909 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.02 H=5.02 L=5.01 C=5.01 V=11,629 | EMA9=4.98 VWAP=4.98 (+0.8%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=7,677 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.01 H=5.02 L=5.00 C=5.00 V=3,118 | EMA9=4.99 VWAP=4.98 (+0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=7,761 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.98 C=4.98 V=11,772 | EMA9=4.99 VWAP=4.98 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.5x avg_vol=7,982 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.96 C=4.97 V=2,731 | EMA9=4.99 VWAP=4.98 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=8,030 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.97 C=4.97 V=4 | EMA9=4.98 VWAP=4.98 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=8,247 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.97 C=4.98 V=2,544 | EMA9=4.98 VWAP=4.98 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=8,109 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=1,019 | EMA9=4.98 VWAP=4.98 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=7,740 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.98 C=4.99 V=287 | EMA9=4.98 VWAP=4.98 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.0x avg_vol=7,715 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.99 V=4,993 | EMA9=4.98 VWAP=4.98 (+0.2%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=7,560 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.98 C=4.99 V=7,262 | EMA9=4.98 VWAP=4.98 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=7,566 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=4,877 | EMA9=4.98 VWAP=4.98 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.6x avg_vol=7,656 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.97 C=4.97 V=23,975 | EMA9=4.98 VWAP=4.98 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=3.1x avg_vol=7,795 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.95 C=4.96 V=7,076 | EMA9=4.98 VWAP=4.98 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=7,738 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.98 L=4.96 C=4.97 V=3,488 | EMA9=4.98 VWAP=4.98 (-0.0%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=8,186 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.96 C=4.96 V=5,632 | EMA9=4.98 VWAP=4.98 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.7x avg_vol=8,328 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.98 L=4.95 C=4.95 V=73,474 | EMA9=4.97 VWAP=4.98 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=8.8x avg_vol=8,356 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.94 L=4.91 C=4.94 V=49,412 | EMA9=4.97 VWAP=4.97 (-0.7%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=5.9x avg_vol=8,417 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.95 H=4.95 L=4.94 C=4.95 V=4,155 | EMA9=4.96 VWAP=4.97 (-0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=9,264 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.94 H=4.96 L=4.94 C=4.96 V=29,081 | EMA9=4.96 VWAP=4.97 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=2.9x avg_vol=10,137 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.98 L=4.95 C=4.98 V=11,327 | EMA9=4.96 VWAP=4.97 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.1x avg_vol=10,213 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.97 C=4.97 V=4,105 | EMA9=4.96 VWAP=4.97 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.4x avg_vol=10,321 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.98 L=4.97 C=4.98 V=4,748 | EMA9=4.97 VWAP=4.97 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=10,033 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.97 L=4.96 C=4.96 V=8,213 | EMA9=4.97 VWAP=4.97 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.8x avg_vol=9,843 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.96 H=4.96 L=4.96 C=4.96 V=600 | EMA9=4.97 VWAP=4.97 (-0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.1x avg_vol=9,863 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.97 H=4.98 L=4.97 C=4.97 V=10,506 | EMA9=4.97 VWAP=4.97 (-0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.0x avg_vol=10,020 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.98 H=4.99 L=4.98 C=4.99 V=2,645 | EMA9=4.97 VWAP=4.97 (+0.3%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.3x avg_vol=9,876 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=4.99 L=4.98 C=4.98 V=16,913 | EMA9=4.97 VWAP=4.97 (+0.1%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=1.7x avg_vol=9,910 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.00 L=4.98 C=5.00 V=4,805 | EMA9=4.97 VWAP=4.97 (+0.4%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.5x avg_vol=9,777 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=5.00 H=5.00 L=4.99 C=5.00 V=9,159 | EMA9=4.98 VWAP=4.97 (+0.5%) HOD=5.50 PM_H=5.15 | MACD=N/A vol_ratio=0.9x avg_vol=10,019 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG CHART | O=4.99 H=5.22 L=4.98 C=5.16 V=877,661 | EMA9=4.98 VWAP=5.02 (+2.9%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=87.0x avg_vol=10,091 bars=50 | sq=IDLE armed=none
+[09:40 ET] CRWG SQ | SQ_PRIMED: vol=86.2x avg, bar_vol=877,661, price=$5.1600 above VWAP ($5.0159)
+  ARMED entry=5.0200 stop=4.9800 R=0.0400 score=11.0 level=whole_dollar setup_type=squeeze [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(3%)
+[09:40 ET] CRWG CHART | O=5.16 H=5.16 L=5.08 C=5.12 V=191,358 | EMA9=5.02 VWAP=5.02 (+1.9%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=18.8x avg_vol=10,184 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.12 H=5.15 L=5.08 C=5.15 V=115,848 | EMA9=5.04 VWAP=5.03 (+2.5%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=10.5x avg_vol=10,992 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.15 H=5.18 L=5.14 C=5.16 V=139,266 | EMA9=5.06 VWAP=5.03 (+2.5%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=11.6x avg_vol=11,978 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.16 H=5.17 L=5.12 C=5.13 V=108,082 | EMA9=5.08 VWAP=5.03 (+1.9%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=8.3x avg_vol=13,002 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.12 H=5.13 L=5.10 C=5.11 V=97,785 | EMA9=5.09 VWAP=5.04 (+1.5%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=7.0x avg_vol=14,065 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.11 H=5.14 L=5.11 C=5.12 V=62,112 | EMA9=5.09 VWAP=5.04 (+1.7%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=4.1x avg_vol=15,237 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.13 H=5.13 L=5.11 C=5.12 V=25,009 | EMA9=5.10 VWAP=5.04 (+1.6%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.5x avg_vol=16,530 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.11 H=5.14 L=5.11 C=5.14 V=9,009 | EMA9=5.10 VWAP=5.04 (+2.0%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.5x avg_vol=17,792 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.13 H=5.13 L=5.08 C=5.09 V=52,978 | EMA9=5.11 VWAP=5.04 (+1.0%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.9x avg_vol=18,074 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.09 H=5.09 L=5.04 C=5.05 V=46,093 | EMA9=5.11 VWAP=5.04 (+0.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.5x avg_vol=18,169 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.05 H=5.06 L=5.04 C=5.06 V=33,253 | EMA9=5.10 VWAP=5.04 (+0.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.8x avg_vol=18,987 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.07 H=5.08 L=5.04 C=5.05 V=73,200 | EMA9=5.09 VWAP=5.04 (+0.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=3.7x avg_vol=19,520 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.05 H=5.06 L=5.03 C=5.03 V=23,649 | EMA9=5.08 VWAP=5.04 (-0.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.2x avg_vol=20,180 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.05 H=5.05 L=5.01 C=5.02 V=5,514 | EMA9=5.07 VWAP=5.04 (-0.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.3x avg_vol=20,984 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.02 H=5.04 L=5.01 C=5.01 V=43,403 | EMA9=5.06 VWAP=5.04 (-0.6%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.0x avg_vol=21,392 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.02 H=5.06 L=5.01 C=5.05 V=46,996 | EMA9=5.05 VWAP=5.04 (+0.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.2x avg_vol=21,169 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.05 H=5.07 L=5.04 C=5.05 V=22,256 | EMA9=5.05 VWAP=5.04 (+0.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.0x avg_vol=21,907 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.05 H=5.14 L=5.05 C=5.07 V=152,804 | EMA9=5.05 VWAP=5.04 (+0.6%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=6.8x avg_vol=22,534 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.08 H=5.09 L=5.08 C=5.08 V=6,701 | EMA9=5.05 VWAP=5.04 (+0.8%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.3x avg_vol=22,828 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.10 H=5.10 L=5.06 C=5.06 V=22,522 | EMA9=5.06 VWAP=5.04 (+0.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.9x avg_vol=24,963 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.06 H=5.08 L=5.06 C=5.07 V=20,314 | EMA9=5.06 VWAP=5.04 (+0.6%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.8x avg_vol=24,934 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.08 H=5.11 L=5.08 C=5.11 V=16,931 | EMA9=5.06 VWAP=5.04 (+1.3%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.7x avg_vol=25,156 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.10 H=5.15 L=5.09 C=5.15 V=37,248 | EMA9=5.07 VWAP=5.04 (+2.1%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.5x avg_vol=25,507 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.15 H=5.16 L=5.12 C=5.13 V=30,357 | EMA9=5.09 VWAP=5.04 (+1.7%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.2x avg_vol=25,613 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.14 H=5.14 L=5.10 C=5.11 V=28,910 | EMA9=5.10 VWAP=5.04 (+1.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=1.1x avg_vol=26,317 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.12 H=5.12 L=5.11 C=5.12 V=6,675 | EMA9=5.10 VWAP=5.04 (+1.5%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.2x avg_vol=26,937 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.12 H=5.15 L=5.12 C=5.15 V=5,547 | EMA9=5.10 VWAP=5.04 (+2.1%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.2x avg_vol=27,475 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.16 H=5.17 L=5.15 C=5.17 V=21,038 | EMA9=5.11 VWAP=5.04 (+2.5%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.8x avg_vol=27,590 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.16 H=5.16 L=5.13 C=5.16 V=73,480 | EMA9=5.12 VWAP=5.05 (+2.3%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.7x avg_vol=27,697 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.16 H=5.16 L=5.15 C=5.16 V=11,207 | EMA9=5.13 VWAP=5.05 (+2.3%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.4x avg_vol=28,025 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.15 H=5.16 L=5.14 C=5.15 V=16,151 | EMA9=5.14 VWAP=5.05 (+2.0%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.5x avg_vol=29,376 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.14 H=5.17 L=5.14 C=5.17 V=64,316 | EMA9=5.14 VWAP=5.05 (+2.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.2x avg_vol=29,505 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.17 H=5.18 L=5.16 C=5.17 V=12,647 | EMA9=5.15 VWAP=5.05 (+2.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.4x avg_vol=29,346 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.17 H=5.17 L=5.17 C=5.17 V=9,047 | EMA9=5.15 VWAP=5.05 (+2.4%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=0.3x avg_vol=30,514 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.17 H=5.18 L=5.16 C=5.16 V=74,355 | EMA9=5.15 VWAP=5.05 (+2.2%) HOD=5.50 PM_H=5.22 | MACD=N/A vol_ratio=2.4x avg_vol=30,701 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.18 H=5.24 L=5.18 C=5.24 V=61,924 | EMA9=5.16 VWAP=5.05 (+3.7%) HOD=5.50 PM_H=5.24 | MACD=N/A vol_ratio=2.0x avg_vol=30,771 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.23 H=5.31 L=5.23 C=5.30 V=306,278 | EMA9=5.17 VWAP=5.07 (+4.6%) HOD=5.50 PM_H=5.31 | MACD=N/A vol_ratio=9.7x avg_vol=31,441 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.30 H=5.30 L=5.26 C=5.27 V=19,361 | EMA9=5.20 VWAP=5.07 (+4.0%) HOD=5.50 PM_H=5.31 | MACD=N/A vol_ratio=0.6x avg_vol=31,778 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.27 H=5.28 L=5.26 C=5.26 V=12,334 | EMA9=5.21 VWAP=5.07 (+3.8%) HOD=5.50 PM_H=5.31 | MACD=N/A vol_ratio=0.4x avg_vol=34,964 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.27 H=5.34 L=5.27 C=5.33 V=56,170 | EMA9=5.22 VWAP=5.07 (+5.1%) HOD=5.50 PM_H=5.34 | MACD=N/A vol_ratio=1.6x avg_vol=34,766 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.33 H=5.35 L=5.29 C=5.34 V=146,347 | EMA9=5.24 VWAP=5.08 (+5.2%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=4.2x avg_vol=34,786 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.35 H=5.35 L=5.32 C=5.32 V=88,709 | EMA9=5.26 VWAP=5.08 (+4.7%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=2.5x avg_vol=35,849 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.32 H=5.33 L=5.31 C=5.31 V=22,932 | EMA9=5.27 VWAP=5.08 (+4.5%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.6x avg_vol=38,738 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.31 H=5.35 L=5.31 C=5.32 V=41,879 | EMA9=5.28 VWAP=5.08 (+4.6%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=1.0x avg_vol=40,381 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.33 H=5.33 L=5.28 C=5.28 V=29,501 | EMA9=5.29 VWAP=5.08 (+3.8%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.7x avg_vol=40,837 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.28 H=5.31 L=5.28 C=5.31 V=21,773 | EMA9=5.29 VWAP=5.09 (+4.4%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.5x avg_vol=41,477 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.31 H=5.31 L=5.29 C=5.29 V=32,128 | EMA9=5.29 VWAP=5.09 (+4.0%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.8x avg_vol=42,025 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.29 H=5.30 L=5.25 C=5.26 V=63,669 | EMA9=5.29 VWAP=5.09 (+3.4%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=1.5x avg_vol=42,125 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.25 H=5.27 L=5.25 C=5.26 V=9,617 | EMA9=5.29 VWAP=5.09 (+3.4%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.2x avg_vol=42,682 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.26 H=5.30 L=5.26 C=5.29 V=20,426 | EMA9=5.28 VWAP=5.09 (+3.9%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.5x avg_vol=43,795 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.29 H=5.29 L=5.28 C=5.29 V=7,532 | EMA9=5.28 VWAP=5.09 (+3.9%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.2x avg_vol=42,963 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.28 H=5.30 L=5.27 C=5.29 V=16,082 | EMA9=5.28 VWAP=5.09 (+3.9%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.4x avg_vol=42,259 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.30 H=5.31 L=5.30 C=5.30 V=32,366 | EMA9=5.29 VWAP=5.09 (+4.1%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.8x avg_vol=41,201 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.30 H=5.32 L=5.29 C=5.32 V=12,943 | EMA9=5.29 VWAP=5.09 (+4.5%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.3x avg_vol=40,210 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.32 H=5.33 L=5.31 C=5.32 V=48,838 | EMA9=5.29 VWAP=5.09 (+4.4%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=1.2x avg_vol=39,439 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.31 H=5.33 L=5.31 C=5.32 V=41,161 | EMA9=5.30 VWAP=5.10 (+4.4%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=1.1x avg_vol=38,153 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.32 H=5.33 L=5.32 C=5.33 V=31,810 | EMA9=5.30 VWAP=5.10 (+4.6%) HOD=5.50 PM_H=5.35 | MACD=N/A vol_ratio=0.8x avg_vol=37,882 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.33 H=5.38 L=5.32 C=5.38 V=158,566 | EMA9=5.31 VWAP=5.10 (+5.4%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=4.1x avg_vol=38,212 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.37 H=5.38 L=5.36 C=5.38 V=34,857 | EMA9=5.32 VWAP=5.10 (+5.4%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=0.9x avg_vol=38,677 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.37 H=5.37 L=5.36 C=5.37 V=39,476 | EMA9=5.33 VWAP=5.11 (+5.2%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=1.0x avg_vol=40,832 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.37 H=5.37 L=5.35 C=5.36 V=41,724 | EMA9=5.34 VWAP=5.11 (+5.0%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=1.0x avg_vol=40,603 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.36 H=5.36 L=5.33 C=5.33 V=21,395 | EMA9=5.35 VWAP=5.11 (+4.3%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=0.5x avg_vol=40,730 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.33 H=5.37 L=5.33 C=5.36 V=28,070 | EMA9=5.34 VWAP=5.11 (+4.9%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=0.7x avg_vol=40,087 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.36 H=5.36 L=5.34 C=5.35 V=72,901 | EMA9=5.35 VWAP=5.11 (+4.6%) HOD=5.50 PM_H=5.38 | MACD=N/A vol_ratio=1.8x avg_vol=40,041 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.35 H=5.39 L=5.35 C=5.39 V=43,010 | EMA9=5.35 VWAP=5.11 (+5.4%) HOD=5.50 PM_H=5.39 | MACD=N/A vol_ratio=1.1x avg_vol=40,502 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.39 H=5.41 L=5.39 C=5.40 V=35,635 | EMA9=5.36 VWAP=5.12 (+5.6%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.9x avg_vol=41,104 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.41 H=5.41 L=5.39 C=5.40 V=39,626 | EMA9=5.36 VWAP=5.12 (+5.5%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=1.0x avg_vol=41,022 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.40 H=5.40 L=5.37 C=5.37 V=64,061 | EMA9=5.37 VWAP=5.12 (+4.9%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=1.6x avg_vol=41,295 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.37 H=5.40 L=5.37 C=5.39 V=23,695 | EMA9=5.37 VWAP=5.12 (+5.2%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.6x avg_vol=39,805 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.39 H=5.40 L=5.39 C=5.40 V=2,543 | EMA9=5.37 VWAP=5.12 (+5.4%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.1x avg_vol=40,976 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.40 H=5.40 L=5.38 C=5.39 V=44,738 | EMA9=5.38 VWAP=5.12 (+5.2%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=1.1x avg_vol=41,000 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.39 H=5.39 L=5.36 C=5.37 V=25,837 | EMA9=5.38 VWAP=5.12 (+4.8%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.6x avg_vol=40,637 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.37 H=5.38 L=5.36 C=5.38 V=27,726 | EMA9=5.38 VWAP=5.13 (+5.0%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.7x avg_vol=41,205 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.38 H=5.40 L=5.38 C=5.40 V=8,074 | EMA9=5.38 VWAP=5.13 (+5.4%) HOD=5.50 PM_H=5.41 | MACD=N/A vol_ratio=0.2x avg_vol=40,972 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.40 H=5.46 L=5.40 C=5.46 V=86,239 | EMA9=5.38 VWAP=5.13 (+6.5%) HOD=5.50 PM_H=5.47 | MACD=N/A vol_ratio=2.1x avg_vol=40,918 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.47 H=5.50 L=5.46 C=5.48 V=22,598 | EMA9=5.40 VWAP=5.13 (+6.8%) HOD=5.50 PM_H=5.50 | MACD=N/A vol_ratio=0.6x avg_vol=40,493 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.48 H=5.57 L=5.47 C=5.55 V=245,955 | EMA9=5.42 VWAP=5.14 (+7.9%) HOD=5.57 PM_H=5.57 | MACD=N/A vol_ratio=5.8x avg_vol=42,117 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.54 H=5.59 L=5.54 C=5.58 V=125,075 | EMA9=5.44 VWAP=5.15 (+8.3%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=2.9x avg_vol=42,465 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.57 H=5.58 L=5.54 C=5.56 V=201,192 | EMA9=5.47 VWAP=5.16 (+7.7%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=4.3x avg_vol=46,293 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.56 H=5.57 L=5.53 C=5.53 V=76,827 | EMA9=5.49 VWAP=5.17 (+7.0%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=1.6x avg_vol=47,346 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.54 H=5.54 L=5.51 C=5.51 V=72,247 | EMA9=5.50 VWAP=5.17 (+6.6%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=1.4x avg_vol=51,223 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.52 H=5.53 L=5.49 C=5.52 V=25,772 | EMA9=5.50 VWAP=5.17 (+6.7%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.5x avg_vol=52,462 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.51 H=5.54 L=5.48 C=5.53 V=48,595 | EMA9=5.50 VWAP=5.17 (+6.9%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.9x avg_vol=52,623 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.52 H=5.54 L=5.51 C=5.51 V=44,209 | EMA9=5.51 VWAP=5.18 (+6.5%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.8x avg_vol=52,891 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.51 L=5.44 C=5.50 V=146,748 | EMA9=5.51 VWAP=5.18 (+6.2%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=2.7x avg_vol=53,698 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.51 L=5.50 C=5.50 V=17,683 | EMA9=5.51 VWAP=5.18 (+6.1%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.3x avg_vol=53,083 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.53 L=5.44 C=5.44 V=49,292 | EMA9=5.51 VWAP=5.18 (+4.9%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.9x avg_vol=54,814 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.45 H=5.52 L=5.45 C=5.51 V=61,735 | EMA9=5.49 VWAP=5.19 (+6.3%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=1.2x avg_vol=51,905 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.51 H=5.52 L=5.48 C=5.50 V=29,036 | EMA9=5.50 VWAP=5.19 (+6.0%) HOD=5.59 PM_H=5.59 | MACD=N/A vol_ratio=0.6x avg_vol=52,515 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.62 L=5.35 C=5.40 V=886,468 | EMA9=5.50 VWAP=5.22 (+3.5%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=16.6x avg_vol=53,524 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.40 H=5.46 L=5.38 C=5.41 V=228,069 | EMA9=5.48 VWAP=5.22 (+3.6%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=4.3x avg_vol=52,970 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.41 H=5.53 L=5.39 C=5.51 V=492,255 | EMA9=5.46 VWAP=5.23 (+5.3%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=8.9x avg_vol=55,395 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.51 H=5.59 L=5.49 C=5.51 V=193,865 | EMA9=5.47 VWAP=5.24 (+5.2%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=3.3x avg_vol=58,239 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.57 L=5.49 C=5.50 V=310,619 | EMA9=5.48 VWAP=5.25 (+4.8%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=4.9x avg_vol=63,776 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.50 H=5.53 L=5.46 C=5.51 V=191,048 | EMA9=5.48 VWAP=5.25 (+5.0%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=2.9x avg_vol=66,878 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.51 H=5.53 L=5.43 C=5.44 V=153,426 | EMA9=5.49 VWAP=5.26 (+3.5%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=2.1x avg_vol=72,615 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.44 H=5.44 L=5.31 C=5.32 V=285,537 | EMA9=5.48 VWAP=5.26 (+1.1%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=3.8x avg_vol=76,069 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.31 H=5.41 L=5.29 C=5.39 V=207,054 | EMA9=5.45 VWAP=5.26 (+2.6%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=2.6x avg_vol=78,545 bars=50 | sq=ARMED armed=$5.02
+[09:40 ET] CRWG CHART | O=5.40 H=5.41 L=5.38 C=5.40 V=172,931 | EMA9=5.44 VWAP=5.26 (+2.6%) HOD=5.62 PM_H=5.59 | MACD=N/A vol_ratio=2.1x avg_vol=83,073 bars=50 | sq=ARMED armed=$5.02
+  [CRWG] SQ_SEED_STALE_RESET: dropped arm @ $5.0200 (stop $4.9800) — current price $5.4150 is 7.9% above trigger (threshold 2.0%)
+🔥 Seeded CRWG: 22267 ticks → 50 bars, EMA=5.4303 (445 ticks/bar avg)
+✅ Subscribed: CRWG
+[09:40 ET] CRCG CHART | O=3.38 H=3.38 L=3.38 C=3.38 V=400 | EMA9=none VWAP=3.34 (+1.0%) HOD=3.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+[09:41 ET] OKLL SQ | SQ_PRIMED: vol=4.8x avg, bar_vol=134,091, price=$9.6200 above VWAP ($9.1128)
+  ARMED entry=9.5000 stop=9.0814 R=0.4186 score=9.3 level=pm_high setup_type=squeeze [PROBE=50%] why=squeeze: base=5.0;vol_extra=+2.3;vwap_dist=+1.0(6%);pm_high_break=+1.0
+[09:41:00 ET] OKLL SQ | ENTRY SIGNAL @ 9.5000 (break 9.5000) stop=9.0814 R=0.4186 score=9.3 setup_type=squeeze why=squeeze: base=5.0;vol_extra=+2.3;vwap_dist=+1.0(6%);pm_high_break=+1.0
+  Sizing: equity=$29,600 risk=$1,036 qty=2474 notional=$23,503 (scaled max=$100,000)
+🟩 ENTRY: OKLL qty=1237 limit=$9.52 stop=$9.0814 R=$0.4186 score=9.3 type=squeeze
+  ALPACA ORDER: 7de14e32-db9d-41a4-8947-347e310a750c BUY 1237 OKLL @ $9.52
+🔥 Seeded CRCG: 10902 ticks → 50 bars, EMA=3.3082 (218 ticks/bar avg)
+✅ Subscribed: CRCG
+📊 Scanner: 5 new candidates, 5 new subs, 5 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+  ORDER TIMEOUT: cancelling 7de14e32-db9d-41a4-8947-347e310a750c
+[09:42 ET] BIRD SQ | SQ_PRIMED: vol=6.0x avg, bar_vol=134,919, price=$9.2700 above VWAP ($3.6437)
+  SQ_NO_ARM: invalid_r (entry=3.9800 stop=8.4200)
+[09:43 ET] BIRD SQ | SQ_PRIMED: vol=11.3x avg, bar_vol=280,997, price=$10.2200 above VWAP ($3.9559)
+  SQ_NO_ARM: invalid_r (entry=3.9800 stop=8.0800)
+  [SEED] KIDZ: 50109 ticks so far, jumping to recent 90min for full context
+[09:43 ET] KIDZ SQ | SQ_PRIMED: vol=285.6x avg, bar_vol=198,421, price=$2.7500 above VWAP ($2.7278)
+  ARMED entry=3.0200 stop=2.9000 R=0.1200 score=10.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+🔥 Seeded KIDZ: 51110 ticks → 50 bars, EMA=2.4081, ARMED (1022 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+
+🔄 Running scanner at 09:43:16 ET...
+Error 162, reqId 316: Historical Market Data Service error message:API scanner subscription cancelled: 316
+  [float_cache] Cleared 12 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 316 (reqId=316, symbol=?)
+  [FMP] NICM: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=NICM&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [yfinance] NICM: Failed to perform, curl: (56) Recv failure: Connection reset by peer. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+  [FMP] QBTX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QBTX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [yfinance] QBTX: Failed to perform, curl: (56) Recv failure: Connection reset by peer. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+[09:44 ET] BIRD SQ | SQ_REJECT: not_new_hod (bar_high=$10.9200 < HOD=$10.9600)
+  [FMP] QUBX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=QUBX&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+  [yfinance] QUBX: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+  [FMP] SMU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/stable/shares-float?symbol=SMU&apikey=SdlXffaC05i4oumVlRxIHOqNOkLJ2TMU
+
+💀 WATCHDOG: main thread frozen for 122s — exiting hard for restart.
+ALERT: bot_v3_hybrid.py died at Wed Apr 15 07:45:47 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
+=== Shutting down at Wed Apr 15 07:45:47 MDT 2026 ===
+Pushing logs...
