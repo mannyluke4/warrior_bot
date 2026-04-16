@@ -372,19 +372,26 @@ def reconcile_positions_on_startup():
     for pos in positions:
         symbol = pos.symbol
         qty = int(pos.qty)
+        qty_available = int(getattr(pos, 'qty_available', qty) or 0)
         avg_entry = float(pos.avg_entry_price)
         unrealized_pnl = float(pos.unrealized_pl)
         market_value = float(pos.market_value)
 
+        # Skip positions fully held by pending orders — they're in-flight, not orphan
+        if qty_available == 0:
+            print(f"  ⏸ IN-FLIGHT: {symbol} qty={qty} — all shares held_for_orders, "
+                  f"skipping adoption/flatten (pending exit will resolve)", flush=True)
+            continue
+
         print(f"  ⚠️ ORPHAN POSITION FOUND: {symbol} qty={qty} "
-              f"entry=${avg_entry:.2f} unrealized=${unrealized_pnl:+,.2f} "
-              f"value=${market_value:,.2f}", flush=True)
+              f"(available={qty_available}) entry=${avg_entry:.2f} "
+              f"unrealized=${unrealized_pnl:+,.2f} value=${market_value:,.2f}", flush=True)
 
         if state.open_position is None:
             state.open_position = {
                 "symbol": symbol,
                 "entry": avg_entry,
-                "qty": qty,
+                "qty": qty_available,  # only adopt the free qty, not shares held for pending orders
                 "r": avg_entry * 0.03,
                 "stop": avg_entry * 0.97,
                 "score": 0.0,
@@ -396,18 +403,18 @@ def reconcile_positions_on_startup():
                 "is_parabolic": False,
                 "fill_confirmed": True,
             }
-            print(f"  → Adopted {symbol} into bot state. Exit management active.", flush=True)
+            print(f"  → Adopted {symbol} qty={qty_available} into bot state. Exit management active.", flush=True)
         else:
             print(f"  → Bot already has position in {state.open_position['symbol']}. "
                   f"CLOSING orphan {symbol}.", flush=True)
             try:
                 from alpaca.trading.requests import MarketOrderRequest
                 req = MarketOrderRequest(
-                    symbol=symbol, qty=qty,
+                    symbol=symbol, qty=qty_available,
                     side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
                 )
                 state.alpaca.submit_order(req)
-                print(f"  → Orphan {symbol} close order submitted.", flush=True)
+                print(f"  → Orphan {symbol} close order submitted (qty={qty_available}).", flush=True)
             except Exception as e:
                 print(f"  → FAILED to close orphan {symbol}: {e}", flush=True)
 
@@ -597,16 +604,26 @@ def periodic_position_sync():
             state.open_position = None
 
     # Case 2: Alpaca has a position the bot doesn't know about
+    # IMPORTANT: skip positions where all shares are held_for_orders (qty_available=0).
+    # Those aren't orphans — they're in-flight on a pending exit order.
+    # Trying to flatten them produces "insufficient qty available" errors +
+    # phantom P&L in exit_trade (see 2026-04-16_morning_report.md).
     if not state.open_position:
         for symbol, pos in alpaca_symbols.items():
             qty = int(pos.qty)
+            qty_available = int(getattr(pos, 'qty_available', qty) or 0)
             avg_entry = float(pos.avg_entry_price)
+            if qty_available == 0:
+                print(f"  ⏸ IN-FLIGHT POSITION: Alpaca holds {symbol} qty={qty} "
+                      f"but all shares held_for_orders. Not adopting — waiting "
+                      f"for pending exit to resolve.", flush=True)
+                continue
             print(f"  ⚠️ ORPHAN DETECTED: Alpaca holds {symbol} qty={qty} "
-                  f"entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
+                  f"(available={qty_available}) entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
             state.open_position = {
                 "symbol": symbol,
                 "entry": avg_entry,
-                "qty": qty,
+                "qty": qty_available,  # adopt only the free qty, not shares held for other orders
                 "r": avg_entry * 0.03,
                 "stop": avg_entry * 0.97,
                 "score": 0.0,
@@ -1839,6 +1856,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     else:
         limit_price = round(price - 0.03, 2)
 
+    order_submitted = False
     try:
         req = LimitOrderRequest(
             symbol=symbol,
@@ -1850,6 +1868,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         )
         alpaca_order = state.alpaca.submit_order(req)
         print(f"  ALPACA EXIT: {alpaca_order.id} SELL {qty} {symbol} @ ${limit_price:.2f}", flush=True)
+        order_submitted = True
     except Exception as e:
         print(f"  ALPACA EXIT FAILED: {e} — trying market order", flush=True)
         try:
@@ -1862,8 +1881,20 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
             )
             alpaca_order = state.alpaca.submit_order(req)
             print(f"  ALPACA MARKET EXIT: {alpaca_order.id} SELL {qty} {symbol}", flush=True)
+            order_submitted = True
         except Exception as e2:
             print(f"  ALPACA MARKET EXIT ALSO FAILED: {e2}", flush=True)
+
+    # Phantom-P&L guard: if BOTH limit and market submissions were rejected
+    # (e.g. "insufficient qty available" when shares are held_for_orders on
+    # another open exit order), DO NOT record P&L. Zero shares changed hands,
+    # zero P&L. Recording here is what produced today's -$258 phantom-loss
+    # divergence from Alpaca truth (see 2026-04-16_morning_report.md).
+    if not order_submitted:
+        print(f"  ⚠️ EXIT ABORTED: {symbol} qty={qty} reason={reason} — "
+              f"no order accepted by Alpaca, state unchanged, no P&L recorded",
+              flush=True)
+        return
 
     pos = state.open_position
     pnl = (price - pos["entry"]) * qty
