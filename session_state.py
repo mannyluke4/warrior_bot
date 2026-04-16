@@ -295,18 +295,20 @@ def decide_boot_mode(fresh: bool = False, scrub: bool = False) -> tuple[str, str
 # ══════════════════════════════════════════════════════════════════════
 
 def flatten_orphan_position(
-    alpaca_client,
+    broker,
     symbol: str,
     qty: int,
     avg_cost: float,
     current_price: float | None = None,
 ) -> None:
-    """Flatten a live Alpaca position that has no corresponding open_trades.json
+    """Flatten a live broker position that has no corresponding open_trades.json
     record. Could mean: (a) crash before the writer ran, (b) a manually placed
     position, or (c) a persistence-writer bug we can't detect at resume time.
 
     We can't distinguish (a)/(b)/(c), so this action is LOUD and gated by
     WB_RESUME_FLATTEN_ORPHANS — Manny can flip it off if it fires wrong.
+
+    `broker` is a BrokerClient (from broker.py) — AlpacaBroker or IBKRBroker.
     """
     if os.getenv("WB_RESUME_FLATTEN_ORPHANS", "1") != "1":
         print(
@@ -328,16 +330,7 @@ def flatten_orphan_position(
     )
 
     try:
-        # Import lazily so the module doesn't hard-require alpaca to be
-        # installed for unit tests of pure-state helpers.
-        from alpaca.trading.requests import MarketOrderRequest
-        from alpaca.trading.enums import OrderSide, TimeInForce
-
-        req = MarketOrderRequest(
-            symbol=symbol, qty=qty,
-            side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
-        )
-        alpaca_client.submit_order(req)
+        broker.submit_market(symbol, qty, "SELL")
         print(f"  ORPHAN FLATTEN submitted for {symbol}", flush=True)
     except Exception as e:
         print(f"  ORPHAN FLATTEN FAILED: {symbol}: {e}", flush=True)

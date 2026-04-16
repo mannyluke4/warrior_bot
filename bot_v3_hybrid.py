@@ -39,6 +39,13 @@ from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 
+from broker import (
+    make_broker, BrokerOrder, BrokerPosition,
+    STATUS_SUBMITTED, STATUS_PARTIALLY, STATUS_FILLED,
+    STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED, STATUS_UNKNOWN,
+    TERMINAL_STATUSES,
+)
+
 # Load .env if present (same as simulate.py — ensures env vars are set)
 load_dotenv()
 
@@ -87,6 +94,11 @@ SHORT_STRATEGY = os.getenv("WB_SHORT_STRATEGY", "B").upper()
 SHORT_TIME_STOP_MIN = float(os.getenv("WB_SHORT_TIME_STOP_MIN", "60"))
 if SHORT_ENABLED:
     from short_detector import make_short_detector
+
+# Broker backend (Phase 1 of Alpaca→IBKR execution migration).
+# "alpaca" = legacy path (default), "ibkr" = new event-driven path.
+# All order flow in this file goes through state.broker — never state.alpaca.
+BROKER_BACKEND = os.getenv("WB_BROKER", "alpaca").lower()
 
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
@@ -225,7 +237,8 @@ class BotState:
     """Holds all mutable bot state."""
     def __init__(self):
         self.ib: IB = None
-        self.alpaca: TradingClient = None  # V3: Alpaca for execution
+        self.alpaca: TradingClient = None  # raw client, owned by AlpacaBroker; callers use state.broker
+        self.broker = None  # BrokerClient — routes all execution. Initialized in main() after connect().
         self.active_symbols: set[str] = set()
         self.contracts: dict[str, Stock] = {}
         self.tickers: dict = {}
@@ -364,12 +377,13 @@ def start_watchdog():
 
 
 def get_account_equity() -> float:
-    """Get current account equity from Alpaca."""
+    """Get current account equity from the broker."""
     try:
-        account = _alpaca_call(state.alpaca.get_account)
-        return float(account.equity)
+        eq = state.broker.get_account_equity()
+        if eq > 0:
+            return eq
     except Exception as e:
-        print(f"  Failed to fetch Alpaca account equity: {e}", flush=True)
+        print(f"  Failed to fetch broker account equity: {e}", flush=True)
     return STARTING_EQUITY  # Fallback
 
 
@@ -378,24 +392,24 @@ def get_account_equity() -> float:
 # ══════════════════════════════════════════════════════════════════════
 
 def reconcile_positions_on_startup():
-    """Fix 1: Check Alpaca for positions the bot doesn't know about."""
+    """Fix 1: Check broker for positions the bot doesn't know about."""
     try:
-        positions = _alpaca_call(state.alpaca.get_all_positions)
+        positions = state.broker.get_positions()
     except Exception as e:
         print(f"  Position sync error: {e}", flush=True)
         return
 
     if not positions:
-        print("  Position sync: No open positions on Alpaca. Clean start.", flush=True)
+        print("  Position sync: No open positions at broker. Clean start.", flush=True)
         return
 
     for pos in positions:
         symbol = pos.symbol
-        qty = int(pos.qty)
-        qty_available = int(getattr(pos, 'qty_available', qty) or 0)
-        avg_entry = float(pos.avg_entry_price)
-        unrealized_pnl = float(pos.unrealized_pl)
-        market_value = float(pos.market_value)
+        qty = pos.qty
+        qty_available = pos.qty_available
+        avg_entry = pos.avg_entry_price
+        unrealized_pnl = pos.unrealized_pnl
+        market_value = pos.market_value
 
         # Skip positions fully held by pending orders — they're in-flight, not orphan
         if qty_available == 0:
@@ -428,12 +442,7 @@ def reconcile_positions_on_startup():
             print(f"  → Bot already has position in {state.open_position['symbol']}. "
                   f"CLOSING orphan {symbol}.", flush=True)
             try:
-                from alpaca.trading.requests import MarketOrderRequest
-                req = MarketOrderRequest(
-                    symbol=symbol, qty=qty_available,
-                    side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
-                )
-                state.alpaca.submit_order(req)
+                state.broker.submit_market(symbol, qty_available, "SELL")
                 print(f"  → Orphan {symbol} close order submitted (qty={qty_available}).", flush=True)
             except Exception as e:
                 print(f"  → FAILED to close orphan {symbol}: {e}", flush=True)
@@ -493,25 +502,24 @@ def resume_reconcile():
     cancelled_buy = 0
     cancelled_sell = 0
     try:
-        open_orders = _alpaca_call(state.alpaca.get_orders) or []
+        open_orders = state.broker.get_open_orders() or []
     except Exception as e:
-        print(f"  RESUME: get_orders failed: {e}", flush=True)
+        print(f"  RESUME: get_open_orders failed: {e}", flush=True)
         open_orders = []
     for o in open_orders:
         try:
-            side = str(getattr(o, "side", "")).lower()
-            is_buy = "buy" in side
-            state.alpaca.cancel_order_by_id(o.id)
+            is_buy = o.side == "BUY"
+            state.broker.cancel_order(o.order_id)
             if is_buy:
                 cancelled_buy += 1
-                print(f"  RESUME: cancelled pending BUY {o.id} {o.symbol} "
-                      f"@ ${float(getattr(o, 'limit_price', 0) or 0):.2f}", flush=True)
+                print(f"  RESUME: cancelled pending BUY {o.order_id} {o.symbol} "
+                      f"@ ${o.limit_price:.2f}", flush=True)
             else:
                 cancelled_sell += 1
-                print(f"  RESUME: cancelled standing SELL {o.id} {o.symbol} "
+                print(f"  RESUME: cancelled standing SELL {o.order_id} {o.symbol} "
                       f"(invariant: no standing SELLs during healthy op)", flush=True)
         except Exception as e:
-            print(f"  RESUME: cancel {o.id} failed: {e}", flush=True)
+            print(f"  RESUME: cancel {o.order_id} failed: {e}", flush=True)
     if cancelled_buy or cancelled_sell:
         print(f"  RESUME: {cancelled_buy} BUYs + {cancelled_sell} SELLs cancelled", flush=True)
 
@@ -519,16 +527,16 @@ def resume_reconcile():
     persisted = ss.read_open_trades()
     by_symbol = {r["symbol"]: r for r in persisted}
     try:
-        positions = _alpaca_call(state.alpaca.get_all_positions) or []
+        positions = state.broker.get_positions() or []
     except Exception as e:
-        print(f"  RESUME: get_all_positions failed: {e}", flush=True)
+        print(f"  RESUME: get_positions failed: {e}", flush=True)
         positions = []
 
     rehydrated_symbols: set[str] = set()
     for apos in positions:
         sym = apos.symbol
-        alpaca_qty = int(apos.qty)
-        alpaca_entry = float(apos.avg_entry_price)
+        broker_qty = apos.qty
+        broker_entry = apos.avg_entry_price
 
         rec = by_symbol.get(sym)
         if rec is None:
@@ -536,29 +544,29 @@ def resume_reconcile():
             # WB_RESUME_FLATTEN_ORPHANS). No current-price estimate available
             # pre-live-ticks; helper omits impact line when None.
             ss.flatten_orphan_position(
-                state.alpaca, sym, alpaca_qty, alpaca_entry, current_price=None,
+                state.broker, sym, broker_qty, broker_entry, current_price=None,
             )
             continue
 
-        # Match: rehydrate with qty drift reconciliation. Alpaca is truth.
+        # Match: rehydrate with qty drift reconciliation. Broker is truth.
         persisted_qty = int(rec.get("qty", 0))
-        if persisted_qty != alpaca_qty:
+        if persisted_qty != broker_qty:
             print(f"⚠️  REHYDRATE QTY DRIFT: {sym} persisted={persisted_qty} "
-                  f"alpaca={alpaca_qty} — trusting Alpaca "
+                  f"broker={broker_qty} — trusting broker "
                   f"(likely partial fill during crash)", flush=True)
             rec = dict(rec)
-            rec["qty"] = alpaca_qty
-        # (Alpaca reporting MORE than persisted is also suspicious — we still
-        # trust Alpaca but flag for audit.)
-        if alpaca_qty > persisted_qty:
-            print(f"⚠️  REHYDRATE QTY DRIFT UP: {sym} alpaca={alpaca_qty} > "
+            rec["qty"] = broker_qty
+        # (Broker reporting MORE than persisted is also suspicious — we still
+        # trust the broker but flag for audit.)
+        if broker_qty > persisted_qty:
+            print(f"⚠️  REHYDRATE QTY DRIFT UP: {sym} broker={broker_qty} > "
                   f"persisted={persisted_qty} — unexpected. Flagging for audit.",
                   flush=True)
 
         if state.open_position is None:
             state.open_position = _trade_record_to_open_position(rec)
             rehydrated_symbols.add(sym)
-            print(f"  RESUME: rehydrated {sym} qty={alpaca_qty} "
+            print(f"  RESUME: rehydrated {sym} qty={broker_qty} "
                   f"entry=${rec['entry_price']:.2f} stop=${rec['stop']:.2f} "
                   f"peak=${rec['peak']:.2f} mode={rec['trail_mode']}", flush=True)
         else:
@@ -569,7 +577,7 @@ def resume_reconcile():
                   f"filled by {state.open_position['symbol']} — flattening {sym}",
                   flush=True)
             ss.flatten_orphan_position(
-                state.alpaca, sym, alpaca_qty, alpaca_entry, current_price=None,
+                state.broker, sym, broker_qty, broker_entry, current_price=None,
             )
 
     # Step 4: restore risk counters.
@@ -586,21 +594,21 @@ def resume_reconcile():
     # back so the on-disk state matches the live in-memory state.
     persist_open_trades()
 
-    # Sanity: stale persisted records for positions that no longer exist on
-    # Alpaca (closed during crash window) would linger without this sync.
+    # Sanity: stale persisted records for positions that no longer exist at
+    # the broker (closed during crash window) would linger without this sync.
     # persist_open_trades already wrote state.open_position (or []) — if the
-    # previous open_trades.json had a symbol that Alpaca no longer reports,
+    # previous open_trades.json had a symbol the broker no longer reports,
     # that record is now dropped from disk. Log the drop for post-mortem.
     dropped = set(by_symbol.keys()) - rehydrated_symbols
     for sym in dropped:
-        print(f"  RESUME: persisted record for {sym} has no live Alpaca position "
+        print(f"  RESUME: persisted record for {sym} has no live broker position "
               f"— dropping (likely closed during crash window)", flush=True)
 
     print("🔁 RESUME: reconcile complete", flush=True)
 
 
 def periodic_position_sync():
-    """Fix 3: Every 60s, verify bot state matches Alpaca reality."""
+    """Fix 3: Every 60s, verify bot state matches broker reality."""
     now = datetime.now(ET)
     if hasattr(state, '_last_position_sync') and state._last_position_sync and \
        (now - state._last_position_sync).total_seconds() < 60:
@@ -608,37 +616,37 @@ def periodic_position_sync():
     state._last_position_sync = now
 
     try:
-        positions = _alpaca_call(state.alpaca.get_all_positions)
+        positions = state.broker.get_positions()
     except Exception as e:
         print(f"  Position sync error: {e}", flush=True)
         return
 
-    alpaca_symbols = {pos.symbol: pos for pos in positions}
+    broker_symbols = {pos.symbol: pos for pos in positions}
 
-    # Case 1: Bot thinks it has a position, but Alpaca doesn't
+    # Case 1: Bot thinks it has a position, but the broker doesn't
     if state.open_position and state.open_position.get("fill_confirmed"):
         bot_symbol = state.open_position["symbol"]
-        if bot_symbol not in alpaca_symbols:
+        if bot_symbol not in broker_symbols:
             print(f"  ⚠️ POSITION DESYNC: Bot thinks it holds {bot_symbol}, "
-                  f"but Alpaca shows no position. Clearing bot state.", flush=True)
+                  f"but broker shows no position. Clearing bot state.", flush=True)
             state.open_position = None
 
-    # Case 2: Alpaca has a position the bot doesn't know about
+    # Case 2: Broker has a position the bot doesn't know about
     # IMPORTANT: skip positions where all shares are held_for_orders (qty_available=0).
     # Those aren't orphans — they're in-flight on a pending exit order.
     # Trying to flatten them produces "insufficient qty available" errors +
     # phantom P&L in exit_trade (see 2026-04-16_morning_report.md).
     if not state.open_position:
-        for symbol, pos in alpaca_symbols.items():
-            qty = int(pos.qty)
-            qty_available = int(getattr(pos, 'qty_available', qty) or 0)
-            avg_entry = float(pos.avg_entry_price)
+        for symbol, pos in broker_symbols.items():
+            qty = pos.qty
+            qty_available = pos.qty_available
+            avg_entry = pos.avg_entry_price
             if qty_available == 0:
-                print(f"  ⏸ IN-FLIGHT POSITION: Alpaca holds {symbol} qty={qty} "
+                print(f"  ⏸ IN-FLIGHT POSITION: broker holds {symbol} qty={qty} "
                       f"but all shares held_for_orders. Not adopting — waiting "
                       f"for pending exit to resolve.", flush=True)
                 continue
-            print(f"  ⚠️ ORPHAN DETECTED: Alpaca holds {symbol} qty={qty} "
+            print(f"  ⚠️ ORPHAN DETECTED: broker holds {symbol} qty={qty} "
                   f"(available={qty_available}) entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
             state.open_position = {
                 "symbol": symbol,
@@ -660,39 +668,31 @@ def periodic_position_sync():
     # Case 3: Quantities mismatch
     if state.open_position and state.open_position.get("fill_confirmed"):
         bot_symbol = state.open_position["symbol"]
-        if bot_symbol in alpaca_symbols:
-            alp_qty = int(alpaca_symbols[bot_symbol].qty)
+        if bot_symbol in broker_symbols:
+            brk_qty = broker_symbols[bot_symbol].qty
             bot_qty = state.open_position["qty"]
-            if alp_qty != bot_qty:
+            if brk_qty != bot_qty:
                 print(f"  ⚠️ QTY MISMATCH: Bot thinks {bot_qty} shares, "
-                      f"Alpaca shows {alp_qty}. Updating bot.", flush=True)
-                state.open_position["qty"] = alp_qty
+                      f"broker shows {brk_qty}. Updating bot.", flush=True)
+                state.open_position["qty"] = brk_qty
 
 
 def wait_for_fill(order_id: str, timeout: int = 15):
-    """Fix 2: Wait for Alpaca order fill with timeout. Returns (price, qty) or (None, 0)."""
+    """Fix 2: Wait for broker order fill with timeout. Returns (price, qty) or (None, 0)."""
     for _ in range(timeout * 2):
-        try:
-            o = state.alpaca.get_order_by_id(order_id)
-            if o.status == 'filled':
-                return float(o.filled_avg_price), int(float(o.filled_qty))
-            if o.status in ('cancelled', 'expired', 'rejected'):
+        o = state.broker.get_order_status(order_id)
+        if o is not None:
+            if o.status == STATUS_FILLED:
+                return o.filled_avg_price, o.filled_qty
+            if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
                 return None, 0
-        except Exception:
-            pass
         time.sleep(0.5)
     # Timeout — cancel
-    try:
-        state.alpaca.cancel_order_by_id(order_id)
-    except Exception:
-        pass
+    state.broker.cancel_order(order_id)
     # Final check — order may have filled between cancel and check
-    try:
-        o = state.alpaca.get_order_by_id(order_id)
-        if o.status == 'filled':
-            return float(o.filled_avg_price), int(float(o.filled_qty))
-    except Exception:
-        pass
+    o = state.broker.get_order_status(order_id)
+    if o is not None and o.status == STATUS_FILLED:
+        return o.filled_avg_price, o.filled_qty
     return None, 0
 
 
@@ -731,25 +731,23 @@ def init_detectors(symbol: str):
         state.ct_detectors[symbol] = ct
 
     if SHORT_ENABLED and symbol not in state.short_detectors:
-        # Pre-check Alpaca shortability. Paper accounts have a much narrower
-        # shortable universe than live — many small-caps in our watchlist
-        # will reject with code 42210000. Skip the detector entirely if
-        # Alpaca says the name isn't shortable.
+        # Pre-check broker shortability. Paper Alpaca has a narrow shortable
+        # universe; IBKR's is much broader. Skip the detector entirely if
+        # the broker says this name can't be shorted here.
         if symbol in state.short_unsupported:
             pass  # previously resolved as non-shortable, skip silently
         else:
             if symbol not in state.short_supported:
                 try:
-                    asset = _alpaca_call(state.alpaca.get_asset, symbol, timeout=5)
-                    if bool(getattr(asset, "shortable", False)):
+                    if state.broker.is_shortable(symbol):
                         state.short_supported.add(symbol)
                     else:
                         state.short_unsupported.add(symbol)
-                        print(f"  SHORT_SKIP: {symbol} not shortable at Alpaca — "
+                        print(f"  SHORT_SKIP: {symbol} not shortable at broker — "
                               f"no short detector", flush=True)
                 except Exception as e:
                     state.short_unsupported.add(symbol)
-                    print(f"  SHORT_SKIP: {symbol} asset lookup failed ({e}) — "
+                    print(f"  SHORT_SKIP: {symbol} shortability lookup failed ({e}) — "
                           f"no short detector", flush=True)
             if symbol in state.short_supported:
                 sd = make_short_detector(SHORT_STRATEGY)
@@ -1527,7 +1525,7 @@ def check_triggers(symbol: str, price: float):
 
 def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
                              original_limit, position_attr, log_prefix=""):
-    """Poll Alpaca for fill. On timeout: cancel + reprice to current market +
+    """Poll broker for fill. On timeout: cancel + reprice to current market +
     resubmit, up to ENTRY_MAX_RETRIES times. Aborts if market runs above
     original_limit × (1 + ENTRY_MAX_CHASE_PCT/100). See directive
     2026-04-15_directive_entry_slippage_retry.md.
@@ -1540,11 +1538,11 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
         filled = False
         terminal = False
         while time.time() < deadline:
-            try:
-                o = state.alpaca.get_order_by_id(cur_order_id)
-                if o.status == 'filled':
-                    actual_price = float(o.filled_avg_price)
-                    actual_qty = int(float(o.filled_qty))
+            o = state.broker.get_order_status(cur_order_id)
+            if o is not None:
+                if o.status == STATUS_FILLED:
+                    actual_price = o.filled_avg_price
+                    actual_qty = o.filled_qty
                     pos = getattr(state, position_attr)
                     if pos and pos.get("order_id") == cur_order_id:
                         pos["entry"] = actual_price
@@ -1566,12 +1564,10 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
                             persist_open_trades()
                     filled = True
                     break
-                if o.status in ('cancelled', 'expired', 'rejected'):
+                if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
                     print(f"  {log_prefix}ORDER {o.status.upper()}: {symbol} {cur_order_id}", flush=True)
                     terminal = True
                     break
-            except Exception as e:
-                print(f"  {log_prefix}FILL CHECK ERROR: {e}", flush=True)
             time.sleep(0.5)
 
         if filled:
@@ -1588,8 +1584,7 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             print(f"  {log_prefix}ORDER TIMEOUT: cancelling {cur_order_id}"
                   + (f" after {attempt} retries" if attempt > 0 else ""),
                   flush=True)
-            try: state.alpaca.cancel_order_by_id(cur_order_id)
-            except Exception: pass
+            state.broker.cancel_order(cur_order_id)
             pos = getattr(state, position_attr)
             if pos and pos.get("order_id") == cur_order_id:
                 setattr(state, position_attr, None)
@@ -1597,8 +1592,7 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             return
 
         # Retry: cancel current, reprice to current market, resubmit
-        try: state.alpaca.cancel_order_by_id(cur_order_id)
-        except Exception: pass
+        state.broker.cancel_order(cur_order_id)
         time.sleep(0.3)
 
         cur_price = state.last_tick_price.get(symbol, cur_limit) or cur_limit
@@ -1620,15 +1614,11 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
               f"new_limit=${new_limit:.2f} (slip=${slip:.3f})", flush=True)
 
         try:
-            req = LimitOrderRequest(
-                symbol=symbol, qty=qty, side=OrderSide.BUY,
-                time_in_force=TimeInForce.DAY, limit_price=new_limit, extended_hours=True,
-            )
-            new_alpaca_order = state.alpaca.submit_order(req)
+            new_order = state.broker.submit_limit(symbol, qty, "BUY", new_limit)
             prev_id = cur_order_id
-            cur_order_id = str(new_alpaca_order.id)
+            cur_order_id = new_order.order_id
             cur_limit = new_limit
-            print(f"  {log_prefix}ALPACA ORDER: {cur_order_id} BUY {qty} {symbol} @ ${new_limit:.2f} (retry)", flush=True)
+            print(f"  {log_prefix}BROKER ORDER: {cur_order_id} BUY {qty} {symbol} @ ${new_limit:.2f} (retry)", flush=True)
             pos = getattr(state, position_attr)
             if pos and pos.get("order_id") == prev_id:
                 pos["order_id"] = cur_order_id
@@ -1691,19 +1681,11 @@ def enter_trade(symbol: str, armed, setup_type: str):
           f"type={setup_type}", flush=True)
 
     try:
-        req = LimitOrderRequest(
-            symbol=symbol,
-            qty=qty,
-            side=OrderSide.BUY,
-            time_in_force=TimeInForce.DAY,
-            limit_price=limit_price,
-            extended_hours=True,
-        )
-        alpaca_order = state.alpaca.submit_order(req)
-        order_id = str(alpaca_order.id)
-        print(f"  ALPACA ORDER: {order_id} BUY {qty} {symbol} @ ${limit_price:.2f}", flush=True)
+        new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
+        order_id = new_order.order_id
+        print(f"  BROKER ORDER: {order_id} BUY {qty} {symbol} @ ${limit_price:.2f}", flush=True)
     except Exception as e:
-        print(f"  ALPACA ORDER FAILED: {e}", flush=True)
+        print(f"  BROKER ORDER FAILED: {e}", flush=True)
         return
 
     state.open_position = {
@@ -1764,13 +1746,9 @@ def _enter_epl_trade(symbol: str, signal):
           f"stop=${stop:.4f} R=${r:.4f} reason={signal.reason}", flush=True)
 
     try:
-        req = LimitOrderRequest(
-            symbol=symbol, qty=qty, side=OrderSide.BUY,
-            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
-        )
-        alpaca_order = state.alpaca.submit_order(req)
-        order_id = str(alpaca_order.id)
-        print(f"  [EPL] ALPACA ORDER: {order_id}", flush=True)
+        new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
+        order_id = new_order.order_id
+        print(f"  [EPL] BROKER ORDER: {order_id}", flush=True)
     except Exception as e:
         print(f"  [EPL] ORDER FAILED: {e}", flush=True)
         return
@@ -1955,8 +1933,8 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
         return
 
     # Short entries submit as SELL. For a naked short, shares must be
-    # easy/hard-to-borrow available at Alpaca. If HTB is unavailable, Alpaca
-    # returns an error which the submit_order exception catches.
+    # easy/hard-to-borrow available at the broker. If HTB is unavailable,
+    # the broker returns an error which the submit_limit exception catches.
     initial_slip = _entry_slippage_for(entry)
     limit_price = round(entry - initial_slip, 2)  # sell-side limit BELOW entry
     now_str = datetime.now(ET).strftime("%H:%M:%S")
@@ -1965,13 +1943,9 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
           f"strat={SHORT_STRATEGY}", flush=True)
 
     try:
-        req = LimitOrderRequest(
-            symbol=symbol, qty=qty, side=OrderSide.SELL,
-            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
-        )
-        alpaca_order = state.alpaca.submit_order(req)
-        order_id = str(alpaca_order.id)
-        print(f"  ALPACA ORDER: {order_id} SHORT {qty} {symbol} @ ${limit_price:.2f}", flush=True)
+        new_order = state.broker.submit_limit(symbol, qty, "SELL", limit_price)
+        order_id = new_order.order_id
+        print(f"  BROKER ORDER: {order_id} SHORT {qty} {symbol} @ ${limit_price:.2f}", flush=True)
     except Exception as e:
         print(f"  SHORT ORDER FAILED: {e}", flush=True)
         return
@@ -2003,12 +1977,11 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
     def verify_short_fill():
         deadline = time.time() + ENTRY_RETRY_TIMEOUT_SEC
         while time.time() < deadline:
-            try:
-                o = state.alpaca.get_order_by_id(order_id)
-                s = str(o.status).lower() if o.status else ""
-                if "filled" in s and "partially" not in s:
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else limit_price
-                    actual_qty = int(float(o.filled_qty or qty))
+            o = state.broker.get_order_status(order_id)
+            if o is not None:
+                if o.status == STATUS_FILLED:
+                    actual_price = o.filled_avg_price or limit_price
+                    actual_qty = o.filled_qty or qty
                     if state.open_short and state.open_short.get("order_id") == order_id:
                         state.open_short["entry"] = actual_price
                         state.open_short["qty"] = actual_qty
@@ -2017,31 +1990,25 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
                         print(f"  SHORT FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}",
                               flush=True)
                     return
-                if "cancel" in s or "expired" in s or "rejected" in s:
-                    print(f"  SHORT UNFILLED: {symbol} order {order_id} status={s} — clearing slot",
+                if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
+                    print(f"  SHORT UNFILLED: {symbol} order {order_id} status={o.status} — clearing slot",
                           flush=True)
                     if state.open_short and state.open_short.get("order_id") == order_id:
                         state.open_short = None
                     return
-            except Exception as e:
-                print(f"  SHORT FILL CHECK ERROR: {e}", flush=True)
             time.sleep(0.5)
-        # Timeout: assume fill (paper account usually does) and confirm with
-        # whatever Alpaca has on record.
-        try:
-            o = state.alpaca.get_order_by_id(order_id)
-            if o.filled_qty and float(o.filled_qty) > 0:
-                actual_price = float(o.filled_avg_price) if o.filled_avg_price else limit_price
-                actual_qty = int(float(o.filled_qty))
-                if state.open_short and state.open_short.get("order_id") == order_id:
-                    state.open_short["entry"] = actual_price
-                    state.open_short["qty"] = actual_qty
-                    state.open_short["stop"] = actual_price + r
-                    state.open_short["fill_confirmed"] = True
-                    print(f"  SHORT FILL (late): {symbol} @ ${actual_price:.4f} qty={actual_qty}",
-                          flush=True)
-        except Exception:
-            pass
+        # Timeout: try one more read; if any shares filled, record the fill.
+        o = state.broker.get_order_status(order_id)
+        if o is not None and o.filled_qty > 0:
+            actual_price = o.filled_avg_price or limit_price
+            actual_qty = o.filled_qty
+            if state.open_short and state.open_short.get("order_id") == order_id:
+                state.open_short["entry"] = actual_price
+                state.open_short["qty"] = actual_qty
+                state.open_short["stop"] = actual_price + r
+                state.open_short["fill_confirmed"] = True
+                print(f"  SHORT FILL (late): {symbol} @ ${actual_price:.4f} qty={actual_qty}",
+                      flush=True)
     import threading
     threading.Thread(target=verify_short_fill, daemon=True).start()
 
@@ -2085,8 +2052,8 @@ def manage_short_exit(symbol: str, price: float):
 
 
 def exit_short(symbol: str, price: float, qty: int, reason: str):
-    """Place cover (BUY) order via Alpaca and record the short trade. Mirrors
-    exit_trade's phantom-P&L guards: no P&L unless Alpaca actually fills."""
+    """Place cover (BUY) order via broker and record the short trade. Mirrors
+    exit_trade's phantom-P&L guards: no P&L unless the broker actually fills."""
     # Urgent cover (stop hit): aggressive limit ABOVE current price.
     if reason == "short_stop_hit":
         limit_price = round(price * 1.03, 2)
@@ -2094,26 +2061,20 @@ def exit_short(symbol: str, price: float, qty: int, reason: str):
         limit_price = round(price + 0.03, 2)
 
     order_submitted = False
+    cover_order = None
     try:
-        req = LimitOrderRequest(
-            symbol=symbol, qty=qty, side=OrderSide.BUY,
-            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
-        )
-        alpaca_order = state.alpaca.submit_order(req)
-        print(f"  ALPACA COVER: {alpaca_order.id} BUY {qty} {symbol} @ ${limit_price:.2f}",
+        cover_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
+        print(f"  BROKER COVER: {cover_order.order_id} BUY {qty} {symbol} @ ${limit_price:.2f}",
               flush=True)
         order_submitted = True
     except Exception as e:
-        print(f"  ALPACA COVER FAILED: {e} — trying market", flush=True)
+        print(f"  BROKER COVER FAILED: {e} — trying market", flush=True)
         try:
-            from alpaca.trading.requests import MarketOrderRequest
-            req = MarketOrderRequest(symbol=symbol, qty=qty, side=OrderSide.BUY,
-                                     time_in_force=TimeInForce.DAY)
-            alpaca_order = state.alpaca.submit_order(req)
-            print(f"  ALPACA MARKET COVER: {alpaca_order.id} BUY {qty} {symbol}", flush=True)
+            cover_order = state.broker.submit_market(symbol, qty, "BUY")
+            print(f"  BROKER MARKET COVER: {cover_order.order_id} BUY {qty} {symbol}", flush=True)
             order_submitted = True
         except Exception as e2:
-            print(f"  ALPACA MARKET COVER ALSO FAILED: {e2}", flush=True)
+            print(f"  BROKER MARKET COVER ALSO FAILED: {e2}", flush=True)
 
     if not order_submitted:
         print(f"  ⚠️ SHORT COVER ABORTED: {symbol} qty={qty} reason={reason} — "
@@ -2139,27 +2100,24 @@ def exit_short(symbol: str, price: float, qty: int, reason: str):
     def verify_cover_fill():
         actual_qty = 0
         actual_price = 0.0
-        status_final = "unknown"
+        status_final = STATUS_UNKNOWN
         for _ in range(60):
-            try:
-                o = state.alpaca.get_order_by_id(alpaca_order.id)
-                s = str(o.status).lower() if o.status else ""
-                if "filled" in s and "partially" not in s:
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = "filled"
+            o = state.broker.get_order_status(cover_order.order_id)
+            if o is not None:
+                if o.status == STATUS_FILLED:
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = STATUS_FILLED
                     break
-                if "partially_filled" in s:
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = "partially_filled"
-                if "cancel" in s or "expired" in s or "rejected" in s:
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = s
+                if o.status == STATUS_PARTIALLY:
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = STATUS_PARTIALLY
+                if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = o.status
                     break
-            except Exception as e:
-                print(f"  COVER FILL CHECK ERROR: {e}", flush=True)
             time.sleep(0.5)
         if actual_qty == 0:
             print(f"  ⚠️ COVER UNFILLED: {symbol} status={status_final} — no shares, no P&L",
@@ -2206,7 +2164,7 @@ def exit_short(symbol: str, price: float, qty: int, reason: str):
 
 
 def exit_trade(symbol: str, price: float, qty: int, reason: str):
-    """Place exit order via ALPACA and record trade."""
+    """Place exit order via broker and record trade."""
     # For urgent exits (stop hit, dollar loss cap, max loss), use very aggressive limit
     urgent_reasons = ('sq_stop_hit', 'sq_dollar_loss_cap', 'sq_max_loss_hit', 'stop_hit')
     if reason in urgent_reasons:
@@ -2215,33 +2173,19 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         limit_price = round(price - 0.03, 2)
 
     order_submitted = False
+    exit_order = None
     try:
-        req = LimitOrderRequest(
-            symbol=symbol,
-            qty=qty,
-            side=OrderSide.SELL,
-            time_in_force=TimeInForce.DAY,
-            limit_price=limit_price,
-            extended_hours=True,
-        )
-        alpaca_order = state.alpaca.submit_order(req)
-        print(f"  ALPACA EXIT: {alpaca_order.id} SELL {qty} {symbol} @ ${limit_price:.2f}", flush=True)
+        exit_order = state.broker.submit_limit(symbol, qty, "SELL", limit_price)
+        print(f"  BROKER EXIT: {exit_order.order_id} SELL {qty} {symbol} @ ${limit_price:.2f}", flush=True)
         order_submitted = True
     except Exception as e:
-        print(f"  ALPACA EXIT FAILED: {e} — trying market order", flush=True)
+        print(f"  BROKER EXIT FAILED: {e} — trying market order", flush=True)
         try:
-            from alpaca.trading.requests import MarketOrderRequest
-            req = MarketOrderRequest(
-                symbol=symbol,
-                qty=qty,
-                side=OrderSide.SELL,
-                time_in_force=TimeInForce.DAY,
-            )
-            alpaca_order = state.alpaca.submit_order(req)
-            print(f"  ALPACA MARKET EXIT: {alpaca_order.id} SELL {qty} {symbol}", flush=True)
+            exit_order = state.broker.submit_market(symbol, qty, "SELL")
+            print(f"  BROKER MARKET EXIT: {exit_order.order_id} SELL {qty} {symbol}", flush=True)
             order_submitted = True
         except Exception as e2:
-            print(f"  ALPACA MARKET EXIT ALSO FAILED: {e2}", flush=True)
+            print(f"  BROKER MARKET EXIT ALSO FAILED: {e2}", flush=True)
 
     # Phantom-P&L guard: if BOTH limit and market submissions were rejected
     # (e.g. "insufficient qty available" when shares are held_for_orders on
@@ -2250,7 +2194,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     # divergence from Alpaca truth (see 2026-04-16_morning_report.md).
     if not order_submitted:
         print(f"  ⚠️ EXIT ABORTED: {symbol} qty={qty} reason={reason} — "
-              f"no order accepted by Alpaca, state unchanged, no P&L recorded",
+              f"no order accepted by broker, state unchanged, no P&L recorded",
               flush=True)
         return
 
@@ -2262,7 +2206,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         # Race: position already cleared. Submission went through anyway,
         # but we can't compute P&L without an entry price. Rare; log + bail.
         print(f"  ⚠️ EXIT RACE: {symbol} state.open_position cleared before "
-              f"P&L snapshot — order {alpaca_order.id} sent, P&L unbookable.",
+              f"P&L snapshot — order {exit_order.order_id} sent, P&L unbookable.",
               flush=True)
         return
     entry_price = pos["entry"]
@@ -2277,7 +2221,7 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     else:
         pos["qty"] = remaining
 
-    # Async verify-and-book: poll Alpaca for the exit order's final state,
+    # Async verify-and-book: poll broker for the exit order's final state,
     # then record P&L using the ACTUAL filled_avg_price and filled_qty
     # (not the intended `price` / `qty` we passed in). This eliminates the
     # ~$125 over-report seen on today's MYSE trade where bot booked the
@@ -2285,42 +2229,37 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     #
     # Defense-in-depth: status in (rejected, expired) with filled_qty=0
     # records NOTHING. The earlier dual-submission-failure guard caught
-    # most of this, but this catches the async case where Alpaca accepts
-    # the submission then later rejects (e.g. insufficient_qty surfacing
-    # after a race).
+    # most of this, but this catches the async case where the broker
+    # accepts the submission then later rejects (e.g. insufficient_qty
+    # surfacing after a race).
     intended_price = price
     intended_qty = qty
 
     def verify_exit_fill():
         actual_qty = 0
         actual_price = 0.0
-        status_final = "unknown"
+        status_final = STATUS_UNKNOWN
         for _ in range(60):  # up to 30s total (0.5s * 60)
-            try:
-                o = state.alpaca.get_order_by_id(alpaca_order.id)
-                s = str(o.status).lower() if o.status else ""
-                # Alpaca enum may be "OrderStatus.filled" — normalize
-                if "filled" in s and "partially" not in s:
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = "filled"
+            o = state.broker.get_order_status(exit_order.order_id)
+            if o is not None:
+                if o.status == STATUS_FILLED:
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = STATUS_FILLED
                     break
-                if "partially_filled" in s:
-                    # Keep polling; last observed partial values updated each iter
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = "partially_filled"
-                if "cancel" in s or "expired" in s or "rejected" in s:
-                    actual_qty = int(float(o.filled_qty or 0))
-                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
-                    status_final = s
+                if o.status == STATUS_PARTIALLY:
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = STATUS_PARTIALLY
+                if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
+                    actual_qty = o.filled_qty
+                    actual_price = o.filled_avg_price
+                    status_final = o.status
                     break
-            except Exception as e:
-                print(f"  EXIT FILL CHECK ERROR ({alpaca_order.id}): {e}", flush=True)
             time.sleep(0.5)
 
         if actual_qty == 0:
-            print(f"  ⚠️ EXIT UNFILLED: {symbol} order {alpaca_order.id} "
+            print(f"  ⚠️ EXIT UNFILLED: {symbol} order {exit_order.order_id} "
                   f"status={status_final} — no shares filled, no P&L recorded "
                   f"(intended qty={intended_qty} reason={reason})", flush=True)
             return
@@ -2906,16 +2845,8 @@ def _enter_box_trade():
     limit_price = round(entry_price + initial_slip, 2)
     original_limit = limit_price
     try:
-        order = LimitOrderRequest(
-            symbol=symbol,
-            qty=shares,
-            side=OrderSide.BUY,
-            time_in_force=TimeInForce.DAY,
-            limit_price=limit_price,
-            extended_hours=True,
-        )
-        result = state.alpaca.submit_order(order)
-        order_id = str(result.id)
+        result = state.broker.submit_limit(symbol, shares, "BUY", limit_price)
+        order_id = result.order_id
 
         state.box_position = {
             "symbol": symbol,
@@ -2967,23 +2898,12 @@ def _exit_box_trade(reason: str):
           f"reason={reason} P&L=${pnl:+,.2f}", flush=True)
 
     try:
-        order = LimitOrderRequest(
-            symbol=symbol,
-            qty=qty,
-            side=OrderSide.SELL,
-            time_in_force=TimeInForce.DAY,
-            limit_price=round(exit_price - 0.02, 2),
-        )
-        state.alpaca.submit_order(order)
+        state.broker.submit_limit(symbol, qty, "SELL", round(exit_price - 0.02, 2),
+                                  extended_hours=False)
     except Exception as e:
         print(f"  [BOX] EXIT ORDER FAILED: {e} — attempting market order", flush=True)
         try:
-            from alpaca.trading.requests import MarketOrderRequest
-            order = MarketOrderRequest(
-                symbol=symbol, qty=qty,
-                side=OrderSide.SELL, time_in_force=TimeInForce.DAY,
-            )
-            state.alpaca.submit_order(order)
+            state.broker.submit_market(symbol, qty, "SELL")
         except Exception as e2:
             print(f"  [BOX] MARKET ORDER ALSO FAILED: {e2}", flush=True)
             return
@@ -3075,9 +2995,20 @@ def main():
     start_tick_flush_thread()
     start_risk_flush_thread()
 
+    # Connect to IBKR BEFORE reconcile — reconcile uses state.broker, and
+    # state.broker requires a live state.ib when WB_BROKER=ibkr.
+    ib = connect()
+    ib.errorEvent += on_ib_error
+
+    # Initialize broker abstraction. All order flow in this file goes
+    # through state.broker (never state.alpaca directly). WB_BROKER
+    # selects the backend; default "alpaca" preserves legacy behavior.
+    state.broker = make_broker(BROKER_BACKEND, alpaca=state.alpaca, ib=state.ib)
+    print(f"Broker: {BROKER_BACKEND.upper()}", flush=True)
+
     # Startup position reconciliation. Resume mode rehydrates trade state
-    # from open_trades.json + reconciles qty/orders against Alpaca; cold
-    # mode adopts any unexpected Alpaca position with conservative defaults.
+    # from open_trades.json + reconciles qty/orders against the broker;
+    # cold mode adopts any unexpected broker position with conservative defaults.
     if boot_mode == "resume":
         resume_reconcile()
     else:
@@ -3088,11 +3019,11 @@ def main():
     def graceful_shutdown(signum, frame):
         print("\n🛑 SHUTDOWN SIGNAL RECEIVED", flush=True)
         try:
-            positions = _alpaca_call(state.alpaca.get_all_positions)
+            positions = state.broker.get_positions() if state.broker else []
             if positions:
                 for pos in positions:
                     print(f"  ⚠️ POSITION OPEN AT SHUTDOWN: {pos.symbol} "
-                          f"qty={pos.qty} P&L=${float(pos.unrealized_pl):+,.2f}", flush=True)
+                          f"qty={pos.qty} P&L=${pos.unrealized_pnl:+,.2f}", flush=True)
                 print("  *** POSITIONS LEFT OPEN — WILL NEED MANUAL MANAGEMENT ***", flush=True)
             else:
                 print("  All positions flat. Clean shutdown.", flush=True)
@@ -3102,13 +3033,7 @@ def main():
     signal_mod.signal(signal_mod.SIGTERM, graceful_shutdown)
     signal_mod.signal(signal_mod.SIGINT, graceful_shutdown)
 
-    # Connect to IBKR (data only)
-    ib = connect()
-
-    # Wire error handler (competing sessions, market data errors)
-    ib.errorEvent += on_ib_error
-
-    # Fetch actual account equity from Alpaca for position sizing
+    # Fetch actual account equity for position sizing (backend-agnostic)
     actual_equity = get_account_equity()
     print(f"Account equity: ${actual_equity:,.0f}", flush=True)
     STARTING_EQUITY = actual_equity
@@ -3247,10 +3172,7 @@ def main():
             if state.pending_order:
                 elapsed = (now - state.pending_order['placed_time']).total_seconds()
                 if elapsed > state.pending_order['timeout_seconds']:
-                    try:
-                        state.alpaca.cancel_order_by_id(state.pending_order['order_id'])
-                    except Exception as e:
-                        print(f"  ORDER CANCEL ERROR: {e}", flush=True)
+                    state.broker.cancel_order(state.pending_order['order_id'])
                     if state.open_position and not state.open_position.get('fill_confirmed'):
                         state.open_position = None
                     state.pending_order = None
