@@ -1,2 +1,50 @@
 === Waking screen and ensuring active desktop ===
 Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+daily_run_v3.sh: line 78:  9805 Terminated: 15          caffeinate -u -t 30
+caffeinate started (PID: 9829)
+=== V3 Hybrid daily run started: Wed Apr 15 16:30:44 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: a605f7c (auto: v3 daily logs 2026-04-15)
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 2b7263093475c095bedc18a40ac95f97  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.031335 +/- 0.059941 time.apple.com 2620:149:a23:3000::1e2
+NTP sync skipped (non-root)
+System time: Wed Apr 15 22:30:45 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+  attempt 2/72: port 4002 not ready yet, waiting 5s...
+Gateway is up on port 4002 (after ~15s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 9902)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 9919)
+Bot health check passed (still running after 15s, PID: 9919)
+HEALTH_OK: Bot connected at 2026-04-15 22:31:23 UTC
+Gateway watchdog started (PID: 9937)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 15 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Wed Apr 15 18:00:26 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-15_daily.log.
+=== Shutting down at Wed Apr 15 18:00:26 MDT 2026 ===
+Pushing logs...
