@@ -21,6 +21,26 @@ import requests
 import pytz
 import yfinance as yf
 from dotenv import load_dotenv
+
+# Float-cache helpers extracted to float_cache.py so Alpaca-free callers
+# (ibkr_scanner, warrior_manual) can import them without loading Alpaca SDK.
+# Re-exported here for back-compat with existing callers.
+from float_cache import (  # noqa: F401
+    FMP_API_KEY,
+    ALPHA_VANTAGE_KEY,
+    SCANNER_DIR,
+    FLOAT_CACHE_PATH,
+    KNOWN_FLOATS,
+    LEVERAGED_ETF_BLACKLIST,
+    is_junk_security,
+    load_float_cache,
+    save_float_cache,
+    get_edgar_shares_outstanding,
+    get_alpha_vantage_float,
+    get_float,
+    classify_profile,
+)
+
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
 from alpaca.data.timeframe import TimeFrame
@@ -32,65 +52,8 @@ load_dotenv()
 
 ET = pytz.timezone("US/Eastern")
 
-FMP_API_KEY = os.getenv("FMP_API_KEY")
-
-KNOWN_FLOATS = {
-    "SPRC": 400_000,
-    "TNMG": 1_150_000,
-    "MNTS": 1_300_000,
-    "ELAB": 2_100_000,
-    "GWAV": 800_000,
-    "VERO": 1_600_000,
-    "APVO": 900_000,
-    "BNAI": 3_300_000,
-    "MOVE": 600_000,
-    "ANPA": 700_000,
-    "PAVM": 700_000,
-    "ROLR": 3_600_000,
-    "ACON": 700_000,
-    "BDSX": 3_700_000,
-    "HIND": 1_500_000,
-    "MLEC": 700_000,
-    "SNSE": 700_000,
-    "ENVB": 500_000,
-    "SHPH": 1_600_000,
-    "LCFY": 1_400_000,
-    "SXTP": 900_000,
-    "BCTX": 1_700_000,
-    "JZXN": 1_320_000,
-}
-
-LEVERAGED_ETF_BLACKLIST = {
-    "MSTU", "MSTX", "MSTZ",
-    "CONL", "WEBL", "SOXL", "SOXS", "TQQQ", "SQQQ",
-    "UVXY", "SVXY", "NUGT", "DUST", "JNUG", "JDST",
-    "LABU", "LABD", "FNGU", "FNGD", "TECL", "TECS",
-    "SPXL", "SPXS", "TNA", "TZA", "UPRO", "SPXU",
-    "FAS", "FAZ", "ERX", "ERY", "BOIL", "KOLD",
-    "NAIL", "DRV", "CURE", "DRIP", "GUSH",
-    "BITX", "BITU", "SBIT",
-}
-
-
-def is_junk_security(symbol: str, name: str = "") -> bool:
-    """Filter out preferred stock, warrants, units, rights, and leveraged ETFs."""
-    sym = symbol.upper()
-    name_upper = name.upper() if name else ""
-    if sym in LEVERAGED_ETF_BLACKLIST:
-        return True
-    junk_keywords = ["PREFERRED", "WARRANT", " UNIT", "RIGHTS",
-                     "DEPOSITARY", "DEBENTURE", "CONVERTIBLE NOTE"]
-    if any(kw in name_upper for kw in junk_keywords):
-        return True
-    if len(sym) >= 5:
-        if sym[-1] == "P" and not sym[-2:] in ("LP", "EP", "AP", "IP", "OP", "UP"):
-            return True
-        if sym[-1] == "W":
-            return True
-        if sym[-1] == "U" and len(sym) >= 5:
-            return True
-    return False
-
+# FMP_API_KEY, KNOWN_FLOATS, LEVERAGED_ETF_BLACKLIST, is_junk_security
+# now live in float_cache.py and are re-exported above.
 
 API_KEY = os.getenv("APCA_API_KEY_ID")
 API_SECRET = os.getenv("APCA_API_SECRET_KEY")
@@ -98,176 +61,10 @@ API_SECRET = os.getenv("APCA_API_SECRET_KEY")
 hist_client = StockHistoricalDataClient(API_KEY, API_SECRET)
 trading_client = TradingClient(API_KEY, API_SECRET)
 
-SCANNER_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scanner_results")
-FLOAT_CACHE_PATH = os.path.join(SCANNER_DIR, "float_cache.json")
-
-
-def load_float_cache() -> dict:
-    if os.path.exists(FLOAT_CACHE_PATH):
-        with open(FLOAT_CACHE_PATH) as f:
-            raw = json.load(f)
-        # Clear stale None entries — forces re-lookup through full chain
-        # (FMP → yfinance → EDGAR → AlphaVantage). With new fallbacks,
-        # most previously-None tickers will now resolve successfully.
-        cleaned = {k: v for k, v in raw.items() if v is not None}
-        dropped = len(raw) - len(cleaned)
-        if dropped > 0:
-            print(f"  [float_cache] Cleared {dropped} stale None entries — will re-attempt lookups")
-            save_float_cache(cleaned)
-        return cleaned
-    return {}
-
-
-def save_float_cache(cache: dict):
-    with open(FLOAT_CACHE_PATH, "w") as f:
-        json.dump(cache, f, indent=2)
-
-
-# --- SEC EDGAR ticker→CIK map (load once at startup) ---
-_EDGAR_CIK_MAP = {}
-
-
-def _load_edgar_cik_map():
-    global _EDGAR_CIK_MAP
-    if _EDGAR_CIK_MAP:
-        return _EDGAR_CIK_MAP
-    try:
-        resp = requests.get(
-            "https://www.sec.gov/files/company_tickers.json",
-            headers={"User-Agent": "WarriorBot luke@delightedpath.net"},
-            timeout=10,
-        )
-        data = resp.json()
-        _EDGAR_CIK_MAP = {
-            v["ticker"].upper(): str(v["cik_str"]).zfill(10)
-            for v in data.values()
-        }
-    except Exception as e:
-        print(f"  [EDGAR] Failed to load CIK map: {e}")
-    return _EDGAR_CIK_MAP
-
-
-def get_edgar_shares_outstanding(symbol: str) -> float | None:
-    """Tier 5: SEC EDGAR shares outstanding as float proxy. Free, 10 req/s."""
-    cik_map = _load_edgar_cik_map()
-    cik = cik_map.get(symbol.upper())
-    if not cik:
-        return None
-    try:
-        url = (f"https://data.sec.gov/api/xbrl/companyconcept/"
-               f"CIK{cik}/dei/EntityCommonStockSharesOutstanding.json")
-        resp = requests.get(url, headers={
-            "User-Agent": "WarriorBot luke@delightedpath.net"
-        }, timeout=10)
-        if resp.status_code != 200:
-            return None
-        data = resp.json()
-        shares_list = data.get("units", {}).get("shares", [])
-        if not shares_list:
-            return None
-        latest = sorted(shares_list, key=lambda x: x.get("end", ""), reverse=True)[0]
-        shares = latest.get("val", 0)
-        if shares > 0:
-            print(f"  [EDGAR] {symbol}: {shares/1e6:.2f}M shares outstanding")
-            return shares
-    except Exception as e:
-        print(f"  [EDGAR] {symbol}: {e}")
-    return None
-
-
-# --- Alpha Vantage free tier (25 calls/day, true float) ---
-ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "")
-
-
-def get_alpha_vantage_float(symbol: str) -> float | None:
-    """Tier 6: Alpha Vantage OVERVIEW — true float. Free tier: 25 calls/day."""
-    if not ALPHA_VANTAGE_KEY:
-        return None
-    try:
-        url = (f"https://www.alphavantage.co/query?function=OVERVIEW"
-               f"&symbol={symbol}&apikey={ALPHA_VANTAGE_KEY}")
-        resp = requests.get(url, timeout=10)
-        data = resp.json()
-        shares_float = data.get("SharesFloat")
-        if shares_float and shares_float != "None" and shares_float != "0":
-            val = float(shares_float)
-            if val > 0:
-                print(f"  [AlphaVantage] {symbol}: {val/1e6:.2f}M float")
-                return val
-    except Exception as e:
-        print(f"  [AlphaVantage] {symbol}: {e}")
-    return None
-
-
-def get_float(symbol: str, cache: dict) -> float | None:
-    """Look up float shares. Priority: KNOWN_FLOATS → cache → FMP → yfinance → EDGAR → AlphaVantage."""
-    # 1. Hardcoded known floats (most reliable for our universe)
-    if symbol in KNOWN_FLOATS:
-        return KNOWN_FLOATS[symbol]
-
-    # 2. Cache (includes previously looked-up values and cached failures)
-    if symbol in cache:
-        return cache[symbol]
-
-    # 3. FMP API (primary lookup)
-    float_shares = None
-    if FMP_API_KEY:
-        try:
-            url = f"https://financialmodelingprep.com/stable/shares-float?symbol={symbol}&apikey={FMP_API_KEY}"
-            resp = requests.get(url, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
-            if data and isinstance(data, list) and len(data) > 0:
-                float_shares = data[0].get("floatShares") or data[0].get("outstandingShares")
-                if float_shares:
-                    print(f"  [FMP] {symbol}: {float_shares/1e6:.2f}M")
-        except Exception as e:
-            print(f"  [FMP] {symbol}: {e}")
-
-    # 4. yfinance fallback
-    if float_shares is None:
-        try:
-            ticker = yf.Ticker(symbol)
-            info = ticker.info
-            float_shares = info.get("floatShares")
-            if float_shares:
-                print(f"  [yfinance] {symbol}: {float_shares/1e6:.2f}M")
-        except Exception as e:
-            print(f"  [yfinance] {symbol}: {e}")
-
-    # 5. SEC EDGAR fallback (free, 10 req/s)
-    if float_shares is None:
-        float_shares = get_edgar_shares_outstanding(symbol)
-
-    # 6. Alpha Vantage free tier (25 calls/day, true float)
-    if float_shares is None:
-        float_shares = get_alpha_vantage_float(symbol)
-        if float_shares is not None:
-            time.sleep(0.5)  # respect 5/min rate limit
-
-    # Cache result (even None to avoid re-lookups)
-    cache[symbol] = float_shares
-    save_float_cache(cache)
-    time.sleep(0.5)
-    return float_shares
-
-
-def classify_profile(float_shares: float | None) -> str:
-    """Classify stock by float: A (<5M), B (5-15M), unknown (no data).
-
-    Float cap raised from 10M to 15M based on WT scanner comparison (2026-03-24):
-    AMIX at 12.9M float produced +$4,111 (8.2R). Data shows diminishing returns
-    above 15M but the 10-15M bucket still has positive EV.
-    """
-    if float_shares is None:
-        return "unknown"
-    millions = float_shares / 1_000_000
-    if millions < 5:
-        return "A"
-    elif millions <= 15:
-        return "B"
-    else:
-        return "skip"
+# SCANNER_DIR, FLOAT_CACHE_PATH, load_float_cache, save_float_cache,
+# get_edgar_shares_outstanding, get_alpha_vantage_float, get_float,
+# classify_profile, ALPHA_VANTAGE_KEY now live in float_cache.py and are
+# re-exported at the top of this module.
 
 
 def get_all_active_symbols() -> list[str]:
