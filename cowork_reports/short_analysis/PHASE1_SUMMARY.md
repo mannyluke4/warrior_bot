@@ -184,3 +184,40 @@ Built `short_detector.py` (Strategy B state machine: IDLE → TOPPED → LH_ARME
 ---
 
 *CC (Opus), 2026-04-16 mid-day. Strategy B prototype produces +$3,321 / 82% WR on the in-universe 8-stock set (plus ~break-even on the out-of-universe 3). Moving to A + C comparison + live wiring.*
+
+---
+
+## 2026-04-16 — A vs B vs C head-to-head (in-universe 8 stocks)
+
+Built ShortDetectorA (exhaustion — shooting-star / bearish-engulfing / CUC, stop HOD×1.03) and ShortDetectorC (VWAP rejection — IDLE → BELOW_VWAP → BOUNCED → ARMED, stop VWAP×1.01) in `short_detector.py`. Factory: `make_short_detector(strategy)`. Added `--strategy {A,B,C}` to `tools/backtest_short.py`. All three strategies replayed against the identical 8-stock in-universe set (same tick caches, same sizing knobs: 3.5% risk, $50K notional cap).
+
+### Side-by-side
+
+| Metric | Strategy A | Strategy B | Strategy C |
+|---|---|---|---|
+| Strategy type | Exhaustion | Lower-high | VWAP rejection |
+| Trades (arm/trigger hit) | 3/8 | **8/8** | 5/8 |
+| Win rate | 67% | **88%** | 20% |
+| Net $PnL | -$75 | **+$3,241** | +$2,884 |
+| Avg R | -0.03R | **+0.39R** | +0.55R |
+| Worst trade | ROLR -$1,049 (-1.0R) | ROLR -$49 (-0.1R) | VERO -$1,050 (-1.0R) |
+| Best trade | BIRD +$948 (+0.9R) | VERO +$1,958 (+1.9R) | ACCL +$7,082 (+6.8R) |
+| Coverage | sparse | full | partial |
+
+### Why B wins
+
+1. **Coverage.** B arms and triggers on all 8 in-universe stocks. A only fires on 3 (tight HOD-proximity pattern filter; HOD-VWAP ratio further culls); C on 5 (needs VWAP break + retest cycle, often doesn't form within session). B is the only strategy that touches the full universe.
+2. **Win rate.** B's 88% is built on modest per-trade R (+0.39R avg). That's the LH fade's signature — small, reliable, repeatable. A at 67% / -0.03R is break-even with meaningful drawdown risk. C at 20% relies entirely on outliers.
+3. **Variance.** B's worst trade is ROLR at -$49 (-0.1R, caught by the 60-min time stop). C's worst is a full -1R hard stop on 4 of 5 trades. A's ROLR is also a full -1R stop. In a live paper session with bet sizing at 3.5% risk, variance matters: B produces a steady $300-400/stock; C is feast-or-famine.
+4. **ACCL +$7,082 on C is real but not reproducible.** ACCL entered at $6.70 with a $0.29 stop (stop buffer 1% over VWAP × 1.01). Tight stop → 3,632 shares × 1.95 pts = $7,082. That structure won't recur reliably — most C entries will sit closer to VWAP with looser stops where the edge disappears.
+5. **A's exhaustion patterns are too rare.** Of the 8 stocks, only VERO/ROLR/GWAV/BIRD had an HOD-proximate exhaustion pattern at all. The 1% proximity filter (bar within 1% of HOD) is strict — the real moves have already faded 5-10% by the time the shooting-star / bearish-engulfing prints cleanly.
+
+### Decision: ship Strategy B to live bot
+
+Strategy B is the clear winner on coverage + consistency + variance. Wiring it into `bot_v3_hybrid.py` (Task #18) under `WB_SHORT_ENABLED` (default 0), replacing the dormant box strategy, with the squeeze path untouched. Live paper test tomorrow morning (2026-04-17) — Manny is out of town starting tomorrow, so the shipped version must be solid before 2AM MT cron fires.
+
+A and C stay in the codebase as alternate strategies, selectable via env `WB_SHORT_STRATEGY=A|B|C`, in case the live data surfaces reasons to revisit.
+
+---
+
+*CC (Opus), 2026-04-16 afternoon. B wins the 3-way. Moving to live-bot integration.*

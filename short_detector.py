@@ -1,5 +1,22 @@
-"""Short strategy — Strategy B "Lower High Short".
+"""Short strategy detectors — Strategies B, A, C from
+DIRECTIVE_SHORT_STRATEGY_RESEARCH.md.
 
+Three parallel detector classes sharing the same public contract:
+  detector.on_bar_close_1m(bar, vwap=...)  → Optional[log_msg]
+  detector.on_trade_price(price)           → Optional[entry_signal]
+  detector.armed                           → ShortArm | None (when LH_ARMED)
+  detector.reset()
+  detector.notify_trade_opened() / notify_trade_closed(pnl)
+
+Strategy B — "Lower High Short" (this file's original implementation).
+Strategy A — "Exhaustion Short" — shorts on the first exhaustion-pattern bar
+  after HOD (shooting star / bearish engulfing / candle-under-candle).
+  Stop at HOD × 1.03.
+Strategy C — "VWAP Rejection Short" — waits for price to drop below VWAP,
+  bounce back toward VWAP, then get rejected (bar closes below VWAP).
+  Stop at VWAP × 1.01.
+
+Strategy B original notes:
 State machine fed by 1m bars. Designed to match the morning-through-fade
 profile observed in the Phase 1 fade analysis
 (cowork_reports/short_analysis/PHASE1_SUMMARY.md).
@@ -195,3 +212,280 @@ class ShortDetector:
                    f"stop={self.armed.stop:.4f} HOD={self.armed.hod_price:.4f}")
             return msg
         return None
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Strategy A — "Exhaustion Short" (Aggressive)
+# ══════════════════════════════════════════════════════════════════════
+
+class ShortDetectorA:
+    """Strategy A: short on the first exhaustion-pattern bar after HOD.
+
+    Exhaustion patterns (any triggers an arm):
+      - Shooting star: upper_wick > 2 × body, lower_wick < body, bar within
+        1% of HOD (top-of-run rejection)
+      - Bearish engulfing: prev bar green, current bar red, current open
+        ≥ prev close, current close ≤ prev open
+      - Candle-under-candle (CUC): current bar's high < previous bar's
+        high AND current bar closes below prev bar's low (clean break)
+
+    Trigger is IMMEDIATE on the exhaustion bar's close — no separate
+    lower-high wait like Strategy B. Trade-off: earlier entry → higher
+    R/R potential, but lower-quality setup → more stop-outs.
+
+    Stop: HOD × 1.03 (per directive Strategy A spec).
+    """
+
+    def __init__(self):
+        self.hod_proximity_pct = float(os.getenv("WB_SHORT_A_HOD_PROX_PCT", "1.0"))
+        self.stop_buffer_pct = float(os.getenv("WB_SHORT_A_STOP_BUFFER_PCT", "3.0"))
+        self.min_hod_vwap_ratio = float(os.getenv("WB_SHORT_A_MIN_HOD_VWAP_RATIO", "1.10"))
+
+        self.symbol: str = ""
+        self._hod = 0.0
+        self._hod_bar_idx = -1
+        self._bar_idx = 0
+        self._prev_bar = None  # for engulfing + CUC checks
+        self.armed: Optional[ShortArm] = None
+        self._shorted = False
+        self._in_trade = False
+
+    def reset(self):
+        self._hod = 0.0
+        self._hod_bar_idx = -1
+        self._bar_idx = 0
+        self._prev_bar = None
+        self.armed = None
+        self._shorted = False
+        self._in_trade = False
+
+    def notify_trade_opened(self):
+        self._in_trade = True
+        self._shorted = True
+
+    def notify_trade_closed(self, pnl: float):
+        self._in_trade = False
+
+    def on_bar_close_1m(self, bar, vwap: Optional[float] = None) -> Optional[str]:
+        self._bar_idx += 1
+        prev = self._prev_bar
+        self._prev_bar = bar
+
+        if self._shorted or self._in_trade:
+            return None
+
+        # Track HOD
+        if bar.high > self._hod:
+            self._hod = bar.high
+            self._hod_bar_idx = self._bar_idx
+            return None
+
+        # HOD/VWAP filter — skip when R/R to VWAP target is too thin
+        if vwap and vwap > 0 and self._hod / vwap < self.min_hod_vwap_ratio:
+            return None
+
+        # Bar must be within hod_proximity_pct% of HOD to count as a
+        # top-of-run exhaustion (otherwise it's mid-fade, not the top).
+        if self._hod > 0:
+            prox = (self._hod - bar.high) / self._hod * 100
+            if prox > self.hod_proximity_pct:
+                return None
+
+        # --- Pattern detection ---
+        body = abs(bar.close - bar.open)
+        upper_wick = bar.high - max(bar.close, bar.open)
+        lower_wick = min(bar.close, bar.open) - bar.low
+        pattern = None
+
+        # Shooting star
+        if body > 0 and upper_wick > 2 * body and lower_wick < body:
+            pattern = "shooting_star"
+
+        # Bearish engulfing (needs prev bar)
+        if not pattern and prev is not None:
+            if (prev.close > prev.open  # prev green
+                    and bar.close < bar.open  # cur red
+                    and bar.open >= prev.close
+                    and bar.close <= prev.open):
+                pattern = "bearish_engulfing"
+
+        # Candle-under-candle (needs prev bar)
+        if not pattern and prev is not None:
+            if bar.high < prev.high and bar.close < prev.low:
+                pattern = "cuc"
+
+        if not pattern:
+            return None
+
+        # Arm immediately — trigger fires on bar close (price = bar.close)
+        trigger_low = bar.close  # short at the close of the pattern bar
+        stop = self._hod * (1 + self.stop_buffer_pct / 100)
+        self.armed = ShortArm(
+            trigger_low=trigger_low,
+            stop=stop,
+            hod_price=self._hod,
+            lh_bar_high=bar.high,
+            armed_bar_idx=self._bar_idx,
+        )
+        self._shorted = True  # Strategy A triggers immediately on bar close
+        return (f"SHORT_A ENTRY ({pattern}): close=${bar.close:.4f} "
+                f"HOD=${self._hod:.4f} stop=${stop:.4f}")
+
+    def on_trade_price(self, price: float) -> Optional[str]:
+        # Strategy A triggers at bar close, not on tick. This method exists
+        # for API parity with B/C but is a no-op.
+        return None
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Strategy C — "VWAP Rejection Short" (Moderate)
+# ══════════════════════════════════════════════════════════════════════
+
+class ShortDetectorC:
+    """Strategy C: wait for price to cross below VWAP, bounce back toward
+    VWAP, then get rejected (bar fails to close above VWAP). Short on the
+    rejection bar.
+
+    State machine:
+      IDLE → BELOW_VWAP (first bar whose close < VWAP, after HOD set)
+      BELOW_VWAP → BOUNCED (bar.high >= VWAP × 0.995)
+      BOUNCED → ARMED (bar.close < VWAP and bar.high <= VWAP × 1.005)
+              ← the rejection: touched VWAP but couldn't close above
+      ARMED → TRIGGERED (tick breaks below the rejection bar's low)
+
+    Stop: VWAP × 1.01 (per directive — tight stop above VWAP).
+    Target: below — VWAP is already lost, so targets are deeper
+    (50% retrace, gap fill).
+    """
+
+    def __init__(self):
+        self.stop_buffer_pct = float(os.getenv("WB_SHORT_C_STOP_BUFFER_PCT", "1.0"))
+        self.vwap_proximity_pct = float(os.getenv("WB_SHORT_C_VWAP_PROX_PCT", "0.5"))
+        self.min_hod_vwap_ratio = float(os.getenv("WB_SHORT_C_MIN_HOD_VWAP_RATIO", "1.05"))
+
+        self.symbol: str = ""
+        self._state = "IDLE"  # IDLE | BELOW_VWAP | BOUNCED | ARMED
+        self._hod = 0.0
+        self._bar_idx = 0
+        self._vwap_at_break = 0.0  # VWAP when we first went below
+        self._rejection_vwap = 0.0  # VWAP at the rejection bar (for stop)
+        self.armed: Optional[ShortArm] = None
+        self._shorted = False
+        self._in_trade = False
+
+    def reset(self):
+        self._state = "IDLE"
+        self._hod = 0.0
+        self._bar_idx = 0
+        self._vwap_at_break = 0.0
+        self._rejection_vwap = 0.0
+        self.armed = None
+        self._shorted = False
+        self._in_trade = False
+
+    def notify_trade_opened(self):
+        self._in_trade = True
+        self._shorted = True
+        self._state = "IDLE"
+
+    def notify_trade_closed(self, pnl: float):
+        self._in_trade = False
+
+    def on_bar_close_1m(self, bar, vwap: Optional[float] = None) -> Optional[str]:
+        self._bar_idx += 1
+
+        if self._shorted or self._in_trade:
+            return None
+
+        # Track HOD
+        if bar.high > self._hod:
+            self._hod = bar.high
+
+        # VWAP required
+        if not vwap or vwap <= 0:
+            return None
+
+        # R/R filter — skip if HOD isn't meaningfully above VWAP
+        if self._hod / vwap < self.min_hod_vwap_ratio:
+            return None
+
+        if self._state == "IDLE":
+            # Transition: first bar that closes below VWAP after HOD is set
+            if bar.close < vwap and self._hod > vwap:
+                self._state = "BELOW_VWAP"
+                self._vwap_at_break = vwap
+                return f"SHORT_C BELOW_VWAP: close=${bar.close:.4f} < VWAP=${vwap:.4f} HOD=${self._hod:.4f}"
+            return None
+
+        if self._state == "BELOW_VWAP":
+            # If price breaks back above VWAP AND closes above, the "below"
+            # state invalidates (price reclaimed — could be a failed short).
+            if bar.close > vwap * (1 + self.vwap_proximity_pct / 100):
+                self._state = "IDLE"
+                return f"SHORT_C RESET: price reclaimed VWAP (close=${bar.close:.4f})"
+            # Has the bounce come yet? We consider a "bounce" as any bar whose
+            # HIGH touches VWAP (from below).
+            if bar.high >= vwap * (1 - self.vwap_proximity_pct / 100):
+                self._state = "BOUNCED"
+                return f"SHORT_C BOUNCED: high=${bar.high:.4f} touched VWAP=${vwap:.4f}"
+            return None
+
+        if self._state == "BOUNCED":
+            # Rejection: bar touched VWAP but closed back below
+            if (bar.high >= vwap * (1 - self.vwap_proximity_pct / 100)
+                    and bar.close < vwap):
+                # Armed: trigger on next tick break below this bar's low
+                trigger_low = bar.low
+                stop = vwap * (1 + self.stop_buffer_pct / 100)
+                self._rejection_vwap = vwap
+                self.armed = ShortArm(
+                    trigger_low=trigger_low,
+                    stop=stop,
+                    hod_price=self._hod,
+                    lh_bar_high=bar.high,
+                    armed_bar_idx=self._bar_idx,
+                )
+                self._state = "ARMED"
+                return (f"SHORT_C ARMED: rejection at VWAP=${vwap:.4f} "
+                        f"trigger<=${trigger_low:.4f} stop=${stop:.4f}")
+            # If bar closed above VWAP, bounce was successful — reset
+            if bar.close > vwap:
+                self._state = "IDLE"
+                return f"SHORT_C RESET: bounce closed above VWAP (close=${bar.close:.4f})"
+            return None
+
+        if self._state == "ARMED":
+            # Invalidate if new HOD — can't short into strength
+            if bar.high > self._hod * 1.002:
+                self._state = "IDLE"
+                self.armed = None
+                return f"SHORT_C UNARM: new HOD broke (bar.high=${bar.high:.4f})"
+            return None
+
+        return None
+
+    def on_trade_price(self, price: float) -> Optional[str]:
+        if self._state != "ARMED" or self.armed is None:
+            return None
+        if self._shorted or self._in_trade:
+            return None
+        if price <= self.armed.trigger_low:
+            self._shorted = True
+            return (f"SHORT_C ENTRY SIGNAL @ {price:.4f} "
+                    f"(break <= {self.armed.trigger_low:.4f}) "
+                    f"stop={self.armed.stop:.4f} HOD={self.armed.hod_price:.4f}")
+        return None
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Factory
+# ══════════════════════════════════════════════════════════════════════
+
+def make_short_detector(strategy: str = "B"):
+    """Return a detector for the named strategy. Strategies: A, B, C."""
+    s = strategy.upper()
+    if s == "A":
+        return ShortDetectorA()
+    if s == "C":
+        return ShortDetectorC()
+    return ShortDetector()  # default B

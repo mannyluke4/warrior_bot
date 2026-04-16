@@ -30,7 +30,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
 from bars import TradeBarBuilder, Bar  # noqa: E402
-from short_detector import ShortDetector  # noqa: E402
+from short_detector import make_short_detector  # noqa: E402
 
 ET = ZoneInfo("America/New_York")
 
@@ -107,7 +107,7 @@ def load_ticks(symbol: str, date: str):
     return ticks
 
 
-def run_symbol(symbol: str, date: str, verbose: bool = False) -> list[Trade]:
+def run_symbol(symbol: str, date: str, strategy: str = "B", verbose: bool = False) -> list[Trade]:
     ticks = load_ticks(symbol, date)
     if not ticks:
         return []
@@ -122,7 +122,7 @@ def run_symbol(symbol: str, date: str, verbose: bool = False) -> list[Trade]:
     cum_pv = 0.0
     cum_v = 0
 
-    detector = ShortDetector()
+    detector = make_short_detector(strategy)
     detector.symbol = symbol
 
     entered = False
@@ -135,18 +135,28 @@ def run_symbol(symbol: str, date: str, verbose: bool = False) -> list[Trade]:
     exit_time = None
     exit_reason = ""
 
+    # Strategy A arms + triggers at bar close (no tick gate). The callback
+    # flips this flag; the tick loop below picks it up and opens the position
+    # at the bar's close price, using the current tick's timestamp.
+    bar_close_trigger = {"fired": False, "price": 0.0}
+
     # Bar builder feeds the detector on close — we use a callback.
     def on_bar(bar):
         nonlocal pre_peak_min_price
         bars_collected.append(bar)
         bar_vwaps.append(cum_pv / cum_v if cum_v > 0 else 0.0)
         # Pre-peak session low for 50% retrace (only track until HOD detected)
-        if not entered and detector._state == "IDLE":
-            if bar.low < pre_peak_min_price:
+        if not entered:
+            state_attr = getattr(detector, "_state", "IDLE")
+            if state_attr == "IDLE" and bar.low < pre_peak_min_price:
                 pre_peak_min_price = bar.low
         msg = detector.on_bar_close_1m(bar, vwap=bar_vwaps[-1])
         if verbose and msg:
             print(f"  [{bar.start.astimezone(ET).strftime('%H:%M')}] {msg}")
+        # Strategy A triggers ON the bar close (msg starts with "SHORT_A ENTRY")
+        if msg and msg.startswith("SHORT_A ENTRY") and detector.armed:
+            bar_close_trigger["fired"] = True
+            bar_close_trigger["price"] = detector.armed.trigger_low
 
     bb = TradeBarBuilder(on_bar_close=on_bar, et_tz=ET, interval_seconds=60)
 
@@ -193,9 +203,21 @@ def run_symbol(symbol: str, date: str, verbose: bool = False) -> list[Trade]:
                 break
             continue
 
-        # Not yet entered — check for trigger
+        # Not yet entered — check for trigger.
+        # Strategy A: fires at bar close via on_bar callback; we honor the flag
+        # with the close price and the current tick's timestamp.
+        if bar_close_trigger["fired"]:
+            entered = True
+            entry_price = bar_close_trigger["price"]
+            entry_time = ts
+            armed_hod = detector.armed.hod_price
+            armed_vwap = bar_vwaps[-1] if bar_vwaps else 0.0
+            bar_close_trigger["fired"] = False
+            detector.notify_trade_opened()
+            continue
+        # Strategies B + C: tick-level trigger
         msg = detector.on_trade_price(price)
-        if msg and "SHORT ENTRY SIGNAL" in msg:
+        if msg and "ENTRY SIGNAL" in msg:
             if verbose:
                 print(f"  [{ts.astimezone(ET).strftime('%H:%M:%S')}] {msg}")
             entered = True
@@ -243,6 +265,8 @@ def main():
     parser.add_argument("symbol", nargs="?")
     parser.add_argument("date", nargs="?")
     parser.add_argument("--universe", action="store_true", help="Run all in-universe targets")
+    parser.add_argument("--strategy", default="B", choices=["A", "B", "C"],
+                        help="Which short strategy to backtest")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -252,14 +276,15 @@ def main():
         return
 
     all_trades = []
-    print(f"Sizing: equity=${EQUITY:,.0f} risk={RISK_PCT*100:.1f}% max_notional=${MAX_NOTIONAL:,.0f}")
+    print(f"Strategy: {args.strategy}  |  Sizing: equity=${EQUITY:,.0f} risk={RISK_PCT*100:.1f}% "
+          f"max_notional=${MAX_NOTIONAL:,.0f}")
     print()
     print(f"{'Symbol':6} {'Date':10} {'Entry':>8} {'Stop':>8} {'Exit':>8}  {'Reason':17} "
           f"{'Qty':>5} {'Notional':>9}  {'PnL/sh':>7} {'$PnL':>8} {'R':>6}")
     print("-" * 115)
     for sym, date in targets:
         try:
-            trades = run_symbol(sym, date, verbose=args.verbose)
+            trades = run_symbol(sym, date, strategy=args.strategy, verbose=args.verbose)
         except FileNotFoundError:
             print(f"{sym:6} {date:10}  (no tick cache — skipped)")
             continue
