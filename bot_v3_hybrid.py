@@ -1896,73 +1896,140 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
               flush=True)
         return
 
+    # Capture pre-exit context BEFORE any mutation, so the async verify
+    # thread has a consistent snapshot (even if manage_exit concurrently
+    # mutates state.open_position).
     pos = state.open_position
-    pnl = (price - pos["entry"]) * qty
-    state.daily_pnl += pnl
-    state.daily_trades += 1
+    if pos is None:
+        # Race: position already cleared. Submission went through anyway,
+        # but we can't compute P&L without an entry price. Rare; log + bail.
+        print(f"  ⚠️ EXIT RACE: {symbol} state.open_position cleared before "
+              f"P&L snapshot — order {alpaca_order.id} sent, P&L unbookable.",
+              flush=True)
+        return
+    entry_price = pos["entry"]
+    setup_type = pos["setup_type"]
 
-    if pnl < 0:
-        state.consecutive_losses += 1
-    else:
-        state.consecutive_losses = 0
-
-    print(f"🟥 EXIT: {symbol} qty={qty} @ ${price:.4f} reason={reason} "
-          f"P&L=${pnl:+,.0f} daily=${state.daily_pnl:+,.0f}", flush=True)
-
-    state.closed_trades.append({
-        "symbol": symbol,
-        "entry": pos["entry"],
-        "exit": price,
-        "qty": qty,
-        "pnl": pnl,
-        "reason": reason,
-        "setup_type": pos["setup_type"],
-        "time": datetime.now(ET).strftime("%H:%M:%S"),
-    })
-
-    # Notify squeeze detector
-    if SQ_ENABLED and symbol in state.sq_detectors:
-        state.sq_detectors[symbol].notify_trade_closed(symbol, pnl)
-
-    # MP V2: unlock re-entry detection when squeeze trade closes
-    if pos["setup_type"] == "squeeze" and symbol in state.mp_detectors:
-        state.mp_detectors[symbol].notify_squeeze_closed(symbol, pnl)
-
-    # MP V2: track re-entry count when mp_reentry trade closes
-    if pos["setup_type"] == "mp_reentry" and symbol in state.mp_detectors:
-        state.mp_detectors[symbol].notify_reentry_closed()
-
-    # CT: unlock continuation detection when squeeze trade closes
-    if pos["setup_type"] == "squeeze" and CT_ENABLED and symbol in state.ct_detectors:
-        hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else 0
-        avg_vol = 0
-        sq = state.sq_detectors.get(symbol)
-        if sq and hasattr(sq, 'bars_1m') and sq.bars_1m:
-            avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
-                          for b in sq.bars_1m) / len(sq.bars_1m)
-        _ct_now_str = datetime.now(ET).strftime("%H:%M")
-        state.ct_detectors[symbol].notify_squeeze_closed(
-            symbol, pnl,
-            entry=pos["entry"], exit_price=price,
-            hod=hod or 0, avg_squeeze_vol=avg_vol,
-            bar_time=_ct_now_str,
-        )
-
-    # CT: track re-entry count when continuation trade closes
-    if pos["setup_type"] == "continuation" and CT_ENABLED and symbol in state.ct_detectors:
-        state.ct_detectors[symbol].notify_continuation_closed(pnl)
-
-    # Clear position if fully exited
+    # Synchronous state update: clear / decrement position IMMEDIATELY so
+    # the next manage_exit tick doesn't see stale qty and try to double-exit.
+    # P&L accounting is separately deferred to the verify thread below.
     remaining = pos["qty"] - qty
     if remaining <= 0:
         state.open_position = None
     else:
         pos["qty"] = remaining
 
-    # Persist post-exit state: open_trades shrinks (empty on full exit, or
-    # updated with new qty on partial), risk picks up the closed trade.
-    persist_open_trades()
-    persist_risk()
+    # Async verify-and-book: poll Alpaca for the exit order's final state,
+    # then record P&L using the ACTUAL filled_avg_price and filled_qty
+    # (not the intended `price` / `qty` we passed in). This eliminates the
+    # ~$125 over-report seen on today's MYSE trade where bot booked the
+    # target exit at $6.20 but Alpaca filled at $6.17.
+    #
+    # Defense-in-depth: status in (rejected, expired) with filled_qty=0
+    # records NOTHING. The earlier dual-submission-failure guard caught
+    # most of this, but this catches the async case where Alpaca accepts
+    # the submission then later rejects (e.g. insufficient_qty surfacing
+    # after a race).
+    intended_price = price
+    intended_qty = qty
+
+    def verify_exit_fill():
+        actual_qty = 0
+        actual_price = 0.0
+        status_final = "unknown"
+        for _ in range(60):  # up to 30s total (0.5s * 60)
+            try:
+                o = state.alpaca.get_order_by_id(alpaca_order.id)
+                s = str(o.status).lower() if o.status else ""
+                # Alpaca enum may be "OrderStatus.filled" — normalize
+                if "filled" in s and "partially" not in s:
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = "filled"
+                    break
+                if "partially_filled" in s:
+                    # Keep polling; last observed partial values updated each iter
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = "partially_filled"
+                if "cancel" in s or "expired" in s or "rejected" in s:
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = s
+                    break
+            except Exception as e:
+                print(f"  EXIT FILL CHECK ERROR ({alpaca_order.id}): {e}", flush=True)
+            time.sleep(0.5)
+
+        if actual_qty == 0:
+            print(f"  ⚠️ EXIT UNFILLED: {symbol} order {alpaca_order.id} "
+                  f"status={status_final} — no shares filled, no P&L recorded "
+                  f"(intended qty={intended_qty} reason={reason})", flush=True)
+            return
+
+        pnl = (actual_price - entry_price) * actual_qty
+        state.daily_pnl += pnl
+        state.daily_trades += 1
+        if pnl < 0:
+            state.consecutive_losses += 1
+        else:
+            state.consecutive_losses = 0
+
+        slip_note = ""
+        if abs(actual_price - intended_price) > 0.005:
+            slip_note = f" (intended ${intended_price:.4f}, slip ${actual_price - intended_price:+.4f})"
+        partial_note = ""
+        if actual_qty < intended_qty:
+            partial_note = f" [PARTIAL {actual_qty}/{intended_qty}]"
+        print(f"🟥 EXIT: {symbol} qty={actual_qty} @ ${actual_price:.4f}{slip_note}{partial_note} "
+              f"reason={reason} P&L=${pnl:+,.0f} daily=${state.daily_pnl:+,.0f}",
+              flush=True)
+
+        state.closed_trades.append({
+            "symbol": symbol,
+            "entry": entry_price,
+            "exit": actual_price,
+            "qty": actual_qty,
+            "pnl": pnl,
+            "reason": reason,
+            "setup_type": setup_type,
+            "time": datetime.now(ET).strftime("%H:%M:%S"),
+        })
+
+        # Detector notifications fire with the ACTUAL P&L, not the intended.
+        # The cumulative-R / has_winner logic depends on correct sign + magnitude.
+        if SQ_ENABLED and symbol in state.sq_detectors:
+            state.sq_detectors[symbol].notify_trade_closed(symbol, pnl)
+
+        if setup_type == "squeeze" and symbol in state.mp_detectors:
+            state.mp_detectors[symbol].notify_squeeze_closed(symbol, pnl)
+
+        if setup_type == "mp_reentry" and symbol in state.mp_detectors:
+            state.mp_detectors[symbol].notify_reentry_closed()
+
+        if setup_type == "squeeze" and CT_ENABLED and symbol in state.ct_detectors:
+            hod = state.bar_builder_1m.get_hod(symbol) if state.bar_builder_1m else 0
+            avg_vol = 0
+            sq = state.sq_detectors.get(symbol)
+            if sq and hasattr(sq, 'bars_1m') and sq.bars_1m:
+                avg_vol = sum(b.get("v", 0) if isinstance(b, dict) else getattr(b, "volume", 0)
+                              for b in sq.bars_1m) / len(sq.bars_1m)
+            _ct_now_str = datetime.now(ET).strftime("%H:%M")
+            state.ct_detectors[symbol].notify_squeeze_closed(
+                symbol, pnl,
+                entry=entry_price, exit_price=actual_price,
+                hod=hod or 0, avg_squeeze_vol=avg_vol,
+                bar_time=_ct_now_str,
+            )
+
+        if setup_type == "continuation" and CT_ENABLED and symbol in state.ct_detectors:
+            state.ct_detectors[symbol].notify_continuation_closed(pnl)
+
+        # Persist post-exit state after P&L is authoritative.
+        persist_open_trades()
+        persist_risk()
+
+    threading.Thread(target=verify_exit_fill, daemon=True, name=f"exit-verify-{symbol}").start()
 
 
 # ══════════════════════════════════════════════════════════════════════
