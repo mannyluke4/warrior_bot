@@ -637,9 +637,17 @@ def check_stale_open_short():
         if o.filled_qty == 0:
             should_clear = True
             reason = f"terminal {o.status}, 0 filled"
+    # Also handle orders that are STILL live after the grace period (e.g.,
+    # IBKR "held while locating" that sits in PreSubmitted indefinitely).
+    # Cancel the order ourselves and treat it as a non-fill.
+    if not should_clear and o is not None and o.status in (STATUS_SUBMITTED, STATUS_PARTIALLY):
+        should_clear = True
+        reason = f"still {o.status} after {age:.0f}s — force-cancelling"
+        state.broker.cancel_order(order_id)
+
     if should_clear:
         print(f"  ⚠️ STALE SHORT: {pos['symbol']} order {order_id} "
-              f"{reason} after {age:.0f}s unconfirmed — clearing stuck slot",
+              f"{reason} — clearing stuck slot",
               flush=True)
         # Release cross-detector in_trade locks set at entry time.
         sym = pos["symbol"]
