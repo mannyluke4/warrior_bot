@@ -240,6 +240,10 @@ class BotState:
         self.short_closed_trades: list = []
         # Pre-peak session low per symbol, used for retrace-50 target.
         self.short_pre_peak_low: dict[str, float] = {}
+        # Alpaca shortability cache — resolved once per symbol at subscribe time.
+        # Only create a short detector for names in short_supported; log-skip the rest.
+        self.short_supported: set = set()
+        self.short_unsupported: set = set()
 
         # Bar builders (1m for detection, 10s for exits)
         self.bar_builder_1m: TradeBarBuilder = None
@@ -727,9 +731,30 @@ def init_detectors(symbol: str):
         state.ct_detectors[symbol] = ct
 
     if SHORT_ENABLED and symbol not in state.short_detectors:
-        sd = make_short_detector(SHORT_STRATEGY)
-        sd.symbol = symbol
-        state.short_detectors[symbol] = sd
+        # Pre-check Alpaca shortability. Paper accounts have a much narrower
+        # shortable universe than live — many small-caps in our watchlist
+        # will reject with code 42210000. Skip the detector entirely if
+        # Alpaca says the name isn't shortable.
+        if symbol in state.short_unsupported:
+            pass  # previously resolved as non-shortable, skip silently
+        else:
+            if symbol not in state.short_supported:
+                try:
+                    asset = _alpaca_call(state.alpaca.get_asset, symbol, timeout=5)
+                    if bool(getattr(asset, "shortable", False)):
+                        state.short_supported.add(symbol)
+                    else:
+                        state.short_unsupported.add(symbol)
+                        print(f"  SHORT_SKIP: {symbol} not shortable at Alpaca — "
+                              f"no short detector", flush=True)
+                except Exception as e:
+                    state.short_unsupported.add(symbol)
+                    print(f"  SHORT_SKIP: {symbol} asset lookup failed ({e}) — "
+                          f"no short detector", flush=True)
+            if symbol in state.short_supported:
+                sd = make_short_detector(SHORT_STRATEGY)
+                sd.symbol = symbol
+                state.short_detectors[symbol] = sd
 
 
 def subscribe_symbol(symbol: str):
@@ -3005,6 +3030,7 @@ def main():
     print(f"  Squeeze: {'ON' if SQ_ENABLED else 'OFF'}")
     print(f"  MP: {'ON' if MP_ENABLED else 'OFF'}")
     print(f"  MP V2 (Re-Entry): {'ON' if MP_V2_ENABLED else 'OFF'}")
+    print(f"  Short: {'ON (strat=' + SHORT_STRATEGY + ')' if SHORT_ENABLED else 'OFF'}")
     print(f"  Port: {IBKR_PORT}")
     print(f"  Risk: {RISK_PCT*100:.1f}% per trade")
     print(f"  Starting Equity: ${STARTING_EQUITY:,.0f}")
