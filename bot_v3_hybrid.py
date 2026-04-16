@@ -78,6 +78,16 @@ MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
 MP_V2_ENABLED = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
 CT_ENABLED = os.getenv("WB_CT_ENABLED", "0") == "1"
 
+# Short strategy (prototyped 2026-04-16 from DIRECTIVE_SHORT_STRATEGY_RESEARCH).
+# Default B — Lower-High Short — won head-to-head against A/C in backtests
+# (88% WR, +$3,241, +0.39R avg on the in-universe 8 stocks). A and C are
+# selectable for experimentation but B is the shipping variant.
+SHORT_ENABLED = os.getenv("WB_SHORT_ENABLED", "0") == "1"
+SHORT_STRATEGY = os.getenv("WB_SHORT_STRATEGY", "B").upper()
+SHORT_TIME_STOP_MIN = float(os.getenv("WB_SHORT_TIME_STOP_MIN", "60"))
+if SHORT_ENABLED:
+    from short_detector import make_short_detector
+
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
 IBKR_PORT = int(os.getenv("IBKR_PORT", "4002"))  # 4002 = Gateway paper
@@ -224,6 +234,12 @@ class BotState:
         self.sq_detectors: dict[str, SqueezeDetector] = {}
         self.mp_detectors: dict[str, MicroPullbackDetector] = {}
         self.ct_detectors: dict[str, ContinuationDetector] = {}
+        # Short strategy detector (WB_SHORT_ENABLED). Separate from long path.
+        self.short_detectors: dict = {}
+        self.open_short: dict = None
+        self.short_closed_trades: list = []
+        # Pre-peak session low per symbol, used for retrace-50 target.
+        self.short_pre_peak_low: dict[str, float] = {}
 
         # Bar builders (1m for detection, 10s for exits)
         self.bar_builder_1m: TradeBarBuilder = None
@@ -709,6 +725,11 @@ def init_detectors(symbol: str):
     if CT_ENABLED and symbol not in state.ct_detectors:
         ct = ContinuationDetector()
         state.ct_detectors[symbol] = ct
+
+    if SHORT_ENABLED and symbol not in state.short_detectors:
+        sd = make_short_detector(SHORT_STRATEGY)
+        sd.symbol = symbol
+        state.short_detectors[symbol] = sd
 
 
 def subscribe_symbol(symbol: str):
@@ -1218,6 +1239,23 @@ def on_bar_close_1m(bar):
             elif "CT_WATCHING" in ct_msg or "CT_PULLBACK" in ct_msg or "CT_PAUSE" in ct_msg:
                 print(f"[{now_str} ET] {symbol} CT | {ct_msg}", flush=True)
 
+    # Short detector (bar-close feed). Strategy B arms at close, triggers on
+    # a later tick. Strategy A arms+triggers on the same bar close.
+    if SHORT_ENABLED and symbol in state.short_detectors:
+        sd = state.short_detectors[symbol]
+        # Track session low while the detector is still hunting (pre-HOD),
+        # for the retrace-50 target at exit time.
+        if not getattr(sd, "_shorted", False) and getattr(sd, "_state", "IDLE") == "IDLE":
+            prev_lo = state.short_pre_peak_low.get(symbol, float("inf"))
+            state.short_pre_peak_low[symbol] = min(prev_lo, bar.low)
+        sd_msg = sd.on_bar_close_1m(bar, vwap=vwap)
+        if sd_msg:
+            print(f"[{now_str} ET] {symbol} SHORT | {sd_msg}", flush=True)
+        # Strategy A triggers on the bar close itself
+        if (sd_msg and sd_msg.startswith("SHORT_A ENTRY") and sd.armed
+                and state.open_position is None and state.open_short is None):
+            _enter_short_trade(symbol, sd, vwap)
+
     # ── EPL: 1m bar processing ──
     if EPL_ENABLED and state.epl_registry and state.epl_registry.strategy_count > 0:
         now_et = datetime.now(ET)
@@ -1404,6 +1442,18 @@ def check_triggers(symbol: str, price: float):
             print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             enter_trade(symbol, armed_before, "squeeze")
             sq.notify_trade_opened()
+            return
+
+    # Short trigger (Strategy B + C fire on tick; A fires at bar close).
+    # Short is additive — squeeze keeps priority on the same symbol/tick.
+    if SHORT_ENABLED and symbol in state.short_detectors and state.open_short is None:
+        sd = state.short_detectors[symbol]
+        armed_sd = sd.armed
+        sd_msg = sd.on_trade_price(price)
+        if sd_msg and "ENTRY SIGNAL" in sd_msg and armed_sd:
+            print(f"[{now_str} ET] {symbol} SHORT | {sd_msg}", flush=True)
+            _vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else 0
+            _enter_short_trade(symbol, sd, _vwap, trigger_price=price)
             return
 
     # Continuation trigger (after SQ, before MP)
@@ -1847,6 +1897,289 @@ def _mp_exit(symbol: str, price: float, pos: dict):
         exit_trade(symbol, price, pos["qty"], "stop_hit")
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Short strategy — Lower-High Short (+ A/C variants via WB_SHORT_STRATEGY)
+# ══════════════════════════════════════════════════════════════════════
+
+def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float = 0.0):
+    """Open a short position via Alpaca. Mirrors enter_trade's structure but
+    submits SELL + tracks the inverse of the long exit ladder.
+
+    For Strategy A, trigger_price is 0 (no tick trigger) — we use
+    detector.armed.trigger_low which equals the pattern bar's close.
+    For B and C, trigger_price is the tick that crossed below the arm's
+    trigger_low — that's the intended entry (short at break).
+    """
+    arm = detector.armed
+    if arm is None:
+        return
+    entry = trigger_price if trigger_price > 0 else arm.trigger_low
+    stop = arm.stop
+    r = stop - entry  # for shorts: R = stop (above) minus entry (below)
+    if r <= 0 or r < MIN_R:
+        print(f"  SKIP SHORT: R={r:.4f} < min {MIN_R}", flush=True)
+        return
+
+    # Dynamic sizing — same risk % + notional cap as long, mirrors backtest
+    current_equity = STARTING_EQUITY + state.daily_pnl
+    risk_dollars = max(50, current_equity * RISK_PCT)
+    qty = int(math.floor(risk_dollars / r))
+    qty_notional = int(math.floor(MAX_NOTIONAL / max(entry, 0.01)))
+    qty = min(qty, qty_notional, MAX_SHARES)
+    if qty <= 0:
+        return
+
+    # Short entries submit as SELL. For a naked short, shares must be
+    # easy/hard-to-borrow available at Alpaca. If HTB is unavailable, Alpaca
+    # returns an error which the submit_order exception catches.
+    initial_slip = _entry_slippage_for(entry)
+    limit_price = round(entry - initial_slip, 2)  # sell-side limit BELOW entry
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+    print(f"[{now_str} ET] 🟦 SHORT ENTRY: {symbol} qty={qty} SELL @ ${limit_price:.2f} "
+          f"(slip=${initial_slip:.3f}) stop=${stop:.4f} R=${r:.4f} HOD=${arm.hod_price:.4f} "
+          f"strat={SHORT_STRATEGY}", flush=True)
+
+    try:
+        req = LimitOrderRequest(
+            symbol=symbol, qty=qty, side=OrderSide.SELL,
+            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
+        )
+        alpaca_order = state.alpaca.submit_order(req)
+        order_id = str(alpaca_order.id)
+        print(f"  ALPACA ORDER: {order_id} SHORT {qty} {symbol} @ ${limit_price:.2f}", flush=True)
+    except Exception as e:
+        print(f"  SHORT ORDER FAILED: {e}", flush=True)
+        return
+
+    state.open_short = {
+        "symbol": symbol, "qty": qty, "entry": limit_price, "stop": stop, "r": r,
+        "setup_type": f"short_{SHORT_STRATEGY.lower()}",
+        "entry_time": datetime.now(ET), "order_id": order_id,
+        "hod_price": arm.hod_price, "armed_vwap": vwap or 0,
+        "pre_peak_low": state.short_pre_peak_low.get(symbol, float("inf")),
+        "fill_confirmed": False,
+    }
+
+    # Mark per-symbol detectors as in-trade so long-side signals can't fire
+    # on the same symbol while the short is open.
+    detector.notify_trade_opened()
+    if SQ_ENABLED and symbol in state.sq_detectors:
+        state.sq_detectors[symbol]._in_trade = True
+    if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
+        state.mp_detectors[symbol]._in_trade = True
+    if CT_ENABLED and symbol in state.ct_detectors:
+        try:
+            state.ct_detectors[symbol]._in_trade = True
+        except Exception:
+            pass
+
+    # Background fill verification — on timeout we don't retry (shorts are
+    # time-sensitive; a missed fill should be abandoned, not chased).
+    def verify_short_fill():
+        deadline = time.time() + ENTRY_RETRY_TIMEOUT_SEC
+        while time.time() < deadline:
+            try:
+                o = state.alpaca.get_order_by_id(order_id)
+                s = str(o.status).lower() if o.status else ""
+                if "filled" in s and "partially" not in s:
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else limit_price
+                    actual_qty = int(float(o.filled_qty or qty))
+                    if state.open_short and state.open_short.get("order_id") == order_id:
+                        state.open_short["entry"] = actual_price
+                        state.open_short["qty"] = actual_qty
+                        state.open_short["stop"] = actual_price + r
+                        state.open_short["fill_confirmed"] = True
+                        print(f"  SHORT FILL: {symbol} @ ${actual_price:.4f} qty={actual_qty}",
+                              flush=True)
+                    return
+                if "cancel" in s or "expired" in s or "rejected" in s:
+                    print(f"  SHORT UNFILLED: {symbol} order {order_id} status={s} — clearing slot",
+                          flush=True)
+                    if state.open_short and state.open_short.get("order_id") == order_id:
+                        state.open_short = None
+                    return
+            except Exception as e:
+                print(f"  SHORT FILL CHECK ERROR: {e}", flush=True)
+            time.sleep(0.5)
+        # Timeout: assume fill (paper account usually does) and confirm with
+        # whatever Alpaca has on record.
+        try:
+            o = state.alpaca.get_order_by_id(order_id)
+            if o.filled_qty and float(o.filled_qty) > 0:
+                actual_price = float(o.filled_avg_price) if o.filled_avg_price else limit_price
+                actual_qty = int(float(o.filled_qty))
+                if state.open_short and state.open_short.get("order_id") == order_id:
+                    state.open_short["entry"] = actual_price
+                    state.open_short["qty"] = actual_qty
+                    state.open_short["stop"] = actual_price + r
+                    state.open_short["fill_confirmed"] = True
+                    print(f"  SHORT FILL (late): {symbol} @ ${actual_price:.4f} qty={actual_qty}",
+                          flush=True)
+        except Exception:
+            pass
+    import threading
+    threading.Thread(target=verify_short_fill, daemon=True).start()
+
+
+def manage_short_exit(symbol: str, price: float):
+    """Run the short exit ladder on each tick. Mirrors backtest_short.py logic:
+      - Stop: price >= stop (cover, taking loss)
+      - Target 1: VWAP, if armed_vwap was meaningfully below entry
+      - Target 2: 50% retrace, if below entry
+      - Time stop: WB_SHORT_TIME_STOP_MIN from entry
+    """
+    pos = state.open_short
+    if pos is None or pos["symbol"] != symbol:
+        return
+    if not pos.get("fill_confirmed", False):
+        return
+
+    entry = pos["entry"]
+    stop = pos["stop"]
+    armed_vwap = pos.get("armed_vwap", 0)
+    hod = pos.get("hod_price", 0)
+    pre_peak_low = pos.get("pre_peak_low", float("inf"))
+    retrace_50 = (hod + pre_peak_low) / 2.0 if pre_peak_low < float("inf") else entry * 0.90
+
+    # Stop (cover at loss)
+    if price >= stop:
+        exit_short(symbol, stop, pos["qty"], "short_stop_hit")
+        return
+    # Target 1 — VWAP. Only take this path if VWAP was meaningfully below entry.
+    if armed_vwap > 0 and armed_vwap < entry * 0.99 and price <= armed_vwap:
+        exit_short(symbol, price, pos["qty"], "short_target_vwap")
+        return
+    # Target 2 — 50% retrace of morning move. Only valid if below entry.
+    if retrace_50 < entry * 0.99 and price <= retrace_50:
+        exit_short(symbol, price, pos["qty"], "short_target_retrace50")
+        return
+    # Time stop
+    held_min = (datetime.now(ET) - pos["entry_time"]).total_seconds() / 60
+    if held_min >= SHORT_TIME_STOP_MIN:
+        exit_short(symbol, price, pos["qty"], f"short_time_{int(SHORT_TIME_STOP_MIN)}min")
+
+
+def exit_short(symbol: str, price: float, qty: int, reason: str):
+    """Place cover (BUY) order via Alpaca and record the short trade. Mirrors
+    exit_trade's phantom-P&L guards: no P&L unless Alpaca actually fills."""
+    # Urgent cover (stop hit): aggressive limit ABOVE current price.
+    if reason == "short_stop_hit":
+        limit_price = round(price * 1.03, 2)
+    else:
+        limit_price = round(price + 0.03, 2)
+
+    order_submitted = False
+    try:
+        req = LimitOrderRequest(
+            symbol=symbol, qty=qty, side=OrderSide.BUY,
+            time_in_force=TimeInForce.DAY, limit_price=limit_price, extended_hours=True,
+        )
+        alpaca_order = state.alpaca.submit_order(req)
+        print(f"  ALPACA COVER: {alpaca_order.id} BUY {qty} {symbol} @ ${limit_price:.2f}",
+              flush=True)
+        order_submitted = True
+    except Exception as e:
+        print(f"  ALPACA COVER FAILED: {e} — trying market", flush=True)
+        try:
+            from alpaca.trading.requests import MarketOrderRequest
+            req = MarketOrderRequest(symbol=symbol, qty=qty, side=OrderSide.BUY,
+                                     time_in_force=TimeInForce.DAY)
+            alpaca_order = state.alpaca.submit_order(req)
+            print(f"  ALPACA MARKET COVER: {alpaca_order.id} BUY {qty} {symbol}", flush=True)
+            order_submitted = True
+        except Exception as e2:
+            print(f"  ALPACA MARKET COVER ALSO FAILED: {e2}", flush=True)
+
+    if not order_submitted:
+        print(f"  ⚠️ SHORT COVER ABORTED: {symbol} qty={qty} reason={reason} — "
+              f"no order accepted, state unchanged, no P&L recorded", flush=True)
+        return
+
+    pos = state.open_short
+    if pos is None:
+        print(f"  ⚠️ SHORT COVER RACE: {symbol} open_short cleared before snapshot", flush=True)
+        return
+    entry_price = pos["entry"]
+    setup_type = pos["setup_type"]
+    intended_price = price
+    intended_qty = qty
+
+    # Clear slot immediately so repeated ticks don't double-cover.
+    remaining = pos["qty"] - qty
+    if remaining <= 0:
+        state.open_short = None
+    else:
+        pos["qty"] = remaining
+
+    def verify_cover_fill():
+        actual_qty = 0
+        actual_price = 0.0
+        status_final = "unknown"
+        for _ in range(60):
+            try:
+                o = state.alpaca.get_order_by_id(alpaca_order.id)
+                s = str(o.status).lower() if o.status else ""
+                if "filled" in s and "partially" not in s:
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = "filled"
+                    break
+                if "partially_filled" in s:
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = "partially_filled"
+                if "cancel" in s or "expired" in s or "rejected" in s:
+                    actual_qty = int(float(o.filled_qty or 0))
+                    actual_price = float(o.filled_avg_price) if o.filled_avg_price else 0.0
+                    status_final = s
+                    break
+            except Exception as e:
+                print(f"  COVER FILL CHECK ERROR: {e}", flush=True)
+            time.sleep(0.5)
+        if actual_qty == 0:
+            print(f"  ⚠️ COVER UNFILLED: {symbol} status={status_final} — no shares, no P&L",
+                  flush=True)
+            return
+        # Short P&L: (entry - exit) × qty.
+        pnl = (entry_price - actual_price) * actual_qty
+        state.daily_pnl += pnl
+        state.daily_trades += 1
+        if pnl < 0:
+            state.consecutive_losses += 1
+        else:
+            state.consecutive_losses = 0
+        slip_note = ""
+        if abs(actual_price - intended_price) > 0.005:
+            slip_note = f" (intended ${intended_price:.4f}, slip ${actual_price - intended_price:+.4f})"
+        partial_note = ""
+        if actual_qty < intended_qty:
+            partial_note = f" [PARTIAL {actual_qty}/{intended_qty}]"
+        print(f"🟩 SHORT COVER: {symbol} qty={actual_qty} @ ${actual_price:.4f}{slip_note}{partial_note} "
+              f"reason={reason} P&L=${pnl:+,.0f} daily=${state.daily_pnl:+,.0f}", flush=True)
+        state.short_closed_trades.append({
+            "symbol": symbol, "entry": entry_price, "exit": actual_price, "qty": actual_qty,
+            "pnl": pnl, "reason": reason, "setup_type": setup_type,
+            "time": datetime.now(ET).strftime("%H:%M:%S"),
+        })
+        # Release the per-symbol cross-detector locks we set on entry.
+        if SHORT_ENABLED and symbol in state.short_detectors:
+            try:
+                state.short_detectors[symbol].notify_trade_closed(pnl)
+            except Exception:
+                pass
+        if SQ_ENABLED and symbol in state.sq_detectors:
+            state.sq_detectors[symbol]._in_trade = False
+        if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
+            state.mp_detectors[symbol]._in_trade = False
+        if CT_ENABLED and symbol in state.ct_detectors:
+            try:
+                state.ct_detectors[symbol]._in_trade = False
+            except Exception:
+                pass
+    import threading
+    threading.Thread(target=verify_cover_fill, daemon=True).start()
+
+
 def exit_trade(symbol: str, price: float, qty: int, reason: str):
     """Place exit order via ALPACA and record trade."""
     # For urgent exits (stop hit, dollar loss cap, max loss), use very aggressive limit
@@ -2162,6 +2495,8 @@ def _process_ticker(ticker):
     # Manage exits
     if state.open_position and state.open_position["symbol"] == symbol:
         manage_exit(symbol, price)
+    if state.open_short and state.open_short["symbol"] == symbol:
+        manage_short_exit(symbol, price)
 
 
 def save_tick_cache(source: dict | None = None):
