@@ -3003,7 +3003,9 @@ def main():
     # Initialize broker abstraction. All order flow in this file goes
     # through state.broker (never state.alpaca directly). WB_BROKER
     # selects the backend; default "alpaca" preserves legacy behavior.
-    state.broker = make_broker(BROKER_BACKEND, alpaca=state.alpaca, ib=state.ib)
+    state.broker = make_broker(
+        BROKER_BACKEND, alpaca=state.alpaca, ib=state.ib, contracts=state.contracts,
+    )
     print(f"Broker: {BROKER_BACKEND.upper()}", flush=True)
 
     # Startup position reconciliation. Resume mode rehydrates trade state

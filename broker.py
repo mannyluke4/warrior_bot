@@ -294,12 +294,19 @@ class IBKRBroker:
         "inactive": STATUS_REJECTED,  # IBKR uses Inactive for rejections
     }
 
-    def __init__(self, ib):
+    def __init__(self, ib, contracts: dict = None):
         self._ib = ib
         # Trade objects indexed by string orderId. Required because
         # get_order_status / cancel_order need the Trade, not just an id.
         self._trades: dict = {}
-        # Qualified contract cache to avoid repeated qualifyContracts calls.
+        # External contract cache shared with the bot (state.contracts).
+        # When callers submit orders from within an ib_insync event loop
+        # callback (tick / bar handlers), calling ib.qualifyContracts() is
+        # a nested ib.run() and raises "This event loop is already running".
+        # We avoid that by reading from the bot's pre-qualified dict first.
+        self._contracts_external = contracts
+        # Private fallback cache for symbols not pre-qualified externally
+        # (e.g. used from the standalone test harness).
         self._contracts: dict = {}
         # Per-symbol shortable cache. False = known non-shortable; True =
         # known shortable; absent = not yet resolved.
@@ -307,10 +314,23 @@ class IBKRBroker:
 
     # ─ Helpers ────────────────────────────────────────────────────
     def _contract_for(self, symbol: str):
-        """Return (and cache) a qualified Stock contract for symbol."""
+        """Return a qualified Stock contract for symbol.
+
+        Prefers the bot's externally-populated contracts dict (safe from
+        any call context). Falls back to our own cache and — only as a
+        last resort — to ib.qualifyContracts, which is UNSAFE to call
+        from an event-loop callback (it performs a nested ib.run()).
+        """
         sym = symbol.upper()
+        # 1. External dict populated by bot's subscribe_symbol.
+        if self._contracts_external is not None:
+            c = self._contracts_external.get(sym) or self._contracts_external.get(symbol)
+            if c is not None:
+                return c
+        # 2. Our own cache from prior qualifications (test harness).
         if sym in self._contracts:
             return self._contracts[sym]
+        # 3. Fallback — only safe to call from outside a loop callback.
         from ib_insync import Stock
         c = Stock(sym, "SMART", "USD")
         self._ib.qualifyContracts(c)
@@ -364,8 +384,10 @@ class IBKRBroker:
         order.outsideRth = bool(extended_hours)
         order.tif = "GTC" if extended_hours else "DAY"
         trade = self._ib.placeOrder(contract, order)
-        # Let ib_insync dispatch the placeOrder event so orderId populates.
-        self._ib.sleep(0)
+        # Note: ib.sleep(0) would pump the event loop here, but calling it
+        # from inside a callback ("This event loop is already running")
+        # raises. ib_insync assigns orderId synchronously before the event
+        # round-trip, so reading it immediately is safe.
         order_id = str(trade.order.orderId)
         self._trades[order_id] = trade
         return self._order_from_trade(trade, side=action)
@@ -513,13 +535,17 @@ class IBKRBroker:
 # Factory
 # ════════════════════════════════════════════════════════════════════════
 
-def make_broker(backend: str, *, alpaca=None, ib=None):
+def make_broker(backend: str, *, alpaca=None, ib=None, contracts: dict = None):
     """Construct a BrokerClient for the named backend.
 
-    backend: "alpaca" | "ibkr" (case-insensitive). From WB_BROKER env.
-    alpaca:  alpaca.trading.client.TradingClient instance (required if
-             backend == "alpaca").
-    ib:      ib_insync.IB instance (required if backend == "ibkr").
+    backend:   "alpaca" | "ibkr" (case-insensitive). From WB_BROKER env.
+    alpaca:    alpaca.trading.client.TradingClient instance (required if
+               backend == "alpaca").
+    ib:        ib_insync.IB instance (required if backend == "ibkr").
+    contracts: optional symbol→Contract dict the caller already maintains
+               (e.g., bot's state.contracts). IBKRBroker uses it to avoid
+               calling ib.qualifyContracts() from inside event callbacks
+               (which would deadlock on nested event-loop run).
     """
     b = (backend or "alpaca").lower()
     if b == "alpaca":
@@ -529,5 +555,5 @@ def make_broker(backend: str, *, alpaca=None, ib=None):
     if b == "ibkr":
         if ib is None:
             raise ValueError("make_broker(ibkr): ib=IB required")
-        return IBKRBroker(ib)
+        return IBKRBroker(ib, contracts=contracts)
     raise ValueError(f"Unknown broker backend: {backend}")
