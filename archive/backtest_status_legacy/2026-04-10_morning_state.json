@@ -1,0 +1,39 @@
+{
+  "label": "2026-04-10_morning",
+  "last_date": "2026-04-10",
+  "equity": 29551,
+  "trades": [
+    {
+      "date": "2026-04-10",
+      "symbol": "SQFT",
+      "pnl": -300,
+      "reason": "sq_trail_exit",
+      "window": "05:19-12:00"
+    },
+    {
+      "date": "2026-04-10",
+      "symbol": "SQFT",
+      "pnl": -105,
+      "reason": "sq_para_trail_exit",
+      "window": "05:19-12:00"
+    },
+    {
+      "date": "2026-04-10",
+      "symbol": "SQFT",
+      "pnl": -44,
+      "reason": "sq_time_exit(5bars)",
+      "window": "05:19-12:00"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-04-10",
+      "trades": 3,
+      "pnl": -449,
+      "equity": 29551,
+      "symbols": "SQFT",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    }
+  ]
+}

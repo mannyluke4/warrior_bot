@@ -1,0 +1,808 @@
+{
+  "label": "C09_ENTRY_STRICT",
+  "last_date": "2026-04-02",
+  "equity": 361161,
+  "trades": [
+    {
+      "date": "2026-01-12",
+      "symbol": "BDSX",
+      "pnl": -375,
+      "reason": "sq_stop_hit",
+      "window": "08:00-12:00"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "BDSX",
+      "pnl": 0,
+      "reason": "sq_para_trail_exit",
+      "window": "08:00-12:00"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "BDSX",
+      "pnl": -321,
+      "reason": "sq_max_loss_hit",
+      "window": "08:00-12:00"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "OM",
+      "pnl": 714,
+      "reason": "sq_target_hit_exit_full",
+      "window": "08:43-12:00"
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "OM",
+      "pnl": -1231,
+      "reason": "max_loss_hit",
+      "window": "08:43-12:00"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": 712,
+      "reason": "sq_target_hit_exit_full",
+      "window": "07:31-12:00"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": 8042,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "07:31-12:00"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": -967,
+      "reason": "max_loss_hit",
+      "window": "07:31-12:00"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": 3663,
+      "reason": "sq_target_hit",
+      "window": "07:31-12:00"
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "AHMA",
+      "pnl": 737,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "07:31-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 5650,
+      "reason": "sq_target_hit",
+      "window": "08:23-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 22930,
+      "reason": "epl_mp_time_exit(5bars)",
+      "window": "08:23-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": 11454,
+      "reason": "sq_target_hit",
+      "window": "08:23-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": -1353,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "08:23-12:00"
+    },
+    {
+      "date": "2026-01-14",
+      "symbol": "ROLR",
+      "pnl": -1207,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "08:23-12:00"
+    },
+    {
+      "date": "2026-01-16",
+      "symbol": "SVRE",
+      "pnl": 700,
+      "reason": "sq_para_trail_exit",
+      "window": "06:49-12:00"
+    },
+    {
+      "date": "2026-01-16",
+      "symbol": "ACCL",
+      "pnl": 4167,
+      "reason": "sq_target_hit",
+      "window": "04:07-12:00"
+    },
+    {
+      "date": "2026-01-16",
+      "symbol": "ACCL",
+      "pnl": -490,
+      "reason": "sq_para_trail_exit",
+      "window": "04:07-12:00"
+    },
+    {
+      "date": "2026-01-16",
+      "symbol": "ACCL",
+      "pnl": 22165,
+      "reason": "sq_target_hit",
+      "window": "04:07-12:00"
+    },
+    {
+      "date": "2026-01-23",
+      "symbol": "BGL",
+      "pnl": 2390,
+      "reason": "sq_target_hit_exit_full",
+      "window": "05:24-12:00"
+    },
+    {
+      "date": "2026-01-26",
+      "symbol": "BATL",
+      "pnl": 2947,
+      "reason": "sq_target_hit_exit_full",
+      "window": "04:16-12:00"
+    },
+    {
+      "date": "2026-01-26",
+      "symbol": "BATL",
+      "pnl": -2400,
+      "reason": "max_loss_hit",
+      "window": "04:16-12:00"
+    },
+    {
+      "date": "2026-01-26",
+      "symbol": "BATL",
+      "pnl": -571,
+      "reason": "epl_mp_time_exit(5bars)",
+      "window": "04:16-12:00"
+    },
+    {
+      "date": "2026-01-26",
+      "symbol": "BATL",
+      "pnl": 180,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "04:16-12:00"
+    },
+    {
+      "date": "2026-01-26",
+      "symbol": "BATL",
+      "pnl": -1085,
+      "reason": "max_loss_hit",
+      "window": "04:16-12:00"
+    },
+    {
+      "date": "2026-02-02",
+      "symbol": "FUSE",
+      "pnl": 1235,
+      "reason": "sq_para_trail_exit",
+      "window": "08:08-12:00"
+    },
+    {
+      "date": "2026-02-03",
+      "symbol": "NPT",
+      "pnl": 114334,
+      "reason": "sq_target_hit",
+      "window": "07:42-12:00"
+    },
+    {
+      "date": "2026-03-05",
+      "symbol": "GXAI",
+      "pnl": 4622,
+      "reason": "sq_target_hit_exit_full",
+      "window": "08:30-12:00"
+    },
+    {
+      "date": "2026-03-05",
+      "symbol": "GXAI",
+      "pnl": -2,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "08:30-12:00"
+    },
+    {
+      "date": "2026-03-05",
+      "symbol": "GXAI",
+      "pnl": -1577,
+      "reason": "max_loss_hit",
+      "window": "08:30-12:00"
+    },
+    {
+      "date": "2026-03-05",
+      "symbol": "GXAI",
+      "pnl": 2074,
+      "reason": "topping_wicky_exit_full",
+      "window": "08:30-12:00"
+    },
+    {
+      "date": "2026-03-05",
+      "symbol": "GXAI",
+      "pnl": -2036,
+      "reason": "max_loss_hit",
+      "window": "08:30-12:00"
+    },
+    {
+      "date": "2026-03-18",
+      "symbol": "ARTL",
+      "pnl": -402,
+      "reason": "sq_para_trail_exit",
+      "window": "07:42-12:00"
+    },
+    {
+      "date": "2026-03-20",
+      "symbol": "ANNA",
+      "pnl": 432,
+      "reason": "sq_para_trail_exit",
+      "window": "07:14-12:00"
+    },
+    {
+      "date": "2026-03-20",
+      "symbol": "ANNA",
+      "pnl": 8425,
+      "reason": "sq_target_hit_exit_full",
+      "window": "07:14-12:00"
+    },
+    {
+      "date": "2026-03-20",
+      "symbol": "ANNA",
+      "pnl": -2479,
+      "reason": "max_loss_hit",
+      "window": "07:14-12:00"
+    },
+    {
+      "date": "2026-03-20",
+      "symbol": "ANNA",
+      "pnl": -323,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "07:14-12:00"
+    },
+    {
+      "date": "2026-03-20",
+      "symbol": "ANNA",
+      "pnl": 1294,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "07:14-12:00"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "AHMA",
+      "pnl": 22176,
+      "reason": "sq_target_hit",
+      "window": "09:15-12:00"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "AHMA",
+      "pnl": 43142,
+      "reason": "sq_target_hit_exit_full",
+      "window": "09:15-12:00"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "AHMA",
+      "pnl": 61503,
+      "reason": "sq_target_hit_exit_full",
+      "window": "09:15-12:00"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "AHMA",
+      "pnl": 3365,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "09:15-12:00"
+    },
+    {
+      "date": "2026-03-23",
+      "symbol": "AHMA",
+      "pnl": -1073,
+      "reason": "bearish_engulfing_exit_full",
+      "window": "09:15-12:00"
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-01-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-07",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-08",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 30000
+    },
+    {
+      "date": "2026-01-12",
+      "trades": 5,
+      "pnl": -1213,
+      "equity": 28787,
+      "symbols": "BDSX OM",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-13",
+      "trades": 5,
+      "pnl": 12187,
+      "equity": 40974,
+      "symbols": "AHMA",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-14",
+      "trades": 5,
+      "pnl": 37474,
+      "equity": 78448,
+      "symbols": "ROLR",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-15",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 78448,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-16",
+      "trades": 4,
+      "pnl": 26542,
+      "equity": 104990,
+      "symbols": "SVRE ACCL",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 104990,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-21",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 104990,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-22",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 104990
+    },
+    {
+      "date": "2026-01-23",
+      "trades": 1,
+      "pnl": 2390,
+      "equity": 107380,
+      "symbols": "BGL",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-26",
+      "trades": 5,
+      "pnl": -929,
+      "equity": 106451,
+      "symbols": "BATL",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 106451,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-28",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 106451
+    },
+    {
+      "date": "2026-01-29",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 106451,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-01-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 106451,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-02",
+      "trades": 1,
+      "pnl": 1235,
+      "equity": 107686,
+      "symbols": "FUSE",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-03",
+      "trades": 1,
+      "pnl": 114334,
+      "equity": 222020,
+      "symbols": "NPT",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-05",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-18",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-19",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-20",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-23",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-02-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-02-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-03",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-03-04",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 222020
+    },
+    {
+      "date": "2026-03-05",
+      "trades": 5,
+      "pnl": 3081,
+      "equity": 225101,
+      "symbols": "GXAI",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-06",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101
+    },
+    {
+      "date": "2026-03-09",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-10",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101
+    },
+    {
+      "date": "2026-03-11",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-12",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-13",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-16",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101
+    },
+    {
+      "date": "2026-03-17",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 225101
+    },
+    {
+      "date": "2026-03-18",
+      "trades": 1,
+      "pnl": -402,
+      "equity": 224699,
+      "symbols": "ARTL",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-19",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 224699,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-20",
+      "trades": 5,
+      "pnl": 7349,
+      "equity": 232048,
+      "symbols": "ANNA",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-23",
+      "trades": 5,
+      "pnl": 129113,
+      "equity": 361161,
+      "symbols": "AHMA",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-24",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-25",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161
+    },
+    {
+      "date": "2026-03-26",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161
+    },
+    {
+      "date": "2026-03-27",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-03-30",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161
+    },
+    {
+      "date": "2026-03-31",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161
+    },
+    {
+      "date": "2026-04-01",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    },
+    {
+      "date": "2026-04-02",
+      "trades": 0,
+      "pnl": 0,
+      "equity": 361161,
+      "symbols": "",
+      "withdrawal": 0,
+      "total_withdrawn": 0
+    }
+  ]
+}
