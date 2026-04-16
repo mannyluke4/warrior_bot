@@ -278,6 +278,10 @@ class LiveScanner:
         self.candidates: dict[str, dict] = {}         # symbol -> candidate info
         self._processing: set[str] = set()            # symbols with in-flight float lookup
         self._rejected: set[str] = set()              # symbols already filtered out (X profile)
+        # session_volume accumulated from Databento TBBO trade stream —
+        # replaces the prior Alpaca snapshot REST lookup for current volume
+        # (2026-04-16 Alpaca purge).
+        self.session_volume: dict[str, int] = {}      # symbol -> total traded size since 04:00 ET
         self.float_cache = load_float_cache()
         self.lock = Lock()
 
@@ -351,7 +355,10 @@ class LiveScanner:
                 self.symbol_dir[event.instrument_id] = event.stype_out_symbol
             return
 
-        if not isinstance(event, db.MBP1Msg):
+        # TBBO messages carry BOTH the BBO state AND the trade print size,
+        # so we get quotes + volume from a single subscription (no Alpaca
+        # REST snapshot needed — 2026-04-16 purge).
+        if not isinstance(event, db.TBBOMsg):
             return
 
         # Resolve symbol
@@ -359,6 +366,17 @@ class LiveScanner:
             symbol = self.symbol_dir.get(event.instrument_id)
         if not symbol:
             return
+
+        # Accumulate session volume from every trade print that lands.
+        # Happens BEFORE rejection/candidate filters so RVOL is accurate
+        # even for symbols that don't pass gap/price yet (might pass later).
+        try:
+            trade_size = int(event.size)
+        except (AttributeError, TypeError, ValueError):
+            trade_size = 0
+        if trade_size > 0:
+            with self.lock:
+                self.session_volume[symbol] = self.session_volume.get(symbol, 0) + trade_size
 
         # Skip already-rejected symbols (no lock needed — set is only added to, never removed)
         if symbol in self._rejected:
@@ -447,26 +465,20 @@ class LiveScanner:
     # -----------------------------------------------------------------------
 
     def _get_candidate_volumes(self) -> dict[str, int]:
-        """Fetch current session volume for all candidates via Alpaca snapshot."""
+        """Return cumulative session volume per candidate from the Databento
+        TBBO trade stream. Replaces the prior Alpaca snapshot REST call
+        (2026-04-16 purge — Alpaca is execution only, never data).
+
+        self.session_volume is updated live in on_event() on every trade
+        print since 04:00 ET. This is more accurate than the old Alpaca
+        snapshot (which had caching delays) and has no cross-vendor
+        dependency.
+        """
         symbols = list(self.candidates.keys())
         if not symbols:
             return {}
-        key = os.getenv("APCA_API_KEY_ID", "")
-        secret = os.getenv("APCA_API_SECRET_KEY", "")
-        if not key:
-            self.log.warning("  [scanner] APCA_API_KEY_ID not set — skipping volume snapshot")
-            return {}
-        url = "https://data.alpaca.markets/v2/stocks/snapshots"
-        params = {"symbols": ",".join(symbols), "feed": "sip"}
-        headers = {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret}
-        try:
-            resp = requests.get(url, params=params, headers=headers, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
-            return {sym: data[sym]["dailyBar"]["v"] for sym in data if sym in data}
-        except Exception as e:
-            self.log.warning(f"  [scanner] Volume snapshot failed: {e}")
-            return {}
+        with self.lock:
+            return {sym: self.session_volume.get(sym, 0) for sym in symbols}
 
     def _rank_score(self, candidate: dict, volume: int, rvol: float) -> float:
         """Composite ranking score: RVOL 40%, volume 30%, gap 20%, float 10%."""
@@ -624,8 +636,12 @@ class LiveScanner:
         # Step 1: Load previous close
         self.load_prev_close()
 
-        # Step 2: Start Databento live stream
-        self.log.info("[2/2] Connecting to Databento live stream (EQUS.MINI mbp-1)...")
+        # Step 2: Start Databento live stream.
+        # Schema=tbbo gives us BOTH top-of-book quotes AND trade prints
+        # (with size) in one subscription. We need the trade sizes to track
+        # session volume ourselves — the old Alpaca snapshot REST call was
+        # purged 2026-04-16.
+        self.log.info("[2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...")
         today_et = datetime.now(ET).date()
         premarket_start = ET.localize(
             datetime(today_et.year, today_et.month, today_et.day, 4, 0, 0)
@@ -634,7 +650,7 @@ class LiveScanner:
         live = db.Live()
         live.subscribe(
             dataset="EQUS.MINI",
-            schema="mbp-1",
+            schema="tbbo",
             symbols="ALL_SYMBOLS",
             start=premarket_start,
         )
