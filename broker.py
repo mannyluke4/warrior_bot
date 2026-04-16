@@ -271,46 +271,242 @@ class IBKRBroker:
     """BrokerClient implementation backed by ib_insync.
 
     Uses the same IB() instance the bot opened for market data. Order flow
-    is event-driven (trade.fillEvent) but exposed through the same poll-
-    style get_order_status method Alpaca uses, for caller parity.
+    is event-driven inside ib_insync (each Trade carries its own orderStatus
+    that is updated by the event loop). The BrokerClient contract exposes
+    that as a polled `get_order_status` for parity with Alpaca's paradigm.
 
-    Phase 2 will populate this class. Kept here to pin the import path
-    and keep the factory symmetric.
+    Thread-safety: ib_insync is single-event-loop. Methods here run on the
+    same loop as the bot's market-data thread; avoid blocking calls that
+    would stall ticker updates. `ib.placeOrder` itself is non-blocking
+    (returns immediately with a Trade whose status fills in via events).
     """
+
+    # IBKR raw status strings → normalized BrokerClient STATUS_* constants.
+    # Reference: ib_insync OrderStatus.Status docstring.
+    _STATUS_MAP = {
+        "pendingsubmit": STATUS_SUBMITTED,
+        "pendingcancel": STATUS_SUBMITTED,  # still live
+        "presubmitted": STATUS_SUBMITTED,
+        "submitted": STATUS_SUBMITTED,
+        "apicancelled": STATUS_CANCELLED,
+        "cancelled": STATUS_CANCELLED,
+        "filled": STATUS_FILLED,
+        "inactive": STATUS_REJECTED,  # IBKR uses Inactive for rejections
+    }
+
     def __init__(self, ib):
         self._ib = ib
-        # trade handles indexed by string orderId — populated on each
-        # submit_* call. Required because IBKR's get_order_status needs
-        # the Trade object, not just the int orderId.
-        self._trades: dict[str, object] = {}
-        # Per-symbol shortable cache. Populated from reqShortableShares
-        # on first lookup; invalidated never (borrow status can change
-        # intraday, but within one session we trust the cached value).
-        self._shortable_cache: dict[str, bool] = {}
+        # Trade objects indexed by string orderId. Required because
+        # get_order_status / cancel_order need the Trade, not just an id.
+        self._trades: dict = {}
+        # Qualified contract cache to avoid repeated qualifyContracts calls.
+        self._contracts: dict = {}
+        # Per-symbol shortable cache. False = known non-shortable; True =
+        # known shortable; absent = not yet resolved.
+        self._shortable_cache: dict = {}
 
-    def submit_limit(self, symbol, qty, side, limit_price, extended_hours=True):
-        raise NotImplementedError("IBKRBroker.submit_limit — Phase 2")
+    # ─ Helpers ────────────────────────────────────────────────────
+    def _contract_for(self, symbol: str):
+        """Return (and cache) a qualified Stock contract for symbol."""
+        sym = symbol.upper()
+        if sym in self._contracts:
+            return self._contracts[sym]
+        from ib_insync import Stock
+        c = Stock(sym, "SMART", "USD")
+        self._ib.qualifyContracts(c)
+        self._contracts[sym] = c
+        return c
 
-    def submit_market(self, symbol, qty, side):
-        raise NotImplementedError("IBKRBroker.submit_market — Phase 2")
+    def _normalize_status(self, raw_status: str, filled: int, total: int) -> str:
+        """Map IBKR's OrderStatus string + fill counts into STATUS_* const."""
+        if not raw_status:
+            return STATUS_UNKNOWN
+        base = self._STATUS_MAP.get(raw_status.lower(), STATUS_UNKNOWN)
+        # IBKR doesn't emit 'PartiallyFilled' — a partial fill still reads
+        # as 'Submitted' with filled>0. Detect by counts.
+        if base == STATUS_SUBMITTED and 0 < filled < total:
+            return STATUS_PARTIALLY
+        return base
 
-    def cancel_order(self, order_id):
-        raise NotImplementedError("IBKRBroker.cancel_order — Phase 2")
+    def _order_from_trade(self, trade, *, side: str = "") -> BrokerOrder:
+        """Build a BrokerOrder snapshot from an ib_insync Trade object."""
+        o = trade.order
+        st = trade.orderStatus
+        total = int(o.totalQuantity or 0)
+        filled = int(st.filled or 0)
+        side_ = side or str(o.action or "").upper()
+        status = self._normalize_status(st.status, filled, total)
+        return BrokerOrder(
+            order_id=str(o.orderId),
+            symbol=getattr(trade.contract, "symbol", ""),
+            qty=total,
+            side=side_,
+            limit_price=float(o.lmtPrice or 0),
+            status=status,
+            filled_qty=filled,
+            filled_avg_price=float(st.avgFillPrice or 0),
+            reject_reason=str(st.whyHeld or ""),
+            _handle=trade,
+        )
 
-    def get_order_status(self, order_id):
-        raise NotImplementedError("IBKRBroker.get_order_status — Phase 2")
+    # ─ Order submission ────────────────────────────────────────────
+    def submit_limit(self, symbol: str, qty: int, side: str,
+                     limit_price: float, extended_hours: bool = True) -> BrokerOrder:
+        """Submit a limit order. ib_insync returns a Trade immediately;
+        actual acceptance / rejection arrives asynchronously via orderStatus
+        events. Callers should poll get_order_status to observe final state."""
+        from ib_insync import LimitOrder
+        contract = self._contract_for(symbol)
+        action = "BUY" if side.upper() == "BUY" else "SELL"
+        order = LimitOrder(action, int(qty), round(float(limit_price), 2))
+        # Extended hours: IBKR requires outsideRth=True AND TIF=GTC. DAY TIF
+        # won't fill outside RTH even with outsideRth set.
+        order.outsideRth = bool(extended_hours)
+        order.tif = "GTC" if extended_hours else "DAY"
+        trade = self._ib.placeOrder(contract, order)
+        # Let ib_insync dispatch the placeOrder event so orderId populates.
+        self._ib.sleep(0)
+        order_id = str(trade.order.orderId)
+        self._trades[order_id] = trade
+        return self._order_from_trade(trade, side=action)
 
-    def get_open_orders(self):
-        raise NotImplementedError("IBKRBroker.get_open_orders — Phase 2")
+    def submit_market(self, symbol: str, qty: int, side: str) -> BrokerOrder:
+        """Submit a market order. Market orders don't fire outside RTH —
+        outsideRth is left False."""
+        from ib_insync import MarketOrder
+        contract = self._contract_for(symbol)
+        action = "BUY" if side.upper() == "BUY" else "SELL"
+        order = MarketOrder(action, int(qty))
+        order.tif = "DAY"
+        order.outsideRth = False
+        trade = self._ib.placeOrder(contract, order)
+        self._ib.sleep(0)
+        order_id = str(trade.order.orderId)
+        self._trades[order_id] = trade
+        return self._order_from_trade(trade, side=action)
 
-    def get_positions(self):
-        raise NotImplementedError("IBKRBroker.get_positions — Phase 2")
+    def cancel_order(self, order_id: str) -> None:
+        """Best-effort cancel. Unknown order_ids are silently ignored —
+        caller confirms terminal state via get_order_status."""
+        trade = self._trades.get(str(order_id))
+        if trade is None or trade.isDone():
+            return
+        try:
+            self._ib.cancelOrder(trade.order)
+        except Exception:
+            pass
 
-    def get_account_equity(self):
-        raise NotImplementedError("IBKRBroker.get_account_equity — Phase 2")
+    def get_order_status(self, order_id: str) -> Optional[BrokerOrder]:
+        """Read current Trade.orderStatus snapshot. Returns None for
+        unknown order_ids (the bot restarted mid-flight, Trade not in
+        our cache)."""
+        trade = self._trades.get(str(order_id))
+        if trade is None:
+            return None
+        return self._order_from_trade(trade)
 
-    def is_shortable(self, symbol):
-        raise NotImplementedError("IBKRBroker.is_shortable — Phase 2")
+    def get_open_orders(self) -> list[BrokerOrder]:
+        """All non-terminal Trades for this session."""
+        return [
+            self._order_from_trade(t)
+            for t in self._ib.trades()
+            if not t.isDone()
+        ]
+
+    # ─ Position + account ──────────────────────────────────────────
+    def get_positions(self) -> list[BrokerPosition]:
+        """Return open positions. qty_available is derived from open
+        exit orders against the symbol (IBKR has no held_for_orders
+        concept). Uses portfolio() when available (includes market data),
+        falls back to positions() when it's not."""
+        out = []
+        # Prefer portfolio() — richer data (marketValue, unrealizedPNL).
+        items = []
+        try:
+            items = self._ib.portfolio()
+        except Exception:
+            items = []
+
+        if items:
+            for it in items:
+                qty = int(it.position)
+                if qty == 0:
+                    continue
+                sym = getattr(it.contract, "symbol", "")
+                out.append(BrokerPosition(
+                    symbol=sym,
+                    qty=qty,
+                    qty_available=self._qty_available(sym, qty),
+                    avg_entry_price=float(it.averageCost or 0),
+                    unrealized_pnl=float(it.unrealizedPNL or 0),
+                    market_value=float(it.marketValue or 0),
+                ))
+            return out
+
+        # Fallback: positions() has no market-value data.
+        for p in self._ib.positions():
+            qty = int(p.position)
+            if qty == 0:
+                continue
+            sym = getattr(p.contract, "symbol", "")
+            out.append(BrokerPosition(
+                symbol=sym,
+                qty=qty,
+                qty_available=self._qty_available(sym, qty),
+                avg_entry_price=float(p.avgCost or 0),
+            ))
+        return out
+
+    def _qty_available(self, symbol: str, signed_qty: int) -> int:
+        """Mimic Alpaca's qty_available = qty - held_for_orders. For IBKR,
+        held_for_orders is the sum of pending close-side orders on symbol."""
+        if signed_qty == 0:
+            return 0
+        # Long → closes are SELL; short → closes are BUY
+        close_side = "SELL" if signed_qty > 0 else "BUY"
+        held = 0
+        for t in self._ib.trades():
+            if t.isDone():
+                continue
+            if getattr(t.contract, "symbol", "") != symbol:
+                continue
+            if str(t.order.action).upper() != close_side:
+                continue
+            remaining = int(t.order.totalQuantity or 0) - int(t.orderStatus.filled or 0)
+            held += max(0, remaining)
+        free = max(0, abs(signed_qty) - held)
+        return free
+
+    def get_account_equity(self) -> float:
+        """IBKR NetLiquidation for position sizing. accountValues() is
+        populated by the connection; no network round-trip here."""
+        try:
+            for v in self._ib.accountValues():
+                if v.tag == "NetLiquidation" and v.currency == "USD":
+                    try:
+                        return float(v.value)
+                    except (ValueError, TypeError):
+                        pass
+        except Exception:
+            pass
+        return 0.0
+
+    def is_shortable(self, symbol: str) -> bool:
+        """Phase 2 MVP: optimistic True, with post-submit rejection as the
+        filter. IBKR's live shortable universe is broad — we default to
+        True and let broker-side rejections (status=Inactive with HTB
+        reason) populate the negative cache via the existing short-detector
+        `_shorted` gate (one attempt per symbol per session).
+
+        Future enhancement: subscribe generic tick 236 (ShortableShares)
+        on first lookup and read ticker.shortableShares directly. Deferred
+        to avoid disturbing the main reqMktData('233') subscription path
+        during the Phase 2 rollout."""
+        sym = symbol.upper()
+        if sym in self._shortable_cache:
+            return self._shortable_cache[sym]
+        self._shortable_cache[sym] = True
+        return True
 
 
 # ════════════════════════════════════════════════════════════════════════
