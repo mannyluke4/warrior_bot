@@ -9,11 +9,9 @@
 
 ## Coverage
 
-6 of 10 stocks analyzed — tick cache available:
-- ROLR 2026-01-14, ACCL 2026-01-16, HIND 2026-01-27, GWAV 2026-01-16, VERO 2026-01-16, MLEC 2026-02-13
+**All 10 stocks analyzed (2026-04-16 mid-day).** Tick data for ANPA/BNAI/PAVM/SNSE fetched via `ibkr_tick_fetcher.py` in a serial chain (parallel fetches hit IBKR concurrency limits; serial works reliably).
 
-4 pending — tick cache empty, needs `ibkr_tick_fetcher.py` fetch tomorrow when IBKR's nightly maintenance ends:
-- ANPA 2026-01-09, BNAI 2026-01-28, PAVM 2026-01-21, SNSE 2026-02-18
+**Important universe clarification from Manny:** the live bot's `WB_MAX_PRICE=$20` filter means it never subscribes to ANPA/BNAI/SNSE (starting prices $29-$78). Those fade profiles are useful as academic pattern study but don't inform what the **live short detector** actually sees. The **practical short universe** is stocks that start ≤$20 (pass the long-entry scanner) and run up — VERO, ROLR, GWAV, HIND, ACCL, MLEC, BIRD, PAVM. Those 8 are what the backtest below exercises.
 
 ---
 
@@ -146,4 +144,43 @@ Whichever strategy ships, it must filter on **"HOD/VWAP ≥ 1.25"** (or similar)
 
 ---
 
-*CC (Opus), 2026-04-15 late night. 6/10 profiles done, 4 pending IBKR. Clear patterns emerging; ready for Phase 2 when you are.*
+## 2026-04-16 update — Strategy B prototype + backtest results
+
+Built `short_detector.py` (Strategy B state machine: IDLE → TOPPED → LH_ARMED → TRIGGERED) and `tools/backtest_short.py` (replays tick cache through the detector, simulates the short with stop + tiered targets + 60m time stop). Position sizing mirrors squeeze: 3.5% equity risk / R, capped at $50K notional.
+
+### Backtest results — Strategy B, full 11 stocks (10 + BIRD from today)
+
+| Symbol | Date | Entry | Exit | Exit reason | Qty | Notional | P&L | R |
+|---|---|---|---|---|---|---|---|---|
+| VERO | 2026-01-16 | $5.62 | $4.14 | target_vwap | 1323 | $7,435 | **+$1,958** | +1.9R |
+| ANPA | 2026-01-09 | $28.99 | $26.04 | target_retrace50 | 316 | $9,161 | **+$932** | +0.9R |
+| HIND | 2026-01-27 | $4.96 | $3.66 | time_60min | 438 | $2,172 | **+$569** | +0.5R |
+| BIRD | 2026-04-15 | $4.11 | $3.93 | target_vwap | 1462 | $6,009 | +$263 | +0.2R |
+| GWAV | 2026-01-16 | $5.94 | $5.45 | time_60min | 407 | $2,418 | +$199 | +0.2R |
+| BNAI | 2026-01-28 | $53.88 | $52.28 | target_vwap | 121 | $6,519 | +$194 | +0.2R |
+| MLEC | 2026-02-13 | $7.20 | $7.03 | target_retrace50 | 711 | $5,119 | +$121 | +0.1R |
+| PAVM | 2026-01-21 | $13.00 | $12.74 | target_vwap | 346 | $4,498 | +$90 | +0.1R |
+| ACCL | 2026-01-16 | $9.61 | $9.44 | target_vwap | 523 | $5,026 | +$89 | +0.1R |
+| ROLR | 2026-01-14 | $15.85 | $16.10 | time_60min | 195 | $3,091 | -$49 | -0.1R |
+| SNSE | 2026-02-18 | $26.67 | $32.32 | **stop_hit** | 185 | $4,934 | **-$1,045** | -1.0R |
+| **Total** | | | | | | avg $5,126 | **+$3,321** | **+0.29R avg** |
+
+**9 wins / 2 losses. 82% WR. +$3,321 net.**
+
+### Strategy B findings
+
+1. **VERO is the archetype** — $5.62 short runs to VWAP $4.14 in 22 minutes, +1.9R. Clean HOD → LH → break pattern. This is the design-intent winner.
+2. **Afternoon movers shine** — ANPA (HOD 14:25, 5h after morning exit) and PAVM (HOD 11:09) produced clean +0.9R / +0.1R respectively when the afternoon HOD was meaningfully above VWAP.
+3. **SNSE is the stop-out warning** — morning LH at $26.67 armed the short, but SNSE made a NEW higher high later (breaking the "HOD not reclaimed" assumption in the original Phase 1 6-of-6 pattern). Stopped out at $32.32 for -$1,045. This matches the "second leg can squeeze a too-early short" risk that ROLR also hinted at with its time-stop loss.
+4. **The 60-minute time stop** caught ROLR (which ran back toward entry during the stop window but didn't break $21.21). Without the time stop, ROLR would have sat through the 5-hour rise to $33.68 and stopped out big.
+5. **Position sizing is working as designed.** VERO got the largest (1323 sh) due to tight $0.79 R; SNSE small (185 sh) due to $5.65 R. Notional utilization max was $9,161 (ANPA), well under $50K cap.
+
+### Next steps
+
+- Strategy A (Exhaustion Short) backtest — same universe, see if waiting for the shooting-star / bearish-engulfing / CUC signal avoids SNSE and ROLR's early-entry losses.
+- Strategy C (VWAP Rejection Short) backtest — wait for VWAP break and rejection on retest; tests whether the SNSE stop-out would have been avoided by deferring entry until VWAP was decisively lost.
+- Live-bot integration: wire chosen strategy into `bot_v3_hybrid.py` replacing box strategy, gate off by default pending tomorrow's first paper session.
+
+---
+
+*CC (Opus), 2026-04-16 mid-day. Strategy B prototype produces +$3,321 / 82% WR on the in-universe 8-stock set (plus ~break-even on the out-of-universe 3). Moving to A + C comparison + live wiring.*
