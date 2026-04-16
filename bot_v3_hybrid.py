@@ -607,6 +607,54 @@ def resume_reconcile():
     print("🔁 RESUME: reconcile complete", flush=True)
 
 
+def check_stale_open_short():
+    """Clear state.open_short if a short entry's verify daemon timed out
+    without seeing a terminal status (happens on 'held while locating'
+    when IBKR searches for borrow > 10s). Without this, the bot stays
+    gated against new shorts until restart.
+
+    Safe: only clears when (a) > STALE_GRACE_SEC since entry_time AND
+    (b) fill_confirmed is still False AND (c) broker reports the order
+    is in a terminal state OR broker doesn't know about the order_id.
+    """
+    STALE_GRACE_SEC = 30
+    pos = state.open_short
+    if pos is None or pos.get("fill_confirmed", False):
+        return
+    age = (datetime.now(ET) - pos["entry_time"]).total_seconds()
+    if age < STALE_GRACE_SEC:
+        return
+    order_id = pos.get("order_id", "")
+    o = state.broker.get_order_status(order_id) if order_id else None
+    should_clear = False
+    reason = ""
+    if o is None:
+        should_clear = True
+        reason = "broker unknown"
+    elif o.status in TERMINAL_STATUSES:
+        # Order is terminal — if anything filled the verify daemon should've
+        # booked it. Clearing here only flips state for unfilled terminals.
+        if o.filled_qty == 0:
+            should_clear = True
+            reason = f"terminal {o.status}, 0 filled"
+    if should_clear:
+        print(f"  ⚠️ STALE SHORT: {pos['symbol']} order {order_id} "
+              f"{reason} after {age:.0f}s unconfirmed — clearing stuck slot",
+              flush=True)
+        # Release cross-detector in_trade locks set at entry time.
+        sym = pos["symbol"]
+        if SHORT_ENABLED and sym in state.short_detectors:
+            try:
+                state.short_detectors[sym].notify_trade_closed(0.0)
+            except Exception:
+                pass
+        if SQ_ENABLED and sym in state.sq_detectors:
+            state.sq_detectors[sym]._in_trade = False
+        if (MP_ENABLED or MP_V2_ENABLED) and sym in state.mp_detectors:
+            state.mp_detectors[sym]._in_trade = False
+        state.open_short = None
+
+
 def periodic_position_sync():
     """Fix 3: Every 60s, verify bot state matches broker reality."""
     now = datetime.now(ET)
@@ -614,6 +662,9 @@ def periodic_position_sync():
        (now - state._last_position_sync).total_seconds() < 60:
         return
     state._last_position_sync = now
+
+    # Piggy-back stale-open_short cleanup on the same cadence.
+    check_stale_open_short()
 
     try:
         positions = state.broker.get_positions()
@@ -1433,6 +1484,11 @@ def check_triggers(symbol: str, price: float):
     """Check if any armed detector triggers on this price."""
     now_str = datetime.now(ET).strftime("%H:%M:%S")
     is_premarket = datetime.now(ET).hour < 9 or (datetime.now(ET).hour == 9 and datetime.now(ET).minute < 30)
+
+    # Proactively clear a stuck open_short so a stale unconfirmed slot
+    # doesn't block new shorts for the 60s until periodic_position_sync.
+    # Cheap (short-circuits when fill_confirmed or recent).
+    check_stale_open_short()
 
     # Already in a position — no new entries
     if state.open_position is not None:
@@ -3207,7 +3263,19 @@ def main():
 
             # Heartbeat every ~1 minute
             if now.second < 2:
-                pos_str = f"OPEN={state.open_position['symbol']} @ ${state.open_position['entry']:.2f}" if state.open_position else "flat"
+                pos_parts = []
+                if state.open_position:
+                    pos_parts.append(
+                        f"LONG={state.open_position['symbol']} @ "
+                        f"${state.open_position['entry']:.2f}"
+                    )
+                if state.open_short:
+                    _conf = "" if state.open_short.get("fill_confirmed") else " (unconfirmed)"
+                    pos_parts.append(
+                        f"SHORT={state.open_short['symbol']} @ "
+                        f"${state.open_short['entry']:.2f}{_conf}"
+                    )
+                pos_str = " | ".join(pos_parts) if pos_parts else "flat"
                 if BOX_ENABLED and state.box_position:
                     pos_str += f" | BOX={state.box_position['symbol']} @ ${state.box_position['entry']:.2f}"
                 zone = "ACTIVE" if active else "SLEEP"
