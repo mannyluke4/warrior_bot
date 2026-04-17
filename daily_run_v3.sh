@@ -12,15 +12,18 @@ mkdir -p "$LOG_DIR"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
 
-# Cleanup trap: push logs even if the script crashes
+# Cleanup trap: push logs even if the script crashes.
+# IMPORTANT: kill only OUR PIDs, not `pkill -f` which matches ANY process
+# with the same name — including a manually-restarted bot. The old pkill
+# caused cascade kills every time we restarted the bot during a session
+# (daily_run's watchdog detected the restart as a death, ran the trap,
+# and pkill killed the fresh instance). Cost us multiple morning sessions.
 cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
-    kill "$BOT_PID" 2>/dev/null || true
-    pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
-    kill "$SCANNER_PID" 2>/dev/null || true
-    pkill -f "live_scanner.py" 2>/dev/null || true
-    kill "$GW_WATCHDOG_PID" 2>/dev/null || true
-    kill "$CAFFEINE_PID" 2>/dev/null || true
+    [ -n "$BOT_PID" ] && kill "$BOT_PID" 2>/dev/null || true
+    [ -n "$SCANNER_PID" ] && kill "$SCANNER_PID" 2>/dev/null || true
+    [ -n "$GW_WATCHDOG_PID" ] && kill "$GW_WATCHDOG_PID" 2>/dev/null || true
+    [ -n "$CAFFEINE_PID" ] && kill "$CAFFEINE_PID" 2>/dev/null || true
     cd ~/warrior_bot_v2
     git add -f logs/ 2>/dev/null || true
     git commit -m "auto: v3 daily logs ${TODAY}" 2>/dev/null || true
