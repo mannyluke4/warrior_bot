@@ -253,3 +253,583 @@ Waiting for IB Gateway on port 4002...
   attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Fri Apr 17 02:40:41 MDT 2026 ===
+daily_run_v3.sh: line 16: 32371 Terminated: 15          caffeinate -dims -w $$
+[v2-ibkr-migration 4998205] auto: v3 daily logs 2026-04-17
+ 3 files changed, 299 insertions(+)
+ create mode 100644 logs/healthcheck_2026-04-17.log
+=== Cleanup complete: Fri Apr 17 02:40:42 MDT 2026 ===
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+daily_run_v3.sh: line 78: 34049 Terminated: 15          caffeinate -u -t 30
+caffeinate started (PID: 34068)
+=== V3 Hybrid daily run started: Fri Apr 17 05:22:13 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 4998205 (auto: v3 daily logs 2026-04-17)
+daily_run_v3.sh hash: c5b26f92734a06adf2eaef33e2d0d199  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 2f0385706697465ce01223b34255e3f7  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.032560 +/- 0.070840 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Fri Apr 17 11:22:15 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Friday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 34152)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 34155)
+BOOT: COLD start (reason=no_marker)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: ON (strat=B)
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: IBKR
+  Position sync: No open positions at broker. Clean start.
+Account equity: $29,499
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 07:22:34 ET (first scan — casting wide net)...
+Error 162, reqId 1396: Historical Market Data Service error message:API scanner subscription cancelled: 1396
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1396 (reqId=1396, symbol=?)
+Error 162, reqId 1397: Historical Market Data Service error message:API scanner subscription cancelled: 1397
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1397 (reqId=1397, symbol=?)
+  Catchup: 43 unique symbols from 3 scanners
+    Catchup: processing 1/43 — ADBG...
+Error 162, reqId 1398: Historical Market Data Service error message:API scanner subscription cancelled: 1398
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1398 (reqId=1398, symbol=?)
+    Catchup: processing 2/43 — AHG...
+    Catchup: processing 3/43 — ALGS...
+BOOT: COLD start (reason=empty_state)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: ON (strat=B)
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-11:00,16:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+    Catchup: processing 4/43 — BITX...
+    Catchup: processing 5/43 — BMNU...
+API connection failed: TimeoutError()
+Connection attempt 1/3 failed: 
+Retrying in 10 seconds...
+    Catchup: processing 6/43 — BTCL...
+    Catchup: processing 7/43 — BTM...
+Bot health check passed (still running after 15s, PID: 34155)
+HEALTH_OK: Bot connected at 2026-04-17 11:22:48 UTC
+Gateway watchdog started (PID: 34179)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri Apr 17 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 8/43 — BTOG...
+    Catchup: processing 9/43 — BZAI...
+    Catchup: processing 10/43 — CONL...
+    Catchup: processing 11/43 — CRCG...
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+    Catchup: processing 12/43 — CRMG...
+  [AlphaVantage] BMNU: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=BMNU&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+  [AlphaVantage] BTCL: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=BTCL&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+    Catchup: processing 13/43 — CRML...
+API connection failed: TimeoutError()
+Connection attempt 2/3 failed: 
+Retrying in 10 seconds...
+    Catchup: processing 14/43 — CRMX...
+    Catchup: processing 15/43 — DARE...
+    Catchup: processing 16/43 — ETHA...
+  Tick cache: ADBG → +2 ticks (total 2)
+  Tick cache: AHG → +2 ticks (total 2)
+  Tick cache: ALGS → +3 ticks (total 3)
+  Tick cache: BITX → +3 ticks (total 3)
+  Tick cache: BMNU → +2 ticks (total 2)
+  Tick cache: BTCL → +2 ticks (total 2)
+  Tick cache: BTM → +3 ticks (total 3)
+  Tick cache: BTOG → +2 ticks (total 2)
+  Tick cache: BZAI → +3 ticks (total 3)
+  Tick cache: CONL → +2 ticks (total 2)
+  Tick cache: CRCG → +2 ticks (total 2)
+  Tick cache: CRMG → +2 ticks (total 2)
+  Tick cache: CRML → +3 ticks (total 3)
+  Tick cache: CRMX → +3 ticks (total 3)
+  Tick cache: DARE → +2 ticks (total 2)
+  Tick cache: ETHA → +3 ticks (total 3)
+📦 Tick cache saved: 16 symbols → tick_cache/2026-04-17/
+    Catchup: processing 17/43 — HODU...
+    Catchup: processing 18/43 — IONZ...
+    Catchup: processing 19/43 — JLHL...
+    Catchup: processing 20/43 — KURA...
+Error 326, reqId -1: Unable to connect as the client id is already in use. Retry with a unique client id.
+Peer closed connection. clientId 1 already in use?
+    Catchup: processing 21/43 — LLYX...
+    Catchup: processing 22/43 — LZM...
+API connection failed: TimeoutError()
+Connection attempt 3/3 failed: 
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 3359, in <module>
+  [FMP] LLYX: 4.76M
+    main()
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 3064, in main
+    ib = connect()
+         ^^^^^^^^^
+  File "/Users/duffy/warrior_bot_v2/bot_v3_hybrid.py", line 763, in connect
+    state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/ib_insync/client.py", line 217, in connectAsync
+    await asyncio.wait_for(self.apiStart, timeout)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/tasks.py", line 519, in wait_for
+    async with timeouts.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/timeouts.py", line 115, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+    Catchup: processing 23/43 — MB...
+    Catchup: processing 24/43 — MSTU...
+    Catchup: processing 25/43 — MSTZ...
+    Catchup: processing 26/43 — MYSE...
+    Catchup: processing 27/43 — NEXA...
+    Catchup: processing 28/43 — NFXS...
+    Catchup: processing 29/43 — NOK...
+  [FMP] NFXS: 0.54M
+    Catchup: processing 30/43 — NPT...
+    Catchup: processing 31/43 — ORCU...
+    Catchup: processing 32/43 — PBM...
+    Catchup: processing 33/43 — PLUG...
+    Catchup: processing 34/43 — SCO...
+  Tick cache: HODU → +2 ticks (total 2)
+  Tick cache: IONZ → +2 ticks (total 2)
+  Tick cache: JLHL → +3 ticks (total 3)
+  Tick cache: KURA → +3 ticks (total 3)
+  Tick cache: LLYX → +3 ticks (total 3)
+  Tick cache: LZM → +3 ticks (total 3)
+  Tick cache: MB → +3 ticks (total 3)
+  Tick cache: MSTU → +3 ticks (total 3)
+  Tick cache: MSTZ → +2 ticks (total 2)
+  Tick cache: MYSE → +3 ticks (total 3)
+  Tick cache: NEXA → +3 ticks (total 3)
+  Tick cache: NFXS → +2 ticks (total 2)
+  Tick cache: NOK → +3 ticks (total 3)
+  Tick cache: NPT → +3 ticks (total 3)
+  Tick cache: ORCU → +3 ticks (total 3)
+  Tick cache: PBM → +3 ticks (total 3)
+  Tick cache: PLUG → +3 ticks (total 3)
+  Tick cache: SCO → +3 ticks (total 3)
+📦 Tick cache saved: 18 symbols → tick_cache/2026-04-17/
+    Catchup: processing 35/43 — SLDP...
+    Catchup: processing 36/43 — SMR...
+    Catchup: processing 37/43 — SMU...
+    Catchup: processing 38/43 — SOXS...
+  [AlphaVantage] SMU: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=SMU&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+    Catchup: processing 39/43 — TSLL...
+  [FMP] SOXS: 31.74M
+    Catchup: processing 40/43 — TZA...
+    Catchup: processing 41/43 — UMC...
+    Catchup: processing 42/43 — UVIX...
+    Catchup: processing 43/43 — WSHP...
+  Catchup: 2 candidates after filters
+  Tick cache: SLDP → +3 ticks (total 3)
+  Tick cache: SMR → +3 ticks (total 3)
+  Tick cache: SMU → +2 ticks (total 2)
+  Tick cache: SOXS → +3 ticks (total 3)
+  Tick cache: TSLL → +3 ticks (total 3)
+  Tick cache: TZA → +3 ticks (total 3)
+  Tick cache: UMC → +3 ticks (total 3)
+  Tick cache: UVIX → +3 ticks (total 3)
+  Tick cache: WSHP → +3 ticks (total 3)
+  Tick cache: PBM → +90 ticks (total 93)
+📦 Tick cache saved: 10 symbols → tick_cache/2026-04-17/
+  Tick cache: PBM → +265 ticks (total 358)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-17/
+[07:25 ET] PBM CHART | O=10.68 H=10.95 L=10.68 C=10.90 V=47,217 | EMA9=10.68 VWAP=10.84 (+0.6%) HOD=10.95 PM_H=10.95 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+  Tick cache: PBM → +171 ticks (total 529)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-17/
+  [SEED] PBM: 50533 ticks so far, jumping to recent 90min for full context
+[07:25 ET] PBM CHART | O=10.88 H=10.90 L=10.81 C=10.85 V=6,480 | EMA9=10.72 VWAP=10.80 (+0.4%) HOD=10.95 PM_H=10.95 | MACD=N/A vol_ratio=0.7x avg_vol=8,759 bars=2 | sq=IDLE armed=none
+[07:25 ET] PBM CHART | O=8.46 H=8.49 L=8.02 C=8.18 V=2,269,793 | EMA9=10.75 VWAP=8.38 (-2.3%) HOD=10.95 PM_H=10.95 | MACD=N/A vol_ratio=86.4x avg_vol=26,277 bars=3 | sq=IDLE armed=none
+[07:25 ET] PBM CHART | O=10.54 H=10.59 L=10.54 C=10.58 V=6,883 | EMA9=10.24 VWAP=8.38 (+26.2%) HOD=10.95 PM_H=10.95 | MACD=N/A vol_ratio=0.3x avg_vol=19,678 bars=4 | sq=IDLE armed=none
+[07:25 ET] PBM SHORT | SHORT_TOPPED: HOD=$10.9500 dwell=3 bars
+🔥 Seeded PBM: 51576 ticks → 5 bars, EMA=10.3043 (10315 ticks/bar avg)
+✅ Subscribed: PBM
+[07:25 ET] PBM CHART | O=10.57 H=10.83 L=10.57 C=10.79 V=44,544 | EMA9=10.30 VWAP=8.43 (+28.0%) HOD=10.95 PM_H=10.95 | MACD=N/A vol_ratio=1.1x avg_vol=39,356 bars=5 | sq=IDLE armed=none
+[07:25 ET] PBM SHORT | SHORT_ARMED: LH=$10.8296 trigger<=$10.5700 stop=$11.0595 HOD=$10.9500
+[07:25 ET] NPT CHART | O=4.48 H=4.48 L=4.48 C=4.48 V=300 | EMA9=none VWAP=4.46 (+0.4%) HOD=4.48 PM_H=4.48 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+  Tick cache: PBM → +51,742 ticks (total 52,271)
+  Tick cache: NPT → +65 ticks (total 68)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+[07:26 ET] PBM SHORT | SHORT_RESET: new HOD $11.0000 (was in LH_ARMED)
+  Tick cache: NPT → +83 ticks (total 151)
+  Tick cache: PBM → +216 ticks (total 52,487)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+  Tick cache: PBM → +231 ticks (total 52,718)
+  Tick cache: NPT → +123 ticks (total 274)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+  Tick cache: NPT → +88 ticks (total 362)
+  Tick cache: PBM → +188 ticks (total 52,906)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.06x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.07x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.07x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.07x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.08x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.08x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_SKIP: HOD/VWAP=1.08x < 1.1x (insufficient R/R)
+[07:27 ET] NPT SHORT | SHORT_TOPPED: HOD=$4.7400 dwell=3 bars
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$4.0000 trigger<=$3.8000 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8500 trigger<=$3.7800 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.9000 trigger<=$3.8300 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8800 trigger<=$3.8200 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8400 trigger<=$3.7600 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.7000 trigger<=$3.6900 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.7700 trigger<=$3.7600 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8900 trigger<=$3.8300 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8200 trigger<=$3.7700 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8100 trigger<=$3.7600 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8500 trigger<=$3.8200 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$3.8300 trigger<=$3.8100 stop=$4.7874 HOD=$4.7400
+[07:27 ET] NPT SQ | SQ_PRIMED: vol=196.0x avg, bar_vol=212,991, price=$5.3300 above VWAP ($4.4395)
+  ARMED entry=5.0200 stop=4.9000 R=0.1200 score=10.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+[07:27 ET] NPT SHORT | SHORT_RESET: new HOD $5.8600 (was in LH_ARMED)
+[07:27 ET] NPT SHORT | SHORT_TOPPED: HOD=$5.8600 dwell=3 bars
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$4.8500 trigger<=$4.3300 stop=$5.9186 HOD=$5.8600
+[07:27 ET] NPT SHORT | SHORT_UNARM: stale (age=9 bars > 8)
+[07:27 ET] NPT SHORT | SHORT_ARMED: LH=$5.5000 trigger<=$5.1000 stop=$5.9186 HOD=$5.8600
+  [NPT] SQ_SEED_STALE_RESET: dropped arm @ $5.0200 (stop $4.9000) — current price $5.6600 is 12.7% above trigger (threshold 2.0%)
+🔥 Seeded NPT: 50452 ticks → 50 bars, EMA=5.1280 (1009 ticks/bar avg)
+✅ Subscribed: NPT
+📊 Scanner: 2 new candidates, 2 new subs, 2 total watching
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+[07:27 ET] NPT SQ | SQ_PRIMED: vol=57.0x avg, bar_vol=301,370, price=$5.6600 above VWAP ($4.9042)
+[07:27 ET] NPT SHORT | SHORT_RESET: new HOD $5.9597 (was in LH_ARMED)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+🔥 Seeded KIDZ: 77 ticks → 36 bars, EMA=1.6471 (2 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 04:00-11:00, 16:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$1.63, last_tick_time=07:27:14
+  TICK AUDIT: NPT: 6 ticks in last 60s, last_price=$4.43, last_tick_time=07:27:14
+  TICK AUDIT: PBM: 792 ticks in last 60s, last_price=$10.85, last_tick_time=07:27:14
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:27 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+
+🔄 Running scanner at 07:27:34 ET...
+  Tick cache: PBM → +182 ticks (total 53,088)
+Error 162, reqId 1588: Historical Market Data Service error message:API scanner subscription cancelled: 1588
+  [float_cache] Cleared 3 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1588 (reqId=1588, symbol=?)
+  Tick cache: NPT → +50,576 ticks (total 50,938)
+  Tick cache: KIDZ → +83 ticks (total 83)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-17/
+[07:28 ET] NPT SQ | SQ_RESET: vwap_lost (close=4.3800 < vwap=4.9010)
+  Tick cache: PBM → +162 ticks (total 53,250)
+  Tick cache: NPT → +136 ticks (total 51,074)
+  Tick cache: WSHP → +3 ticks (total 6)
+  Tick cache: BZAI → +3 ticks (total 6)
+  Tick cache: LZM → +3 ticks (total 6)
+  Tick cache: CRMX → +3 ticks (total 6)
+  Tick cache: NFXS → +2 ticks (total 4)
+  Tick cache: UMC → +3 ticks (total 6)
+  Tick cache: KURA → +3 ticks (total 6)
+  Tick cache: CRML → +3 ticks (total 6)
+  Tick cache: MB → +3 ticks (total 6)
+📦 Tick cache saved: 11 symbols → tick_cache/2026-04-17/
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-04-17.json (1 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 3 total watching
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$1.63, last_tick_time=07:27:17
+  TICK AUDIT: NPT: 282 ticks in last 60s, last_price=$4.37, last_tick_time=07:28:32
+  TICK AUDIT: PBM: 450 ticks in last 60s, last_price=$10.78, last_tick_time=07:28:32
+  Tick cache: PBM → +189 ticks (total 53,439)
+  Tick cache: NPT → +66 ticks (total 51,140)
+  Tick cache: NEXA → +3 ticks (total 6)
+  Tick cache: SLDP → +3 ticks (total 6)
+  Tick cache: DARE → +2 ticks (total 4)
+  Tick cache: BTM → +2 ticks (total 5)
+  Tick cache: FLYX → +3 ticks (total 3)
+  Tick cache: CRMG → +2 ticks (total 4)
+  Tick cache: ORCU → +3 ticks (total 6)
+  Tick cache: IONZ → +2 ticks (total 4)
+  Tick cache: SMU → +2 ticks (total 4)
+📦 Tick cache saved: 11 symbols → tick_cache/2026-04-17/
+  [AlphaVantage] SMU: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=SMU&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+[07:29:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=355 | KIDZ:0t/IDLE NPT:95t/IDLE PBM:101t/IDLE
+[07:29:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=362 | KIDZ:0t/IDLE NPT:98t/IDLE PBM:105t/IDLE
+  Tick cache: PBM → +89 ticks (total 53,528)
+  Tick cache: NPT → +92 ticks (total 51,232)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+[07:29 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+  TICK AUDIT: KIDZ: 1 ticks in last 60s, last_price=$1.63, last_tick_time=07:29:21
+  TICK AUDIT: NPT: 156 ticks in last 60s, last_price=$4.35, last_tick_time=07:29:31
+  TICK AUDIT: PBM: 221 ticks in last 60s, last_price=$10.90, last_tick_time=07:29:32
+  Tick cache: NPT → +67 ticks (total 51,299)
+  Tick cache: PBM → +126 ticks (total 53,654)
+  Tick cache: KIDZ → +1 ticks (total 84)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-17/
+[07:30 ET] PBM CHART | O=10.80 H=10.91 L=10.75 C=10.76 V=24,201 | EMA9=10.69 VWAP=8.56 (+25.6%) HOD=11.03 PM_H=11.03 | MACD=N/A vol_ratio=0.7x avg_vol=34,017 bars=10 | sq=IDLE armed=none
+[07:30 ET] NPT CHART | O=4.38 H=4.38 L=4.35 C=4.35 V=11,558 | EMA9=4.93 VWAP=4.90 (-11.2%) HOD=5.96 PM_H=5.96 | MACD=N/A vol_ratio=1.8x avg_vol=6,256 bars=50 | sq=IDLE armed=none
+[07:30 ET] NPT SHORT | SHORT_TOPPED: HOD=$5.9597 dwell=3 bars
+[07:30:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=324 | KIDZ:0t/IDLE NPT:44t/IDLE PBM:121t/IDLE
+[07:30:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=336 | KIDZ:0t/IDLE NPT:50t/IDLE PBM:127t/IDLE
+  Tick cache: PBM → +136 ticks (total 53,790)
+  Tick cache: NPT → +62 ticks (total 51,361)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+  TICK AUDIT: KIDZ: 0 ticks in last 60s, last_price=$1.63, last_tick_time=07:29:21
+  TICK AUDIT: NPT: 132 ticks in last 60s, last_price=$4.38, last_tick_time=07:30:32
+  TICK AUDIT: PBM: 325 ticks in last 60s, last_price=$10.71, last_tick_time=07:30:32
+⚠️ TICK DROUGHT: KIDZ — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[07:30 ET] KIDZ CHART | O=1.63 H=1.63 L=1.63 C=1.63 V=400 | EMA9=1.64 VWAP=1.63 (+0.0%) HOD=1.66 PM_H=1.66 | MACD=N/A vol_ratio=2.7x avg_vol=151 bars=38 | sq=IDLE armed=none
+[07:30 ET] KIDZ SHORT | SHORT_SKIP: HOD/VWAP=1.02x < 1.1x (insufficient R/R)
+  Tick cache: PBM → +206 ticks (total 53,996)
+  Tick cache: NPT → +65 ticks (total 51,426)
+  Tick cache: KIDZ → +3 ticks (total 87)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-17/
+[07:31 ET] NPT SHORT | SHORT_ARMED: LH=$4.4100 trigger<=$4.3500 stop=$6.0193 HOD=$5.9597
+[07:31:00 ET] NPT SHORT | SHORT ENTRY SIGNAL @ 4.3500 (break <= 4.3500) stop=6.0193 HOD=5.9597
+[07:31:00 ET] 🟦 SHORT ENTRY: NPT qty=618 SELL @ $4.30 (slip=$0.050) stop=$6.0193 R=$1.6693 HOD=$5.9597 strat=B
+  BROKER ORDER: 1670 SHORT 618 NPT @ $4.30
+[07:31 ET] PBM SHORT | SHORT_TOPPED: HOD=$11.0300 dwell=3 bars
+  SHORT UNFILLED: NPT order 1670 status=rejected — clearing slot
+[07:31:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=387 | KIDZ:4t/IDLE NPT:65t/IDLE PBM:159t/IDLE
+[07:31:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=395 | KIDZ:4t/IDLE NPT:68t/IDLE PBM:164t/IDLE
+  Tick cache: PBM → +186 ticks (total 54,182)
+  Tick cache: NPT → +79 ticks (total 51,505)
+  Tick cache: KIDZ → +1 ticks (total 88)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-17/
+  TICK AUDIT: KIDZ: 4 ticks in last 60s, last_price=$1.63, last_tick_time=07:30:46
+  TICK AUDIT: NPT: 167 ticks in last 60s, last_price=$4.34, last_tick_time=07:31:32
+  TICK AUDIT: PBM: 414 ticks in last 60s, last_price=$10.35, last_tick_time=07:31:32
+  Tick cache: PBM → +267 ticks (total 54,449)
+  Tick cache: NPT → +101 ticks (total 51,606)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+  Tick cache: PBM → +74 ticks (total 54,523)
+  Tick cache: NPT → +48 ticks (total 51,654)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-17/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+============================================================
+BOOT: would RESUME (reason=marker_present) but WB_SESSION_RESUME_ENABLED=0 — forcing COLD
+BOOT: COLD start (reason=resume_gate_off)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: ON (strat=B)
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: IBKR
+  Position sync: No open positions at broker. Clean start.
+Account equity: $29,499
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 07:32:05 ET (first scan — casting wide net)...
+Error 162, reqId 1673: Historical Market Data Service error message:API scanner subscription cancelled: 1673
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1673 (reqId=1673, symbol=?)
+Error 162, reqId 1674: Historical Market Data Service error message:API scanner subscription cancelled: 1674
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1674 (reqId=1674, symbol=?)
+  Catchup: 43 unique symbols from 3 scanners
+  [float_cache] Cleared 1 stale None entries — will re-attempt lookups
+    Catchup: processing 1/43 — AHG...
+Error 162, reqId 1675: Historical Market Data Service error message:API scanner subscription cancelled: 1675
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 1675 (reqId=1675, symbol=?)
+    Catchup: processing 2/43 — ALGS...
+    Catchup: processing 3/43 — BMNU...
+    Catchup: processing 4/43 — BTCL...
+    Catchup: processing 5/43 — BTM...
+    Catchup: processing 6/43 — BZAI...
+    Catchup: processing 7/43 — CONL...
+    Catchup: processing 8/43 — CRCG...
+    Catchup: processing 9/43 — CRMG...
+    Catchup: processing 10/43 — CRML...
+    Catchup: processing 11/43 — CRMX...
+    Catchup: processing 12/43 — DARE...
+  [AlphaVantage] BMNU: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=BMNU&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+  [AlphaVantage] BTCL: HTTPSConnectionPool(host='www.alphavantage.co', port=443): Max retries exceeded with url: /query?function=OVERVIEW&symbol=BTCL&apikey=2VA0L62B63YY5G67 (Caused by NameResolutionError("HTTPSConnection(host='www.alphavantage.co', port=443): Failed to resolve 'www.alphavantage.co' ([Errno 8] nodename nor servname provided, or not known)"))
+    Catchup: processing 13/43 — ELAB...
+    Catchup: processing 14/43 — ENVB...
+    Catchup: processing 15/43 — ETHA...
+    Catchup: processing 16/43 — HODU...
+    Catchup: processing 17/43 — IONZ...
+    Catchup: processing 18/43 — JLHL...
+  Tick cache: AHG → +2 ticks (total 4)
+  Tick cache: ALGS → +2 ticks (total 5)
+  Tick cache: BMNU → +1 ticks (total 3)
+  Tick cache: BTCL → +2 ticks (total 4)
+  Tick cache: BTM → +2 ticks (total 7)
+  Tick cache: BZAI → +1 ticks (total 7)
+  Tick cache: CONL → +2 ticks (total 4)
+  Tick cache: CRCG → +2 ticks (total 4)
+  Tick cache: CRMG → +2 ticks (total 6)
+  Tick cache: CRML → +1 ticks (total 7)
+  Tick cache: CRMX → +2 ticks (total 8)
+  Tick cache: DARE → +2 ticks (total 6)
+  Tick cache: ELAB → +2 ticks (total 2)
+  Tick cache: ENVB → +2 ticks (total 2)
+  Tick cache: ETHA → +2 ticks (total 5)
+  Tick cache: HODU → +2 ticks (total 4)
+  Tick cache: IONZ → +1 ticks (total 5)
+  Tick cache: JLHL → +2 ticks (total 5)
+📦 Tick cache saved: 18 symbols → tick_cache/2026-04-17/
+    Catchup: processing 19/43 — KURA...
+    Catchup: processing 20/43 — LLYX...
+    Catchup: processing 21/43 — LZM...
+    Catchup: processing 22/43 — MB...
+    Catchup: processing 23/43 — MSTU...
+    Catchup: processing 24/43 — MSTZ...
+    Catchup: processing 25/43 — MYSE...
+    Catchup: processing 26/43 — NEXA...
+    Catchup: processing 27/43 — NFXS...
+ALERT: bot_v3_hybrid.py died at Fri Apr 17 05:32:48 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-17_daily.log.
+=== Shutting down at Fri Apr 17 05:32:48 MDT 2026 ===
+    Catchup: processing 28/43 — NOK...
+    Catchup: processing 29/43 — NPT...
+    Catchup: processing 30/43 — ORCU...
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+Pushing logs...
