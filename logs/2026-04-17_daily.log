@@ -833,3 +833,8 @@ ALERT: bot_v3_hybrid.py died at Fri Apr 17 05:32:48 MDT 2026! Session ended earl
 🛑 SHUTDOWN SIGNAL RECEIVED
   All positions flat. Clean shutdown.
 Pushing logs...
+[v2-ibkr-migration 1181903] auto: v3 daily logs 2026-04-17
+ 3 files changed, 625 insertions(+)
+ create mode 100644 logs/2026-04-17_scanner.log
+=== V3 Hybrid daily run complete: Fri Apr 17 05:32:54 MDT 2026 ===
+=== TRAP: cleanup at Fri Apr 17 05:32:54 MDT 2026 ===
