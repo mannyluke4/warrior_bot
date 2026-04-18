@@ -135,13 +135,15 @@ def main():
                         help="Fetch all scanner candidates for a date range")
     parser.add_argument("--force", action="store_true",
                         help="Re-fetch even if cache file exists (overwrite Databento data with IBKR)")
+    parser.add_argument("--client-id", type=int, default=int(os.getenv("IBKR_FETCHER_CLIENT_ID", "99")),
+                        help="IBKR clientId (default 99). Use distinct values if prior fetcher conn is stuck.")
     args = parser.parse_args()
 
     # Connect to IBKR
     ib = IB()
     try:
         port = int(os.getenv("IBKR_PORT", "4002"))
-        ib.connect("127.0.0.1", port, clientId=99, timeout=15)
+        ib.connect("127.0.0.1", port, clientId=args.client_id, timeout=15)
     except Exception as e:
         print(f"FATAL: Cannot connect to IBKR: {e}")
         sys.exit(1)
@@ -159,11 +161,19 @@ def main():
             for date in dates:
                 sf = os.path.join(SCANNER_DIR, f"{date}.json")
                 with open(sf) as f:
-                    candidates = json.load(f)
+                    raw = json.load(f)
+                # Handle both formats: flat list of {symbol:...} dicts
+                # OR live-scanner's [{timestamp:..., candidates:[...]}] nesting
+                if isinstance(raw, list) and raw and "candidates" in raw[0]:
+                    candidates = []
+                    for entry in raw:
+                        candidates.extend(entry.get("candidates", []))
+                else:
+                    candidates = raw if isinstance(raw, list) else []
                 if not candidates:
                     continue
 
-                symbols = [c["symbol"] for c in candidates]
+                symbols = [c["symbol"] for c in candidates if "symbol" in c]
                 if args.force:
                     to_fetch = symbols
                     cached = []
