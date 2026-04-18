@@ -152,7 +152,7 @@ def run_symbol(symbol: str, date: str, strategy: str = "B", verbose: bool = Fals
                 pre_peak_min_price = bar.low
         msg = detector.on_bar_close_1m(bar, vwap=bar_vwaps[-1])
         if verbose and msg:
-            print(f"  [{bar.start.astimezone(ET).strftime('%H:%M')}] {msg}")
+            print(f"  [{bar.start_utc.astimezone(ET).strftime('%H:%M')}] {msg}")
         # Strategy A triggers ON the bar close (msg starts with "SHORT_A ENTRY")
         if msg and msg.startswith("SHORT_A ENTRY") and detector.armed:
             bar_close_trigger["fired"] = True

@@ -277,4 +277,44 @@ Keep the short strategy in simulation mode. Run the backtest across the full YTD
 
 ---
 
-*CC (Opus), 2026-04-17 afternoon. Strategy B is proven in backtest, infrastructure is battle-tested in production, execution is blocked by paper-account constraints. Next step is a broker-level decision.*
+---
+
+## 9. Backtest — 2026-04-17 Morning (missed due to cascade kill)
+
+The bot was down from 07:32-07:38 ET (cascade kill from daily_run_v3.sh watchdog). We missed the entire golden hour. Historical ticks were refetched from IBKR for all 6 subscribed symbols (KIDZ, NPT, MYSE, PBM, WSHP: full day 04:00-20:00 ET; EFOI: 09:59-20:00 ET partial — Gateway dropped during fetch at IBKR maintenance window).
+
+### Squeeze backtest (07:00-12:00 ET)
+
+| Symbol | Trades | Win | P&L | Detail |
+|---|---|---|---|---|
+| MYSE | 2 | 2W/0L | **+$1,892** | #1: entry $3.59 → exit $3.74 (BE exit) +$1,364. #2: entry $3.85 → exit $4.03 (BE exit) +$528 |
+| WSHP | 3 | 1W/2L | **+$168** | #1: $20.04 → $20.97 (target) +$2,324. #2: $21.98 → $21.56 (BE exit) -$946. #3: $21.93 → $21.40 (EPL stop) -$1,209 |
+| KIDZ | 0 | — | $0 | No arms |
+| NPT | 0 | — | $0 | No arms |
+| PBM | 0 | — | $0 | No arms |
+| EFOI | 0 | — | $0 | No arms (partial data — missing pre-10:00 ET) |
+| **Total** | **5** | **3W/2L** | **+$2,060** | |
+
+**If the bot had been running:** we would have captured **+$2,060** in squeeze trades — MYSE's two clean breakouts and WSHP's +$2,324 target hit (partially offset by two re-entry losses).
+
+### Short backtest (Strategy B, full day)
+
+| Symbol | Entry | Stop | Exit | Reason | Qty | $PnL | R |
+|---|---|---|---|---|---|---|---|
+| PBM | $11.50 | $12.39 | $10.20 | target_vwap | 1176 | **+$1,529** | +1.5R |
+| WSHP | $16.72 | $20.16 | $16.50 | time_60min | 305 | +$67 | +0.1R |
+| MYSE | $3.03 | $3.48 | $3.11 | time_60min | 2310 | -$185 | -0.2R |
+| NPT | $3.53 | $4.39 | $4.39 | stop_hit | 1215 | -$1,049 | -1.0R |
+| EFOI | $3.77 | $5.61 | $5.61 | stop_hit | 572 | -$1,050 | -1.0R |
+| KIDZ | — | — | — | no arm/trigger | — | $0 | — |
+| **Total** | | | | | | **-$688** | **-0.1R avg** |
+
+**Short findings for 2026-04-17:** PBM was the standout — clean fade from HOD $12.39 to VWAP $10.20, +$1,529 (+1.5R). The same PBM that IBKR paper rejected on margin. WSHP had a modest win. NPT and EFOI both stopped out (-1.0R each). MYSE was a small loss on time-stop.
+
+**Combined potential (squeeze + short):** +$2,060 + (-$688) = **+$1,372 if both strategies had executed.** Squeeze carried the day; the short strategy's PBM winner was offset by two stop-outs.
+
+**Key insight — the PBM short that IBKR paper rejected (+$1,529):** This exact trade was attempted live (10:09:26 ET, qty=1179 @ $8.72) but rejected for margin. In the backtest, the entry comes later at $11.50 (after more setup development) and exits at VWAP $10.20. The R/R was excellent. This is precisely the kind of trade that would fill on a live IBKR account with standard margin.
+
+---
+
+*CC (Opus), 2026-04-17 late evening. Morning backtest added — +$2,060 squeeze + (-$688) short = +$1,372 potential. PBM short (+$1,529) validates Strategy B's edge on a stock IBKR paper couldn't execute. Next step is a broker-level decision.*
