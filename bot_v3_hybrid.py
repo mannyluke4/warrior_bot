@@ -110,8 +110,14 @@ STARTING_EQUITY = float(os.getenv("WB_STARTING_EQUITY", "30000"))
 RISK_PCT = float(os.getenv("WB_RISK_PCT", "0.025"))  # 2.5% of equity per trade
 MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "100000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
-SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"  # 50% buying power (2x equity)
+SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"
+BUYING_POWER_PCT = float(os.getenv("WB_BUYING_POWER_PCT", "0.50"))
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
+
+# PDT protection — limit entries per day to conserve day-trade slots.
+# Under $25K equity: 3 day trades per 5 rolling business days. Setting
+# MAX_DAILY_ENTRIES=1 keeps us safe. 0 = unlimited (paper mode default).
+MAX_DAILY_ENTRIES = int(os.getenv("WB_MAX_DAILY_ENTRIES", "0"))
 
 # Entry slippage + retry (added 2026-04-15 — was hardcoded $0.02 + single-shot)
 # Dynamic slippage: max(SLIPPAGE_MIN, price * SLIPPAGE_PCT). If initial limit
@@ -269,6 +275,7 @@ class BotState:
         # Daily risk
         self.daily_pnl: float = 0.0
         self.daily_trades: int = 0
+        self.daily_entries: int = 0  # PDT guard — counts entries, not round-trips
         self.consecutive_losses: int = 0
         self.closed_trades: list[dict] = []
 
@@ -1502,6 +1509,10 @@ def check_triggers(symbol: str, price: float):
     if state.open_position is not None:
         return
 
+    # PDT guard — max entries per day (conserve day-trade slots under $25K)
+    if MAX_DAILY_ENTRIES > 0 and state.daily_entries >= MAX_DAILY_ENTRIES:
+        return
+
     # Box position blocks momentum entry (unless simultaneous allowed)
     if BOX_ENABLED and not BOX_SIMULTANEOUS and state.box_position is not None:
         return
@@ -1715,10 +1726,12 @@ def enter_trade(symbol: str, armed, setup_type: str):
     current_equity = STARTING_EQUITY + state.daily_pnl  # STARTING_EQUITY is set from IBKR NetLiquidation at startup
     risk_dollars = max(50, current_equity * RISK_PCT)
 
-    # Size calculation — scale notional with equity if enabled
-    effective_notional = MAX_NOTIONAL
+    # Size calculation. SCALE_NOTIONAL uses a % of 2× margin buying power
+    # (compounding — scales with equity). Fixed mode uses MAX_NOTIONAL.
     if SCALE_NOTIONAL:
-        effective_notional = max(MAX_NOTIONAL, current_equity * 2)  # 50% buying power (2x equity)
+        effective_notional = current_equity * 2 * BUYING_POWER_PCT
+    else:
+        effective_notional = MAX_NOTIONAL
     qty = int(math.floor(risk_dollars / r))
     qty_notional = int(math.floor(effective_notional / max(entry, 0.01)))
     qty = min(qty, qty_notional, MAX_SHARES)
@@ -1726,7 +1739,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
     notional = qty * entry
     print(f"  Sizing: equity=${current_equity:,.0f} risk=${risk_dollars:,.0f} "
           f"qty={qty} notional=${notional:,.0f}" +
-          (f" (scaled max=${effective_notional:,.0f})" if SCALE_NOTIONAL else ""),
+          (f" (BP {BUYING_POWER_PCT*100:.0f}% max=${effective_notional:,.0f})" if SCALE_NOTIONAL else ""),
           flush=True)
 
     if size_mult < 1.0:
@@ -1767,6 +1780,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
         "is_parabolic": "[PARABOLIC]" in (armed.score_detail or ""),
         "fill_confirmed": False,
     }
+    state.daily_entries += 1
 
     # Store pending order for timeout check
     state.pending_order = {
@@ -1823,6 +1837,7 @@ def _enter_epl_trade(symbol: str, signal):
         "peak": limit_price, "tp_hit": False, "entry_time": datetime.now(ET),
         "order_id": order_id, "is_parabolic": False, "fill_confirmed": False,
     }
+    state.daily_entries += 1
     state.pending_order = {"order_id": order_id, "placed_time": datetime.now(ET), "timeout_seconds": 15}
 
     epl_strat = state.epl_registry.get_strategy(signal.strategy)
@@ -3015,6 +3030,8 @@ def main():
     print(f"  MP: {'ON' if MP_ENABLED else 'OFF'}")
     print(f"  MP V2 (Re-Entry): {'ON' if MP_V2_ENABLED else 'OFF'}")
     print(f"  Short: {'ON (strat=' + SHORT_STRATEGY + ')' if SHORT_ENABLED else 'OFF'}")
+    print(f"  Max entries/day: {MAX_DAILY_ENTRIES if MAX_DAILY_ENTRIES > 0 else 'unlimited'}")
+    print(f"  Buying power: {BUYING_POWER_PCT*100:.0f}% of 2x margin" if SCALE_NOTIONAL else "  Notional cap: fixed")
     print(f"  Port: {IBKR_PORT}")
     print(f"  Risk: {RISK_PCT*100:.1f}% per trade")
     print(f"  Starting Equity: ${STARTING_EQUITY:,.0f}")
