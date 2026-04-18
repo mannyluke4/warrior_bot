@@ -1726,10 +1726,11 @@ def enter_trade(symbol: str, armed, setup_type: str):
     current_equity = STARTING_EQUITY + state.daily_pnl  # STARTING_EQUITY is set from IBKR NetLiquidation at startup
     risk_dollars = max(50, current_equity * RISK_PCT)
 
-    # Size calculation. SCALE_NOTIONAL uses a % of 2× margin buying power
-    # (compounding — scales with equity). Fixed mode uses MAX_NOTIONAL.
+    # Size calculation. SCALE_NOTIONAL reads actual buying power from the
+    # broker and caps at BUYING_POWER_PCT of it. Fixed mode uses MAX_NOTIONAL.
     if SCALE_NOTIONAL:
-        effective_notional = current_equity * 2 * BUYING_POWER_PCT
+        broker_bp = state.broker.get_buying_power() if state.broker else current_equity * 2
+        effective_notional = broker_bp * BUYING_POWER_PCT
     else:
         effective_notional = MAX_NOTIONAL
     qty = int(math.floor(risk_dollars / r))
@@ -1739,7 +1740,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
     notional = qty * entry
     print(f"  Sizing: equity=${current_equity:,.0f} risk=${risk_dollars:,.0f} "
           f"qty={qty} notional=${notional:,.0f}" +
-          (f" (BP {BUYING_POWER_PCT*100:.0f}% max=${effective_notional:,.0f})" if SCALE_NOTIONAL else ""),
+          (f" (BP {BUYING_POWER_PCT*100:.0f}% of ${broker_bp:,.0f} = max ${effective_notional:,.0f})" if SCALE_NOTIONAL else ""),
           flush=True)
 
     if size_mult < 1.0:

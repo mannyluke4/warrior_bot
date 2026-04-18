@@ -250,6 +250,14 @@ class AlpacaBroker:
         except Exception:
             return 0.0
 
+    def get_buying_power(self) -> float:
+        """Current buying power for position sizing."""
+        try:
+            acct = _with_timeout(self._c.get_account, timeout=5)
+            return float(acct.buying_power)
+        except Exception:
+            return 0.0
+
     def is_shortable(self, symbol: str) -> bool:
         """Pre-trade check: can this name be sold short on this account?
         Returns False on lookup failure (conservative — treat as not
@@ -502,9 +510,19 @@ class IBKRBroker:
     def get_account_equity(self) -> float:
         """IBKR NetLiquidation for position sizing. accountValues() is
         populated by the connection; no network round-trip here."""
+        return self._account_value("NetLiquidation")
+
+    def get_buying_power(self) -> float:
+        """IBKR BuyingPower — the broker-reported max notional before
+        margin calls. Accounts under $25K get 2× (RegT); over $25K
+        get 4× (PDT). Caller multiplies by WB_BUYING_POWER_PCT to
+        get the effective position-size cap."""
+        return self._account_value("BuyingPower")
+
+    def _account_value(self, tag: str) -> float:
         try:
             for v in self._ib.accountValues():
-                if v.tag == "NetLiquidation" and v.currency == "USD":
+                if v.tag == tag and v.currency == "USD":
                     try:
                         return float(v.value)
                     except (ValueError, TypeError):
