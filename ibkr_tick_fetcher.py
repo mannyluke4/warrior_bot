@@ -123,6 +123,53 @@ def save_ticks(ticks: list, symbol: str, date: str):
     return out_path
 
 
+def needs_extend(cache_path: str, full_day_end_utc_hour: int = 19) -> bool:
+    """Check if an existing tick_cache file needs extending to full-day.
+    Returns True if the file doesn't exist, is empty, or its last tick
+    is before full_day_end_utc_hour (default 19 = 15:00 ET in EDT,
+    14:00 ET in EST — conservative cutoff for 'covers the afternoon').
+    """
+    if not os.path.exists(cache_path):
+        return True
+    try:
+        with gzip.open(cache_path, "rt") as f:
+            data = json.load(f)
+        if not data:
+            return True
+        last_t = data[-1].get("t", "")
+        # Parse hour from timestamp (format: 2026-01-16T16:59:59+00:00 or similar)
+        # Extract the hour portion — works for both T-separated and space-separated
+        hour_str = last_t[11:13] if len(last_t) > 13 else ""
+        if not hour_str.isdigit():
+            return True
+        last_hour_utc = int(hour_str)
+        return last_hour_utc < full_day_end_utc_hour
+    except Exception:
+        return True
+
+
+def safe_save_ticks(new_ticks: list, symbol: str, date: str) -> bool:
+    """Save ticks only if the new data is a superset of existing data.
+    Returns True if saved, False if skipped (existing had more ticks)."""
+    cache_path = os.path.join(TICK_CACHE_DIR, date, f"{symbol}.json.gz")
+    existing_count = 0
+    if os.path.exists(cache_path):
+        try:
+            with gzip.open(cache_path, "rt") as f:
+                existing = json.load(f)
+            existing_count = len(existing)
+        except Exception:
+            pass
+    if len(new_ticks) < existing_count:
+        print(f"  SKIP SAVE: {symbol} new={len(new_ticks)} < existing={existing_count} — keeping existing",
+              flush=True)
+        return False
+    save_ticks(new_ticks, symbol, date)
+    if existing_count > 0:
+        print(f"    (extended: {existing_count:,} → {len(new_ticks):,} ticks)", flush=True)
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser(description="Fetch IBKR historical ticks for backtesting")
     parser.add_argument("symbol", nargs="?", help="Stock symbol (e.g., EEIQ)")
@@ -134,7 +181,12 @@ def main():
     parser.add_argument("--date-range", nargs=2, metavar=("START", "END"),
                         help="Fetch all scanner candidates for a date range")
     parser.add_argument("--force", action="store_true",
-                        help="Re-fetch even if cache file exists (overwrite Databento data with IBKR)")
+                        help="Re-fetch even if cache file exists (overwrite)")
+    parser.add_argument("--extend", action="store_true",
+                        help="Only refetch files that don't cover full day. "
+                             "Checks last tick timestamp — if past 19:00 UTC (15:00 ET), "
+                             "considers it complete. Safe on restart: never deletes data, "
+                             "only replaces with a superset (more ticks = wider coverage).")
     parser.add_argument("--client-id", type=int, default=int(os.getenv("IBKR_FETCHER_CLIENT_ID", "99")),
                         help="IBKR clientId (default 99). Use distinct values if prior fetcher conn is stuck.")
     args = parser.parse_args()
@@ -177,22 +229,43 @@ def main():
                 if args.force:
                     to_fetch = symbols
                     cached = []
+                    skipped_full = []
+                elif args.extend:
+                    # Only refetch files that don't cover the full day
+                    to_fetch = []
+                    cached = []
+                    skipped_full = []
+                    for s in symbols:
+                        cp = os.path.join(TICK_CACHE_DIR, date, f"{s}.json.gz")
+                        if not os.path.exists(cp):
+                            to_fetch.append(s)
+                        elif needs_extend(cp):
+                            to_fetch.append(s)
+                        else:
+                            skipped_full.append(s)
                 else:
                     cached = [s for s in symbols if os.path.exists(
                         os.path.join(TICK_CACHE_DIR, date, f"{s}.json.gz"))]
                     to_fetch = [s for s in symbols if s not in cached]
+                    skipped_full = []
 
                 if not to_fetch:
-                    print(f"[{date}] All {len(symbols)} symbols already cached, skipping")
+                    skip_reason = f"{len(skipped_full)} full-day" if args.extend else f"{len(symbols)} cached"
+                    print(f"[{date}] All {len(symbols)} symbols complete ({skip_reason}), skipping")
                     continue
 
-                print(f"\n[{date}] Fetching {len(to_fetch)} symbols ({len(cached)} cached)...")
+                extend_note = f", {len(skipped_full)} already full-day" if skipped_full else ""
+                print(f"\n[{date}] Fetching {len(to_fetch)} symbols{extend_note}...")
                 for sym in to_fetch:
                     print(f"  [{date}] {sym}...", flush=True)
                     ticks = fetch_ticks(ib, sym, date, args.start, args.end)
                     if ticks:
-                        save_ticks(ticks, sym, date)
-                        total_symbols += 1
+                        if args.extend:
+                            if safe_save_ticks(ticks, sym, date):
+                                total_symbols += 1
+                        else:
+                            save_ticks(ticks, sym, date)
+                            total_symbols += 1
                     else:
                         print(f"  {sym}: no ticks")
                     time_mod.sleep(1)  # IBKR pacing between symbols
