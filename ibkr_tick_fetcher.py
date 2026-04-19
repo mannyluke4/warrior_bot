@@ -123,11 +123,11 @@ def save_ticks(ticks: list, symbol: str, date: str):
     return out_path
 
 
-def needs_extend(cache_path: str, full_day_end_utc_hour: int = 19) -> bool:
+def needs_extend(cache_path: str) -> bool:
     """Check if an existing tick_cache file needs extending to full-day.
     Returns True if the file doesn't exist, is empty, or its last tick
-    is before full_day_end_utc_hour (default 19 = 15:00 ET in EDT,
-    14:00 ET in EST — conservative cutoff for 'covers the afternoon').
+    is before 15:00 ET (3 PM — well past afternoon session). Correctly
+    handles midnight-UTC rollover (00:xx UTC = 20:xx ET = full day).
     """
     if not os.path.exists(cache_path):
         return True
@@ -137,13 +137,14 @@ def needs_extend(cache_path: str, full_day_end_utc_hour: int = 19) -> bool:
         if not data:
             return True
         last_t = data[-1].get("t", "")
-        # Parse hour from timestamp (format: 2026-01-16T16:59:59+00:00 or similar)
-        # Extract the hour portion — works for both T-separated and space-separated
-        hour_str = last_t[11:13] if len(last_t) > 13 else ""
-        if not hour_str.isdigit():
-            return True
-        last_hour_utc = int(hour_str)
-        return last_hour_utc < full_day_end_utc_hour
+        from datetime import datetime as _dt, timezone as _tz
+        from zoneinfo import ZoneInfo as _ZI
+        _ET = _ZI("America/New_York")
+        last_dt = _dt.fromisoformat(last_t)
+        if last_dt.tzinfo is None:
+            last_dt = last_dt.replace(tzinfo=_tz.utc)
+        last_et = last_dt.astimezone(_ET)
+        return last_et.hour < 15
     except Exception:
         return True
 
