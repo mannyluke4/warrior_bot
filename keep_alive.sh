@@ -19,7 +19,8 @@ set -euo pipefail
 
 LOG=~/warrior_bot_v2/logs/keep_alive_$(date +%Y-%m-%d).log
 BOT_DIR=~/warrior_bot_v2
-IBKR_PORT=4002
+# Read IBKR_PORT from .env so it works for both paper (4002) and live (4001)
+IBKR_PORT=$(grep "^IBKR_PORT=" ~/warrior_bot_v2/.env 2>/dev/null | cut -d= -f2 | tr -d ' ' || echo "4002")
 BOT_SCRIPT="bot_v3_hybrid.py"
 DAILY_LOG="$BOT_DIR/logs/$(date +%Y-%m-%d)_daily.log"
 

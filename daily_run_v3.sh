@@ -7,7 +7,7 @@ set -euo pipefail
 LOG_DIR=~/warrior_bot_v2/logs
 TODAY=$(date +%Y-%m-%d)
 LOG_FILE="$LOG_DIR/${TODAY}_daily.log"
-IBKR_PORT=4002  # Gateway paper trading port
+IBKR_PORT=4001  # Gateway live trading port (was 4002 for paper)
 mkdir -p "$LOG_DIR"
 
 exec > >(tee -a "$LOG_FILE") 2>&1

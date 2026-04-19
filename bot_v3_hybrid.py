@@ -2761,24 +2761,40 @@ def on_ib_error(reqId, errorCode, errorString, contract):
 
 
 def preflight_port_check():
-    """Verify no port conflicts before connecting."""
+    """Verify no port conflicts before connecting. Uses IBKR_PORT from .env
+    so it works for both paper (4002) and live (4001) configurations."""
     import subprocess
-    ports = {4002: False, 7497: False}
+    target_port = IBKR_PORT
+    other_port = 7497
+    ports = {target_port: False, other_port: False}
     for port in ports:
-        result = subprocess.run(["lsof", "-i", f":{port}"], capture_output=True, text=True)
-        if result.stdout.strip():
-            ports[port] = True
-            print(f"  Port {port}: IN USE", flush=True)
-        else:
-            print(f"  Port {port}: free", flush=True)
+        try:
+            result = subprocess.run(["lsof", "-i", f":{port}"], capture_output=True, text=True)
+            if result.stdout.strip():
+                ports[port] = True
+                print(f"  Port {port}: IN USE", flush=True)
+            else:
+                print(f"  Port {port}: free", flush=True)
+        except FileNotFoundError:
+            # lsof not available — try socket connect instead
+            import socket
+            try:
+                s = socket.socket()
+                s.settimeout(1)
+                s.connect(("127.0.0.1", port))
+                s.close()
+                ports[port] = True
+                print(f"  Port {port}: IN USE", flush=True)
+            except Exception:
+                print(f"  Port {port}: free", flush=True)
 
-    if ports[4002] and ports[7497]:
-        print("🔴 CRITICAL: Both ports 4002 AND 7497 are occupied!", flush=True)
+    if ports[target_port] and ports[other_port]:
+        print(f"🔴 CRITICAL: Both ports {target_port} AND {other_port} are occupied!", flush=True)
         print("  This can cause IBKR data routing confusion. Kill one.", flush=True)
         sys.exit(1)
 
-    if not ports[4002]:
-        print(f"  WARNING: Port 4002 not yet open (Gateway may still be starting)", flush=True)
+    if not ports[target_port]:
+        print(f"  WARNING: Port {target_port} not yet open (Gateway may still be starting)", flush=True)
 
 
 def on_pending_tickers_backup(tickers):
