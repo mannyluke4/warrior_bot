@@ -5815,3 +5815,12 @@ IBKR ERROR 162: Historical Market Data Service error message:API scanner subscri
 ALERT: bot_v3_hybrid.py died at Mon Apr 20 10:00:18 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-20_daily.log.
 === Shutting down at Mon Apr 20 10:00:18 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration fccb3ff] auto: v3 daily logs 2026-04-20
+ 7 files changed, 6239 insertions(+)
+ create mode 100644 logs/2026-04-20_scanner.log
+ create mode 100644 logs/2026-04-20_ytd_capped25k.log
+ create mode 100644 logs/2026-04-20_ytd_uncapped.log
+ create mode 100644 logs/gateway_golive_2026-04-20.log
+ create mode 100644 logs/keep_alive_2026-04-20.log
+=== V3 Hybrid daily run complete: Mon Apr 20 10:00:25 MDT 2026 ===
+=== TRAP: cleanup at Mon Apr 20 10:00:25 MDT 2026 ===
