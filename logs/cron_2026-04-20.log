@@ -106,3 +106,20 @@ Waiting for IB Gateway on port 4001...
   attempt 72/72: port 4001 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4001 within 360 seconds. Aborting.
 === TRAP: cleanup at Mon Apr 20 02:10:39 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 70901 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration da13ffd] auto: v3 daily logs 2026-04-20
+ 8 files changed, 26407 insertions(+)
+ create mode 100644 logs/2026-04-17_ytd_tick_fetch.log
+ create mode 100644 logs/2026-04-18_ytd_extend.log
+ create mode 100644 logs/2026-04-18_ytd_tick_fetch.log
+ create mode 100644 logs/2026-04-19_ytd_backtest.log
+ create mode 100644 logs/2026-04-20_daily.log
+ create mode 100644 logs/cron_2026-04-20.log
+ create mode 100644 logs/keep_alive_2026-04-17.log
+=== Cleanup complete: Mon Apr 20 02:10:41 MDT 2026 ===
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
