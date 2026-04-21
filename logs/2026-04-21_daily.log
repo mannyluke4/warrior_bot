@@ -106,3 +106,104 @@ Waiting for IB Gateway on port 4001...
   attempt 72/72: port 4001 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4001 within 360 seconds. Aborting.
 === TRAP: cleanup at Tue Apr 21 02:10:37 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 82266 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 900bdae] auto: v3 daily logs 2026-04-21
+ 8 files changed, 1452 insertions(+)
+ create mode 100644 logs/2026-04-20_ytd_profile_config3.log
+ create mode 100644 logs/2026-04-20_ytd_profile_config3_dynattempts.log
+ create mode 100644 logs/2026-04-20_ytd_profile_config3_winsoff.log
+ create mode 100644 logs/2026-04-20_ytd_uncapped_30k.log
+ create mode 100644 logs/2026-04-21_daily.log
+ create mode 100644 logs/cron_2026-04-21.log
+=== Cleanup complete: Tue Apr 21 02:10:39 MDT 2026 ===
+=== Waking screen and ensuring active desktop ===
+Display wake signal sent
+Waiting 10s for desktop session...
+Desktop session: ACTIVE
+daily_run_v3.sh: line 81: 21814 Terminated: 15          caffeinate -u -t 30
+caffeinate started (PID: 21826)
+=== V3 Hybrid daily run started: Tue Apr 21 12:12:35 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 900bdae (auto: v3 daily logs 2026-04-21)
+daily_run_v3.sh hash: 621373f9ca9e6c0bc7d87964a1487df5  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: da18ae42beb8337819b5d1401fc22e86  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.027346 +/- 0.051467 time.apple.com 2620:149:a23:3000::1f2
+NTP sync skipped (non-root)
+System time: Tue Apr 21 18:12:37 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4001...
+  attempt 1/72: port 4001 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Tuesday.txt
++
++[0m
+  attempt 2/72: port 4001 not ready yet, waiting 5s...
+  attempt 3/72: port 4001 not ready yet, waiting 5s...
+Gateway is up on port 4001 (after ~20s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 21923)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 21935)
+BOOT: COLD start (reason=no_marker)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: 1
+  Buying power: 50% of 2x margin
+  Port: 4001
+  Risk: 2.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $600 (2% of equity, scaling)
+  Windows: 07:00-12:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4001: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['U24537964']
+Broker: IBKR
+  Position sync: No open positions at broker. Clean start.
+Account equity: $10,779
+EPL disabled (WB_EPL_ENABLED=0)
+
+📡 Databento bridge: 1 new symbols from watchlist.txt: ['KIDZ']
+🔥 Seeded KIDZ: 600 ticks → 50 bars, EMA=1.5293 (12 ticks/bar avg)
+✅ Subscribed: KIDZ
+
+Bot running. Windows: 07:00-12:00 ET. Ctrl+C to stop.
+
+🛑 All trading windows closed. Shutting down.
+  Tick cache: KIDZ → +603 ticks (total 603)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-21/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+============================================================
+FATAL: bot_v3_hybrid.py crashed within 15s of launch. Check /Users/duffy/warrior_bot_v2/logs/2026-04-21_daily.log for details.
+=== TRAP: cleanup at Tue Apr 21 12:13:20 MDT 2026 ===
