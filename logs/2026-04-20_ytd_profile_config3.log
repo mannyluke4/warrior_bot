@@ -1,0 +1,170 @@
+============================================================
+PROFILE SYSTEM RETEST: 3-Way Comparison
+Period: Jan 2 - Mar 12, 2026 (49 trading days)
+Starting equity: $30,000
+Profile A risk: 2.5% ($250-$1500)
+Profile B risk: A/3 capped at $250
+L2: OFF (tick cache has trade data only)
+============================================================
+
+============================================================
+CONFIG 3: Profile Full (+ bail timer, giveback, warmup)
+============================================================
+[1/49] 2026-01-02: 0 candidates
+[2/49] 2026-01-03: 0 candidates
+[3/49] 2026-01-05: 0 candidates
+[4/49] 2026-01-06: 1 scanned → 1 selected (1A + 0B) eq=$30,000
+    CYCN[A]: ticks=276,804 armed=1 signals=1 trades=0 risk=$750 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$30,000
+[5/49] 2026-01-07: 1 scanned → 1 selected (1A + 0B) eq=$30,000
+    CDIO[A]: ticks=132,293 armed=0 signals=0 trades=0 risk=$750 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$30,000
+[6/49] 2026-01-08: 1 scanned → 1 selected (1A + 0B) eq=$30,000
+    ACON[A]: ticks=414,274 armed=2 signals=1 trades=1 risk=$750 pnl=+675
+  Config 3: 1 trades (1A $+675 + 0B $+0) day=$+675 eq=$30,675
+[7/49] 2026-01-09: 3 scanned → 3 selected (3A + 0B) eq=$30,675
+    KUST[A]: ticks=32,354 armed=0 signals=0 trades=0 risk=$767 pnl=+0
+    ICON[A]: ticks=41,359 armed=0 signals=0 trades=0 risk=$767 pnl=+0
+    APVO[A]: ticks=113,865 armed=2 signals=1 trades=1 risk=$767 pnl=+5146
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$30,675
+[8/49] 2026-01-12: 3 scanned → 2 selected (2A + 0B) eq=$30,675
+    NCEL[A]: ticks=17,778 armed=0 signals=0 trades=0 risk=$767 pnl=+0
+    BDSX[A]: ticks=484,252 armed=6 signals=5 trades=5 risk=$767 pnl=+4940
+  Config 3: 1 trades (1A $+0 + 0B $+0) day=$+0 eq=$30,675
+[9/49] 2026-01-13: 3 scanned → 3 selected (3A + 0B) eq=$30,675
+    IOTR[A]: ticks=116,081 armed=1 signals=1 trades=0 risk=$767 pnl=+0
+    AHMA[A]: ticks=653,728 armed=8 signals=5 trades=5 risk=$767 pnl=+5571
+    BCTX[A]: ticks=134,498 armed=2 signals=1 trades=1 risk=$767 pnl=+9411
+  Config 3: 1 trades (1A $-329 + 0B $+0) day=$-329 eq=$30,346
+[10/49] 2026-01-14: 4 scanned → 3 selected (2A + 1B) eq=$30,346
+    ROLR[A]: ticks=1,133,891 armed=8 signals=5 trades=5 risk=$759 pnl=+13537
+    CMND[A]: ticks=10,016 armed=1 signals=0 trades=0 risk=$759 pnl=+0
+    MVO[B]: ticks=8,669 armed=0 signals=0 trades=0 risk=$250 pnl=+0
+  Config 3: 1 trades (1A $+3,308 + 0B $+0) day=$+3,308 eq=$33,654
+[11/49] 2026-01-15: 4 scanned → 4 selected (4A + 0B) eq=$33,654
+    SPHL[A]: ticks=1,272,634 armed=6 signals=5 trades=5 risk=$841 pnl=+1919
+    BNKK[A]: ticks=662,285 armed=5 signals=2 trades=2 risk=$841 pnl=-390
+    CJMB[A]: ticks=1,234,705 armed=7 signals=5 trades=5 risk=$841 pnl=+3542
+    AGPU[A]: ticks=44,844 armed=3 signals=2 trades=2 risk=$841 pnl=-174
+  Config 3: 2 trades (2A $-360 + 0B $+0) day=$-360 eq=$33,294
+[12/49] 2026-01-16: 5 scanned → 5 selected (5A + 0B) eq=$33,294
+    LCFY[A]: ticks=557,725 armed=3 signals=2 trades=2 risk=$832 pnl=+2061
+    ACCL[A]: ticks=193,352 armed=1 signals=1 trades=1 risk=$832 pnl=+9305
+    BIYA[A]: ticks=208,416 armed=1 signals=1 trades=1 risk=$832 pnl=+790
+    GWAV[A]: ticks=96,313 armed=3 signals=2 trades=2 risk=$832 pnl=+3390
+    TNMG[A]: ticks=145,906 armed=1 signals=1 trades=0 risk=$832 pnl=+0
+  Config 3: 1 trades (1A $+2,418 + 0B $+0) day=$+2,418 eq=$35,712
+[13/49] 2026-01-20: 6 scanned → 5 selected (5A + 0B) eq=$35,712
+    TWG[A]: ticks=770,446 armed=5 signals=5 trades=5 risk=$893 pnl=+1595
+    SHPH[A]: ticks=978,987 armed=9 signals=5 trades=5 risk=$893 pnl=+3807
+    BTTC[A]: ticks=295,553 armed=0 signals=0 trades=0 risk=$893 pnl=+0
+    IVF[A]: ticks=899,844 armed=1 signals=1 trades=1 risk=$893 pnl=-287
+    ICON[A]: ticks=106,783 armed=2 signals=2 trades=0 risk=$893 pnl=+0
+  Config 3: 2 trades (2A $+4,002 + 0B $+0) day=$+4,002 eq=$39,714
+[14/49] 2026-01-21: 5 scanned → 5 selected (4A + 1B) eq=$39,714
+    SLGB[A]: ticks=452,581 armed=4 signals=4 trades=4 risk=$993 pnl=+3680
+    BOXL[A]: ticks=312,743 armed=2 signals=2 trades=0 risk=$993 pnl=+0
+    LSTA[B]: ticks=25,419 armed=1 signals=1 trades=0 risk=$250 pnl=+0
+    AQMS[A]: ticks=201,806 armed=0 signals=0 trades=0 risk=$993 pnl=+0
+    MLEC[A]: ticks=57,831 armed=0 signals=0 trades=0 risk=$993 pnl=+0
+  Config 3: 1 trades (1A $+3,308 + 0B $+0) day=$+3,308 eq=$43,022
+[15/49] 2026-01-22: 3 scanned → 3 selected (3A + 0B) eq=$43,022
+    IOTR[A]: ticks=439,438 armed=4 signals=3 trades=3 risk=$1076 pnl=+36
+    SXTP[A]: ticks=1,774,069 armed=7 signals=5 trades=4 risk=$1076 pnl=+1068
+    NXTS[A]: ticks=173,714 armed=0 signals=0 trades=0 risk=$1076 pnl=+0
+  Config 3: 1 trades (1A $+795 + 0B $+0) day=$+795 eq=$43,817
+[16/49] 2026-01-23: 7 scanned → 5 selected (5A + 0B) eq=$43,817
+    DRCT[A]: ticks=759,741 armed=2 signals=2 trades=2 risk=$1095 pnl=+1041
+    MOVE[A]: ticks=685,363 armed=6 signals=4 trades=4 risk=$1095 pnl=+7420
+    RVYL[A]: ticks=99,913 armed=0 signals=0 trades=0 risk=$1095 pnl=+0
+    RAYA[A]: ticks=310,948 armed=2 signals=2 trades=0 risk=$1095 pnl=+0
+    SLE[A]: ticks=125,879 armed=1 signals=1 trades=1 risk=$1095 pnl=+3666
+  Config 3: 1 trades (1A $+845 + 0B $+0) day=$+845 eq=$44,662
+[17/49] 2026-01-26: 3 scanned → 3 selected (0A + 3B) eq=$44,662
+    BATL[B]: ticks=1,323,152 armed=4 signals=3 trades=3 risk=$250 pnl=+2827
+    GXAI[B]: ticks=513,389 armed=3 signals=1 trades=1 risk=$250 pnl=-9
+    ARAI[B]: ticks=172,549 armed=1 signals=0 trades=0 risk=$250 pnl=+0
+  Config 3: 4 trades (0A $+0 + 4B $+2,818) day=$+2,818 eq=$47,480
+[18/49] 2026-01-27: 5 scanned → 5 selected (4A + 1B) eq=$47,480
+    NUWE[A]: ticks=533,969 armed=1 signals=1 trades=1 risk=$1187 pnl=-166
+    HIND[A]: ticks=570,002 armed=2 signals=2 trades=2 risk=$1187 pnl=+6175
+    CYN[B]: ticks=426,897 armed=2 signals=1 trades=1 risk=$250 pnl=+0
+    NETG[A]: ticks=560 armed=0 signals=0 trades=0 risk=$1187 pnl=+0
+    PHGE[A]: ticks=310,845 armed=0 signals=0 trades=0 risk=$1187 pnl=+0
+  Config 3: 2 trades (1A $+5,057 + 1B $+0) day=$+5,057 eq=$52,537
+[19/49] 2026-01-28: 3 scanned → 3 selected (3A + 0B) eq=$52,537
+    MRNO[A]: ticks=262,553 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    AIMD[A]: ticks=90,575 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    BBGI[A]: ticks=10,937 armed=2 signals=1 trades=1 risk=$1313 pnl=-347
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[20/49] 2026-01-29: 3 scanned → 2 selected (2A + 0B) eq=$52,537
+    SER[A]: ticks=270,740 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    ZSTK[A]: ticks=34,240 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[21/49] 2026-01-30: 3 scanned → 3 selected (3A + 0B) eq=$52,537
+    PMN[A]: ticks=201,560 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    VIVS[A]: ticks=336,194 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    DZZ[A]: ticks=1,062 armed=1 signals=0 trades=0 risk=$1313 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[22/49] 2026-02-02: 5 scanned → 4 selected (2A + 2B) eq=$52,537
+    SWVL[B]: ticks=384,762 armed=1 signals=1 trades=0 risk=$250 pnl=+0
+    CISS[A]: ticks=166,706 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    IPW[A]: ticks=63,753 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+    FATN[B]: ticks=4,608 armed=0 signals=0 trades=0 risk=$250 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[23/49] 2026-02-03: 3 scanned → 3 selected (2A + 1B) eq=$52,537
+    FATN[B]: ticks=228,351 armed=0 signals=0 trades=0 risk=$250 pnl=+0
+    FIEE[A]: ticks=39,028 armed=2 signals=2 trades=2 risk=$1313 pnl=+2009
+    NPT[A]: ticks=421,859 armed=6 signals=4 trades=3 risk=$1313 pnl=+36170
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[24/49] 2026-02-04: 2 scanned → 1 selected (1A + 0B) eq=$52,537
+    TLF[A]: ticks=1,089 armed=0 signals=0 trades=0 risk=$1313 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[25/49] 2026-02-05: 1 scanned → 1 selected (1A + 0B) eq=$52,537
+    RNAZ[A]: ticks=320,139 armed=1 signals=0 trades=0 risk=$1313 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,537
+[26/49] 2026-02-06: 2 scanned → 2 selected (2A + 0B) eq=$52,537
+    WHLR[A]: ticks=185,563 armed=2 signals=1 trades=1 risk=$1313 pnl=-141
+    FLYE[A]: ticks=184,264 armed=1 signals=1 trades=1 risk=$1313 pnl=+4391
+  Config 3: 1 trades (1A $-141 + 0B $+0) day=$-141 eq=$52,396
+[27/49] 2026-02-09: 0 candidates
+[28/49] 2026-02-10: 1 scanned → 1 selected (1A + 0B) eq=$52,396
+    SPOG[A]: ticks=3,663 armed=1 signals=0 trades=0 risk=$1310 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,396
+[29/49] 2026-02-11: 0 candidates
+[30/49] 2026-02-12: 0 candidates
+[31/49] 2026-02-13: 0 candidates
+[32/49] 2026-02-17: 1 scanned → 1 selected (1A + 0B) eq=$52,396
+    OBAI[A]: ticks=273,676 armed=1 signals=1 trades=1 risk=$1310 pnl=+5767
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$52,396
+[33/49] 2026-02-18: 0 candidates
+[34/49] 2026-02-19: 0 candidates
+[35/49] 2026-02-20: 0 candidates
+[36/49] 2026-02-23: 0 candidates
+[37/49] 2026-02-24: 0 candidates
+[38/49] 2026-02-25: 0 candidates
+[39/49] 2026-02-26: 0 candidates
+[40/49] 2026-02-27: 0 candidates
+[41/49] 2026-03-02: 0 candidates
+[42/49] 2026-03-03: 0 candidates
+[43/49] 2026-03-04: 0 candidates
+[44/49] 2026-03-05: 1 scanned → 1 selected (1A + 0B) eq=$52,396
+    MTEK[A]: ticks=281,010 armed=1 signals=1 trades=1 risk=$1310 pnl=-468
+  Config 3: 1 trades (1A $-468 + 0B $+0) day=$-468 eq=$51,928
+[45/49] 2026-03-06: 0 candidates
+[46/49] 2026-03-09: 1 scanned → 1 selected (1A + 0B) eq=$51,928
+    AGH[A]: ticks=278,310 armed=0 signals=0 trades=0 risk=$1298 pnl=+0
+  Config 3: 0 trades (0A $+0 + 0B $+0) day=$+0 eq=$51,928
+[47/49] 2026-03-10: 0 candidates
+[48/49] 2026-03-11: 0 candidates
+[49/49] 2026-03-12: 0 candidates
+
+Config 3 done: $+21,928 (+73.1%)
+
+Report saved: /Users/duffy/warrior_bot_v2/PROFILE_RETEST_REPORT.md
+
+============================================================
+FINAL RESULTS
+============================================================
+Config 3 (Profiles Full):         $+21,928 (+73.1%)
+============================================================
