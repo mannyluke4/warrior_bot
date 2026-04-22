@@ -207,3 +207,9 @@ Bot running. Windows: 07:00-12:00 ET. Ctrl+C to stop.
 ============================================================
 FATAL: bot_v3_hybrid.py crashed within 15s of launch. Check /Users/duffy/warrior_bot_v2/logs/2026-04-21_daily.log for details.
 === TRAP: cleanup at Tue Apr 21 12:13:20 MDT 2026 ===
+daily_run_v3.sh: line 21: 21826 Terminated: 15          caffeinate -dims -w $$
+[v2-ibkr-migration 2d3845f] auto: v3 daily logs 2026-04-21
+ 4 files changed, 621 insertions(+)
+ create mode 100644 logs/2026-04-21_scanner.log
+ create mode 100644 logs/keep_alive_2026-04-21.log
+=== Cleanup complete: Tue Apr 21 12:13:21 MDT 2026 ===
