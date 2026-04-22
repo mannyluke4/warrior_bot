@@ -539,3 +539,339 @@ Killing stale processes...
 +==============================================================================[0m
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Wed Apr 22 05:02:35 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 71722 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 7805b1d] auto: v3 daily logs 2026-04-22
+ 4 files changed, 25877 insertions(+)
+ create mode 100644 logs/2026-04-22_scanner.log
+ create mode 100644 logs/keep_alive_2026-04-22.log
+=== Cleanup complete: Wed Apr 22 05:02:37 MDT 2026 ===
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 72778)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 72787)
+BOOT: would RESUME (reason=marker_present) but WB_SESSION_RESUME_ENABLED=0 — forcing COLD
+BOOT: COLD start (reason=resume_gate_off)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: IBKR
+  Position sync: No open positions at broker. Clean start.
+Account equity: $29,503
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 07:02:51 ET (first scan — casting wide net)...
+Error 162, reqId 2264: Historical Market Data Service error message:API scanner subscription cancelled: 2264
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2264 (reqId=2264, symbol=?)
+Error 162, reqId 2265: Historical Market Data Service error message:API scanner subscription cancelled: 2265
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2265 (reqId=2265, symbol=?)
+  Catchup: 38 unique symbols from 3 scanners
+    Catchup: processing 1/38 — BEZ...
+Error 162, reqId 2266: Historical Market Data Service error message:API scanner subscription cancelled: 2266
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 2266 (reqId=2266, symbol=?)
+    Catchup: processing 2/38 — BITU...
+    Catchup: processing 3/38 — BITX...
+    Catchup: processing 4/38 — BMNU...
+    Catchup: processing 5/38 — CCUP...
+    Catchup: processing 6/38 — CONL...
+    Catchup: processing 7/38 — CRCG...
+Bot health check passed (still running after 15s, PID: 72787)
+HEALTH_OK: Bot connected at 2026-04-22 11:03:05 UTC
+Gateway watchdog started (PID: 72804)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Apr 22 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 8/38 — DAMD...
+    Catchup: processing 9/38 — DCX...
+    Catchup: processing 10/38 — ELPW...
+    Catchup: processing 11/38 — ETHA...
+    Catchup: processing 12/38 — ETHT...
+    Catchup: processing 13/38 — HCAI...
+    Catchup: processing 14/38 — IONZ...
+    Catchup: processing 15/38 — KYTX...
+    Catchup: processing 16/38 — LOCL...
+  Tick cache: BEZ → +2 ticks (total 4)
+  Tick cache: BITU → +2 ticks (total 4)
+  Tick cache: BITX → +3 ticks (total 6)
+  Tick cache: BMNU → +3 ticks (total 5)
+  Tick cache: CCUP → +3 ticks (total 6)
+  Tick cache: CONL → +1 ticks (total 3)
+  Tick cache: CRCG → +3 ticks (total 5)
+  Tick cache: DAMD → +2 ticks (total 4)
+  Tick cache: DCX → +2 ticks (total 5)
+  Tick cache: ELPW → +2 ticks (total 175)
+  Tick cache: ETHA → +3 ticks (total 5)
+  Tick cache: ETHT → +3 ticks (total 6)
+  Tick cache: HCAI → +2 ticks (total 4)
+  Tick cache: IONZ → +2 ticks (total 4)
+  Tick cache: KYTX → +2 ticks (total 3)
+  Tick cache: LOCL → +3 ticks (total 6)
+📦 Tick cache saved: 16 symbols → tick_cache/2026-04-22/
+    Catchup: processing 17/38 — MRAL...
+    Catchup: processing 18/38 — MSTP...
+    Catchup: processing 19/38 — MSTU...
+    Catchup: processing 20/38 — MSTZ...
+    Catchup: processing 21/38 — NEOV...
+    Catchup: processing 22/38 — NOK...
+    Catchup: processing 23/38 — NVTS...
+    Catchup: processing 24/38 — OKLL...
+    Catchup: processing 25/38 — OPEN...
+    Catchup: processing 26/38 — PBM...
+    Catchup: processing 27/38 — PLUG...
+    Catchup: processing 28/38 — POET...
+    Catchup: processing 29/38 — RDWU...
+    Catchup: processing 30/38 — SCO...
+    Catchup: processing 31/38 — SLDP...
+    Catchup: processing 32/38 — SMR...
+    Catchup: processing 33/38 — SMU...
+    Catchup: processing 34/38 — SOXS...
+    Catchup: processing 35/38 — SST...
+  Tick cache: MRAL → +3 ticks (total 5)
+  Tick cache: MSTP → +3 ticks (total 6)
+  Tick cache: MSTU → +2 ticks (total 4)
+  Tick cache: MSTZ → +2 ticks (total 4)
+  Tick cache: NEOV → +2 ticks (total 4)
+  Tick cache: NOK → +1 ticks (total 3)
+  Tick cache: NVTS → +3 ticks (total 6)
+  Tick cache: OKLL → +3 ticks (total 6)
+  Tick cache: OPEN → +2 ticks (total 4)
+  Tick cache: PBM → +2 ticks (total 4)
+  Tick cache: PLUG → +2 ticks (total 5)
+  Tick cache: POET → +3 ticks (total 6)
+  Tick cache: RDWU → +2 ticks (total 4)
+  Tick cache: SCO → +3 ticks (total 6)
+  Tick cache: SLDP → +3 ticks (total 5)
+  Tick cache: SMR → +3 ticks (total 4)
+  Tick cache: SMU → +3 ticks (total 6)
+  Tick cache: SOXS → +2 ticks (total 4)
+📦 Tick cache saved: 18 symbols → tick_cache/2026-04-22/
+    Catchup: processing 36/38 — TSLL...
+    Catchup: processing 37/38 — UVIX...
+    Catchup: processing 38/38 — VIVO...
+  Catchup: 3 candidates after filters
+  Tick cache: SST → +3 ticks (total 5)
+  Tick cache: TSLL → +3 ticks (total 6)
+  Tick cache: UVIX → +3 ticks (total 6)
+  Tick cache: VIVO → +2 ticks (total 4)
+  Tick cache: ELPW → +150 ticks (total 325)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-04-22/
+  Tick cache: ELPW → +173 ticks (total 498)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-22/
+[07:05 ET] ELPW CHART | O=2.06 H=2.06 L=2.03 C=2.03 V=27,771 | EMA9=2.06 VWAP=2.05 (-0.7%) HOD=2.10 PM_H=2.10 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+  Tick cache: ELPW → +161 ticks (total 659)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-04-22/
+  [SEED] ELPW: 50390 ticks so far, jumping to recent 90min for full context
+[07:05 ET] ELPW CHART | O=2.03 H=2.06 L=2.03 C=2.04 V=21,839 | EMA9=2.05 VWAP=2.05 (-0.3%) HOD=2.42 PM_H=2.42 | MACD=N/A vol_ratio=11.4x avg_vol=1,918 bars=2 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.42 H=2.67 L=2.41 C=2.43 V=598,900 | EMA9=2.05 VWAP=2.48 (-2.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=104.1x avg_vol=5,754 bars=3 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.42 H=2.60 L=2.31 C=2.33 V=269,597 | EMA9=2.13 VWAP=2.47 (-5.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=24.3x avg_vol=11,116 bars=4 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.34 H=2.43 L=2.33 C=2.35 V=158,136 | EMA9=2.17 VWAP=2.46 (-4.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=7.1x avg_vol=22,231 bars=5 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.33 H=2.35 L=2.23 C=2.28 V=267,694 | EMA9=2.20 VWAP=2.42 (-5.9%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=6.7x avg_vol=40,016 bars=6 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.34 L=2.28 C=2.33 V=105,231 | EMA9=2.22 VWAP=2.42 (-3.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.8x avg_vol=59,703 bars=7 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.33 H=2.34 L=2.25 C=2.27 V=104,573 | EMA9=2.24 VWAP=2.41 (-5.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.2x avg_vol=89,416 bars=8 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.67 L=2.26 C=2.30 V=92,874 | EMA9=2.25 VWAP=2.40 (-4.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.0x avg_vol=91,393 bars=9 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.35 L=2.24 C=2.25 V=89,736 | EMA9=2.26 VWAP=2.40 (-6.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.0x avg_vol=92,857 bars=10 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.24 H=2.26 L=2.22 C=2.25 V=111,191 | EMA9=2.26 VWAP=2.39 (-5.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.2x avg_vol=92,859 bars=11 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.27 L=2.22 C=2.26 V=84,819 | EMA9=2.26 VWAP=2.38 (-5.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.9x avg_vol=92,575 bars=12 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.27 L=2.23 C=2.23 V=46,303 | EMA9=2.26 VWAP=2.38 (-6.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=94,126 bars=13 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.31 L=2.23 C=2.27 V=61,300 | EMA9=2.25 VWAP=2.37 (-4.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.7x avg_vol=93,410 bars=14 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.30 L=2.27 C=2.30 V=59,758 | EMA9=2.26 VWAP=2.37 (-3.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.7x avg_vol=90,046 bars=15 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.33 L=2.27 C=2.33 V=70,110 | EMA9=2.26 VWAP=2.37 (-1.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.8x avg_vol=88,129 bars=16 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.33 H=2.36 L=2.28 C=2.30 V=133,400 | EMA9=2.28 VWAP=2.37 (-2.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.5x avg_vol=86,356 bars=17 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.31 L=2.28 C=2.30 V=41,174 | EMA9=2.28 VWAP=2.37 (-2.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=85,400 bars=18 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.33 L=2.28 C=2.33 V=28,670 | EMA9=2.29 VWAP=2.36 (-1.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=88,067 bars=19 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.33 H=2.37 L=2.33 C=2.35 V=100,042 | EMA9=2.29 VWAP=2.36 (-0.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.2x avg_vol=85,599 bars=20 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.35 H=2.36 L=2.32 C=2.36 V=34,710 | EMA9=2.30 VWAP=2.36 (-0.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=82,753 bars=21 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.36 H=2.38 L=2.30 C=2.31 V=140,523 | EMA9=2.32 VWAP=2.36 (-2.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.7x avg_vol=83,576 bars=22 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.31 H=2.35 L=2.30 C=2.35 V=40,030 | EMA9=2.31 VWAP=2.36 (-0.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=81,355 bars=23 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.35 H=2.43 L=2.34 C=2.40 V=201,328 | EMA9=2.32 VWAP=2.36 (+1.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=2.4x avg_vol=83,927 bars=24 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.40 H=2.41 L=2.32 C=2.34 V=116,174 | EMA9=2.34 VWAP=2.36 (-0.9%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.4x avg_vol=82,098 bars=25 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.35 H=2.35 L=2.32 C=2.33 V=57,730 | EMA9=2.34 VWAP=2.36 (-1.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.7x avg_vol=86,867 bars=26 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.33 H=2.34 L=2.28 C=2.31 V=81,560 | EMA9=2.34 VWAP=2.36 (-2.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.9x avg_vol=87,995 bars=27 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.32 L=2.28 C=2.29 V=25,252 | EMA9=2.33 VWAP=2.36 (-3.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=86,874 bars=28 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.30 L=2.27 C=2.29 V=39,848 | EMA9=2.32 VWAP=2.36 (-3.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=86,684 bars=29 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.31 L=2.26 C=2.27 V=35,218 | EMA9=2.32 VWAP=2.36 (-3.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=84,566 bars=30 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.28 L=2.25 C=2.27 V=62,787 | EMA9=2.31 VWAP=2.36 (-3.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.8x avg_vol=83,075 bars=31 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.29 L=2.27 C=2.28 V=24,838 | EMA9=2.30 VWAP=2.36 (-3.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=81,531 bars=32 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.29 L=2.27 C=2.28 V=18,814 | EMA9=2.30 VWAP=2.36 (-3.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=80,945 bars=33 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.29 L=2.25 C=2.27 V=38,719 | EMA9=2.29 VWAP=2.36 (-3.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=79,245 bars=34 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.29 L=2.20 C=2.22 V=102,299 | EMA9=2.29 VWAP=2.35 (-5.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.3x avg_vol=77,468 bars=35 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.22 H=2.24 L=2.21 C=2.22 V=49,319 | EMA9=2.28 VWAP=2.35 (-5.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=76,361 bars=36 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.22 H=2.24 L=2.20 C=2.22 V=86,668 | EMA9=2.26 VWAP=2.35 (-5.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.1x avg_vol=77,081 bars=37 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.22 H=2.23 L=2.20 C=2.23 V=24,533 | EMA9=2.26 VWAP=2.35 (-5.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=76,331 bars=38 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.26 L=2.23 C=2.23 V=40,906 | EMA9=2.25 VWAP=2.35 (-4.9%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=76,603 bars=39 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.25 L=2.23 C=2.25 V=17,261 | EMA9=2.25 VWAP=2.34 (-4.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=75,268 bars=40 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.26 L=2.24 C=2.25 V=20,880 | EMA9=2.25 VWAP=2.34 (-4.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=74,409 bars=41 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.25 L=2.21 C=2.23 V=24,551 | EMA9=2.25 VWAP=2.34 (-4.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=73,015 bars=42 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.24 L=2.22 C=2.24 V=6,647 | EMA9=2.24 VWAP=2.34 (-4.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.1x avg_vol=71,774 bars=43 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.29 L=2.23 C=2.27 V=56,568 | EMA9=2.24 VWAP=2.34 (-3.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.8x avg_vol=70,675 bars=44 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.26 C=2.27 V=21,311 | EMA9=2.25 VWAP=2.34 (-3.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=69,220 bars=45 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.29 L=2.27 C=2.28 V=19,005 | EMA9=2.25 VWAP=2.34 (-2.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=68,939 bars=46 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.29 L=2.27 C=2.27 V=11,663 | EMA9=2.26 VWAP=2.34 (-2.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=67,904 bars=47 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.28 L=2.26 C=2.27 V=11,973 | EMA9=2.26 VWAP=2.34 (-3.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=66,863 bars=48 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.27 L=2.24 C=2.25 V=18,570 | EMA9=2.26 VWAP=2.34 (-3.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=65,713 bars=49 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.26 L=2.23 C=2.24 V=10,084 | EMA9=2.26 VWAP=2.34 (-4.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=64,616 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.24 H=2.29 L=2.24 C=2.28 V=11,874 | EMA9=2.26 VWAP=2.34 (-2.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=64,956 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.32 L=2.27 C=2.28 V=39,264 | EMA9=2.26 VWAP=2.34 (-2.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=64,966 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.30 L=2.27 C=2.29 V=21,308 | EMA9=2.27 VWAP=2.34 (-2.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=64,763 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.31 L=2.29 C=2.30 V=17,134 | EMA9=2.27 VWAP=2.34 (-1.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=64,430 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.30 H=2.30 L=2.27 C=2.28 V=22,933 | EMA9=2.28 VWAP=2.34 (-2.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=62,596 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.29 L=2.27 C=2.27 V=7,288 | EMA9=2.28 VWAP=2.34 (-2.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.1x avg_vol=59,719 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.24 C=2.24 V=18,590 | EMA9=2.28 VWAP=2.34 (-4.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=54,724 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.27 L=2.24 C=2.26 V=21,797 | EMA9=2.27 VWAP=2.34 (-3.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=52,725 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.28 L=2.26 C=2.27 V=12,607 | EMA9=2.27 VWAP=2.34 (-2.9%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=50,970 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.24 C=2.25 V=20,090 | EMA9=2.27 VWAP=2.34 (-3.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=49,520 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.25 L=2.23 C=2.23 V=18,654 | EMA9=2.26 VWAP=2.34 (-4.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=47,946 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.24 L=2.22 C=2.24 V=12,767 | EMA9=2.26 VWAP=2.34 (-4.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=46,086 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.25 L=2.23 C=2.24 V=10,761 | EMA9=2.25 VWAP=2.34 (-4.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=44,736 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.24 H=2.24 L=2.22 C=2.22 V=24,224 | EMA9=2.25 VWAP=2.34 (-5.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=44,052 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.23 H=2.24 L=2.22 C=2.23 V=12,403 | EMA9=2.24 VWAP=2.34 (-4.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.3x avg_vol=43,020 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.24 H=2.24 L=2.22 C=2.23 V=7,343 | EMA9=2.24 VWAP=2.34 (-4.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=42,295 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.24 H=2.27 L=2.23 C=2.27 V=18,556 | EMA9=2.24 VWAP=2.34 (-3.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=41,117 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.28 L=2.26 C=2.27 V=25,349 | EMA9=2.24 VWAP=2.33 (-2.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.7x avg_vol=38,545 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.25 C=2.25 V=15,820 | EMA9=2.25 VWAP=2.33 (-3.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=38,083 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.25 H=2.28 L=2.25 C=2.27 V=21,171 | EMA9=2.25 VWAP=2.33 (-2.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=38,015 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.31 L=2.27 C=2.30 V=50,765 | EMA9=2.25 VWAP=2.33 (-1.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.4x avg_vol=36,297 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.30 L=2.26 C=2.28 V=17,726 | EMA9=2.26 VWAP=2.33 (-2.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=36,020 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.28 L=2.26 C=2.28 V=25,644 | EMA9=2.27 VWAP=2.33 (-2.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.8x avg_vol=34,188 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.25 C=2.27 V=18,587 | EMA9=2.27 VWAP=2.33 (-2.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=33,733 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.28 L=2.26 C=2.26 V=6,466 | EMA9=2.27 VWAP=2.33 (-3.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=30,148 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.29 L=2.26 C=2.29 V=13,230 | EMA9=2.27 VWAP=2.33 (-1.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.5x avg_vol=28,156 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.29 L=2.27 C=2.28 V=10,498 | EMA9=2.27 VWAP=2.33 (-2.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.4x avg_vol=27,110 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.29 L=2.27 C=2.27 V=19,782 | EMA9=2.27 VWAP=2.33 (-2.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.8x avg_vol=25,716 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.28 L=2.24 C=2.26 V=34,366 | EMA9=2.27 VWAP=2.33 (-3.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.4x avg_vol=25,415 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.27 H=2.27 L=2.26 C=2.26 V=14,162 | EMA9=2.27 VWAP=2.33 (-3.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=25,005 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.28 L=2.26 C=2.27 V=15,711 | EMA9=2.27 VWAP=2.33 (-2.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.6x avg_vol=24,988 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.28 L=2.27 C=2.27 V=5,847 | EMA9=2.27 VWAP=2.33 (-2.6%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=23,995 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.28 L=2.26 C=2.26 V=5,881 | EMA9=2.27 VWAP=2.33 (-3.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.2x avg_vol=23,809 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.26 H=2.29 L=2.25 C=2.28 V=26,078 | EMA9=2.27 VWAP=2.33 (-2.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.1x avg_vol=23,544 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.29 H=2.29 L=2.28 C=2.29 V=19,518 | EMA9=2.27 VWAP=2.33 (-1.7%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=0.9x avg_vol=22,874 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.28 H=2.35 L=2.28 C=2.32 V=136,553 | EMA9=2.27 VWAP=2.33 (-0.5%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=6.4x avg_vol=21,319 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.32 H=2.35 L=2.30 C=2.34 V=72,792 | EMA9=2.28 VWAP=2.33 (+0.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=3.5x avg_vol=20,710 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.34 H=2.37 L=2.31 C=2.36 V=144,695 | EMA9=2.29 VWAP=2.33 (+1.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=6.9x avg_vol=21,113 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.36 H=2.44 L=2.36 C=2.41 V=241,768 | EMA9=2.31 VWAP=2.33 (+3.2%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=10.9x avg_vol=22,098 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW SQ | SQ_PRIMED: vol=10.3x avg, bar_vol=241,768, price=$2.4100 above VWAP ($2.3346)
+[07:05 ET] ELPW CHART | O=2.40 H=2.41 L=2.37 C=2.40 V=97,396 | EMA9=2.33 VWAP=2.34 (+2.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=4.1x avg_vol=23,523 bars=50 | sq=PRIMED armed=none
+[07:05 ET] ELPW CHART | O=2.39 H=2.40 L=2.36 C=2.37 V=63,242 | EMA9=2.34 VWAP=2.34 (+1.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=2.5x avg_vol=25,607 bars=50 | sq=PRIMED armed=none
+[07:05 ET] ELPW CHART | O=2.37 H=2.37 L=2.33 C=2.33 V=63,910 | EMA9=2.35 VWAP=2.34 (-0.3%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=2.4x avg_vol=27,169 bars=50 | sq=PRIMED armed=none
+[07:05 ET] ELPW SQ | SQ_RESET: vwap_lost (close=2.3300 < vwap=2.3365)
+[07:05 ET] ELPW CHART | O=2.33 H=2.37 L=2.32 C=2.36 V=61,604 | EMA9=2.34 VWAP=2.34 (+1.0%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=2.2x avg_vol=27,958 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.37 H=2.38 L=2.34 C=2.34 V=31,890 | EMA9=2.35 VWAP=2.34 (+0.1%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=1.1x avg_vol=29,127 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.35 H=2.35 L=2.30 C=2.31 V=57,686 | EMA9=2.35 VWAP=2.34 (-1.4%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=2.0x avg_vol=29,230 bars=50 | sq=IDLE armed=none
+[07:05 ET] ELPW CHART | O=2.31 H=2.32 L=2.21 C=2.22 V=141,026 | EMA9=2.34 VWAP=2.33 (-4.9%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=4.8x avg_vol=29,445 bars=50 | sq=IDLE armed=none
+🔥 Seeded ELPW: 51401 ticks → 50 bars, EMA=2.3142 (1028 ticks/bar avg)
+✅ Subscribed: ELPW
+[07:05 ET] ELPW CHART | O=2.22 H=2.22 L=2.13 C=2.15 V=125,718 | EMA9=2.31 VWAP=2.33 (-7.8%) HOD=2.67 PM_H=2.67 | MACD=N/A vol_ratio=4.2x avg_vol=30,235 bars=50 | sq=IDLE armed=none
+[07:05 ET] HCAI CHART | O=9.95 H=9.95 L=9.95 C=9.95 V=200 | EMA9=none VWAP=9.91 (+0.4%) HOD=9.95 PM_H=9.95 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+  Tick cache: ELPW → +51,490 ticks (total 52,149)
+  Tick cache: HCAI → +17 ticks (total 21)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-22/
+  Tick cache: ELPW → +72 ticks (total 52,221)
+  Tick cache: HCAI → +65 ticks (total 86)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-22/
+  Tick cache: ELPW → +88 ticks (total 52,309)
+  Tick cache: HCAI → +127 ticks (total 213)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-22/
+  Tick cache: HCAI → +203 ticks (total 416)
+  Tick cache: ELPW → +82 ticks (total 52,391)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-04-22/
+  [SEED] HCAI: 50612 ticks so far, jumping to recent 90min for full context
+[07:07 ET] HCAI SQ | SQ_PRIMED: vol=15.7x avg, bar_vol=68,890, price=$11.4400 above VWAP ($9.8733)
+  ARMED entry=11.0200 stop=10.9000 R=0.1200 score=10.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+🔥 Seeded HCAI: 51621 ticks → 49 bars, EMA=10.8792, ARMED (1053 ticks/bar avg)
+✅ Subscribed: HCAI
+  Tick cache: HCAI → +51,743 ticks (total 52,159)
+  Tick cache: ELPW → +97 ticks (total 52,488)
+  Tick cache: DCX → +51 ticks (total 56)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-22/
+  Tick cache: DCX → +273 ticks (total 329)
+  Tick cache: ELPW → +122 ticks (total 52,610)
+  Tick cache: HCAI → +88 ticks (total 52,247)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-22/
+IBKR ERROR 2105: HMDS data farm connection is broken:ushmds (reqId=-1, symbol=?)
+IBKR ERROR 2103: Market data farm connection is broken:usfarm (reqId=-1, symbol=?)
+⚠️ IBKR ERROR 2106: HMDS data farm connection is OK:ushmds (symbol=?)
+⚠️ IBKR ERROR 2104: Market data farm connection is OK:usfarm (symbol=?)
+Error 10197, reqId 2396: No market data during competing live session, contract: Stock(conId=872439889, symbol='HCAI', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='HCAI', tradingClass='SCM')
+⚠️ IBKR ERROR 10197: No market data during competing live session (symbol=HCAI)
+  >> Competing session detected! Re-subscribing all active symbols...
+  Re-sub failed for HCAI: This event loop is already running
+  Re-sub failed for ELPW: This event loop is already running
+  >> Re-subscription complete for 2 symbols
+Error 10197, reqId 2448: No market data during competing live session, contract: Stock(conId=847905947, symbol='DCX', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='DCX', tradingClass='SCM')
+⚠️ IBKR ERROR 10197: No market data during competing live session (symbol=DCX)
+  >> Competing session detected! Re-subscribing all active symbols...
+cancelMktData: No reqId found for contract Stock(conId=872439889, symbol='HCAI', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='HCAI', tradingClass='SCM')
+  Re-sub failed for HCAI: This event loop is already running
+cancelMktData: No reqId found for contract Stock(conId=862912901, symbol='ELPW', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='ELPW', tradingClass='SCM')
+  Re-sub failed for ELPW: This event loop is already running
+  >> Re-subscription complete for 2 symbols
+Error 10197, reqId 2344: No market data during competing live session
+⚠️ IBKR ERROR 10197: No market data during competing live session (symbol=?)
+  >> Competing session detected! Re-subscribing all active symbols...
+cancelMktData: No reqId found for contract Stock(conId=872439889, symbol='HCAI', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='HCAI', tradingClass='SCM')
+  Re-sub failed for HCAI: This event loop is already running
+cancelMktData: No reqId found for contract Stock(conId=862912901, symbol='ELPW', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='ELPW', tradingClass='SCM')
+  Re-sub failed for ELPW: This event loop is already running
+  >> Re-subscription complete for 2 symbols
+Error 10197, reqId 2448: No market data during competing live session, contract: Stock(conId=847905947, symbol='DCX', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='DCX', tradingClass='SCM')
+⚠️ IBKR ERROR 10197: No market data during competing live session (symbol=DCX)
+  >> Competing session detected! Re-subscribing all active symbols...
+cancelMktData: No reqId found for contract Stock(conId=872439889, symbol='HCAI', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='HCAI', tradingClass='SCM')
+  Re-sub failed for HCAI: This event loop is already running
+cancelMktData: No reqId found for contract Stock(conId=862912901, symbol='ELPW', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='ELPW', tradingClass='SCM')
+  Re-sub failed for ELPW: This event loop is already running
+  >> Re-subscription complete for 2 symbols
+  Tick cache: DCX → +74 ticks (total 403)
+  Tick cache: ELPW → +26 ticks (total 52,636)
+  Tick cache: HCAI → +6 ticks (total 52,253)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-04-22/
+Error 10197, reqId 2448: No market data during competing live session, contract: Stock(conId=847905947, symbol='DCX', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='DCX', tradingClass='SCM')
+⚠️ IBKR ERROR 10197: No market data during competing live session (symbol=DCX)
+  >> Competing session detected! Re-subscribing all active symbols...
+cancelMktData: No reqId found for contract Stock(conId=872439889, symbol='HCAI', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='HCAI', tradingClass='SCM')
+  Re-sub failed for HCAI: This event loop is already running
+cancelMktData: No reqId found for contract Stock(conId=862912901, symbol='ELPW', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='ELPW', tradingClass='SCM')
+  Re-sub failed for ELPW: This event loop is already running
+  >> Re-subscription complete for 2 symbols
+
+💀 WATCHDOG: main thread frozen for 128s — exiting hard for restart.
+ALERT: bot_v3_hybrid.py died at Wed Apr 22 05:11:05 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-22_daily.log.
+=== Shutting down at Wed Apr 22 05:11:05 MDT 2026 ===
+Pushing logs...

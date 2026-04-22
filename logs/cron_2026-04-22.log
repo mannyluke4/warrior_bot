@@ -242,3 +242,9 @@ Waiting for IB Gateway on port 4002...
 +==============================================================================[0m
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Wed Apr 22 05:02:35 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 71722 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 7805b1d] auto: v3 daily logs 2026-04-22
+ 4 files changed, 25877 insertions(+)
+ create mode 100644 logs/2026-04-22_scanner.log
+ create mode 100644 logs/keep_alive_2026-04-22.log
+=== Cleanup complete: Wed Apr 22 05:02:37 MDT 2026 ===
