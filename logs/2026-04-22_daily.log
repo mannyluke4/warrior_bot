@@ -875,3 +875,7 @@ cancelMktData: No reqId found for contract Stock(conId=862912901, symbol='ELPW',
 ALERT: bot_v3_hybrid.py died at Wed Apr 22 05:11:05 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-04-22_daily.log.
 === Shutting down at Wed Apr 22 05:11:05 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration 5b4fc33] auto: v3 daily logs 2026-04-22
+ 3 files changed, 25576 insertions(+)
+=== V3 Hybrid daily run complete: Wed Apr 22 05:11:12 MDT 2026 ===
+=== TRAP: cleanup at Wed Apr 22 05:11:12 MDT 2026 ===
