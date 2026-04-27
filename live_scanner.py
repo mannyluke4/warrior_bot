@@ -314,7 +314,7 @@ class LiveScanner:
             # Insert symbology so to_df() maps instrument IDs to ticker symbols
             symbology_json = data.request_symbology(client)
             data.insert_symbology_json(symbology_json)
-            df = data.to_df(pretty_px=True)
+            df = data.to_df()
 
             if "symbol" not in df.columns:
                 self.log.warning("      'symbol' column missing from df — check symbology insertion")
