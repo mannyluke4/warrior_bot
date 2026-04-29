@@ -35,6 +35,7 @@ trap cleanup EXIT
 BOT_PID=""
 SCANNER_PID=""
 GW_WATCHDOG_PID=""
+CAFFEINE_PID=""   # init early so cleanup trap can reference safely under set -u
 
 # ── Step 0: Wake the display (no osascript, no keystroke) ────────────
 # Per DIRECTIVE_AUTOSTART_PERMANENT_FIX.md (2026-04-28):
@@ -53,8 +54,13 @@ echo "Display wake (caffeinate -u) sent"
 sleep 5  # let display actually wake
 
 # Verify wake worked. ioreg DevicePowerState: 4=on, 1=dim, 0=off.
+# `|| true` defends against pipefail: on a headless Mac mini there may be
+# no IODisplayWrangler at all, so grep returns 1 and the pipeline would
+# blow up under `set -eo pipefail` before CAFFEINE_PID is initialized.
+# 2026-04-29 fix — first cron run failed at this exact step.
 DISPLAY_STATE=$(ioreg -n IODisplayWrangler -r -d 1 2>/dev/null \
-    | grep -i "DevicePowerState" | awk '{print $NF}' | head -1)
+    | grep -i "DevicePowerState" | awk '{print $NF}' | head -1 || true)
+DISPLAY_STATE="${DISPLAY_STATE:-unknown}"
 if [ "$DISPLAY_STATE" = "4" ]; then
     echo "Display ACTIVE (DevicePowerState=4)"
 elif [ "$DISPLAY_STATE" = "1" ] || [ "$DISPLAY_STATE" = "0" ]; then
@@ -62,7 +68,9 @@ elif [ "$DISPLAY_STATE" = "1" ] || [ "$DISPLAY_STATE" = "0" ]; then
     caffeinate -u -t 30 &
     sleep 5
 else
-    echo "Display state: ${DISPLAY_STATE:-unknown}"
+    # No display detected (headless) or unknown state — caffeinate -u still
+    # keeps the system awake even without a physical display.
+    echo "Display state: $DISPLAY_STATE (continuing — caffeinate keeps system awake regardless)"
 fi
 
 # Persistent caffeinate for the entire session — keeps display + system
