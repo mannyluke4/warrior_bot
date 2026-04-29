@@ -7,7 +7,7 @@ set -euo pipefail
 LOG_DIR=~/warrior_bot_v2/logs
 TODAY=$(date +%Y-%m-%d)
 LOG_FILE="$LOG_DIR/${TODAY}_daily.log"
-IBKR_PORT=4001  # Gateway live (re-live 2026-04-22 — TradingView session conflict with paper)
+IBKR_PORT=4002  # Gateway paper (2026-04-28 — back to paper, no TV conflict per Manny)
 mkdir -p "$LOG_DIR"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
@@ -36,50 +36,40 @@ BOT_PID=""
 SCANNER_PID=""
 GW_WATCHDOG_PID=""
 
-# ── Step 0: Wake the screen and ensure active desktop ────────────────
-# IB Gateway needs a display context. Wake the Mac, unlock if needed.
-echo "=== Waking screen and ensuring active desktop ==="
+# ── Step 0: Wake the display (no osascript, no keystroke) ────────────
+# Per DIRECTIVE_AUTOSTART_PERMANENT_FIX.md (2026-04-28):
+# osascript keystroke unlock fails silently when run from cron because
+# cron has no GUI session / WindowServer connection. Replaced with
+# caffeinate -u (acts as if user is active) which works headless.
+# Lock screen disabled in System Settings (Layer 1) and auto-login
+# enabled (Layer 2) handle the lock-state side; this script just wakes
+# the display and pins it awake for the session.
+echo "=== Waking screen ==="
 
-# 1. Force wake the display
-caffeinate -u -t 30 &
-WAKE_PID=$!
-echo "Display wake signal sent"
-sleep 3
+# caffeinate -u: simulate user activity → wakes display, prevents sleep.
+# -t 60: hold for 60s, long enough for the rest of startup.
+caffeinate -u -t 60 &
+echo "Display wake (caffeinate -u) sent"
+sleep 5  # let display actually wake
 
-# 2. Send escape key + click to dismiss screensaver/lock screen
-# Requires: System Settings → Privacy & Security → Accessibility → add cron/bash/osascript
-osascript -e 'tell application "System Events" to key code 53' 2>/dev/null || true
-sleep 2
-
-# 3. Type password to unlock (password in ~/.mac_unlock_pw, chmod 600)
-if [ -f ~/.mac_unlock_pw ]; then
-    MAC_PW=$(cat ~/.mac_unlock_pw)
-    osascript -e "tell application \"System Events\"
-        keystroke \"${MAC_PW}\"
-        delay 1
-        keystroke return
-    end tell" 2>/dev/null || echo "WARN: keystroke failed — check Accessibility permissions"
+# Verify wake worked. ioreg DevicePowerState: 4=on, 1=dim, 0=off.
+DISPLAY_STATE=$(ioreg -n IODisplayWrangler -r -d 1 2>/dev/null \
+    | grep -i "DevicePowerState" | awk '{print $NF}' | head -1)
+if [ "$DISPLAY_STATE" = "4" ]; then
+    echo "Display ACTIVE (DevicePowerState=4)"
+elif [ "$DISPLAY_STATE" = "1" ] || [ "$DISPLAY_STATE" = "0" ]; then
+    echo "WARN: Display still in sleep state ($DISPLAY_STATE) — retrying wake"
+    caffeinate -u -t 30 &
+    sleep 5
 else
-    echo "WARN: ~/.mac_unlock_pw not found"
-    echo "  Create: echo 'yourpassword' > ~/.mac_unlock_pw && chmod 600 ~/.mac_unlock_pw"
+    echo "Display state: ${DISPLAY_STATE:-unknown}"
 fi
 
-echo "Waiting 10s for desktop session..."
-sleep 10
-
-# 4. Verify display is active
-if osascript -e 'tell application "Finder" to activate' 2>/dev/null; then
-    echo "Desktop session: ACTIVE"
-else
-    echo "WARN: Desktop may not be active — Gateway might fail"
-fi
-
-kill $WAKE_PID 2>/dev/null || true
-
-# Keep Mac awake for the entire trading session
+# Persistent caffeinate for the entire session — keeps display + system
+# awake until this shell exits. Linked to $$ so it dies with the script.
 caffeinate -dims -w $$ &
 CAFFEINE_PID=$!
-echo "caffeinate started (PID: $CAFFEINE_PID)"
+echo "Persistent caffeinate started (PID: $CAFFEINE_PID)"
 
 echo "=== V3 Hybrid daily run started: $(date) ==="
 
