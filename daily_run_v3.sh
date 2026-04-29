@@ -107,25 +107,36 @@ python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetect
 # 4. Kill any stale Gateway/TWS/Java/bot before starting fresh
 echo "Killing stale processes..."
 pkill -9 -f "bot_ibkr.py" 2>/dev/null || true
-pkill -9 -f "java.*ibgateway" 2>/dev/null || true
-pkill -9 -f "java.*IBGateway" 2>/dev/null || true
-pkill -9 -f "java.*tws" 2>/dev/null || true
-pkill -9 -f "java.*Jts" 2>/dev/null || true
-pkill -9 -f "java.*ibc" 2>/dev/null || true
-pkill -9 -f "java.*IBC" 2>/dev/null || true
-sleep 5
-# Verify Java is truly dead (IBC uses pgrep to check)
-if pgrep -f "java.*config.ini" > /dev/null 2>&1; then
-    echo "WARNING: Java still alive, force killing all java..."
-    pkill -9 -f "java" 2>/dev/null || true
-    sleep 3
+# 5. Reuse existing gateway if it's already authenticated. The pkill-and-
+# restart pattern caused 2 AM cron failures: IBKR's server-side session
+# from yesterday's gateway didn't clear in 5s after hard-kill, blocking
+# the fresh login. If port $IBKR_PORT is already listening, the gateway
+# is healthy — skip kill+restart entirely. New gateway only spawned when
+# port is genuinely down.
+if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2>/dev/null; then
+    echo "Gateway already up on port $IBKR_PORT — reusing existing session (no kill/restart)"
+    IBC_PID=""
+else
+    echo "Gateway port $IBKR_PORT down — killing stale java and starting fresh..."
+    pkill -9 -f "java.*ibgateway" 2>/dev/null || true
+    pkill -9 -f "java.*IBGateway" 2>/dev/null || true
+    pkill -9 -f "java.*tws" 2>/dev/null || true
+    pkill -9 -f "java.*Jts" 2>/dev/null || true
+    pkill -9 -f "java.*ibc" 2>/dev/null || true
+    pkill -9 -f "java.*IBC" 2>/dev/null || true
+    # 30s gives IBKR's server-side session time to clear after hard-kill,
+    # avoiding "session already active" rejections on the fresh login.
+    sleep 30
+    if pgrep -f "java.*config.ini" > /dev/null 2>&1; then
+        echo "WARNING: Java still alive, force killing all java..."
+        pkill -9 -f "java" 2>/dev/null || true
+        sleep 3
+    fi
+    echo "All stale processes cleared."
+    echo "Starting IB Gateway via IBC..."
+    ~/ibc/gatewaystartmacos.sh -inline &
+    IBC_PID=$!
 fi
-echo "All stale processes cleared."
-
-# 5. Start IB Gateway via IBC (headless — no GUI, no AppleScript dependency)
-echo "Starting IB Gateway via IBC..."
-~/ibc/gatewaystartmacos.sh -inline &
-IBC_PID=$!
 
 # Wait for Gateway to open port 4002
 # IBC + Gateway login takes ~3 minutes typically. Allow up to 6 minutes.
