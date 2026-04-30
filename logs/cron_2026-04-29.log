@@ -108,3 +108,25 @@ Waiting for IB Gateway on port 4002...
   attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Wed Apr 29 08:22:21 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 82033 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration b050f39] auto: v3 daily logs 2026-04-29
+ 8 files changed, 612 insertions(+)
+ create mode 100644 logs/2026-04-29_daily.log
+ create mode 100644 logs/cron_2026-04-29.log
+ create mode 100644 logs/gateway_2026-04-27.log
+ create mode 100644 logs/gateway_2026-04-28_1447.log
+ create mode 100644 logs/gateway_paper_2026-04-28_1526.log
+ create mode 100644 logs/gateway_paper_clean_204100.log
+ create mode 100644 logs/keep_alive_2026-04-28.log
+=== Cleanup complete: Wed Apr 29 08:22:23 MDT 2026 ===
+/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 75: 82090 Killed: 9               "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
