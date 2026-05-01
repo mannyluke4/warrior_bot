@@ -1,0 +1,32 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 8409)
+=== V3 Hybrid daily run started: Fri May  1 02:00:06 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 48dd060 (auto: v3 daily logs 2026-04-30)
+daily_run_v3.sh hash: ea169dca6cc3f491da6722d1caca28ac6cf7ab9a
+bot_v3_hybrid.py hash: 4f7f3166520d1eabebe38f9fbdebe58975c79077
+sntp: clock_settime: Operation not permitted
++0.031969 +/- 0.057919 time.apple.com 2620:149:a23:3000::1f2
+NTP sync skipped (non-root)
+System time: Fri May  1 08:00:07 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 8438)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 8447)
+Bot health check passed (still running after 15s, PID: 8447)
+HEALTH_OK: Bot connected at 2026-05-01 08:00:31 UTC
+Gateway watchdog started (PID: 8452)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri May  1 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+=== TRAP: cleanup at Fri May  1 10:21:09 MDT 2026 ===

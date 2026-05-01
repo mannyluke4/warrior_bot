@@ -1,0 +1,39 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: WTO  |  Date: 2026-05-01  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Building WTO bars from tick cache for 2026-05-01...
+  Total bars: 203  |  Seed: 17  |  Sim: 186
+  Seed complete: EMA9=2.2259
+  Loaded 95,385 ticks from cache (tick_cache//2026-05-01/WTO.json.gz)
+  Tick replay: 74160 trades for sim window
+  SIM_START: crossed sim_start — 0 pre-sim ticks used for seeding only
+  [07:03] SQ_REJECT: not_new_hod (bar_high=$2.4800 < HOD=$2.8123)
+  [07:07] SQ_REJECT: not_new_hod (bar_high=$2.5000 < HOD=$2.8123)
+  [07:08] SQ_PRIMED: vol=22.3x avg, bar_vol=856,591, price=$2.8500 above VWAP ($2.4360)
+  [07:14] ARMED entry=3.0200 stop=2.9000 R=0.1200 score=5.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;[PARABOLIC]
+  [07:15] SQ_ENTRY: 3.0400 stop=2.9000 R=0.1400 qty=3571 score=5.0 setup_type=squeeze
+  [07:17] V2_SQ_TARGET_HIT @ 3.2700
+
+======================================================================
+  BACKTEST REPORT: WTO -- 2026-05-01 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 74160 sim + 17 seed  |  EMA9=2.2842  VWAP=2.4852
+======================================================================
+
+    #    TIME    ENTRY     STOP       R  SCORE     EXIT  REASON                     P&L  R-MULT  XTIME
+  ───  ──────  ───────  ───────  ──────  ─────  ───────  ────────────────────  ────────  ──────  ─────
+    1   07:15   3.0400   2.9000  0.1400    5.0   3.2700  sq_target_hit_exit_full      +739    +1.5R  07:17
+
+  ──────────────────────────────────────────────────────────────────
+  SUMMARY
+  ──────────────────────────────────────────────────────────────────
+  Trades: 1  |  Wins: 1  |  Losses: 0  |  Win Rate: 100.0%
+  Gross P&L: $+739  |  Avg R-Multiple: +0.7R
+  Largest Win: $+739  |  Largest Loss: $+0
+  Armed: 1  |  Signals: 1  |  Entered: 1
+======================================================================
+
