@@ -1,0 +1,13 @@
+YTD Backtest: 1 dates (2026-04-30 → 2026-04-30)
+  Squeeze: ON  (MP forced OFF)
+  Short:   OFF
+  Filters: gap=5.0-500.0% price=$2.0-$20.0 float<20.0M rvol>1.5x pmvol>30,000
+  Compounding: start=$10,000  bp_pct=50%×4×eq  notional_cap=none
+
+[1/1] 2026-04-30 (15 syms) | SQ: 0t $+0   | eq=$10,000 (cap=$20,000) | YTD SQ=$+0 SH=$+0 Combined=$+0
+
+======================================================================
+SQUEEZE: 0 trades, 0W/0L (0% WR), $+0
+COMBINED: $+0
+EQUITY:   $10,000 → $10,000 (+0.0%)
+======================================================================

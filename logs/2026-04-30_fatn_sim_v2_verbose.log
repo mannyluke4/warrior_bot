@@ -1,0 +1,57 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FATN  |  Date: 2026-04-30  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Building FATN bars from tick cache for 2026-04-30...
+  Total bars: 895  |  Seed: 560  |  Sim: 335
+  Seed complete: EMA9=2.9918
+  Loaded 239,685 ticks from cache (tick_cache//2026-04-30/FATN.json.gz)
+  Tick replay: 193244 trades for sim window
+  SIM_START: crossed sim_start — 0 pre-sim ticks used for seeding only
+  [07:06] 1M IMPULSE detected
+  [07:16] 1M PULLBACK 1/3
+  QUALITY_GATE symbol=FATN gate=no_reentry result=PASS losses=0/1 trades=0/2
+  [07:21] 1M NO_ARM exhaustion: vol_ratio=0.01 (min 0.4) recent=1900 earlier=141939.0
+  [07:26] 1M IMPULSE detected
+  [07:31] 1M RESET (extended: 6 green candles)
+  [07:36] 1M RESET (extended: 7 green candles)
+  [07:41] 1M RESET (extended: 8 green candles)
+  [07:46] 1M RESET (extended: 9 green candles)
+  [07:51] 1M RESET (extended: 10 green candles)
+  [07:56] 1M RESET (extended: 11 green candles)
+  [08:01] 1M RESET (extended: 12 green candles)
+  [08:03] 1M IMPULSE detected
+  [07:00] 1M RESET (lost VWAP)
+  [07:05] SQ_REJECT: not_new_hod (bar_high=$3.1200 < HOD=$3.6800)
+  [07:06] SQ_REJECT: not_new_hod (bar_high=$3.2500 < HOD=$3.6800)
+  [07:07] SQ_REJECT: not_new_hod (bar_high=$3.4400 < HOD=$3.6800)
+  [07:12] SQ_REJECT: not_new_hod (bar_high=$3.2600 < HOD=$3.6800)
+  [07:14] SQ_REJECT: not_new_hod (bar_high=$3.2650 < HOD=$3.6800)
+  [07:17] SQ_REJECT: not_new_hod (bar_high=$3.2500 < HOD=$3.6800)
+  [09:08] 1M IMPULSE detected
+  [09:09] 1M RESET (topping wicky)
+  [09:11] 1M IMPULSE detected
+  [09:12] 1M RESET (trend down, range=10.7%)
+  [09:34] SQ_REJECT: not_new_hod (bar_high=$3.5300 < HOD=$3.7300)
+  [09:37] SQ_REJECT: not_new_hod (bar_high=$3.6600 < HOD=$3.7300)
+  [07:07] SQ_PRIMED: vol=34.9x avg, bar_vol=562,113, price=$3.4199 above VWAP ($3.2540)
+  [07:08] SQ_RESET: vwap_lost (close=3.2000 < vwap=3.2571)
+  [07:14] SQ_REJECT: not_new_hod (bar_high=$3.2650 < HOD=$3.5400)
+  [07:14] 1M IMPULSE detected
+  [07:15] 1M RESET (lost VWAP)
+  [07:06] SQ_REJECT: not_new_hod (bar_high=$3.2500 < HOD=$3.5400)
+  [07:07] SQ_REJECT: not_new_hod (bar_high=$3.4400 < HOD=$3.5400)
+
+======================================================================
+  BACKTEST REPORT: FATN -- 2026-04-30 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 193244 sim + 560 seed  |  EMA9=2.9253  VWAP=3.2363
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================

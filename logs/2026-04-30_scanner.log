@@ -38894,3 +38894,42 @@
 07:30:02  stopping live client
 07:30:02  Done.
 07:30:02  connection closed
+10:46:22  Live Scanner starting — 2026-04-30 
+10:46:22  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+10:46:22  Initialized Historical(gateway=https://hist.databento.com)
+10:46:22        Requesting OHLCV from 2026-04-01 to 2026-04-29...
+10:46:31        12,647 symbols with avg daily volume
+10:46:31        12,647 symbols with prev close loaded
+10:46:31  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+10:46:31  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-04-30 04:00:00-04:00 snapshot=False
+10:46:31  connecting to remote gateway
+10:46:32  authenticated session_id='1777966402'
+10:46:32  adding user callback on_event
+10:46:32  starting live client
+10:46:32        Stream started, replaying from 04:00 ET...
+10:46:32  [7_14] No candidates to write.
+10:46:32  [FINAL] No candidates to write.
+10:46:32  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+10:46:32  stopping live client
+10:46:32  Done.
+10:46:32  connection closed
+11:06:57  Live Scanner starting — 2026-04-30 
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+11:06:57  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+11:06:57  Initialized Historical(gateway=https://hist.databento.com)
+11:06:57        Requesting OHLCV from 2026-04-01 to 2026-04-29...
+11:07:14        12,647 symbols with avg daily volume
+11:07:14        12,647 symbols with prev close loaded
+11:07:14  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+11:07:14  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-04-30 04:00:00-04:00 snapshot=False
+11:07:14  connecting to remote gateway
+11:07:15  authenticated session_id='1777969838'
+11:07:15  adding user callback on_event
+11:07:15  starting live client
+11:07:15        Stream started, replaying from 04:00 ET...
+11:07:15  [7_14] No candidates to write.
+11:07:15  [FINAL] No candidates to write.
+11:07:15  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+11:07:15  stopping live client
+11:07:15  Done.
+11:07:15  connection closed

@@ -1,0 +1,25 @@
+
+======================================================================
+  WARRIOR BOT BACKTESTER (TICK MODE)
+  Symbols: FATN  |  Date: 2026-04-30  |  Window: 07:00 -> 12:00 ET
+======================================================================
+
+Building FATN bars from tick cache for 2026-04-30...
+  Total bars: 895  |  Seed: 560  |  Sim: 335
+  Seed complete: EMA9=2.9918
+  Loaded 239,637 ticks from cache (tick_cache//2026-04-30/FATN.json.gz)
+  Tick replay: 193244 trades for sim window
+  SIM_START: crossed sim_start — 0 pre-sim ticks used for seeding only
+  QUALITY_GATE symbol=FATN gate=no_reentry result=PASS losses=0/1 trades=0/2
+
+======================================================================
+  BACKTEST REPORT: FATN -- 2026-04-30 (07:00 -> 12:00 ET)
+======================================================================
+  Settings: risk=$1000  min_score=3.0  MACD_gate=ON  slippage=$0.02  exit=signal  cooldown=2/10m  L2=OFF [TICK mode]
+  Bars: 193244 sim + 560 seed  |  EMA9=2.9253  VWAP=3.2363
+======================================================================
+
+  No trades taken.
+
+  Armed: 0  |  Signals: 0
+======================================================================
