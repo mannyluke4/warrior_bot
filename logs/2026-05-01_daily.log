@@ -9490,3 +9490,459 @@ IBKR ERROR 162: Historical Market Data Service error message:API scanner subscri
   Momentum P&L: $+0
 ============================================================
 === TRAP: cleanup at Fri May  1 10:21:09 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  8409 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  8452 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 189c437] auto: v3 daily logs 2026-05-01
+ 8 files changed, 47584 insertions(+)
+ create mode 100644 logs/2026-04-16_myse_sim_v2.log
+ create mode 100644 logs/2026-04-16_myse_sim_v2_REFETCH.log
+ create mode 100644 logs/2026-05-01_daily.log
+ create mode 100644 logs/2026-05-01_scanner.log
+ create mode 100644 logs/2026-05-01_wto_sim.log
+ create mode 100644 logs/cron_2026-05-01.log
+ create mode 100644 logs/myse_refetch.log
+=== Cleanup complete: Fri May  1 10:21:11 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 12716)
+=== V3 Hybrid daily run started: Fri May  1 10:21:17 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 189c437 (auto: v3 daily logs 2026-05-01)
+daily_run_v3.sh hash: b7c61b86a57a2638fd133973f5f74adb  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: da18ae42beb8337819b5d1401fc22e86  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+sntp: clock_settime: Operation not permitted
++0.029073 +/- 0.056732 time.apple.com 2620:149:a23:3000::1f2
+NTP sync skipped (non-root)
+System time: Fri May  1 16:21:18 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 12744)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 12746)
+BOOT: would RESUME (reason=marker_present) but WB_SESSION_RESUME_ENABLED=0 — forcing COLD
+BOOT: COLD start (reason=resume_gate_off)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: IBKR
+  Position sync: No open positions at broker. Clean start.
+Account equity: $29,518
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 12:21:27 ET (first scan — casting wide net)...
+Error 162, reqId 7532: Historical Market Data Service error message:API scanner subscription cancelled: 7532
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 7532 (reqId=7532, symbol=?)
+Error 162, reqId 7533: Historical Market Data Service error message:API scanner subscription cancelled: 7533
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 7533 (reqId=7533, symbol=?)
+  Catchup: 53 unique symbols from 3 scanners
+    Catchup: processing 1/53 — AAL...
+Error 162, reqId 7534: Historical Market Data Service error message:API scanner subscription cancelled: 7534
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 7534 (reqId=7534, symbol=?)
+    Catchup: processing 2/53 — ACCO...
+    Catchup: processing 3/53 — AGH...
+    Catchup: processing 4/53 — AIRS...
+    Catchup: processing 5/53 — ANIK...
+    Catchup: processing 6/53 — APXT...
+    Catchup: processing 7/53 — ATOM...
+  [FMP] APXT: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+Bot health check passed (still running after 15s, PID: 12746)
+HEALTH_OK: Bot connected at 2026-05-01 16:21:41 UTC
+Gateway watchdog started (PID: 12758)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri May  1 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 8/53 — AWF...
+    Catchup: processing 9/53 — BAFN...
+  [FMP] AWF: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 10/53 — BITO...
+    Catchup: processing 11/53 — BMNU...
+    Catchup: processing 12/53 — BOOM...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 13/53 — CERS...
+    Catchup: processing 14/53 — CMU...
+    Catchup: processing 15/53 — CVM...
+    Catchup: processing 16/53 — CXH...
+    Catchup: processing 17/53 — DDFD...
+  Tick cache: AAL → +2 ticks (total 2)
+  Tick cache: ACCO → +1 ticks (total 20)
+  Tick cache: AGH → +2 ticks (total 60)
+  Tick cache: AIRS → +2 ticks (total 49)
+  Tick cache: ANIK → +1 ticks (total 76)
+  Tick cache: APXT → +2 ticks (total 2)
+  Tick cache: ATOM → +2 ticks (total 74)
+  Tick cache: AWF → +1 ticks (total 1)
+  Tick cache: BAFN → +2 ticks (total 2)
+  Tick cache: BITO → +1 ticks (total 4)
+  Tick cache: BMNU → +2 ticks (total 2)
+  Tick cache: BOOM → +2 ticks (total 81)
+  Tick cache: CERS → +2 ticks (total 120)
+  Tick cache: CMU → +2 ticks (total 2)
+  Tick cache: CVM → +2 ticks (total 2)
+  Tick cache: CXH → +2 ticks (total 2)
+  Tick cache: DDFD → +2 ticks (total 2)
+📦 Tick cache saved: 17 symbols → tick_cache/2026-05-01/
+    Catchup: processing 18/53 — DDFJ...
+    Catchup: processing 19/53 — DFII...
+    Catchup: processing 20/53 — DRCT...
+  [FMP] DFII: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 21/53 — EGHT...
+    Catchup: processing 22/53 — ESPR...
+    Catchup: processing 23/53 — EUDA...
+    Catchup: processing 24/53 — F...
+    Catchup: processing 25/53 — GRAB...
+    Catchup: processing 26/53 — GVH...
+    Catchup: processing 27/53 — ISPC...
+    Catchup: processing 28/53 — JBLU...
+    Catchup: processing 29/53 — LABT...
+    Catchup: processing 30/53 — LWLG...
+    Catchup: processing 31/53 — MARA...
+    Catchup: processing 32/53 — NBIG...
+    Catchup: processing 33/53 — NIO...
+    Catchup: processing 34/53 — NOK...
+    Catchup: processing 35/53 — NVD...
+    Catchup: processing 36/53 — OIO...
+  Tick cache: DDFJ → +1 ticks (total 1)
+  Tick cache: DFII → +2 ticks (total 2)
+  Tick cache: DRCT → +2 ticks (total 31)
+  Tick cache: EGHT → +2 ticks (total 96)
+  Tick cache: ESPR → +2 ticks (total 124)
+  Tick cache: EUDA → +2 ticks (total 35)
+  Tick cache: F → +2 ticks (total 2)
+  Tick cache: GRAB → +2 ticks (total 2)
+  Tick cache: GVH → +2 ticks (total 24)
+  Tick cache: ISPC → +2 ticks (total 179)
+  Tick cache: JBLU → +2 ticks (total 2)
+  Tick cache: LABT → +2 ticks (total 104)
+  Tick cache: LWLG → +2 ticks (total 109)
+  Tick cache: MARA → +2 ticks (total 2)
+  Tick cache: NBIG → +1 ticks (total 50)
+  Tick cache: NIO → +2 ticks (total 2)
+  Tick cache: NOK → +2 ticks (total 62)
+  Tick cache: NVD → +2 ticks (total 2)
+  Tick cache: OIO → +2 ticks (total 49)
+📦 Tick cache saved: 19 symbols → tick_cache/2026-05-01/
+    Catchup: processing 37/53 — OWL...
+    Catchup: processing 38/53 — PN...
+    Catchup: processing 39/53 — RBLU...
+    Catchup: processing 40/53 — SCO...
+  [FMP] RBLU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 41/53 — SENS...
+    Catchup: processing 42/53 — SOFI...
+    Catchup: processing 43/53 — SOXS...
+    Catchup: processing 44/53 — SPDN...
+    Catchup: processing 45/53 — SST...
+    Catchup: processing 46/53 — TSLG...
+    Catchup: processing 47/53 — TSLL...
+  [FMP] TSLG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 48/53 — TZA...
+    Catchup: processing 49/53 — UONE...
+    Catchup: processing 50/53 — WENN...
+    Catchup: processing 51/53 — WTO...
+  [FMP] WENN: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 52/53 — YCY...
+    Catchup: processing 53/53 — ZETX...
+  [FMP] YCY: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [EDGAR] YCY: 11.86M shares outstanding
+  Catchup: 7 candidates after filters
+  [FMP] ZETX: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Tick cache: OWL → +2 ticks (total 24)
+  Tick cache: PN → +2 ticks (total 25)
+  Tick cache: RBLU → +2 ticks (total 2)
+  Tick cache: SCO → +2 ticks (total 2)
+  Tick cache: SENS → +3 ticks (total 3)
+  Tick cache: SOFI → +2 ticks (total 5)
+  Tick cache: SOXS → +2 ticks (total 71)
+  Tick cache: SPDN → +1 ticks (total 1)
+  Tick cache: SST → +2 ticks (total 202)
+  Tick cache: TSLG → +1 ticks (total 1)
+  Tick cache: TSLL → +2 ticks (total 2)
+  Tick cache: TZA → +1 ticks (total 1)
+  Tick cache: UONE → +2 ticks (total 2)
+  Tick cache: WENN → +2 ticks (total 2)
+  Tick cache: WTO → +2 ticks (total 113,129)
+  Tick cache: YCY → +2 ticks (total 2)
+  Tick cache: ZETX → +2 ticks (total 2)
+  Tick cache: LABT → +7 ticks (total 111)
+📦 Tick cache saved: 18 symbols → tick_cache/2026-05-01/
+  Tick cache: LABT → +63 ticks (total 174)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-05-01/
+  Tick cache: LABT → +117 ticks (total 291)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-05-01/
+  [SEED] LABT: 50561 ticks so far, jumping to recent 90min for full context
+  Tick cache: LABT → +60 ticks (total 351)
+📦 Tick cache saved: 1 symbols → tick_cache/2026-05-01/
+[12:24 ET] LABT SQ | SQ_PRIMED: vol=2546.4x avg, bar_vol=180,965, price=$3.3531 above VWAP ($3.3378)
+  ARMED entry=3.0200 stop=2.9400 R=0.0800 score=10.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;[PARABOLIC]
+  [LABT] SQ_SEED_STALE_RESET: dropped arm @ $3.0200 (stop $2.9400) — current price $3.2700 is 8.3% above trigger (threshold 2.0%)
+🔥 Seeded LABT: 51563 ticks → 50 bars, EMA=3.3602 (1031 ticks/bar avg)
+✅ Subscribed: LABT
+  Tick cache: LABT → +51,619 ticks (total 51,970)
+  Tick cache: WTO → +28 ticks (total 113,157)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-05-01/
+[12:25 ET] LABT CHART | O=3.56 H=3.57 L=3.56 C=3.57 V=6,407 | EMA9=3.34 VWAP=3.96 (-9.9%) HOD=4.69 PM_H=4.69 | MACD=N/A vol_ratio=17.8x avg_vol=359 bars=50 | sq=IDLE armed=none
+[12:25 ET] WTO CHART | O=2.29 H=2.29 L=2.28 C=2.28 V=10,580 | EMA9=2.30 VWAP=2.28 (-0.0%) HOD=2.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=1 | sq=IDLE armed=none
+  Tick cache: LABT → +60 ticks (total 52,030)
+  Tick cache: WTO → +10 ticks (total 113,167)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-05-01/
+  Tick cache: LABT → +53 ticks (total 52,083)
+  Tick cache: WTO → +38 ticks (total 113,205)
+📦 Tick cache saved: 2 symbols → tick_cache/2026-05-01/
+  [SEED] WTO: 50831 ticks so far, jumping to recent 90min for full context
+[12:26 ET] WTO SQ | SQ_REJECT: not_new_hod (bar_high=$2.7100 < HOD=$2.8123)
+[12:26 ET] WTO SQ | SQ_REJECT: not_new_hod (bar_high=$2.4800 < HOD=$2.8123)
+[12:26 ET] WTO SQ | SQ_REJECT: not_new_hod (bar_high=$2.5000 < HOD=$2.8123)
+[12:26 ET] WTO SQ | SQ_PRIMED: vol=12.2x avg, bar_vol=856,591, price=$2.8500 above VWAP ($2.4483)
+[12:26 ET] WTO SQ | SQ_RESET: vwap_lost (close=2.1100 < vwap=2.4515)
+🔥 Seeded WTO: 51846 ticks → 38 bars, EMA=2.2048 (1364 ticks/bar avg)
+✅ Subscribed: WTO
+  Tick cache: LABT → +51 ticks (total 52,134)
+  Tick cache: WTO → +51,855 ticks (total 165,060)
+  Tick cache: SST → +5 ticks (total 207)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-05-01/
+  Tick cache: LABT → +58 ticks (total 52,192)
+  Tick cache: WTO → +25 ticks (total 165,085)
+  Tick cache: SST → +13 ticks (total 220)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-05-01/
+  Tick cache: SST → +13 ticks (total 233)
+  Tick cache: WTO → +12 ticks (total 165,097)
+  Tick cache: LABT → +44 ticks (total 52,236)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-05-01/
+  Tick cache: SST → +17 ticks (total 250)
+  Tick cache: WTO → +6 ticks (total 165,103)
+  Tick cache: LABT → +80 ticks (total 52,316)
+📦 Tick cache saved: 3 symbols → tick_cache/2026-05-01/
+  [SEED] SST: 50060 ticks so far, jumping to recent 90min for full context
+[12:28 ET] SST SQ | SQ_PRIMED: vol=17.8x avg, bar_vol=66,209, price=$4.4650 above VWAP ($4.4187)
+[12:28 ET] SST SQ | SQ_RESET: vwap_lost (close=4.2500 < vwap=4.4229)
+[12:28 ET] SST SQ | SQ_PRIMED: vol=11.9x avg, bar_vol=104,310, price=$4.8200 above VWAP ($4.5841)
+[12:28 ET] SST SQ | ARMED entry=5.0200 stop=4.9000 R=0.1200 score=11.0 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+5.0;vwap_dist=+1.0(11%);[PARABOLIC]
+🔥 Seeded SST: 51061 ticks → 50 bars, EMA=4.1088, ARMED (1021 ticks/bar avg)
+✅ Subscribed: SST
+  Tick cache: LABT → +81 ticks (total 52,397)
+  Tick cache: SST → +51,087 ticks (total 51,337)
+  Tick cache: WTO → +14 ticks (total 165,117)
+  Tick cache: ISPC → +15 ticks (total 194)
+📦 Tick cache saved: 4 symbols → tick_cache/2026-05-01/
+  Tick cache: LABT → +85 ticks (total 52,482)
+  Tick cache: ISPC → +58 ticks (total 252)
+  Tick cache: WTO → +8 ticks (total 165,125)
+  Tick cache: SST → +14 ticks (total 51,351)
+📦 Tick cache saved: 4 symbols → tick_cache/2026-05-01/
+  Tick cache: SST → +20 ticks (total 51,371)
+  Tick cache: LABT → +129 ticks (total 52,611)
+  Tick cache: ISPC → +83 ticks (total 335)
+  Tick cache: WTO → +27 ticks (total 165,152)
+📦 Tick cache saved: 4 symbols → tick_cache/2026-05-01/
+[12:30 ET] ISPC CHART | O=5.40 H=5.44 L=5.30 C=5.44 V=32,703 | EMA9=5.74 VWAP=5.40 (+0.8%) HOD=5.82 PM_H=-inf | MACD=N/A vol_ratio=163.5x avg_vol=200 bars=2 | sq=IDLE armed=none
+[12:30 ET] LABT CHART | O=3.53 H=3.54 L=3.48 C=3.50 V=56,542 | EMA9=3.48 VWAP=3.95 (-11.4%) HOD=4.69 PM_H=4.69 | MACD=N/A vol_ratio=98.3x avg_vol=575 bars=50 | sq=IDLE armed=none
+  Tick cache: ISPC → +66 ticks (total 401)
+  Tick cache: LABT → +58 ticks (total 52,669)
+[12:30 ET] WTO CHART | O=2.29 H=2.29 L=2.26 C=2.26 V=4,150 | EMA9=2.23 VWAP=2.44 (-7.4%) HOD=3.00 PM_H=3.00 | MACD=N/A vol_ratio=0.1x avg_vol=59,162 bars=42 | sq=IDLE armed=none
+  Tick cache: WTO → +9 ticks (total 165,161)
+  Tick cache: SST → +19 ticks (total 51,390)
+📦 Tick cache saved: 4 symbols → tick_cache/2026-05-01/
+[12:30 ET] SST CHART | O=3.97 H=3.98 L=3.95 C=3.95 V=7,755 | EMA9=4.07 VWAP=4.83 (-18.3%) HOD=5.48 PM_H=5.48 | MACD=N/A vol_ratio=0.3x avg_vol=29,352 bars=50 | sq=ARMED armed=$5.02
+  [SEED] ISPC: 50874 ticks so far, jumping to recent 90min for full context
+[12:30 ET] ISPC CHART | O=5.44 H=5.48 L=5.43 C=5.43 V=14,916 | EMA9=5.68 VWAP=5.41 (+0.4%) HOD=6.10 PM_H=6.10 | MACD=N/A vol_ratio=24.9x avg_vol=600 bars=3 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.10 H=6.12 L=5.58 C=6.12 V=42,846 | EMA9=5.63 VWAP=5.60 (+9.3%) HOD=6.12 PM_H=6.12 | MACD=N/A vol_ratio=30.6x avg_vol=1,400 bars=4 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=5.74 H=6.24 L=5.67 C=6.01 V=16,777 | EMA9=5.73 VWAP=5.67 (+6.0%) HOD=6.24 PM_H=6.24 | MACD=N/A vol_ratio=6.0x avg_vol=2,800 bars=5 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.02 H=6.29 L=5.92 C=6.25 V=7,300 | EMA9=5.78 VWAP=5.70 (+9.7%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=1.4x avg_vol=5,040 bars=6 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.19 H=6.29 L=6.00 C=6.09 V=12,657 | EMA9=5.88 VWAP=5.74 (+6.2%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=1.8x avg_vol=6,996 bars=7 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.09 H=6.10 L=5.90 C=5.91 V=7,448 | EMA9=5.92 VWAP=5.75 (+2.8%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=1.1x avg_vol=7,040 bars=8 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=5.90 H=6.09 L=5.50 C=6.06 V=7,088 | EMA9=5.92 VWAP=5.76 (+5.2%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.9x avg_vol=7,742 bars=9 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.01 H=6.10 L=6.01 C=6.02 V=3,802 | EMA9=5.95 VWAP=5.77 (+4.4%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.5x avg_vol=7,709 bars=10 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.02 H=6.09 L=5.92 C=6.07 V=3,279 | EMA9=5.96 VWAP=5.77 (+5.1%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.4x avg_vol=7,647 bars=11 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.04 H=6.06 L=5.91 C=5.91 V=3,132 | EMA9=5.98 VWAP=5.78 (+2.2%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.4x avg_vol=7,297 bars=12 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=5.97 H=5.99 L=5.86 C=5.91 V=5,537 | EMA9=5.97 VWAP=5.78 (+2.2%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.8x avg_vol=6,963 bars=13 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=5.93 H=6.11 L=5.93 C=6.10 V=3,923 | EMA9=5.96 VWAP=5.79 (+5.4%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.6x avg_vol=6,668 bars=14 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.10 H=6.11 L=6.02 C=6.04 V=1,995 | EMA9=5.98 VWAP=5.79 (+4.3%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.3x avg_vol=6,587 bars=15 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.04 H=6.10 L=6.01 C=6.06 V=2,212 | EMA9=6.00 VWAP=5.80 (+4.6%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.3x avg_vol=6,410 bars=16 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.06 H=6.09 L=6.04 C=6.09 V=728 | EMA9=6.01 VWAP=5.80 (+5.1%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.1x avg_vol=6,134 bars=17 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.11 H=6.26 L=6.09 C=6.23 V=3,628 | EMA9=6.02 VWAP=5.80 (+7.4%) HOD=6.29 PM_H=6.29 | MACD=N/A vol_ratio=0.6x avg_vol=5,903 bars=18 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.23 H=6.75 L=6.23 C=6.57 V=51,902 | EMA9=6.07 VWAP=5.98 (+9.9%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=9.2x avg_vol=5,615 bars=19 | sq=IDLE armed=none
+[12:30 ET] ISPC SQ | SQ_PRIMED: vol=9.4x avg, bar_vol=51,902, price=$6.5700 above VWAP ($5.9800)
+[12:30 ET] ISPC CHART | O=6.59 H=6.68 L=6.41 C=6.57 V=44,411 | EMA9=6.17 VWAP=6.07 (+8.2%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=8.1x avg_vol=5,511 bars=20 | sq=PRIMED armed=none
+[12:30 ET] ISPC CHART | O=6.56 H=6.61 L=6.32 C=6.37 V=30,919 | EMA9=6.25 VWAP=6.11 (+4.3%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=4.7x avg_vol=6,613 bars=21 | sq=PRIMED armed=none
+[12:30 ET] ISPC CHART | O=6.35 H=6.48 L=6.32 C=6.44 V=11,469 | EMA9=6.27 VWAP=6.12 (+5.3%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=1.5x avg_vol=7,873 bars=22 | sq=PRIMED armed=none
+[12:30 ET] ISPC CHART | O=6.40 H=6.50 L=6.31 C=6.44 V=10,016 | EMA9=6.31 VWAP=6.13 (+5.1%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=1.1x avg_vol=8,920 bars=23 | sq=PRIMED armed=none
+[12:30 ET] ISPC SQ | SQ_RESET: prime_expired (4 bars elapsed)
+[12:30 ET] ISPC CHART | O=6.43 H=6.49 L=6.33 C=6.36 V=9,053 | EMA9=6.33 VWAP=6.14 (+3.7%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=1.0x avg_vol=9,031 bars=24 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.34 H=6.43 L=6.32 C=6.39 V=6,642 | EMA9=6.34 VWAP=6.14 (+4.1%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=0.7x avg_vol=9,072 bars=25 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.39 H=6.47 L=6.34 C=6.44 V=8,837 | EMA9=6.35 VWAP=6.15 (+4.8%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=1.0x avg_vol=9,071 bars=26 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.40 H=6.44 L=6.22 C=6.24 V=17,842 | EMA9=6.37 VWAP=6.15 (+1.4%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=2.0x avg_vol=8,978 bars=27 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.24 H=6.44 L=6.24 C=6.39 V=4,429 | EMA9=6.34 VWAP=6.16 (+3.8%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=0.5x avg_vol=8,973 bars=28 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.38 H=6.52 L=6.33 C=6.49 V=7,062 | EMA9=6.35 VWAP=6.16 (+5.3%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=0.8x avg_vol=9,289 bars=29 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.48 H=6.74 L=6.39 C=6.72 V=22,654 | EMA9=6.38 VWAP=6.19 (+8.6%) HOD=6.75 PM_H=6.75 | MACD=N/A vol_ratio=2.5x avg_vol=9,122 bars=30 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.69 H=6.88 L=6.61 C=6.65 V=57,961 | EMA9=6.45 VWAP=6.26 (+6.3%) HOD=6.88 PM_H=6.88 | MACD=N/A vol_ratio=6.4x avg_vol=9,053 bars=31 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.65 H=6.75 L=6.57 C=6.60 V=32,420 | EMA9=6.49 VWAP=6.29 (+5.0%) HOD=6.88 PM_H=6.88 | MACD=N/A vol_ratio=3.4x avg_vol=9,492 bars=32 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.61 H=6.83 L=6.57 C=6.81 V=29,780 | EMA9=6.51 VWAP=6.31 (+7.9%) HOD=6.88 PM_H=6.88 | MACD=N/A vol_ratio=2.8x avg_vol=10,678 bars=33 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.79 H=6.99 L=6.70 C=6.88 V=54,868 | EMA9=6.57 VWAP=6.36 (+8.1%) HOD=6.99 PM_H=6.99 | MACD=N/A vol_ratio=4.8x avg_vol=11,337 bars=34 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.85 H=7.12 L=6.81 C=7.00 V=83,101 | EMA9=6.63 VWAP=6.44 (+8.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=7.0x avg_vol=11,880 bars=35 | sq=IDLE armed=none
+[12:30 ET] ISPC SQ | SQ_PRIMED: vol=6.3x avg, bar_vol=83,101, price=$6.9986 above VWAP ($6.4409)
+  ARMED entry=7.0200 stop=6.9000 R=0.1200 score=9.8 level=whole_dollar setup_type=squeeze [PARABOLIC] [PROBE=50%] why=squeeze: base=5.0;vol_extra=+3.8;vwap_dist=+1.0(9%);[PARABOLIC]
+[12:30 ET] ISPC CHART | O=6.99 H=6.99 L=6.78 C=6.84 V=69,605 | EMA9=6.71 VWAP=6.48 (+5.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=5.3x avg_vol=13,108 bars=36 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.85 H=6.86 L=6.72 C=6.83 V=59,903 | EMA9=6.73 VWAP=6.51 (+5.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=4.1x avg_vol=14,564 bars=37 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.79 H=6.83 L=6.67 C=6.70 V=45,561 | EMA9=6.75 VWAP=6.52 (+2.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.8x avg_vol=16,052 bars=38 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.71 H=6.83 L=6.66 C=6.77 V=26,524 | EMA9=6.74 VWAP=6.52 (+3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.5x avg_vol=17,206 bars=39 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.77 H=6.81 L=6.65 C=6.70 V=15,357 | EMA9=6.75 VWAP=6.53 (+2.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.9x avg_vol=17,933 bars=40 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.71 H=6.75 L=6.64 C=6.64 V=13,895 | EMA9=6.74 VWAP=6.53 (+1.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=18,148 bars=41 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.65 H=6.74 L=6.62 C=6.65 V=25,415 | EMA9=6.72 VWAP=6.53 (+1.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.4x avg_vol=18,080 bars=42 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.65 H=6.79 L=6.63 C=6.74 V=18,896 | EMA9=6.70 VWAP=6.54 (+3.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.1x avg_vol=17,980 bars=43 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.74 H=6.83 L=6.70 C=6.77 V=40,572 | EMA9=6.71 VWAP=6.55 (+3.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.2x avg_vol=18,153 bars=44 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.77 H=6.83 L=6.53 C=6.55 V=53,466 | EMA9=6.72 VWAP=6.55 (-0.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.9x avg_vol=18,170 bars=45 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.55 H=6.61 L=6.45 C=6.49 V=41,067 | EMA9=6.69 VWAP=6.55 (-1.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.2x avg_vol=18,668 bars=46 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.49 H=6.53 L=6.40 C=6.43 V=34,631 | EMA9=6.65 VWAP=6.55 (-1.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.8x avg_vol=19,424 bars=47 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.43 H=6.49 L=6.36 C=6.41 V=35,299 | EMA9=6.61 VWAP=6.55 (-2.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.8x avg_vol=19,885 bars=48 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.40 H=6.46 L=6.27 C=6.32 V=45,074 | EMA9=6.57 VWAP=6.54 (-3.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.2x avg_vol=20,192 bars=49 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.31 H=6.36 L=6.27 C=6.33 V=27,614 | EMA9=6.52 VWAP=6.53 (-3.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.3x avg_vol=20,500 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.35 H=6.39 L=6.23 C=6.25 V=20,933 | EMA9=6.48 VWAP=6.53 (-4.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.0x avg_vol=21,416 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.25 H=6.31 L=6.24 C=6.29 V=14,523 | EMA9=6.43 VWAP=6.53 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.7x avg_vol=21,959 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.32 L=6.19 C=6.23 V=21,788 | EMA9=6.40 VWAP=6.52 (-4.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.0x avg_vol=22,325 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.29 L=6.18 C=6.24 V=26,236 | EMA9=6.37 VWAP=6.52 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.2x avg_vol=22,479 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.31 L=6.21 C=6.21 V=10,965 | EMA9=6.34 VWAP=6.51 (-4.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=22,638 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.26 L=6.20 C=6.23 V=10,496 | EMA9=6.32 VWAP=6.51 (-4.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=22,831 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.33 L=6.22 C=6.27 V=7,882 | EMA9=6.30 VWAP=6.51 (-3.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=22,905 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.33 L=6.21 C=6.22 V=20,288 | EMA9=6.29 VWAP=6.51 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.9x avg_vol=22,861 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.21 H=6.26 L=6.13 C=6.14 V=20,133 | EMA9=6.28 VWAP=6.50 (-5.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.9x avg_vol=22,870 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.15 H=6.21 L=6.14 C=6.18 V=10,928 | EMA9=6.25 VWAP=6.50 (-4.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=23,139 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.19 H=6.20 L=6.16 C=6.19 V=6,833 | EMA9=6.24 VWAP=6.50 (-4.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,473 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.19 H=6.26 L=6.19 C=6.24 V=6,417 | EMA9=6.23 VWAP=6.50 (-3.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,629 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.24 H=6.27 L=6.20 C=6.21 V=7,843 | EMA9=6.23 VWAP=6.49 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,704 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.21 H=6.26 L=6.19 C=6.24 V=7,268 | EMA9=6.23 VWAP=6.49 (-3.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,722 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.25 L=6.20 C=6.22 V=5,248 | EMA9=6.23 VWAP=6.49 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=23,802 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.29 L=6.20 C=6.24 V=11,741 | EMA9=6.23 VWAP=6.49 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=23,910 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.24 H=6.27 L=6.20 C=6.24 V=8,267 | EMA9=6.23 VWAP=6.49 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,972 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.27 L=6.18 C=6.18 V=5,661 | EMA9=6.23 VWAP=6.49 (-4.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=24,197 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.18 H=6.20 L=6.14 C=6.17 V=7,774 | EMA9=6.22 VWAP=6.49 (-4.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=24,291 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.18 H=6.18 L=6.07 C=6.13 V=18,712 | EMA9=6.21 VWAP=6.48 (-5.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=23,845 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.13 H=6.17 L=6.11 C=6.13 V=5,924 | EMA9=6.19 VWAP=6.48 (-5.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=23,328 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.13 H=6.21 L=6.11 C=6.21 V=12,154 | EMA9=6.18 VWAP=6.48 (-4.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=23,079 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.26 L=6.20 C=6.23 V=6,812 | EMA9=6.19 VWAP=6.48 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=22,966 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.21 H=6.22 L=6.21 C=6.22 V=2,472 | EMA9=6.20 VWAP=6.48 (-4.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=23,010 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.21 H=6.23 L=6.15 C=6.19 V=3,479 | EMA9=6.20 VWAP=6.47 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=22,964 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.17 H=6.22 L=6.11 C=6.14 V=2,307 | EMA9=6.20 VWAP=6.47 (-5.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=22,879 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.13 H=6.20 L=6.12 C=6.18 V=1,369 | EMA9=6.19 VWAP=6.47 (-4.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=22,770 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.18 H=6.24 L=6.16 C=6.24 V=4,004 | EMA9=6.19 VWAP=6.47 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=22,453 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.29 L=6.23 C=6.27 V=6,684 | EMA9=6.20 VWAP=6.47 (-3.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=22,390 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.27 H=6.27 L=6.24 C=6.26 V=4,909 | EMA9=6.21 VWAP=6.47 (-3.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=22,328 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.26 H=6.27 L=6.23 C=6.27 V=2,064 | EMA9=6.22 VWAP=6.47 (-3.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=22,002 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.26 H=6.27 L=6.23 C=6.24 V=2,983 | EMA9=6.23 VWAP=6.47 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=21,133 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.24 H=6.25 L=6.20 C=6.20 V=2,648 | EMA9=6.23 VWAP=6.47 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=20,514 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.23 L=6.20 C=6.21 V=2,408 | EMA9=6.23 VWAP=6.47 (-4.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=19,967 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.23 L=6.16 C=6.20 V=3,840 | EMA9=6.22 VWAP=6.47 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=18,901 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.18 H=6.22 L=6.16 C=6.16 V=3,605 | EMA9=6.22 VWAP=6.47 (-4.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=17,613 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.17 H=6.21 L=6.13 C=6.15 V=3,871 | EMA9=6.21 VWAP=6.47 (-4.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=16,271 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.14 H=6.20 L=6.10 C=6.10 V=9,227 | EMA9=6.20 VWAP=6.47 (-5.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.6x avg_vol=15,122 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.11 H=6.15 L=6.09 C=6.13 V=8,799 | EMA9=6.18 VWAP=6.46 (-5.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.6x avg_vol=14,271 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.10 H=6.25 L=6.10 C=6.18 V=2,530 | EMA9=6.17 VWAP=6.46 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=13,918 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.25 H=6.25 L=6.18 C=6.21 V=5,621 | EMA9=6.17 VWAP=6.46 (-3.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=13,784 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.25 L=6.18 C=6.23 V=4,582 | EMA9=6.18 VWAP=6.46 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=13,552 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.19 H=6.20 L=6.19 C=6.19 V=2,053 | EMA9=6.19 VWAP=6.46 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=13,148 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.20 L=6.19 C=6.19 V=646 | EMA9=6.19 VWAP=6.46 (-4.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=12,856 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.20 L=6.17 C=6.17 V=1,269 | EMA9=6.19 VWAP=6.46 (-4.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=12,070 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.17 H=6.18 L=6.13 C=6.15 V=2,049 | EMA9=6.19 VWAP=6.46 (-4.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=10,992 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.19 H=6.22 L=6.14 C=6.22 V=1,308 | EMA9=6.18 VWAP=6.46 (-3.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=10,180 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.29 L=6.17 C=6.27 V=8,179 | EMA9=6.19 VWAP=6.46 (-2.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.9x avg_vol=9,515 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.26 H=6.29 L=6.24 C=6.27 V=4,026 | EMA9=6.20 VWAP=6.46 (-2.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=8,821 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.25 H=6.30 L=6.25 C=6.28 V=5,879 | EMA9=6.22 VWAP=6.46 (-2.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.7x avg_vol=8,068 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.30 L=6.20 C=6.21 V=6,087 | EMA9=6.23 VWAP=6.46 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=7,587 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.21 H=6.26 L=6.18 C=6.22 V=5,962 | EMA9=6.23 VWAP=6.46 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=7,280 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.24 L=6.18 C=6.21 V=5,433 | EMA9=6.23 VWAP=6.46 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=7,108 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.19 H=6.20 L=6.17 C=6.17 V=946 | EMA9=6.22 VWAP=6.46 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.1x avg_vol=6,785 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.17 H=6.22 L=6.17 C=6.21 V=3,132 | EMA9=6.21 VWAP=6.45 (-3.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=6,360 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.22 L=6.19 C=6.22 V=1,421 | EMA9=6.21 VWAP=6.45 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=6,156 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.22 L=6.19 C=6.19 V=2,061 | EMA9=6.21 VWAP=6.45 (-4.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=6,005 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.18 H=6.19 L=6.17 C=6.17 V=4,246 | EMA9=6.21 VWAP=6.45 (-4.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.7x avg_vol=5,873 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.17 H=6.21 L=6.15 C=6.20 V=6,501 | EMA9=6.20 VWAP=6.45 (-4.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.2x avg_vol=5,501 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.20 H=6.30 L=6.19 C=6.30 V=4,627 | EMA9=6.20 VWAP=6.45 (-2.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.9x avg_vol=5,177 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.30 H=6.36 L=6.28 C=6.35 V=15,203 | EMA9=6.22 VWAP=6.45 (-1.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=3.0x avg_vol=5,087 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.35 H=6.36 L=6.31 C=6.32 V=8,887 | EMA9=6.25 VWAP=6.45 (-2.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.8x avg_vol=5,042 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.31 H=6.50 L=6.31 C=6.49 V=21,176 | EMA9=6.26 VWAP=6.45 (+0.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=4.1x avg_vol=5,221 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.51 H=6.67 L=6.45 C=6.67 V=48,729 | EMA9=6.31 VWAP=6.45 (+3.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=9.3x avg_vol=5,242 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.66 H=6.67 L=6.50 C=6.55 V=37,915 | EMA9=6.38 VWAP=6.46 (+1.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=6.9x avg_vol=5,526 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.56 H=6.67 L=6.46 C=6.66 V=26,794 | EMA9=6.41 VWAP=6.46 (+3.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=4.5x avg_vol=5,987 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.66 H=6.72 L=6.53 C=6.72 V=30,099 | EMA9=6.46 VWAP=6.46 (+4.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=4.7x avg_vol=6,356 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.72 H=6.78 L=6.63 C=6.69 V=54,989 | EMA9=6.51 VWAP=6.47 (+3.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=8.2x avg_vol=6,734 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.65 H=6.69 L=6.50 C=6.55 V=36,521 | EMA9=6.55 VWAP=6.47 (+1.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=5.0x avg_vol=7,233 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.56 H=6.60 L=6.40 C=6.50 V=30,647 | EMA9=6.55 VWAP=6.47 (+0.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=3.9x avg_vol=7,809 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.44 H=6.54 L=6.40 C=6.45 V=14,234 | EMA9=6.54 VWAP=6.47 (-0.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.7x avg_vol=8,173 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.44 H=6.51 L=6.32 C=6.36 V=65,619 | EMA9=6.52 VWAP=6.47 (-1.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=7.6x avg_vol=8,677 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.36 H=6.40 L=6.34 C=6.36 V=19,818 | EMA9=6.49 VWAP=6.47 (-1.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.3x avg_vol=8,720 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.36 H=6.37 L=6.27 C=6.33 V=22,922 | EMA9=6.46 VWAP=6.46 (-2.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=2.4x avg_vol=9,478 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.33 H=6.33 L=6.22 C=6.29 V=30,431 | EMA9=6.44 VWAP=6.46 (-2.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=3.1x avg_vol=9,832 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.33 L=6.28 C=6.29 V=14,063 | EMA9=6.41 VWAP=6.46 (-2.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.4x avg_vol=10,228 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.31 H=6.34 L=6.20 C=6.28 V=33,253 | EMA9=6.38 VWAP=6.46 (-2.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=3.1x avg_vol=10,802 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.31 H=6.31 L=6.24 C=6.25 V=4,101 | EMA9=6.36 VWAP=6.46 (-3.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=11,061 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.29 L=6.22 C=6.24 V=6,943 | EMA9=6.34 VWAP=6.46 (-3.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.6x avg_vol=11,658 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.23 H=6.24 L=6.17 C=6.24 V=15,141 | EMA9=6.32 VWAP=6.46 (-3.3%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.3x avg_vol=11,606 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.33 H=6.39 L=6.33 C=6.38 V=4,918 | EMA9=6.30 VWAP=6.46 (-1.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=11,647 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.34 H=6.39 L=6.28 C=6.30 V=14,065 | EMA9=6.32 VWAP=6.45 (-2.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.2x avg_vol=11,914 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.33 H=6.35 L=6.28 C=6.33 V=9,260 | EMA9=6.32 VWAP=6.45 (-1.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.8x avg_vol=11,954 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.33 L=6.29 C=6.29 V=2,766 | EMA9=6.32 VWAP=6.45 (-2.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.2x avg_vol=12,187 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.27 H=6.33 L=6.27 C=6.31 V=7,527 | EMA9=6.31 VWAP=6.45 (-2.2%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.6x avg_vol=12,326 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.30 L=6.21 C=6.22 V=20,106 | EMA9=6.31 VWAP=6.45 (-3.6%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.6x avg_vol=12,304 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.22 H=6.29 L=6.21 C=6.27 V=6,240 | EMA9=6.29 VWAP=6.45 (-2.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=12,384 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.28 H=6.30 L=6.25 C=6.28 V=4,467 | EMA9=6.29 VWAP=6.45 (-2.7%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=12,716 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.29 H=6.34 L=6.25 C=6.32 V=4,480 | EMA9=6.29 VWAP=6.45 (-2.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=12,655 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.34 H=6.42 L=6.32 C=6.35 V=8,186 | EMA9=6.29 VWAP=6.45 (-1.5%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.7x avg_vol=12,566 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.38 H=6.47 L=6.35 C=6.45 V=15,461 | EMA9=6.30 VWAP=6.45 (+0.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=1.2x avg_vol=12,606 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.45 H=6.47 L=6.40 C=6.40 V=6,837 | EMA9=6.33 VWAP=6.45 (-0.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=12,659 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.40 H=6.44 L=6.38 C=6.40 V=9,162 | EMA9=6.35 VWAP=6.45 (-0.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.7x avg_vol=12,881 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.42 H=6.42 L=6.37 C=6.38 V=3,942 | EMA9=6.36 VWAP=6.45 (-1.1%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.3x avg_vol=12,978 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.39 H=6.39 L=6.35 C=6.36 V=6,134 | EMA9=6.36 VWAP=6.45 (-1.4%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.5x avg_vol=13,152 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.37 H=6.40 L=6.35 C=6.39 V=7,772 | EMA9=6.36 VWAP=6.45 (-0.9%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.6x avg_vol=13,207 bars=50 | sq=ARMED armed=$7.02
+[12:30 ET] ISPC CHART | O=6.40 H=6.42 L=6.38 C=6.40 V=5,772 | EMA9=6.37 VWAP=6.45 (-0.8%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=13,290 bars=50 | sq=ARMED armed=$7.02
+🔥 Seeded ISPC: 51875 ticks → 50 bars, EMA=6.3739, ARMED (1037 ticks/bar avg)
+✅ Subscribed: ISPC
+[12:30 ET] BMNU CHART | O=2.02 H=2.02 L=2.02 C=2.02 V=2,000 | EMA9=none VWAP=2.02 (+0.0%) HOD=2.02 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=IDLE armed=none
+[12:30 ET] ISPC CHART | O=6.39 H=6.45 L=6.39 C=6.45 V=4,776 | EMA9=6.37 VWAP=6.45 (+0.0%) HOD=7.12 PM_H=7.12 | MACD=N/A vol_ratio=0.4x avg_vol=13,422 bars=50 | sq=ARMED armed=$7.02
+  Tick cache: WTO → +3 ticks (total 165,164)
+  Tick cache: ISPC → +51,937 ticks (total 52,338)
+  Tick cache: LABT → +41 ticks (total 52,710)
+  Tick cache: SST → +16 ticks (total 51,406)
+  Tick cache: BMNU → +25 ticks (total 27)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-01/
+  Tick cache: WTO → +9 ticks (total 165,173)
+  Tick cache: LABT → +55 ticks (total 52,765)
+  Tick cache: BMNU → +61 ticks (total 88)
+  Tick cache: SST → +25 ticks (total 51,431)
+  Tick cache: ISPC → +40 ticks (total 52,378)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-01/
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+=== TRAP: cleanup at Fri May  1 10:31:35 MDT 2026 ===

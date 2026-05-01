@@ -37742,3 +37742,22 @@
 07:30:02  stopping live client
 07:30:02  Done.
 07:30:02  connection closed
+10:21:22  Live Scanner starting — 2026-05-01 
+10:21:22  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+10:21:22  Initialized Historical(gateway=https://hist.databento.com)
+10:21:22        Requesting OHLCV from 2026-04-02 to 2026-04-30...
+10:21:32        12,646 symbols with avg daily volume
+10:21:32        12,646 symbols with prev close loaded
+10:21:32  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+10:21:32  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-01 04:00:00-04:00 snapshot=False
+10:21:32  connecting to remote gateway
+10:21:34  authenticated session_id='1778199876'
+10:21:34  adding user callback on_event
+10:21:34  starting live client
+10:21:34        Stream started, replaying from 04:00 ET...
+10:21:34  [7_14] No candidates to write.
+10:21:34  [FINAL] No candidates to write.
+10:21:34  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+10:21:34  stopping live client
+10:21:34  Done.
+10:21:34  connection closed

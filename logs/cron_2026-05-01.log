@@ -30,3 +30,19 @@ Gateway watchdog started (PID: 8452)
 Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri May  1 18:05:00 MDT 2026)...
   Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
 === TRAP: cleanup at Fri May  1 10:21:09 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  8409 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  8452 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 189c437] auto: v3 daily logs 2026-05-01
+ 8 files changed, 47584 insertions(+)
+ create mode 100644 logs/2026-04-16_myse_sim_v2.log
+ create mode 100644 logs/2026-04-16_myse_sim_v2_REFETCH.log
+ create mode 100644 logs/2026-05-01_daily.log
+ create mode 100644 logs/2026-05-01_scanner.log
+ create mode 100644 logs/2026-05-01_wto_sim.log
+ create mode 100644 logs/cron_2026-05-01.log
+ create mode 100644 logs/myse_refetch.log
+=== Cleanup complete: Fri May  1 10:21:11 MDT 2026 ===
