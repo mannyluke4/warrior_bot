@@ -21,6 +21,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
     [ -n "$BOT_PID" ] && kill "$BOT_PID" 2>/dev/null || true
+    [ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
     [ -n "$SCANNER_PID" ] && kill "$SCANNER_PID" 2>/dev/null || true
     [ -n "$GW_WATCHDOG_PID" ] && kill "$GW_WATCHDOG_PID" 2>/dev/null || true
     [ -n "$CAFFEINE_PID" ] && kill "$CAFFEINE_PID" 2>/dev/null || true
@@ -33,6 +34,7 @@ cleanup() {
 trap cleanup EXIT
 
 BOT_PID=""
+SUBBOT_PID=""
 SCANNER_PID=""
 GW_WATCHDOG_PID=""
 CAFFEINE_PID=""   # init early so cleanup trap can reference safely under set -u
@@ -88,6 +90,8 @@ CODE_SHA=$(git rev-parse --short HEAD)
 echo "Code version: $CODE_SHA ($(git log -1 --format='%s'))"
 echo "daily_run_v3.sh hash: $(md5sum ~/warrior_bot_v2/daily_run_v3.sh 2>/dev/null || shasum ~/warrior_bot_v2/daily_run_v3.sh 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
 echo "bot_v3_hybrid.py hash: $(md5sum ~/warrior_bot_v2/bot_v3_hybrid.py 2>/dev/null || shasum ~/warrior_bot_v2/bot_v3_hybrid.py 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
+echo "bot_alpaca_subbot.py hash: $(md5sum ~/warrior_bot_v2/bot_alpaca_subbot.py 2>/dev/null || shasum ~/warrior_bot_v2/bot_alpaca_subbot.py 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
+echo "alpaca_feed.py hash: $(md5sum ~/warrior_bot_v2/alpaca_feed.py 2>/dev/null || shasum ~/warrior_bot_v2/alpaca_feed.py 2>/dev/null | cut -d' ' -f1 || echo 'n/a')"
 
 # 1b. NTP time sync — accurate bar timestamps depend on local clock
 # NTP sync (non-sudo — sudo hangs in cron without a password)
@@ -102,6 +106,10 @@ echo "Pre-flight: checking Python imports..."
 python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetector; from ibkr_scanner import scan_premarket_live; from alpaca.trading.client import TradingClient; print('V3 Imports OK')" || {
     echo "FATAL: Pre-flight import check failed. Aborting."
     exit 1
+}
+# Sub-bot imports — non-fatal if these break, but log loudly so we know.
+python3 -c "from alpaca_feed import AlpacaFeed, Stock; from broker import AlpacaBroker; print('Sub-bot Imports OK')" || {
+    echo "WARN: Sub-bot import check failed — sub-bot will be skipped."
 }
 
 # 4. Kill any stale Gateway/TWS/Java/bot before starting fresh
@@ -160,6 +168,7 @@ fi
 # 6. Kill any stale bot processes
 echo "Cleaning up stale connections..."
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
+pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true
 sleep 2
 
 # 6b. Start Databento live scanner (writes watchlist.txt for the bot)
@@ -185,6 +194,28 @@ if ! kill -0 "$BOT_PID" 2>/dev/null; then
 fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+# 8a. Start the Alpaca sub-bot in parallel (live A/B against IBKR data feed).
+# Reads main bot's session_state/<today>/watchlist.json for symbol selection.
+# Writes its own state to session_state_alpaca/ + tick_cache_alpaca/. Trades
+# on a separate Alpaca paper account; main bot is unaffected.
+# Failure here is NON-fatal — the main bot must keep running even if the
+# sub-bot can't start.
+SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_alpaca.log"
+echo "Starting bot_alpaca_subbot.py (parallel A/B sub-bot)..."
+python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+SUBBOT_PID=$!
+echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
+
+# Sub-bot health check — non-fatal (don't abort the session if it fails).
+sleep 15
+if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+    echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
+    echo "      See $SUBBOT_LOG for details."
+    SUBBOT_PID=""
+else
+    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
+fi
 
 # 8b. Gateway watchdog — detect if Gateway port drops during session
 (
@@ -218,14 +249,21 @@ while true; do
         echo "ALERT: bot_v3_hybrid.py died at $(date)! Session ended early. Check $LOG_FILE."
         break
     fi
+    # Sub-bot is non-critical — log if it dies but keep watching the main bot.
+    if [ -n "$SUBBOT_PID" ] && ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+        echo "WARN: bot_alpaca_subbot.py died at $(date). Main bot continuing alone."
+        SUBBOT_PID=""
+    fi
     sleep 60 || true
 done
 
 # 10. Shut down
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
+[ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
 sleep 5
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
+pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true
 
 # 11. Commit and push logs
 echo "Pushing logs..."

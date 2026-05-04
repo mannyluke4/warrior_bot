@@ -37,6 +37,16 @@ ET = ZoneInfo("America/New_York")
 # Repo root — this module lives at the top level of warrior_bot_v2
 _ROOT = os.path.dirname(os.path.abspath(__file__))
 
+# Session/cache directory names. The main bot uses defaults ("session_state"
+# / "tick_cache"); a parallel bot (e.g. bot_alpaca_subbot.py) sets these env
+# vars at startup to write to isolated directories. Resolved at first call,
+# not import (env may not be loaded yet when this module imports).
+def _session_dir_name() -> str:
+    return os.getenv("WB_SESSION_DIR_NAME", "session_state")
+
+def _tick_cache_dir_name() -> str:
+    return os.getenv("WB_TICK_CACHE_DIR_NAME", "tick_cache")
+
 # Cap closed_trades in risk.json to bound the file size over a day
 CLOSED_TRADES_CAP = 50
 
@@ -65,11 +75,11 @@ def _today_str() -> str:
 
 
 def session_dir(date_str: str | None = None) -> str:
-    return os.path.join(_ROOT, "session_state", date_str or _today_str())
+    return os.path.join(_ROOT, _session_dir_name(), date_str or _today_str())
 
 
 def tick_cache_dir(date_str: str | None = None) -> str:
-    return os.path.join(_ROOT, "tick_cache", date_str or _today_str())
+    return os.path.join(_ROOT, _tick_cache_dir_name(), date_str or _today_str())
 
 
 def _path(name: str, date_str: str | None = None) -> str:
