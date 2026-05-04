@@ -202,8 +202,16 @@ echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 # Failure here is NON-fatal — the main bot must keep running even if the
 # sub-bot can't start.
 SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_alpaca.log"
-echo "Starting bot_alpaca_subbot.py (parallel A/B sub-bot)..."
-python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+# Sub-bot configuration for tomorrow's Phase 1: WB solo on the sub-bot
+# (squeeze stays on the main bot). The sub-bot's own startup forces
+# WB_BROKER=alpaca, IBKR_CLIENT_ID=2, and the *_alpaca state dirs.
+# Strategy gates we override here at launch:
+#   WB_SQUEEZE_ENABLED=0           — sub-bot does not run squeeze (main does)
+#   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB Phase 1 paper validation
+# To change tomorrow's split, edit these two lines.
+echo "Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)..."
+WB_SQUEEZE_ENABLED=0 WB_WAVE_BREAKOUT_ENABLED=1 \
+  python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
 SUBBOT_PID=$!
 echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
 

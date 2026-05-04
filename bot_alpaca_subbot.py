@@ -1,26 +1,42 @@
 """
-bot_alpaca_subbot.py — Warrior Bot Alpaca Sub-Bot.
+bot_alpaca_subbot.py — Warrior Bot Sub-Bot (IBKR data + Alpaca execution).
 
-Parallel sub-bot to bot_v3_hybrid.py for live A/B comparison of data feeds.
-Shares strategy code (squeeze_detector, trade_manager, EPL framework, etc.)
-with the main bot. Differs from main bot in exactly two places:
+Refactored 2026-05-04 evening: switched from Alpaca StockDataStream-data
+to IBKR-data after the 2026-05-04 trading-day measurement showed Alpaca
+IEX captured only 0.1-3.6% of the IBKR consolidated tick stream on the
+small-cap universe Manny actually trades. (See cowork_reports/
+2026-05-04_subbot_morning_review or the project memory for the data.)
 
-  1. Data feed:    Alpaca StockDataStream + StockHistoricalDataClient,
-                   wrapped by alpaca_feed.AlpacaFeed which exposes the same
-                   API surface as ib_insync.IB. (vs main bot: IB Gateway)
-  2. Execution:    AlpacaBroker via alpaca-py TradingClient.
-                   (Main bot uses IBKRBroker via ib_insync.placeOrder)
+Sub-bot now mirrors the original V3 hybrid architecture:
+
+  1. Data feed:    IB Gateway (same as main bot, separate clientId=2 so
+                   the two bots don't collide on IBKR's per-client API).
+  2. Execution:    Alpaca paper account via AlpacaBroker (separate from
+                   main's IBKR paper, so order flow is fully isolated).
+
+This gives us:
+  - Strategy validation that's not feed-degraded (esp. for tick-density-
+    sensitive strategies like Wave Breakout)
+  - Account-level isolation so a buggy strategy on the sub-bot can't
+    affect the main bot's positions
+  - The same fundamental gateway dependency as main, no new infra
 
 Watchlist source: this sub-bot does NOT run its own scanner. It polls
 session_state/<today>/watchlist.json that the main bot writes after each
-subscribe_symbol call, and mirrors those subscriptions on the Alpaca feed.
-Same universe, same seeding window, same detector wiring — only the data
-path differs. Trades on a separate Alpaca paper account; main bot is
-unaffected.
+subscribe_symbol call, and mirrors those subscriptions on the IBKR feed.
+Same universe, same seeding, same detector wiring — only the broker for
+order placement differs. Both bots' strategies are otherwise independent.
 
 Output isolation:
   session_state_alpaca/YYYY-MM-DD/  — independent risk/positions/marker
-  tick_cache_alpaca/YYYY-MM-DD/     — independent tick log (Alpaca-sourced)
+  tick_cache_alpaca/YYYY-MM-DD/     — independent tick log (IBKR-sourced
+                                       on this side too, but separate dir
+                                       to avoid collision with main bot's
+                                       cache writes)
+
+Note on the alpaca_feed.py module: kept in repo as dormant code. May be
+revived if we ever want to test on degraded data, run on a host without
+IBKR access, or A/B feeds for a different (large-cap) universe.
 
 Auto-start: launched alongside the main bot from daily_run_v3.sh.
 """
@@ -32,7 +48,11 @@ import sys
 
 # ── Sub-bot env overrides — MUST be set before any module-level imports
 #    that read these env vars (broker.py, session_state.py, etc.) ────────
+# WB_BROKER=alpaca: orders route to Alpaca paper account
 os.environ["WB_BROKER"] = "alpaca"
+# IBKR_CLIENT_ID=2: distinct from main bot's clientId=1; both can subscribe
+# to the same gateway concurrently, each gets its own RTVolume tick stream.
+os.environ["IBKR_CLIENT_ID"] = os.getenv("WB_SUBBOT_IBKR_CLIENT_ID", "2")
 os.environ.setdefault("WB_SESSION_DIR_NAME", "session_state_alpaca")
 os.environ.setdefault("WB_TICK_CACHE_DIR_NAME", "tick_cache_alpaca")
 
@@ -49,20 +69,11 @@ from collections import deque
 import pytz
 from dotenv import load_dotenv
 
-# ── Data-feed shim: alpaca_feed exposes ib_insync.IB-shaped API backed
-#    by Alpaca's StockDataStream + StockHistoricalDataClient. The bot's
-#    state.ib.* call sites work unchanged. ─────────────────────────────
-from alpaca_feed import AlpacaFeed as IB, Stock
+# Data feed: real IBKR gateway via ib_insync (matches main bot exactly).
+from ib_insync import IB, Stock, LimitOrder, MarketOrder, util
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
-
-# LimitOrder/MarketOrder/util are imported in bot_v3_hybrid.py for signature
-# parity but order flow goes through state.broker (AlpacaBroker). Stubbed
-# here since alpaca_feed has no equivalents and the symbols are not called.
-LimitOrder = None
-MarketOrder = None
-util = None
 
 from broker import (
     make_broker, BrokerOrder, BrokerPosition,
@@ -3134,8 +3145,8 @@ def main():
         print(f"BOOT: COLD start (reason={boot_reason})", flush=True)
 
     print("=" * 60)
-    print("  WARRIOR BOT — ALPACA SUB-BOT (parallel A/B to main IBKR bot)")
-    print(f"  Data:    Alpaca StockDataStream (feed={os.getenv('WB_ALPACA_DATA_FEED', 'iex')})")
+    print("  WARRIOR BOT — SUB-BOT (IBKR data + Alpaca exec hybrid)")
+    print(f"  Data:    IB Gateway port {IBKR_PORT} clientId={IBKR_CLIENT_ID}")
     print(f"  Exec:    AlpacaBroker (paper={os.getenv('APCA_PAPER', 'true')})")
     print(f"  State:   {os.getenv('WB_SESSION_DIR_NAME', 'session_state')}/")
     print(f"  Cache:   {os.getenv('WB_TICK_CACHE_DIR_NAME', 'tick_cache')}/")
