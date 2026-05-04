@@ -33,6 +33,21 @@ The Stage 3 acceptance gate as originally drafted contained a structural conflic
 
 ---
 
+## Important Note on Sizing
+
+The Stage 2 backtest used **fixed $1,000 risk per trade** (no compounding). The +$154K headline is therefore a "raw alpha" number. The live bot must use **equity-percent sizing** to match the squeeze and capture compounding properly. With 2.5% of equity per trade scaling from $30K starting equity:
+
+- Early trades risk ~$750
+- After +$10K of wins: risk grows to ~$1,000
+- After +$50K: risk grows to ~$2,000
+- A late-year RYOJ-style 30R winner could be $50K+ instead of $34K
+
+Under favorable path conditions, the +$154K backtest could compound to $300K-$800K. Under adverse early drawdowns, lower. We won't know until it's running live, which is exactly the point of paper validation.
+
+The sizing helper below replicates this logic precisely.
+
+---
+
 ## What Gets Built
 
 ### File 1: `wave_breakout_detector.py` (new, ~400 LOC)
@@ -68,11 +83,13 @@ WB_WB_REVERSAL_CONFIRM_PCT=0.005    # 0.5% reversal required to confirm wave end
 # Setup scoring threshold (V8b uses 7)
 WB_WB_MIN_SCORE=7                   # minimum score for ARMED state
 
-# Position sizing (V0 hardening — MANDATORY)
-WB_WB_RISK_DOLLARS=1000             # default risk per trade
+# Position sizing — EQUITY-PERCENT (matches squeeze for compounding)
+WB_WB_RISK_PCT=0.025                # 2.5% of current equity per trade (matches squeeze)
+WB_WB_RISK_FLOOR_DOLLARS=500        # don't risk less than $500 even if equity is small
+WB_WB_RISK_CEILING_DOLLARS=5000     # don't risk more than $5K even if equity is large
 WB_WB_MIN_RISK_PER_SHARE=0.01       # absolute floor
 WB_WB_MIN_RISK_PCT=0.001            # 10 bps of entry price floor
-WB_WB_MAX_NOTIONAL=50000            # binding cap
+WB_WB_MAX_NOTIONAL=50000            # binding notional cap (per-trade)
 
 # Exit logic (V2 trailing-only — the big winner)
 WB_WB_TRAILING_ACTIVATE_R=1.0       # trail activates at +1R (breakeven)
@@ -84,7 +101,7 @@ WB_WB_SESSION_END_FORCE_EXIT=1      # exit any open position at session end
 # Pyramid (V5 — adds modest +$6K combined with V2)
 WB_WB_PYRAMID_ENABLED=1
 WB_WB_PYRAMID_TRIGGER_R=1.0         # add second leg when +1R reached
-WB_WB_PYRAMID_RISK_DOLLARS=1000     # same risk on second leg
+WB_WB_PYRAMID_RISK_PCT=0.025        # second leg uses same equity-percent as first
 
 # Portfolio concurrency (V7 — realistic operating constraint)
 WB_WB_MAX_CONCURRENT=3              # max simultaneous positions across symbols
@@ -141,7 +158,45 @@ if WB_WAVE_BREAKOUT_ENABLED and state.symbols[symbol].get('wb_position'):
 
 6. **Order placement helpers** (`place_wave_breakout_entry`, `place_wave_breakout_exit`) — model after the squeeze versions, but with `setup_type="wave_breakout"` for clean log filtering.
 
-### File 3: Logging convention
+### File 3: Position sizing helper (in `bot_v3_hybrid.py`)
+
+Must mirror the squeeze sizing function so both strategies share the same equity scaling:
+
+```python
+def compute_wb_position_size(entry_price: float, stop_price: float, current_equity: float) -> tuple[int, float]:
+    """Compute Wave Breakout position size with equity-percent risk.
+    
+    Returns (shares, risk_dollars). Returns (0, 0) if position can't be sized.
+    """
+    # Risk dollars = % of equity, with floor and ceiling
+    risk_pct = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
+    risk_floor = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
+    risk_ceiling = float(os.getenv("WB_WB_RISK_CEILING_DOLLARS", "5000"))
+    risk_dollars = max(risk_floor, min(risk_ceiling, current_equity * risk_pct))
+    
+    # Risk per share with V0 hardening
+    min_risk_pct = float(os.getenv("WB_WB_MIN_RISK_PCT", "0.001"))
+    min_risk_abs = float(os.getenv("WB_WB_MIN_RISK_PER_SHARE", "0.01"))
+    raw_risk_per_share = entry_price - stop_price
+    risk_per_share = max(raw_risk_per_share, min_risk_abs, entry_price * min_risk_pct)
+    
+    if risk_per_share <= 0:
+        return (0, 0.0)
+    
+    # Shares by risk
+    shares_by_risk = int(risk_dollars / risk_per_share)
+    
+    # Notional cap
+    max_notional = float(os.getenv("WB_WB_MAX_NOTIONAL", "50000"))
+    shares_by_notional = int(max_notional / entry_price) if entry_price > 0 else 0
+    
+    shares = min(shares_by_risk, shares_by_notional)
+    return (shares, risk_dollars)
+```
+
+This ensures Wave Breakout sizing scales with account equity exactly the way squeeze does. When the account grows from squeeze wins, Wave Breakout sizes up too. When the account drawdowns, both strategies size down together.
+
+### File 4: Logging convention
 
 All Wave Breakout log lines must be prefixed `[WB]` for filtering:
 ```
