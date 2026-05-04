@@ -1,0 +1,25 @@
+{
+  "candidates": {
+    "label": "candidates (no cap)",
+    "n_trades": 743,
+    "win_rate_pct": 53.16,
+    "profit_factor": 2.01,
+    "total_pnl": 173007.04,
+    "avg_win": 871.03,
+    "avg_loss": -491.52,
+    "max_trade": 34632.63,
+    "min_trade": -1000.0
+  },
+  "portfolio": {
+    "label": "portfolio (\u22643 concurrent, 1/symbol)",
+    "n_trades": 647,
+    "win_rate_pct": 53.32,
+    "profit_factor": 1.97,
+    "total_pnl": 147997.37,
+    "avg_win": 871.19,
+    "avg_loss": -505.17,
+    "max_trade": 34632.63,
+    "min_trade": -1000.0
+  },
+  "filtered_out": 96
+}

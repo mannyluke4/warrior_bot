@@ -1,0 +1,205 @@
+{
+  "section_a_frequency": {
+    "n_cells": 2588,
+    "cells_with_any_wave": 1154,
+    "pct_cells_with_waves": 44.6,
+    "cells_with_setup_ge_7": 288,
+    "pct_cells_with_setup": 11.1,
+    "total_waves": 15648,
+    "avg_waves_per_active_cell": 13.56,
+    "median_waves_per_active_cell": 6,
+    "max_waves_in_one_cell": 504,
+    "magnitude_distribution_pct": {
+      "1-2%": 6830,
+      "3-5%": 2188,
+      "5-10%": 930,
+      "2-3%": 3240,
+      "<1%": 1937,
+      ">10%": 523
+    },
+    "time_of_day_buckets": {
+      "premarket (4-9:30)": 4288,
+      "morning (9:30-12)": 4555,
+      "midday (12-15)": 2267,
+      "close (15-16)": 675,
+      "afterhours (16-20)": 3863
+    },
+    "median_wave_magnitude_pct": 1.833,
+    "p25_wave_magnitude_pct": 1.258,
+    "p75_wave_magnitude_pct": 2.884
+  },
+  "section_b_pattern_match": {
+    "n_down_waves_scored": 7873,
+    "score_ge_7": 830,
+    "pct_score_ge_7": 10.54,
+    "score_ge_8": 375,
+    "score_ge_9": 124,
+    "score_ge_10": 57,
+    "score_distribution": {
+      "0": 304,
+      "1": 532,
+      "2": 1005,
+      "3": 1741,
+      "4": 1151,
+      "5": 1624,
+      "6": 686,
+      "7": 455,
+      "8": 251,
+      "9": 67,
+      "10": 57
+    },
+    "criterion_hit_rate_all_pct": {
+      "score_has_prior_waves": 86.0,
+      "score_near_recent_low": 32.1,
+      "score_macd_rising": 24.0,
+      "score_higher_low": 38.4,
+      "score_volume_confirm": 47.7,
+      "score_green_bounce": 24.1,
+      "score_minimal_upper_wick": 46.6
+    },
+    "criterion_hit_rate_top_pct": {
+      "score_has_prior_waves": 99.0,
+      "score_near_recent_low": 80.8,
+      "score_macd_rising": 66.3,
+      "score_higher_low": 78.3,
+      "score_volume_confirm": 63.1,
+      "score_green_bounce": 72.4,
+      "score_minimal_upper_wick": 81.6
+    }
+  },
+  "section_c_performance": {
+    "n_trades": 551,
+    "n_wins": 224,
+    "n_losses": 327,
+    "win_rate_pct": 40.65,
+    "total_pnl": 2514153.39,
+    "gross_winners": 2792344.6,
+    "gross_losers": 278191.21,
+    "profit_factor": 10.04,
+    "avg_win": 12465.82,
+    "avg_loss": -850.74,
+    "median_win": 1061.54,
+    "median_loss": -999.98,
+    "max_drawdown": 18978.96,
+    "max_drawdown_pct_of_pnl": 0.8,
+    "trades_per_day_avg": 7.35,
+    "trades_per_day_max": 36,
+    "trade_days": 75,
+    "top1_trade_pnl": 2196000.0,
+    "pct_pnl_from_top5_trades": 92.4,
+    "pct_pnl_from_top1_trade": 87.3,
+    "pct_pnl_from_top5_days": 95.3,
+    "n_unique_symbols": 174,
+    "top_5_symbols_by_pnl": [
+      [
+        "FIGG",
+        2195576.03,
+        4
+      ],
+      [
+        "CRWG",
+        61279.59,
+        9
+      ],
+      [
+        "KIDZ",
+        36817.02,
+        66
+      ],
+      [
+        "CKX",
+        30796.35,
+        1
+      ],
+      [
+        "SKYQ",
+        28463.46,
+        11
+      ]
+    ],
+    "bottom_5_symbols_by_pnl": [
+      [
+        "JLHL",
+        -5598.72,
+        1
+      ],
+      [
+        "SPOG",
+        -4815.67,
+        6
+      ],
+      [
+        "LLYX",
+        -4071.27,
+        9
+      ],
+      [
+        "ARTL",
+        -4033.2,
+        9
+      ],
+      [
+        "TLF",
+        -3999.98,
+        4
+      ]
+    ],
+    "exit_reason_breakdown": {
+      "target_hit": 118,
+      "stop_hit": 220,
+      "time_stop": 205,
+      "session_end": 8
+    },
+    "top_5_days_by_pnl": [
+      [
+        "2026-02-24",
+        2195576.17
+      ],
+      [
+        "2026-04-29",
+        98143.58
+      ],
+      [
+        "2026-04-16",
+        41010.94
+      ],
+      [
+        "2026-01-22",
+        31436.09
+      ],
+      [
+        "2026-03-09",
+        30294.51
+      ]
+    ],
+    "bottom_5_days_by_pnl": [
+      [
+        "2026-02-10",
+        -4815.67
+      ],
+      [
+        "2026-04-27",
+        -4999.93
+      ],
+      [
+        "2026-04-13",
+        -5280.58
+      ],
+      [
+        "2026-01-30",
+        -5408.05
+      ],
+      [
+        "2026-04-06",
+        -6166.22
+      ]
+    ]
+  },
+  "section_d_acceptance": {
+    "100+ trades": true,
+    "WR >= 50%": false,
+    "PF >= 1.4": true,
+    "not outlier-dominated": false,
+    "pattern in >= 30% of cells": true
+  }
+}

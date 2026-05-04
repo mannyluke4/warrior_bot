@@ -1,0 +1,247 @@
+[
+  {
+    "label": "V0 baseline",
+    "n": 552,
+    "wr": 40.6,
+    "pf": 1.29,
+    "total": 31891.0,
+    "avg_w": 638.0,
+    "avg_l": -339.0,
+    "top5days_pct": 119.8,
+    "top1_trade": 12888.0,
+    "rmax_R": 12.9,
+    "exits": {
+      "target_hit": 118,
+      "stop_hit": 221,
+      "time_stop": 206,
+      "session_end": 7
+    }
+  },
+  {
+    "label": "V1 wide target",
+    "n": 743,
+    "wr": 33.9,
+    "pf": 1.12,
+    "total": 21718.0,
+    "avg_w": 797.0,
+    "avg_l": -365.0,
+    "top5days_pct": 182.8,
+    "top1_trade": 2500.0,
+    "rmax_R": 2.5,
+    "exits": {
+      "time_stop": 382,
+      "stop_hit": 310,
+      "target_hit": 34,
+      "session_end": 17
+    }
+  },
+  {
+    "label": "V2 trailing only",
+    "n": 744,
+    "wr": 53.2,
+    "pf": 2.01,
+    "total": 173178.0,
+    "avg_w": 869.0,
+    "avg_l": -492.0,
+    "top5days_pct": 63.3,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "trailing_stop": 391,
+      "stop_hit": 317,
+      "session_end": 36
+    }
+  },
+  {
+    "label": "V3 time30",
+    "n": 552,
+    "wr": 40.8,
+    "pf": 1.66,
+    "total": 77955.0,
+    "avg_w": 872.0,
+    "avg_l": -362.0,
+    "top5days_pct": 83.6,
+    "top1_trade": 12888.0,
+    "rmax_R": 12.9,
+    "exits": {
+      "target_hit": 172,
+      "stop_hit": 286,
+      "session_end": 14,
+      "time_stop": 80
+    }
+  },
+  {
+    "label": "V4 no time stop",
+    "n": 552,
+    "wr": 38.2,
+    "pf": 1.99,
+    "total": 127858.0,
+    "avg_w": 1221.0,
+    "avg_l": -381.0,
+    "top5days_pct": 88.3,
+    "top1_trade": 42577.0,
+    "rmax_R": 42.6,
+    "exits": {
+      "target_hit": 201,
+      "stop_hit": 321,
+      "session_end": 30
+    }
+  },
+  {
+    "label": "V5 pyramid",
+    "n": 553,
+    "wr": 40.3,
+    "pf": 1.27,
+    "total": 30132.0,
+    "avg_w": 645.0,
+    "avg_l": -344.0,
+    "top5days_pct": 125.6,
+    "top1_trade": 13188.0,
+    "rmax_R": 13.2,
+    "exits": {
+      "target_hit": 119,
+      "stop_hit": 221,
+      "time_stop": 206,
+      "session_end": 7
+    }
+  },
+  {
+    "label": "V6 score-sized",
+    "n": 552,
+    "wr": 40.6,
+    "pf": 1.27,
+    "total": 27685.0,
+    "avg_w": 578.0,
+    "avg_l": -310.0,
+    "top5days_pct": 105.4,
+    "top1_trade": 6444.0,
+    "rmax_R": 6.4,
+    "exits": {
+      "target_hit": 118,
+      "stop_hit": 221,
+      "time_stop": 206,
+      "session_end": 7
+    }
+  },
+  {
+    "label": "V7 (V0 base) +concurrent",
+    "n": 501,
+    "wr": 40.1,
+    "pf": 1.22,
+    "total": 22473.0,
+    "avg_w": 616.0,
+    "avg_l": -338.0,
+    "top5days_pct": 131.5,
+    "top1_trade": 12888.0,
+    "rmax_R": 12.9,
+    "exits": {
+      "stop_hit": 205,
+      "target_hit": 113,
+      "time_stop": 176,
+      "session_end": 7
+    }
+  },
+  {
+    "label": "V7 (V2 base) +concurrent",
+    "n": 647,
+    "wr": 53.3,
+    "pf": 1.97,
+    "total": 147997.0,
+    "avg_w": 871.0,
+    "avg_l": -505.0,
+    "top5days_pct": 65.8,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "stop_hit": 278,
+      "trailing_stop": 340,
+      "session_end": 29
+    }
+  },
+  {
+    "label": "V8 (V2+V3+V6+V7)",
+    "n": 662,
+    "wr": 52.1,
+    "pf": 2.02,
+    "total": 136730.0,
+    "avg_w": 785.0,
+    "avg_l": -423.0,
+    "top5days_pct": 65.8,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "stop_hit": 257,
+      "trailing_stop": 328,
+      "session_end": 16,
+      "time_stop": 61
+    }
+  },
+  {
+    "label": "V8b V2+pyramid+V7",
+    "n": 648,
+    "wr": 53.4,
+    "pf": 2.01,
+    "total": 154435.0,
+    "avg_w": 887.0,
+    "avg_l": -505.0,
+    "top5days_pct": 62.9,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "stop_hit": 278,
+      "trailing_stop": 341,
+      "session_end": 29
+    }
+  },
+  {
+    "label": "V8c V2+score\u22658+V7",
+    "n": 297,
+    "wr": 51.5,
+    "pf": 2.03,
+    "total": 82555.0,
+    "avg_w": 1063.0,
+    "avg_l": -556.0,
+    "top5days_pct": 94.6,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "trailing_stop": 149,
+      "session_end": 18,
+      "stop_hit": 130
+    }
+  },
+  {
+    "label": "V8d V2+score\u22659+V7",
+    "n": 106,
+    "wr": 51.9,
+    "pf": 2.51,
+    "total": 39170.0,
+    "avg_w": 1185.0,
+    "avg_l": -509.0,
+    "top5days_pct": 107.6,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "session_end": 8,
+      "stop_hit": 45,
+      "trailing_stop": 53
+    }
+  },
+  {
+    "label": "V8e V2+pyr+score\u22658+V7",
+    "n": 297,
+    "wr": 51.5,
+    "pf": 2.09,
+    "total": 87015.0,
+    "avg_w": 1092.0,
+    "avg_l": -556.0,
+    "top5days_pct": 93.9,
+    "top1_trade": 34633.0,
+    "rmax_R": 34.6,
+    "exits": {
+      "trailing_stop": 149,
+      "session_end": 18,
+      "stop_hit": 130
+    }
+  }
+]
