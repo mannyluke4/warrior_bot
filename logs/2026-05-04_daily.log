@@ -23314,3 +23314,38 @@ IBKR ERROR 162: Historical Market Data Service error message:API scanner subscri
 ALERT: bot_v3_hybrid.py died at Mon May  4 18:00:50 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-04_daily.log.
 === Shutting down at Mon May  4 18:00:50 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration 2718d06] auto: v3 daily logs 2026-05-04
+ 34 files changed, 90423 insertions(+)
+ create mode 100644 logs/2026-05-04_daily.log
+ create mode 100644 logs/2026-05-04_scanner.log
+ create mode 100644 logs/2026-05-04_subbot_alpaca.log
+ create mode 100644 logs/cron_2026-05-04.log
+ create mode 100644 logs/flag_battery_20260503_2058/3tranche_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/SUMMARY.md
+ create mode 100644 logs/flag_battery_20260503_2058/dynamic_attempts_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/level_map_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/parabolic_regime_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/partial_exit_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/runner_detect_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/seed_gate_off.log
+ create mode 100644 logs/flag_battery_20260503_2058/stale_gate_off.log
+ create mode 100644 logs/flag_battery_20260503_2058/vol_floor_on.log
+ create mode 100644 logs/flag_battery_20260503_2058/wide_trail_on.log
+ create mode 100644 logs/flag_battery_launcher_20260503_2058.log
+ create mode 100644 logs/gateway_manual_20260503_2005.log
+ create mode 100644 logs/gateway_manual_20260503_2255.log
+ create mode 100644 logs/ibc_20260502_1331.log
+ create mode 100644 logs/ibc_20260502_1333.log
+ create mode 100644 logs/ibc_clean_20260502_133808.log
+ create mode 100644 logs/ibc_clean_20260502_134126.log
+ create mode 100644 logs/ibc_clean_20260502_160557.log
+ create mode 100644 logs/ibc_clean_20260502_174636.log
+ create mode 100644 logs/ibc_clean_20260502_174801.log
+ create mode 100644 logs/ibc_clean_20260502_175034.log
+ create mode 100644 logs/ibc_clean_20260502_175236.log
+ create mode 100644 logs/ytd_backtest_post_backfill_20260503_1117.log
+ create mode 100644 logs/ytd_tick_backfill_20260501_2201_marAPR_dedup.log
+ create mode 100644 logs/ytd_tick_backfill_20260502_1753_resume.log
+ create mode 100644 logs/ytd_tick_backfill_20260502_2346_apr07on.log
+=== V3 Hybrid daily run complete: Mon May  4 18:00:58 MDT 2026 ===
+=== TRAP: cleanup at Mon May  4 18:00:58 MDT 2026 ===
