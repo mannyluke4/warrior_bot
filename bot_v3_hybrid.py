@@ -627,6 +627,13 @@ def reconcile_positions_on_startup():
                   f"skipping adoption/flatten (pending exit will resolve)", flush=True)
             continue
 
+        # Skip Wave Breakout positions — they're owned by WB's own state machine,
+        # not orphans. (Patched 2026-05-05 after squeeze adoption stole every WB
+        # entry on the sub-bot and force-closed via bail_timer.)
+        if symbol in state.wb_positions:
+            print(f"  ✅ {symbol} is a WB position (qty={qty}) — skip adoption.", flush=True)
+            continue
+
         print(f"  ⚠️ ORPHAN POSITION FOUND: {symbol} qty={qty} "
               f"(available={qty_available}) entry=${avg_entry:.2f} "
               f"unrealized=${unrealized_pnl:+,.2f} value=${market_value:,.2f}", flush=True)
@@ -914,6 +921,10 @@ def periodic_position_sync():
                 print(f"  ⏸ IN-FLIGHT POSITION: broker holds {symbol} qty={qty} "
                       f"but all shares held_for_orders. Not adopting — waiting "
                       f"for pending exit to resolve.", flush=True)
+                continue
+            # Skip Wave Breakout positions — owned by WB state machine, not orphans.
+            # (Patched 2026-05-05 after squeeze stole every WB entry on the sub-bot.)
+            if symbol in state.wb_positions:
                 continue
             print(f"  ⚠️ ORPHAN DETECTED: broker holds {symbol} qty={qty} "
                   f"(available={qty_available}) entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
