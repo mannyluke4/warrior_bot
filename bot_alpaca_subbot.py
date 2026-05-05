@@ -124,6 +124,14 @@ WAVE_BREAKOUT_ENABLED = os.getenv("WB_WAVE_BREAKOUT_ENABLED", "0") == "1"
 WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
 if WAVE_BREAKOUT_ENABLED:
     from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
+
+# Tick-By-Tick migration (DIRECTIVE_TICKBYTICK_MIGRATION.md).
+# Stage 1 probe (2026-05-05): account capacity = 5 simultaneous
+# reqTickByTickData('AllLast') subscriptions. Override via WB_TBT_MAX if a
+# future probe finds a higher cap. WB_TBT_ENABLED master gate is OFF until
+# Stage 3 promotion logic ships — Stage 2 alone is dormant infrastructure.
+TBT_ENABLED = os.getenv("WB_TBT_ENABLED", "0") == "1"
+TBT_MAX_SUBSCRIPTIONS = int(os.getenv("WB_TBT_MAX", "5"))
 MP_V2_ENABLED = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
 CT_ENABLED = os.getenv("WB_CT_ENABLED", "0") == "1"
 
@@ -301,6 +309,17 @@ class BotState:
         self.wb_positions: dict = {}                # symbol → {entry, qty, stop, score, ...}
         self.wb_pending_orders: dict = {}           # symbol → order_id (entry order in flight)
         self.wb_closed_trades: list = []
+
+        # Tick-By-Tick Migration (Stage 2 — DIRECTIVE_TICKBYTICK_MIGRATION.md).
+        # Two-tier subscription model. Tier 1 = reqTickByTickData('AllLast')
+        # delivering every print; capped at 5 simultaneous (probed 2026-05-05).
+        # Tier 2 = reqMktData('233') 250ms snapshots — current behavior, kept
+        # for all watchlist symbols as awareness layer. Symbols promote to
+        # Tier 1 when active in a setup; demote when idle (Stage 3 logic).
+        self.tier: dict = {}                        # symbol → "snapshot" | "tick_by_tick"
+        self.tbt_tickers: dict = {}                 # symbol → ib_insync Ticker from reqTickByTickData
+        self.tbt_last_processed_index: dict = {}    # symbol → last ticker.tickByTicks idx already drained
+        self.tbt_subscribed_at: dict = {}           # symbol → datetime promoted (cooldown reference)
         # Short strategy detector (WB_SHORT_ENABLED). Separate from long path.
         self.short_detectors: dict = {}
         self.open_short: dict = None
@@ -1074,8 +1093,77 @@ def subscribe_symbol(symbol: str):
     state.active_symbols.add(symbol)
     state.tick_counts[symbol] = 0
     state.sub_retry_counts[symbol] = 0
+    # Tick-By-Tick tier: every newly-subscribed symbol starts in Tier 2
+    # (snapshot reqMktData). Stage 3 promotion logic decides if/when to
+    # add a tick-by-tick subscription on top.
+    state.tier.setdefault(symbol, "snapshot")
     print(f"✅ Subscribed: {symbol}", flush=True)
     persist_watchlist()
+
+
+def subscribe_tick_by_tick(symbol: str, reason: str = "manual") -> bool:
+    """Promote `symbol` from Tier 2 (snapshot reqMktData) to Tier 1 (full
+    per-print stream via reqTickByTickData('AllLast')). Returns True on
+    success, False on failure or no-op.
+
+    The Tier 2 reqMktData subscription is intentionally NOT cancelled —
+    snapshot fields keep flowing on the same Ticker, but
+    `on_ticker_update` routes the symbol to the per-print drain when
+    `state.tier[symbol] == 'tick_by_tick'`, so the snapshot fields are
+    ignored. No double-counting.
+
+    Capacity is capped at TBT_MAX_SUBSCRIPTIONS (Stage 1 probe = 5).
+    Stage 3's `manage_tier1_subscriptions` is responsible for ensuring the
+    cap isn't exceeded; this helper enforces it as a backstop and returns
+    False if the cap is already saturated.
+    """
+    if state.tier.get(symbol) == "tick_by_tick":
+        return True  # idempotent
+    if len(state.tbt_tickers) >= TBT_MAX_SUBSCRIPTIONS:
+        print(f"[TIER] PROMOTE {symbol} BLOCKED — capacity full "
+              f"({len(state.tbt_tickers)}/{TBT_MAX_SUBSCRIPTIONS})", flush=True)
+        return False
+    contract = state.contracts.get(symbol)
+    if not contract:
+        print(f"[TIER] PROMOTE {symbol} BLOCKED — no contract registered", flush=True)
+        return False
+    try:
+        tbt_ticker = state.ib.reqTickByTickData(contract, "AllLast", 0, False)
+    except Exception as e:
+        print(f"[TIER] PROMOTE {symbol} FAILED — reqTickByTickData raised: {e}", flush=True)
+        return False
+    state.tbt_tickers[symbol] = tbt_ticker
+    state.tbt_last_processed_index[symbol] = 0
+    state.tbt_subscribed_at[symbol] = datetime.now(ET)
+    state.tier[symbol] = "tick_by_tick"
+    print(f"[TIER] PROMOTE {symbol} reason={reason} "
+          f"capacity={len(state.tbt_tickers)}/{TBT_MAX_SUBSCRIPTIONS}", flush=True)
+    return True
+
+
+def unsubscribe_tick_by_tick(symbol: str, reason: str = "manual") -> bool:
+    """Demote `symbol` back to Tier 2. Cancels the tick-by-tick stream;
+    the snapshot reqMktData subscription remains active so the symbol
+    continues on the awareness layer. Returns True if a demotion actually
+    occurred (i.e. symbol was in Tier 1)."""
+    if state.tier.get(symbol) != "tick_by_tick":
+        return False
+    contract = state.contracts.get(symbol)
+    if contract:
+        try:
+            state.ib.cancelTickByTickData(contract, "AllLast")
+        except Exception as e:
+            print(f"[TIER] DEMOTE {symbol} cancelTickByTickData raised: {e}", flush=True)
+    sub_at = state.tbt_subscribed_at.get(symbol)
+    held = (datetime.now(ET) - sub_at).total_seconds() if sub_at else None
+    state.tbt_tickers.pop(symbol, None)
+    state.tbt_last_processed_index.pop(symbol, None)
+    state.tbt_subscribed_at.pop(symbol, None)
+    state.tier[symbol] = "snapshot"
+    held_str = f"{held:.0f}s" if held is not None else "?"
+    print(f"[TIER] DEMOTE {symbol} reason={reason} was_tier1_for={held_str} "
+          f"capacity={len(state.tbt_tickers)}/{TBT_MAX_SUBSCRIPTIONS}", flush=True)
+    return True
 
 
 def check_subscription_health():
@@ -2732,14 +2820,70 @@ def check_halts():
 # ══════════════════════════════════════════════════════════════════════
 
 def on_ticker_update(tickers):
-    """Called on every market data update (~250ms). Receives a SET of updated tickers."""
+    """Called on every market data update. Receives a SET of updated tickers
+    from ib.pendingTickersEvent — fires for both reqMktData (snapshot) and
+    reqTickByTickData updates. Dispatches each ticker by tier.
+
+    Tier 1 (tick_by_tick): drain ticker.tickByTicks list — every print is
+        delivered, no 250ms throttle. Snapshot fields on the same Ticker
+        are ignored to avoid double-counting.
+    Tier 2 (snapshot): the legacy path — read ticker.last / ticker.lastSize
+        as before. This is the awareness layer for symbols not actively in
+        a setup."""
     state.last_on_ticker_fire = datetime.now(ET)
     for ticker in tickers:
-        _process_ticker(ticker)
+        contract = getattr(ticker, "contract", None)
+        sym = contract.symbol if contract else None
+        if sym and state.tier.get(sym) == "tick_by_tick":
+            _drain_tick_by_tick_ticker(ticker)
+        else:
+            _process_ticker(ticker)
+
+
+def _drain_tick_by_tick_ticker(ticker):
+    """For Tier 1 symbols: walk through new entries in `ticker.tickByTicks`
+    and feed each as a real trade tick. ib_insync appends every print to
+    that list when the symbol is subscribed via reqTickByTickData('AllLast').
+
+    The ticker's `.last` / `.lastSize` snapshot fields also tick (because
+    the same Ticker is re-used by ib_insync), but they're ignored on the
+    Tier 1 path — only the per-print stream is processed. This is the
+    "ignore reqMktData events for tick-by-tick symbols" rule from the
+    migration directive."""
+    contract = ticker.contract
+    if not contract:
+        return
+    symbol = contract.symbol
+    last_idx = state.tbt_last_processed_index.get(symbol, 0)
+    new_ticks = ticker.tickByTicks[last_idx:] if hasattr(ticker, "tickByTicks") else []
+    if not new_ticks:
+        return
+    for tk in new_ticks:
+        try:
+            price = float(tk.price) if tk.price else 0.0
+            size = int(tk.size or 0)
+            ts_raw = tk.time
+        except (AttributeError, TypeError, ValueError):
+            continue
+        if ts_raw is None:
+            ts_raw = datetime.now(timezone.utc)
+        if ts_raw.tzinfo is None:
+            ts_raw = ts_raw.replace(tzinfo=timezone.utc)
+        ts_et = ts_raw.astimezone(ET)
+        # Health-monitoring update — every tick counts toward audit metrics.
+        state.tick_counts[symbol] = state.tick_counts.get(symbol, 0) + 1
+        state.last_tick_time[symbol] = ts_et
+        state.last_tick_price[symbol] = price
+        # Real-trade processing only when price/size are valid.
+        if price > 0 and size > 0:
+            _process_trade_tick(symbol, price, size, ts_et)
+    state.tbt_last_processed_index[symbol] = len(ticker.tickByTicks)
 
 
 def _process_ticker(ticker):
-    """Process a single ticker update."""
+    """Tier 2 (snapshot) path. Receives one ticker from reqMktData updates
+    delivered every ~250ms. Health-monitoring runs on every ticker update;
+    trade-side downstream runs only when ticker.last is a valid trade."""
     contract = ticker.contract
     if not contract:
         return
@@ -2776,6 +2920,13 @@ def _process_ticker(ticker):
     # Get trade size from ticker (lastSize = size of most recent trade print)
     size = int(ticker.lastSize) if ticker.lastSize and not math.isnan(ticker.lastSize) else 0
 
+    _process_trade_tick(symbol, price, size, ts)
+
+
+def _process_trade_tick(symbol: str, price: float, size: int, ts):
+    """Shared trade-tick downstream — bar builders, detectors, EPL, exits, WB.
+    Called by both _process_ticker (Tier 2 snapshot path) and
+    _drain_tick_by_tick_ticker (Tier 1 per-print path)."""
     # Record tick for backtest cache (exact same data the bot sees).
     # Lock serializes against the periodic flush swap — see _tick_flush_loop.
     with _tick_buffer_lock:
