@@ -100,6 +100,19 @@ if WAVE_BREAKOUT_ENABLED:
 # Stage 3 promotion logic ships — Stage 2 alone is dormant infrastructure.
 TBT_ENABLED = os.getenv("WB_TBT_ENABLED", "0") == "1"
 TBT_MAX_SUBSCRIPTIONS = int(os.getenv("WB_TBT_MAX", "5"))
+# Stage 3 — promotion/demotion policy.
+TBT_MANAGE_INTERVAL_SEC = int(os.getenv("WB_TBT_MANAGE_SEC", "30"))   # how often to re-rank
+TBT_COOLDOWN_SEC = int(os.getenv("WB_TBT_COOLDOWN_SEC", "300"))        # min Tier-1 hold time
+TBT_VOLUME_RESERVE_N = max(1, TBT_MAX_SUBSCRIPTIONS // 2)              # "active hunt" reserve
+# Priority weights — see DIRECTIVE_TICKBYTICK_MIGRATION.md.
+TBT_PRI_OPEN_POSITION = 1000
+TBT_PRI_ARMED = 500
+TBT_PRI_PRIMED = 200
+TBT_PRI_WB_OBS_MED = 50          # WAVE_OBSERVING (any). The directive distinguishes
+                                  # ≥5 vs ≥7 by score, but the WB detector doesn't expose
+                                  # last-wave score; flat 50 captures the intent.
+TBT_PRI_VOLUME_FLOOR = 20
+TBT_PRI_VOLUME_CEIL = 50
 
 # Short strategy (prototyped 2026-04-16 from DIRECTIVE_SHORT_STRATEGY_RESEARCH).
 # Default B — Lower-High Short — won head-to-head against A/C in backtests
@@ -289,6 +302,10 @@ class BotState:
         self.tbt_tickers: dict = {}                 # symbol → ib_insync Ticker from reqTickByTickData
         self.tbt_last_processed_index: dict = {}    # symbol → last ticker.tickByTicks idx already drained
         self.tbt_subscribed_at: dict = {}           # symbol → datetime promoted (cooldown reference)
+        # Stage 3 — promotion/demotion management state.
+        self.last_tier1_manage = None                       # datetime of last manage_tier1 cycle
+        self.tier1_volume_buckets: dict = {}                # symbol → list[(ts, vol)] last 5 1m bars
+        self.tier1_volume_rank: dict = {}                   # symbol → 1-based rank in top-N volume reserve
         # Short strategy detector (WB_SHORT_ENABLED). Separate from long path.
         self.short_detectors: dict = {}
         self.open_short: dict = None
@@ -1160,6 +1177,196 @@ def unsubscribe_tick_by_tick(symbol: str, reason: str = "manual") -> bool:
     return True
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Tick-By-Tick Stage 3 — promotion / demotion policy
+# ══════════════════════════════════════════════════════════════════════
+
+def _maintain_tier1_volume_bucket(bar) -> None:
+    """Called from on_bar_close_1m. Appends this 1m bar's volume to a
+    per-symbol rolling window of the last 5 closed bars (≈ 5-min volume).
+    The volume-rank Tier-1 reserve picks the top-N by this sum."""
+    if not TBT_ENABLED:
+        return
+    sym = bar.symbol
+    buckets = state.tier1_volume_buckets.setdefault(sym, [])
+    buckets.append((bar.start_utc, bar.volume))
+    if len(buckets) > 5:
+        del buckets[: len(buckets) - 5]
+
+
+def _compute_5m_volume_rank() -> dict:
+    """Returns {symbol: 1-based rank} for the top TBT_VOLUME_RESERVE_N
+    symbols by sum of the last 5 1m-bar volumes. Symbols outside the
+    reserve are not included in the dict."""
+    sums = []
+    for sym in state.active_symbols:
+        buckets = state.tier1_volume_buckets.get(sym, [])
+        total = sum(v for _, v in buckets)
+        if total > 0:
+            sums.append((sym, total))
+    sums.sort(key=lambda x: (-x[1], x[0]))
+    return {sym: i + 1 for i, (sym, _) in enumerate(sums[:TBT_VOLUME_RESERVE_N])}
+
+
+def _has_open_position(symbol: str) -> bool:
+    if state.open_position and state.open_position.get("symbol") == symbol:
+        return True
+    if state.open_short and state.open_short.get("symbol") == symbol:
+        return True
+    if symbol in state.wb_positions:
+        return True
+    return False
+
+
+def compute_tier1_priority(symbol: str) -> int:
+    """Score `symbol` for Tier 1 desirability. Higher = better candidate.
+    Returns 0 if symbol has no signal worth a tick-by-tick slot."""
+    # 1000 — open position. Must always be Tier 1 while in a trade.
+    if _has_open_position(symbol):
+        return TBT_PRI_OPEN_POSITION
+
+    pri = 0
+    sq = state.sq_detectors.get(symbol)
+    if sq is not None:
+        sq_state = getattr(sq, "_state", None)
+        if sq_state == "ARMED":
+            pri = max(pri, TBT_PRI_ARMED)
+        elif sq_state == "PRIMED":
+            pri = max(pri, TBT_PRI_PRIMED)
+
+    wb = state.wb_detectors.get(symbol)
+    if wb is not None:
+        wb_state = getattr(wb, "state", None)
+        if wb_state == "ARMED":
+            pri = max(pri, TBT_PRI_ARMED)
+        elif wb_state == "WAVE_OBSERVING":
+            pri = max(pri, TBT_PRI_WB_OBS_MED)
+
+    if pri > 0:
+        return pri
+
+    # Volume-rank reserve only kicks in when no detector signal is present.
+    rank = state.tier1_volume_rank.get(symbol)
+    if rank is not None and rank <= TBT_VOLUME_RESERVE_N:
+        if TBT_VOLUME_RESERVE_N == 1:
+            return TBT_PRI_VOLUME_CEIL
+        scale = (TBT_VOLUME_RESERVE_N - rank) / max(1, TBT_VOLUME_RESERVE_N - 1)
+        return int(TBT_PRI_VOLUME_FLOOR + (TBT_PRI_VOLUME_CEIL - TBT_PRI_VOLUME_FLOOR) * scale)
+
+    return 0
+
+
+def _tier1_priority_reason(priority: int) -> str:
+    """Map a priority score to the human-readable reason logged with
+    [TIER] PROMOTE."""
+    if priority >= TBT_PRI_OPEN_POSITION:
+        return "open_position"
+    if priority >= TBT_PRI_ARMED:
+        return "detector_armed"
+    if priority >= TBT_PRI_PRIMED:
+        return "detector_primed"
+    if priority >= TBT_PRI_WB_OBS_MED:
+        return "wave_observing"
+    if priority >= TBT_PRI_VOLUME_FLOOR:
+        return f"volume_top{TBT_VOLUME_RESERVE_N}"
+    return "unknown"
+
+
+def _can_demote_tier1(symbol: str, now) -> bool:
+    """Cooldown gate: a symbol can only be demoted after holding its slot
+    for at least TBT_COOLDOWN_SEC. Open positions are also a hard hold —
+    even if compute_tier1_priority drops, we keep the slot until close."""
+    if _has_open_position(symbol):
+        return False
+    sub_at = state.tbt_subscribed_at.get(symbol)
+    if not sub_at:
+        return True  # malformed state — let demotion proceed and clean up
+    return (now - sub_at).total_seconds() >= TBT_COOLDOWN_SEC
+
+
+def manage_tier1_subscriptions() -> None:
+    """Re-rank all active symbols, promote the top TBT_MAX_SUBSCRIPTIONS
+    with priority > 0, demote the rest (subject to cooldown). Called
+    every TBT_MANAGE_INTERVAL_SEC from the main loop. No-op when
+    TBT_ENABLED is false."""
+    if not TBT_ENABLED:
+        return
+    now = datetime.now(ET)
+    if state.last_tier1_manage and (now - state.last_tier1_manage).total_seconds() < TBT_MANAGE_INTERVAL_SEC:
+        return
+    state.last_tier1_manage = now
+
+    # Refresh volume rank once per cycle.
+    state.tier1_volume_rank = _compute_5m_volume_rank()
+
+    # Score every active symbol.
+    candidates = [(sym, compute_tier1_priority(sym)) for sym in state.active_symbols]
+    candidates.sort(key=lambda x: (-x[1], x[0]))
+
+    # Top N with non-zero priority are the target Tier 1.
+    target: list = []
+    for sym, pri in candidates:
+        if pri <= 0 or len(target) >= TBT_MAX_SUBSCRIPTIONS:
+            break
+        target.append((sym, pri))
+    target_syms = {sym for sym, _ in target}
+
+    current_tier1 = {s for s, t in state.tier.items() if t == "tick_by_tick"}
+
+    # Force-eviction guarantee: an OPEN POSITION must be Tier 1 immediately,
+    # even if every slot is locked by cooldown. We only override the cooldown
+    # for that case (acceptance criterion #3 in the directive). ARMED-level
+    # signals respect cooldown — if observed in production that the policy
+    # is too rigid and ARMED setups miss slots, relax then.
+    needs_position_slot = any(
+        pri >= TBT_PRI_OPEN_POSITION and sym not in current_tier1
+        for sym, pri in target
+    )
+
+    # 1. Demote symbols that fell off the target list.
+    for sym in current_tier1 - target_syms:
+        if _can_demote_tier1(sym, now):
+            unsubscribe_tick_by_tick(sym, reason="dropped_from_target")
+        elif needs_position_slot and not _has_open_position(sym):
+            unsubscribe_tick_by_tick(sym, reason="evicted_for_open_position")
+
+    # 2. Promote symbols on the target list not currently in Tier 1.
+    for sym, pri in target:
+        if state.tier.get(sym) == "tick_by_tick":
+            continue
+        if len(state.tbt_tickers) >= TBT_MAX_SUBSCRIPTIONS:
+            # Capacity full because some held by cooldown — nothing more we can do this cycle.
+            break
+        subscribe_tick_by_tick(sym, reason=_tier1_priority_reason(pri))
+
+    # 3. Periodic STATUS line — single source of truth for the audit trail.
+    tier1_list = sorted(state.tbt_tickers.keys())
+    tier2_count = max(0, len(state.active_symbols) - len(tier1_list))
+    print(f"[TIER] STATUS tier1={tier1_list} tier2={tier2_count} "
+          f"capacity={len(tier1_list)}/{TBT_MAX_SUBSCRIPTIONS}", flush=True)
+
+
+def cancel_all_tick_by_tick(reason: str = "shutdown") -> None:
+    """Cancel every active reqTickByTickData subscription. Used on
+    window-close and reconnect to reset Tier 1 state. Safe to call when
+    no Tier 1 subs exist."""
+    if not state.tbt_tickers:
+        return
+    for sym in list(state.tbt_tickers.keys()):
+        c = state.contracts.get(sym)
+        if c:
+            try:
+                state.ib.cancelTickByTickData(c, "AllLast")
+            except Exception:
+                pass
+    print(f"[TIER] CANCEL_ALL n={len(state.tbt_tickers)} reason={reason}", flush=True)
+    state.tbt_tickers.clear()
+    state.tbt_last_processed_index.clear()
+    state.tbt_subscribed_at.clear()
+    for sym in list(state.tier.keys()):
+        state.tier[sym] = "snapshot"
+
+
 def check_subscription_health():
     """Check that all subscribed symbols are receiving ticks. Resubscribe if not."""
     for symbol in list(state.active_symbols):
@@ -1641,6 +1848,9 @@ def on_bar_close_1m(bar):
     """1-minute bar close: feed to squeeze + MP detectors."""
     symbol = bar.symbol
     now_str = datetime.now(ET).strftime("%H:%M")
+
+    # Tier-1 volume rolling window — fed every closed 1m bar.
+    _maintain_tier1_volume_bucket(bar)
 
     # Get VWAP from bar builder
     vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else None
@@ -3213,6 +3423,8 @@ def on_ib_error(reqId, errorCode, errorString, contract):
         print(f"⚠️ IBKR ERROR {errorCode}: {errorString} (symbol={sym})", flush=True)
         if errorCode == 10197:
             print(f"  >> Competing session detected! Re-subscribing all active symbols...", flush=True)
+            # Drop all Tier-1 state — manage_tier1_subscriptions will re-promote next cycle.
+            cancel_all_tick_by_tick(reason="competing_session")
             for symbol in list(state.active_symbols):
                 c = state.contracts.get(symbol)
                 if c:
@@ -3665,10 +3877,16 @@ def main():
                                 state.ib.cancelMktData(c)
                             except Exception:
                                 pass
+                    # Drop all Tier-1 tick-by-tick subs — evening session
+                    # repromotes from scratch via manage_tier1_subscriptions.
+                    cancel_all_tick_by_tick(reason="dead_zone_reset")
                     state.active_symbols.clear()
                     state.contracts.clear()
                     state.tickers.clear()
                     state.tick_counts.clear()
+                    state.tier.clear()
+                    state.tier1_volume_buckets.clear()
+                    state.tier1_volume_rank.clear()
                     state.sq_detectors.clear()
                     state.mp_detectors.clear()
                     state.ct_detectors.clear()
@@ -3696,6 +3914,9 @@ def main():
 
                 # Fix 3: Periodic position sync with Alpaca (every 60s)
                 periodic_position_sync()
+
+                # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
+                manage_tier1_subscriptions()
 
                 # ── Box strategy logic ──
                 if box_active:
@@ -3786,6 +4007,14 @@ def main():
                         state.ib.pendingTickersEvent += on_ticker_update
                         state.ib.pendingTickersEvent += on_pending_tickers_backup
                         state.ib.errorEvent += on_ib_error
+                        # Drop Tier-1 state — IB Gateway dropped subscriptions
+                        # on disconnect; manage_tier1_subscriptions repromotes
+                        # next cycle based on current detector state.
+                        state.tbt_tickers.clear()
+                        state.tbt_last_processed_index.clear()
+                        state.tbt_subscribed_at.clear()
+                        for s in list(state.tier.keys()):
+                            state.tier[s] = "snapshot"
                         # Re-subscribe all active symbols with RTVolume
                         for sym in list(state.active_symbols):
                             c = state.contracts.get(sym)
