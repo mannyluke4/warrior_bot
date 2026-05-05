@@ -1,0 +1,32 @@
+{
+  "starting_equity": 100000.0,
+  "final_equity": 248267.5,
+  "growth_factor": 2.483,
+  "n_trades_executed": 648,
+  "n_skipped": 97,
+  "skipped_reasons": {
+    "duplicate_symbol": 97
+  },
+  "win_rate_pct": 53.4,
+  "profit_factor": 1.79,
+  "total_pnl": 148267.5,
+  "avg_win": 971.0,
+  "avg_loss": -621.51,
+  "max_drawdown_dollars": 18150.44,
+  "max_drawdown_pct": 7.79,
+  "max_trade": 34633.23,
+  "min_trade": -2499.97,
+  "config": {
+    "starting_equity": 100000.0,
+    "risk_pct": 0.025,
+    "risk_floor": 500.0,
+    "risk_ceiling": 5000.0,
+    "max_notional": 50000.0,
+    "min_risk_per_share": 0.01,
+    "min_risk_pct_of_entry": 0.001,
+    "buying_power_multiplier": 4.0,
+    "max_concurrent": 3,
+    "one_per_symbol": true,
+    "track_buying_power": true
+  }
+}
