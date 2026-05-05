@@ -1,0 +1,405 @@
+BOOT: COLD start (reason=no_marker)
+============================================================
+  WARRIOR BOT — SUB-BOT (IBKR data + Alpaca exec hybrid)
+  Data:    IB Gateway port 4002 clientId=2
+  Exec:    AlpacaBroker (paper=true)
+  State:   session_state_alpaca/
+  Cache:   tick_cache_alpaca/
+  Squeeze: OFF
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+⚠️  WARNING: WB_SQUEEZE_ENABLED is OFF — bot will not trade squeezes!
+  Set WB_SQUEEZE_ENABLED=1 in .env or environment to enable.
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: ALPACA
+  Position sync: No open positions at broker. Clean start.
+Account equity: $30,195
+EPL initialized: 1 strategies registered
+
+📡 Sub-bot: 3 new symbols from main bot's watchlist: ['CLNN', 'FATN', 'KBSX']
+🔥 Seeded CLNN: 19 ticks → 0 bars (19 ticks/bar avg)
+✅ Subscribed: CLNN
+🔥 Seeded FATN: 5 ticks → 0 bars (5 ticks/bar avg)
+✅ Subscribed: FATN
+🔥 Seeded KBSX: 1 ticks → 0 bars (1 ticks/bar avg)
+✅ Subscribed: KBSX
+
+Bot running. Windows: 04:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.50, last_tick_time=04:00:33
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.00, last_tick_time=04:00:34
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:00:35
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:01:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=10 | CLNN:9t/? FATN:1t/? KBSX:0t/?
+[04:01:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=15 | CLNN:14t/? FATN:1t/? KBSX:0t/?
+  Tick cache: CLNN → +42 ticks (total 42)
+  Tick cache: FATN → +5 ticks (total 5)
+  Tick cache: KBSX → +5 ticks (total 5)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +74 ticks (total 116)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 97 ticks in last 60s, last_price=$7.51, last_tick_time=04:01:35
+  TICK AUDIT: FATN: 1 ticks in last 60s, last_price=$3.00, last_tick_time=04:00:41
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:00:39
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+[04:02:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:0t/? KBSX:2t/?
+[04:02:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:0t/? KBSX:2t/?
+  Tick cache: CLNN → +5 ticks (total 121)
+  Tick cache: KBSX → +2 ticks (total 7)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +3 ticks (total 124)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 4 ticks in last 60s, last_price=$7.51, last_tick_time=04:02:26
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.00, last_tick_time=04:00:41
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:01:37
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:03:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:2t/? KBSX:0t/?
+[04:03:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=8 | CLNN:6t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +7 ticks (total 131)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +16 ticks (total 147)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 22 ticks in last 60s, last_price=$7.50, last_tick_time=04:03:30
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.00, last_tick_time=04:02:38
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:01:37
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:04:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+[04:04:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+  Tick cache: KBSX → +2 ticks (total 9)
+  Tick cache: CLNN → +7 ticks (total 154)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +10 ticks (total 164)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 18 ticks in last 60s, last_price=$7.50, last_tick_time=04:04:33
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.00, last_tick_time=04:02:38
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:03:38
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:05:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:0t/? FATN:2t/? KBSX:0t/?
+[04:05:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:0t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +1 ticks (total 165)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+[04:05 ET] CLNN CHART | O=7.50 H=7.50 L=7.50 C=7.50 V=17 | EMA9=none VWAP=7.43 (+0.9%) HOD=7.64 PM_H=7.64 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: CLNN → +4 ticks (total 169)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 4 ticks in last 60s, last_price=$7.50, last_tick_time=04:05:30
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.00, last_tick_time=04:04:38
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:03:38
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:05 ET] KBSX CHART | O=1.30 H=1.30 L=1.30 C=1.30 V=400 | EMA9=none VWAP=1.30 (+0.0%) HOD=1.30 PM_H=1.30 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[04:06:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:0t/? KBSX:2t/?
+[04:06:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:0t/? KBSX:2t/?
+  Tick cache: KBSX → +2 ticks (total 11)
+  Tick cache: CLNN → +5 ticks (total 174)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +5 ticks (total 179)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 10 ticks in last 60s, last_price=$7.50, last_tick_time=04:06:25
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.00, last_tick_time=04:04:38
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:05:38
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:07:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:2t/? KBSX:0t/?
+[04:07:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +1 ticks (total 180)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +7 ticks (total 187)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 9 ticks in last 60s, last_price=$7.50, last_tick_time=04:07:34
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.00, last_tick_time=04:06:38
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:05:38
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:08:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:0t/? KBSX:2t/?
+[04:08:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3 | CLNN:1t/? FATN:0t/? KBSX:2t/?
+  Tick cache: CLNN → +2 ticks (total 189)
+  Tick cache: KBSX → +2 ticks (total 13)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +2 ticks (total 191)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 3 ticks in last 60s, last_price=$7.50, last_tick_time=04:08:26
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.00, last_tick_time=04:06:38
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:07:39
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:09:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=12 | CLNN:10t/? FATN:2t/? KBSX:0t/?
+[04:09:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=16 | CLNN:14t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +14 ticks (total 205)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +15 ticks (total 220)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 35 ticks in last 60s, last_price=$7.50, last_tick_time=04:09:35
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.00, last_tick_time=04:08:39
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:07:39
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:10:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=12 | CLNN:6t/? FATN:4t/? KBSX:2t/?
+[04:10:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=12 | CLNN:6t/? FATN:4t/? KBSX:2t/?
+[04:10 ET] CLNN CHART | O=7.33 H=7.50 L=7.31 C=7.50 V=3,378 | EMA9=none VWAP=7.43 (+0.9%) HOD=7.64 PM_H=7.64 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: CLNN → +14 ticks (total 234)
+  Tick cache: KBSX → +2 ticks (total 15)
+  Tick cache: FATN → +3 ticks (total 8)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-05/
+  Tick cache: CLNN → +5 ticks (total 239)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 12 ticks in last 60s, last_price=$7.50, last_tick_time=04:10:29
+  TICK AUDIT: FATN: 4 ticks in last 60s, last_price=$3.02, last_tick_time=04:09:55
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:09:39
+[04:10 ET] FATN CHART | O=3.02 H=3.02 L=3.02 C=3.02 V=104 | EMA9=none VWAP=3.02 (-0.0%) HOD=3.05 PM_H=3.05 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[04:11:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:6t/? FATN:1t/? KBSX:0t/?
+[04:11:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:6t/? FATN:1t/? KBSX:0t/?
+  Tick cache: FATN → +1 ticks (total 9)
+  Tick cache: CLNN → +9 ticks (total 248)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+============================================================
+=== RESTART at Tue May  5 02:11:33 MDT 2026 ===
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py", line 69, in <module>
+    import pytz
+ModuleNotFoundError: No module named 'pytz'
+=== RESTART (with venv) at Tue May  5 02:12:10 MDT 2026 ===
+BOOT: RESUME mode (marker age=708s, reason=marker_present)
+============================================================
+  WARRIOR BOT — SUB-BOT (IBKR data + Alpaca exec hybrid)
+  Data:    IB Gateway port 4002 clientId=2
+  Exec:    AlpacaBroker (paper=true)
+  State:   session_state_alpaca/
+  Cache:   tick_cache_alpaca/
+  Squeeze: OFF
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+⚠️  WARNING: WB_SQUEEZE_ENABLED is OFF — bot will not trade squeezes!
+  Set WB_SQUEEZE_ENABLED=1 in .env or environment to enable.
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: ALPACA
+🔁 RESUME: reconciling orders + positions
+  RESUME: risk restored — daily_pnl=$+0.00 trades=0 losses=0 (closed_trades=0 cached)
+🔁 RESUME: reconcile complete
+Account equity: $30,195
+EPL initialized: 1 strategies registered
+
+📡 Sub-bot: 3 new symbols from main bot's watchlist: ['CLNN', 'FATN', 'KBSX']
+[WB] [04:12 ET] CLNN WB_DOWNWAVE: wave_id=1 score=2 (< 7, no arm)
+  [RESUME] CLNN: bridged gap (1.3m, capped 90m) → 2 ticks
+🔁 [RESUME] CLNN: 248 ticks → 0 bars | drift=1.3m
+✅ Subscribed: CLNN
+🔁 [RESUME] FATN: 9 ticks → 0 bars | drift=1.6m
+✅ Subscribed: FATN
+🔁 [RESUME] KBSX: 15 ticks → 0 bars | drift=2.7m
+✅ Subscribed: KBSX
+
+Bot running. Windows: 04:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.48, last_tick_time=04:12:21
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.02, last_tick_time=04:12:21
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:12:22
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: CLNN → +4 ticks (total 252)
+  Tick cache: FATN → +3 ticks (total 12)
+  Tick cache: KBSX → +3 ticks (total 18)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-05/
+[04:13:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1 | CLNN:1t/? FATN:0t/? KBSX:0t/?
+[04:13:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1 | CLNN:1t/? FATN:0t/? KBSX:0t/?
+  Tick cache: CLNN → +2 ticks (total 254)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 3 ticks in last 60s, last_price=$7.49, last_tick_time=04:13:12
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.02, last_tick_time=04:12:24
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:12:26
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+  Tick cache: FATN → +2 ticks (total 14)
+  Tick cache: KBSX → +2 ticks (total 20)
+  Tick cache: CLNN → +3 ticks (total 257)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-05/
+[04:14:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:3t/? FATN:0t/? KBSX:2t/?
+[04:14:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:3t/? FATN:0t/? KBSX:2t/?
+  Tick cache: FATN → +2 ticks (total 16)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 3 ticks in last 60s, last_price=$7.50, last_tick_time=04:13:40
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.02, last_tick_time=04:14:18
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:13:26
+  Tick cache: CLNN → +2 ticks (total 259)
+  Tick cache: FATN → +3 ticks (total 19)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:15:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:2t/? FATN:3t/? KBSX:0t/?
+[04:15:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:2t/? FATN:3t/? KBSX:0t/?
+  TICK AUDIT: CLNN: 2 ticks in last 60s, last_price=$7.52, last_tick_time=04:14:40
+  TICK AUDIT: FATN: 3 ticks in last 60s, last_price=$3.03, last_tick_time=04:14:33
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:13:26
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:15 ET] KBSX CHART | O=1.30 H=1.30 L=1.30 C=1.30 V=400 | EMA9=none VWAP=1.30 (+0.0%) HOD=1.30 PM_H=1.30 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[04:15 ET] CLNN CHART | O=7.52 H=7.52 L=7.52 C=7.52 V=2 | EMA9=none VWAP=7.44 (+1.0%) HOD=7.64 PM_H=7.64 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: KBSX → +2 ticks (total 22)
+  Tick cache: CLNN → +1 ticks (total 260)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:16:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:3t/? FATN:0t/? KBSX:2t/?
+[04:16:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:3t/? FATN:0t/? KBSX:2t/?
+  Tick cache: CLNN → +4 ticks (total 264)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 7 ticks in last 60s, last_price=$7.52, last_tick_time=04:16:21
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:14:33
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:15:24
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: CLNN → +7 ticks (total 271)
+  Tick cache: FATN → +2 ticks (total 21)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:17:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:2t/? KBSX:0t/?
+[04:17:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +5 ticks (total 276)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 10 ticks in last 60s, last_price=$7.52, last_tick_time=04:17:14
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.03, last_tick_time=04:16:24
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:15:24
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: KBSX → +2 ticks (total 24)
+  Tick cache: CLNN → +2 ticks (total 278)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:18:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+[04:18:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+  TICK AUDIT: CLNN: 2 ticks in last 60s, last_price=$7.52, last_tick_time=04:17:44
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:16:24
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:17:25
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: FATN → +2 ticks (total 23)
+  Tick cache: CLNN → +4 ticks (total 282)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:19:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=9 | CLNN:7t/? FATN:2t/? KBSX:0t/?
+[04:19:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=9 | CLNN:7t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +6 ticks (total 288)
+  Tick cache: FATN → +2 ticks (total 25)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 10 ticks in last 60s, last_price=$7.50, last_tick_time=04:19:15
+  TICK AUDIT: FATN: 4 ticks in last 60s, last_price=$3.03, last_tick_time=04:19:03
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:17:25
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: KBSX → +2 ticks (total 26)
+  Tick cache: CLNN → +2 ticks (total 290)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:20:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:0t/? KBSX:2t/?
+[04:20:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=7 | CLNN:5t/? FATN:0t/? KBSX:2t/?
+[04:20 ET] CLNN CHART | O=7.50 H=7.52 L=7.50 C=7.52 V=412 | EMA9=none VWAP=7.45 (+1.0%) HOD=7.64 PM_H=7.64 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: CLNN → +4 ticks (total 294)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 6 ticks in last 60s, last_price=$7.52, last_tick_time=04:20:14
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:19:03
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:19:25
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:20 ET] FATN CHART | O=3.03 H=3.03 L=3.03 C=3.03 V=2 | EMA9=none VWAP=3.02 (+0.2%) HOD=3.05 PM_H=3.05 | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: FATN → +2 ticks (total 27)
+  Tick cache: CLNN → +1 ticks (total 295)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:21:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:2t/? KBSX:0t/?
+[04:21:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:2t/? KBSX:0t/?
+  Tick cache: CLNN → +1 ticks (total 296)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 2 ticks in last 60s, last_price=$7.52, last_tick_time=04:20:52
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.03, last_tick_time=04:20:25
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:19:25
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: KBSX → +2 ticks (total 28)
+  Tick cache: FATN → +2 ticks (total 29)
+📦 Tick cache saved: 2 symbols → tick_cache_alpaca/2026-05-05/
+[04:22:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:0t/? FATN:2t/? KBSX:2t/?
+[04:22:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5 | CLNN:0t/? FATN:3t/? KBSX:2t/?
+  Tick cache: FATN → +2 ticks (total 31)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.52, last_tick_time=04:20:52
+  TICK AUDIT: FATN: 4 ticks in last 60s, last_price=$3.03, last_tick_time=04:22:05
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:21:25
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: CLNN → +2 ticks (total 298)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+[04:23:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:2t/? FATN:0t/? KBSX:0t/?
+[04:23:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:2t/? FATN:0t/? KBSX:0t/?
+  TICK AUDIT: CLNN: 2 ticks in last 60s, last_price=$7.52, last_tick_time=04:22:26
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:22:05
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:21:25
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: FATN → +2 ticks (total 33)
+  Tick cache: KBSX → +2 ticks (total 30)
+  Tick cache: CLNN → +1 ticks (total 299)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-05/
+[04:24:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+[04:24:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=4 | CLNN:2t/? FATN:0t/? KBSX:2t/?
+  Tick cache: CLNN → +1 ticks (total 300)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+  TICK AUDIT: CLNN: 2 ticks in last 60s, last_price=$7.51, last_tick_time=04:23:55
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:23:26
+  TICK AUDIT: KBSX: 2 ticks in last 60s, last_price=$1.30, last_tick_time=04:23:28
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+IBKR ERROR 2105: HMDS data farm connection is broken:ushmds (reqId=-1, symbol=?)
+IBKR ERROR 2103: Market data farm connection is broken:usfarm (reqId=-1, symbol=?)
+Error 1100, reqId -1: Connectivity between IBKR and Trader Workstation has been lost.
+IBKR ERROR 1100: Connectivity between IBKR and Trader Workstation has been lost. (reqId=-1, symbol=?)
+  Tick cache: FATN → +2 ticks (total 35)
+📦 Tick cache saved: 1 symbols → tick_cache_alpaca/2026-05-05/
+[04:25:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:0t/? FATN:2t/? KBSX:0t/?
+IBKR ERROR 2157: Sec-def data farm connection is broken:secdefil (reqId=-1, symbol=?)
+[04:25:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2 | CLNN:0t/? FATN:2t/? KBSX:0t/?
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.51, last_tick_time=04:23:55
+  TICK AUDIT: FATN: 2 ticks in last 60s, last_price=$3.03, last_tick_time=04:24:26
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:23:28
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[04:26:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=0 | CLNN:0t/? FATN:0t/? KBSX:0t/?
+[04:26:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=0 | CLNN:0t/? FATN:0t/? KBSX:0t/?
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.51, last_tick_time=04:23:55
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:24:26
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:23:28
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+[04:27:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=0 | CLNN:0t/? FATN:0t/? KBSX:0t/?
+[04:27:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=0 | CLNN:0t/? FATN:0t/? KBSX:0t/?
+  TICK AUDIT: CLNN: 0 ticks in last 60s, last_price=$7.51, last_tick_time=04:23:55
+  TICK AUDIT: FATN: 0 ticks in last 60s, last_price=$3.03, last_tick_time=04:24:26
+  TICK AUDIT: KBSX: 0 ticks in last 60s, last_price=$1.30, last_tick_time=04:23:28
+⚠️ TICK DROUGHT: FATN — 0 ticks in last audit period. Resubscribing (attempt 2/3)...
+⚠️ TICK DROUGHT: KBSX — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+⚠️ TICK DROUGHT: CLNN — 0 ticks in last audit period. Resubscribing (attempt 3/3)...
+
+🛑 SHUTDOWN SIGNAL RECEIVED
