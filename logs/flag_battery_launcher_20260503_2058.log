@@ -1,0 +1,42 @@
+[20:58:05] Starting: WB_LEVEL_MAP_ENABLED=1 (level_map_on)
+[21:13:31] Done: level_map_on → eq=$209807 (Δ+0) [926s, rc=0]
+[21:13:31] Starting: WB_SQ_RUNNER_DETECT_ENABLED=1 (runner_detect_on)
+[21:28:59] Done: runner_detect_on → eq=$197062 (Δ-12745) [928s, rc=0]
+[21:28:59] Starting: WB_SQ_DYNAMIC_ATTEMPTS_ENABLED=1 (dynamic_attempts_on)
+[21:44:28] Done: dynamic_attempts_on → eq=$224960 (Δ+15153) [929s, rc=0]
+[21:44:28] Starting: WB_SQ_PARTIAL_EXIT_ENABLED=1 (partial_exit_on)
+[21:59:57] Done: partial_exit_on → eq=$183951 (Δ-25856) [929s, rc=0]
+[21:59:57] Starting: WB_SEED_GATE_ENABLED=0 (seed_gate_off)
+[22:15:25] Done: seed_gate_off → eq=$209807 (Δ+0) [928s, rc=0]
+[22:15:25] Starting: WB_SQ_SEED_STALE_GATE_ENABLED=0 (stale_gate_off)
+[22:30:54] Done: stale_gate_off → eq=$209807 (Δ+0) [929s, rc=0]
+[22:30:54] Starting: WB_SQ_WIDE_TRAIL_ENABLED=1 (wide_trail_on)
+[22:46:21] Done: wide_trail_on → eq=$202986 (Δ-6821) [927s, rc=0]
+[22:46:21] Starting: WB_3TRANCHE_ENABLED=1 (3tranche_on)
+[23:01:54] Done: 3tranche_on → eq=$175556 (Δ-34251) [933s, rc=0]
+[23:01:54] Starting: WB_VOL_FLOOR_ENABLED=1 (vol_floor_on)
+[23:17:33] Done: vol_floor_on → eq=$209807 (Δ+0) [939s, rc=0]
+[23:17:33] Starting: WB_PARABOLIC_REGIME_ENABLED=1 (parabolic_regime_on)
+[23:33:18] Done: parabolic_regime_on → eq=$213538 (Δ+3731) [945s, rc=0]
+
+=== ALL DONE ===
+Summary: logs/flag_battery_20260503_2058/SUMMARY.md
+# Stage-2 Flag Battery — Sun May  3 20:58:05 MDT 2026
+
+Baseline (no overrides): $30K → $209807 (+599.4%)
+Window: 2026-01-02 → 2026-04-30, squeeze-only
+
+| Flag | Setting | Final Equity | Δ vs Baseline | Trades | WR | Log |
+|------|---------|--------------|---------------|--------|-----|-----|
+| `WB_LEVEL_MAP_ENABLED` | 1 | $209807 | +0 | 179 | 17% | [log](level_map_on.log) |
+| `WB_SQ_RUNNER_DETECT_ENABLED` | 1 | $197062 | -12745 | 179 | 16% | [log](runner_detect_on.log) |
+| `WB_SQ_DYNAMIC_ATTEMPTS_ENABLED` | 1 | $224960 | +15153 | 188 | 17% | [log](dynamic_attempts_on.log) |
+| `WB_SQ_PARTIAL_EXIT_ENABLED` | 1 | $183951 | -25856 | 179 | 16% | [log](partial_exit_on.log) |
+| `WB_SEED_GATE_ENABLED` | 0 | $209807 | +0 | 179 | 17% | [log](seed_gate_off.log) |
+| `WB_SQ_SEED_STALE_GATE_ENABLED` | 0 | $209807 | +0 | 179 | 17% | [log](stale_gate_off.log) |
+| `WB_SQ_WIDE_TRAIL_ENABLED` | 1 | $202986 | -6821 | 180 | 19% | [log](wide_trail_on.log) |
+| `WB_3TRANCHE_ENABLED` | 1 | $175556 | -34251 | 179 | 17% | [log](3tranche_on.log) |
+| `WB_VOL_FLOOR_ENABLED` | 1 | $209807 | +0 | 179 | 17% | [log](vol_floor_on.log) |
+| `WB_PARABOLIC_REGIME_ENABLED` | 1 | $213538 | +3731 | 179 | 17% | [log](parabolic_regime_on.log) |
+
+Battery complete: Sun May  3 23:33:18 MDT 2026

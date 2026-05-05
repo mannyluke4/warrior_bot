@@ -1,0 +1,40 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 5856)
+=== V3 Hybrid daily run started: Mon May  4 02:00:06 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: fda4e57 (alpaca subbot: parallel A/B vs IBKR data feed)
+daily_run_v3.sh hash: d2eb60244d9936def978671845250f72d49a41a3
+bot_v3_hybrid.py hash: 537c6246450e83a37f933b2fd231aeb8ded64189
+bot_alpaca_subbot.py hash: 305d42bfa75706f30aa94f270864d47a0abdac05
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.032770 +/- 0.057689 time.apple.com 2620:149:a23:4000::1e2
+NTP sync skipped (non-root)
+System time: Mon May  4 08:00:08 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Starting live_scanner.py...
+Live scanner started (PID: 5895)
+Starting bot_v3_hybrid.py...
+Bot started (PID: 5897)
+Bot health check passed (still running after 15s, PID: 5897)
+HEALTH_OK: Bot connected at 2026-05-04 08:00:32 UTC
+Starting bot_alpaca_subbot.py (parallel A/B sub-bot)...
+Sub-bot started (PID: 5904, log: /Users/duffy/warrior_bot_v2/logs/2026-05-04_subbot_alpaca.log)
+Sub-bot health check passed (still running after 15s, PID: 5904)
+Gateway watchdog started (PID: 5915)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon May  4 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Mon May  4 18:00:50 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-04_daily.log.
+=== Shutting down at Mon May  4 18:00:50 MDT 2026 ===
+Pushing logs...

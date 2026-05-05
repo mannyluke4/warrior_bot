@@ -1,0 +1,22 @@
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Saturday.txt
++
++[0m
+/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 75: 29968 Killed: 9               "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
