@@ -118,6 +118,12 @@ DATABENTO_BRIDGE = os.getenv("WB_DATABENTO_BRIDGE_ENABLED", "1") == "1"
 # ── Strategy gates ───────────────────────────────────────────────────
 SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
+
+# Wave Breakout (Stage 3 — DIRECTIVE_WAVE_BREAKOUT_STAGE3_BUILD.md).
+WAVE_BREAKOUT_ENABLED = os.getenv("WB_WAVE_BREAKOUT_ENABLED", "0") == "1"
+WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
+if WAVE_BREAKOUT_ENABLED:
+    from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
 MP_V2_ENABLED = os.getenv("WB_MP_V2_ENABLED", "0") == "1"
 CT_ENABLED = os.getenv("WB_CT_ENABLED", "0") == "1"
 
@@ -289,6 +295,12 @@ class BotState:
         self.sq_detectors: dict[str, SqueezeDetector] = {}
         self.mp_detectors: dict[str, MicroPullbackDetector] = {}
         self.ct_detectors: dict[str, ContinuationDetector] = {}
+
+        # Wave Breakout — parallel strategy.
+        self.wb_detectors: dict = {}                # symbol → WaveBreakoutDetector
+        self.wb_positions: dict = {}                # symbol → {entry, qty, stop, score, ...}
+        self.wb_pending_orders: dict = {}           # symbol → order_id (entry order in flight)
+        self.wb_closed_trades: list = []
         # Short strategy detector (WB_SHORT_ENABLED). Separate from long path.
         self.short_detectors: dict = {}
         self.open_short: dict = None
@@ -428,6 +440,167 @@ def get_account_equity() -> float:
     except Exception as e:
         print(f"  Failed to fetch broker account equity: {e}", flush=True)
     return STARTING_EQUITY  # Fallback
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Wave Breakout helpers (Stage 3) — ported from bot_v3_hybrid.py
+# ──────────────────────────────────────────────────────────────────────
+
+def compute_wb_position_size(entry_price: float, stop_price: float,
+                              current_equity: float) -> tuple[int, float]:
+    """Equity-percent sizing with V0 hardening floors + max-notional cap."""
+    risk_pct = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
+    risk_floor = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
+    risk_ceiling = float(os.getenv("WB_WB_RISK_CEILING_DOLLARS", "5000"))
+    risk_dollars = max(risk_floor, min(risk_ceiling, current_equity * risk_pct))
+
+    min_risk_pct = float(os.getenv("WB_WB_MIN_RISK_PCT", "0.001"))
+    min_risk_abs = float(os.getenv("WB_WB_MIN_RISK_PER_SHARE", "0.01"))
+    raw_risk_per_share = entry_price - stop_price
+    risk_per_share = max(raw_risk_per_share, min_risk_abs, entry_price * min_risk_pct)
+    if risk_per_share <= 0 or entry_price <= 0:
+        return (0, 0.0)
+
+    shares_by_risk = int(risk_dollars / risk_per_share)
+    max_notional = float(os.getenv("WB_WB_MAX_NOTIONAL", "50000"))
+    shares_by_notional = int(max_notional / entry_price)
+    return (min(shares_by_risk, shares_by_notional), risk_dollars)
+
+
+def _wb_active_count() -> int:
+    return len(state.wb_positions)
+
+
+def place_wave_breakout_entry(symbol: str, msg: str) -> None:
+    parts = {}
+    for tok in msg.replace("WB_ENTER:", "").strip().split():
+        if "=" in tok:
+            k, v = tok.split("=", 1)
+            parts[k] = v
+    try:
+        entry_price = float(parts["entry"])
+        stop_price = float(parts["stop"])
+        score = int(parts.get("score", 7))
+    except (KeyError, ValueError) as e:
+        print(f"[WB] {symbol} ENTER parse error: {e} ({msg})", flush=True)
+        return
+
+    if symbol in state.wb_positions:
+        print(f"[WB] {symbol} DEFER: already in WB position", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("already_in_wb_position")
+        return
+    if state.open_position and state.open_position.get("symbol") == symbol:
+        print(f"[WB] {symbol} DEFER: squeeze position already open in symbol", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("squeeze_position_in_symbol")
+        return
+
+    if _wb_active_count() >= WB_MAX_CONCURRENT:
+        print(f"[WB] {symbol} DEFER: portfolio cap "
+              f"({_wb_active_count()}/{WB_MAX_CONCURRENT}) reached", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("portfolio_cap")
+        return
+
+    equity = get_account_equity()
+    shares, risk_dollars = compute_wb_position_size(entry_price, stop_price, equity)
+    if shares <= 0:
+        print(f"[WB] {symbol} SKIP: position_size_zero "
+              f"(entry={entry_price:.4f} stop={stop_price:.4f})", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("size_zero")
+        return
+
+    notional = shares * entry_price
+    print(f"[WB] {symbol} ENTER qty={shares} entry=${entry_price:.4f} "
+          f"stop=${stop_price:.4f} risk=${risk_dollars:.0f} notional=${notional:,.0f} "
+          f"score={score}", flush=True)
+
+    slippage = max(ENTRY_SLIPPAGE_MIN, entry_price * ENTRY_SLIPPAGE_PCT)
+    limit_price = round(entry_price + slippage, 2)
+    try:
+        order = state.broker.submit_limit(
+            symbol, shares, "BUY", limit_price, extended_hours=True,
+        )
+    except Exception as e:
+        print(f"[WB] {symbol} ORDER REJECT: {e}", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed(f"submit_failed:{e}")
+        return
+
+    state.wb_pending_orders[symbol] = {
+        "order_id": order.order_id,
+        "entry_price_target": entry_price,
+        "stop_price": stop_price,
+        "score": score,
+        "shares_requested": shares,
+        "placed_at": datetime.now(ET),
+    }
+
+    fill_price, filled_qty = wait_for_fill(order.order_id, timeout=ENTRY_RETRY_TIMEOUT_SEC)
+    if filled_qty > 0 and fill_price is not None:
+        state.wb_positions[symbol] = {
+            "symbol": symbol, "entry": fill_price, "qty": filled_qty,
+            "stop": stop_price, "score": score, "risk_dollars": risk_dollars,
+            "entry_time": datetime.now(ET), "order_id": order.order_id,
+            "setup_type": "wave_breakout", "peak": fill_price, "pyramid_filled": False,
+        }
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_filled(fill_price, datetime.now(timezone.utc), score=score)
+        print(f"[WB] {symbol} FILL @ ${fill_price:.4f} qty={filled_qty} (R={fill_price-stop_price:.4f})",
+              flush=True)
+    else:
+        print(f"[WB] {symbol} ENTRY TIMEOUT — no fill within "
+              f"{ENTRY_RETRY_TIMEOUT_SEC}s, cancelled", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("fill_timeout")
+    state.wb_pending_orders.pop(symbol, None)
+
+
+def place_wave_breakout_exit(symbol: str, msg: str) -> None:
+    pos = state.wb_positions.get(symbol)
+    if pos is None:
+        return
+
+    parts = {}
+    for tok in msg.replace("WB_EXIT:", "").strip().split():
+        if "=" in tok:
+            k, v = tok.split("=", 1)
+            parts[k] = v
+    reason = parts.get("reason", "unknown")
+    try:
+        exit_price_signal = float(parts.get("exit", "0"))
+    except ValueError:
+        exit_price_signal = 0.0
+
+    qty = pos["qty"]
+    print(f"[WB] {symbol} EXIT reason={reason} signal=${exit_price_signal:.4f} qty={qty}",
+          flush=True)
+    try:
+        sell = state.broker.submit_market(symbol, qty, "SELL")
+    except Exception as e:
+        print(f"[WB] {symbol} EXIT ORDER REJECT: {e}", flush=True)
+        return
+
+    fill_price, filled_qty = wait_for_fill(sell.order_id, timeout=15)
+    if filled_qty > 0 and fill_price is not None:
+        pnl = (fill_price - pos["entry"]) * filled_qty
+        r = (fill_price - pos["entry"]) / max(pos["entry"] - pos["stop"], 0.0001)
+        print(f"[WB] {symbol} EXITED @ ${fill_price:.4f} pnl=${pnl:+,.2f} r_mult={r:+.2f}",
+              flush=True)
+        state.wb_closed_trades.append({
+            "symbol": symbol, "setup_type": "wave_breakout",
+            "entry": pos["entry"], "exit": fill_price, "qty": filled_qty,
+            "pnl": pnl, "r_mult": r, "reason": reason,
+            "entry_time": pos["entry_time"], "exit_time": datetime.now(ET),
+        })
+    else:
+        print(f"[WB] {symbol} EXIT NO-FILL — manual review", flush=True)
+
+    state.wb_positions.pop(symbol, None)
+    if symbol in state.wb_detectors:
+        state.wb_detectors[symbol].mark_exited()
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -831,6 +1004,10 @@ def init_detectors(symbol: str):
     if CT_ENABLED and symbol not in state.ct_detectors:
         ct = ContinuationDetector()
         state.ct_detectors[symbol] = ct
+
+    # Wave Breakout — parallel strategy.
+    if WAVE_BREAKOUT_ENABLED and symbol not in state.wb_detectors:
+        state.wb_detectors[symbol] = WaveBreakoutDetector(symbol)
 
     if SHORT_ENABLED and symbol not in state.short_detectors:
         # Pre-check broker shortability. Paper Alpaca has a narrow shortable
@@ -1406,6 +1583,12 @@ def on_bar_close_1m(bar):
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             elif "SQ_REJECT" in sq_msg or "SQ_RESET" in sq_msg:
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+
+    # Wave Breakout detection
+    if WAVE_BREAKOUT_ENABLED and symbol in state.wb_detectors:
+        wb_msg = state.wb_detectors[symbol].on_bar_close_1m(bar, vwap=vwap)
+        if wb_msg:
+            print(f"[WB] [{now_str} ET] {symbol} {wb_msg}", flush=True)
 
     # MP detection (standalone MP or V2 re-entry)
     if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:
@@ -2644,6 +2827,21 @@ def _process_ticker(ticker):
     if state.open_short and state.open_short["symbol"] == symbol:
         manage_short_exit(symbol, price)
 
+    # Wave Breakout — parallel tick path.
+    if WAVE_BREAKOUT_ENABLED and symbol in state.wb_detectors:
+        det = state.wb_detectors[symbol]
+        wb_msg = det.on_trade_price(price, ts=None)
+        if wb_msg:
+            if wb_msg.startswith("WB_ENTER"):
+                place_wave_breakout_entry(symbol, wb_msg)
+            elif wb_msg.startswith("WB_EXIT"):
+                place_wave_breakout_exit(symbol, wb_msg)
+            elif (wb_msg.startswith("WB_TRAIL_ARMED") or
+                  wb_msg.startswith("WB_PYRAMID") or
+                  wb_msg.startswith("WB_DISARMED")):
+                now_str = datetime.now(ET).strftime("%H:%M:%S")
+                print(f"[WB] [{now_str} ET] {symbol} {wb_msg}", flush=True)
+
 
 def save_tick_cache(source: dict | None = None):
     """Save recorded ticks to tick_cache/ for future backtesting.
@@ -3309,6 +3507,7 @@ def main():
                     state.sq_detectors.clear()
                     state.mp_detectors.clear()
                     state.ct_detectors.clear()
+                    state.wb_detectors.clear()
                     # Reset bar builders so evening bars start fresh
                     state.bar_builder_1m = TradeBarBuilder(on_bar_close=on_bar_close_1m, et_tz=ET, interval_seconds=60)
                     state.bar_builder_10s = TradeBarBuilder(on_bar_close=on_bar_close_10s, et_tz=ET, interval_seconds=10)
@@ -3370,6 +3569,25 @@ def main():
                     if BOX_ENABLED and state.box_position:
                         _exit_box_trade("window_close")
                         state.box_engine = None
+                    # Close any Wave Breakout positions before dead zone
+                    if WAVE_BREAKOUT_ENABLED and state.wb_positions:
+                        for wb_sym in list(state.wb_positions.keys()):
+                            ticker = state.tickers.get(wb_sym)
+                            wb_price = None
+                            if ticker:
+                                for attr in ("last", "bid", "close"):
+                                    p = getattr(ticker, attr, None)
+                                    if p and not math.isnan(p) and p > 0:
+                                        wb_price = p
+                                        break
+                            if wb_price:
+                                print(f"[WB] {wb_sym} window_close — force exit at ${wb_price:.2f}", flush=True)
+                                place_wave_breakout_exit(
+                                    wb_sym,
+                                    f"WB_EXIT: reason=window_close exit={wb_price} r_mult=0.0",
+                                )
+                            else:
+                                print(f"[WB] {wb_sym} window_close — NO PRICE, position left open!", flush=True)
 
                     # Save tick cache from morning session
                     save_tick_cache()
