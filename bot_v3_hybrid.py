@@ -160,10 +160,28 @@ ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
 ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # max % above original limit
 ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
 
+# Exit-side slippage budget. Exits use SELL LIMITs (per project rule: never
+# market orders, never broker-side stops). Limit price = current_price -
+# max(EXIT_SLIPPAGE_MIN, current_price * EXIT_SLIPPAGE_PCT). On a BUY-to-
+# cover the buffer is added instead of subtracted.
+EXIT_SLIPPAGE_MIN = float(os.getenv("WB_EXIT_SLIPPAGE_MIN", "0.05"))
+EXIT_SLIPPAGE_PCT = float(os.getenv("WB_EXIT_SLIPPAGE_PCT", "0.005"))
+
 
 def _entry_slippage_for(price: float) -> float:
     """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
     return max(ENTRY_SLIPPAGE_MIN, price * ENTRY_SLIPPAGE_PCT)
+
+
+def _exit_limit_price(price: float, side: str) -> float:
+    """Slippage-buffered limit for exits. SELL → below current price, BUY-to-
+    cover → above. The bot never submits market orders on exits (per project
+    rule); when an internal stop fires we accept up to this slippage to ensure
+    fill but never accept a totally unbounded one."""
+    buffer = max(EXIT_SLIPPAGE_MIN, price * EXIT_SLIPPAGE_PCT)
+    if side.upper() == "SELL":
+        return round(price - buffer, 2)
+    return round(price + buffer, 2)
 
 # Session resume (2026-04-15 — see cowork_reports/2026-04-15_greenlight_session_resume.md)
 # WB_TICK_FLUSH_ENABLED: always-on crash-safety for the tick cache (independent
@@ -291,6 +309,11 @@ class BotState:
         self.wb_positions: dict = {}                # symbol → {entry, qty, stop, score, ...}
         self.wb_pending_orders: dict = {}           # symbol → order_id (entry order in flight)
         self.wb_closed_trades: list = []
+        # Entry-halt safety. Set True when reconcile detects a broker position
+        # the bot can't account for (orphan). Per the never-flatten rule, the
+        # bot stops opening new positions until the operator clears the halt.
+        self.entry_halt_active: bool = False
+        self.entry_halt_reason: str = ""
 
         # Tick-By-Tick Migration (Stage 2 — DIRECTIVE_TICKBYTICK_MIGRATION.md).
         # Two-tier subscription model. Tier 1 = reqTickByTickData('AllLast')
@@ -483,6 +506,11 @@ def _wb_active_count() -> int:
 def place_wave_breakout_entry(symbol: str, msg: str) -> None:
     """Handle a "WB_ENTER: entry=X stop=Y score=Z" message from the
     detector. Computes size, checks portfolio cap, places the order."""
+    if state.entry_halt_active:
+        print(f"[WB] {symbol} SKIP: entry halt active ({state.entry_halt_reason})", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("entry_halt")
+        return
     # Parse the detector message
     parts = {}
     for tok in msg.replace("WB_ENTER:", "").strip().split():
@@ -556,6 +584,7 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
         "shares_requested": shares,
         "placed_at": datetime.now(ET),
     }
+    persist_wb_state()
 
     # Wait briefly for fill (mirrors squeeze pattern)
     fill_price, filled_qty = wait_for_fill(order.order_id, timeout=ENTRY_RETRY_TIMEOUT_SEC)
@@ -584,6 +613,7 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
         if symbol in state.wb_detectors:
             state.wb_detectors[symbol].mark_entry_failed("fill_timeout")
     state.wb_pending_orders.pop(symbol, None)
+    persist_wb_state()
 
 
 def place_wave_breakout_exit(symbol: str, msg: str) -> None:
@@ -605,10 +635,14 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
         exit_price_signal = 0.0
 
     qty = pos["qty"]
-    print(f"[WB] {symbol} EXIT reason={reason} signal=${exit_price_signal:.4f} qty={qty}",
-          flush=True)
+    # Reference price for the limit: prefer the trigger tick, fall back to the
+    # position's tracked peak if the message didn't carry one.
+    ref_price = exit_price_signal if exit_price_signal > 0 else float(pos.get("peak") or pos["entry"])
+    limit_price = _exit_limit_price(ref_price, "SELL")
+    print(f"[WB] {symbol} EXIT reason={reason} signal=${exit_price_signal:.4f} "
+          f"qty={qty} limit=${limit_price:.4f}", flush=True)
     try:
-        sell = state.broker.submit_market(symbol, qty, "SELL")
+        sell = state.broker.submit_limit(symbol, qty, "SELL", limit_price, extended_hours=True)
     except Exception as e:
         print(f"[WB] {symbol} EXIT ORDER REJECT: {e}", flush=True)
         return
@@ -631,6 +665,7 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
     state.wb_positions.pop(symbol, None)
     if symbol in state.wb_detectors:
         state.wb_detectors[symbol].mark_exited()
+    persist_wb_state()
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -692,13 +727,19 @@ def reconcile_positions_on_startup():
             }
             print(f"  → Adopted {symbol} qty={qty_available} into bot state. Exit management active.", flush=True)
         else:
-            print(f"  → Bot already has position in {state.open_position['symbol']}. "
-                  f"CLOSING orphan {symbol}.", flush=True)
-            try:
-                state.broker.submit_market(symbol, qty_available, "SELL")
-                print(f"  → Orphan {symbol} close order submitted (qty={qty_available}).", flush=True)
-            except Exception as e:
-                print(f"  → FAILED to close orphan {symbol}: {e}", flush=True)
+            # Halt-and-log: the broker has a position the bot can't account for.
+            # Per project rule (feedback_session_persistence_required.md):
+            # never auto-flatten orphans — that's how the 2026-05-05 CLNN
+            # SELL-MARKET-after-close incident happened. Halt new entries until
+            # the operator manually reconciles. The position keeps any internal
+            # stop the bot already had; if state was lost, the operator must
+            # decide whether to keep, exit, or hand back to the bot.
+            state.entry_halt_active = True
+            state.entry_halt_reason = (f"orphan {symbol} qty={qty_available} "
+                                       f"avg=${avg_entry:.2f}")
+            print(f"  → 🚧 ORPHAN HALT: {symbol} qty={qty_available} avg=${avg_entry:.2f} "
+                  f"present in broker, no bot state. Bot will NOT auto-flatten. "
+                  f"New entries blocked until manual reconciliation.", flush=True)
 
 
 def _trade_record_to_open_position(rec: dict) -> dict:
@@ -776,7 +817,46 @@ def resume_reconcile():
     if cancelled_buy or cancelled_sell:
         print(f"  RESUME: {cancelled_buy} BUYs + {cancelled_sell} SELLs cancelled", flush=True)
 
-    # Step 3: rehydrate positions, index persisted trades by symbol.
+    # Step 3a: rehydrate WB / short state from wb_state.json. Done before the
+    # broker-position pass so we recognize WB/short positions as known (not
+    # orphans) when reconciling against the broker.
+    #
+    # JSON serializes datetime as ISO strings; downstream code does datetime
+    # arithmetic (e.g. age = now - entry_time) so we must coerce back here.
+    def _coerce_dt(d: dict, keys: list) -> None:
+        for k in keys:
+            v = d.get(k)
+            if isinstance(v, str):
+                try:
+                    parsed = datetime.fromisoformat(v)
+                    if parsed.tzinfo is None:
+                        parsed = parsed.replace(tzinfo=timezone.utc)
+                    d[k] = parsed.astimezone(ET)
+                except ValueError:
+                    pass
+
+    wb_data = ss.read_wb_state()
+    rehydrated_wb = wb_data.get("wb_positions") or {}
+    rehydrated_pending = wb_data.get("wb_pending_orders") or {}
+    rehydrated_short = wb_data.get("open_short")
+    if rehydrated_wb:
+        for _sym, _pos in rehydrated_wb.items():
+            if isinstance(_pos, dict):
+                _coerce_dt(_pos, ["entry_time"])
+        state.wb_positions = dict(rehydrated_wb)
+        print(f"  RESUME: rehydrated {len(state.wb_positions)} WB positions: "
+              f"{sorted(state.wb_positions.keys())}", flush=True)
+    if rehydrated_pending:
+        for _sym, _po in rehydrated_pending.items():
+            if isinstance(_po, dict):
+                _coerce_dt(_po, ["placed_at"])
+        state.wb_pending_orders = dict(rehydrated_pending)
+    if rehydrated_short and isinstance(rehydrated_short, dict):
+        _coerce_dt(rehydrated_short, ["entry_time"])
+        state.open_short = rehydrated_short
+        print(f"  RESUME: rehydrated short on {rehydrated_short.get('symbol')}", flush=True)
+
+    # Step 3b: rehydrate squeeze positions, index persisted trades by symbol.
     persisted = ss.read_open_trades()
     by_symbol = {r["symbol"]: r for r in persisted}
     try:
@@ -791,14 +871,27 @@ def resume_reconcile():
         broker_qty = apos.qty
         broker_entry = apos.avg_entry_price
 
+        # Skip symbols already accounted for by WB or short rehydrate.
+        if sym in state.wb_positions:
+            print(f"  RESUME: {sym} qty={broker_qty} matches rehydrated WB position — skip squeeze match", flush=True)
+            rehydrated_symbols.add(sym)
+            continue
+        if state.open_short and state.open_short.get("symbol") == sym:
+            print(f"  RESUME: {sym} qty={broker_qty} matches rehydrated short position — skip squeeze match", flush=True)
+            rehydrated_symbols.add(sym)
+            continue
+
         rec = by_symbol.get(sym)
         if rec is None:
-            # No persisted record → orphan. Loud flatten (gated by
-            # WB_RESUME_FLATTEN_ORPHANS). No current-price estimate available
-            # pre-live-ticks; helper omits impact line when None.
+            # No persisted record in any strategy → true orphan. Per project
+            # rule (no auto-flatten), set the halt flag and let the operator
+            # reconcile manually. flatten_orphan_position now only logs.
             ss.flatten_orphan_position(
                 state.broker, sym, broker_qty, broker_entry, current_price=None,
             )
+            state.entry_halt_active = True
+            state.entry_halt_reason = (f"resume orphan {sym} qty={broker_qty} "
+                                       f"avg=${broker_entry:.2f}")
             continue
 
         # Match: rehydrate with qty drift reconciliation. Broker is truth.
@@ -914,6 +1007,7 @@ def check_stale_open_short():
         if (MP_ENABLED or MP_V2_ENABLED) and sym in state.mp_detectors:
             state.mp_detectors[sym]._in_trade = False
         state.open_short = None
+        persist_wb_state()
 
 
 def periodic_position_sync():
@@ -2309,6 +2403,9 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
 
 def enter_trade(symbol: str, armed, setup_type: str):
     """Place entry order via IBKR."""
+    if state.entry_halt_active:
+        print(f"  SKIP {symbol}: entry halt active ({state.entry_halt_reason})", flush=True)
+        return
     entry = armed.trigger_high
     stop = armed.stop_low
     r = armed.r
@@ -2635,6 +2732,7 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
         "pre_peak_low": state.short_pre_peak_low.get(symbol, float("inf")),
         "fill_confirmed": False,
     }
+    persist_wb_state()
 
     # Mark per-symbol detectors as in-trade so long-side signals can't fire
     # on the same symbol while the short is open.
@@ -2672,6 +2770,7 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
                           flush=True)
                     if state.open_short and state.open_short.get("order_id") == order_id:
                         state.open_short = None
+                        persist_wb_state()
                     return
             time.sleep(0.5)
         # Timeout: try one more read; if any shares filled, record the fill.
@@ -2745,13 +2844,10 @@ def exit_short(symbol: str, price: float, qty: int, reason: str):
               flush=True)
         order_submitted = True
     except Exception as e:
-        print(f"  BROKER COVER FAILED: {e} — trying market", flush=True)
-        try:
-            cover_order = state.broker.submit_market(symbol, qty, "BUY")
-            print(f"  BROKER MARKET COVER: {cover_order.order_id} BUY {qty} {symbol}", flush=True)
-            order_submitted = True
-        except Exception as e2:
-            print(f"  BROKER MARKET COVER ALSO FAILED: {e2}", flush=True)
+        # Per project rule: no market fallbacks. If the limit didn't take,
+        # log and let the next tick re-trigger the exit logic with a fresh price.
+        print(f"  BROKER COVER FAILED: {e} — no market fallback (per project rules); "
+              f"will retry on next tick with fresh price", flush=True)
 
     if not order_submitted:
         print(f"  ⚠️ SHORT COVER ABORTED: {symbol} qty={qty} reason={reason} — "
@@ -2773,6 +2869,7 @@ def exit_short(symbol: str, price: float, qty: int, reason: str):
         state.open_short = None
     else:
         pos["qty"] = remaining
+    persist_wb_state()
 
     def verify_cover_fill():
         actual_qty = 0
@@ -2856,13 +2953,11 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         print(f"  BROKER EXIT: {exit_order.order_id} SELL {qty} {symbol} @ ${limit_price:.2f}", flush=True)
         order_submitted = True
     except Exception as e:
-        print(f"  BROKER EXIT FAILED: {e} — trying market order", flush=True)
-        try:
-            exit_order = state.broker.submit_market(symbol, qty, "SELL")
-            print(f"  BROKER MARKET EXIT: {exit_order.order_id} SELL {qty} {symbol}", flush=True)
-            order_submitted = True
-        except Exception as e2:
-            print(f"  BROKER MARKET EXIT ALSO FAILED: {e2}", flush=True)
+        # Per project rule: no market fallbacks. The limit's slippage budget
+        # already covers normal exit conditions; if it failed, retrying with a
+        # fresh price on the next tick is safer than a market order.
+        print(f"  BROKER EXIT FAILED: {e} — no market fallback (per project rules); "
+              f"will retry on next tick with fresh price", flush=True)
 
     # Phantom-P&L guard: if BOTH limit and market submissions were rejected
     # (e.g. "insufficient qty available" when shares are held_for_orders on
@@ -3277,12 +3372,19 @@ def _tick_flush_loop():
         time.sleep(SESSION_FLUSH_SEC)
         try:
             with _tick_buffer_lock:
-                if not any(state.tick_buffer.values()):
-                    continue
-                snap, state.tick_buffer = state.tick_buffer, {}
+                snap_to_flush = bool(any(state.tick_buffer.values()))
+                if snap_to_flush:
+                    snap, state.tick_buffer = state.tick_buffer, {}
+                else:
+                    snap = None
             # Release lock before disk IO — callback thread can resume writing
             # into the fresh state.tick_buffer while we serialize the snapshot.
-            save_tick_cache(source=snap)
+            if snap is not None:
+                save_tick_cache(source=snap)
+            # Defense in depth: flush WB state on the same cadence so crash
+            # loss is bounded to one tick of trail-stop drift rather than the
+            # whole position record. Cheap (small JSON file).
+            persist_wb_state()
         except Exception as e:
             print(f"⚠️  TICK FLUSH ERROR: {e}", flush=True)
 
@@ -3351,6 +3453,24 @@ def persist_open_trades():
             ss.write_open_trades([])
     except Exception as e:
         print(f"⚠️  persist_open_trades error: {e}", flush=True)
+
+
+def persist_wb_state():
+    """Sync state.wb_positions / state.wb_pending_orders / state.open_short
+    to wb_state.json. Called on every WB mutation (entry fill, exit fill,
+    pyramid leg, trail update) plus periodically from the flush thread.
+
+    Datetimes inside dicts serialize via default=str (atomic_write_json) and
+    are round-tripped as ISO strings on read; rehydrate parses them back.
+    """
+    try:
+        ss.write_wb_state(
+            wb_positions=state.wb_positions,
+            wb_pending_orders=state.wb_pending_orders,
+            open_short=state.open_short,
+        )
+    except Exception as e:
+        print(f"⚠️  persist_wb_state error: {e}", flush=True)
 
 
 def persist_risk():
@@ -3676,15 +3796,15 @@ def _exit_box_trade(reason: str):
           f"reason={reason} P&L=${pnl:+,.2f}", flush=True)
 
     try:
-        state.broker.submit_limit(symbol, qty, "SELL", round(exit_price - 0.02, 2),
-                                  extended_hours=False)
+        state.broker.submit_limit(symbol, qty, "SELL",
+                                  _exit_limit_price(exit_price, "SELL"),
+                                  extended_hours=True)
     except Exception as e:
-        print(f"  [BOX] EXIT ORDER FAILED: {e} — attempting market order", flush=True)
-        try:
-            state.broker.submit_market(symbol, qty, "SELL")
-        except Exception as e2:
-            print(f"  [BOX] MARKET ORDER ALSO FAILED: {e2}", flush=True)
-            return
+        # Per project rule: no market fallback. Box exits retry on the next
+        # box-loop iteration with fresh price.
+        print(f"  [BOX] EXIT ORDER FAILED: {e} — no market fallback (per project rules)",
+              flush=True)
+        return
 
     state.box_daily_pnl += pnl
     state.box_daily_trades += 1

@@ -259,6 +259,52 @@ def read_epl_state(date_str: str | None = None) -> dict:
 
 
 # ══════════════════════════════════════════════════════════════════════
+# WB / short / WB-pending state — durable plan for non-squeeze strategies.
+#
+# Per project rule (feedback_session_persistence_required.md): every
+# strategy's open positions, pending orders, and exit plan must persist so
+# a restart can resume them. The squeeze side uses open_trades.json above;
+# this is the equivalent for WB and short. Format is permissive — no strict
+# schema validation — because these strategies' state shapes evolve more
+# than squeeze's stable trade record.
+# ══════════════════════════════════════════════════════════════════════
+
+def write_wb_state(
+    *,
+    wb_positions: dict,
+    wb_pending_orders: dict,
+    open_short: dict | None,
+) -> None:
+    """Persist non-squeeze strategy state. Called on every mutation
+    (entry fill, exit fill, pyramid, trail update, order placement) so a
+    `kill -9` mid-update loses at most one tick of stop-trail data.
+
+    Datetimes inside the dicts are serialized via the default=str fallback
+    in atomic_write_json — they round-trip as ISO strings on read.
+    """
+    payload = {
+        "wb_positions": wb_positions,
+        "wb_pending_orders": wb_pending_orders,
+        "open_short": open_short,
+    }
+    atomic_write_json(_path("wb_state.json"), payload)
+
+
+def read_wb_state(date_str: str | None = None) -> dict:
+    """Read non-squeeze strategy state. Returns empty-but-shaped dict on any
+    failure so the boot path can call this unconditionally."""
+    data = read_json_safe(_path("wb_state.json", date_str),
+                          {"wb_positions": {}, "wb_pending_orders": {}, "open_short": None})
+    if not isinstance(data, dict):
+        return {"wb_positions": {}, "wb_pending_orders": {}, "open_short": None}
+    return {
+        "wb_positions": data.get("wb_positions") if isinstance(data.get("wb_positions"), dict) else {},
+        "wb_pending_orders": data.get("wb_pending_orders") if isinstance(data.get("wb_pending_orders"), dict) else {},
+        "open_short": data.get("open_short") if isinstance(data.get("open_short"), dict) else None,
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Scrub
 # ══════════════════════════════════════════════════════════════════════
 
@@ -311,36 +357,23 @@ def flatten_orphan_position(
     avg_cost: float,
     current_price: float | None = None,
 ) -> None:
-    """Flatten a live broker position that has no corresponding open_trades.json
-    record. Could mean: (a) crash before the writer ran, (b) a manually placed
-    position, or (c) a persistence-writer bug we can't detect at resume time.
+    """LEGACY name retained for callers; this NO LONGER flattens. Per project
+    rule (feedback_session_persistence_required.md), the bot must never
+    auto-flatten an orphan position with a market order — that's how the
+    2026-05-05 CLNN incident happened. Orphans now halt: this function logs
+    loudly and the caller is expected to set an entry-halt flag in bot state
+    so new entries are blocked until manual reconciliation.
 
-    We can't distinguish (a)/(b)/(c), so this action is LOUD and gated by
-    WB_RESUME_FLATTEN_ORPHANS — Manny can flip it off if it fires wrong.
-
-    `broker` is a BrokerClient (from broker.py) — AlpacaBroker or IBKRBroker.
+    `broker` parameter retained for signature compatibility with the old
+    flatten path; intentionally unused.
     """
-    if os.getenv("WB_RESUME_FLATTEN_ORPHANS", "1") != "1":
-        print(
-            f"⚠️  ORPHAN POSITION DETECTED (flatten disabled): {symbol} {qty} shares "
-            f"@ ${avg_cost:.2f} avg_cost — no record in open_trades.json. Leaving untouched.",
-            flush=True,
-        )
-        return
-
     impact = None
     if current_price is not None:
         impact = (current_price - avg_cost) * qty
-
     print(
-        f"⚠️  ORPHAN POSITION FLATTEN: {symbol} {qty} shares @ ${avg_cost:.2f} avg_cost "
-        f"— no record in open_trades.json. Flattening at market."
+        f"🚧 ORPHAN POSITION DETECTED: {symbol} {qty} shares @ ${avg_cost:.2f} avg_cost "
+        f"— no rehydrated state record. Bot will NOT auto-flatten (per project rules). "
+        f"Halt new entries; manual reconcile required."
         + (f" Est. impact at ${current_price:.2f}: ${impact:+,.2f}" if impact is not None else ""),
         flush=True,
     )
-
-    try:
-        broker.submit_market(symbol, qty, "SELL")
-        print(f"  ORPHAN FLATTEN submitted for {symbol}", flush=True)
-    except Exception as e:
-        print(f"  ORPHAN FLATTEN FAILED: {symbol}: {e}", flush=True)
