@@ -210,7 +210,11 @@ SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_alpaca.log"
 #   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB Phase 1 paper validation
 # To change tomorrow's split, edit these two lines.
 echo "Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)..."
-WB_SQUEEZE_ENABLED=0 WB_WAVE_BREAKOUT_ENABLED=1 \
+# WB_TBT_ENABLED=0 on sub-bot per 2026-05-06: per-account TBT cap is 5
+# (verified via 10190 collisions). Main bot's squeeze is tick-density-
+# sensitive and gets all 5 slots; sub-bot runs WB on snapshot reqMktData
+# only — WB is bar-based and tolerates the live-tick gap.
+WB_SQUEEZE_ENABLED=0 WB_WAVE_BREAKOUT_ENABLED=1 WB_TBT_ENABLED=0 \
   python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
 SUBBOT_PID=$!
 echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
