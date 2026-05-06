@@ -49312,3 +49312,13 @@
 08:38:49  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
 08:38:49  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-06 04:00:00-04:00 snapshot=False
 08:38:49  connecting to remote gateway
+08:38:51  authenticated session_id='3317247560'
+08:38:51  adding user callback on_event
+08:38:51  starting live client
+08:38:51        Stream started, replaying from 04:00 ET...
+08:38:51  [7_14] No candidates to write.
+08:38:51  [FINAL] No candidates to write.
+08:38:51  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+08:38:51  stopping live client
+08:38:51  Done.
+08:38:51  connection closed
