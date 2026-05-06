@@ -1,0 +1,127 @@
+=== reqTickByTickData CAPACITY PROBE ===
+Time: 2026-05-05T13:15:30.143001
+Connection: 127.0.0.1:4002  clientId=98
+Probe universe: up to 30 symbols
+
+Connected. Account: ['DUQ143444']
+
+Subscribing one-at-a-time to reqTickByTickData('AllLast'); 5s wait between each.
+
+  [1/30] AAPL   ✓ subscribed; 1 ticks in 5s
+  [2/30] MSFT   ✓ subscribed; 1 ticks in 5s
+  [3/30] GOOGL  ✓ subscribed; 0 ticks in 5s
+  [4/30] AMZN   ✓ subscribed; 0 ticks in 5s
+  [5/30] META   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 14: Max number of tick-by-tick requests has been reached., contract: Stock(conId=76792991, symbol='TSLA', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='TSLA', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=14 — Max number of tick-by-tick requests has been reached.
+  [6/30] TSLA   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 16: Max number of tick-by-tick requests has been reached., contract: Stock(conId=4815747, symbol='NVDA', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='NVDA', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=16 — Max number of tick-by-tick requests has been reached.
+  [7/30] NVDA   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 18: Max number of tick-by-tick requests has been reached., contract: Stock(conId=4391, symbol='AMD', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='AMD', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=18 — Max number of tick-by-tick requests has been reached.
+  [8/30] AMD    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 20: Max number of tick-by-tick requests has been reached., contract: Stock(conId=270639, symbol='INTC', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='INTC', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=20 — Max number of tick-by-tick requests has been reached.
+  [9/30] INTC   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 22: Max number of tick-by-tick requests has been reached., contract: Stock(conId=272800, symbol='ORCL', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='ORCL', tradingClass='ORCL')
+  ⚠️ IBKR error 10190 reqId=22 — Max number of tick-by-tick requests has been reached.
+  [10/30] ORCL   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 24: Max number of tick-by-tick requests has been reached., contract: Stock(conId=1520593, symbol='JPM', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='JPM', tradingClass='JPM')
+  ⚠️ IBKR error 10190 reqId=24 — Max number of tick-by-tick requests has been reached.
+  [11/30] JPM    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 26: Max number of tick-by-tick requests has been reached., contract: Stock(conId=10098, symbol='BAC', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='BAC', tradingClass='BAC')
+  ⚠️ IBKR error 10190 reqId=26 — Max number of tick-by-tick requests has been reached.
+  [12/30] BAC    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 28: Max number of tick-by-tick requests has been reached., contract: Stock(conId=10375, symbol='WFC', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='WFC', tradingClass='WFC')
+  ⚠️ IBKR error 10190 reqId=28 — Max number of tick-by-tick requests has been reached.
+  [13/30] WFC    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 30: Max number of tick-by-tick requests has been reached., contract: Stock(conId=87335484, symbol='C', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='C', tradingClass='C')
+  ⚠️ IBKR error 10190 reqId=30 — Max number of tick-by-tick requests has been reached.
+  [14/30] C      ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 32: Max number of tick-by-tick requests has been reached., contract: Stock(conId=4627828, symbol='GS', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='GS', tradingClass='GS')
+  ⚠️ IBKR error 10190 reqId=32 — Max number of tick-by-tick requests has been reached.
+  [15/30] GS     ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 34: Max number of tick-by-tick requests has been reached., contract: Stock(conId=8719, symbol='JNJ', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='JNJ', tradingClass='JNJ')
+  ⚠️ IBKR error 10190 reqId=34 — Max number of tick-by-tick requests has been reached.
+  [16/30] JNJ    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 36: Max number of tick-by-tick requests has been reached., contract: Stock(conId=11031, symbol='PFE', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='PFE', tradingClass='PFE')
+  ⚠️ IBKR error 10190 reqId=36 — Max number of tick-by-tick requests has been reached.
+  [17/30] PFE    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 38: Max number of tick-by-tick requests has been reached., contract: Stock(conId=70101545, symbol='MRK', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='MRK', tradingClass='MRK')
+  ⚠️ IBKR error 10190 reqId=38 — Max number of tick-by-tick requests has been reached.
+  [18/30] MRK    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 40: Max number of tick-by-tick requests has been reached., contract: Stock(conId=5111, symbol='BMY', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='BMY', tradingClass='BMY')
+  ⚠️ IBKR error 10190 reqId=40 — Max number of tick-by-tick requests has been reached.
+  [19/30] BMY    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 42: Max number of tick-by-tick requests has been reached., contract: Stock(conId=269753, symbol='GILD', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='GILD', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=42 — Max number of tick-by-tick requests has been reached.
+  [20/30] GILD   ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 44: Max number of tick-by-tick requests has been reached., contract: Stock(conId=13977, symbol='XOM', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='XOM', tradingClass='XOM')
+  ⚠️ IBKR error 10190 reqId=44 — Max number of tick-by-tick requests has been reached.
+  [21/30] XOM    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 46: Max number of tick-by-tick requests has been reached., contract: Stock(conId=5684, symbol='CVX', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='CVX', tradingClass='CVX')
+  ⚠️ IBKR error 10190 reqId=46 — Max number of tick-by-tick requests has been reached.
+  [22/30] CVX    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 48: Max number of tick-by-tick requests has been reached., contract: Stock(conId=10885, symbol='COP', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='COP', tradingClass='COP')
+  ⚠️ IBKR error 10190 reqId=48 — Max number of tick-by-tick requests has been reached.
+  [23/30] COP    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 50: Max number of tick-by-tick requests has been reached., contract: Stock(conId=10880, symbol='OXY', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='OXY', tradingClass='OXY')
+  ⚠️ IBKR error 10190 reqId=50 — Max number of tick-by-tick requests has been reached.
+  [24/30] OXY    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 52: Max number of tick-by-tick requests has been reached., contract: Stock(conId=89495776, symbol='MPC', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='MPC', tradingClass='MPC')
+  ⚠️ IBKR error 10190 reqId=52 — Max number of tick-by-tick requests has been reached.
+  [25/30] MPC    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 54: Max number of tick-by-tick requests has been reached., contract: Stock(conId=756733, symbol='SPY', exchange='SMART', primaryExchange='ARCA', currency='USD', localSymbol='SPY', tradingClass='SPY')
+  ⚠️ IBKR error 10190 reqId=54 — Max number of tick-by-tick requests has been reached.
+  [26/30] SPY    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 56: Max number of tick-by-tick requests has been reached., contract: Stock(conId=320227571, symbol='QQQ', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='QQQ', tradingClass='NMS')
+  ⚠️ IBKR error 10190 reqId=56 — Max number of tick-by-tick requests has been reached.
+  [27/30] QQQ    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 58: Max number of tick-by-tick requests has been reached., contract: Stock(conId=9579970, symbol='IWM', exchange='SMART', primaryExchange='ARCA', currency='USD', localSymbol='IWM', tradingClass='IWM')
+  ⚠️ IBKR error 10190 reqId=58 — Max number of tick-by-tick requests has been reached.
+  [28/30] IWM    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 60: Max number of tick-by-tick requests has been reached., contract: Stock(conId=73128548, symbol='DIA', exchange='SMART', primaryExchange='ARCA', currency='USD', localSymbol='DIA', tradingClass='DIA')
+  ⚠️ IBKR error 10190 reqId=60 — Max number of tick-by-tick requests has been reached.
+  [29/30] DIA    ✓ subscribed; 0 ticks in 5s
+Error 10190, reqId 62: Max number of tick-by-tick requests has been reached., contract: Stock(conId=12340041, symbol='VTI', exchange='SMART', primaryExchange='ARCA', currency='USD', localSymbol='VTI', tradingClass='VTI')
+  ⚠️ IBKR error 10190 reqId=62 — Max number of tick-by-tick requests has been reached.
+  [30/30] VTI    ✓ subscribed; 0 ticks in 5s
+
+=== RESULT ===
+Successful subscriptions: 30
+Symbols subscribed:       AAPL, MSFT, GOOGL, AMZN, META, TSLA, NVDA, AMD, INTC, ORCL, JPM, BAC, WFC, C, GS, JNJ, PFE, MRK, BMY, GILD, XOM, CVX, COP, OXY, MPC, SPY, QQQ, IWM, DIA, VTI
+No failure — capacity is at least 30 (probe didn't exhaust)
+
+=== Cleanup — cancelling all probe subscriptions ===
+cancelMktData: No reqId found for contract Stock(symbol='AAPL', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='MSFT', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='GOOGL', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='AMZN', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='META', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='TSLA', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='NVDA', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='AMD', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='INTC', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='ORCL', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='JPM', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='BAC', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='WFC', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='C', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='GS', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='JNJ', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='PFE', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='MRK', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='BMY', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='GILD', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='XOM', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='CVX', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='COP', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='OXY', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='MPC', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='SPY', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='QQQ', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='IWM', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='DIA', exchange='SMART', currency='USD')
+cancelMktData: No reqId found for contract Stock(symbol='VTI', exchange='SMART', currency='USD')
+Done.

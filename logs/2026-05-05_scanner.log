@@ -25200,3 +25200,22 @@
 02:22:49  CANDIDATE [04:22] AEON: gap=+nan% $nan float=8.17M
 02:23:15  CANDIDATE [04:23] VSEC: gap=+nan% $nan float=19.57M
 02:24:36  disconnecting client due to timeout, no data received for 40 second(s)
+08:17:39  Live Scanner starting — 2026-05-05 
+  [float_cache] Cleared 6 stale None entries — will re-attempt lookups
+08:17:39  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+08:17:39  Initialized Historical(gateway=https://hist.databento.com)
+08:17:39        Requesting OHLCV from 2026-04-06 to 2026-05-04...
+08:17:58        12,674 symbols with avg daily volume
+08:17:58        12,674 symbols with prev close loaded
+08:17:58  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+08:17:58  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-05 04:00:00-04:00 snapshot=False
+08:17:58  connecting to remote gateway
+08:17:59  authenticated session_id='3317050765'
+08:17:59  adding user callback on_event
+08:17:59  starting live client
+08:17:59        Stream started, replaying from 04:00 ET...
+08:17:59  [7_14] No candidates to write.
+08:17:59  [FINAL] No candidates to write.
+08:17:59  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+08:17:59  stopping live client
+08:17:59  Done.
