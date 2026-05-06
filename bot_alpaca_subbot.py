@@ -186,6 +186,21 @@ MAX_DAILY_ENTRIES = int(os.getenv("WB_MAX_DAILY_ENTRIES", "0"))
 # original limit (stops unbounded chasing on vertical moves).
 EXIT_SLIPPAGE_MIN = float(os.getenv("WB_EXIT_SLIPPAGE_MIN", "0.05"))
 EXIT_SLIPPAGE_PCT = float(os.getenv("WB_EXIT_SLIPPAGE_PCT", "0.005"))
+
+# Tradability Gate (DIRECTIVE_TRADABILITY_GATE.md, 2026-05-06).
+# Pre-submission filter on WB entries. Four boolean gates, all must pass:
+#   1. R ≥ max(2.5% of entry, 3× spread) — meaningful R relative to noise
+#   2. Entry ≥ +1.5% above VWAP (long) — directional commitment
+#   3. Avg 5-min volume over last 5 bars ≥ 5,000 — liquid tape
+#   4. ≤1 of last 5 5-min bars degenerate (O=H=L=C) — real price discovery
+# On reject: blacklist symbol for 30 min so the same dead tape doesn't re-arm.
+TRADABILITY_GATE_ENABLED = os.getenv("WB_WB_TRADABILITY_GATE_ENABLED", "1") == "1"
+GATE_MIN_R_PCT = float(os.getenv("WB_WB_GATE_MIN_R_PCT", "0.025"))
+GATE_MIN_R_SPREAD_MULT = float(os.getenv("WB_WB_GATE_MIN_R_SPREAD_MULT", "3.0"))
+GATE_MIN_VWAP_DIST_PCT = float(os.getenv("WB_WB_GATE_MIN_VWAP_DIST_PCT", "1.5"))
+GATE_MIN_5BAR_VOL = int(os.getenv("WB_WB_GATE_MIN_5BAR_VOL", "5000"))
+GATE_MAX_DEGENERATE_BARS = int(os.getenv("WB_WB_GATE_MAX_DEGENERATE_BARS", "1"))
+CHOP_BLACKLIST_MINUTES = int(os.getenv("WB_WB_CHOP_BLACKLIST_MINUTES", "30"))
 ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))  # 0.5% of price
 ENTRY_MAX_RETRIES = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
@@ -337,6 +352,12 @@ class BotState:
         # bot stops opening new positions until the operator clears the halt.
         self.entry_halt_active: bool = False
         self.entry_halt_reason: str = ""
+        # Tradability Gate state (DIRECTIVE_TRADABILITY_GATE.md).
+        self.choppy_until: dict = {}                # symbol → datetime when blacklist expires
+        self.bars_1m_history: dict = {}             # symbol → list[Bar] (last ~25 1m bars; consumed in 5-of-5 chunks for 5min context)
+        self.chop_reject_count: int = 0             # day total of [CHOP_REJECT] events
+        self.chop_reject_unique: set = set()        # unique symbols rejected (for summary)
+        self.chop_blacklist_hits: int = 0           # day total of [CHOP_BLACKLIST_HIT] events
 
         # Tick-By-Tick Migration (Stage 2 — DIRECTIVE_TICKBYTICK_MIGRATION.md).
         # Two-tier subscription model. Tier 1 = reqTickByTickData('AllLast')
@@ -522,6 +543,185 @@ def _wb_active_count() -> int:
     return len(state.wb_positions)
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Tradability Gate (DIRECTIVE_TRADABILITY_GATE.md, 2026-05-06)
+#
+# Pre-submission filter on WB entries — refuses entries on stocks with
+# tape that can't support a profitable exit. Today's losers (CLNN/FATN)
+# all failed at least 3 of these 4 gates; today's winner (PMAX) passed
+# all 4. Gate is bot-side, not detector-side, so it's easy to backtest
+# in isolation, toggle by env var, and tune independently of detector
+# logic.
+# ══════════════════════════════════════════════════════════════════════
+
+def _gate_r_distance(entry: float, stop: float, current_spread: float | None) -> tuple[bool, str]:
+    """Gate 1: R must be ≥ 2.5% of entry AND ≥ 3× the bid-ask spread.
+    A stop ~1% from entry on a stock with 0.5% spread has no buffer for
+    spread + slippage + normal noise — guaranteed to whipsaw out."""
+    r_dollars = entry - stop
+    if entry <= 0 or r_dollars <= 0:
+        return False, f"degenerate (entry={entry} stop={stop})"
+    r_pct = r_dollars / entry
+    if r_pct < GATE_MIN_R_PCT:
+        return False, f"R={r_pct*100:.2f}% < {GATE_MIN_R_PCT*100:.1f}% floor"
+    if current_spread is not None and current_spread > 0:
+        if r_dollars < GATE_MIN_R_SPREAD_MULT * current_spread:
+            return False, f"R=${r_dollars:.4f} < {GATE_MIN_R_SPREAD_MULT:.1f}×spread=${GATE_MIN_R_SPREAD_MULT*current_spread:.4f}"
+    return True, "ok"
+
+
+def _gate_vwap_distance(entry: float, vwap: float | None, side: str = "long") -> tuple[bool, str]:
+    """Gate 2: For longs, entry must be ≥ +1.5% above VWAP.
+    Persistent VWAP separation is a clean proxy for directional commitment
+    by buyers. Today's PMAX held +3.3 to +10.5% above VWAP; FATN/CLNN
+    oscillated within ±2-3%."""
+    if vwap is None or vwap <= 0:
+        return False, "vwap unavailable"
+    dist_pct = (entry - vwap) / vwap * 100
+    if side == "long":
+        if dist_pct < GATE_MIN_VWAP_DIST_PCT:
+            return False, f"vwap_dist={dist_pct:+.2f}% < +{GATE_MIN_VWAP_DIST_PCT}%"
+    else:
+        if dist_pct > -GATE_MIN_VWAP_DIST_PCT:
+            return False, f"vwap_dist={dist_pct:+.2f}% > -{GATE_MIN_VWAP_DIST_PCT}%"
+    return True, "ok"
+
+
+def _gate_volume(bars_5min: list) -> tuple[bool, str]:
+    """Gate 3: Avg 5-min volume over last 5 bars ≥ 5,000 shares.
+    The detector cannot extract a profitable trade from tape that nobody
+    else is trading. Today's PMAX 5-min volumes: 8K-52K. FATN: 5-1,011
+    (50-1000× lower)."""
+    if len(bars_5min) < 5:
+        return False, f"only {len(bars_5min)} 5min bars available, need 5"
+    last5 = bars_5min[-5:]
+    avg_vol = sum(b.volume for b in last5) / 5
+    if avg_vol < GATE_MIN_5BAR_VOL:
+        return False, f"avg_5bar_vol={avg_vol:.0f} < {GATE_MIN_5BAR_VOL}"
+    return True, "ok"
+
+
+def _gate_degenerate_bars(bars_5min: list) -> tuple[bool, str]:
+    """Gate 4: At most 1 of last 5 5-min bars is degenerate (O=H=L=C).
+    Single-print bars mean ONE trade or ZERO trades happened in 5 min.
+    The detector replays them as if they're real waves; they're not."""
+    if len(bars_5min) < 5:
+        return False, f"only {len(bars_5min)} 5min bars available, need 5"
+    last5 = bars_5min[-5:]
+    degenerate_count = sum(
+        1 for b in last5
+        if b.high == b.low == b.close == b.open
+    )
+    if degenerate_count > GATE_MAX_DEGENERATE_BARS:
+        return False, f"{degenerate_count}/5 last bars degenerate (O=H=L=C)"
+    return True, "ok"
+
+
+def _build_5min_from_1min(bars_1m: list) -> list:
+    """Aggregate trailing 1-min bars into synthetic 5-min bars (5-of-5).
+    Returns the most recent N complete 5-min synthetic bars. Bars must be
+    chronologically ordered (oldest → newest)."""
+    if not bars_1m:
+        return []
+    # Group from the END so we always have a complete trailing 5-min bucket.
+    # Count from end, take 5 at a time.
+    n = len(bars_1m)
+    chunks = []
+    i = n - (n % 5) - 5  # start of the most-recent complete 5-tuple
+    while i >= 0:
+        chunk = bars_1m[i:i+5]
+        if len(chunk) == 5:
+            chunks.insert(0, _agg_bars(chunk))
+        i -= 5
+    return chunks
+
+
+def _agg_bars(bars_1m: list):
+    """Aggregate 5 1-min Bars into a single 5-min synthetic Bar."""
+    from bars import Bar
+    return Bar(
+        symbol=bars_1m[0].symbol,
+        start_utc=bars_1m[0].start_utc,
+        open=bars_1m[0].open,
+        high=max(b.high for b in bars_1m),
+        low=min(b.low for b in bars_1m),
+        close=bars_1m[-1].close,
+        volume=sum(b.volume for b in bars_1m),
+    )
+
+
+def _check_tradability(
+    symbol: str,
+    entry: float,
+    stop: float,
+    vwap: float | None,
+    current_spread: float | None,
+    bars_1m_for_symbol: list,
+    side: str = "long",
+) -> tuple[bool, list[str]]:
+    """Composite gate. All four sub-gates must pass; returns reasons for ALL
+    failed gates so logs are informative."""
+    bars_5m = _build_5min_from_1min(bars_1m_for_symbol)
+    failures = []
+    ok, reason = _gate_r_distance(entry, stop, current_spread)
+    if not ok:
+        failures.append(f"R: {reason}")
+    ok, reason = _gate_vwap_distance(entry, vwap, side)
+    if not ok:
+        failures.append(f"VWAP: {reason}")
+    ok, reason = _gate_volume(bars_5m)
+    if not ok:
+        failures.append(f"VOL: {reason}")
+    ok, reason = _gate_degenerate_bars(bars_5m)
+    if not ok:
+        failures.append(f"BARS: {reason}")
+    return (len(failures) == 0, failures)
+
+
+def _is_chop_blacklisted(symbol: str) -> bool:
+    """Per-day chop blacklist: stays True until cooldown expires."""
+    until = state.choppy_until.get(symbol)
+    if until is None:
+        return False
+    if datetime.now(ET) >= until:
+        del state.choppy_until[symbol]
+        return False
+    return True
+
+
+def _add_to_chop_blacklist(symbol: str, minutes: int = None):
+    if minutes is None:
+        minutes = CHOP_BLACKLIST_MINUTES
+    state.choppy_until[symbol] = datetime.now(ET) + timedelta(minutes=minutes)
+
+
+def _record_1m_bar_history(bar):
+    """Maintain a rolling per-symbol deque of the last ~25 closed 1-min bars
+    so we can synthesize 5 5-min bars on demand at entry time. Called from
+    on_bar_close_1m. Caps at 30 to keep memory bounded."""
+    sym = bar.symbol
+    history = state.bars_1m_history.setdefault(sym, [])
+    history.append(bar)
+    if len(history) > 30:
+        del history[: len(history) - 30]
+
+
+def _current_spread_for(symbol: str) -> float | None:
+    """Best-effort live spread from the bot's ticker. Returns None if
+    bid/ask are missing or invalid."""
+    ticker = state.tickers.get(symbol)
+    if ticker is None:
+        return None
+    try:
+        bid = float(getattr(ticker, "bid", None) or 0)
+        ask = float(getattr(ticker, "ask", None) or 0)
+        if bid <= 0 or ask <= 0 or ask < bid:
+            return None
+        return ask - bid
+    except (TypeError, ValueError):
+        return None
+
+
 def place_wave_breakout_entry(symbol: str, msg: str) -> None:
     if state.entry_halt_active:
         print(f"[WB] {symbol} SKIP: entry halt active ({state.entry_halt_reason})", flush=True)
@@ -558,6 +758,46 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
         if symbol in state.wb_detectors:
             state.wb_detectors[symbol].mark_entry_failed("portfolio_cap")
         return
+
+    # Tradability gate (DIRECTIVE_TRADABILITY_GATE.md). Per-day chop blacklist
+    # checked first (cheap), then the four composite gates. On reject, log
+    # structured [CHOP_REJECT] / [CHOP_BLACKLIST] events and refuse entry.
+    if TRADABILITY_GATE_ENABLED:
+        if _is_chop_blacklisted(symbol):
+            until = state.choppy_until[symbol]
+            print(f"[CHOP_BLACKLIST_HIT] {symbol} still blacklisted "
+                  f"(re-arm rejected) until {until.strftime('%H:%M:%S')} ET",
+                  flush=True)
+            state.chop_blacklist_hits += 1
+            if symbol in state.wb_detectors:
+                state.wb_detectors[symbol].mark_entry_failed("chop_blacklisted")
+            return
+
+        vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else None
+        spread = _current_spread_for(symbol)
+        bars_1m = state.bars_1m_history.get(symbol, [])
+        passed, reasons = _check_tradability(
+            symbol=symbol,
+            entry=entry_price,
+            stop=stop_price,
+            vwap=vwap,
+            current_spread=spread,
+            bars_1m_for_symbol=bars_1m,
+            side="long",
+        )
+        if not passed:
+            print(f"[CHOP_REJECT] {symbol} failed: {' | '.join(reasons)}",
+                  flush=True)
+            _add_to_chop_blacklist(symbol)
+            until = state.choppy_until[symbol]
+            print(f"[CHOP_BLACKLIST] {symbol} blacklisted until "
+                  f"{until.strftime('%H:%M:%S')} ET ({CHOP_BLACKLIST_MINUTES}min)",
+                  flush=True)
+            state.chop_reject_count += 1
+            state.chop_reject_unique.add(symbol)
+            if symbol in state.wb_detectors:
+                state.wb_detectors[symbol].mark_entry_failed("chop_reject")
+            return
 
     equity = get_account_equity()
     shares, risk_dollars = compute_wb_position_size(entry_price, stop_price, equity)
@@ -1915,6 +2155,9 @@ def on_bar_close_1m(bar):
 
     # Tier-1 volume rolling window — fed every closed 1m bar.
     _maintain_tier1_volume_bucket(bar)
+
+    # Tradability-gate 1m bar history (consumed in 5-of-5 chunks at entry time).
+    _record_1m_bar_history(bar)
 
     # Get VWAP from bar builder
     vwap = state.bar_builder_1m.get_vwap(symbol) if state.bar_builder_1m else None
@@ -4060,6 +4303,16 @@ def main():
 
                     # Save tick cache from morning session
                     save_tick_cache()
+                    # Tradability-gate end-of-window summary
+                    if TRADABILITY_GATE_ENABLED:
+                        n_unique = len(state.chop_reject_unique)
+                        symbols_str = (", ".join(sorted(state.chop_reject_unique))
+                                       if n_unique else "(none)")
+                        print(f"[CHOP_SUMMARY] window total: "
+                              f"{state.chop_reject_count} entries rejected "
+                              f"({n_unique} unique symbols: {symbols_str}), "
+                              f"{state.chop_blacklist_hits} blacklist hits prevented re-entry",
+                              flush=True)
                     print(f"\n💤 Dead zone ({now.strftime('%H:%M')} ET). Sleeping until next window...", flush=True)
 
             # Issue 5: Pending order timeout check (cancel unfilled entries after 15s)
