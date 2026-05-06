@@ -3359,43 +3359,58 @@ def on_ticker_update(tickers):
 
 
 def _drain_tick_by_tick_ticker(ticker):
-    """For Tier 1 symbols: walk through new entries in `ticker.tickByTicks`
-    and feed each as a real trade tick. ib_insync appends every print to
-    that list when the symbol is subscribed via reqTickByTickData('AllLast').
+    """For Tier 1 symbols: process per-print events in `ticker.tickByTicks`.
 
-    The ticker's `.last` / `.lastSize` snapshot fields also tick (because
-    the same Ticker is re-used by ib_insync), but they're ignored on the
-    Tier 1 path — only the per-print stream is processed. This is the
-    "ignore reqMktData events for tick-by-tick symbols" rule from the
-    migration directive."""
+    IMPORTANT — `tickByTicks` is per-cycle, NOT accumulating. ib_insync
+    populates the list with the ticks that arrived since the last
+    `pendingTickersEvent` and clears it before the next cycle. So the
+    correct usage is: every event, iterate whatever's currently in the
+    list. Do NOT track an index across events — that was the 2026-05-06
+    bug that caused Tier 1 symbols to silently go data-blind hours after
+    the first tick (verified by scripts/probe_tbt_event_flow.py).
+
+    Same-Ticker note: ib_insync uses ONE Ticker object per contract for
+    both reqMktData and reqTickByTickData (probe-confirmed). When the
+    snapshot side updates `.last` / `.lastSize`, this same handler fires
+    with `tickByTicks` empty — that's fine, we just have nothing to
+    process. Health monitoring still updates from the snapshot in that
+    case so audit_tick_health doesn't false-alarm on a quiet TBT cycle
+    while the snapshot fields are clearly live."""
     contract = ticker.contract
     if not contract:
         return
     symbol = contract.symbol
-    last_idx = state.tbt_last_processed_index.get(symbol, 0)
-    new_ticks = ticker.tickByTicks[last_idx:] if hasattr(ticker, "tickByTicks") else []
-    if not new_ticks:
+    tbt_events = list(ticker.tickByTicks or [])
+
+    if tbt_events:
+        # Per-print path — the high-fidelity stream we promoted for.
+        for tk in tbt_events:
+            try:
+                price = float(tk.price) if tk.price else 0.0
+                size = int(tk.size or 0)
+                ts_raw = tk.time
+            except (AttributeError, TypeError, ValueError):
+                continue
+            if ts_raw is None:
+                ts_raw = datetime.now(timezone.utc)
+            if ts_raw.tzinfo is None:
+                ts_raw = ts_raw.replace(tzinfo=timezone.utc)
+            ts_et = ts_raw.astimezone(ET)
+            state.tick_counts[symbol] = state.tick_counts.get(symbol, 0) + 1
+            state.last_tick_time[symbol] = ts_et
+            state.last_tick_price[symbol] = price
+            if price > 0 and size > 0:
+                _process_trade_tick(symbol, price, size, ts_et)
         return
-    for tk in new_ticks:
-        try:
-            price = float(tk.price) if tk.price else 0.0
-            size = int(tk.size or 0)
-            ts_raw = tk.time
-        except (AttributeError, TypeError, ValueError):
-            continue
-        if ts_raw is None:
-            ts_raw = datetime.now(timezone.utc)
-        if ts_raw.tzinfo is None:
-            ts_raw = ts_raw.replace(tzinfo=timezone.utc)
-        ts_et = ts_raw.astimezone(ET)
-        # Health-monitoring update — every tick counts toward audit metrics.
-        state.tick_counts[symbol] = state.tick_counts.get(symbol, 0) + 1
-        state.last_tick_time[symbol] = ts_et
-        state.last_tick_price[symbol] = price
-        # Real-trade processing only when price/size are valid.
-        if price > 0 and size > 0:
-            _process_trade_tick(symbol, price, size, ts_et)
-    state.tbt_last_processed_index[symbol] = len(ticker.tickByTicks)
+
+    # No per-print events this cycle — refresh health metrics from the
+    # snapshot side (last/lastSize) so audit_tick_health doesn't declare
+    # 🔴 CRITICAL drought when the symbol is just briefly quiet on TBT.
+    # Don't double-process trades — only the per-print path bumps tick_counts.
+    last_attr = getattr(ticker, "last", None)
+    if last_attr is not None and not (isinstance(last_attr, float) and math.isnan(last_attr)) and last_attr > 0:
+        state.last_tick_time[symbol] = datetime.now(ET)
+        state.last_tick_price[symbol] = float(last_attr)
 
 
 def _process_ticker(ticker):
