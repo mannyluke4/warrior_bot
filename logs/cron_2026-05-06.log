@@ -71,3 +71,11 @@ HEALTH_OK: Bot connected at 2026-05-06 14:38:48 UTC
 Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)...
 Sub-bot started (PID: 45040, log: /Users/duffy/warrior_bot_v2/logs/2026-05-06_subbot_alpaca.log)
 Pushing logs...
+[v2-ibkr-migration 14eef51] auto: v3 daily logs 2026-05-06
+ 4 files changed, 61115 insertions(+)
+ create mode 100644 logs/2026-05-06_daily.log
+ create mode 100644 logs/2026-05-06_scanner.log
+ create mode 100644 logs/2026-05-06_subbot_alpaca.log
+ create mode 100644 logs/cron_2026-05-06.log
+=== V3 Hybrid daily run complete: Wed May  6 08:38:50 MDT 2026 ===
+=== TRAP: cleanup at Wed May  6 08:38:50 MDT 2026 ===
