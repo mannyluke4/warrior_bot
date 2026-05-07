@@ -180,9 +180,25 @@ echo "Live scanner started (PID: $SCANNER_PID)"
 sleep 5
 
 # 7. Start the V3 hybrid bot
-echo "Starting bot_v3_hybrid.py..."
+# 2026-05-07: switched to Alpaca execution on a dedicated paper account
+# (PA3VP0LB4OID) — IBKR paper margin requirements were rejecting squeeze
+# entries (e.g. ATRA $202-short reject on 2026-05-07). MAIN_APCA_API_*
+# keys come from .env. Sub-bot continues to use the original APCA_API_*
+# keys for its own account.
+# .env is not sourced by this script (the bot uses load_dotenv internally),
+# so extract the main-bot keys inline for the env-var injection below.
+MAIN_APCA_KEY=$(grep "^MAIN_APCA_API_KEY_ID=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+MAIN_APCA_SECRET=$(grep "^MAIN_APCA_API_SECRET_KEY=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+if [ -z "$MAIN_APCA_KEY" ] || [ -z "$MAIN_APCA_SECRET" ]; then
+    echo "FATAL: MAIN_APCA_API_KEY_ID / MAIN_APCA_API_SECRET_KEY missing from .env"
+    exit 1
+fi
+echo "Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)..."
 cd ~/warrior_bot_v2
-python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+APCA_API_KEY_ID="$MAIN_APCA_KEY" \
+APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
+WB_BROKER=alpaca \
+  python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 
