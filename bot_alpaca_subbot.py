@@ -201,6 +201,11 @@ GATE_MIN_VWAP_DIST_PCT = float(os.getenv("WB_WB_GATE_MIN_VWAP_DIST_PCT", "1.5"))
 GATE_MIN_5BAR_VOL = int(os.getenv("WB_WB_GATE_MIN_5BAR_VOL", "5000"))
 GATE_MAX_DEGENERATE_BARS = int(os.getenv("WB_WB_GATE_MAX_DEGENERATE_BARS", "1"))
 CHOP_BLACKLIST_MINUTES = int(os.getenv("WB_WB_CHOP_BLACKLIST_MINUTES", "30"))
+# Score-based bypass: when the WB detector's own confidence score reaches
+# this threshold, trust it and skip the chop gate. 2026-05-08 morning
+# analysis showed the gate rejecting multiple score=10 setups on the
+# day's biggest gapper (ATRA +70%) for tight-but-not-chop R values.
+GATE_HIGH_CONFIDENCE_BYPASS_SCORE = int(os.getenv("WB_WB_GATE_HIGH_CONFIDENCE_BYPASS_SCORE", "9"))
 ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))  # 0.5% of price
 ENTRY_MAX_RETRIES = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
@@ -762,7 +767,19 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
     # Tradability gate (DIRECTIVE_TRADABILITY_GATE.md). Per-day chop blacklist
     # checked first (cheap), then the four composite gates. On reject, log
     # structured [CHOP_REJECT] / [CHOP_BLACKLIST] events and refuse entry.
-    if TRADABILITY_GATE_ENABLED:
+    #
+    # Score-based bypass (2026-05-08 morning): when the WB detector's own
+    # confidence score reaches GATE_HIGH_CONFIDENCE_BYPASS_SCORE (default 9),
+    # trust it and skip the gate entirely. Today's morning showed the gate
+    # rejecting multiple score=10 setups on the day's biggest gapper (ATRA
+    # +70%) for R values in the 1.0-1.2% band — premarket-gapper consolidation,
+    # not chop. The detector's own score is a better trust signal for A+ setups
+    # than the gate's R/VWAP/vol heuristics on tight-but-real setups.
+    if TRADABILITY_GATE_ENABLED and score >= GATE_HIGH_CONFIDENCE_BYPASS_SCORE:
+        print(f"[CHOP_BYPASS] {symbol} score={score} >= {GATE_HIGH_CONFIDENCE_BYPASS_SCORE} "
+              f"— skipping chop gate (high-confidence detector signal)",
+              flush=True)
+    if TRADABILITY_GATE_ENABLED and score < GATE_HIGH_CONFIDENCE_BYPASS_SCORE:
         if _is_chop_blacklisted(symbol):
             until = state.choppy_until[symbol]
             print(f"[CHOP_BLACKLIST_HIT] {symbol} still blacklisted "
