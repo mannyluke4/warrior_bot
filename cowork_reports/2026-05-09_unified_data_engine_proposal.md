@@ -18,10 +18,13 @@ Manny's read after seeing 2026-05-08's session: we're leaving money on the table
 - **04:00 → 10:00 ET**: Squeeze owns TBT priority. Squeeze decides which 5 symbols hold Tier 1 slots. WB still operates, but on Tier 2 (snapshot) data.
 - **10:00 → 20:00 ET**: WB owns TBT priority. WB decides which 5 symbols hold Tier 1 slots. Squeeze winds down (it's never traded after 10:00 ET in our data anyway).
 
+**Critical revision (Manny, 2026-05-09):** We are NOT replacing the current dual-bot setup. Manny is provisioning a **third Alpaca paper account** specifically to host the unified-engine-driven version. That setup will run in **parallel** with the current dual-bot setup so we can do a clean A/B over the same trading sessions, on the same watchlist, against the same scanner, with the same time windows. Decision to flip to live-money on June 4 will be informed by the comparison results, not by the calendar. **The current dual-bot architecture stays untouched and unmodified for the duration of the A/B period.**
+
 We need Cowork's third perspective on:
 1. **Is this the right architecture?** Or is there a cleaner pattern we're missing?
-2. **What's the safest build sequence?** We have the May 15-16 tuning review and June 4 real-money deadline as bookends.
-3. **Edge cases we may not have thought of**, especially around handoffs, crash recovery, and live-money behavior.
+2. **How do we resolve the IBKR data-side contention?** (See "The IBKR Account Problem" section below — this is the most important open question.) Both setups want IBKR data; we have one IBKR paper account. The third Alpaca account fixes execution-side, not data-side.
+3. **What's the cleanest A/B comparison protocol?** Same watchlist + same windows + same scanner output is the easy part. The hard part is making sure neither setup's IBKR-side activity contaminates the other.
+4. **Edge cases we may not have thought of**, especially around the handoff protocol, crash recovery, and live-money behavior.
 
 ---
 
@@ -212,13 +215,112 @@ This is the hardest part of the design. Open questions for Cowork:
 
 ---
 
-## Why this is the weekend project
+## A/B test plan — the third Alpaca paper account
 
-- **Markets closed** through Sunday night. We can build, kill, restart, screw up, and recover without missing a paper session.
-- **Memorial Day weekend** is *not* this weekend (that's May 23-25), so we don't have a 3-day window — but May 9-10 + May 16-17 are both clean.
-- **Trade data collection still happens during weekdays.** We can ship the engine without breaking the dual-bot setup if we build it side-by-side and only flip over once verified.
-- **Five-day paper validation** before flipping live = May 12 / 13 / 14 / 15 / 18 (Tue-Fri + Mon following). That brings us to the May 18 week tuning review with 5 sessions of unified-engine data.
-- **June 4 deadline** has buffer if we ship engine by May 16, validate through May 22, tune at May 18-19 review, lock in by May 22-23, and freeze the week of June 1.
+This is the load-bearing change in the 2026-05-09 revision. Instead of replacing the current setup, we run both architectures **side-by-side** during weekday paper sessions and compare:
+
+```
+Setup A (CURRENT — unchanged for A/B duration)              Setup B (NEW — engine-driven)
+┌────────────────────────────────────┐                      ┌────────────────────────────────────┐
+│ IB Gateway (port 4002)             │                      │ IB Gateway — see "IBKR Problem"   │
+│   clientId=1 → main bot (squeeze)  │                      │   clientId=3 → data_engine.py     │
+│   clientId=2 → sub-bot (WB)        │                      │                                    │
+│                                    │                      │ Strategy bots (logic only):        │
+│ Alpaca:                            │                      │   squeeze_bot.py                  │
+│   PA3VP0LB4OID ← main bot orders   │                      │   wb_bot.py                       │
+│   PA3LXGIPGG8B ← sub-bot orders    │                      │                                    │
+└────────────────────────────────────┘                      │ Alpaca:                            │
+                                                            │   PA-NEW-3rd-ACCOUNT ← all orders  │
+                                                            │   from both engine-driven          │
+                                                            │   strategies                       │
+                                                            └────────────────────────────────────┘
+
+         Daily P&L = sum(PA3VP0LB4OID, PA3LXGIPGG8B)              Daily P&L = PA-NEW-3rd-ACCOUNT
+                            │                                                  │
+                            └─────────── A/B comparison ────────────────────────┘
+                                          (same watchlist,
+                                           same scanner,
+                                           same windows)
+```
+
+### What we measure
+
+| Metric | Setup A (sum of 2 accts) | Setup B (engine acct) |
+|---|---|---|
+| Daily P&L (realized) | from Alpaca order ledger | from Alpaca order ledger |
+| Number of entries fired | from logs | from logs |
+| Number of entries filled vs rejected | from logs + Alpaca | from logs + Alpaca |
+| Avg slippage on entry/exit | from log + Alpaca fills | from log + Alpaca fills |
+| Tick density seen per symbol | from tick cache | from engine tick stream |
+| BP rejections | from Alpaca error codes | from Alpaca error codes |
+| TBT slot utilization | from `[TIER]` log lines | from engine policy log |
+| Time-to-fill (signal → fill) | from order timestamps | from order timestamps |
+
+### What we control for
+
+- **Same watchlist** — both setups read `watchlist.txt` (live scanner writes once, both consume).
+- **Same trading windows** — both run 04:00-12:00 ET morning + 16:00-20:00 ET evening.
+- **Same chop gate config** — both bots read same `.env`.
+- **Same WaveBreakout detector code** — only the data plumbing differs.
+- **Same Squeeze detector code** — only the data plumbing differs.
+- **Same scanner output cadence** — `live_scanner.py` runs once per day, output consumed by both.
+
+### What we CANNOT control for
+
+- **TBT slot allocation will differ** by design. That's literally what we're testing.
+- **Tick reception timing** may differ by milliseconds between the two stacks. For tick-level entry triggers (squeeze), this could swing fills.
+- **Order placement timing** could differ if engine adds non-trivial IPC latency.
+
+### What "winning" looks like
+
+After ~5 sessions:
+- Setup B P&L ≥ Setup A P&L *and* engine had no infrastructure incidents → **Engine wins, plan to flip live-money June 4 to engine architecture**.
+- Setup B P&L < Setup A P&L by a margin (define how much) → **Stay on dual-bot for June 4 live**.
+- Mixed / inconclusive → **Extend A/B for another 5 sessions, push live-money decision to follow-up review**.
+
+This is the right framing because it removes "did we time the cutover correctly?" from the question. We never cut over until the data justifies it.
+
+---
+
+## The IBKR Account Problem (most important open question)
+
+Manny gets a third Alpaca paper account easily — confirmed in his message. The issue is the **data side**. We have ONE IBKR paper account. With Setup A using clientIds 1+2 (main bot + sub-bot), Setup B's data engine would need clientId=3 against the same IBKR account → **all three would compete for the same 5-slot per-account TBT pool**. That's the cross-bot 10190 collision we already had on 2026-05-06.
+
+### Options to resolve
+
+| Option | Description | Pros | Cons |
+|---|---|---|---|
+| **A. Second IBKR paper account** | Manny provisions a separate IBKR paper account. Engine uses that. Setup A keeps the original. | Clean A/B with full TBT on both sides | Requires Manny to set up another IBKR account. Unknown if same broker permissions / data entitlements transfer. Two paper accounts to keep the demo seats current. |
+| **B. Engine runs without TBT during A/B** | Engine subscribes only to `reqMktData('233')` snapshots; no TBT until the comparison concludes. | Zero IBKR contention with current setup. Validates engine architecture cleanly. | We can't actually validate the time-sliced TBT priority feature during A/B — we'd be testing "engine architecture without its main differentiator". |
+| **C. Time-share the day** | Setup A runs Mon/Wed/Fri, Setup B runs Tue/Thu. They never overlap on IBKR. | Full TBT for whichever's running. | Halves the data per setup. A/B comparison is now Mon vs Tue, Wed vs Thu — not the same session. |
+| **D. Engine runs on Alpaca data feed** | `data_engine.py` subscribes to Alpaca's `iex` SIP feed instead of IBKR. | Total decoupling — current setup gets full IBKR, engine gets Alpaca. | Alpaca SIP is ~10% the print density of IBKR TBT (we A/B'd it 2026-05-04). Tick-level entries fire on different prices. The comparison is contaminated by data-source quality, not architecture. |
+| **E. Engine runs in tick-cache replay mode** | Engine validates correctness against historical tick caches at real-time speed. No live IBKR connection. | Zero contention. Lets us harden the engine code before live deployment. | Doesn't validate live behavior. Doesn't measure live P&L. Best as a *pre*-A/B step, not the A/B itself. |
+
+### Cowork: this is the question we most need your perspective on
+
+Recommendation we're leaning toward (subject to Cowork's input):
+- **Phase 1 (May 11-15, weekdays):** Build the engine, validate via Option E (tick-cache replay). No live IBKR conflict. Engine architecture proved correct against today's session and prior days.
+- **Phase 2 (May 18-22, weekdays):** Decide between Option A and Option B based on Manny's IBKR-account capacity:
+  - If Manny can get a second IBKR paper account → **Option A** (full A/B with TBT on both sides).
+  - If not → **Option B** (engine runs without TBT during A/B, we accept the limited test).
+- **Phase 3 (May 26-30):** Whichever option held in Phase 2, gather 5 sessions of head-to-head data.
+- **June 1-3:** Final review. Either flip to engine for June 4 live, or keep dual-bot.
+
+**Cowork research questions:**
+1. Can a single IBKR retail-paper user open multiple paper accounts? Or does the second require a separate user?
+2. Is there a way to ask IBKR for an increased TBT-slot quota on a paper account (worth the conversation, even if unlikely)?
+3. For multi-process trading systems running against a single IBKR account, what's the standard pattern for sharing the data subscription pool? Is there a published library or pattern?
+4. Are there known ways to multiplex one IBKR connection across multiple consumer processes that don't trigger 10190 collisions? (We know clientId multiplexing doesn't work because the cap is per-account.)
+
+---
+
+## Why this weekend is the right time to plan
+
+- **Markets closed** through Sunday night. We can think and design without missing a paper session.
+- **The current setup keeps producing data.** Daily trade-breakdown reports continue Mon-Fri. We're not under pressure to finalize the engine architecture before any specific weekday.
+- **Weekend lets Cowork research** in parallel with us drafting code.
+- **The A/B framing means no urgency on a hard cutover date.** We can take the time to build the engine right and let the comparison data drive the live-money decision.
+- **June 4 deadline** still applies, but it's now a "decide based on data" deadline, not a "ship the new architecture" deadline. If Setup B isn't beating Setup A by June 4, we go live with Setup A.
 
 ---
 
@@ -295,45 +397,66 @@ These are explicit non-goals so Cowork's plan stays scoped:
 
 ---
 
-## Tentative timeline (Cowork to challenge)
+## Tentative timeline (revised for A/B framing)
 
-| Date | Milestone |
-|---|---|
-| 2026-05-09 (today) | This proposal goes to Cowork |
-| 2026-05-10 (Sunday) | Cowork delivers research + design feedback + build directive |
-| 2026-05-11 (Monday) | Trading session runs on current dual-bot setup (don't disrupt) |
-| 2026-05-11 evening | CC starts building unified engine in `data-engine-unified` worktree |
-| 2026-05-12 to 05-15 | Trading sessions Mon-Thu run on current setup; engine built in parallel; daily trade reports continue |
-| 2026-05-15 (Fri eve) | Engine code-complete, replay-tested against today's tick caches |
-| 2026-05-16 (Sat) + 05-17 (Sun) | Tuning review using the 5 sessions of trade-breakdown data; ALSO finalize engine if not done |
-| 2026-05-18 (Mon) | Flip live-paper to unified engine |
-| 2026-05-18 to 05-22 | Five sessions of paper data on unified engine + tuning changes |
-| 2026-05-23 to 05-31 | Buffer for fixes, stabilization, broker-review final answer |
-| 2026-06-04 | Real-money go-live |
+| Date | Setup A (current dual-bot) | Setup B (new engine) | Notes |
+|---|---|---|---|
+| 2026-05-09 (today) | Off (Saturday) | Off — proposal to Cowork | This document |
+| 2026-05-10 (Sun) | Off | Cowork research + design directive | |
+| 2026-05-11 (Mon) | **Live paper as usual** | Dev: bootstrap `data_engine.py` + IPC scaffold | Current setup unchanged. Daily trade report generated. |
+| 2026-05-12 (Tue) | **Live paper as usual** | Dev: tick distribution to consumer bots; replay-mode validation | Current setup unchanged. Daily trade report generated. |
+| 2026-05-13 (Wed) | **Live paper as usual** | Dev: time-sliced priority module; promotion/demotion policy | Current setup unchanged. Daily trade report generated. |
+| 2026-05-14 (Thu) | **Live paper as usual** | Dev: handoff protocol + open-position protection | Current setup unchanged. Daily trade report generated. |
+| 2026-05-15 (Fri) | **Live paper as usual** | Dev: 3rd Alpaca account wiring + paper trading harness | Current setup unchanged. Daily trade report generated. |
+| 2026-05-16 (Sat) | Off | Engine replay-validation against the 5 days of tick caches | + tuning review using 5 days of A-side trade-breakdown data |
+| 2026-05-17 (Sun) | Off | Final pre-flight; bug fixes | |
+| 2026-05-18 (Mon) | **Live paper as usual** | **First live paper session — engine + 3rd Alpaca account** | A/B begins. Both setups run same watchlist same windows. |
+| 2026-05-19 (Tue) | Live paper | Live paper (engine) | Day 2 of A/B |
+| 2026-05-20 (Wed) | Live paper | Live paper (engine) | Day 3 of A/B |
+| 2026-05-21 (Thu) | Live paper | Live paper (engine) | Day 4 of A/B |
+| 2026-05-22 (Fri) | Live paper | Live paper (engine) | Day 5 of A/B → **comparison report** |
+| 2026-05-23 to 05-31 | Continue running A/B in parallel | Continue running A/B in parallel | Decision-readiness window. Tune both based on data. |
+| 2026-06-01 to 06-03 | Final stabilization | Final stabilization | Pick winner based on accumulated A/B data. |
+| 2026-06-04 | **Real-money go-live on the winning architecture** | | |
 
-**Cowork: tear apart this timeline. If it's too aggressive, where? If we're missing a step, what?**
+**Cowork: tear apart this timeline. If it's too aggressive, where? If we're missing a step, what?** Specifically: is May 11-15 enough to build the engine to live-paper-quality? If not, push everything back a week and accept the smaller A/B sample before June 4.
 
 ---
 
-## Decision criteria — when to greenlight the build
+## Decision criteria — two distinct gates
 
-We greenlight if Cowork's research surfaces:
+### Gate 1: Greenlight the build (after Cowork's response)
+
+We greenlight building the engine if Cowork's research surfaces:
 1. **No fundamental design flaw** in the single-engine + time-sliced approach.
 2. **A concrete IPC + process pattern** (ours or theirs) that handles our scale safely.
 3. **A handoff protocol** that doesn't risk losing TBT data during the transition.
 4. **A failure-mode plan** that's acceptable for live money.
-5. **A timeline** that beats the June 4 deadline with buffer.
+5. **A workable answer to "The IBKR Account Problem"** (Section above) — even if it's "use Option B with limited scope," that's actionable.
 
-If any of those come back as "no, this is wrong because ___", we step back and reconsider.
+If any of those come back as "no, this is wrong because ___", we step back and reconsider before writing any code.
+
+### Gate 2: Flip to engine for June 4 live (after A/B data)
+
+We flip live-money to Setup B (engine) on June 4 only if, by June 3:
+1. **Setup B's accumulated paper P&L beats Setup A's** by a margin we agree on with Cowork (suggest: ≥10% better and statistically meaningful given sample size).
+2. **Setup B has had no infrastructure incidents** that took both strategies offline simultaneously.
+3. **Setup B's slippage is no worse than Setup A's** by more than ~5 bps on average.
+4. **Setup B's BP rejection count is zero or matches Setup A's** (proves the equity-tied notional cap fix from 2026-05-08 was sufficient).
+5. **The June 1-3 stabilization window has zero unresolved code defects.**
+
+If any of these fail → **June 4 live-money goes on Setup A (current dual-bot)**, and Setup B continues paper validation through June.
+
+The A/B framing means there is no scenario where we ship untested architecture into live money. That's the load-bearing improvement vs the original "flip live-paper" plan.
 
 ---
 
 ## What we're NOT doing while we wait for Cowork's response
 
-- Bots continue running on the current dual-architecture every weekday morning at 02:00 MT.
-- The two correctness fixes shipped 2026-05-08 (pyramid silenced + equity-tied notional cap) take effect on Monday 2026-05-11 — that's our first session of clean paper data on the new caps.
+- Setup A bots continue running on the current dual-architecture every weekday morning at 02:00 MT — **untouched, no modifications, no experimental knobs**. This is the baseline against which Setup B will be measured.
+- The two correctness fixes shipped 2026-05-08 (pyramid silenced + equity-tied notional cap) take effect on Monday 2026-05-11 — that's our first session of clean paper data on the new caps. Both setups will eventually share these fixes, so they don't contaminate the A/B.
 - Daily trade-breakdown reports continue (the format established by `cowork_reports/daily_trades/2026-05-08_trade_breakdown.md`) — five sessions of data is the minimum sample size for the May 15-16 tuning review.
-- No experimental architecture changes during weekday sessions. The current setup is producing data; don't disrupt it.
+- **No experimental architecture changes during weekday Setup A sessions.** Whatever Cowork comes back with for the engine build happens in a separate worktree, on a separate Alpaca paper account, with its own scheduling. Setup A is sacred.
 
 ---
 
@@ -351,6 +474,10 @@ If any of those come back as "no, this is wrong because ___", we step back and r
 
 ---
 
-*Manny's words on the trigger: "we cant know that for sure. here is my proposal: we need to think about this differently. we need one data collection engine. this is what both bots read simultaniously. one profile. no conflicts."*
+*Manny's words on the original trigger: "we cant know that for sure. here is my proposal: we need to think about this differently. we need one data collection engine. this is what both bots read simultaniously. one profile. no conflicts."*
 
-*The architecture as written is what falls out of taking that statement seriously. Cowork: come back with what you'd change, what's missing, and a build directive we can hand to CC on Monday.*
+*Manny's revision (2026-05-09): "i can actually get a third alpaca paper account. so well use that to test this and leave current one as is and comoare results."*
+
+*Net effect of the revision: the architecture proposal is unchanged, but the deployment path is now A/B head-to-head against the working setup, on a separate Alpaca paper account, with go-live decision driven by accumulated comparison data instead of a calendar cutover. The current dual-bot setup is untouched until Setup B has empirically earned the live-money slot.*
+
+*Cowork: come back with what you'd change, what's missing, your answer on the IBKR Account Problem, and a build directive we can hand to CC on Monday.*
