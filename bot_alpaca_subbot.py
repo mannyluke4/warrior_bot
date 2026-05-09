@@ -523,9 +523,28 @@ def get_account_equity() -> float:
 # Wave Breakout helpers (Stage 3) — ported from bot_v3_hybrid.py
 # ──────────────────────────────────────────────────────────────────────
 
+def _wb_effective_notional_cap(current_equity: float) -> tuple[float, float, float, float]:
+    """Compute the effective per-position notional cap.
+
+    Returns (effective_cap, hard_ceiling, equity_cap, floor) so callers can
+    log the reasoning. Cap = min(hard_ceiling, max(floor, equity × pct))."""
+    hard_ceiling = float(os.getenv("WB_WB_MAX_NOTIONAL", "50000"))
+    pct = float(os.getenv("WB_WB_NOTIONAL_PER_POSITION_PCT", "1.0"))
+    floor = float(os.getenv("WB_WB_NOTIONAL_FLOOR", "10000"))
+    equity_cap = current_equity * pct
+    effective = min(hard_ceiling, max(floor, equity_cap))
+    return (effective, hard_ceiling, equity_cap, floor)
+
+
 def compute_wb_position_size(entry_price: float, stop_price: float,
                               current_equity: float) -> tuple[int, float]:
-    """Equity-percent sizing with V0 hardening floors + max-notional cap."""
+    """Equity-percent sizing with V0 hardening floors + max-notional cap.
+
+    Notional cap is min(WB_WB_MAX_NOTIONAL, max(WB_WB_NOTIONAL_FLOOR,
+    equity × WB_WB_NOTIONAL_PER_POSITION_PCT)). At $30K equity / 1.0× pct
+    that gives ~$30K per position, allowing 3-4 concurrent score-bypass
+    entries to fit in 4× margin BP without insufficient_buying_power
+    rejections (validated against 2026-05-08 TRAW reject scenario)."""
     risk_pct = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
     risk_floor = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
     risk_ceiling = float(os.getenv("WB_WB_RISK_CEILING_DOLLARS", "5000"))
@@ -539,8 +558,8 @@ def compute_wb_position_size(entry_price: float, stop_price: float,
         return (0, 0.0)
 
     shares_by_risk = int(risk_dollars / risk_per_share)
-    max_notional = float(os.getenv("WB_WB_MAX_NOTIONAL", "50000"))
-    shares_by_notional = int(max_notional / entry_price)
+    effective_cap, _hc, _ec, _fl = _wb_effective_notional_cap(current_equity)
+    shares_by_notional = int(effective_cap / entry_price)
     return (min(shares_by_risk, shares_by_notional), risk_dollars)
 
 
@@ -818,6 +837,10 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
 
     equity = get_account_equity()
     shares, risk_dollars = compute_wb_position_size(entry_price, stop_price, equity)
+    eff_cap, hard_ceiling, equity_cap, floor = _wb_effective_notional_cap(equity)
+    print(f"[WB] {symbol} sizing: equity=${equity:,.0f} equity_cap=${equity_cap:,.0f} "
+          f"floor=${floor:,.0f} ceiling=${hard_ceiling:,.0f} "
+          f"effective_cap=${eff_cap:,.0f}", flush=True)
     if shares <= 0:
         print(f"[WB] {symbol} SKIP: position_size_zero "
               f"(entry={entry_price:.4f} stop={stop_price:.4f})", flush=True)
@@ -4099,6 +4122,12 @@ def main():
         print(f"  Max Daily Loss: ${MAX_DAILY_LOSS:,.0f} (fixed)")
     print(f"  Windows: {TRADING_WINDOWS_STR}")
     print(f"  SQ Target R: {SQ_TARGET_R}")
+    if WAVE_BREAKOUT_ENABLED:
+        eff, hc, ec, fl = _wb_effective_notional_cap(STARTING_EQUITY)
+        print(f"  WB notional cap (at starting equity ${STARTING_EQUITY:,.0f}): "
+              f"effective=${eff:,.0f} (equity_cap=${ec:,.0f}, floor=${fl:,.0f}, "
+              f"ceiling=${hc:,.0f})")
+        print(f"  WB pyramid: {'ON' if os.getenv('WB_WB_PYRAMID_ENABLED', '0') == '1' else 'OFF'}")
     print("=" * 60)
     if not SQ_ENABLED:
         print("⚠️  WARNING: WB_SQUEEZE_ENABLED is OFF — bot will not trade squeezes!")

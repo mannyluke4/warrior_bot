@@ -83,8 +83,12 @@ class WaveBreakoutConfig:
     session_end_force_exit: bool = True
     stop_buffer_pct: float = 0.25     # below bounce-bar low (matches research)
 
-    # Pyramid (V5)
-    pyramid_enabled: bool = True
+    # Pyramid (V5) — DISABLED. Trigger logic exists but Alpaca leg2 order
+    # placement is not wired in place_wave_breakout_entry(). Enabling without
+    # wiring produces silent log noise (validated 2026-05-08: SST $4.04 +
+    # ATRA $8.84 trigger events fired with no orders submitted). Will be
+    # re-enabled by a separate directive after order placement is wired.
+    pyramid_enabled: bool = False
     pyramid_trigger_r: float = 1.0    # add second leg at +1R
 
     @classmethod
@@ -107,7 +111,7 @@ class WaveBreakoutConfig:
             no_time_stop=b("WB_WB_NO_TIME_STOP", True),
             session_end_force_exit=b("WB_WB_SESSION_END_FORCE_EXIT", True),
             stop_buffer_pct=f("WB_WB_STOP_BUFFER_PCT", 0.25),
-            pyramid_enabled=b("WB_WB_PYRAMID_ENABLED", True),
+            pyramid_enabled=b("WB_WB_PYRAMID_ENABLED", False),
             pyramid_trigger_r=f("WB_WB_PYRAMID_TRIGGER_R", 1.0),
         )
 
