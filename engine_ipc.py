@@ -12,10 +12,13 @@ object as produced by `encode(msg)`. The receiver buffers bytes and yields
 parsed messages via `iter_frames(reader)` or `decode(line)`.
 
 Message types (engine → bots):
-    TickMessage         — every trade tick
-    BarMessage          — 1m bar close (with VWAP)
+    TickMessage         — every trade tick (IBKR)
+    BarMessage          — 1m bar close (with VWAP, built from IBKR ticks)
+    QuoteMessage        — every Alpaca quote update (bid/ask). Used by bots
+                          for cross-feed-aware limit pricing so orders fill
+                          on Alpaca's tape even when IBKR's last print lags.
     SubscriptionsMessage — current watchlist + tier allocation (sent on change)
-    HeartbeatMessage    — every 5s
+    HeartbeatMessage    — every 5s (includes Alpaca-stream health)
     StreamPausedMessage — engine lost IBKR connection
     StreamResumedMessage — IBKR connection restored
 
@@ -83,6 +86,29 @@ class BarMessage:
 
 
 @dataclass
+class QuoteMessage:
+    """One Alpaca quote update (NBBO snapshot from IEX or SIP). Emitted by
+    the engine's parallel Alpaca quote stream — the IBKR tick stream is
+    the source of truth for signals; this is purely for order pricing.
+
+    Bots cache the latest (bid, ask, ts) per symbol and use it via
+    `get_priced_limit()` so an entry/exit limit is set against Alpaca's
+    actual book rather than IBKR's possibly-stale last print. Solves the
+    cross-feed fill-quality problem documented 2026-05-11 (TRAW 4-retry
+    timeout, ODYS chase-cap timeout).
+    """
+    symbol: str = ""
+    ts: str = ""                  # ISO 8601, when Alpaca emitted the quote
+    bid: float = 0.0
+    ask: float = 0.0
+    bid_size: int = 0
+    ask_size: int = 0
+    feed: str = "iex"             # "iex" (free) or "sip" (paid)
+    engine_seq: int = 0           # monotonic per-symbol; separate from tick seq
+    type: str = "quote"
+
+
+@dataclass
 class SubscriptionsMessage:
     """Engine broadcasts this whenever the watchlist or tier allocation
     changes. During A/B period: tier1 is always empty, tier2 is the full
@@ -97,11 +123,22 @@ class SubscriptionsMessage:
 @dataclass
 class HeartbeatMessage:
     """Engine → bots every 5 seconds. Bots use this to detect engine
-    liveness; absence for >2 intervals means socket-level fail-CLOSED."""
+    liveness; absence for >2 intervals means socket-level fail-CLOSED.
+
+    Alpaca-stream health fields (added 2026-05-11):
+      alpaca_stream_connected — engine's Alpaca quote-stream WS is up
+      alpaca_quote_rate_5s    — quote updates received in the trailing 5s
+      alpaca_quote_oldest_age_ms — max staleness across watchlist symbols
+                                    (helps bots decide whether to fall back
+                                     to IBKR-only pricing)
+    """
     ts: str                       # ISO 8601 ET
     engine_uptime_s: int
     ibkr_connected: bool
     tick_rate_5s: int             # ticks delivered in the trailing 5s
+    alpaca_stream_connected: bool = False
+    alpaca_quote_rate_5s: int = 0
+    alpaca_quote_oldest_age_ms: int = 0
     type: str = "heartbeat"
 
 
@@ -145,6 +182,7 @@ class InterestMessage:
 _MESSAGE_TYPES = {
     "tick": TickMessage,
     "bar": BarMessage,
+    "quote": QuoteMessage,
     "subscriptions": SubscriptionsMessage,
     "heartbeat": HeartbeatMessage,
     "stream_paused": StreamPausedMessage,
@@ -152,6 +190,28 @@ _MESSAGE_TYPES = {
     "hello": HelloMessage,
     "interest": InterestMessage,
 }
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Helpers
+# ══════════════════════════════════════════════════════════════════════
+
+
+def quote_from_message(msg: Any) -> QuoteMessage:
+    """Coerce a decoded message (dict or QuoteMessage) into a QuoteMessage.
+
+    `decode()` returns the dataclass for known types and a plain dict for
+    forward-compat unknown types. Callers (bots) that want to defensively
+    handle either shape can route through this helper.
+    """
+    if isinstance(msg, QuoteMessage):
+        return msg
+    if isinstance(msg, dict):
+        known_fields = set(QuoteMessage.__dataclass_fields__.keys())
+        kwargs = {k: v for k, v in msg.items() if k in known_fields}
+        return QuoteMessage(**kwargs)
+    raise TypeError(f"quote_from_message: expected QuoteMessage or dict, "
+                    f"got {type(msg).__name__}")
 
 
 # ══════════════════════════════════════════════════════════════════════
