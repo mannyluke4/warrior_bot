@@ -36,11 +36,14 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import math
 import os
+import queue
 import signal
 import sys
 import threading
 import time
+import traceback
 from collections import defaultdict, deque
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -62,6 +65,7 @@ from engine_ipc import (
     HeartbeatMessage,
     HelloMessage,
     InterestMessage,
+    QuoteMessage,
     StreamPausedMessage,
     StreamResumedMessage,
     SubscriptionsMessage,
@@ -119,6 +123,27 @@ HEARTBEAT_SEC = 5
 RECONNECT_BACKOFF = [1, 2, 4, 8, 16, 30, 30, 30, 30, 30]
 RECONNECT_TOTAL_BUDGET_SEC = 5 * 60
 
+# Alpaca quote stream — parallel feed for cross-feed-aware limit pricing.
+# See QuoteMessage docstring and the 2026-05-11 ODYS/TRAW live losses.
+ALPACA_QUOTE_FEED = os.getenv("ENGINE_ALPACA_QUOTE_FEED", "iex").lower()
+# Capped per-drain pull from the cross-thread queue so the asyncio loop
+# never stalls under a quote-rate burst (premarket runners can fire 1K+
+# quotes/sec on hot tickers).
+ALPACA_QUOTE_DRAIN_BATCH = 2000
+
+
+def _alpaca_creds_present() -> tuple[bool, str, str]:
+    """Returns (ok, key, secret). ok=False if either is empty or looks like
+    the .env.engine template sentinel — engine logs a DISABLED line and
+    skips starting the stream in that case."""
+    key = (os.getenv("APCA_API_KEY_ID") or "").strip()
+    secret = (os.getenv("APCA_API_SECRET_KEY") or "").strip()
+    if not key or not secret:
+        return False, key, secret
+    if "<" in key or "<" in secret or "FILL" in key.upper():
+        return False, key, secret
+    return True, key, secret
+
 
 def now_et() -> datetime:
     return datetime.now(ET)
@@ -130,6 +155,306 @@ def now_iso_et() -> str:
 
 def today_et_str() -> str:
     return now_et().strftime("%Y-%m-%d")
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Alpaca quote stream — parallel feed
+# ══════════════════════════════════════════════════════════════════════
+
+
+class AlpacaQuoteStream:
+    """Subscribes to Alpaca's quote websocket in parallel with IBKR ticks.
+
+    Threading model:
+      - alpaca-py's StockDataStream.run() owns its own asyncio loop and
+        must run in its own thread (it calls asyncio.run() internally).
+        We start it in a daemon thread named "alpaca-quote-stream".
+      - The async `_on_quote` callback fires on the stream's loop. It
+        is a synchronous-from-asyncio handoff: we push a tuple onto a
+        thread-safe `queue.Queue` (NOT asyncio.Queue, since the consumer
+        runs on the engine's loop, not the stream's).
+      - The engine's asyncio loop runs a `consumer_loop()` coroutine that
+        drains the queue in batches and calls back into the engine to
+        broadcast QuoteMessage frames + update health counters.
+
+    This mirrors `alpaca_feed.py`'s queue-bridge pattern — the same
+    proven plumbing Setup A uses for live trades.
+
+    Reconnect behavior: alpaca-py's StockDataStream auto-reconnects with
+    exponential backoff internally. We track liveness via the timestamp
+    of the most recent quote we've received. If we go > QUOTE_LIVENESS_S
+    without any quote, we flag `connected=False` for heartbeat reporting
+    even if the WS object hasn't told us it's dead. This catches the
+    "WS hung but never errored" pathology Manny has seen on Alpaca's
+    free tier before.
+    """
+
+    # Heuristic liveness: if no quote in 30s during market hours, declare
+    # the stream stale. Engines run before-open + after-close; we don't
+    # use this as a hard fail, just a heartbeat-health signal.
+    QUOTE_LIVENESS_S = 30
+
+    def __init__(self, api_key: str, api_secret: str, feed: str,
+                 broadcast_fn, get_main_loop_fn,
+                 quote_seq_fn, on_quote_received_fn):
+        """
+        broadcast_fn(QuoteMessage)        — called from engine loop to push
+                                             to all IPC clients
+        get_main_loop_fn() -> asyncio loop — returns the engine's loop
+                                             (used to schedule the consumer
+                                             coroutine via call_soon_threadsafe)
+        quote_seq_fn(symbol) -> int       — next sequence number for symbol
+        on_quote_received_fn(symbol, ts_utc) — health bookkeeping (called
+                                             from the engine loop)
+        """
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self.feed = feed
+        self.broadcast_fn = broadcast_fn
+        self.get_main_loop_fn = get_main_loop_fn
+        self.quote_seq_fn = quote_seq_fn
+        self.on_quote_received_fn = on_quote_received_fn
+
+        self._stream = None              # alpaca-py StockDataStream
+        self._stream_thread: Optional[threading.Thread] = None
+        self._subscribed: set[str] = set()
+        self._sub_lock = threading.Lock()
+        self._stop = threading.Event()
+        self._consumer_task: Optional[asyncio.Task] = None
+
+        # Cross-thread bridge — stream callback (background thread) → engine
+        # loop (main asyncio loop). Large but bounded; we drop-oldest on
+        # full like the IPC slow-consumer policy.
+        self._quote_queue: "queue.Queue[tuple]" = queue.Queue(maxsize=50_000)
+
+        # Liveness tracking — last successful quote receipt monotonic ts.
+        self._last_quote_mono: float = 0.0
+        self._connected: bool = False    # True after stream thread reports ready
+        self._dropped: int = 0
+
+    # ── Public surface used by DataEngine ─────────────────────────────
+
+    @property
+    def connected(self) -> bool:
+        """Heartbeat-grade liveness flag. False if we haven't seen a
+        quote in QUOTE_LIVENESS_S and never received one (pre-market)
+        is also False — bots interpret False as "fall back to IBKR-only
+        pricing"."""
+        if not self._connected:
+            return False
+        # If we've never received a quote, _last_quote_mono == 0 and we
+        # report False — bots should not trust an unproven stream.
+        if self._last_quote_mono == 0.0:
+            return False
+        age = time.monotonic() - self._last_quote_mono
+        return age <= self.QUOTE_LIVENESS_S
+
+    @property
+    def dropped(self) -> int:
+        return self._dropped
+
+    def start(self, main_loop: asyncio.AbstractEventLoop):
+        """Start the stream thread + the engine-loop consumer task.
+
+        Idempotent: a second call is a no-op."""
+        if self._stream_thread is not None and self._stream_thread.is_alive():
+            return
+        # Build the alpaca-py stream object on the calling (main) thread;
+        # actual run() happens in the spawned thread.
+        from alpaca.data.live import StockDataStream
+        from alpaca.data.enums import DataFeed
+        try:
+            df = DataFeed(self.feed)
+        except ValueError:
+            df = DataFeed.IEX
+        self._stream = StockDataStream(self.api_key, self.api_secret, feed=df)
+
+        # Start the consumer first so any racing quotes that land during
+        # subscribe have somewhere to be drained to.
+        self._consumer_task = asyncio.create_task(self._consumer_loop())
+
+        # Spawn the WS thread.
+        self._stream_thread = threading.Thread(
+            target=self._run_stream, name="alpaca-quote-stream", daemon=True,
+        )
+        self._stream_thread.start()
+        self._connected = True
+        print(f"[ENGINE] {now_iso_et()} Alpaca quote stream started "
+              f"(feed={self.feed})", flush=True)
+
+    def stop(self):
+        """Tear down: stop the WS thread + cancel the consumer."""
+        self._stop.set()
+        try:
+            if self._stream is not None:
+                self._stream.stop()
+        except Exception:
+            pass
+        if self._consumer_task is not None:
+            try:
+                self._consumer_task.cancel()
+            except Exception:
+                pass
+        # Don't join the thread on the loop — alpaca-py's run() may take
+        # a moment to unwind. Daemon thread will exit at process end.
+        self._connected = False
+
+    def subscribe(self, symbols: list[str]):
+        """Add the given symbols to the live subscription set. Safe to
+        call from any thread (the alpaca-py call is internally
+        thread-safe — same pattern alpaca_feed.py uses)."""
+        if not symbols or self._stream is None:
+            return
+        with self._sub_lock:
+            new = [s for s in symbols if s not in self._subscribed]
+            if not new:
+                return
+            try:
+                # subscribe_quotes accepts varargs of symbols. Call once per
+                # batch so a watchlist push of N symbols is one WS frame.
+                self._stream.subscribe_quotes(self._on_quote, *new)
+                self._subscribed.update(new)
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote sub: "
+                      f"{','.join(sorted(new))}", flush=True)
+            except Exception as e:
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote subscribe error: {e!r}",
+                      flush=True)
+
+    def unsubscribe(self, symbols: list[str]):
+        if not symbols or self._stream is None:
+            return
+        with self._sub_lock:
+            drop = [s for s in symbols if s in self._subscribed]
+            if not drop:
+                return
+            try:
+                self._stream.unsubscribe_quotes(*drop)
+                self._subscribed.difference_update(drop)
+            except Exception as e:
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote unsub error: {e!r}",
+                      flush=True)
+
+    # ── Stream thread entry ───────────────────────────────────────────
+
+    def _run_stream(self):
+        """Stream-thread target. alpaca-py's run() blocks until stop()."""
+        while not self._stop.is_set():
+            try:
+                # alpaca-py StockDataStream.run() calls asyncio.run() inside
+                # this thread, owning its own event loop. Returns on stop().
+                self._stream.run()
+                if self._stop.is_set():
+                    return
+                # If run() returned without a stop() (e.g. WS exited on
+                # error), pause briefly and let alpaca-py reconnect on
+                # the next iteration.
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote stream run() "
+                      f"returned unexpectedly — restarting in 2s", flush=True)
+                time.sleep(2.0)
+            except Exception as e:
+                if self._stop.is_set():
+                    return
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote stream crashed: "
+                      f"{e!r} — restarting in 5s", flush=True)
+                traceback.print_exc()
+                time.sleep(5.0)
+
+    async def _on_quote(self, quote):
+        """alpaca-py callback. Runs on the stream's asyncio loop (background
+        thread). MUST NOT touch the engine's loop directly — push to the
+        cross-thread queue and let the consumer dispatch on the engine
+        loop. Keep this fast."""
+        try:
+            symbol = getattr(quote, "symbol", "") or ""
+            bid = float(getattr(quote, "bid_price", 0) or 0)
+            ask = float(getattr(quote, "ask_price", 0) or 0)
+            bid_sz = int(getattr(quote, "bid_size", 0) or 0)
+            ask_sz = int(getattr(quote, "ask_size", 0) or 0)
+            ts = getattr(quote, "timestamp", None)
+            if not symbol:
+                return
+            # Skip degenerate or NaN quotes — wide-spread or one-side-only
+            # zero quotes happen at the open and right after halts.
+            if bid <= 0 and ask <= 0:
+                return
+            if math.isnan(bid) or math.isnan(ask):
+                return
+            if ts is None:
+                ts = datetime.now(UTC)
+            elif getattr(ts, "tzinfo", None) is None:
+                ts = ts.replace(tzinfo=UTC)
+            try:
+                self._quote_queue.put_nowait((symbol, bid, ask, bid_sz, ask_sz, ts))
+            except queue.Full:
+                # Drop oldest, then enqueue new. We do this on the stream
+                # thread (not main loop) so the consumer never blocks.
+                try:
+                    self._quote_queue.get_nowait()
+                except queue.Empty:
+                    pass
+                self._dropped += 1
+                if self._dropped in (1, 100, 1000):
+                    print(f"[ENGINE] {now_iso_et()} Alpaca quote queue full — "
+                          f"dropped {self._dropped} (consumer falling behind)",
+                          flush=True)
+                try:
+                    self._quote_queue.put_nowait((symbol, bid, ask, bid_sz, ask_sz, ts))
+                except queue.Full:
+                    pass
+        except Exception as e:
+            print(f"[ENGINE] {now_iso_et()} Alpaca _on_quote error: {e!r}",
+                  flush=True)
+
+    # ── Engine-loop consumer ──────────────────────────────────────────
+
+    async def _consumer_loop(self):
+        """Drains _quote_queue on the engine's asyncio loop. Each drained
+        quote is converted to a QuoteMessage and broadcast. Sleeps a few
+        ms between drains so we don't starve the IBKR tick stream."""
+        try:
+            while not self._stop.is_set():
+                # Drain up to ALPACA_QUOTE_DRAIN_BATCH per cycle to bound
+                # one-iteration work. queue.Queue.get_nowait is fine in
+                # an asyncio context as long as we yield each cycle.
+                drained = 0
+                for _ in range(ALPACA_QUOTE_DRAIN_BATCH):
+                    try:
+                        symbol, bid, ask, bid_sz, ask_sz, ts_utc = \
+                            self._quote_queue.get_nowait()
+                    except queue.Empty:
+                        break
+                    drained += 1
+                    ts_iso = ts_utc.astimezone(ET).isoformat()
+                    seq = self.quote_seq_fn(symbol)
+                    msg = QuoteMessage(
+                        symbol=symbol, ts=ts_iso, bid=bid, ask=ask,
+                        bid_size=bid_sz, ask_size=ask_sz, feed=self.feed,
+                        engine_seq=seq,
+                    )
+                    try:
+                        self.broadcast_fn(msg)
+                    except Exception as e:
+                        print(f"[ENGINE] {now_iso_et()} quote broadcast "
+                              f"error: {e!r}", flush=True)
+                    try:
+                        self.on_quote_received_fn(symbol, ts_utc)
+                    except Exception:
+                        pass
+                    # Stamp liveness here (not in the WS callback) since
+                    # the WS thread may have queue-dropped before drain.
+                    self._last_quote_mono = time.monotonic()
+                # Pace the drain: if nothing pending, sleep longer; if we
+                # drained the full batch, yield briefly to let other tasks
+                # run before the next drain.
+                if drained == 0:
+                    await asyncio.sleep(0.05)
+                else:
+                    await asyncio.sleep(0.002)
+        except asyncio.CancelledError:
+            return
+        except Exception as e:
+            print(f"[ENGINE] {now_iso_et()} Alpaca consumer loop crashed: "
+                  f"{e!r}", flush=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -172,7 +497,21 @@ class DataEngine:
         self.tickers: dict = {}
 
         # Per-symbol monotonic sequence number (resets on engine restart).
+        # `seq` is shared by ticks + bars (interleaved per-symbol ordering).
+        # `quote_seq` is separate per the QuoteMessage contract — bots
+        # treat tick and quote streams independently.
         self.seq: dict[str, int] = defaultdict(int)
+        self.quote_seq: dict[str, int] = defaultdict(int)
+
+        # Per-symbol Alpaca quote bookkeeping for heartbeat staleness.
+        # Stamped on every successful quote consume; oldest age is reported
+        # by _heartbeat_loop.
+        self._last_quote_mono_by_symbol: dict[str, float] = {}
+        # Rolling 5s window of quote counts (mirrors _rate_window for ticks).
+        self._quote_rate_window: deque = deque()
+
+        # Alpaca quote stream (lazy — only built if creds are present).
+        self.alpaca_quote_stream: Optional[AlpacaQuoteStream] = None
 
         # Bar builder — 1-minute bars from ticks. on_bar_close emits a
         # BarMessage. Same TradeBarBuilder Setup A uses, so our session
@@ -230,6 +569,11 @@ class DataEngine:
         wl_task = asyncio.create_task(self._watchlist_loop())
         self._start_flush_thread()
 
+        # Bring up the Alpaca quote stream (independent of IBKR). If creds
+        # are missing or template sentinels, we log DISABLED and continue
+        # — the bots fall back to IBKR-only pricing via get_priced_limit().
+        self._start_alpaca_quote_stream()
+
         # Initial IBKR connect.
         await self._ensure_ibkr_connected()
 
@@ -257,6 +601,14 @@ class DataEngine:
                 await server.wait_closed()
             except Exception:
                 pass
+            # Tear down the Alpaca quote stream before flushing — its
+            # consumer task references the broadcast path we're closing.
+            if self.alpaca_quote_stream is not None:
+                try:
+                    self.alpaca_quote_stream.stop()
+                except Exception as e:
+                    print(f"[ENGINE] {now_iso_et()} Alpaca stream stop "
+                          f"error: {e!r}", flush=True)
             self._flush_stop.set()
             if self._flush_thread is not None:
                 self._flush_thread.join(timeout=5)
@@ -278,6 +630,49 @@ class DataEngine:
         if self.shutdown_event and not self.shutdown_event.is_set():
             self.shutdown_event.set()
 
+    def _start_alpaca_quote_stream(self):
+        """Bring up the Alpaca quote stream if creds are present. Hooks into
+        the engine's broadcast + sequence-numbering + health bookkeeping."""
+        ok, key, _ = _alpaca_creds_present()
+        if not ok:
+            print(f"[ENGINE] {now_iso_et()} Alpaca quote stream DISABLED — "
+                  f"credentials not set in .env.engine (APCA_API_KEY_ID / "
+                  f"APCA_API_SECRET_KEY missing or template sentinel). "
+                  f"Bots will fall back to IBKR-only pricing.", flush=True)
+            return
+        _, key, secret = _alpaca_creds_present()
+        try:
+            self.alpaca_quote_stream = AlpacaQuoteStream(
+                api_key=key,
+                api_secret=secret,
+                feed=ALPACA_QUOTE_FEED,
+                broadcast_fn=self._broadcast_nowait,
+                get_main_loop_fn=lambda: self._main_loop,
+                quote_seq_fn=self._next_quote_seq,
+                on_quote_received_fn=self._on_quote_received,
+            )
+            self.alpaca_quote_stream.start(self._main_loop)
+            # Pre-subscribe whatever's already in the watchlist (e.g. the
+            # engine was restarted mid-session).
+            if self.watchlist:
+                self.alpaca_quote_stream.subscribe(sorted(self.watchlist))
+        except Exception as e:
+            print(f"[ENGINE] {now_iso_et()} Alpaca quote stream init failed: "
+                  f"{e!r} — continuing without it", flush=True)
+            traceback.print_exc()
+            self.alpaca_quote_stream = None
+
+    def _next_quote_seq(self, symbol: str) -> int:
+        """Allocate next per-symbol quote sequence number. Called from the
+        engine loop (consumer coroutine) — safe to mutate dict here."""
+        self.quote_seq[symbol] += 1
+        return self.quote_seq[symbol]
+
+    def _on_quote_received(self, symbol: str, ts_utc: datetime):
+        """Per-quote bookkeeping for heartbeat health. Engine-loop only."""
+        self._last_quote_mono_by_symbol[symbol] = time.monotonic()
+        self._quote_rate_window.append((time.monotonic(), 1))
+
     def _print_banner(self):
         print("=" * 72, flush=True)
         print(f"[ENGINE] {now_iso_et()} Setup B Unified Data Engine starting", flush=True)
@@ -288,6 +683,12 @@ class DataEngine:
         print(f"[ENGINE]   Watchlist src:  {self._watchlist_path()}", flush=True)
         print(f"[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)" if AB_PERIOD
               else "[ENGINE]   Tier 1 (TBT):   not implemented yet (Phase 3)", flush=True)
+        ok, _, _ = _alpaca_creds_present()
+        if ok:
+            print(f"[ENGINE]   Alpaca quotes:  ENABLED (feed={ALPACA_QUOTE_FEED})", flush=True)
+        else:
+            print(f"[ENGINE]   Alpaca quotes:  DISABLED (no creds in .env.engine)",
+                  flush=True)
         print("=" * 72, flush=True)
 
     # ── IBKR ──────────────────────────────────────────────────────────
@@ -386,6 +787,16 @@ class DataEngine:
                 self.tickers[sym] = tk
             except Exception as e:
                 print(f"[ENGINE] {now_iso_et()} resub error {sym}: {e!r}", flush=True)
+        # IBKR reconnect doesn't affect the Alpaca stream (independent
+        # transport), but the watchlist could have grown while we were
+        # disconnected. Re-push the full set; AlpacaQuoteStream dedups
+        # against _subscribed internally.
+        if self.alpaca_quote_stream is not None and self.watchlist:
+            try:
+                self.alpaca_quote_stream.subscribe(sorted(self.watchlist))
+            except Exception as e:
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote resub error: {e!r}",
+                      flush=True)
 
     # ── Watchlist ─────────────────────────────────────────────────────
 
@@ -457,6 +868,15 @@ class DataEngine:
                 print(f"[ENGINE] {now_iso_et()} subscribed {sym} (snapshot)", flush=True)
             except Exception as e:
                 print(f"[ENGINE] {now_iso_et()} subscribe {sym} failed: {e!r}", flush=True)
+        # Mirror the new symbols into the Alpaca quote stream so bots get
+        # bid/ask updates for the same set. Subscribe in one batch (one WS
+        # frame) — alpaca-py handles the broadcast internally.
+        if self.alpaca_quote_stream is not None:
+            try:
+                self.alpaca_quote_stream.subscribe(symbols)
+            except Exception as e:
+                print(f"[ENGINE] {now_iso_et()} Alpaca quote sub error: {e!r}",
+                      flush=True)
 
     async def _broadcast_subscriptions(self):
         msg = SubscriptionsMessage(
@@ -633,11 +1053,34 @@ class DataEngine:
                 while self._rate_window and self._rate_window[0][0] < cutoff:
                     self._rate_window.popleft()
                 rate = sum(c for _, c in self._rate_window)
+                # Same trailing-5s window for Alpaca quote rate.
+                while (self._quote_rate_window
+                       and self._quote_rate_window[0][0] < cutoff):
+                    self._quote_rate_window.popleft()
+                quote_rate = sum(c for _, c in self._quote_rate_window)
+                # Oldest quote age across the watchlist (ms). Symbols we've
+                # never received a quote for don't count (None tracker).
+                # If the Alpaca stream is disabled, this is just 0.
+                oldest_age_ms = 0
+                if (self.alpaca_quote_stream is not None
+                        and self._last_quote_mono_by_symbol):
+                    now_mono = time.monotonic()
+                    ages = [
+                        (now_mono - t) * 1000.0
+                        for t in self._last_quote_mono_by_symbol.values()
+                    ]
+                    if ages:
+                        oldest_age_ms = int(max(ages))
+                alpaca_connected = (self.alpaca_quote_stream is not None
+                                    and self.alpaca_quote_stream.connected)
                 msg = HeartbeatMessage(
                     ts=now_iso_et(),
                     engine_uptime_s=int(time.monotonic() - self.started_at),
                     ibkr_connected=self.ibkr_connected,
                     tick_rate_5s=int(rate),
+                    alpaca_stream_connected=alpaca_connected,
+                    alpaca_quote_rate_5s=int(quote_rate),
+                    alpaca_quote_oldest_age_ms=int(oldest_age_ms),
                 )
                 await self._broadcast(msg)
             except Exception as e:
