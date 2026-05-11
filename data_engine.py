@@ -95,15 +95,18 @@ SOCKET_PATH = os.getenv("ENGINE_IPC_SOCKET", DEFAULT_SOCKET_PATH)
 AB_PERIOD = os.getenv("WB_ENGINE_AB_PERIOD", "1") == "1"
 
 # Watchlist source: Setup A's session_state/<today>/watchlist.json — the
-# directive pinned this exact path. We re-poll it every WL_POLL_SEC so
-# new scanner pushes show up without restarting the engine.
+# directive pinned this exact path (read-only consumption of Setup A's
+# scanner output). We re-poll it every WL_POLL_SEC so new scanner pushes
+# show up without restarting the engine.
 SETUP_A_ROOT = os.path.expanduser("~/warrior_bot_v2")
 WL_POLL_SEC = int(os.getenv("ENGINE_WL_POLL_SEC", "10"))
 
-# Tick cache dir (engine-specific so we don't collide with Setup A).
+# Tick cache dir — lives inside the engine worktree so we never write
+# under ~/warrior_bot_v2/ (Setup A directory is read-only for us per
+# directive). Default is <worktree>/tick_cache_engine/.
 TICK_CACHE_DIR = os.getenv(
     "ENGINE_TICK_CACHE_DIR",
-    os.path.join(SETUP_A_ROOT, "tick_cache_engine"),
+    os.path.join(_HERE, "tick_cache_engine"),
 )
 TICK_FLUSH_SEC = int(os.getenv("ENGINE_TICK_FLUSH_SEC", "30"))
 

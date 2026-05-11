@@ -1,5 +1,8 @@
 # Secrets — NEVER push
 .env
+# Note: .env.engine TEMPLATE is committed (with <FILL_IN> placeholders);
+# do NOT commit the live-creds variant. If you want the live variant kept
+# locally only, rename it .env.engine.local and update loaders.
 
 # Python
 venv/
@@ -18,6 +21,7 @@ logs/
 # Cached data
 l2_cache/
 tick_cache/
+tick_cache_engine/
 
 # Ephemeral state
 last_session_symbols.txt
