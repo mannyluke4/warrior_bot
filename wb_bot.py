@@ -33,6 +33,7 @@ from engine_bot_common import (
     bar_from_message,
     connect_to_engine,
     engine_reader_thread,
+    get_priced_limit,
     make_alpaca_broker,
     now_et,
     now_iso_et,
@@ -243,8 +244,12 @@ class WBBot:
             det.mark_entry_failed("size_zero")
             return
 
-        slippage = max(ENTRY_SLIPPAGE_MIN, entry * ENTRY_SLIPPAGE_PCT)
-        limit_price = round(entry + slippage, 2)
+        # Cross-feed-aware limit pricing — see get_priced_limit() docstring.
+        # Replaces the old `entry + max($0.05, 0.5%)` hardcoded slippage.
+        limit_price = get_priced_limit(
+            self.state, symbol, "BUY", entry,
+            log_label="QUOTE_AWARE",
+        )
         notional = qty * entry
         print(f"[WB] {now_iso_et()} {symbol} ENTRY qty={qty} limit=${limit_price:.2f} "
               f"stop=${stop:.4f} R=${entry-stop:.4f} risk=${risk_dollars:.0f} "
@@ -310,8 +315,13 @@ class WBBot:
         except ValueError:
             exit_signal_price = 0.0
         ref = exit_signal_price if exit_signal_price > 0 else pos.peak
-        # Sell side: limit just below ref so we take the bid promptly.
-        limit_price = round(ref - 0.03, 2)
+        # Cross-feed-aware SELL pricing. WB exits don't have the
+        # stop-hit-vs-target distinction the squeeze bot does — the
+        # detector decides; we just need to take Alpaca's bid promptly.
+        limit_price = get_priced_limit(
+            self.state, symbol, "SELL", ref,
+            log_label="QUOTE_AWARE",
+        )
         print(f"[WB] {now_iso_et()} {symbol} EXIT submitting reason={reason} "
               f"qty={pos.qty} limit=${limit_price:.2f}", flush=True)
         try:

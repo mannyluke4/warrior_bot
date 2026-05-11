@@ -26,10 +26,10 @@ import sys
 import threading
 import time
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Literal, Optional
 from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
@@ -45,6 +45,7 @@ from engine_ipc import (
     BarMessage,
     HeartbeatMessage,
     HelloMessage,
+    QuoteMessage,
     StreamPausedMessage,
     StreamResumedMessage,
     SubscriptionsMessage,
@@ -145,12 +146,27 @@ def wait_for_fill(broker, order_id: str, timeout: float = 10.0) -> tuple[Optiona
 class EngineState:
     """Live state derived from engine messages. Mutated by the reader
     thread, read by the bot's main thread. Single-flag atomicity is
-    enough — the GIL covers the bool/int assignments we care about."""
+    enough — the GIL covers the bool/int assignments we care about.
+
+    `latest_alpaca_quote` is the per-symbol cache of the last Alpaca
+    bid/ask we received from the engine. Read by get_priced_limit() at
+    order-placement time so the limit reflects Alpaca's actual book
+    rather than IBKR's possibly-stale last print. Dict shape:
+        symbol -> (bid, ask, ts_utc)
+    Updated on every QuoteMessage from the engine — no extra API call
+    needed at signal time.
+    """
     connected: bool = False         # socket open to engine
     ibkr_connected: bool = False    # engine's last reported ibkr state
     stream_paused: bool = True       # fail-CLOSED until first heartbeat
     last_heartbeat_ts: Optional[float] = None
     watchlist: list = None
+    # Alpaca-stream health (mirrored from heartbeat).
+    alpaca_stream_connected: bool = False
+    alpaca_quote_rate_5s: int = 0
+    alpaca_quote_oldest_age_ms: int = 0
+    # Per-symbol latest Alpaca quote — (bid, ask, ts_utc).
+    latest_alpaca_quote: dict = field(default_factory=dict)
 
     def __post_init__(self):
         if self.watchlist is None:
@@ -194,6 +210,12 @@ def engine_reader_thread(sock: socket.socket, state: EngineState,
     THIS thread — keep them quick or hand off to the main bot loop via
     a queue. The detector + broker calls happen on a separate worker
     thread per-symbol (see `BotRunner`).
+
+    QuoteMessage is intentionally handled inline here (no on_quote
+    callback) — the bot uses the cached `state.latest_alpaca_quote`
+    dict at order-placement time, so there's nothing strategy-specific
+    to dispatch per-quote. Keeping the update in the reader thread
+    avoids the queue-hop latency that would defeat the purpose.
     """
     try:
         for msg in read_frames_blocking(sock):
@@ -201,9 +223,23 @@ def engine_reader_thread(sock: socket.socket, state: EngineState,
                 on_tick(msg)
             elif isinstance(msg, BarMessage):
                 on_bar(msg)
+            elif isinstance(msg, QuoteMessage):
+                # Cheap dict write. Use a tuple for atomicity — readers
+                # get a coherent (bid, ask, ts) snapshot even mid-update
+                # since dict[k]=tuple is one slot replacement under the GIL.
+                try:
+                    ts_utc = datetime.fromisoformat(msg.ts).astimezone(UTC)
+                except (ValueError, AttributeError):
+                    ts_utc = datetime.now(UTC)
+                state.latest_alpaca_quote[msg.symbol] = (
+                    float(msg.bid), float(msg.ask), ts_utc,
+                )
             elif isinstance(msg, HeartbeatMessage):
                 state.last_heartbeat_ts = time.monotonic()
                 state.ibkr_connected = msg.ibkr_connected
+                state.alpaca_stream_connected = msg.alpaca_stream_connected
+                state.alpaca_quote_rate_5s = msg.alpaca_quote_rate_5s
+                state.alpaca_quote_oldest_age_ms = msg.alpaca_quote_oldest_age_ms
                 # Heartbeat with ibkr_connected=False does NOT clear
                 # stream_paused; only StreamResumed does.
             elif isinstance(msg, StreamPausedMessage):
@@ -300,3 +336,123 @@ def starting_equity_from_broker(broker) -> float:
         print(f"[BOT] {now_iso_et()} equity lookup failed: {e!r}", flush=True)
     # Fallback so the bot still runs even if Alpaca hiccups at startup.
     return float(os.getenv("WB_FALLBACK_EQUITY", "30000"))
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Cross-feed-aware limit pricing
+# ══════════════════════════════════════════════════════════════════════
+
+# Buffer config (read from env at module load — bots reload env via dotenv
+# before this is imported, so values are stable for the session).
+#
+# WB_BASE_BUFFER_PCT       — % above IBKR signal price (BUY) / below (SELL)
+# WB_CROSS_FEED_BUFFER_PCT — % above Alpaca ask (BUY) / below bid (SELL)
+# WB_QUOTE_STALENESS_MAX_MS — quotes older than this fall back to IBKR-only
+# WB_FALLBACK_SAFETY_BUFFER_PCT — wider buffer used when no fresh quote
+BASE_BUFFER_PCT_DEFAULT = float(os.getenv("WB_BASE_BUFFER_PCT", "0.5"))
+CROSS_FEED_BUFFER_PCT_DEFAULT = float(os.getenv("WB_CROSS_FEED_BUFFER_PCT", "0.5"))
+QUOTE_STALENESS_MAX_MS_DEFAULT = int(os.getenv("WB_QUOTE_STALENESS_MAX_MS", "2000"))
+FALLBACK_SAFETY_BUFFER_PCT_DEFAULT = float(
+    os.getenv("WB_FALLBACK_SAFETY_BUFFER_PCT", "1.0")
+)
+
+
+def get_priced_limit(
+    state: EngineState,
+    symbol: str,
+    side: Literal["BUY", "SELL"],
+    ibkr_signal_price: float,
+    base_buffer_pct: Optional[float] = None,
+    cross_feed_buffer_pct: Optional[float] = None,
+    max_quote_age_ms: Optional[int] = None,
+    fallback_safety_buffer_pct: Optional[float] = None,
+    log_label: str = "QUOTE_AWARE",
+) -> float:
+    """Compute an entry/exit limit price that's likely to fill on Alpaca.
+
+    BUY:  limit = max(ibkr_signal * (1 + base_buffer_pct/100),
+                       alpaca_ask  * (1 + cross_feed_buffer_pct/100))
+    SELL: limit = min(ibkr_signal * (1 - base_buffer_pct/100),
+                       alpaca_bid  * (1 - cross_feed_buffer_pct/100))
+
+    Fallback (no fresh quote or stream offline): IBKR-only pricing using
+    `fallback_safety_buffer_pct` (deliberately wider than base_buffer so a
+    stale-quote situation doesn't underprice). Logs a `[FALLBACK]` line
+    so the operator can audit how often fallback fires.
+
+    Logs a `[QUOTE_AWARE]` line whenever the Alpaca-side bound is the
+    binding constraint — that's the actionable data point for assessing
+    whether the cross-feed fix is doing its job.
+    """
+    if base_buffer_pct is None:
+        base_buffer_pct = BASE_BUFFER_PCT_DEFAULT
+    if cross_feed_buffer_pct is None:
+        cross_feed_buffer_pct = CROSS_FEED_BUFFER_PCT_DEFAULT
+    if max_quote_age_ms is None:
+        max_quote_age_ms = QUOTE_STALENESS_MAX_MS_DEFAULT
+    if fallback_safety_buffer_pct is None:
+        fallback_safety_buffer_pct = FALLBACK_SAFETY_BUFFER_PCT_DEFAULT
+
+    side_upper = side.upper()
+    if side_upper not in ("BUY", "SELL"):
+        raise ValueError(f"get_priced_limit: side must be BUY or SELL, got {side!r}")
+
+    base_pct = base_buffer_pct / 100.0
+    cross_pct = cross_feed_buffer_pct / 100.0
+    fallback_pct = fallback_safety_buffer_pct / 100.0
+
+    if side_upper == "BUY":
+        ibkr_limit = ibkr_signal_price * (1.0 + base_pct)
+    else:
+        ibkr_limit = ibkr_signal_price * (1.0 - base_pct)
+
+    # Look up the cached Alpaca quote. If we have one and it's fresh,
+    # compute the cross-feed-aware bound; otherwise fall back to IBKR-
+    # only pricing with the wider safety buffer.
+    snap = state.latest_alpaca_quote.get(symbol)
+    stream_up = state.alpaca_stream_connected
+    fresh_quote: Optional[tuple] = None
+    if snap is not None and stream_up:
+        bid, ask, ts_utc = snap
+        # Quote is meaningful only if both sides are positive (one-sided
+        # zero quotes happen at the open + after halts).
+        if bid > 0 and ask > 0 and ask >= bid:
+            age_ms = (datetime.now(UTC) - ts_utc).total_seconds() * 1000.0
+            if age_ms <= max_quote_age_ms:
+                fresh_quote = (bid, ask, age_ms)
+
+    if fresh_quote is None:
+        # Fallback — use IBKR signal + wider buffer.
+        if side_upper == "BUY":
+            limit = ibkr_signal_price * (1.0 + fallback_pct)
+        else:
+            limit = ibkr_signal_price * (1.0 - fallback_pct)
+        limit = round(limit, 2)
+        reason = "no_quote" if snap is None else (
+            "stream_down" if not stream_up else "stale_quote"
+        )
+        print(f"[FALLBACK] {symbol} {side_upper} limit={limit:.4f} "
+              f"reason={reason} ibkr_signal={ibkr_signal_price:.4f} "
+              f"buffer_pct={fallback_safety_buffer_pct}", flush=True)
+        return limit
+
+    bid, ask, age_ms = fresh_quote
+    if side_upper == "BUY":
+        alpaca_limit = ask * (1.0 + cross_pct)
+        limit = max(ibkr_limit, alpaca_limit)
+        binding = "alpaca_ask" if alpaca_limit > ibkr_limit else "ibkr_signal"
+    else:
+        alpaca_limit = bid * (1.0 - cross_pct)
+        limit = min(ibkr_limit, alpaca_limit)
+        binding = "alpaca_bid" if alpaca_limit < ibkr_limit else "ibkr_signal"
+
+    limit = round(limit, 2)
+    # Log only when Alpaca was the binding constraint — that's the
+    # high-signal data we want for evaluating the change. Side noted so
+    # squeeze (BUY) and exits (SELL) can be filtered separately.
+    if binding.startswith("alpaca_"):
+        print(f"[{log_label}] {symbol} {side_upper} limit={limit:.4f} "
+              f"from {binding}={ask if side_upper == 'BUY' else bid:.4f} "
+              f"(ibkr_signal+buffer={round(ibkr_limit, 4):.4f}) "
+              f"quote_age_ms={int(age_ms)}", flush=True)
+    return limit

@@ -43,6 +43,7 @@ from engine_bot_common import (
     bar_from_message,
     connect_to_engine,
     engine_reader_thread,
+    get_priced_limit,
     make_alpaca_broker,
     now_et,
     now_iso_et,
@@ -239,8 +240,15 @@ class SqueezeBot:
                   f"${current_equity:,.0f}, risk ${risk_dollars:.0f})", flush=True)
             return
 
-        slippage = max(ENTRY_SLIPPAGE_MIN, entry * ENTRY_SLIPPAGE_PCT)
-        limit_price = round(entry + slippage, 2)
+        # Cross-feed-aware limit pricing — uses cached Alpaca ask if fresh,
+        # falls back to IBKR-signal+safety-buffer otherwise. Replaces the
+        # old hardcoded `entry + max($0.05, 0.5%)` formula that was failing
+        # to fill on TRAW/ODYS on 2026-05-11 (Alpaca ask was $0.05-$1.20
+        # higher than IBKR's last print at signal time).
+        limit_price = get_priced_limit(
+            self.state, symbol, "BUY", entry,
+            log_label="QUOTE_AWARE",
+        )
         notional = qty * entry
         print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY qty={qty} limit=${limit_price:.2f} "
               f"stop=${stop:.4f} R=${r:.4f} risk=${risk_dollars:.0f} "
@@ -310,13 +318,26 @@ class SqueezeBot:
 
     def _submit_exit(self, pos: _Position, price: float, reason: str):
         """SELL LIMIT exit. Limit set slightly below ref price so the
-        order takes the bid in a falling tape but doesn't sit forever."""
-        # Use a small wiggle: $0.03 below ref for normal targets, 3%
-        # below ref for stop-hit urgency. Same convention as Setup A.
+        order takes the bid in a falling tape but doesn't sit forever.
+
+        Cross-feed-aware: uses cached Alpaca bid when fresh so we sell at
+        Alpaca's actual bid rather than IBKR's possibly-stale price. Stop-
+        hit / max-loss exits use a wider buffer (urgency to clear) by
+        widening the base buffer at the call site.
+        """
         if reason in ("sq_stop_hit", "sq_max_loss_hit"):
-            limit_price = round(price * 0.97, 2)
+            # Urgency — wider buffer below the ref so the SELL takes the
+            # bid even in a fast falling tape. 3% (vs ~0.5% default).
+            limit_price = get_priced_limit(
+                self.state, pos.symbol, "SELL", price,
+                base_buffer_pct=3.0, cross_feed_buffer_pct=3.0,
+                log_label="QUOTE_AWARE_STOP",
+            )
         else:
-            limit_price = round(price - 0.03, 2)
+            limit_price = get_priced_limit(
+                self.state, pos.symbol, "SELL", price,
+                log_label="QUOTE_AWARE",
+            )
         try:
             order = self.broker.submit_limit(
                 pos.symbol, pos.qty, "SELL", limit_price, extended_hours=True,
