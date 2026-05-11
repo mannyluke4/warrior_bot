@@ -34,6 +34,12 @@ from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
 
+# Result tuple for place_with_retry: (fill_price, filled_qty, last_order_id,
+# last_limit, attempts). attempts counts retries beyond the initial shot —
+# attempts=0 means "filled on the first attempt". last_order_id may be the
+# final cancelled order id when no fill — useful for log audits / persistence.
+from typing import NamedTuple
+
 # Make sure the worktree root is on sys.path so `from bars import Bar` works
 # regardless of how the bot was launched.
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -456,3 +462,205 @@ def get_priced_limit(
               f"(ibkr_signal+buffer={round(ibkr_limit, 4):.4f}) "
               f"quote_age_ms={int(age_ms)}", flush=True)
     return limit
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Retry-with-reprice loop
+# ══════════════════════════════════════════════════════════════════════
+#
+# Why this exists (TRAW 2026-05-11): a single-shot limit picked at signal
+# time goes stale fast — Alpaca's ask can jump above the IBKR-derived
+# limit between the moment we price and the moment Alpaca routes. The
+# 2026-05-11 failure showed 4 sequential limits at $2.36/$2.40/$2.44/$2.45
+# all timing out because none of them ever touched Alpaca's actual ask.
+#
+# The fix: on each retry, repull get_priced_limit() so the new limit is
+# anchored to the FRESHEST cached Alpaca quote (the engine reader thread
+# updates state.latest_alpaca_quote on every QuoteMessage). The chase cap
+# is computed off the ORIGINAL limit so we never buy more than N% above
+# what we first committed to — protects against chasing a vertical print.
+
+ENTRY_RETRY_ENABLED_DEFAULT = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
+ENTRY_MAX_RETRIES_DEFAULT = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
+ENTRY_RETRY_TIMEOUT_SEC_DEFAULT = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
+ENTRY_MAX_CHASE_PCT_DEFAULT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))
+
+
+class RetryResult(NamedTuple):
+    """Result of place_with_retry. fill_price/filled_qty are None,0 on no-fill.
+    last_order_id is the broker id of the FINAL attempted order (filled or
+    cancelled) — useful for log correlation. attempts counts retries beyond
+    the initial shot (0 = filled on first attempt).
+    """
+    fill_price: Optional[float]
+    filled_qty: int
+    last_order_id: Optional[str]
+    last_limit: float
+    attempts: int
+
+
+def place_with_retry(
+    broker,
+    state: EngineState,
+    symbol: str,
+    side: Literal["BUY", "SELL"],
+    qty: int,
+    ibkr_signal_price: float,
+    *,
+    max_retries: Optional[int] = None,
+    timeout_sec_per_attempt: Optional[float] = None,
+    max_chase_pct: Optional[float] = None,
+    base_buffer_pct: Optional[float] = None,
+    cross_feed_buffer_pct: Optional[float] = None,
+    fallback_safety_buffer_pct: Optional[float] = None,
+    extended_hours: bool = True,
+    log_prefix: str = "BOT",
+    log_label: str = "QUOTE_AWARE",
+    retry_enabled: Optional[bool] = None,
+) -> RetryResult:
+    """Submit a limit order with retry-and-reprice on timeout.
+
+    On timeout, the order is cancelled (wait_for_fill cancels on timeout
+    internally — we additionally re-cancel as defense in depth) and the
+    next attempt repulls get_priced_limit() to anchor on the freshest
+    Alpaca quote. Stops when:
+      - Filled (returns RetryResult with fill_price/filled_qty set)
+      - max_retries reached (logs ORDER TIMEOUT after N retries)
+      - Reprice exceeds chase cap (logs ORDER TIMEOUT: exceeds max chase)
+
+    chase cap direction:
+      BUY:  abort if new_limit > original_limit * (1 + max_chase_pct/100)
+      SELL: abort if new_limit < original_limit * (1 - max_chase_pct/100)
+
+    Sizing is NOT recomputed between attempts (qty stays fixed) — letting
+    risk-based qty drift with price is a design hazard.
+
+    The stop price is NOT a parameter here — that's the caller's
+    responsibility; only the entry limit moves between attempts.
+    """
+    if retry_enabled is None:
+        retry_enabled = ENTRY_RETRY_ENABLED_DEFAULT
+    if max_retries is None:
+        max_retries = ENTRY_MAX_RETRIES_DEFAULT
+    if timeout_sec_per_attempt is None:
+        timeout_sec_per_attempt = ENTRY_RETRY_TIMEOUT_SEC_DEFAULT
+    if max_chase_pct is None:
+        max_chase_pct = ENTRY_MAX_CHASE_PCT_DEFAULT
+
+    side_upper = side.upper()
+    if side_upper not in ("BUY", "SELL"):
+        raise ValueError(f"place_with_retry: side must be BUY or SELL, got {side!r}")
+
+    # Anchor = first limit we computed. Chase cap is measured against it.
+    original_limit = get_priced_limit(
+        state, symbol, side_upper, ibkr_signal_price,
+        base_buffer_pct=base_buffer_pct,
+        cross_feed_buffer_pct=cross_feed_buffer_pct,
+        fallback_safety_buffer_pct=fallback_safety_buffer_pct,
+        log_label=log_label,
+    )
+    chase_pct = max_chase_pct / 100.0
+    if side_upper == "BUY":
+        chase_cap = round(original_limit * (1.0 + chase_pct), 4)
+    else:
+        chase_cap = round(original_limit * (1.0 - chase_pct), 4)
+
+    # If retries are disabled, behave like the old single-shot path.
+    effective_max_retries = max_retries if retry_enabled else 0
+
+    cur_limit = original_limit
+    last_order_id: Optional[str] = None
+    attempt = 0
+    while True:
+        # On retry, repull the limit so we anchor on freshest Alpaca quote.
+        if attempt > 0:
+            cur_limit = get_priced_limit(
+                state, symbol, side_upper, ibkr_signal_price,
+                base_buffer_pct=base_buffer_pct,
+                cross_feed_buffer_pct=cross_feed_buffer_pct,
+                fallback_safety_buffer_pct=fallback_safety_buffer_pct,
+                log_label=log_label,
+            )
+            # Chase cap: BUY rejects "too high", SELL rejects "too low".
+            if side_upper == "BUY" and cur_limit > chase_cap:
+                print(f"[{log_prefix}] {now_iso_et()} {symbol} ORDER TIMEOUT: "
+                      f"{side_upper} reprice ${cur_limit:.4f} exceeds max chase "
+                      f"${chase_cap:.4f} ({max_chase_pct}% above original "
+                      f"${original_limit:.4f}) after {attempt} retries — giving up",
+                      flush=True)
+                return RetryResult(None, 0, last_order_id, cur_limit, attempt)
+            if side_upper == "SELL" and cur_limit < chase_cap:
+                print(f"[{log_prefix}] {now_iso_et()} {symbol} ORDER TIMEOUT: "
+                      f"{side_upper} reprice ${cur_limit:.4f} below max chase "
+                      f"${chase_cap:.4f} ({max_chase_pct}% below original "
+                      f"${original_limit:.4f}) after {attempt} retries — giving up",
+                      flush=True)
+                return RetryResult(None, 0, last_order_id, cur_limit, attempt)
+
+        # Submit (or resubmit).
+        try:
+            order = broker.submit_limit(
+                symbol, qty, side_upper, cur_limit, extended_hours=extended_hours,
+            )
+        except Exception as e:
+            print(f"[{log_prefix}] {now_iso_et()} {symbol} "
+                  f"{'RETRY ' if attempt > 0 else ''}BROKER REJECT: {e!r}",
+                  flush=True)
+            return RetryResult(None, 0, last_order_id, cur_limit, attempt)
+        last_order_id = order.order_id
+        retry_tag = f" [RETRY {attempt}/{effective_max_retries}]" if attempt > 0 else ""
+        print(f"[{log_prefix}] {now_iso_et()} BROKER ORDER: {order.order_id} "
+              f"{side_upper} {qty} {symbol} @ ${cur_limit:.2f}{retry_tag}",
+              flush=True)
+
+        # Wait for fill / terminal state.
+        fill_price, filled_qty = wait_for_fill(
+            broker, order.order_id, timeout=timeout_sec_per_attempt,
+        )
+        if filled_qty > 0 and fill_price is not None:
+            return RetryResult(float(fill_price), int(filled_qty),
+                                order.order_id, cur_limit, attempt)
+
+        # No fill — decide whether to retry.
+        if attempt >= effective_max_retries:
+            # wait_for_fill already best-effort cancels on timeout; if the
+            # state machine raced (filled in-flight), the next iteration
+            # would have seen filled_qty>0 already. Defense-in-depth cancel.
+            try:
+                broker.cancel_order(order.order_id)
+            except Exception:
+                pass
+            print(f"[{log_prefix}] {now_iso_et()} {symbol} ORDER TIMEOUT: "
+                  f"{side_upper} cancelling {order.order_id} after "
+                  f"{attempt} retries", flush=True)
+            return RetryResult(None, 0, order.order_id, cur_limit, attempt)
+
+        # Ensure the prior order is in a terminal state before resubmitting.
+        try:
+            broker.cancel_order(order.order_id)
+        except Exception:
+            pass
+        # Brief settle so Alpaca's state machine commits CANCELLED before
+        # we submit a same-symbol order (avoids spurious "duplicate order").
+        time.sleep(0.3)
+        attempt += 1
+
+
+__all__ = [
+    "EngineState",
+    "DailyRisk",
+    "RetryResult",
+    "bar_from_message",
+    "connect_to_engine",
+    "engine_reader_thread",
+    "get_priced_limit",
+    "make_alpaca_broker",
+    "now_et",
+    "now_iso_et",
+    "place_with_retry",
+    "starting_equity_from_broker",
+    "today_et_str",
+    "wait_for_fill",
+    "ET",
+    "UTC",
+]

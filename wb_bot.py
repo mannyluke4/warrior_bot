@@ -37,6 +37,7 @@ from engine_bot_common import (
     make_alpaca_broker,
     now_et,
     now_iso_et,
+    place_with_retry,
     starting_equity_from_broker,
     wait_for_fill,
     ET,
@@ -88,6 +89,8 @@ class _WBPosition:
     order_id: str
     peak: float
     pyramid_filled: bool = False
+    # In-flight guard for exit retry loop (see squeeze_bot for rationale).
+    exit_in_flight: bool = False
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -244,36 +247,27 @@ class WBBot:
             det.mark_entry_failed("size_zero")
             return
 
-        # Cross-feed-aware limit pricing — see get_priced_limit() docstring.
-        # Replaces the old `entry + max($0.05, 0.5%)` hardcoded slippage.
-        limit_price = get_priced_limit(
-            self.state, symbol, "BUY", entry,
-            log_label="QUOTE_AWARE",
-        )
         notional = qty * entry
-        print(f"[WB] {now_iso_et()} {symbol} ENTRY qty={qty} limit=${limit_price:.2f} "
-              f"stop=${stop:.4f} R=${entry-stop:.4f} risk=${risk_dollars:.0f} "
-              f"notional=${notional:,.0f} score={score}", flush=True)
+        print(f"[WB] {now_iso_et()} {symbol} ENTRY qty={qty} "
+              f"ibkr_signal=${entry:.4f} stop=${stop:.4f} R=${entry-stop:.4f} "
+              f"risk=${risk_dollars:.0f} notional=${notional:,.0f} "
+              f"score={score}", flush=True)
 
-        try:
-            order = self.broker.submit_limit(
-                symbol, qty, "BUY", limit_price, extended_hours=True,
-            )
-        except Exception as e:
-            print(f"[WB] {now_iso_et()} {symbol} BROKER REJECT: {e!r}", flush=True)
-            det.mark_entry_failed(f"broker_reject:{e}")
-            return
-
+        # Off-loop retry-with-reprice loop (see engine_bot_common.place_with_retry).
         def _await_fill():
-            fill_price, filled_qty = wait_for_fill(
-                self.broker, order.order_id, timeout=ENTRY_RETRY_TIMEOUT_SEC,
+            res = place_with_retry(
+                self.broker, self.state, symbol, "BUY", qty,
+                ibkr_signal_price=entry,
+                log_prefix="WB",
+                log_label="QUOTE_AWARE",
             )
-            if filled_qty > 0 and fill_price is not None:
+            if res.fill_price is not None and res.filled_qty > 0:
                 pos = _WBPosition(
-                    symbol=symbol, qty=filled_qty, entry=float(fill_price),
+                    symbol=symbol, qty=res.filled_qty,
+                    entry=float(res.fill_price),
                     stop=stop, score=score, risk_dollars=risk_dollars,
-                    entry_time=now_et(), order_id=order.order_id,
-                    peak=float(fill_price),
+                    entry_time=now_et(), order_id=res.last_order_id or "",
+                    peak=float(res.fill_price),
                 )
                 with self._positions_lock:
                     self.positions[symbol] = pos
@@ -281,16 +275,18 @@ class WBBot:
                 # The WB detector needs to know the real fill so its
                 # trailing-stop math anchors correctly.
                 try:
-                    det.mark_filled(float(fill_price),
+                    det.mark_filled(float(res.fill_price),
                                     datetime.now(UTC), score=score)
                 except Exception as e:
                     print(f"[WB] {now_iso_et()} {symbol} mark_filled error: {e!r}",
                           flush=True)
-                print(f"[WB] {now_iso_et()} {symbol} FILL @ ${fill_price:.4f} "
-                      f"qty={filled_qty}", flush=True)
-            else:
-                print(f"[WB] {now_iso_et()} {symbol} ENTRY TIMEOUT — no fill",
+                retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                print(f"[WB] {now_iso_et()} {symbol} FILL @ "
+                      f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}",
                       flush=True)
+            else:
+                # place_with_retry already logged the specific timeout
+                # reason (max retries vs chase-cap exceeded).
                 det.mark_entry_failed("fill_timeout")
 
         threading.Thread(target=_await_fill, daemon=True,
@@ -299,11 +295,16 @@ class WBBot:
     # ── Exit handling ────────────────────────────────────────────────
 
     def _handle_exit(self, symbol: str, msg: str):
-        """Detector emitted WB_EXIT. Place SELL LIMIT, book P&L when filled."""
+        """Detector emitted WB_EXIT. Place SELL LIMIT with retry-and-reprice,
+        book P&L when filled. Mirrors squeeze_bot's exit retry pattern."""
         with self._positions_lock:
             pos = self.positions.get(symbol)
-        if pos is None:
-            return
+            if pos is None:
+                return
+            if pos.exit_in_flight:
+                # Already trying to exit — let the in-flight loop finish.
+                return
+            pos.exit_in_flight = True
         parts = {}
         for tok in msg.replace("WB_EXIT:", "").strip().split():
             if "=" in tok:
@@ -315,43 +316,41 @@ class WBBot:
         except ValueError:
             exit_signal_price = 0.0
         ref = exit_signal_price if exit_signal_price > 0 else pos.peak
-        # Cross-feed-aware SELL pricing. WB exits don't have the
-        # stop-hit-vs-target distinction the squeeze bot does — the
-        # detector decides; we just need to take Alpaca's bid promptly.
-        limit_price = get_priced_limit(
-            self.state, symbol, "SELL", ref,
-            log_label="QUOTE_AWARE",
-        )
         print(f"[WB] {now_iso_et()} {symbol} EXIT submitting reason={reason} "
-              f"qty={pos.qty} limit=${limit_price:.2f}", flush=True)
-        try:
-            order = self.broker.submit_limit(
-                symbol, pos.qty, "SELL", limit_price, extended_hours=True,
-            )
-        except Exception as e:
-            print(f"[WB] {now_iso_et()} {symbol} EXIT REJECT: {e!r}", flush=True)
-            return
+              f"qty={pos.qty} ref=${ref:.4f}", flush=True)
 
         det = self.detectors.get(symbol)
 
         def _await_exit_fill():
-            fill_price, filled_qty = wait_for_fill(
-                self.broker, order.order_id, timeout=15,
+            res = place_with_retry(
+                self.broker, self.state, symbol, "SELL", pos.qty,
+                ibkr_signal_price=ref,
+                log_prefix="WB",
+                log_label="QUOTE_AWARE",
             )
-            if filled_qty > 0 and fill_price is not None:
-                pnl = (fill_price - pos.entry) * filled_qty
+            if res.fill_price is not None and res.filled_qty > 0:
+                pnl = (res.fill_price - pos.entry) * res.filled_qty
                 self.risk.record_close(pnl)
                 with self._positions_lock:
                     self.positions.pop(symbol, None)
                 if det is not None:
                     try:
-                        det.mark_exited(float(fill_price), reason=reason)
+                        det.mark_exited(float(res.fill_price), reason=reason)
                     except Exception:
                         pass
-                print(f"[WB] {now_iso_et()} {symbol} CLOSED @ ${fill_price:.4f} "
-                      f"pnl=${pnl:+,.2f} reason={reason} "
-                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}", flush=True)
+                retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                print(f"[WB] {now_iso_et()} {symbol} CLOSED @ "
+                      f"${res.fill_price:.4f} pnl=${pnl:+,.2f} reason={reason} "
+                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}",
+                      flush=True)
             else:
+                # All retries exhausted or chase cap hit — clear the
+                # in-flight flag so the next WB_EXIT can spin up a new
+                # cycle. No market fallback (project rule).
+                with self._positions_lock:
+                    live = self.positions.get(symbol)
+                    if live is not None:
+                        live.exit_in_flight = False
                 print(f"[WB] {now_iso_et()} {symbol} EXIT TIMEOUT — position "
                       f"still open", flush=True)
 

@@ -47,6 +47,7 @@ from engine_bot_common import (
     make_alpaca_broker,
     now_et,
     now_iso_et,
+    place_with_retry,
     starting_equity_from_broker,
     today_et_str,
     wait_for_fill,
@@ -92,6 +93,11 @@ class _Position:
     order_id: str
     peak: float
     setup_type: str = "squeeze"
+    # In-flight guard: prevents duplicate exit submissions while a
+    # retry-and-reprice loop is mid-flight (without this, every adverse
+    # tick during a 4-attempt × 10s retry window would spawn a new exit
+    # thread and double-sell).
+    exit_in_flight: bool = False
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -240,51 +246,46 @@ class SqueezeBot:
                   f"${current_equity:,.0f}, risk ${risk_dollars:.0f})", flush=True)
             return
 
-        # Cross-feed-aware limit pricing — uses cached Alpaca ask if fresh,
-        # falls back to IBKR-signal+safety-buffer otherwise. Replaces the
-        # old hardcoded `entry + max($0.05, 0.5%)` formula that was failing
-        # to fill on TRAW/ODYS on 2026-05-11 (Alpaca ask was $0.05-$1.20
-        # higher than IBKR's last print at signal time).
-        limit_price = get_priced_limit(
-            self.state, symbol, "BUY", entry,
-            log_label="QUOTE_AWARE",
-        )
         notional = qty * entry
-        print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY qty={qty} limit=${limit_price:.2f} "
-              f"stop=${stop:.4f} R=${r:.4f} risk=${risk_dollars:.0f} "
-              f"notional=${notional:,.0f} score={score:.1f}", flush=True)
+        print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY qty={qty} "
+              f"ibkr_signal=${entry:.4f} stop=${stop:.4f} R=${r:.4f} "
+              f"risk=${risk_dollars:.0f} notional=${notional:,.0f} "
+              f"score={score:.1f}", flush=True)
 
-        try:
-            order = self.broker.submit_limit(
-                symbol, qty, "BUY", limit_price, extended_hours=True,
-            )
-        except Exception as e:
-            print(f"[SQUEEZE] {now_iso_et()} {symbol} BROKER REJECT: {e!r}",
-                  flush=True)
-            return
-
-        # Off-loop wait for fill so the tick handler keeps draining.
+        # Off-loop retry-with-reprice loop. Each retry repulls
+        # get_priced_limit() which reads the freshest cached Alpaca
+        # quote — so retries chase real Alpaca liquidity rather than
+        # the stale IBKR-derived limit that caused the TRAW 4-retry
+        # timeout on 2026-05-11.
         def _await_fill():
-            fill_price, filled_qty = wait_for_fill(
-                self.broker, order.order_id, timeout=ENTRY_RETRY_TIMEOUT_SEC,
+            res = place_with_retry(
+                self.broker, self.state, symbol, "BUY", qty,
+                ibkr_signal_price=entry,
+                log_prefix="SQUEEZE",
+                log_label="QUOTE_AWARE",
             )
-            if filled_qty > 0 and fill_price is not None:
+            if res.fill_price is not None and res.filled_qty > 0:
                 pos = _Position(
-                    symbol=symbol, qty=filled_qty, entry=float(fill_price),
+                    symbol=symbol, qty=res.filled_qty,
+                    entry=float(res.fill_price),
                     stop=stop, r=r, score=score,
-                    entry_time=now_et(), order_id=order.order_id,
-                    peak=float(fill_price),
+                    entry_time=now_et(), order_id=res.last_order_id or "",
+                    peak=float(res.fill_price),
                 )
                 with self._positions_lock:
                     self.positions[symbol] = pos
                 self.risk.daily_entries += 1
                 det.notify_trade_opened()
-                print(f"[SQUEEZE] {now_iso_et()} {symbol} FILL @ ${fill_price:.4f} "
-                      f"qty={filled_qty}", flush=True)
-            else:
-                print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY TIMEOUT — "
-                      f"no fill in {ENTRY_RETRY_TIMEOUT_SEC}s, cancelled",
+                retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                print(f"[SQUEEZE] {now_iso_et()} {symbol} FILL @ "
+                      f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}",
                       flush=True)
+            else:
+                # place_with_retry already logged the timeout reason
+                # (max retries vs chase-cap exceeded). Nothing else to do —
+                # detector state was not advanced past `armed` clearance,
+                # so the next legitimate trigger can fire normally.
+                pass
 
         threading.Thread(target=_await_fill, daemon=True,
                          name=f"squeeze-fill-{symbol}").start()
@@ -305,78 +306,91 @@ class SqueezeBot:
                 return
             if price > pos.peak:
                 pos.peak = price
+            # Skip if an exit cycle is already mid-retry; the in-flight
+            # loop owns the position until it completes or aborts.
+            if pos.exit_in_flight:
+                return
             # Stop hit?
             if price <= pos.stop:
+                pos.exit_in_flight = True
                 self._submit_exit(pos, price, reason="sq_stop_hit")
                 return
             # Target (1.5R per X01 config)
             target_r = float(os.getenv("WB_SQ_TARGET_R", "1.5"))
             target_px = pos.entry + target_r * pos.r
             if price >= target_px and pos.qty > 0:
+                pos.exit_in_flight = True
                 self._submit_exit(pos, price, reason="sq_target_hit")
                 return
 
     def _submit_exit(self, pos: _Position, price: float, reason: str):
-        """SELL LIMIT exit. Limit set slightly below ref price so the
-        order takes the bid in a falling tape but doesn't sit forever.
+        """SELL LIMIT exit with retry-and-reprice.
 
         Cross-feed-aware: uses cached Alpaca bid when fresh so we sell at
-        Alpaca's actual bid rather than IBKR's possibly-stale price. Stop-
-        hit / max-loss exits use a wider buffer (urgency to clear) by
-        widening the base buffer at the call site.
+        Alpaca's actual bid rather than IBKR's possibly-stale price. On
+        timeout the order is cancelled and re-priced against the freshest
+        Alpaca quote — this fixes the CLNN trail-limit no-fill scenario
+        from 2026-05-11 where the SELL limit sat above Alpaca's bid until
+        the position bled out.
+
+        Stop-hit / max-loss exits use a wider buffer (urgency to clear).
+        Per the exit-side chase-cap semantics, we never sell BELOW
+        original × (1 - max_chase_pct/100); for urgency exits the wider
+        buffer means the original_limit is already lower, so retries can
+        still chase the bid further down within reason. Project rule: no
+        market orders, ever.
         """
-        if reason in ("sq_stop_hit", "sq_max_loss_hit"):
-            # Urgency — wider buffer below the ref so the SELL takes the
-            # bid even in a fast falling tape. 3% (vs ~0.5% default).
-            limit_price = get_priced_limit(
-                self.state, pos.symbol, "SELL", price,
-                base_buffer_pct=3.0, cross_feed_buffer_pct=3.0,
-                log_label="QUOTE_AWARE_STOP",
-            )
-        else:
-            limit_price = get_priced_limit(
-                self.state, pos.symbol, "SELL", price,
-                log_label="QUOTE_AWARE",
-            )
-        try:
-            order = self.broker.submit_limit(
-                pos.symbol, pos.qty, "SELL", limit_price, extended_hours=True,
-            )
-        except Exception as e:
-            print(f"[SQUEEZE] {now_iso_et()} {pos.symbol} EXIT REJECT: {e!r}",
-                  flush=True)
-            return
-        print(f"[SQUEEZE] {now_iso_et()} {pos.symbol} EXIT submitted "
-              f"reason={reason} qty={pos.qty} limit=${limit_price:.2f}",
-              flush=True)
-
-        # Off-loop fill wait + book the P&L.
         symbol = pos.symbol
+        if reason in ("sq_stop_hit", "sq_max_loss_hit"):
+            base_buf = 3.0
+            cross_buf = 3.0
+            label = "QUOTE_AWARE_STOP"
+        else:
+            base_buf = None
+            cross_buf = None
+            label = "QUOTE_AWARE"
+        print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT submitting "
+              f"reason={reason} qty={pos.qty} ref=${price:.4f}", flush=True)
 
+        # Off-loop retry-with-reprice. Critical for trail-limit / bail-timer
+        # exits — without per-retry Alpaca-bid repricing, a stale SELL sits
+        # above the bid and bleeds the position.
         def _await_exit_fill():
-            fill_price, filled_qty = wait_for_fill(
-                self.broker, order.order_id, timeout=15,
+            res = place_with_retry(
+                self.broker, self.state, symbol, "SELL", pos.qty,
+                ibkr_signal_price=price,
+                base_buffer_pct=base_buf,
+                cross_feed_buffer_pct=cross_buf,
+                log_prefix="SQUEEZE",
+                log_label=label,
             )
-            if filled_qty > 0 and fill_price is not None:
-                pnl = (fill_price - pos.entry) * filled_qty
+            if res.fill_price is not None and res.filled_qty > 0:
+                pnl = (res.fill_price - pos.entry) * res.filled_qty
                 self.risk.record_close(pnl)
                 with self._positions_lock:
                     self.positions.pop(symbol, None)
                 det = self.detectors.get(symbol)
                 if det is not None:
                     try:
-                        det.notify_trade_closed(symbol, pnl,
-                                                r_mult=(pnl / (pos.qty * pos.r))
-                                                if pos.r > 0 and pos.qty > 0 else 0.0)
+                        det.notify_trade_closed(
+                            symbol, pnl,
+                            r_mult=(pnl / (pos.qty * pos.r))
+                            if pos.r > 0 and pos.qty > 0 else 0.0)
                     except Exception:
                         pass
+                retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} CLOSED @ "
-                      f"${fill_price:.4f} pnl=${pnl:+,.2f} reason={reason} "
-                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}", flush=True)
+                      f"${res.fill_price:.4f} pnl=${pnl:+,.2f} reason={reason} "
+                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}",
+                      flush=True)
             else:
-                # Exit didn't fill — leave the position in books and try
-                # again on the next adverse tick. No fallback to market
-                # (project rule).
+                # Exit didn't fill after all retries — clear the in-flight
+                # flag so the next adverse tick triggers another full
+                # retry cycle. Project rule: no market fallback.
+                with self._positions_lock:
+                    live = self.positions.get(symbol)
+                    if live is not None:
+                        live.exit_in_flight = False
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT TIMEOUT — "
                       f"position still open, will retry on next adverse tick",
                       flush=True)
