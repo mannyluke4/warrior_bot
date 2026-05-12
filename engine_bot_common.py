@@ -571,29 +571,38 @@ def get_priced_limit(
 
     bid, ask, age_ms = fresh_quote
 
-    # Divergent-quote guard. If Alpaca's quote disagrees with IBKR by more
-    # than DIVERGENT_PCT, the cached Alpaca quote is almost certainly stale
-    # or wrong (post-halt one-sided print, missed update, etc). Using it
-    # would risk:
-    #   BUY  → chase a phantom move above IBKR's view
-    #   SELL → sell BELOW where the symbol is actually trading
-    # 2026-05-12 FATN: IBKR stop signal $3.54, Alpaca bid $3.09 (12.7% gap).
-    # Without this guard, SELL limit priced at $3.07 (Alpaca-bid - buffer).
-    # Order luckily filled at $3.52 ($0.45 of price improvement), but if a
-    # thin buyer sat at $3.07-3.10 in Alpaca's book we'd have realized
-    # a 3R loss instead of a 1R stop. Same shape on BUY: original directive
-    # mentioned this fallback for the BUY side but it wasn't wired here.
+    # Divergent-quote guard — BUY SIDE ONLY (2026-05-12 revision).
+    #
+    # Asymmetry: SELL limits act as FLOORS — a "too low" SELL limit just
+    # gives any real bid more headroom to fill at the true market price.
+    # 2026-05-12 empirical proof:
+    #   FATN exit: IBKR signal $3.54, Alpaca bid $3.09 (12.7% gap). Bot priced
+    #              SELL limit at $3.07. Filled at $3.52 (limit-as-floor).
+    #   ATRA exit: IBKR signal $9.89, Alpaca bid $8.52 (13.8% gap). Bot priced
+    #              SELL limit at $8.48. Filled at $9.80 (limit-as-floor).
+    # The original concern ("Alpaca might match the low limit") was unfounded:
+    # the matching engine fills at the real bid when liquidity exists.
+    #
+    # For BUY: a HIGH Alpaca-ask limit CAPS "max I'll pay" — chasing a phantom
+    # move would buy above where IBKR sees the market. KEEP guard for BUY.
+    # For SELL: fall through to the normal min(ibkr_limit, alpaca_limit)
+    # cross-feed-aware logic; the low limit is harmless (floor behavior).
+    #
+    # We still emit a [QUOTE_INFO] observability log on the SELL side when
+    # divergence is large, so we keep eyes on the pattern without vetoing.
     relevant = ask if side_upper == "BUY" else bid
     divergence_pct = abs(relevant - ibkr_signal_price) / ibkr_signal_price * 100.0
-    if divergence_pct > DIVERGENT_QUOTE_MAX_PCT:
-        if side_upper == "BUY":
-            limit = ibkr_signal_price * (1.0 + fallback_pct)
-        else:
-            limit = ibkr_signal_price * (1.0 - fallback_pct)
+    if side_upper == "SELL" and divergence_pct > DIVERGENT_QUOTE_MAX_PCT:
+        print(f"[QUOTE_INFO] {symbol} SELL: large divergence "
+              f"{divergence_pct:.2f}% (alpaca_bid={bid:.4f}, "
+              f"ibkr={ibkr_signal_price:.4f}) — limit-as-floor pattern "
+              f"expected to yield real-market fill", flush=True)
+    if side_upper == "BUY" and divergence_pct > DIVERGENT_QUOTE_MAX_PCT:
+        limit = ibkr_signal_price * (1.0 + fallback_pct)
         limit = round(limit, 2)
         print(f"[ALPACA_QUOTE_DIVERGENT] {symbol} {side_upper} limit={limit:.4f} "
               f"ibkr_signal={ibkr_signal_price:.4f} "
-              f"{'alpaca_ask' if side_upper == 'BUY' else 'alpaca_bid'}={relevant:.4f} "
+              f"alpaca_ask={relevant:.4f} "
               f"gap_pct={divergence_pct:.2f} "
               f"(>{DIVERGENT_QUOTE_MAX_PCT}%) — using IBKR-only fallback", flush=True)
         return limit
