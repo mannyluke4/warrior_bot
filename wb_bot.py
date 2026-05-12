@@ -62,11 +62,19 @@ from session_history import SessionHistory
 
 WB_ENABLED = os.getenv("WB_WAVE_BREAKOUT_ENABLED", "1") == "1"
 
-# Chop Gate v3 — second-layer gate (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
-# 2026-05-12). Default OFF; flip WB_CHOP_GATE_V3_ENABLED=1 in .env.
-# Trade-history recording is ALWAYS ON (write-only): SessionHistory
-# populates the per-symbol blacklist so v3 has prior-session data when
-# promoted, whether v3 is currently enabled or not (directive line 309).
+# Chop Gate v3 — modular second-layer gate
+# (DIRECTIVE_CHOP_GATE_V3_MODULAR_ROLLOUT.md, 2026-05-12).
+# Master kill switch: WB_CHOP_GATE_V3_ENABLED. Per-sub-gate enable flags
+# live in chop_gate_v3 (read at call time) so a sub-gate can ship without
+# touching the bot:
+#     WB_CG3_MACD_ENABLED            (default 1 — ships Wed 2026-05-13)
+#     WB_CG3_HOD_RECENT_ENABLED      (default 0 — observe-only)
+#     WB_CG3_DEAD_BOUNCE_ENABLED     (default 0 — observe-only)
+#     WB_CG3_VOL_FT_ENABLED          (default 0 — deferred)
+#     WB_CG3_XSESSION_BL_ENABLED     (default 0 — Monday rollout)
+# Disabled sub-gates still execute for telemetry ([CG3_OBSERVE] lines)
+# but cannot veto.
+# Trade-history recording is ALWAYS ON (write-only).
 WB_CHOP_GATE_V3_ENABLED = os.getenv("WB_CHOP_GATE_V3_ENABLED", "0") == "1"
 _session_history_recorder = SessionHistory()
 
