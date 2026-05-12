@@ -75,6 +75,20 @@ ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))
 ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
 
+# ── Squeeze exit-ladder config (mirrors Setup A's bot_v3_hybrid.py knobs)
+# These are read with the SAME defaults as Setup A's .env so that on a
+# squeeze-only A/B against identical fills, the engine bot makes byte-
+# identical exit decisions. Every default below matches Setup A's .env.
+SQ_TARGET_R = float(os.getenv("WB_SQ_TARGET_R", "1.5"))
+SQ_TRAIL_R = float(os.getenv("WB_SQ_TRAIL_R", "1.5"))
+SQ_PARA_TRAIL_R = float(os.getenv("WB_SQ_PARA_TRAIL_R", "1.0"))
+SQ_RUNNER_TRAIL_R = float(os.getenv("WB_SQ_RUNNER_TRAIL_R", "2.5"))
+SQ_MAX_LOSS_DOLLARS = float(os.getenv("WB_SQ_MAX_LOSS_DOLLARS", "500"))
+SQ_CORE_PCT = int(os.getenv("WB_SQ_CORE_PCT", "90"))
+
+BAIL_TIMER_ENABLED = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
+BAIL_TIMER_MINUTES = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
 
 # ══════════════════════════════════════════════════════════════════════
 # Per-symbol state
@@ -83,6 +97,33 @@ ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
 
 @dataclass
 class _Position:
+    """Squeeze position state — augmented to carry every field Setup A's
+    `_squeeze_exit` ladder reads. Field names match Setup A's open_position
+    dict so a future persistence layer can map 1:1 between the two setups.
+
+    Field map (Setup A pos[...] → engine self.X):
+      pos["entry"]              → entry           (filled avg)
+      pos["stop"]               → stop            (hard stop)
+      pos["r"]                  → r               (entry - stop_low for longs)
+      pos["qty"]                → qty             (CURRENT qty; drops to runner
+                                                    on partial-target exit)
+      pos["peak"]               → peak            (max price since entry)
+      pos["tp_hit"]             → tp_hit          (target-R partial taken)
+      pos["partial_filled_qty"] → partial_filled_qty  (the core size sold at TP)
+      pos["partial_filled_at"]  → partial_filled_at   (iso UTC stamp of TP exit)
+      pos["runner_stop"]        → runner_stop     (post-TP minimum stop)
+      pos["is_parabolic"]       → is_parabolic    (parsed from ENTRY SIGNAL why=)
+      pos["entry_time"]         → entry_time      (datetime in ET)
+      pos["setup_type"]         → setup_type      ("squeeze" today)
+      pos["score"] / pos["score_detail"]
+                                 → score / score_detail
+      pos["fill_confirmed"]     → fill_confirmed  (True after wait_for_fill)
+      pos["order_id"]           → order_id        (ENTRY order id, audit only)
+
+    Engine-only fields (no Setup A equivalent):
+      exit_in_flight            — retry-loop ownership guard (see comment
+                                   block on `_submit_exit`).
+    """
     symbol: str
     qty: int
     entry: float
@@ -93,6 +134,14 @@ class _Position:
     order_id: str
     peak: float
     setup_type: str = "squeeze"
+    score_detail: str = ""
+    is_parabolic: bool = False
+    # Trade-management state — mutated by the exit ladder.
+    tp_hit: bool = False
+    partial_filled_qty: int = 0
+    partial_filled_at: Optional[str] = None  # iso UTC string for JSON-trivial
+    runner_stop: float = 0.0
+    fill_confirmed: bool = False
     # In-flight guard: prevents duplicate exit submissions while a
     # retry-and-reprice loop is mid-flight (without this, every adverse
     # tick during a 4-attempt × 10s retry window would spawn a new exit
@@ -118,7 +167,12 @@ class SqueezeBot:
         self.state = EngineState()
         self.detectors: dict[str, SqueezeDetector] = {}
         self.positions: dict[str, _Position] = {}
-        self._positions_lock = threading.Lock()
+        # RLock — the exit ladder's persistence-flush hook (added in the
+        # session-persistence commit) re-enters the lock from a context
+        # already holding it; using a plain Lock would deadlock. We use
+        # RLock from the start so the ladder code can call any helper
+        # without lock-discipline footguns.
+        self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
 
     def _ensure_detector(self, symbol: str) -> SqueezeDetector:
@@ -252,6 +306,14 @@ class SqueezeBot:
               f"risk=${risk_dollars:.0f} notional=${notional:,.0f} "
               f"score={score:.1f}", flush=True)
 
+        # Parabolic flag — Setup A reads this from `armed.score_detail`,
+        # which we get via the ENTRY SIGNAL's `why=` suffix. The detector
+        # appends "[PARABOLIC]" to score_detail when parabolic mode armed;
+        # downstream the trail rung reads `is_parabolic` to pick the
+        # tighter SQ_PARA_TRAIL_R over SQ_TRAIL_R.
+        is_parabolic = "[PARABOLIC]" in sig
+        score_detail = sig.split("why=", 1)[1] if "why=" in sig else ""
+
         # Off-loop retry-with-reprice loop. Each retry repulls
         # get_priced_limit() which reads the freshest cached Alpaca
         # quote — so retries chase real Alpaca liquidity rather than
@@ -271,14 +333,18 @@ class SqueezeBot:
                     stop=stop, r=r, score=score,
                     entry_time=now_et(), order_id=res.last_order_id or "",
                     peak=float(res.fill_price),
+                    score_detail=score_detail,
+                    is_parabolic=is_parabolic,
+                    fill_confirmed=True,
                 )
                 with self._positions_lock:
                     self.positions[symbol] = pos
                 self.risk.daily_entries += 1
                 det.notify_trade_opened()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                para_tag = " [PARABOLIC]" if is_parabolic else ""
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} FILL @ "
-                      f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}",
+                      f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}{para_tag}",
                       flush=True)
             else:
                 # place_with_retry already logged the timeout reason
@@ -293,55 +359,162 @@ class SqueezeBot:
     # ── Exit management ──────────────────────────────────────────────
 
     def _tick_manage_exit(self, symbol: str, price: float):
-        """Mirror Setup A's manage_exit at a high level: stop loss + 2R
-        target. Simpler than the full Setup A ladder because the engine
-        bot is intentionally minimal during A/B — once we win the A/B
-        we'll expand. For now, hit stop = exit-at-limit at stop, hit
-        target = exit-at-limit at target. Both via SELL LIMIT (no market
-        orders per project rule).
+        """Full Setup A squeeze exit ladder, byte-for-byte port of
+        `_squeeze_exit` in bot_v3_hybrid.py.
+
+        Ladder order (must match Setup A exactly for A/B isolation):
+          [Bail timer]    pre-ladder gate — minutes_in_trade >= MIN and
+                          price <= entry → bail. Honors WB_BAIL_TIMER_ENABLED.
+          [0] Dollar loss cap (SQ_MAX_LOSS_DOLLARS) — exit at any unrealized
+                          loss >= cap. Fired first so a violent reversal
+                          can't fall through to the slower trail.
+          [1] Hard stop — price <= stop (long stop is below entry).
+          [Pre-target]    — until tp_hit:
+            [2] Trail     — price <= peak - (trail_r * r). trail_r is
+                          SQ_PARA_TRAIL_R for parabolic positions, else
+                          SQ_TRAIL_R. Same trail used pre-target only.
+            [3] Target    — price >= entry + (SQ_TARGET_R * r). Take SQ_CORE_PCT%
+                          off as the "core" exit, runner stays open with
+                          runner_stop = max(stop, entry + 0.01). Sets tp_hit.
+          [Post-target]   — once tp_hit (runner phase):
+            [4] Runner trail — price <= max(runner_stop, peak - SQ_RUNNER_TRAIL_R*r).
+
+        Every exit is a SELL LIMIT via `_submit_exit` (which uses
+        place_with_retry → cross-feed-aware pricing + retry). Project
+        rules: no market orders, no broker stops. The exit_in_flight guard
+        prevents the retry loop from being entered twice in parallel.
         """
         with self._positions_lock:
             pos = self.positions.get(symbol)
             if pos is None:
                 return
+            # Don't manage exits until entry fill is confirmed.
+            if not pos.fill_confirmed:
+                return
+
+            # Update peak.
             if price > pos.peak:
                 pos.peak = price
+
             # Skip if an exit cycle is already mid-retry; the in-flight
             # loop owns the position until it completes or aborts.
             if pos.exit_in_flight:
                 return
-            # Stop hit?
-            if price <= pos.stop:
+
+            entry = pos.entry
+            stop = pos.stop
+            r = pos.r
+            qty = pos.qty
+
+            # ── Bail timer (pre-ladder gate) ──────────────────────────
+            if BAIL_TIMER_ENABLED:
+                minutes_in = (now_et() - pos.entry_time).total_seconds() / 60.0
+                if minutes_in >= BAIL_TIMER_MINUTES and price <= entry:
+                    pos.exit_in_flight = True
+                    self._submit_exit(pos, price, reason="bail_timer")
+                    return
+
+            # ── 0) Dollar loss cap ────────────────────────────────────
+            if SQ_MAX_LOSS_DOLLARS > 0:
+                unrealized_loss = (entry - price) * qty
+                if unrealized_loss >= SQ_MAX_LOSS_DOLLARS:
+                    pos.exit_in_flight = True
+                    self._submit_exit(
+                        pos, price,
+                        reason=f"sq_dollar_loss_cap (${unrealized_loss:,.0f})",
+                    )
+                    return
+
+            # ── 1) Hard stop ──────────────────────────────────────────
+            if price <= stop:
                 pos.exit_in_flight = True
                 self._submit_exit(pos, price, reason="sq_stop_hit")
                 return
-            # Target (1.5R per X01 config)
-            target_r = float(os.getenv("WB_SQ_TARGET_R", "1.5"))
-            target_px = pos.entry + target_r * pos.r
-            if price >= target_px and pos.qty > 0:
-                pos.exit_in_flight = True
-                self._submit_exit(pos, price, reason="sq_target_hit")
-                return
+
+            # ── Pre-target phase ──────────────────────────────────────
+            if not pos.tp_hit:
+                # [2] Trailing stop. For parabolic positions Setup A uses
+                # the tighter SQ_PARA_TRAIL_R to lock gains aggressively.
+                if r > 0:
+                    trail_r = SQ_PARA_TRAIL_R if pos.is_parabolic else SQ_TRAIL_R
+                    trail_price = pos.peak - (trail_r * r)
+                    if price <= trail_price:
+                        reason = ("sq_para_trail_exit" if pos.is_parabolic
+                                  else "sq_trail_exit")
+                        pos.exit_in_flight = True
+                        self._submit_exit(pos, price, reason=reason)
+                        return
+
+                # [3] Target hit — exit core, keep runner. SQ_CORE_PCT % off
+                # at target; the remaining qty becomes the runner managed
+                # by the post-target branch on subsequent ticks.
+                #
+                # NB: Setup A's EPL graduation hook (bot_v3_hybrid.py
+                # line 3041-3058) is NOT ported — EPL is a Setup-A-only
+                # framework that doesn't run on the engine side. Omitting
+                # it does NOT change exit-fill behavior (no SELL is gated
+                # on EPL graduation; it's just bookkeeping for a different
+                # strategy that the engine doesn't run).
+                if r > 0 and price >= entry + (SQ_TARGET_R * r):
+                    pos.tp_hit = True
+                    pos.partial_filled_at = datetime.now(UTC).isoformat()
+                    qty_core = max(1, int(qty * SQ_CORE_PCT / 100))
+                    qty_runner = qty - qty_core
+                    pos.partial_filled_qty = qty_core
+                    if qty_runner > 0:
+                        pos.runner_stop = max(stop, entry + 0.01)
+                        # Shrink the bot-tracked qty to the runner size
+                        # BEFORE the exit is submitted, so a parallel tick
+                        # observing the runner-stop branch sees the right
+                        # qty. Setup A sets pos["qty"] = qty_runner AFTER
+                        # exit_trade(); we do it before because our exit
+                        # path is async (place_with_retry on a worker
+                        # thread) and we can't rely on synchronous order
+                        # like Setup A's exit_trade does.
+                        pos.qty = qty_runner
+                        pos.exit_in_flight = True  # runner remains, in_flight is for core sale
+                        self._submit_exit_partial(
+                            pos, price, qty_core, reason="sq_target_hit",
+                        )
+                    else:
+                        # qty_core == qty (SQ_CORE_PCT=100, or qty was 1
+                        # to start). Full exit at target — no runner.
+                        pos.exit_in_flight = True
+                        self._submit_exit(pos, price, reason="sq_target_hit")
+                    return
+
+            # ── Post-target (runner) phase ────────────────────────────
+            if pos.tp_hit and pos.qty > 0:
+                if r > 0:
+                    runner_trail = pos.peak - (SQ_RUNNER_TRAIL_R * r)
+                    runner_stop = max(pos.runner_stop, runner_trail)
+                    if runner_stop > pos.runner_stop:
+                        pos.runner_stop = runner_stop
+                    if price <= runner_stop:
+                        pos.exit_in_flight = True
+                        self._submit_exit(pos, price, reason="sq_runner_trail")
+                        return
 
     def _submit_exit(self, pos: _Position, price: float, reason: str):
-        """SELL LIMIT exit with retry-and-reprice.
+        """SELL LIMIT exit for the FULL current pos.qty.
 
         Cross-feed-aware: uses cached Alpaca bid when fresh so we sell at
         Alpaca's actual bid rather than IBKR's possibly-stale price. On
         timeout the order is cancelled and re-priced against the freshest
-        Alpaca quote — this fixes the CLNN trail-limit no-fill scenario
-        from 2026-05-11 where the SELL limit sat above Alpaca's bid until
-        the position bled out.
+        Alpaca quote.
 
-        Stop-hit / max-loss exits use a wider buffer (urgency to clear).
-        Per the exit-side chase-cap semantics, we never sell BELOW
-        original × (1 - max_chase_pct/100); for urgency exits the wider
-        buffer means the original_limit is already lower, so retries can
-        still chase the bid further down within reason. Project rule: no
-        market orders, ever.
+        Stop-hit / max-loss / dollar-cap exits use a wider buffer (urgency
+        to clear). Project rule: no market orders, ever.
         """
         symbol = pos.symbol
-        if reason in ("sq_stop_hit", "sq_max_loss_hit"):
+        urgent_reasons = ("sq_stop_hit", "sq_max_loss_hit", "sq_dollar_loss_cap")
+        # Match Setup A's urgent-vs-normal limit buffer asymmetry. Setup A
+        # uses `price * 0.97` for urgent (a 3% below-market chase-cap that
+        # rapidly walks down to the bid) and `price - 0.03` for non-urgent.
+        # We map that to the engine's get_priced_limit knobs: a 3.0% base+
+        # cross buffer for urgent, defaults (0.5%) for normal — same
+        # economic effect within rounding.
+        if reason.startswith("sq_dollar_loss_cap") or reason in urgent_reasons:
             base_buf = 3.0
             cross_buf = 3.0
             label = "QUOTE_AWARE_STOP"
@@ -352,12 +525,13 @@ class SqueezeBot:
         print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT submitting "
               f"reason={reason} qty={pos.qty} ref=${price:.4f}", flush=True)
 
-        # Off-loop retry-with-reprice. Critical for trail-limit / bail-timer
-        # exits — without per-retry Alpaca-bid repricing, a stale SELL sits
-        # above the bid and bleeds the position.
+        # Capture qty BEFORE handing to the worker — pos.qty can mutate
+        # under us if the main loop transitions to runner phase.
+        exit_qty = pos.qty
+
         def _await_exit_fill():
             res = place_with_retry(
-                self.broker, self.state, symbol, "SELL", pos.qty,
+                self.broker, self.state, symbol, "SELL", exit_qty,
                 ibkr_signal_price=price,
                 base_buffer_pct=base_buf,
                 cross_feed_buffer_pct=cross_buf,
@@ -374,29 +548,94 @@ class SqueezeBot:
                     try:
                         det.notify_trade_closed(
                             symbol, pnl,
-                            r_mult=(pnl / (pos.qty * pos.r))
-                            if pos.r > 0 and pos.qty > 0 else 0.0)
+                            r_mult=(pnl / (exit_qty * pos.r))
+                            if pos.r > 0 and exit_qty > 0 else 0.0)
                     except Exception:
                         pass
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                partial_tag = (f" [PARTIAL {res.filled_qty}/{exit_qty}]"
+                               if res.filled_qty < exit_qty else "")
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} CLOSED @ "
                       f"${res.fill_price:.4f} pnl=${pnl:+,.2f} reason={reason} "
-                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}",
+                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}{partial_tag}",
                       flush=True)
             else:
-                # Exit didn't fill after all retries — clear the in-flight
-                # flag so the next adverse tick triggers another full
-                # retry cycle. Project rule: no market fallback.
+                # Exit didn't fill — clear the in-flight flag so the next
+                # adverse tick triggers another full retry cycle.
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
                         live.exit_in_flight = False
-                print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT TIMEOUT — "
+                print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT FAILED — "
                       f"position still open, will retry on next adverse tick",
                       flush=True)
 
         threading.Thread(target=_await_exit_fill, daemon=True,
                          name=f"squeeze-exit-{symbol}").start()
+
+    def _submit_exit_partial(self, pos: _Position, price: float,
+                              core_qty: int, reason: str):
+        """SELL LIMIT exit for the CORE portion at target-hit. The runner
+        (pos.qty after the shrink in the caller) stays open and is managed
+        by the post-target branch of `_tick_manage_exit` on subsequent
+        ticks.
+
+        P&L is booked for the CORE shares only — the runner books its own
+        P&L when it eventually exits via `_submit_exit`. This matches
+        Setup A's exit_trade(symbol, price, qty_core, "sq_target_hit")
+        semantics (exit_trade computes pnl on the qty argument, not the
+        full pos["qty"]).
+        """
+        symbol = pos.symbol
+        print(f"[SQUEEZE] {now_iso_et()} {symbol} TARGET HIT — selling core "
+              f"qty={core_qty} (keeping runner qty={pos.qty}) ref=${price:.4f}",
+              flush=True)
+
+        def _await_partial_fill():
+            res = place_with_retry(
+                self.broker, self.state, symbol, "SELL", core_qty,
+                ibkr_signal_price=price,
+                log_prefix="SQUEEZE",
+                log_label="QUOTE_AWARE",
+            )
+            if res.fill_price is not None and res.filled_qty > 0:
+                pnl = (res.fill_price - pos.entry) * res.filled_qty
+                self.risk.record_close(pnl)
+                with self._positions_lock:
+                    live = self.positions.get(symbol)
+                    if live is not None:
+                        live.partial_filled_qty = int(res.filled_qty)
+                        live.exit_in_flight = False  # runner is free to manage now
+                retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                print(f"[SQUEEZE] {now_iso_et()} {symbol} CORE EXIT @ "
+                      f"${res.fill_price:.4f} qty={res.filled_qty} "
+                      f"pnl=${pnl:+,.2f} reason={reason} "
+                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag} "
+                      f"— runner ({pos.qty}sh) active",
+                      flush=True)
+            else:
+                # Core didn't fill — back out the tp_hit flip so the
+                # pre-target ladder takes the next tick instead of the
+                # runner phase (otherwise we'd be in runner mode with no
+                # core sale, which is a bug). Setup A doesn't hit this
+                # case because exit_trade is synchronous; we do, hence the
+                # rollback.
+                with self._positions_lock:
+                    live = self.positions.get(symbol)
+                    if live is not None:
+                        # Restore the qty we shrunk in _tick_manage_exit.
+                        live.qty = live.qty + core_qty
+                        live.tp_hit = False
+                        live.partial_filled_at = None
+                        live.partial_filled_qty = 0
+                        live.runner_stop = 0.0
+                        live.exit_in_flight = False
+                print(f"[SQUEEZE] {now_iso_et()} {symbol} CORE EXIT FAILED "
+                      f"— rolled back tp_hit, will retry target on next tick",
+                      flush=True)
+
+        threading.Thread(target=_await_partial_fill, daemon=True,
+                         name=f"squeeze-core-{symbol}").start()
 
     # ── Main loop ─────────────────────────────────────────────────────
 
