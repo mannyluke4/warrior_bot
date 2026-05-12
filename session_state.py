@@ -274,10 +274,16 @@ def write_wb_state(
     wb_positions: dict,
     wb_pending_orders: dict,
     open_short: dict | None,
+    session_losses: dict | None = None,
 ) -> None:
     """Persist non-squeeze strategy state. Called on every mutation
     (entry fill, exit fill, pyramid, trail update, order placement) so a
     `kill -9` mid-update loses at most one tick of stop-trail data.
+
+    session_losses: per-symbol closed-loss count for the within-session
+    same-symbol blacklist (Hypothesis #11, 2026-05-12). Optional for
+    backward compatibility — callers that don't pass it get an empty dict
+    persisted, which is the same as cold-starting the blacklist.
 
     Datetimes inside the dicts are serialized via the default=str fallback
     in atomic_write_json — they round-trip as ISO strings on read.
@@ -286,6 +292,7 @@ def write_wb_state(
         "wb_positions": wb_positions,
         "wb_pending_orders": wb_pending_orders,
         "open_short": open_short,
+        "session_losses": session_losses or {},
     }
     atomic_write_json(_path("wb_state.json"), payload)
 
@@ -293,14 +300,27 @@ def write_wb_state(
 def read_wb_state(date_str: str | None = None) -> dict:
     """Read non-squeeze strategy state. Returns empty-but-shaped dict on any
     failure so the boot path can call this unconditionally."""
-    data = read_json_safe(_path("wb_state.json", date_str),
-                          {"wb_positions": {}, "wb_pending_orders": {}, "open_short": None})
+    default = {"wb_positions": {}, "wb_pending_orders": {},
+               "open_short": None, "session_losses": {}}
+    data = read_json_safe(_path("wb_state.json", date_str), default)
     if not isinstance(data, dict):
-        return {"wb_positions": {}, "wb_pending_orders": {}, "open_short": None}
+        return default
+    sl_raw = data.get("session_losses")
+    # Coerce values to int so e.g. JSON-roundtripped floats don't slip through.
+    if isinstance(sl_raw, dict):
+        sl_clean = {}
+        for k, v in sl_raw.items():
+            try:
+                sl_clean[str(k)] = int(v)
+            except (TypeError, ValueError):
+                continue
+    else:
+        sl_clean = {}
     return {
         "wb_positions": data.get("wb_positions") if isinstance(data.get("wb_positions"), dict) else {},
         "wb_pending_orders": data.get("wb_pending_orders") if isinstance(data.get("wb_pending_orders"), dict) else {},
         "open_short": data.get("open_short") if isinstance(data.get("open_short"), dict) else None,
+        "session_losses": sl_clean,
     }
 
 

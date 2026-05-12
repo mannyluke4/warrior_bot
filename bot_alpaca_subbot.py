@@ -135,6 +135,26 @@ from chop_gate_v3 import chop_gate_v3 as _chop_gate_v3_fn  # noqa: E402
 from session_history import SessionHistory  # noqa: E402
 _session_history_recorder = SessionHistory()
 
+# Hypothesis #10 — R% floor (2026-05-12). Across 5/8, 5/11, 5/12 every WB
+# loser had post-fill R% < 1.5%, every winner had R% >= 1.97% (5-for-5).
+# Reject arms whose (entry-stop)/entry falls below WB_MIN_R_PCT BEFORE the
+# chop gate so v2/v3 don't have to chew through the obvious tight-R noise.
+# Default-ON per directive — data is overwhelming. Flip enabled=0 to
+# disable for live diff.
+WB_MIN_R_PCT_ENABLED = os.getenv("WB_MIN_R_PCT_ENABLED", "1") == "1"
+WB_MIN_R_PCT = float(os.getenv("WB_MIN_R_PCT", "1.5"))
+
+# Hypothesis #11 — within-session same-symbol blacklist (2026-05-12).
+# Today's FATN double-loss = -$2,367 in 45 min; yesterday's ATRA triple-loss
+# = -$1,326. Pattern overwhelming. After WB_SAME_SESSION_BLACKLIST_LOSS_COUNT
+# closed losses on a symbol THIS session, refuse all further entries on it.
+# Reset cold-start at next launch (session_losses dict re-zeroed). Persisted
+# via wb_state.json so mid-day restart keeps the blacklist.
+WB_SAME_SESSION_BLACKLIST_ENABLED = os.getenv(
+    "WB_SAME_SESSION_BLACKLIST_ENABLED", "1") == "1"
+WB_SAME_SESSION_BLACKLIST_LOSS_COUNT = int(os.getenv(
+    "WB_SAME_SESSION_BLACKLIST_LOSS_COUNT", "1"))
+
 # Tick-By-Tick migration (DIRECTIVE_TICKBYTICK_MIGRATION.md).
 # Stage 1 probe (2026-05-05): account capacity = 5 simultaneous
 # reqTickByTickData('AllLast') subscriptions. Override via WB_TBT_MAX if a
@@ -362,6 +382,11 @@ class BotState:
         self.wb_positions: dict = {}                # symbol → {entry, qty, stop, score, ...}
         self.wb_pending_orders: dict = {}           # symbol → order_id (entry order in flight)
         self.wb_closed_trades: list = []
+        # Hypothesis #11 — within-session same-symbol blacklist. Symbol → count
+        # of closed losses this session. Incremented in place_wave_breakout_exit
+        # when pnl<0; checked in place_wave_breakout_entry before chop gates.
+        # Persisted via write_wb_state so mid-day restart preserves it.
+        self.session_losses: dict[str, int] = {}
         # Entry-halt safety. Set True when reconcile detects a broker position
         # the bot can't account for (orphan). Per the never-flatten rule, the
         # bot stops opening new positions until the operator clears the halt.
@@ -793,6 +818,39 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
             state.wb_detectors[symbol].mark_entry_failed("portfolio_cap")
         return
 
+    # Hypothesis #11 — within-session same-symbol blacklist (2026-05-12).
+    # If this symbol has already taken >=N closed losses this session, refuse
+    # further entries until next bot launch. Runs BEFORE chop gate v2 because
+    # it's a cheap dict lookup and applies to both gate paths (including the
+    # score>=9 chop_bypass branch). FATN 2026-05-12 -$2,367 in 45min was the
+    # trigger; the data also covers ATRA 2026-05-11 triple-loss -$1,326.
+    if WB_SAME_SESSION_BLACKLIST_ENABLED:
+        prior_losses = state.session_losses.get(symbol, 0)
+        if prior_losses >= WB_SAME_SESSION_BLACKLIST_LOSS_COUNT:
+            print(f"[CHOP_REJECT] {symbol}: same_session_loss_blacklist "
+                  f"(had {prior_losses} losses today, threshold "
+                  f"{WB_SAME_SESSION_BLACKLIST_LOSS_COUNT})", flush=True)
+            if symbol in state.wb_detectors:
+                state.wb_detectors[symbol].mark_entry_failed(
+                    "same_session_loss_blacklist")
+            return
+
+    # Hypothesis #10 — R% floor (2026-05-12). Across 5/8, 5/11, 5/12 every
+    # WB loser had post-fill R% < 1.5%; every winner had R% >= 1.97% (5-for-5).
+    # Reject arms whose (entry-stop)/entry falls below WB_MIN_R_PCT BEFORE
+    # chop gate v2 — cheap to compute, and applies in the score>=9 chop_bypass
+    # path too (NVOX 5/11 was score=9 R%=0.25%, -$37). Default 1.5%.
+    if WB_MIN_R_PCT_ENABLED:
+        if entry_price > 0:
+            r_pct = (entry_price - stop_price) / entry_price * 100.0
+            if r_pct < WB_MIN_R_PCT:
+                print(f"[CHOP_REJECT] {symbol}: r_pct_below_floor "
+                      f"(R%={r_pct:.2f} < {WB_MIN_R_PCT}%)", flush=True)
+                if symbol in state.wb_detectors:
+                    state.wb_detectors[symbol].mark_entry_failed(
+                        "r_pct_below_floor")
+                return
+
     # Tradability gate (DIRECTIVE_TRADABILITY_GATE.md). Per-day chop blacklist
     # checked first (cheap), then the four composite gates. On reject, log
     # structured [CHOP_REJECT] / [CHOP_BLACKLIST] events and refuse entry.
@@ -971,6 +1029,14 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
             "pnl": pnl, "r_mult": r, "reason": reason,
             "entry_time": pos["entry_time"], "exit_time": datetime.now(ET),
         })
+        # Hypothesis #11 — record losing close for within-session blacklist.
+        # Increment regardless of WB_SAME_SESSION_BLACKLIST_ENABLED so the
+        # counter is accurate if the gate is flipped on mid-session.
+        if pnl < 0:
+            state.session_losses[symbol] = state.session_losses.get(symbol, 0) + 1
+            print(f"[WB] {symbol} session_losses={state.session_losses[symbol]} "
+                  f"(threshold={WB_SAME_SESSION_BLACKLIST_LOSS_COUNT}, "
+                  f"enabled={WB_SAME_SESSION_BLACKLIST_ENABLED})", flush=True)
         # SessionHistory recording — ALWAYS ON, write-only. Populates the
         # per-symbol blacklist file so chop_gate_v3 has prior-session data
         # whether v3 is currently enabled or not (directive line 309).
@@ -1176,6 +1242,17 @@ def resume_reconcile():
         _coerce_dt(rehydrated_short, ["entry_time"])
         state.open_short = rehydrated_short
         print(f"  RESUME: rehydrated short on {rehydrated_short.get('symbol')}", flush=True)
+
+    # Hypothesis #11 — rehydrate within-session same-symbol blacklist counts.
+    # Without this a mid-day restart would forget today's losers and let the
+    # bot re-enter FATN after we already paid for the lesson.
+    rehydrated_session_losses = wb_data.get("session_losses") or {}
+    if isinstance(rehydrated_session_losses, dict) and rehydrated_session_losses:
+        state.session_losses = {str(k): int(v) for k, v in
+                                rehydrated_session_losses.items()}
+        print(f"  RESUME: rehydrated session_losses for "
+              f"{len(state.session_losses)} symbols: "
+              f"{dict(sorted(state.session_losses.items()))}", flush=True)
 
     # Step 3b: rehydrate squeeze positions, index persisted trades by symbol.
     persisted = ss.read_open_trades()
@@ -3767,13 +3844,14 @@ def persist_open_trades():
 
 def persist_wb_state():
     """Sync state.wb_positions / state.wb_pending_orders / state.open_short
-    to wb_state.json. Called on every WB mutation plus periodically from the
-    flush thread."""
+    + state.session_losses to wb_state.json. Called on every WB mutation
+    plus periodically from the flush thread."""
     try:
         ss.write_wb_state(
             wb_positions=state.wb_positions,
             wb_pending_orders=state.wb_pending_orders,
             open_short=state.open_short,
+            session_losses=state.session_losses,
         )
     except Exception as e:
         print(f"⚠️  persist_wb_state error: {e}", flush=True)
