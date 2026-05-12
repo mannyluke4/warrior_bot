@@ -71,6 +71,16 @@ ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))
 ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
 
+# Trailing-stop knobs (mirror WaveBreakoutDetector's defaults; the detector
+# reads them itself but the bot wants visibility for log lines + persistence).
+WB_TRAILING_ACTIVATE_R = float(os.getenv("WB_WB_TRAILING_ACTIVATE_R", "1.0"))
+WB_TRAILING_DISTANCE_R = float(os.getenv("WB_WB_TRAILING_DISTANCE_R", "0.5"))
+WB_HARD_STOP_R = float(os.getenv("WB_WB_HARD_STOP_R", "1.0"))
+# Pyramid trigger leg2 is SILENT in Setup A per 2026-05-08 breakdown — the
+# detector emits WB_PYRAMID but Setup A's subbot doesn't wire it to an
+# Alpaca BUY. We mirror that exactly: log the signal, don't place leg2.
+WB_PYRAMID_ENABLED = os.getenv("WB_WB_PYRAMID_ENABLED", "0") == "1"
+
 
 # ══════════════════════════════════════════════════════════════════════
 # Per-symbol position
@@ -79,6 +89,15 @@ ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
 
 @dataclass
 class _WBPosition:
+    """WB position state.
+
+    The WB exit logic lives almost entirely INSIDE the WaveBreakoutDetector:
+    activation, trail update, hard stop, pyramid trigger all live in
+    `WaveBreakoutDetector._update_position`. The bot just routes the
+    detector's WB_EXIT message to an Alpaca SELL. So the bot-side state
+    we carry is leaner than squeeze's — but we still mirror the trail
+    flags for log audits.
+    """
     symbol: str
     qty: int
     entry: float
@@ -89,6 +108,10 @@ class _WBPosition:
     order_id: str
     peak: float
     pyramid_filled: bool = False
+    # Trail-state mirror — for log lines + audit.
+    trail_armed: bool = False
+    trail_stop: float = 0.0
+    fill_confirmed: bool = False
     # In-flight guard for exit retry loop (see squeeze_bot for rationale).
     exit_in_flight: bool = False
 
@@ -143,7 +166,10 @@ class WBBot:
         self.state = EngineState()
         self.detectors: dict[str, WaveBreakoutDetector] = {}
         self.positions: dict[str, _WBPosition] = {}
-        self._positions_lock = threading.Lock()
+        # RLock for consistency with squeeze_bot; persistence helpers
+        # (added in a later commit) re-enter the lock from contexts
+        # already holding it. Plain Lock would deadlock.
+        self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
 
     def _ensure_detector(self, symbol: str) -> WaveBreakoutDetector:
@@ -167,14 +193,55 @@ class WBBot:
             print(f"[WB] {now_iso_et()} {sym} detector tick error: {e!r}",
                   flush=True)
             return
+        # Update bot-side peak mirror. The detector tracks its own peak
+        # for the trail math, but the bot mirroring keeps the audit log
+        # consistent and gives a later persistence layer a current peak
+        # to flush. Peak-only update — no other state changes here.
+        with self._positions_lock:
+            pos = self.positions.get(sym)
+            if pos is not None and pos.fill_confirmed and msg.price > pos.peak:
+                pos.peak = msg.price
         if not res:
             return
         if res.startswith("WB_ENTER"):
             self._handle_entry(sym, res, det)
         elif res.startswith("WB_EXIT"):
             self._handle_exit(sym, res)
-        elif (res.startswith("WB_TRAIL_ARMED") or res.startswith("WB_PYRAMID")
-              or res.startswith("WB_DISARMED")):
+        elif res.startswith("WB_TRAIL_ARMED"):
+            # Mirror trail state onto the bot-side position so a later
+            # persistence layer can capture "trail is armed" + the
+            # current trail_stop. The detector remains the source of
+            # truth for trail math — the bot just shadows the flag.
+            with self._positions_lock:
+                pos = self.positions.get(sym)
+                if pos is not None:
+                    pos.trail_armed = True
+                    for tok in res.split():
+                        if tok.startswith("trail="):
+                            try:
+                                pos.trail_stop = float(tok.split("=", 1)[1])
+                            except ValueError:
+                                pass
+            print(f"[WB] {now_iso_et()} {sym} {res}", flush=True)
+        elif res.startswith("WB_PYRAMID"):
+            # Pyramid leg2 is SILENT per Setup A (2026-05-08 breakdown
+            # documented "pyramid leg2 may not be wired to Alpaca
+            # execution"). We log the trigger but DO NOT place a second
+            # BUY. WB_WB_PYRAMID_ENABLED is also OFF by default in env.
+            #
+            # If we ever decide to wire leg2, the place would be here —
+            # parse the leg2 entry from the message and call
+            # place_with_retry with the additional shares. Until then,
+            # this is intentionally a no-op beyond logging.
+            if WB_PYRAMID_ENABLED:
+                print(f"[WB] {now_iso_et()} {sym} {res} (PYRAMID_ENABLED=1 but "
+                      f"leg2 execution intentionally unwired during A/B parity "
+                      f"period — matches Setup A behavior; see 2026-05-08 note)",
+                      flush=True)
+            else:
+                print(f"[WB] {now_iso_et()} {sym} {res} (silent — leg2 not "
+                      f"wired, matches Setup A)", flush=True)
+        elif res.startswith("WB_DISARMED"):
             print(f"[WB] {now_iso_et()} {sym} {res}", flush=True)
 
     def on_bar(self, msg: BarMessage):
@@ -268,6 +335,7 @@ class WBBot:
                     stop=stop, score=score, risk_dollars=risk_dollars,
                     entry_time=now_et(), order_id=res.last_order_id or "",
                     peak=float(res.fill_price),
+                    fill_confirmed=True,
                 )
                 with self._positions_lock:
                     self.positions[symbol] = pos
