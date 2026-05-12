@@ -166,6 +166,35 @@ WB_SAME_SESSION_BLACKLIST_ENABLED = os.getenv(
 WB_SAME_SESSION_BLACKLIST_LOSS_COUNT = int(os.getenv(
     "WB_SAME_SESSION_BLACKLIST_LOSS_COUNT", "1"))
 
+# Hypothesis #14 — pre-market time block for WB arms (2026-05-12).
+# Across 5/8, 5/11, 5/12 (the WB dataset), 8 of 8 WB entries fired before
+# 11:00 ET / 9:00 MT were closed losers. Zero winners ever fired pre-9 AM MT.
+# Pre-market WB setups need post-open volume that hasn't materialized yet;
+# the breakout structure looks similar but doesn't have institutional flow
+# to sustain it. Reject arms whose entry-time is before WB_PRE_MARKET_BLOCK_MIN_ET
+# BEFORE chop gate v2/v3 (cheapest possible check) — applies in the score>=9
+# chop_bypass path too (same precedent as H#10/H#11). Default-ON per directive
+# — data is overwhelming (8-for-8). Flip enabled=0 to disable for live diff.
+WB_PRE_MARKET_BLOCK_ENABLED = os.getenv(
+    "WB_PRE_MARKET_BLOCK_ENABLED", "1") == "1"
+WB_PRE_MARKET_BLOCK_MIN_ET = os.getenv(
+    "WB_PRE_MARKET_BLOCK_MIN_ET", "11:00")
+
+
+def _parse_hh_mm(hhmm: str) -> time_cls:
+    """Parse 'HH:MM' (24-hour ET) into a datetime.time. Defaults to 11:00
+    on malformed input so a typo can't accidentally disable the gate."""
+    try:
+        hh, mm = hhmm.strip().split(":")
+        return time_cls(int(hh), int(mm))
+    except Exception:
+        print(f"[WB_PRE_MARKET_BLOCK] bad WB_PRE_MARKET_BLOCK_MIN_ET={hhmm!r} "
+              f"— defaulting to 11:00", flush=True)
+        return time_cls(11, 0)
+
+
+_WB_PRE_MARKET_BLOCK_MIN_TIME = _parse_hh_mm(WB_PRE_MARKET_BLOCK_MIN_ET)
+
 # Tick-By-Tick migration (DIRECTIVE_TICKBYTICK_MIGRATION.md).
 # Stage 1 probe (2026-05-05): account capacity = 5 simultaneous
 # reqTickByTickData('AllLast') subscriptions. Override via WB_TBT_MAX if a
@@ -861,6 +890,21 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
                     state.wb_detectors[symbol].mark_entry_failed(
                         "r_pct_below_floor")
                 return
+
+    # Hypothesis #14 — pre-market time block (2026-05-12). 8 of 8 WB entries
+    # fired before 11:00 ET / 9:00 MT across 5/8, 5/11, 5/12 were losers.
+    # Zero winners ever fired pre-9 AM MT. Runs BEFORE chop gate v2 and applies
+    # to the score>=9 chop_bypass branch too (same precedent as H#10/H#11).
+    if WB_PRE_MARKET_BLOCK_ENABLED:
+        now_et_dt = datetime.now(ET)
+        if now_et_dt.time() < _WB_PRE_MARKET_BLOCK_MIN_TIME:
+            print(f"[CHOP_REJECT] {symbol}: pre_threshold_time "
+                  f"(now={now_et_dt.strftime('%H:%M')} ET < "
+                  f"min={WB_PRE_MARKET_BLOCK_MIN_ET} ET)", flush=True)
+            if symbol in state.wb_detectors:
+                state.wb_detectors[symbol].mark_entry_failed(
+                    "pre_threshold_time")
+            return
 
     # Tradability gate (DIRECTIVE_TRADABILITY_GATE.md). Per-day chop blacklist
     # checked first (cheap), then the four composite gates. On reject, log
