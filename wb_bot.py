@@ -70,6 +70,24 @@ WB_ENABLED = os.getenv("WB_WAVE_BREAKOUT_ENABLED", "1") == "1"
 WB_CHOP_GATE_V3_ENABLED = os.getenv("WB_CHOP_GATE_V3_ENABLED", "0") == "1"
 _session_history_recorder = SessionHistory()
 
+# Hypothesis #10 — R% floor (2026-05-12). Across 5/8, 5/11, 5/12 every WB
+# loser had post-fill R% < 1.5%; every winner had R% >= 1.97% (5-for-5).
+# Reject arms whose (entry-stop)/entry falls below WB_MIN_R_PCT BEFORE the
+# chop gate v3 (so v3 doesn't have to chew through obvious tight-R noise)
+# and BEFORE sizing (cheap, applies even when v3 disabled). Default-ON per
+# directive — data is overwhelming. Flip enabled=0 to disable for live diff.
+WB_MIN_R_PCT_ENABLED = os.getenv("WB_MIN_R_PCT_ENABLED", "1") == "1"
+WB_MIN_R_PCT = float(os.getenv("WB_MIN_R_PCT", "1.5"))
+
+# Hypothesis #11 — within-session same-symbol blacklist (2026-05-12). After
+# WB_SAME_SESSION_BLACKLIST_LOSS_COUNT closed losses on a symbol this
+# session, refuse all further entries on it. Persisted via the per-bot
+# risk.json so mid-day restart keeps the blacklist; reset at cold start.
+WB_SAME_SESSION_BLACKLIST_ENABLED = os.getenv(
+    "WB_SAME_SESSION_BLACKLIST_ENABLED", "1") == "1"
+WB_SAME_SESSION_BLACKLIST_LOSS_COUNT = int(os.getenv(
+    "WB_SAME_SESSION_BLACKLIST_LOSS_COUNT", "1"))
+
 WB_RISK_PCT = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
 WB_RISK_FLOOR = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
 WB_RISK_CEIL = float(os.getenv("WB_WB_RISK_CEILING_DOLLARS", "5000"))
@@ -189,6 +207,11 @@ class WBBot:
         self.state = EngineState()
         self.detectors: dict[str, WaveBreakoutDetector] = {}
         self.positions: dict[str, _WBPosition] = {}
+        # Hypothesis #11 — within-session same-symbol blacklist. Symbol →
+        # count of closed losses this session. Incremented in _handle_exit
+        # when pnl<0; checked in _handle_entry before chop gate v3. Persisted
+        # via risk.json so mid-day restart preserves it; cleared at cold start.
+        self.session_losses: dict[str, int] = {}
         # RLock — `_persist_open_trades` re-enters from contexts already
         # holding the lock (mirror of squeeze_bot rationale).
         self._positions_lock = threading.RLock()
@@ -345,6 +368,35 @@ class WBBot:
             det.mark_entry_failed(f"parse_error:{e}")
             return
 
+        # Hypothesis #11 — within-session same-symbol blacklist (2026-05-12).
+        # If this symbol has already taken >=N closed losses this session,
+        # refuse further entries until next bot launch. Runs BEFORE chop gate
+        # v3 because it's a cheap dict lookup. FATN 2026-05-12 -$2,367 in
+        # 45min was the trigger; data also covers ATRA 2026-05-11 triple-loss.
+        if WB_SAME_SESSION_BLACKLIST_ENABLED:
+            prior_losses = self.session_losses.get(symbol, 0)
+            if prior_losses >= WB_SAME_SESSION_BLACKLIST_LOSS_COUNT:
+                print(f"[CHOP_REJECT] {now_iso_et()} {symbol}: "
+                      f"same_session_loss_blacklist (had {prior_losses} "
+                      f"losses today, threshold "
+                      f"{WB_SAME_SESSION_BLACKLIST_LOSS_COUNT})", flush=True)
+                det.mark_entry_failed("same_session_loss_blacklist")
+                return
+
+        # Hypothesis #10 — R% floor (2026-05-12). Across 5/8, 5/11, 5/12 every
+        # WB loser had post-fill R% < 1.5%; every winner had R% >= 1.97%
+        # (5-for-5). Reject arms whose (entry-stop)/entry falls below
+        # WB_MIN_R_PCT BEFORE chop gate v3 — cheap and applies regardless
+        # of score (NVOX 5/11 was score=9 R%=0.25%, -$37). Default 1.5%.
+        if WB_MIN_R_PCT_ENABLED and entry > 0:
+            r_pct = (entry - stop) / entry * 100.0
+            if r_pct < WB_MIN_R_PCT:
+                print(f"[CHOP_REJECT] {now_iso_et()} {symbol}: "
+                      f"r_pct_below_floor (R%={r_pct:.2f} < "
+                      f"{WB_MIN_R_PCT}%)", flush=True)
+                det.mark_entry_failed("r_pct_below_floor")
+                return
+
         # Chop Gate v3 — second-layer check (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
         # 2026-05-12). Default OFF; toggle via WB_CHOP_GATE_V3_ENABLED. Three
         # intraday metrics (failed_hod_attempts, macd_rolling_over,
@@ -467,6 +519,18 @@ class WBBot:
             if res.fill_price is not None and res.filled_qty > 0:
                 pnl = (res.fill_price - pos.entry) * res.filled_qty
                 self.risk.record_close(pnl)
+                # Hypothesis #11 — record losing close for within-session
+                # blacklist. Increment regardless of gate flag so the counter
+                # is accurate if the gate is flipped on mid-session.
+                if pnl < 0:
+                    self.session_losses[symbol] = (
+                        self.session_losses.get(symbol, 0) + 1
+                    )
+                    print(f"[WB] {now_iso_et()} {symbol} "
+                          f"session_losses={self.session_losses[symbol]} "
+                          f"(threshold={WB_SAME_SESSION_BLACKLIST_LOSS_COUNT}, "
+                          f"enabled={WB_SAME_SESSION_BLACKLIST_ENABLED})",
+                          flush=True)
                 with self._positions_lock:
                     self.positions.pop(symbol, None)
                 if det is not None:
@@ -590,6 +654,7 @@ class WBBot:
                 daily_entries=self.risk.daily_entries,
                 consecutive_losses=self.risk.consecutive_losses,
                 closed_trades=self.risk.closed_trades,
+                session_losses=self.session_losses,
             )
         except Exception as e:
             print(f"[WB] {now_iso_et()} persist_risk error: {e!r}", flush=True)
@@ -747,6 +812,15 @@ class WBBot:
         self.risk.daily_entries = int(risk_data.get("daily_entries", 0))
         self.risk.consecutive_losses = int(risk_data.get("consecutive_losses", 0))
         self.risk.closed_trades = list(risk_data.get("closed_trades", []))
+        # Hypothesis #11 — restore within-session same-symbol blacklist counts.
+        # Without this a mid-day restart would forget today's losers and let
+        # the bot re-enter FATN after we already paid for the lesson.
+        rehydrated_sl = risk_data.get("session_losses") or {}
+        if isinstance(rehydrated_sl, dict) and rehydrated_sl:
+            self.session_losses = {str(k): int(v) for k, v in rehydrated_sl.items()}
+            print(f"[WB] {now_iso_et()} RESUME: session_losses restored for "
+                  f"{len(self.session_losses)} symbols: "
+                  f"{dict(sorted(self.session_losses.items()))}", flush=True)
         print(f"[WB] {now_iso_et()} RESUME: risk restored "
               f"daily_pnl=${self.risk.daily_pnl:+,.2f} "
               f"entries={self.risk.daily_entries}", flush=True)

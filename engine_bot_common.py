@@ -1033,31 +1033,52 @@ class EngineSession:
 
     # ── Risk (daily counters + capped closed_trades) ─────────────────
     def write_risk(self, *, daily_pnl: float, daily_entries: int,
-                   consecutive_losses: int, closed_trades: list) -> None:
+                   consecutive_losses: int, closed_trades: list,
+                   session_losses: Optional[dict] = None) -> None:
         # Cap closed_trades at 50 like Setup A — diagnostic, not load-bearing.
         trimmed = closed_trades[-50:] if len(closed_trades) > 50 else closed_trades
+        # session_losses: per-symbol closed-loss count for the within-session
+        # same-symbol blacklist (Hypothesis #11, 2026-05-12). Optional for
+        # backward compatibility — None / missing both mean an empty blacklist.
+        sl_payload: dict[str, int] = {}
+        if isinstance(session_losses, dict):
+            for k, v in session_losses.items():
+                try:
+                    sl_payload[str(k)] = int(v)
+                except (TypeError, ValueError):
+                    continue
         with self._lock:
             _atomic_write_json(self.risk_path(), {
                 "daily_pnl": float(daily_pnl),
                 "daily_entries": int(daily_entries),
                 "consecutive_losses": int(consecutive_losses),
                 "closed_trades": trimmed,
+                "session_losses": sl_payload,
                 "updated_at": datetime.now(UTC).isoformat(),
             })
 
     def read_risk(self, date_str: Optional[str] = None) -> dict:
         default = {
             "daily_pnl": 0.0, "daily_entries": 0, "consecutive_losses": 0,
-            "closed_trades": [],
+            "closed_trades": [], "session_losses": {},
         }
         data = _read_json_safe(self.risk_path(date_str), default)
         if not isinstance(data, dict):
             return default
+        sl_raw = data.get("session_losses")
+        sl_clean: dict[str, int] = {}
+        if isinstance(sl_raw, dict):
+            for k, v in sl_raw.items():
+                try:
+                    sl_clean[str(k)] = int(v)
+                except (TypeError, ValueError):
+                    continue
         return {
             "daily_pnl": float(data.get("daily_pnl", 0.0)),
             "daily_entries": int(data.get("daily_entries", 0)),
             "consecutive_losses": int(data.get("consecutive_losses", 0)),
             "closed_trades": data.get("closed_trades", []) or [],
+            "session_losses": sl_clean,
         }
 
     # ── Scrub (for --fresh / --scrub CLI flags) ───────────────────────
