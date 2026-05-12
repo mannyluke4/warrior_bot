@@ -76,10 +76,10 @@ from session_history import SessionHistory  # noqa: E402
 from macd import MACDState  # noqa: E402
 
 # Sub-gate registry used for per-sub-gate validation passes.
+# dead_bounce retired per DIRECTIVE_CHOP_GATE_V3_DEAD_BOUNCE_RETIRE.md (2026-05-12).
 SUB_GATES = [
     ("macd",              sub_gate_macd),
     ("hod_recent",        sub_gate_hod_recent),
-    ("dead_bounce",       sub_gate_dead_bounce),
     ("vol_followthrough", sub_gate_vol_followthrough),
     ("xsession_bl",       sub_gate_xsession_bl),
 ]
@@ -946,10 +946,10 @@ def main() -> int:
     print(f"Wrote {composite_path}", flush=True)
 
     # ── Per-sub-gate reports (Phase 3 of modular rollout) ──────────────
+    # dead_bounce retired per DIRECTIVE_CHOP_GATE_V3_DEAD_BOUNCE_RETIRE.md.
     report_paths = {
         "macd":              out_dir / "2026-05-13_chop_gate_v3_macd_only_validation.md",
         "hod_recent":        out_dir / "2026-05-13_chop_gate_v3_hod_recent_validation.md",
-        "dead_bounce":       out_dir / "2026-05-13_chop_gate_v3_dead_bounce_validation.md",
         "xsession_bl":       out_dir / "2026-05-13_chop_gate_v3_xsession_validation.md",
     }
     notes_common = [
@@ -975,14 +975,7 @@ def main() -> int:
             "FATN 5/5 14:39 winner passed.",
         ],
     )
-    db_crits, db_counts = _write_sub_gate_report(
-        decisions, "dead_bounce", report_paths["dead_bounce"],
-        extra_notes=notes_common + [
-            "Advisory only — user reviews report before flipping "
-            "WB_CG3_DEAD_BOUNCE_ENABLED=1. Expected: FATN 5/8 13:58 blocked, "
-            "all winners passed.",
-        ],
-    )
+    # dead_bounce retired per DIRECTIVE_CHOP_GATE_V3_DEAD_BOUNCE_RETIRE.md.
     xb_crits, xb_counts = _write_sub_gate_report(
         decisions, "xsession_bl", report_paths["xsession_bl"],
         extra_notes=notes_common + [
@@ -1009,9 +1002,6 @@ def main() -> int:
 
     print("\nhod_recent advisory summary:")
     for label, ok, detail in hod_crits:
-        print(f"  [{'PASS' if ok else 'INFO'}] {label} — {detail}")
-    print("\ndead_bounce advisory summary:")
-    for label, ok, detail in db_crits:
         print(f"  [{'PASS' if ok else 'INFO'}] {label} — {detail}")
     print("\nxsession_bl advisory summary:")
     for label, ok, detail in xb_crits:

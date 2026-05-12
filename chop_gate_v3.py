@@ -529,7 +529,15 @@ def sub_gate_dead_bounce(
     session_history: Any,
     today: str,
 ) -> Tuple[bool, str]:
-    """Veto when the chart shape is 'stock died slow + weak technical bounce'.
+    """RETIRED 2026-05-12 per DIRECTIVE_CHOP_GATE_V3_DEAD_BOUNCE_RETIRE.md.
+
+    The metric never blocked its design target (FATN 5/8 13:58) in either
+    v1 or v2; the OR/AND step-2 redesigns both failed validation. Function
+    kept here for code-archaeology only; no caller invokes it. Do not
+    re-enable without a fresh theoretically-grounded design (see directive
+    §4 for the gate's required re-entry conditions).
+
+    Veto when the chart shape is 'stock died slow + weak technical bounce'.
 
     All 4 conditions must be met for veto:
       1) HOD set in first 90 min of session (configurable)
@@ -715,7 +723,8 @@ def sub_gate_xsession_bl(
 _SUB_GATES = (
     ("macd",              sub_gate_macd,              _enabled_macd),
     ("hod_recent",        sub_gate_hod_recent,        _enabled_hod_recent),
-    ("dead_bounce",       sub_gate_dead_bounce,       _enabled_dead_bounce),
+    # dead_bounce RETIRED per DIRECTIVE_CHOP_GATE_V3_DEAD_BOUNCE_RETIRE.md
+    # (2026-05-12). Function kept below for reference; never enabled.
     ("vol_followthrough", sub_gate_vol_followthrough, _enabled_vol_ft),
     ("xsession_bl",       sub_gate_xsession_bl,       _enabled_xsession_bl),
 )
