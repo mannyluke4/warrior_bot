@@ -482,6 +482,12 @@ QUOTE_STALENESS_MAX_MS_DEFAULT = int(os.getenv("WB_QUOTE_STALENESS_MAX_MS", "200
 FALLBACK_SAFETY_BUFFER_PCT_DEFAULT = float(
     os.getenv("WB_FALLBACK_SAFETY_BUFFER_PCT", "1.0")
 )
+# WB_DIVERGENT_QUOTE_MAX_PCT — if Alpaca quote disagrees with IBKR by more
+# than this %, the cached Alpaca quote is almost certainly stale or wrong;
+# fall back to IBKR-only pricing instead of trusting Alpaca. Applies to
+# BOTH BUY (vs alpaca_ask) and SELL (vs alpaca_bid). See 2026-05-12 FATN
+# incident where IBKR stop $3.54 vs Alpaca bid $3.09 (12.7% gap).
+DIVERGENT_QUOTE_MAX_PCT = float(os.getenv("WB_DIVERGENT_QUOTE_MAX_PCT", "5.0"))
 
 
 def get_priced_limit(
@@ -564,6 +570,34 @@ def get_priced_limit(
         return limit
 
     bid, ask, age_ms = fresh_quote
+
+    # Divergent-quote guard. If Alpaca's quote disagrees with IBKR by more
+    # than DIVERGENT_PCT, the cached Alpaca quote is almost certainly stale
+    # or wrong (post-halt one-sided print, missed update, etc). Using it
+    # would risk:
+    #   BUY  → chase a phantom move above IBKR's view
+    #   SELL → sell BELOW where the symbol is actually trading
+    # 2026-05-12 FATN: IBKR stop signal $3.54, Alpaca bid $3.09 (12.7% gap).
+    # Without this guard, SELL limit priced at $3.07 (Alpaca-bid - buffer).
+    # Order luckily filled at $3.52 ($0.45 of price improvement), but if a
+    # thin buyer sat at $3.07-3.10 in Alpaca's book we'd have realized
+    # a 3R loss instead of a 1R stop. Same shape on BUY: original directive
+    # mentioned this fallback for the BUY side but it wasn't wired here.
+    relevant = ask if side_upper == "BUY" else bid
+    divergence_pct = abs(relevant - ibkr_signal_price) / ibkr_signal_price * 100.0
+    if divergence_pct > DIVERGENT_QUOTE_MAX_PCT:
+        if side_upper == "BUY":
+            limit = ibkr_signal_price * (1.0 + fallback_pct)
+        else:
+            limit = ibkr_signal_price * (1.0 - fallback_pct)
+        limit = round(limit, 2)
+        print(f"[ALPACA_QUOTE_DIVERGENT] {symbol} {side_upper} limit={limit:.4f} "
+              f"ibkr_signal={ibkr_signal_price:.4f} "
+              f"{'alpaca_ask' if side_upper == 'BUY' else 'alpaca_bid'}={relevant:.4f} "
+              f"gap_pct={divergence_pct:.2f} "
+              f"(>{DIVERGENT_QUOTE_MAX_PCT}%) — using IBKR-only fallback", flush=True)
+        return limit
+
     if side_upper == "BUY":
         alpaca_limit = ask * (1.0 + cross_pct)
         limit = max(ibkr_limit, alpaca_limit)
