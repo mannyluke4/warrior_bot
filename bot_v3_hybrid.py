@@ -174,6 +174,13 @@ EXIT_SLIPPAGE_PCT = float(os.getenv("WB_EXIT_SLIPPAGE_PCT", "0.005"))
 # being placed (every callsite is wrapped in try/except). Squeeze entries ONLY.
 LATENCY_DIAGNOSTIC_ENABLED = os.getenv("WB_LATENCY_DIAGNOSTIC_ENABLED", "1") == "1"
 
+# Alpaca-aware limit pricing (DORMANT — Phase 3 of latency directive, gated OFF).
+# When the diagnostic identifies Outcome B (consistent meaningful latency), flip
+# WB_ALPACA_AWARE_LIMITS=1 and wire compute_alpaca_aware_limit() into the entry
+# path. The helper itself exists in this file so Friday's activation is a single
+# env-var flip — it is currently NOT wired into any caller.
+ALPACA_AWARE_LIMITS_ENABLED = os.getenv("WB_ALPACA_AWARE_LIMITS", "0") == "1"
+
 
 def _entry_slippage_for(price: float) -> float:
     """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
@@ -2476,6 +2483,74 @@ def _finalize_latency_record(record: dict, *, terminal_state: str,
             print(f"  [LATENCY_DIAG_FINALIZE_FAIL] {e}", flush=True)
         except Exception:
             pass
+
+
+# ─── Phase 3 (DORMANT) — Alpaca-aware limit price helper ─────────────────
+# DORMANT until directive Outcome B activates this. Function exists so the
+# Friday post-diagnostic activation is a single env-var flip
+# (WB_ALPACA_AWARE_LIMITS=1). NOT wired into any caller yet — flipping the env
+# var alone is a no-op until a caller is added in a follow-up commit.
+
+def compute_alpaca_aware_limit(symbol: str, signal_price: float, side: str,
+                                buffer_pct: float = 0.005) -> float:
+    """Return a limit price calibrated to Alpaca's current view of the market.
+
+    For BUY:  max(signal_price × (1+buffer), alpaca_ask × (1+buffer))
+    For SELL: min(signal_price × (1-buffer), alpaca_bid × (1-buffer))
+
+    Falls back to base_limit = signal_price ± buffer when:
+      • WB_ALPACA_AWARE_LIMITS is off (default)
+      • state.alpaca_data_client is None
+      • Alpaca quote call fails / times out
+      • Alpaca quote is >5% divergent from signal_price (likely stale/bad data —
+        we don't want to chase a phantom move).
+
+    Returns a price rounded to 2 decimal places.
+
+    DORMANT until directive Outcome B activates this — function exists so the
+    Friday post-diagnostic activation is a single env-var flip
+    (WB_ALPACA_AWARE_LIMITS=1) + a one-line wire-up in enter_trade()."""
+    side_u = side.upper()
+    if side_u == "BUY":
+        base_limit = round(signal_price * (1 + buffer_pct), 2)
+    else:
+        base_limit = round(signal_price * (1 - buffer_pct), 2)
+
+    if not ALPACA_AWARE_LIMITS_ENABLED or state.alpaca_data_client is None:
+        return base_limit
+
+    try:
+        from alpaca.data.requests import StockLatestQuoteRequest
+        q_resp = state.alpaca_data_client.get_stock_latest_quote(
+            StockLatestQuoteRequest(symbol_or_symbols=symbol)
+        )
+        q = q_resp.get(symbol) if isinstance(q_resp, dict) else None
+        if q is None:
+            return base_limit
+        if side_u == "BUY":
+            alpaca_ref = float(q.ask_price) if getattr(q, "ask_price", None) else None
+        else:
+            alpaca_ref = float(q.bid_price) if getattr(q, "bid_price", None) else None
+        if alpaca_ref is None or signal_price <= 0:
+            return base_limit
+        # Divergence guard: if Alpaca's view is wildly different from IBKR,
+        # the Alpaca quote is likely stale or broken — use base_limit.
+        if abs(alpaca_ref - signal_price) / signal_price > 0.05:
+            try:
+                print(f"  [ALPACA_QUOTE_DIVERGENT] {symbol}: alpaca_ref={alpaca_ref:.4f} "
+                      f"signal={signal_price:.4f} (>5% gap) — using base limit", flush=True)
+            except Exception:
+                pass
+            return base_limit
+        if side_u == "BUY":
+            return round(max(base_limit, alpaca_ref * (1 + buffer_pct)), 2)
+        return round(min(base_limit, alpaca_ref * (1 - buffer_pct)), 2)
+    except Exception as e:
+        try:
+            print(f"  [ALPACA_AWARE_FAIL] {symbol}: {e} — using base limit", flush=True)
+        except Exception:
+            pass
+        return base_limit
 
 
 def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
