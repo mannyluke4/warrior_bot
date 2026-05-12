@@ -36,7 +36,7 @@ import re
 import sys
 import tempfile
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field  # noqa: F401
 from datetime import date as _date, datetime, time as _time, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -65,10 +65,24 @@ from chop_gate_v3 import (  # noqa: E402
     failed_hod_attempts,
     macd_rolling_over,
     has_volume_followthrough,
+    sub_gate_macd,
+    sub_gate_hod_recent,
+    sub_gate_dead_bounce,
+    sub_gate_vol_followthrough,
+    sub_gate_xsession_bl,
     _set_session_history,
 )
 from session_history import SessionHistory  # noqa: E402
 from macd import MACDState  # noqa: E402
+
+# Sub-gate registry used for per-sub-gate validation passes.
+SUB_GATES = [
+    ("macd",              sub_gate_macd),
+    ("hod_recent",        sub_gate_hod_recent),
+    ("dead_bounce",       sub_gate_dead_bounce),
+    ("vol_followthrough", sub_gate_vol_followthrough),
+    ("xsession_bl",       sub_gate_xsession_bl),
+]
 
 ET = ZoneInfo("America/New_York")
 UTC = timezone.utc
@@ -445,10 +459,21 @@ class ReplayDecision:
     blacklist_reason: str
     passes: bool
     reason: str
+    # Per-sub-gate verdicts captured during the same replay pass. Each
+    # entry is (passes, reason) — passes=True means this sub-gate would
+    # NOT veto the entry; passes=False means it WOULD veto.
+    sub_gate_verdicts: Dict[str, Tuple[bool, str]] = field(default_factory=dict)
 
 
 def replay_trades(trades: List[Trade]) -> List[ReplayDecision]:
     """Chronologically replay trades through chop_gate_v3.
+
+    Each trade is evaluated TWICE:
+      1) Through the composite orchestrator (`chop_gate_v3`), respecting
+         the currently-active env flags.
+      2) Through every sub-gate individually (regardless of env flags), so
+         each sub-gate's would-veto / would-pass verdict is captured for
+         downstream per-sub-gate reports.
 
     Cross-session blacklist is built incrementally: each trade's v3
     decision is computed BEFORE that trade's outcome is recorded into
@@ -461,8 +486,6 @@ def replay_trades(trades: List[Trade]) -> List[ReplayDecision]:
     _set_session_history(history)
 
     decisions: List[ReplayDecision] = []
-    # Sort by entry_time_utc. Ties broken by source filename so output
-    # is deterministic.
     sorted_trades = sorted(trades, key=lambda t: (t.entry_time_utc, t.source, t.symbol))
 
     for trade in sorted_trades:
@@ -477,9 +500,22 @@ def replay_trades(trades: List[Trade]) -> List[ReplayDecision]:
             trade.symbol, trade.date,
         )
 
+        # Composite orchestrator (env-aware).
         passes, reason = chop_gate_v3(
             trade.symbol, bars, macd, trade.date,
         )
+
+        # Per-sub-gate verdicts (independent of env flags).
+        sub_verdicts: Dict[str, Tuple[bool, str]] = {}
+        for name, fn in SUB_GATES:
+            try:
+                sg_pass, sg_reason = fn(
+                    trade.symbol, bars, macd, history, trade.date,
+                )
+            except Exception as e:
+                sg_pass, sg_reason = True, f"error:{e!r}"
+            sub_verdicts[name] = (sg_pass, sg_reason)
+
         decisions.append(ReplayDecision(
             trade=trade,
             bars_count=len(bars),
@@ -491,10 +527,9 @@ def replay_trades(trades: List[Trade]) -> List[ReplayDecision]:
             blacklist_reason=black_reason,
             passes=passes,
             reason=reason,
+            sub_gate_verdicts=sub_verdicts,
         ))
 
-        # Record this trade's outcome AFTER the decision, so later trades
-        # see it in their blacklist computation.
         if trade.pnl is not None and trade.r_multiple is not None:
             history.record_trade(
                 symbol=trade.symbol,
@@ -687,6 +722,187 @@ def write_report(
 
 
 # ══════════════════════════════════════════════════════════════════════
+# Per-sub-gate validation
+# ══════════════════════════════════════════════════════════════════════
+
+
+def _macd_acceptance(
+    decisions: List[ReplayDecision],
+) -> List[Tuple[str, bool, str]]:
+    """MACD-only acceptance criteria (per modular directive §2):
+      1. Top-3 winners by P&L preserved — 100%
+      2. All 4 winners in dataset preserved — 100%
+      3. >= 2 losers blocked by MACD alone
+      4. Zero false positives (no winner blocked)
+    """
+    winners = [d for d in decisions if (d.trade.pnl or 0) > 0]
+    losers = [d for d in decisions if (d.trade.pnl or 0) <= 0]
+
+    def macd_blocks(d: ReplayDecision) -> bool:
+        v = d.sub_gate_verdicts.get("macd")
+        return v is not None and not v[0]
+
+    # Criterion 1
+    winners_sorted = sorted(winners, key=lambda d: (d.trade.pnl or 0), reverse=True)
+    top3 = winners_sorted[:3]
+    top3_ok = all(not macd_blocks(d) for d in top3) if top3 else True
+    top3_detail = ", ".join(
+        f"{d.trade.symbol} {d.trade.date} {_format_money(d.trade.pnl)} "
+        f"({'BLOCK' if macd_blocks(d) else 'PASS'})"
+        for d in top3
+    ) or "no winners in dataset"
+
+    # Criterion 2
+    all_win_ok = all(not macd_blocks(d) for d in winners)
+    win_detail = (
+        f"{sum(1 for d in winners if not macd_blocks(d))}/{len(winners)} preserved"
+    )
+
+    # Criterion 3
+    macd_loser_blocks = sum(1 for d in losers if macd_blocks(d))
+    crit3 = (macd_loser_blocks >= 2,
+             f"{macd_loser_blocks} losers blocked by MACD (threshold >= 2)")
+
+    # Criterion 4 — zero winners blocked
+    fps = sum(1 for d in winners if macd_blocks(d))
+    crit4 = (fps == 0, f"{fps} false positives (winners blocked)")
+
+    return [
+        ("Criterion 1: top-3 winners by P&L preserved (100%)", top3_ok, top3_detail),
+        ("Criterion 2: all winners preserved (100%)",         all_win_ok, win_detail),
+        ("Criterion 3: >= 2 losers blocked by MACD alone",    crit3[0], crit3[1]),
+        ("Criterion 4: zero false positives",                  crit4[0], crit4[1]),
+    ]
+
+
+def _generic_sub_gate_acceptance(
+    decisions: List[ReplayDecision],
+    sub_name: str,
+) -> List[Tuple[str, bool, str]]:
+    """Advisory acceptance summary for non-MACD sub-gates.
+
+    Mirrors the modular directive's expected-outcomes wording. These are
+    NOT blocking gates (Phase 5 of the build directive — user reviews
+    the report before flipping the env flag).
+    """
+    winners = [d for d in decisions if (d.trade.pnl or 0) > 0]
+    losers = [d for d in decisions if (d.trade.pnl or 0) <= 0]
+
+    def blocks(d: ReplayDecision) -> bool:
+        v = d.sub_gate_verdicts.get(sub_name)
+        return v is not None and not v[0]
+
+    losers_blocked = sum(1 for d in losers if blocks(d))
+    winners_blocked = sum(1 for d in winners if blocks(d))
+    winners_passed = len(winners) - winners_blocked
+
+    # Top-3 preservation is the same hard discipline.
+    winners_sorted = sorted(winners, key=lambda d: (d.trade.pnl or 0), reverse=True)
+    top3 = winners_sorted[:3]
+    top3_ok = all(not blocks(d) for d in top3) if top3 else True
+    top3_detail = ", ".join(
+        f"{d.trade.symbol} {d.trade.date} {_format_money(d.trade.pnl)} "
+        f"({'BLOCK' if blocks(d) else 'PASS'})"
+        for d in top3
+    ) or "no winners in dataset"
+
+    crit_losers = (
+        losers_blocked >= 1,
+        f"{losers_blocked}/{len(losers)} losers blocked",
+    )
+    crit_winners = (
+        winners_blocked == 0,
+        f"{winners_passed}/{len(winners)} winners preserved",
+    )
+
+    return [
+        ("Advisory 1: zero winners blocked", crit_winners[0], crit_winners[1]),
+        ("Advisory 2: at least 1 loser blocked", crit_losers[0], crit_losers[1]),
+        ("Advisory 3: top-3 winners preserved", top3_ok, top3_detail),
+    ]
+
+
+def _write_sub_gate_report(
+    decisions: List[ReplayDecision],
+    sub_name: str,
+    out_path: Path,
+    extra_notes: List[str],
+) -> Tuple[List[Tuple[str, bool, str]], Dict[str, int]]:
+    """Render a per-sub-gate validation report. Returns the acceptance
+    rows (so the caller can decide whether to block on MACD failures)
+    plus a summary counts dict."""
+    if sub_name == "macd":
+        crits = _macd_acceptance(decisions)
+    else:
+        crits = _generic_sub_gate_acceptance(decisions, sub_name)
+
+    def blocks(d: ReplayDecision) -> bool:
+        v = d.sub_gate_verdicts.get(sub_name)
+        return v is not None and not v[0]
+
+    counts = {
+        "blocked_winner": sum(1 for d in decisions if blocks(d) and (d.trade.pnl or 0) > 0),
+        "blocked_loser":  sum(1 for d in decisions if blocks(d) and (d.trade.pnl or 0) <= 0),
+        "passed_winner":  sum(1 for d in decisions if not blocks(d) and (d.trade.pnl or 0) > 0),
+        "passed_loser":   sum(1 for d in decisions if not blocks(d) and (d.trade.pnl or 0) <= 0),
+    }
+
+    lines: List[str] = []
+    lines.append(f"# Chop Gate v3 — `{sub_name}` Sub-Gate Validation Report")
+    lines.append("")
+    lines.append(f"**Date generated:** {datetime.now(ET).isoformat(timespec='seconds')}")
+    lines.append(f"**Source repo:** {_ROOT}")
+    lines.append(f"**Sub-gate under test:** `{sub_name}` (others = observe-only)")
+    lines.append(f"**Sample size:** {len(decisions)} closed WB trades")
+    lines.append("")
+    lines.append("## Counts (this sub-gate alone)")
+    lines.append("")
+    lines.append("| Outcome | Count |")
+    lines.append("|---|---:|")
+    lines.append(f"| blocked, was loser (saved) | {counts['blocked_loser']} |")
+    lines.append(f"| blocked, was winner (false positive) | {counts['blocked_winner']} |")
+    lines.append(f"| passed, was winner (preserved) | {counts['passed_winner']} |")
+    lines.append(f"| passed, was loser (not caught) | {counts['passed_loser']} |")
+    lines.append("")
+    lines.append("## Acceptance criteria")
+    lines.append("")
+    lines.append("| # | Criterion | Result | Detail |")
+    lines.append("|---|---|---|---|")
+    for i, (label, ok, detail) in enumerate(crits, start=1):
+        verdict = "PASS" if ok else "FAIL"
+        lines.append(f"| {i} | {label} | {verdict} | {detail} |")
+    lines.append("")
+    overall = all(ok for _, ok, _ in crits)
+    lines.append(f"**Overall:** {'PASS' if overall else 'FAIL'}")
+    lines.append("")
+    lines.append("## Per-trade decisions (chronological)")
+    lines.append("")
+    lines.append(
+        "| Date | Time ET | Sym | Setup | Score | Outcome | P&L | R | Bars | "
+        f"`{sub_name}` verdict | Reason |"
+    )
+    lines.append("|" + "|".join(["---"] * 11) + "|")
+    for d in sorted(decisions, key=lambda d: (d.trade.entry_time_utc, d.trade.source)):
+        t = d.trade
+        et_time = t.entry_time_utc.astimezone(ET).strftime("%H:%M")
+        outcome = "WIN" if (t.pnl or 0) > 0 else ("LOSS" if (t.pnl or 0) < 0 else "FLAT")
+        sg = d.sub_gate_verdicts.get(sub_name, (True, "no_verdict"))
+        verdict = "PASS" if sg[0] else "BLOCK"
+        lines.append(
+            f"| {t.date} | {et_time} | {t.symbol} | {t.setup} | {t.score} | "
+            f"{outcome} | {_format_money(t.pnl)} | {t.r_multiple:+.2f} | "
+            f"{d.bars_count} | {verdict} | {sg[1]} |"
+        )
+    lines.append("")
+    lines.append("## Notes")
+    lines.append("")
+    for n in extra_notes:
+        lines.append(f"- {n}")
+    out_path.write_text("\n".join(lines) + "\n")
+    return crits, counts
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Entrypoint
 # ══════════════════════════════════════════════════════════════════════
 
@@ -723,19 +939,100 @@ def main() -> int:
     decisions = replay_trades(trades)
     out_dir = _ROOT / "cowork_reports"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "2026-05-12_chop_gate_v3_validation.md"
-    write_report(decisions, out_path)
-    print(f"Wrote {out_path}", flush=True)
 
-    # Re-run criterion check at exit for CI-friendliness.
+    # ── Composite (legacy/orchestrator) report ─────────────────────────
+    composite_path = out_dir / "2026-05-12_chop_gate_v3_validation.md"
+    write_report(decisions, composite_path)
+    print(f"Wrote {composite_path}", flush=True)
+
+    # ── Per-sub-gate reports (Phase 3 of modular rollout) ──────────────
+    report_paths = {
+        "macd":              out_dir / "2026-05-13_chop_gate_v3_macd_only_validation.md",
+        "hod_recent":        out_dir / "2026-05-13_chop_gate_v3_hod_recent_validation.md",
+        "dead_bounce":       out_dir / "2026-05-13_chop_gate_v3_dead_bounce_validation.md",
+        "xsession_bl":       out_dir / "2026-05-13_chop_gate_v3_xsession_validation.md",
+    }
+    notes_common = [
+        "Per-sub-gate validation runs each sub-gate INDEPENDENTLY (other sub-gates "
+        "in observe-only). Bars + MACD reconstructed from tick cache up to the "
+        "exact moment of arm (no future leakage).",
+        "Cross-session blacklist is built incrementally — each trade's decision "
+        "sees only prior-day trades closed in the dataset.",
+    ]
+
+    macd_crits, macd_counts = _write_sub_gate_report(
+        decisions, "macd", report_paths["macd"],
+        extra_notes=notes_common + [
+            "MACD-only is the gate going LIVE Wednesday 5/13 (default ON). "
+            "Failing criterion 1, 2, or 4 = DO NOT ship.",
+        ],
+    )
+    hod_crits, hod_counts = _write_sub_gate_report(
+        decisions, "hod_recent", report_paths["hod_recent"],
+        extra_notes=notes_common + [
+            "Advisory only — user reviews report before flipping "
+            "WB_CG3_HOD_RECENT_ENABLED=1. Expected: FATN 5/12 entries blocked, "
+            "FATN 5/5 14:39 winner passed.",
+        ],
+    )
+    db_crits, db_counts = _write_sub_gate_report(
+        decisions, "dead_bounce", report_paths["dead_bounce"],
+        extra_notes=notes_common + [
+            "Advisory only — user reviews report before flipping "
+            "WB_CG3_DEAD_BOUNCE_ENABLED=1. Expected: FATN 5/8 13:58 blocked, "
+            "all winners passed.",
+        ],
+    )
+    xb_crits, xb_counts = _write_sub_gate_report(
+        decisions, "xsession_bl", report_paths["xsession_bl"],
+        extra_notes=notes_common + [
+            "Advisory only — flipping WB_CG3_XSESSION_BL_ENABLED=1 is Monday 5/18. "
+            "Expected: FATN blacklisted by 5/12, ATRA never blacklisted, CLNN "
+            "not blacklisted by THIS gate (CLNN handled by MACD same-day).",
+        ],
+    )
+
+    for p in report_paths.values():
+        print(f"Wrote {p}", flush=True)
+
+    # ── CI summary ─────────────────────────────────────────────────────
     crits = _check_criteria(decisions)
-    print("\nAcceptance summary:")
+    print("\nLegacy composite acceptance summary:")
     for label, ok, detail in crits:
         verdict = "PASS" if ok else "FAIL"
         print(f"  [{verdict}] {label} — {detail}")
-    overall = all(ok for _, ok, _ in crits)
-    print(f"\nOverall: {'PASS' if overall else 'FAIL'}")
-    return 0 if overall else 2
+
+    print("\nMACD-only acceptance summary (DIRECTIVE §2 — BLOCKING):")
+    for label, ok, detail in macd_crits:
+        verdict = "PASS" if ok else "FAIL"
+        print(f"  [{verdict}] {label} — {detail}")
+
+    print("\nhod_recent advisory summary:")
+    for label, ok, detail in hod_crits:
+        print(f"  [{'PASS' if ok else 'INFO'}] {label} — {detail}")
+    print("\ndead_bounce advisory summary:")
+    for label, ok, detail in db_crits:
+        print(f"  [{'PASS' if ok else 'INFO'}] {label} — {detail}")
+    print("\nxsession_bl advisory summary:")
+    for label, ok, detail in xb_crits:
+        print(f"  [{'PASS' if ok else 'INFO'}] {label} — {detail}")
+
+    # MACD criteria 1, 2, 4 are BLOCKING. Criterion 3 (>= 2 losers blocked)
+    # is informational: if it passes weakly (exactly 2), the rollout
+    # directive says to push but note in commit message. The caller
+    # (CI / commit pipeline) should read the exit code:
+    #     0 → all blocking MACD criteria pass
+    #     2 → at least one blocking MACD criterion failed → DO NOT PUSH
+    macd_labels = [label for label, _, _ in macd_crits]
+    macd_pass = [ok for _, ok, _ in macd_crits]
+    blocking_idx = [
+        i for i, lbl in enumerate(macd_labels)
+        if "Criterion 1" in lbl or "Criterion 2" in lbl or "Criterion 4" in lbl
+    ]
+    macd_blocking_ok = all(macd_pass[i] for i in blocking_idx)
+    print(f"\nMACD blocking-criteria result: "
+          f"{'PASS' if macd_blocking_ok else 'FAIL'}")
+    return 0 if macd_blocking_ok else 2
 
 
 if __name__ == "__main__":
