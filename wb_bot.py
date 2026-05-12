@@ -96,6 +96,34 @@ WB_SAME_SESSION_BLACKLIST_ENABLED = os.getenv(
 WB_SAME_SESSION_BLACKLIST_LOSS_COUNT = int(os.getenv(
     "WB_SAME_SESSION_BLACKLIST_LOSS_COUNT", "1"))
 
+# Hypothesis #14 — pre-market time block for WB arms (2026-05-12).
+# Across 5/8, 5/11, 5/12 (the WB dataset), 8 of 8 WB entries fired before
+# 11:00 ET / 9:00 MT were closed losers. Zero winners ever fired pre-9 AM MT.
+# Pre-market WB setups need post-open volume that hasn't materialized yet.
+# Reject arms whose entry-time is before WB_PRE_MARKET_BLOCK_MIN_ET BEFORE
+# chop gate v3 (cheapest possible check). Default-ON per directive — data is
+# overwhelming (8-for-8). Flip enabled=0 to disable for live diff.
+WB_PRE_MARKET_BLOCK_ENABLED = os.getenv(
+    "WB_PRE_MARKET_BLOCK_ENABLED", "1") == "1"
+WB_PRE_MARKET_BLOCK_MIN_ET = os.getenv(
+    "WB_PRE_MARKET_BLOCK_MIN_ET", "11:00")
+
+
+def _parse_hh_mm_to_time(hhmm: str):
+    """Parse 'HH:MM' (24-hour ET) into a datetime.time. Defaults to 11:00
+    on malformed input so a typo can't accidentally disable the gate."""
+    from datetime import time as _time_cls
+    try:
+        hh, mm = hhmm.strip().split(":")
+        return _time_cls(int(hh), int(mm))
+    except Exception:
+        print(f"[WB_PRE_MARKET_BLOCK] bad WB_PRE_MARKET_BLOCK_MIN_ET={hhmm!r} "
+              f"— defaulting to 11:00", flush=True)
+        return _time_cls(11, 0)
+
+
+_WB_PRE_MARKET_BLOCK_MIN_TIME = _parse_hh_mm_to_time(WB_PRE_MARKET_BLOCK_MIN_ET)
+
 WB_RISK_PCT = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
 WB_RISK_FLOOR = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
 WB_RISK_CEIL = float(os.getenv("WB_WB_RISK_CEILING_DOLLARS", "5000"))
@@ -403,6 +431,20 @@ class WBBot:
                       f"r_pct_below_floor (R%={r_pct:.2f} < "
                       f"{WB_MIN_R_PCT}%)", flush=True)
                 det.mark_entry_failed("r_pct_below_floor")
+                return
+
+        # Hypothesis #14 — pre-market time block (2026-05-12). 8 of 8 WB
+        # entries fired before 11:00 ET / 9:00 MT across 5/8, 5/11, 5/12 were
+        # losers. Zero winners ever fired pre-9 AM MT. Runs BEFORE chop gate
+        # v3 — cheapest possible check.
+        if WB_PRE_MARKET_BLOCK_ENABLED:
+            now_et_dt = now_et()
+            if now_et_dt.time() < _WB_PRE_MARKET_BLOCK_MIN_TIME:
+                print(f"[CHOP_REJECT] {now_iso_et()} {symbol}: "
+                      f"pre_threshold_time "
+                      f"(now={now_et_dt.strftime('%H:%M')} ET < "
+                      f"min={WB_PRE_MARKET_BLOCK_MIN_ET} ET)", flush=True)
+                det.mark_entry_failed("pre_threshold_time")
                 return
 
         # Chop Gate v3 — second-layer check (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
