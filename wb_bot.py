@@ -100,8 +100,14 @@ class _WBPosition:
     activation, trail update, hard stop, pyramid trigger all live in
     `WaveBreakoutDetector._update_position`. The bot just routes the
     detector's WB_EXIT message to an Alpaca SELL. So the bot-side state
-    we carry is leaner than squeeze's — but we still mirror the trail
-    flags for log audits.
+    we carry is leaner than squeeze's — but we still persist enough that
+    a crash-restart can pick up the position and continue managing.
+
+    The trailing_armed / trail_stop flags are mirrored from the detector
+    for visibility + log lines. On resume we don't try to rehydrate them
+    back into the detector — the detector's `_update_position` is purely
+    a function of (peak, entry, R, stop) which we DO restore, so the
+    trail recomputes correctly on the next tick.
     """
     symbol: str
     qty: int
@@ -113,7 +119,7 @@ class _WBPosition:
     order_id: str
     peak: float
     pyramid_filled: bool = False
-    # Trail-state mirror — for log lines + audit.
+    # Trail-state mirror — for log lines and persistence audit only.
     trail_armed: bool = False
     trail_stop: float = 0.0
     fill_confirmed: bool = False
@@ -173,8 +179,8 @@ class WBBot:
         self.state = EngineState()
         self.detectors: dict[str, WaveBreakoutDetector] = {}
         self.positions: dict[str, _WBPosition] = {}
-        # RLock — persistence helpers re-enter from contexts holding the
-        # lock. Mirror of squeeze_bot rationale.
+        # RLock — `_persist_open_trades` re-enters from contexts already
+        # holding the lock (mirror of squeeze_bot rationale).
         self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
         # Per-bot persistence helper — writes go to session_state_engine/<date>/wb_bot/.
@@ -209,9 +215,9 @@ class WBBot:
                   flush=True)
             return
         # Update bot-side peak mirror + persist on peak advance, mirroring
-        # Setup A's per-tick peak update for the squeeze side. Keeps the
-        # persisted record fresh enough that a crash recovery sees an up-
-        # to-date peak rather than the stale entry-time peak.
+        # Setup A's per-tick peak update for the squeeze side. This keeps
+        # the persisted record fresh enough that a crash recovery sees
+        # an up-to-date peak rather than the stale entry-time peak.
         with self._positions_lock:
             pos = self.positions.get(sym)
             if pos is not None and pos.fill_confirmed and msg.price > pos.peak:
@@ -232,6 +238,7 @@ class WBBot:
                 pos = self.positions.get(sym)
                 if pos is not None:
                     pos.trail_armed = True
+                    # Parse trail=X.XXXX out of the message text.
                     for tok in res.split():
                         if tok.startswith("trail="):
                             try:
@@ -251,6 +258,7 @@ class WBBot:
             # place_with_retry with the additional shares. Until then,
             # this is intentionally a no-op beyond logging.
             if WB_PYRAMID_ENABLED:
+                # Stub — leg2 execution intentionally not wired during A/B.
                 print(f"[WB] {now_iso_et()} {sym} {res} (PYRAMID_ENABLED=1 but "
                       f"leg2 execution intentionally unwired during A/B parity "
                       f"period — matches Setup A behavior; see 2026-05-08 note)",
@@ -375,8 +383,8 @@ class WBBot:
                       f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}",
                       flush=True)
             else:
-                # place_with_retry already logged the specific timeout
-                # reason (max retries vs chase-cap exceeded).
+                # place_with_retry already logged the specific failure
+                # reason (timeout / rejected / chase-cap exceeded).
                 det.mark_entry_failed("fill_timeout")
 
         threading.Thread(target=_await_fill, daemon=True,
@@ -438,9 +446,9 @@ class WBBot:
                       f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}{partial_tag}",
                       flush=True)
             else:
-                # All retries exhausted or chase cap hit — clear the
-                # in-flight flag so the next WB_EXIT can spin up a new
-                # cycle. No market fallback (project rule).
+                # All retries exhausted or terminal status (rejected / etc).
+                # Clear the in-flight flag so the next WB_EXIT can spin up
+                # a new cycle. Project rule: no market fallback.
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
@@ -549,12 +557,24 @@ class WBBot:
         about gets adopted with conservative defaults (stop = entry × 0.99,
         risk_dollars = 0). Never auto-flatten — per project rule.
 
-        Detector re-anchor: the WB detector is rebuilt from scratch on
-        boot and doesn't know it has an open position. After rehydrating
-        a position, we call det.mark_filled() to re-anchor the detector's
-        exit state machine. This recomputes trail_stop / hard_stop from
-        the persisted entry/stop/peak — so the next tick can fire the
-        appropriate exit if needed.
+        Note: the detector state is NOT rehydrated. The detector is
+        rebuilt from scratch and won't know it has an open position. The
+        bot side knows, and the bot routes exit signals via WB_EXIT
+        messages from the detector. On resume, the detector starts in
+        IDLE state, but the bot side has the position. So a re-entry
+        signal could fire while we already hold the symbol — the
+        `already_in_position` guard in _handle_entry catches that.
+
+        The position's actual exit will fire from the bot side via the
+        same tick-by-tick stop check — wait, this is a problem. The
+        WB exit logic lives inside `WaveBreakoutDetector._update_position`,
+        which only runs when `self._position` is set (set by
+        det.mark_filled). On resume, we don't call mark_filled, so the
+        detector has no position to manage exits on.
+
+        Fix: after rehydrating a position, call det.mark_filled() to
+        re-anchor the detector's exit state machine. This recomputes
+        trail_stop / hard_stop from the persisted entry/stop/peak.
         """
         print(f"[WB] {now_iso_et()} RESUME: reconciling state", flush=True)
 
@@ -605,12 +625,18 @@ class WBBot:
 
             rec = by_symbol.get(sym)
             if rec is None:
-                # Per-bot session_state means we only see OUR own
-                # persisted positions. A position we don't have a record
-                # for IS a WB orphan (or a cross-bot position; in that
-                # case the squeeze bot would adopt it from its own
-                # session_state subdir on its resume). Conservative
-                # adoption rather than auto-flatten.
+                # No persisted WB record. We CAN'T assume this is a WB
+                # orphan — it might belong to the squeeze sibling. So we
+                # only adopt as WB if the persisted file mentions no other
+                # strategy claiming it (in our per-bot file it doesn't, so
+                # we'd adopt every cross-bot position). Safer: log + skip,
+                # let the squeeze bot adopt if it's a squeeze position.
+                # The session_state directory is per-bot, so each bot only
+                # sees its OWN persisted positions — squeeze positions are
+                # in squeeze_bot/open_trades.json, not wb_bot's.
+                #
+                # That means a true WB orphan (one we lost track of) WILL
+                # look like no-persisted-record here. Adopt conservatively.
                 print(f"[WB] {now_iso_et()} [ORPHAN_DETECTED] {sym} "
                       f"qty={qty_avail} entry=${broker_entry:.4f} "
                       f"— adopting as WB-orphan (stop=entry*0.99)",

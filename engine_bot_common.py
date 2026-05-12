@@ -40,6 +40,62 @@ from dotenv import load_dotenv
 # final cancelled order id when no fill — useful for log audits / persistence.
 from typing import NamedTuple
 
+# ─── wait_for_fill terminal-status enum ─────────────────────────────────
+# Returned as the 3rd element of wait_for_fill's tuple so place_with_retry
+# (and any other caller) can distinguish "retry-worthy timeout" from
+# "broker-side rejection that must NOT be resubmitted".
+#
+# Background: the 2026-05-11 TRAW incident on the subbot saw a BP-rejection
+# (Alpaca returned status=rejected with insufficient buying power) loop the
+# retry loop FOUR times, blindly resubmitting the same qty and being rejected
+# each time. Same root cause as "exit retry loop on stop-hit might compound
+# a position if a partial fill is treated as a timeout".
+#
+# Semantics:
+#   FILL_STATUS_FILLED            — order fully (or "filled enough" — see partial
+#                                     rule below) consumed. fill_price + fill_qty
+#                                     are valid; caller proceeds.
+#   FILL_STATUS_PARTIAL_THEN_TIMEOUT
+#                                  — some shares filled, but the rest never did
+#                                     before timeout. fill_price/fill_qty reflect
+#                                     the partial. **place_with_retry MUST treat
+#                                     this as a fill and NOT resubmit** — otherwise
+#                                     the next attempt's qty would double-count.
+#   FILL_STATUS_REJECTED          — broker rejected the order (BP, HTB, halt,
+#                                     duplicate). Terminal. No retry — resubmitting
+#                                     the same qty gets rejected again.
+#   FILL_STATUS_CANCELLED         — order cancelled (by us or by broker). Terminal.
+#                                     No retry — we already gave up on this attempt.
+#   FILL_STATUS_EXPIRED           — TIF expired. Terminal. No retry — the limit was
+#                                     stale enough that the venue dropped it; the
+#                                     caller can decide to start a fresh attempt.
+#   FILL_STATUS_REPLACED          — order replaced (rare on Alpaca; possible if a
+#                                     pending replace race fires). Terminal — the
+#                                     replacement order has its own id we no longer
+#                                     track. Caller should treat as unknown state
+#                                     and not retry.
+#   FILL_STATUS_TIMEOUT           — no terminal state seen within timeout. Eligible
+#                                     for retry-with-reprice (this is the ONLY
+#                                     status that triggers another attempt).
+
+FILL_STATUS_FILLED = "filled"
+FILL_STATUS_PARTIAL_THEN_TIMEOUT = "partial_then_timeout"
+FILL_STATUS_REJECTED = "rejected"
+FILL_STATUS_CANCELLED = "cancelled"
+FILL_STATUS_EXPIRED = "expired"
+FILL_STATUS_REPLACED = "replaced"
+FILL_STATUS_TIMEOUT = "timeout"
+
+# Statuses that mean "do NOT resubmit". Filled is a success — also no resubmit.
+FILL_TERMINAL_NO_RETRY = frozenset({
+    FILL_STATUS_FILLED,
+    FILL_STATUS_PARTIAL_THEN_TIMEOUT,
+    FILL_STATUS_REJECTED,
+    FILL_STATUS_CANCELLED,
+    FILL_STATUS_EXPIRED,
+    FILL_STATUS_REPLACED,
+})
+
 # Make sure the worktree root is on sys.path so `from bars import Bar` works
 # regardless of how the bot was launched.
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -62,6 +118,8 @@ from engine_ipc import (
 )
 
 
+# Local override (gitignored) wins over committed template.
+load_dotenv(os.path.join(_HERE, ".env.engine.local"))
 load_dotenv(os.path.join(_HERE, ".env.engine"))
 # Inherit non-secret detector config from main .env (Setup A's tuning knobs).
 load_dotenv(os.path.join(_HERE, ".env"))
@@ -116,11 +174,35 @@ def make_alpaca_broker():
     return AlpacaBroker(client)
 
 
-def wait_for_fill(broker, order_id: str, timeout: float = 10.0) -> tuple[Optional[float], int]:
-    """Poll the broker for fill confirmation. Returns (avg_fill_price, qty)
-    on fill, (None, 0) on timeout / cancellation. Mirrors Setup A's
-    wait_for_fill pattern."""
+def wait_for_fill(
+    broker, order_id: str, timeout: float = 10.0,
+) -> tuple[Optional[float], int, str]:
+    """Poll the broker for fill confirmation. Returns a triple:
+        (avg_fill_price, filled_qty, terminal_status)
+
+    `terminal_status` is one of the FILL_STATUS_* constants and is the
+    contract the retry loop uses to decide whether resubmit is safe. See
+    the comment block on those constants for the full semantics matrix.
+
+    Behavior:
+      - status=filled with shares → (price, qty, FILL_STATUS_FILLED).
+      - status=partially_filled at the deadline → (price, qty,
+        FILL_STATUS_PARTIAL_THEN_TIMEOUT). Caller MUST NOT resubmit.
+      - status=rejected → (None, 0, FILL_STATUS_REJECTED). Caller MUST NOT
+        resubmit the same qty. Also logs Alpaca's reject_reason for audit.
+      - status=cancelled → (None, 0, FILL_STATUS_CANCELLED).
+      - status=expired → (None, 0, FILL_STATUS_EXPIRED).
+      - status=replaced → (None, 0, FILL_STATUS_REPLACED).
+      - deadline reached with no terminal state → cancel + return
+        (None, 0, FILL_STATUS_TIMEOUT). Only this status is retry-eligible.
+
+    On rejected, the partial fill (if any — rare but possible: Alpaca can
+    fill some shares then reject the remainder) IS returned. The caller
+    should treat the partial as a real position update and stop retrying.
+    """
     deadline = time.time() + timeout
+    last_partial_price: Optional[float] = None
+    last_partial_qty: int = 0
     while time.time() < deadline:
         try:
             o = broker.get_order_status(order_id)
@@ -129,18 +211,57 @@ def wait_for_fill(broker, order_id: str, timeout: float = 10.0) -> tuple[Optiona
         if o is None:
             time.sleep(0.5)
             continue
+        # Snapshot any partial-fill progress so we can return it from the
+        # final partial_then_timeout / rejected path.
         if o.filled_qty > 0 and o.filled_avg_price > 0:
-            if o.status in ("filled", "partially_filled"):
-                return float(o.filled_avg_price), int(o.filled_qty)
-        if o.status in ("cancelled", "rejected", "expired"):
-            return None, 0
+            last_partial_price = float(o.filled_avg_price)
+            last_partial_qty = int(o.filled_qty)
+
+        if o.status == "filled" and o.filled_qty > 0:
+            return (
+                float(o.filled_avg_price), int(o.filled_qty),
+                FILL_STATUS_FILLED,
+            )
+        if o.status == "rejected":
+            reason = getattr(o, "reject_reason", "") or "unspecified"
+            print(f"[BOT] {now_iso_et()} order {order_id} REJECTED "
+                  f"reason={reason!r} partial={last_partial_qty}/?", flush=True)
+            # Return partial fill data too: if Alpaca rejected the remainder
+            # after partially filling, the partial is real and the caller
+            # must record it (otherwise broker truth diverges from bot state).
+            if last_partial_qty > 0 and last_partial_price is not None:
+                return (last_partial_price, last_partial_qty, FILL_STATUS_REJECTED)
+            return (None, 0, FILL_STATUS_REJECTED)
+        if o.status == "cancelled":
+            if last_partial_qty > 0 and last_partial_price is not None:
+                return (last_partial_price, last_partial_qty, FILL_STATUS_CANCELLED)
+            return (None, 0, FILL_STATUS_CANCELLED)
+        if o.status == "expired":
+            if last_partial_qty > 0 and last_partial_price is not None:
+                return (last_partial_price, last_partial_qty, FILL_STATUS_EXPIRED)
+            return (None, 0, FILL_STATUS_EXPIRED)
+        # Alpaca exposes "replaced" on order replace; treat as terminal
+        # because the replacement carries a different id we no longer track.
+        if getattr(o, "status", "") == "replaced":
+            return (None, 0, FILL_STATUS_REPLACED)
         time.sleep(0.5)
-    # Best-effort cancel on timeout so the order isn't left hanging.
+
+    # Deadline reached without terminal state. If we observed a partial,
+    # return PARTIAL_THEN_TIMEOUT so the retry loop records the partial
+    # as a fill (and does NOT resubmit — that would compound the position).
+    # Otherwise it's a clean timeout: cancel + report.
+    if last_partial_qty > 0 and last_partial_price is not None:
+        # Best-effort cancel of the remainder so it doesn't surprise-fill later.
+        try:
+            broker.cancel_order(order_id)
+        except Exception:
+            pass
+        return (last_partial_price, last_partial_qty, FILL_STATUS_PARTIAL_THEN_TIMEOUT)
     try:
         broker.cancel_order(order_id)
     except Exception:
         pass
-    return None, 0
+    return (None, 0, FILL_STATUS_TIMEOUT)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -613,15 +734,69 @@ def place_with_retry(
               f"{side_upper} {qty} {symbol} @ ${cur_limit:.2f}{retry_tag}",
               flush=True)
 
-        # Wait for fill / terminal state.
-        fill_price, filled_qty = wait_for_fill(
+        # Wait for fill / terminal state. The triple's third element is
+        # the terminal-status enum — see FILL_STATUS_* constants and the
+        # comment block above wait_for_fill for the full semantics matrix.
+        fill_price, filled_qty, fill_status = wait_for_fill(
             broker, order.order_id, timeout=timeout_sec_per_attempt,
         )
-        if filled_qty > 0 and fill_price is not None:
+
+        # FILLED: full success. Stop and return.
+        if fill_status == FILL_STATUS_FILLED:
             return RetryResult(float(fill_price), int(filled_qty),
                                 order.order_id, cur_limit, attempt)
 
-        # No fill — decide whether to retry.
+        # PARTIAL_THEN_TIMEOUT: some shares filled, the rest didn't fill
+        # before the per-attempt deadline. Treat the partial as a real
+        # fill and STOP — resubmitting would compound the position because
+        # the partial qty is already real at the broker.
+        #
+        # The retry loop carries `qty` (the originally-requested quantity)
+        # not the remaining qty, so a naive resubmit would buy `qty` more,
+        # not `qty - filled_qty`. Even computing remaining would risk a
+        # race vs late-arriving fills. Cleaner contract: partial is final.
+        if fill_status == FILL_STATUS_PARTIAL_THEN_TIMEOUT:
+            print(f"[{log_prefix}] {now_iso_et()} {symbol} PARTIAL FILL "
+                  f"{filled_qty}/{qty} {side_upper} — accepting partial, "
+                  f"NOT retrying (would compound the position)", flush=True)
+            return RetryResult(float(fill_price), int(filled_qty),
+                                order.order_id, cur_limit, attempt)
+
+        # REJECTED: broker refused (BP, HTB, halt, duplicate). Terminal.
+        # If shares filled before the reject (rare), record those. Either
+        # way: do NOT retry the same qty — it'll get rejected again.
+        if fill_status == FILL_STATUS_REJECTED:
+            if filled_qty > 0 and fill_price is not None:
+                print(f"[{log_prefix}] {now_iso_et()} {symbol} REJECTED "
+                      f"after partial fill {filled_qty}/{qty} — recording "
+                      f"partial, NOT retrying (broker rejected remainder)",
+                      flush=True)
+                return RetryResult(float(fill_price), int(filled_qty),
+                                    order.order_id, cur_limit, attempt)
+            print(f"[{log_prefix}] {now_iso_et()} {symbol} {side_upper} "
+                  f"REJECTED by broker — aborting retry loop (resubmitting "
+                  f"same qty would re-trigger the same rejection)",
+                  flush=True)
+            return RetryResult(None, 0, order.order_id, cur_limit, attempt)
+
+        # CANCELLED / EXPIRED / REPLACED: terminal but not a broker NACK.
+        # Treat the same as a hard timeout — no retry, since we already
+        # gave up on this attempt (cancelled = our cancel, or broker's;
+        # expired = TIF; replaced = lost-track-of replacement order).
+        if fill_status in (FILL_STATUS_CANCELLED, FILL_STATUS_EXPIRED,
+                            FILL_STATUS_REPLACED):
+            if filled_qty > 0 and fill_price is not None:
+                print(f"[{log_prefix}] {now_iso_et()} {symbol} terminal "
+                      f"{fill_status} after partial fill {filled_qty}/{qty} "
+                      f"— recording partial, not retrying", flush=True)
+                return RetryResult(float(fill_price), int(filled_qty),
+                                    order.order_id, cur_limit, attempt)
+            print(f"[{log_prefix}] {now_iso_et()} {symbol} order {order.order_id} "
+                  f"terminal {fill_status} — not retrying", flush=True)
+            return RetryResult(None, 0, order.order_id, cur_limit, attempt)
+
+        # From here down, fill_status must be FILL_STATUS_TIMEOUT — the
+        # only retry-eligible status. Decide whether we have budget left.
         if attempt >= effective_max_retries:
             # wait_for_fill already best-effort cancels on timeout; if the
             # state machine raced (filled in-flight), the next iteration
@@ -921,6 +1096,15 @@ __all__ = [
     "wait_for_fill",
     "ET",
     "UTC",
+    # wait_for_fill terminal-status enum
+    "FILL_STATUS_FILLED",
+    "FILL_STATUS_PARTIAL_THEN_TIMEOUT",
+    "FILL_STATUS_REJECTED",
+    "FILL_STATUS_CANCELLED",
+    "FILL_STATUS_EXPIRED",
+    "FILL_STATUS_REPLACED",
+    "FILL_STATUS_TIMEOUT",
+    "FILL_TERMINAL_NO_RETRY",
     # Session persistence (Phase 3)
     "EngineSession",
     "decide_boot_mode",

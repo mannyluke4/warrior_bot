@@ -106,7 +106,8 @@ SESSION_RESUME_ENABLED = os.getenv("WB_SESSION_RESUME_ENABLED", "0") == "1"
 class _Position:
     """Squeeze position state — augmented to carry every field Setup A's
     `_squeeze_exit` ladder reads. Field names match Setup A's open_position
-    dict so a future persistence layer can map 1:1 between the two setups.
+    dict so the persistence layer's schema can map 1:1 between the two
+    setups when we eventually want to compare.
 
     Field map (Setup A pos[...] → engine self.X):
       pos["entry"]              → entry           (filled avg)
@@ -143,7 +144,8 @@ class _Position:
     setup_type: str = "squeeze"
     score_detail: str = ""
     is_parabolic: bool = False
-    # Trade-management state — mutated by the exit ladder.
+    # Trade-management state — mutated by the exit ladder, persisted on every
+    # change so a crash-restart resumes from the right rung of the ladder.
     tp_hit: bool = False
     partial_filled_qty: int = 0
     partial_filled_at: Optional[str] = None  # iso UTC string for JSON-trivial
@@ -176,8 +178,10 @@ class SqueezeBot:
         self.state = EngineState()
         self.detectors: dict[str, SqueezeDetector] = {}
         self.positions: dict[str, _Position] = {}
-        # RLock — _persist_open_trades re-enters the lock from inside
-        # _tick_manage_exit (already holding it). Plain Lock deadlocks.
+        # RLock because `_persist_open_trades` re-enters the lock from
+        # inside `_tick_manage_exit` (which is already holding it). A
+        # plain Lock would deadlock the bot the first time the ladder
+        # tries to persist mid-exit.
         self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
         # Per-bot persistence helper — writes go to session_state_engine/<date>/squeeze_bot/.
@@ -247,6 +251,8 @@ class SqueezeBot:
         # has a detector ready.
         for sym in msg.watchlist:
             self._ensure_detector(sym)
+        # Persist the watchlist so a resumed engine + bot pair can see
+        # what symbols this session has been tracking. Best-effort.
         try:
             self.session.write_watchlist(list(msg.watchlist))
         except Exception as e:
@@ -332,9 +338,9 @@ class SqueezeBot:
 
         # Parabolic flag — Setup A reads this from `armed.score_detail`,
         # which we get via the ENTRY SIGNAL's `why=` suffix. The detector
-        # appends "[PARABOLIC]" to score_detail when parabolic mode armed;
-        # downstream the trail rung reads `is_parabolic` to pick the
-        # tighter SQ_PARA_TRAIL_R over SQ_TRAIL_R.
+        # appends "[PARABOLIC]" to score_detail when parabolic mode armed.
+        # Parsing the full text rather than `parts["why"]` because the why
+        # token can contain semicolons that the naive split corrupts.
         is_parabolic = "[PARABOLIC]" in sig
         score_detail = sig.split("why=", 1)[1] if "why=" in sig else ""
 
@@ -374,10 +380,10 @@ class SqueezeBot:
                       f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}{para_tag}",
                       flush=True)
             else:
-                # place_with_retry already logged the timeout reason
-                # (max retries vs chase-cap exceeded). Nothing else to do —
-                # detector state was not advanced past `armed` clearance,
-                # so the next legitimate trigger can fire normally.
+                # place_with_retry already logged the specific failure
+                # reason (timeout / rejected / chase-cap exceeded). Nothing
+                # else to do — detector state was not advanced past `armed`
+                # clearance, so the next legitimate trigger can fire normally.
                 pass
 
         threading.Thread(target=_await_fill, daemon=True,
@@ -387,7 +393,7 @@ class SqueezeBot:
 
     def _tick_manage_exit(self, symbol: str, price: float):
         """Full Setup A squeeze exit ladder, byte-for-byte port of
-        `_squeeze_exit` in bot_v3_hybrid.py.
+        `_squeeze_exit` in bot_v3_hybrid.py (line 3005-3083 at HEAD).
 
         Ladder order (must match Setup A exactly for A/B isolation):
           [Bail timer]    pre-ladder gate — minutes_in_trade >= MIN and
@@ -409,13 +415,18 @@ class SqueezeBot:
         Every exit is a SELL LIMIT via `_submit_exit` (which uses
         place_with_retry → cross-feed-aware pricing + retry). Project
         rules: no market orders, no broker stops. The exit_in_flight guard
-        prevents the retry loop from being entered twice in parallel.
+        prevents the retry loop from being entered twice in parallel; once
+        an exit is dispatched, subsequent ticks bail at the top of this
+        method until the loop completes or aborts.
         """
         with self._positions_lock:
             pos = self.positions.get(symbol)
             if pos is None:
                 return
-            # Don't manage exits until entry fill is confirmed.
+            # Don't manage exits until entry fill is confirmed (Setup A
+            # gates this on fill_confirmed; we set fill_confirmed=True the
+            # moment _await_fill records a fill, so this is mostly a no-op
+            # but matches Setup A's defensive ordering).
             if not pos.fill_confirmed:
                 return
 
@@ -435,6 +446,9 @@ class SqueezeBot:
             qty = pos.qty
 
             # ── Bail timer (pre-ladder gate) ──────────────────────────
+            # Setup A's manage_exit dispatches to _squeeze_exit AFTER the
+            # bail-timer check. We inline that here so dispatch order is
+            # byte-identical: bail first, then dollar-cap, then ladder.
             if BAIL_TIMER_ENABLED:
                 minutes_in = (now_et() - pos.entry_time).total_seconds() / 60.0
                 if minutes_in >= BAIL_TIMER_MINUTES and price <= entry:
@@ -480,6 +494,14 @@ class SqueezeBot:
                 # [3] Target hit — exit core, keep runner. SQ_CORE_PCT % off
                 # at target; the remaining qty becomes the runner managed
                 # by the post-target branch on subsequent ticks.
+                #
+                # NB: Setup A's EPL graduation hook (bot_v3_hybrid.py
+                # line 3041-3058) is NOT ported — EPL is a Setup-A-only
+                # framework that doesn't run on the engine side. Omitting
+                # it does NOT change exit-fill behavior (no SELL is gated
+                # on EPL graduation; it's just bookkeeping for a different
+                # strategy that the engine doesn't run). Document this so
+                # a later sweep doesn't quietly add it.
                 if r > 0 and price >= entry + (SQ_TARGET_R * r):
                     pos.tp_hit = True
                     pos.partial_filled_at = datetime.now(UTC).isoformat()
@@ -488,8 +510,20 @@ class SqueezeBot:
                     pos.partial_filled_qty = qty_core
                     if qty_runner > 0:
                         pos.runner_stop = max(stop, entry + 0.01)
+                        # Shrink the bot-tracked qty to the runner size
+                        # BEFORE the exit is submitted, so a parallel tick
+                        # observing the runner-stop branch sees the right
+                        # qty. Setup A sets pos["qty"] = qty_runner AFTER
+                        # exit_trade(); we do it before because our exit
+                        # path is async (place_with_retry on a worker
+                        # thread) and we can't rely on synchronous order
+                        # like Setup A's exit_trade does.
+                        #
+                        # Critical: _submit_exit must use the qty value
+                        # captured BEFORE this shrink, so we pass qty_core
+                        # explicitly rather than re-reading pos.qty.
                         pos.qty = qty_runner
-                        pos.exit_in_flight = True  # runner remains, in_flight is for core sale
+                        pos.exit_in_flight = True  # runner remains, in_flight is for the core sale
                         self._persist_open_trades()
                         self._submit_exit_partial(
                             pos, price, qty_core, reason="sq_target_hit",
@@ -503,6 +537,8 @@ class SqueezeBot:
                     return
 
             # ── Post-target (runner) phase ────────────────────────────
+            # The bail-timer above already fired for the pre-runner window;
+            # post-target trail is the only remaining exit rung.
             if pos.tp_hit and pos.qty > 0:
                 if r > 0:
                     runner_trail = pos.peak - (SQ_RUNNER_TRAIL_R * r)
@@ -522,10 +558,17 @@ class SqueezeBot:
         Cross-feed-aware: uses cached Alpaca bid when fresh so we sell at
         Alpaca's actual bid rather than IBKR's possibly-stale price. On
         timeout the order is cancelled and re-priced against the freshest
-        Alpaca quote.
+        Alpaca quote — this fixes the CLNN trail-limit no-fill scenario
+        from 2026-05-11 where the SELL limit sat above Alpaca's bid until
+        the position bled out.
 
         Stop-hit / max-loss / dollar-cap exits use a wider buffer (urgency
         to clear). Project rule: no market orders, ever.
+
+        Persistence: closes (filled) flush risk.json + clear open_trades.json
+        synchronously inside the fill thread. Timeouts re-flush
+        open_trades.json so the persisted state knows the exit is no longer
+        in flight.
         """
         symbol = pos.symbol
         urgent_reasons = ("sq_stop_hit", "sq_max_loss_hit", "sq_dollar_loss_cap")
@@ -585,7 +628,8 @@ class SqueezeBot:
                       flush=True)
             else:
                 # Exit didn't fill — clear the in-flight flag so the next
-                # adverse tick triggers another full retry cycle.
+                # adverse tick triggers another full retry cycle. Project
+                # rule: no market fallback.
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
@@ -604,6 +648,12 @@ class SqueezeBot:
         (pos.qty after the shrink in the caller) stays open and is managed
         by the post-target branch of `_tick_manage_exit` on subsequent
         ticks.
+
+        Persistence: target-hit partials are a state transition (tp_hit
+        flipped, partial_filled_qty / runner_stop set). The caller already
+        wrote open_trades.json before calling this; we write again on the
+        actual fill to record the partial_filled_at timestamp accurately
+        and on close-of-thread to clear exit_in_flight.
 
         P&L is booked for the CORE shares only — the runner books its own
         P&L when it eventually exits via `_submit_exit`. This matches
@@ -626,6 +676,8 @@ class SqueezeBot:
             if res.fill_price is not None and res.filled_qty > 0:
                 pnl = (res.fill_price - pos.entry) * res.filled_qty
                 self.risk.record_close(pnl)
+                # Update partial_filled_qty in case Alpaca filled less than
+                # requested (rare — most likely full core fill).
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
@@ -643,10 +695,14 @@ class SqueezeBot:
             else:
                 # Core didn't fill — back out the tp_hit flip so the
                 # pre-target ladder takes the next tick instead of the
-                # runner phase.
+                # runner phase (otherwise we'd be in runner mode with no
+                # core sale, which is a bug). Setup A doesn't hit this
+                # case because exit_trade is synchronous; we do, hence the
+                # rollback.
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
+                        # Restore the qty we shrunk in _tick_manage_exit.
                         live.qty = live.qty + core_qty
                         live.tp_hit = False
                         live.partial_filled_at = None
@@ -765,7 +821,7 @@ class SqueezeBot:
         Critical adoption policy (per project rule
         feedback_session_persistence_required.md): if Alpaca reports an
         open position the bot's state doesn't know about, we ADOPT it
-        with conservative defaults (stop = entry × 0.99, R = entry × 0.01),
+        with conservative defaults (stop = entry × 0.97, R = entry × 0.03),
         flagged setup_type="orphan_adopted". We NEVER auto-flatten — the
         2026-05-05 CLNN incident showed how dangerous that is.
 
@@ -835,6 +891,9 @@ class SqueezeBot:
                       f"qty={qty_avail} entry=${broker_entry:.4f} "
                       f"— adopting with conservative defaults "
                       f"(stop=entry*0.99, R=entry*0.01)", flush=True)
+                # Tighter than Setup A's 3%-stop default because the engine
+                # has no idea what setup produced this position; a 1% stop
+                # bounds downside while the operator decides what to do.
                 pos = _Position(
                     symbol=sym, qty=qty_avail,
                     entry=float(broker_entry),
@@ -942,23 +1001,30 @@ class SqueezeBot:
 def main():
     """CLI:
       --resume  Force resume from today's marker (cold-starts if no marker).
-      --fresh   Force cold start, scrubbing session_state_engine/<date>/squeeze_bot/.
+      --fresh   Force cold start, scrubbing today's session_state_engine/<date>/<bot_id>/.
       (no flag) Auto-decide via marker presence (Setup A's pattern).
 
     The resume gate WB_SESSION_RESUME_ENABLED must ALSO be 1 for resume to
     actually take effect — when 0 (default), the bot writes durable state
-    but cold-starts on every boot. Matches Setup A's two-gate setup.
+    but cold-starts on every boot. This matches Setup A's two-gate setup
+    so a config flip on either side has the same effect.
     """
     import argparse
     parser = argparse.ArgumentParser(description="Setup B squeeze bot")
     parser.add_argument("--resume", action="store_true",
                         help="Force resume from today's marker")
     parser.add_argument("--fresh", action="store_true",
-                        help="Force cold start, wiping session_state_engine/squeeze_bot/")
+                        help="Force cold start, wiping today's session_state_engine/squeeze_bot/")
     args, _ = parser.parse_known_args()
 
+    # We need a session to call decide_boot_mode; build a transient one
+    # using the same bot_id the SqueezeBot constructor will use. The
+    # SqueezeBot instance later constructs its own EngineSession — both
+    # point at the same on-disk directory, so they observe the same
+    # marker state.
     session = EngineSession("squeeze_bot")
     if args.fresh:
+        # Wipe BEFORE deciding mode so empty-state logic fires cleanly.
         session.scrub_today()
     boot_mode, boot_reason = decide_boot_mode(
         session, fresh=args.fresh, resume=args.resume,
