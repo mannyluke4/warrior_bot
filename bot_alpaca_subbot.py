@@ -125,8 +125,19 @@ WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
 if WAVE_BREAKOUT_ENABLED:
     from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
 
-# Chop Gate v3 — second-layer gate behind v2 (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
-# 2026-05-12). Default OFF; flip WB_CHOP_GATE_V3_ENABLED=1 in .env to enable.
+# Chop Gate v3 — modular second-layer gate behind v2
+# (DIRECTIVE_CHOP_GATE_V3_MODULAR_ROLLOUT.md, 2026-05-12).
+# Master kill switch is WB_CHOP_GATE_V3_ENABLED. Per-sub-gate enable flags
+# live INSIDE the chop_gate_v3 module (read at call time) so we can flip a
+# single sub-gate to live without touching the bot code:
+#     WB_CG3_MACD_ENABLED            (default 1 — ships Wed 2026-05-13)
+#     WB_CG3_HOD_RECENT_ENABLED      (default 0 — observe-only)
+#     WB_CG3_DEAD_BOUNCE_ENABLED     (default 0 — observe-only)
+#     WB_CG3_VOL_FT_ENABLED          (default 0 — deferred)
+#     WB_CG3_XSESSION_BL_ENABLED     (default 0 — Monday rollout)
+# Disabled sub-gates STILL run for telemetry; they emit [CG3_OBSERVE] lines
+# but cannot veto.
+#
 # Trade-history recording (SessionHistory.record_trade) is ALWAYS ON: it's
 # write-only and we want the cross-session blacklist populated whether v3 is
 # active or not, so promotion later has prior data to act on.
