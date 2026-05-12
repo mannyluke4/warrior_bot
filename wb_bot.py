@@ -52,6 +52,8 @@ from engine_ipc import (
     TickMessage,
 )
 from wave_breakout_detector import WaveBreakoutDetector
+from chop_gate_v3 import chop_gate_v3 as _chop_gate_v3_fn
+from session_history import SessionHistory
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -59,6 +61,14 @@ from wave_breakout_detector import WaveBreakoutDetector
 # ══════════════════════════════════════════════════════════════════════
 
 WB_ENABLED = os.getenv("WB_WAVE_BREAKOUT_ENABLED", "1") == "1"
+
+# Chop Gate v3 — second-layer gate (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
+# 2026-05-12). Default OFF; flip WB_CHOP_GATE_V3_ENABLED=1 in .env.
+# Trade-history recording is ALWAYS ON (write-only): SessionHistory
+# populates the per-symbol blacklist so v3 has prior-session data when
+# promoted, whether v3 is currently enabled or not (directive line 309).
+WB_CHOP_GATE_V3_ENABLED = os.getenv("WB_CHOP_GATE_V3_ENABLED", "0") == "1"
+_session_history_recorder = SessionHistory()
 
 WB_RISK_PCT = float(os.getenv("WB_WB_RISK_PCT", "0.025"))
 WB_RISK_FLOOR = float(os.getenv("WB_WB_RISK_FLOOR_DOLLARS", "500"))
@@ -335,6 +345,34 @@ class WBBot:
             det.mark_entry_failed(f"parse_error:{e}")
             return
 
+        # Chop Gate v3 — second-layer check (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
+        # 2026-05-12). Default OFF; toggle via WB_CHOP_GATE_V3_ENABLED. Three
+        # intraday metrics (failed_hod_attempts, macd_rolling_over,
+        # has_volume_followthrough) + one cross-session blacklist veto. Per
+        # directive lines 311-325, v3 applies regardless of score (no
+        # high-confidence bypass). Bars come from the detector's _bars list
+        # (dict-shaped; chop_gate_v3 tolerates both dict + Bar). MACD state
+        # comes from det._macd; engine's macd.py exposes line_at / signal_at
+        # / histogram_at after the additive history-buffer extension.
+        if WB_CHOP_GATE_V3_ENABLED:
+            try:
+                bars_1m_v3 = list(getattr(det, "_bars", []) or [])
+                macd_state_v3 = getattr(det, "_macd", None)
+                today_iso = now_et().date().isoformat()
+                v3_passes, v3_reason = _chop_gate_v3_fn(
+                    symbol, bars_1m_v3, macd_state_v3, today_iso,
+                )
+                if not v3_passes:
+                    print(f"[CHOP_REJECT_V3] {now_iso_et()} {symbol}: "
+                          f"{v3_reason}", flush=True)
+                    det.mark_entry_failed("chop_reject_v3")
+                    return
+            except Exception as e:
+                # Fail-OPEN so a v3 bug can't block live entries; log so
+                # we know to investigate.
+                print(f"[CHOP_REJECT_V3_ERROR] {now_iso_et()} {symbol}: "
+                      f"{e!r} — passing entry", flush=True)
+
         current_equity = self.starting_equity + self.risk.daily_pnl
         qty, risk_dollars = _compute_wb_position_size(entry, stop, current_equity)
         if qty <= 0:
@@ -438,6 +476,23 @@ class WBBot:
                         pass
                 self._persist_open_trades()
                 self._persist_risk()
+                # SessionHistory recording — ALWAYS ON, write-only. Populates
+                # the per-symbol blacklist file so chop_gate_v3 has prior-
+                # session data whether v3 is currently enabled or not
+                # (directive line 309).
+                try:
+                    risk_per_share = max(pos.entry - pos.stop, 1e-6)
+                    r_mult = (float(res.fill_price) - pos.entry) / risk_per_share
+                    _session_history_recorder.record_trade(
+                        symbol=symbol,
+                        date=now_et().date().isoformat(),
+                        pnl=float(pnl),
+                        r_multiple=float(r_mult),
+                    )
+                except Exception as e:
+                    print(f"[WB] {now_iso_et()} {symbol} "
+                          f"session_history.record_trade error: {e!r}",
+                          flush=True)
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 partial_tag = (f" [PARTIAL {res.filled_qty}/{pos.qty}]"
                                if res.filled_qty < pos.qty else "")
