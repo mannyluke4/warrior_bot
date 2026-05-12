@@ -125,6 +125,16 @@ WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
 if WAVE_BREAKOUT_ENABLED:
     from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
 
+# Chop Gate v3 — second-layer gate behind v2 (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
+# 2026-05-12). Default OFF; flip WB_CHOP_GATE_V3_ENABLED=1 in .env to enable.
+# Trade-history recording (SessionHistory.record_trade) is ALWAYS ON: it's
+# write-only and we want the cross-session blacklist populated whether v3 is
+# active or not, so promotion later has prior data to act on.
+WB_CHOP_GATE_V3_ENABLED = os.getenv("WB_CHOP_GATE_V3_ENABLED", "0") == "1"
+from chop_gate_v3 import chop_gate_v3 as _chop_gate_v3_fn  # noqa: E402
+from session_history import SessionHistory  # noqa: E402
+_session_history_recorder = SessionHistory()
+
 # Tick-By-Tick migration (DIRECTIVE_TICKBYTICK_MIGRATION.md).
 # Stage 1 probe (2026-05-05): account capacity = 5 simultaneous
 # reqTickByTickData('AllLast') subscriptions. Override via WB_TBT_MAX if a
@@ -835,6 +845,32 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
                 state.wb_detectors[symbol].mark_entry_failed("chop_reject")
             return
 
+    # Chop Gate v3 — second-layer check (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
+    # 2026-05-12). Runs AFTER chop_gate_v2 has cleared (or after the
+    # score>=9 chop_bypass branch above) — v3 ALSO applies to bypass per
+    # directive lines 311-325. Default OFF; toggle via WB_CHOP_GATE_V3_ENABLED.
+    # Three intraday metrics (failed_hod_attempts, macd_rolling_over,
+    # has_volume_followthrough) + one cross-session blacklist veto.
+    if WB_CHOP_GATE_V3_ENABLED:
+        try:
+            bars_1m_v3 = state.bars_1m_history.get(symbol, [])
+            det_v3 = state.wb_detectors.get(symbol)
+            macd_state_v3 = getattr(det_v3, "_macd", None) if det_v3 else None
+            today_iso = datetime.now(ET).date().isoformat()
+            v3_passes, v3_reason = _chop_gate_v3_fn(
+                symbol, bars_1m_v3, macd_state_v3, today_iso,
+            )
+            if not v3_passes:
+                print(f"[CHOP_REJECT_V3] {symbol}: {v3_reason}", flush=True)
+                if symbol in state.wb_detectors:
+                    state.wb_detectors[symbol].mark_entry_failed("chop_reject_v3")
+                return
+        except Exception as e:
+            # Fail-OPEN on v3 errors so a bug here can't block live entries.
+            # The error itself is logged so we know to investigate.
+            print(f"[CHOP_REJECT_V3_ERROR] {symbol}: {e!r} — passing entry",
+                  flush=True)
+
     equity = get_account_equity()
     shares, risk_dollars = compute_wb_position_size(entry_price, stop_price, equity)
     eff_cap, hard_ceiling, equity_cap, floor = _wb_effective_notional_cap(equity)
@@ -935,6 +971,19 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
             "pnl": pnl, "r_mult": r, "reason": reason,
             "entry_time": pos["entry_time"], "exit_time": datetime.now(ET),
         })
+        # SessionHistory recording — ALWAYS ON, write-only. Populates the
+        # per-symbol blacklist file so chop_gate_v3 has prior-session data
+        # whether v3 is currently enabled or not (directive line 309).
+        try:
+            _session_history_recorder.record_trade(
+                symbol=symbol,
+                date=datetime.now(ET).date().isoformat(),
+                pnl=float(pnl),
+                r_multiple=float(r),
+            )
+        except Exception as e:
+            print(f"[WB] {symbol} session_history.record_trade error: {e!r}",
+                  flush=True)
     else:
         print(f"[WB] {symbol} EXIT NO-FILL — manual review", flush=True)
 
