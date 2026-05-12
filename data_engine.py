@@ -75,8 +75,9 @@ from engine_ipc import (
     DEFAULT_SOCKET_PATH,
 )
 
-# Load .env.engine first (Setup B's config), falling back to .env so the
-# inherited detector knobs are picked up if .env.engine doesn't override.
+# Load .env.engine.local first (gitignored secrets), then .env.engine
+# (committed template), then .env (Setup A's detector knobs for inheritance).
+load_dotenv(os.path.join(_HERE, ".env.engine.local"))
 load_dotenv(os.path.join(_HERE, ".env.engine"))
 load_dotenv(os.path.join(_HERE, ".env"))
 

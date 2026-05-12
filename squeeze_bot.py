@@ -39,9 +39,11 @@ if _HERE not in sys.path:
 
 from engine_bot_common import (
     DailyRisk,
+    EngineSession,
     EngineState,
     bar_from_message,
     connect_to_engine,
+    decide_boot_mode,
     engine_reader_thread,
     get_priced_limit,
     make_alpaca_broker,
@@ -88,6 +90,11 @@ SQ_CORE_PCT = int(os.getenv("WB_SQ_CORE_PCT", "90"))
 
 BAIL_TIMER_ENABLED = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
 BAIL_TIMER_MINUTES = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
+# Session-resume gate. Mirrors Setup A's WB_SESSION_RESUME_ENABLED. When 0
+# (default), bot writes durable state but cold-starts on every boot so a
+# later "flip to 1" can resume cleanly without retroactive bugs.
+SESSION_RESUME_ENABLED = os.getenv("WB_SESSION_RESUME_ENABLED", "0") == "1"
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -155,10 +162,12 @@ class _Position:
 
 
 class SqueezeBot:
-    def __init__(self):
+    def __init__(self, *, boot_mode: str = "cold", boot_reason: str = "no_marker"):
         if not SQ_ENABLED:
             raise SystemExit("WB_SQUEEZE_ENABLED=0 — refusing to start.")
         self.bot_id = "squeeze_bot"
+        self.boot_mode = boot_mode
+        self.boot_reason = boot_reason
         self.broker = make_alpaca_broker()
         self.starting_equity = starting_equity_from_broker(self.broker)
         self.risk = DailyRisk(self.starting_equity)
@@ -167,13 +176,23 @@ class SqueezeBot:
         self.state = EngineState()
         self.detectors: dict[str, SqueezeDetector] = {}
         self.positions: dict[str, _Position] = {}
-        # RLock — the exit ladder's persistence-flush hook (added in the
-        # session-persistence commit) re-enters the lock from a context
-        # already holding it; using a plain Lock would deadlock. We use
-        # RLock from the start so the ladder code can call any helper
-        # without lock-discipline footguns.
+        # RLock — _persist_open_trades re-enters the lock from inside
+        # _tick_manage_exit (already holding it). Plain Lock deadlocks.
         self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
+        # Per-bot persistence helper — writes go to session_state_engine/<date>/squeeze_bot/.
+        self.session = EngineSession(self.bot_id)
+        # If we're cold-starting, stamp the marker so a subsequent crash
+        # within the same day can be detected as a resume candidate.
+        if self.boot_mode == "cold":
+            try:
+                self.session.write_marker()
+            except Exception as e:
+                print(f"[SQUEEZE] {now_iso_et()} write_marker error: {e!r}", flush=True)
+        # Resume rehydration runs early so positions are available before
+        # the engine reader thread starts firing ticks.
+        if self.boot_mode == "resume":
+            self._resume_rehydrate()
 
     def _ensure_detector(self, symbol: str) -> SqueezeDetector:
         d = self.detectors.get(symbol)
@@ -228,6 +247,11 @@ class SqueezeBot:
         # has a detector ready.
         for sym in msg.watchlist:
             self._ensure_detector(sym)
+        try:
+            self.session.write_watchlist(list(msg.watchlist))
+        except Exception as e:
+            print(f"[SQUEEZE] {now_iso_et()} write_watchlist error: {e!r}",
+                  flush=True)
 
     def on_disconnect(self):
         print(f"[SQUEEZE] {now_iso_et()} engine socket closed — fail-CLOSED, "
@@ -341,6 +365,9 @@ class SqueezeBot:
                     self.positions[symbol] = pos
                 self.risk.daily_entries += 1
                 det.notify_trade_opened()
+                # Persist immediately on fill confirmation — same as Setup A's
+                # persist_open_trades() write point.
+                self._persist_open_trades()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 para_tag = " [PARABOLIC]" if is_parabolic else ""
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} FILL @ "
@@ -392,9 +419,10 @@ class SqueezeBot:
             if not pos.fill_confirmed:
                 return
 
-            # Update peak.
+            # Update peak — persist on advance like Setup A.
             if price > pos.peak:
                 pos.peak = price
+                self._persist_open_trades()
 
             # Skip if an exit cycle is already mid-retry; the in-flight
             # loop owns the position until it completes or aborts.
@@ -411,6 +439,7 @@ class SqueezeBot:
                 minutes_in = (now_et() - pos.entry_time).total_seconds() / 60.0
                 if minutes_in >= BAIL_TIMER_MINUTES and price <= entry:
                     pos.exit_in_flight = True
+                    self._persist_open_trades()
                     self._submit_exit(pos, price, reason="bail_timer")
                     return
 
@@ -419,6 +448,7 @@ class SqueezeBot:
                 unrealized_loss = (entry - price) * qty
                 if unrealized_loss >= SQ_MAX_LOSS_DOLLARS:
                     pos.exit_in_flight = True
+                    self._persist_open_trades()
                     self._submit_exit(
                         pos, price,
                         reason=f"sq_dollar_loss_cap (${unrealized_loss:,.0f})",
@@ -428,6 +458,7 @@ class SqueezeBot:
             # ── 1) Hard stop ──────────────────────────────────────────
             if price <= stop:
                 pos.exit_in_flight = True
+                self._persist_open_trades()
                 self._submit_exit(pos, price, reason="sq_stop_hit")
                 return
 
@@ -442,19 +473,13 @@ class SqueezeBot:
                         reason = ("sq_para_trail_exit" if pos.is_parabolic
                                   else "sq_trail_exit")
                         pos.exit_in_flight = True
+                        self._persist_open_trades()
                         self._submit_exit(pos, price, reason=reason)
                         return
 
                 # [3] Target hit — exit core, keep runner. SQ_CORE_PCT % off
                 # at target; the remaining qty becomes the runner managed
                 # by the post-target branch on subsequent ticks.
-                #
-                # NB: Setup A's EPL graduation hook (bot_v3_hybrid.py
-                # line 3041-3058) is NOT ported — EPL is a Setup-A-only
-                # framework that doesn't run on the engine side. Omitting
-                # it does NOT change exit-fill behavior (no SELL is gated
-                # on EPL graduation; it's just bookkeeping for a different
-                # strategy that the engine doesn't run).
                 if r > 0 and price >= entry + (SQ_TARGET_R * r):
                     pos.tp_hit = True
                     pos.partial_filled_at = datetime.now(UTC).isoformat()
@@ -463,16 +488,9 @@ class SqueezeBot:
                     pos.partial_filled_qty = qty_core
                     if qty_runner > 0:
                         pos.runner_stop = max(stop, entry + 0.01)
-                        # Shrink the bot-tracked qty to the runner size
-                        # BEFORE the exit is submitted, so a parallel tick
-                        # observing the runner-stop branch sees the right
-                        # qty. Setup A sets pos["qty"] = qty_runner AFTER
-                        # exit_trade(); we do it before because our exit
-                        # path is async (place_with_retry on a worker
-                        # thread) and we can't rely on synchronous order
-                        # like Setup A's exit_trade does.
                         pos.qty = qty_runner
                         pos.exit_in_flight = True  # runner remains, in_flight is for core sale
+                        self._persist_open_trades()
                         self._submit_exit_partial(
                             pos, price, qty_core, reason="sq_target_hit",
                         )
@@ -480,6 +498,7 @@ class SqueezeBot:
                         # qty_core == qty (SQ_CORE_PCT=100, or qty was 1
                         # to start). Full exit at target — no runner.
                         pos.exit_in_flight = True
+                        self._persist_open_trades()
                         self._submit_exit(pos, price, reason="sq_target_hit")
                     return
 
@@ -490,8 +509,10 @@ class SqueezeBot:
                     runner_stop = max(pos.runner_stop, runner_trail)
                     if runner_stop > pos.runner_stop:
                         pos.runner_stop = runner_stop
+                        self._persist_open_trades()
                     if price <= runner_stop:
                         pos.exit_in_flight = True
+                        self._persist_open_trades()
                         self._submit_exit(pos, price, reason="sq_runner_trail")
                         return
 
@@ -552,6 +573,9 @@ class SqueezeBot:
                             if pos.r > 0 and exit_qty > 0 else 0.0)
                     except Exception:
                         pass
+                # Persist: position cleared, risk advanced.
+                self._persist_open_trades()
+                self._persist_risk()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 partial_tag = (f" [PARTIAL {res.filled_qty}/{exit_qty}]"
                                if res.filled_qty < exit_qty else "")
@@ -566,6 +590,7 @@ class SqueezeBot:
                     live = self.positions.get(symbol)
                     if live is not None:
                         live.exit_in_flight = False
+                self._persist_open_trades()
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} EXIT FAILED — "
                       f"position still open, will retry on next adverse tick",
                       flush=True)
@@ -606,6 +631,8 @@ class SqueezeBot:
                     if live is not None:
                         live.partial_filled_qty = int(res.filled_qty)
                         live.exit_in_flight = False  # runner is free to manage now
+                self._persist_open_trades()
+                self._persist_risk()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} CORE EXIT @ "
                       f"${res.fill_price:.4f} qty={res.filled_qty} "
@@ -616,26 +643,250 @@ class SqueezeBot:
             else:
                 # Core didn't fill — back out the tp_hit flip so the
                 # pre-target ladder takes the next tick instead of the
-                # runner phase (otherwise we'd be in runner mode with no
-                # core sale, which is a bug). Setup A doesn't hit this
-                # case because exit_trade is synchronous; we do, hence the
-                # rollback.
+                # runner phase.
                 with self._positions_lock:
                     live = self.positions.get(symbol)
                     if live is not None:
-                        # Restore the qty we shrunk in _tick_manage_exit.
                         live.qty = live.qty + core_qty
                         live.tp_hit = False
                         live.partial_filled_at = None
                         live.partial_filled_qty = 0
                         live.runner_stop = 0.0
                         live.exit_in_flight = False
+                self._persist_open_trades()
                 print(f"[SQUEEZE] {now_iso_et()} {symbol} CORE EXIT FAILED "
                       f"— rolled back tp_hit, will retry target on next tick",
                       flush=True)
 
         threading.Thread(target=_await_partial_fill, daemon=True,
                          name=f"squeeze-core-{symbol}").start()
+
+    # ── Persistence ──────────────────────────────────────────────────
+
+    def _position_to_record(self, pos: _Position) -> dict:
+        """Map _Position → open_trades.json schema. Field set matches the
+        EngineSession.OPEN_TRADE_REQUIRED_FIELDS_ENGINE validation set."""
+        return {
+            "symbol": pos.symbol,
+            "setup_type": pos.setup_type,
+            "entry_price": float(pos.entry),
+            "entry_time": pos.entry_time.isoformat(),
+            "qty": int(pos.qty),
+            "r": float(pos.r),
+            "stop": float(pos.stop),
+            "score": float(pos.score),
+            "peak": float(pos.peak),
+            "tp_hit": bool(pos.tp_hit),
+            "partial_filled_qty": int(pos.partial_filled_qty),
+            "partial_filled_at": pos.partial_filled_at,
+            "runner_stop": float(pos.runner_stop),
+            "is_parabolic": bool(pos.is_parabolic),
+            "fill_confirmed": bool(pos.fill_confirmed),
+            "order_id": pos.order_id,
+            # Audit-only — handy in post-mortem JSON inspection.
+            "score_detail": pos.score_detail,
+        }
+
+    def _record_to_position(self, rec: dict) -> _Position:
+        """Inverse — rebuild a _Position from a persisted record."""
+        entry_time_str = rec.get("entry_time", "")
+        try:
+            et = datetime.fromisoformat(entry_time_str)
+            if et.tzinfo is None:
+                et = et.replace(tzinfo=UTC)
+            et = et.astimezone(ET)
+        except (ValueError, TypeError):
+            et = now_et()
+        return _Position(
+            symbol=rec["symbol"],
+            qty=int(rec["qty"]),
+            entry=float(rec["entry_price"]),
+            stop=float(rec["stop"]),
+            r=float(rec["r"]),
+            score=float(rec.get("score", 0.0)),
+            entry_time=et,
+            order_id=rec.get("order_id", ""),
+            peak=float(rec.get("peak", rec["entry_price"])),
+            setup_type=rec.get("setup_type", "squeeze"),
+            score_detail=rec.get("score_detail", ""),
+            is_parabolic=bool(rec.get("is_parabolic", False)),
+            tp_hit=bool(rec.get("tp_hit", False)),
+            partial_filled_qty=int(rec.get("partial_filled_qty", 0)),
+            partial_filled_at=rec.get("partial_filled_at"),
+            runner_stop=float(rec.get("runner_stop", 0.0)),
+            fill_confirmed=bool(rec.get("fill_confirmed", True)),
+            exit_in_flight=False,  # never persist in-flight state
+        )
+
+    def _persist_open_trades(self) -> None:
+        """Flush every currently-confirmed position to open_trades.json.
+        Best-effort: on IO error log and continue — the periodic flush
+        thread will retry."""
+        try:
+            with self._positions_lock:
+                trades = [self._position_to_record(p)
+                          for p in self.positions.values()
+                          if p.fill_confirmed]
+            self.session.write_open_trades(trades)
+        except Exception as e:
+            print(f"[SQUEEZE] {now_iso_et()} persist_open_trades error: {e!r}",
+                  flush=True)
+
+    def _persist_risk(self) -> None:
+        try:
+            self.session.write_risk(
+                daily_pnl=self.risk.daily_pnl,
+                daily_entries=self.risk.daily_entries,
+                consecutive_losses=self.risk.consecutive_losses,
+                closed_trades=self.risk.closed_trades,
+            )
+        except Exception as e:
+            print(f"[SQUEEZE] {now_iso_et()} persist_risk error: {e!r}", flush=True)
+
+    def _periodic_flush_loop(self):
+        """Belt-and-suspenders background flush — every WB_SESSION_FLUSH_SEC
+        seconds, rewrite open_trades.json + risk.json so a kill -9 mid-
+        update loses at most one cycle worth of trail-stop drift."""
+        while not self._shutdown.is_set():
+            self._shutdown.wait(self.session.flush_sec)
+            if self._shutdown.is_set():
+                return
+            self._persist_open_trades()
+            self._persist_risk()
+
+    # ── Resume ────────────────────────────────────────────────────────
+
+    def _resume_rehydrate(self):
+        """Resume-mode startup: rehydrate positions + risk counters from
+        disk, cancel any pending Alpaca orders (entry retry state is lost
+        on crash; standing exits are an invariant violation), then
+        reconcile against Alpaca's actual position list.
+
+        Critical adoption policy (per project rule
+        feedback_session_persistence_required.md): if Alpaca reports an
+        open position the bot's state doesn't know about, we ADOPT it
+        with conservative defaults (stop = entry × 0.99, R = entry × 0.01),
+        flagged setup_type="orphan_adopted". We NEVER auto-flatten — the
+        2026-05-05 CLNN incident showed how dangerous that is.
+
+        If WB_SESSION_RESUME_ENABLED=0 (default), this method is still
+        callable but `main()` won't enter the resume branch (boot_mode
+        forced to "cold"); the call is gated externally.
+        """
+        print(f"[SQUEEZE] {now_iso_et()} RESUME: reconciling state", flush=True)
+
+        # Step 1: cancel any open orders left over from the crash. Standing
+        # SELLs are an invariant violation (we never leave protective stops
+        # at the broker per project rules); a leftover BUY might be a stale
+        # retry attempt that we no longer track.
+        cancelled_buy = cancelled_sell = 0
+        try:
+            open_orders = self.broker.get_open_orders() or []
+        except Exception as e:
+            print(f"[SQUEEZE] {now_iso_et()} RESUME: get_open_orders failed: {e!r}",
+                  flush=True)
+            open_orders = []
+        for o in open_orders:
+            try:
+                self.broker.cancel_order(o.order_id)
+                if o.side == "BUY":
+                    cancelled_buy += 1
+                else:
+                    cancelled_sell += 1
+            except Exception as e:
+                print(f"[SQUEEZE] {now_iso_et()} RESUME: cancel {o.order_id} "
+                      f"failed: {e!r}", flush=True)
+        if cancelled_buy or cancelled_sell:
+            print(f"[SQUEEZE] {now_iso_et()} RESUME: cancelled "
+                  f"{cancelled_buy} BUYs + {cancelled_sell} SELLs",
+                  flush=True)
+
+        # Step 2: load persisted open trades, index by symbol.
+        persisted = self.session.read_open_trades()
+        by_symbol = {r["symbol"]: r for r in persisted}
+
+        # Step 3: reconcile against broker.
+        try:
+            broker_positions = self.broker.get_positions() or []
+        except Exception as e:
+            print(f"[SQUEEZE] {now_iso_et()} RESUME: get_positions failed: {e!r}",
+                  flush=True)
+            broker_positions = []
+
+        rehydrated_symbols: set[str] = set()
+        for bp in broker_positions:
+            sym = bp.symbol
+            broker_qty = bp.qty
+            broker_entry = bp.avg_entry_price
+            qty_avail = bp.qty_available
+
+            if qty_avail == 0:
+                print(f"[SQUEEZE] {now_iso_et()} RESUME: {sym} qty={broker_qty} "
+                      f"all held_for_orders — skip (pending exit will resolve)",
+                      flush=True)
+                continue
+
+            rec = by_symbol.get(sym)
+            if rec is None:
+                # No persisted record → orphan. Adopt with conservative
+                # defaults rather than flatten. Setup type marks the
+                # provenance so post-mortem can audit.
+                print(f"[SQUEEZE] {now_iso_et()} [ORPHAN_DETECTED] {sym} "
+                      f"qty={qty_avail} entry=${broker_entry:.4f} "
+                      f"— adopting with conservative defaults "
+                      f"(stop=entry*0.99, R=entry*0.01)", flush=True)
+                pos = _Position(
+                    symbol=sym, qty=qty_avail,
+                    entry=float(broker_entry),
+                    stop=float(broker_entry) * 0.99,
+                    r=float(broker_entry) * 0.01,
+                    score=0.0,
+                    entry_time=now_et(),
+                    order_id="adopted",
+                    peak=float(broker_entry),
+                    setup_type="orphan_adopted",
+                    fill_confirmed=True,
+                )
+                self.positions[sym] = pos
+                rehydrated_symbols.add(sym)
+                continue
+
+            # Persisted match — rehydrate, but trust broker on qty drift.
+            pos = self._record_to_position(rec)
+            if pos.qty != broker_qty:
+                print(f"[SQUEEZE] {now_iso_et()} RESUME: {sym} qty drift "
+                      f"persisted={pos.qty} broker={broker_qty} — trusting broker",
+                      flush=True)
+                pos.qty = broker_qty
+            self.positions[sym] = pos
+            rehydrated_symbols.add(sym)
+            print(f"[SQUEEZE] {now_iso_et()} RESUME: rehydrated {sym} "
+                  f"qty={pos.qty} entry=${pos.entry:.4f} stop=${pos.stop:.4f} "
+                  f"peak=${pos.peak:.4f} tp_hit={pos.tp_hit}", flush=True)
+
+        # Step 4: drop persisted records that no longer exist at broker
+        # (closed during crash window).
+        dropped = set(by_symbol.keys()) - rehydrated_symbols
+        for sym in dropped:
+            print(f"[SQUEEZE] {now_iso_et()} RESUME: dropping persisted "
+                  f"{sym} (no live broker position — closed during crash window)",
+                  flush=True)
+
+        # Step 5: restore risk counters.
+        risk_data = self.session.read_risk()
+        self.risk.daily_pnl = float(risk_data.get("daily_pnl", 0.0))
+        self.risk.daily_entries = int(risk_data.get("daily_entries", 0))
+        self.risk.consecutive_losses = int(risk_data.get("consecutive_losses", 0))
+        self.risk.closed_trades = list(risk_data.get("closed_trades", []))
+        print(f"[SQUEEZE] {now_iso_et()} RESUME: risk restored "
+              f"daily_pnl=${self.risk.daily_pnl:+,.2f} "
+              f"entries={self.risk.daily_entries} "
+              f"consec_losses={self.risk.consecutive_losses}", flush=True)
+
+        # Step 6: persist the reconciled state so on-disk matches in-memory.
+        self._persist_open_trades()
+        self._persist_risk()
+        print(f"[SQUEEZE] {now_iso_et()} RESUME: complete", flush=True)
 
     # ── Main loop ─────────────────────────────────────────────────────
 
@@ -645,6 +896,12 @@ class SqueezeBot:
         self.state.stream_paused = True  # cleared on first heartbeat with ibkr_connected=True
         print(f"[SQUEEZE] {now_iso_et()} connected to engine — fail-CLOSED until "
               f"first healthy heartbeat", flush=True)
+
+        # Periodic flush thread — every WB_SESSION_FLUSH_SEC seconds,
+        # rewrite open_trades.json + risk.json so a kill -9 mid-update
+        # loses at most one cycle worth of trail-stop drift.
+        threading.Thread(target=self._periodic_flush_loop, daemon=True,
+                         name="periodic-flush").start()
 
         # Reader thread.
         t = threading.Thread(
@@ -683,7 +940,42 @@ class SqueezeBot:
 
 
 def main():
-    bot = SqueezeBot()
+    """CLI:
+      --resume  Force resume from today's marker (cold-starts if no marker).
+      --fresh   Force cold start, scrubbing session_state_engine/<date>/squeeze_bot/.
+      (no flag) Auto-decide via marker presence (Setup A's pattern).
+
+    The resume gate WB_SESSION_RESUME_ENABLED must ALSO be 1 for resume to
+    actually take effect — when 0 (default), the bot writes durable state
+    but cold-starts on every boot. Matches Setup A's two-gate setup.
+    """
+    import argparse
+    parser = argparse.ArgumentParser(description="Setup B squeeze bot")
+    parser.add_argument("--resume", action="store_true",
+                        help="Force resume from today's marker")
+    parser.add_argument("--fresh", action="store_true",
+                        help="Force cold start, wiping session_state_engine/squeeze_bot/")
+    args, _ = parser.parse_known_args()
+
+    session = EngineSession("squeeze_bot")
+    if args.fresh:
+        session.scrub_today()
+    boot_mode, boot_reason = decide_boot_mode(
+        session, fresh=args.fresh, resume=args.resume,
+    )
+    # Hard gate: WB_SESSION_RESUME_ENABLED=0 forces cold even if a marker
+    # is present. Mirrors Setup A's two-gate design.
+    if boot_mode == "resume" and not SESSION_RESUME_ENABLED:
+        print(f"[SQUEEZE] BOOT: would RESUME (reason={boot_reason}) but "
+              f"WB_SESSION_RESUME_ENABLED=0 — forcing COLD", flush=True)
+        boot_mode = "cold"
+        boot_reason = "resume_gate_off"
+    age = session.marker_age_seconds()
+    age_str = f"{age:.0f}s" if age is not None else "n/a"
+    print(f"[SQUEEZE] BOOT: {boot_mode.upper()} (reason={boot_reason}, "
+          f"marker_age={age_str})", flush=True)
+
+    bot = SqueezeBot(boot_mode=boot_mode, boot_reason=boot_reason)
     def _sig(*_):
         print(f"[SQUEEZE] {now_iso_et()} signal received — shutting down",
               flush=True)

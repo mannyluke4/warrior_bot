@@ -29,9 +29,11 @@ if _HERE not in sys.path:
 
 from engine_bot_common import (
     DailyRisk,
+    EngineSession,
     EngineState,
     bar_from_message,
     connect_to_engine,
+    decide_boot_mode,
     engine_reader_thread,
     get_priced_limit,
     make_alpaca_broker,
@@ -39,6 +41,7 @@ from engine_bot_common import (
     now_iso_et,
     place_with_retry,
     starting_equity_from_broker,
+    today_et_str,
     wait_for_fill,
     ET,
     UTC,
@@ -80,6 +83,8 @@ WB_HARD_STOP_R = float(os.getenv("WB_WB_HARD_STOP_R", "1.0"))
 # detector emits WB_PYRAMID but Setup A's subbot doesn't wire it to an
 # Alpaca BUY. We mirror that exactly: log the signal, don't place leg2.
 WB_PYRAMID_ENABLED = os.getenv("WB_WB_PYRAMID_ENABLED", "0") == "1"
+
+SESSION_RESUME_ENABLED = os.getenv("WB_SESSION_RESUME_ENABLED", "0") == "1"
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -154,10 +159,12 @@ def _compute_wb_position_size(entry: float, stop: float,
 
 
 class WBBot:
-    def __init__(self):
+    def __init__(self, *, boot_mode: str = "cold", boot_reason: str = "no_marker"):
         if not WB_ENABLED:
             raise SystemExit("WB_WAVE_BREAKOUT_ENABLED=0 — refusing to start.")
         self.bot_id = "wb_bot"
+        self.boot_mode = boot_mode
+        self.boot_reason = boot_reason
         self.broker = make_alpaca_broker()
         self.starting_equity = starting_equity_from_broker(self.broker)
         self.risk = DailyRisk(self.starting_equity)
@@ -166,11 +173,19 @@ class WBBot:
         self.state = EngineState()
         self.detectors: dict[str, WaveBreakoutDetector] = {}
         self.positions: dict[str, _WBPosition] = {}
-        # RLock for consistency with squeeze_bot; persistence helpers
-        # (added in a later commit) re-enter the lock from contexts
-        # already holding it. Plain Lock would deadlock.
+        # RLock — persistence helpers re-enter from contexts holding the
+        # lock. Mirror of squeeze_bot rationale.
         self._positions_lock = threading.RLock()
         self._shutdown = threading.Event()
+        # Per-bot persistence helper — writes go to session_state_engine/<date>/wb_bot/.
+        self.session = EngineSession(self.bot_id)
+        if self.boot_mode == "cold":
+            try:
+                self.session.write_marker()
+            except Exception as e:
+                print(f"[WB] {now_iso_et()} write_marker error: {e!r}", flush=True)
+        if self.boot_mode == "resume":
+            self._resume_rehydrate()
 
     def _ensure_detector(self, symbol: str) -> WaveBreakoutDetector:
         d = self.detectors.get(symbol)
@@ -193,14 +208,15 @@ class WBBot:
             print(f"[WB] {now_iso_et()} {sym} detector tick error: {e!r}",
                   flush=True)
             return
-        # Update bot-side peak mirror. The detector tracks its own peak
-        # for the trail math, but the bot mirroring keeps the audit log
-        # consistent and gives a later persistence layer a current peak
-        # to flush. Peak-only update — no other state changes here.
+        # Update bot-side peak mirror + persist on peak advance, mirroring
+        # Setup A's per-tick peak update for the squeeze side. Keeps the
+        # persisted record fresh enough that a crash recovery sees an up-
+        # to-date peak rather than the stale entry-time peak.
         with self._positions_lock:
             pos = self.positions.get(sym)
             if pos is not None and pos.fill_confirmed and msg.price > pos.peak:
                 pos.peak = msg.price
+                self._persist_open_trades()
         if not res:
             return
         if res.startswith("WB_ENTER"):
@@ -208,10 +224,10 @@ class WBBot:
         elif res.startswith("WB_EXIT"):
             self._handle_exit(sym, res)
         elif res.startswith("WB_TRAIL_ARMED"):
-            # Mirror trail state onto the bot-side position so a later
-            # persistence layer can capture "trail is armed" + the
-            # current trail_stop. The detector remains the source of
-            # truth for trail math — the bot just shadows the flag.
+            # Mirror trail state onto the bot-side position so a crash-
+            # restart can persist that the trail is armed (the detector
+            # state machine will recompute trail_stop from peak+R, but
+            # logs read more naturally when the bot mirrors the flag).
             with self._positions_lock:
                 pos = self.positions.get(sym)
                 if pos is not None:
@@ -222,6 +238,7 @@ class WBBot:
                                 pos.trail_stop = float(tok.split("=", 1)[1])
                             except ValueError:
                                 pass
+                    self._persist_open_trades()
             print(f"[WB] {now_iso_et()} {sym} {res}", flush=True)
         elif res.startswith("WB_PYRAMID"):
             # Pyramid leg2 is SILENT per Setup A (2026-05-08 breakdown
@@ -260,6 +277,10 @@ class WBBot:
     def on_subscriptions(self, msg: SubscriptionsMessage):
         for sym in msg.watchlist:
             self._ensure_detector(sym)
+        try:
+            self.session.write_watchlist(list(msg.watchlist))
+        except Exception as e:
+            print(f"[WB] {now_iso_et()} write_watchlist error: {e!r}", flush=True)
 
     def on_disconnect(self):
         print(f"[WB] {now_iso_et()} engine socket closed — fail-CLOSED, no new "
@@ -348,6 +369,7 @@ class WBBot:
                 except Exception as e:
                     print(f"[WB] {now_iso_et()} {symbol} mark_filled error: {e!r}",
                           flush=True)
+                self._persist_open_trades()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
                 print(f"[WB] {now_iso_et()} {symbol} FILL @ "
                       f"${res.fill_price:.4f} qty={res.filled_qty}{retry_tag}",
@@ -406,10 +428,14 @@ class WBBot:
                         det.mark_exited(float(res.fill_price), reason=reason)
                     except Exception:
                         pass
+                self._persist_open_trades()
+                self._persist_risk()
                 retry_tag = f" (after {res.attempts} retries)" if res.attempts > 0 else ""
+                partial_tag = (f" [PARTIAL {res.filled_qty}/{pos.qty}]"
+                               if res.filled_qty < pos.qty else "")
                 print(f"[WB] {now_iso_et()} {symbol} CLOSED @ "
                       f"${res.fill_price:.4f} pnl=${pnl:+,.2f} reason={reason} "
-                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}",
+                      f"daily_pnl=${self.risk.daily_pnl:+,.2f}{retry_tag}{partial_tag}",
                       flush=True)
             else:
                 # All retries exhausted or chase cap hit — clear the
@@ -419,11 +445,233 @@ class WBBot:
                     live = self.positions.get(symbol)
                     if live is not None:
                         live.exit_in_flight = False
-                print(f"[WB] {now_iso_et()} {symbol} EXIT TIMEOUT — position "
+                self._persist_open_trades()
+                print(f"[WB] {now_iso_et()} {symbol} EXIT FAILED — position "
                       f"still open", flush=True)
 
         threading.Thread(target=_await_exit_fill, daemon=True,
                          name=f"wb-exit-{symbol}").start()
+
+    # ── Persistence ──────────────────────────────────────────────────
+
+    def _position_to_record(self, pos: _WBPosition) -> dict:
+        """Map _WBPosition → open_trades.json schema. The required-fields
+        set in EngineSession is squeeze-oriented (carries tp_hit etc.); we
+        fill those with WB-appropriate defaults (tp_hit=False, no partial,
+        runner_stop=0) so the same validation passes for both bots."""
+        return {
+            "symbol": pos.symbol,
+            "setup_type": "wave_breakout",
+            "entry_price": float(pos.entry),
+            "entry_time": pos.entry_time.isoformat(),
+            "qty": int(pos.qty),
+            "r": float(pos.entry - pos.stop),
+            "stop": float(pos.stop),
+            "score": float(pos.score),
+            "peak": float(pos.peak),
+            "tp_hit": False,
+            "partial_filled_qty": 0,
+            "partial_filled_at": None,
+            "runner_stop": 0.0,
+            "is_parabolic": False,
+            "fill_confirmed": bool(pos.fill_confirmed),
+            "order_id": pos.order_id,
+            # WB-specific audit fields.
+            "trail_armed": bool(pos.trail_armed),
+            "trail_stop": float(pos.trail_stop),
+            "pyramid_filled": bool(pos.pyramid_filled),
+            "risk_dollars": float(pos.risk_dollars),
+        }
+
+    def _record_to_position(self, rec: dict) -> _WBPosition:
+        entry_time_str = rec.get("entry_time", "")
+        try:
+            et = datetime.fromisoformat(entry_time_str)
+            if et.tzinfo is None:
+                et = et.replace(tzinfo=UTC)
+            et = et.astimezone(ET)
+        except (ValueError, TypeError):
+            et = now_et()
+        return _WBPosition(
+            symbol=rec["symbol"],
+            qty=int(rec["qty"]),
+            entry=float(rec["entry_price"]),
+            stop=float(rec["stop"]),
+            score=int(rec.get("score", 7)),
+            risk_dollars=float(rec.get("risk_dollars", 0.0)),
+            entry_time=et,
+            order_id=rec.get("order_id", ""),
+            peak=float(rec.get("peak", rec["entry_price"])),
+            pyramid_filled=bool(rec.get("pyramid_filled", False)),
+            trail_armed=bool(rec.get("trail_armed", False)),
+            trail_stop=float(rec.get("trail_stop", 0.0)),
+            fill_confirmed=bool(rec.get("fill_confirmed", True)),
+            exit_in_flight=False,
+        )
+
+    def _persist_open_trades(self) -> None:
+        try:
+            with self._positions_lock:
+                trades = [self._position_to_record(p)
+                          for p in self.positions.values()
+                          if p.fill_confirmed]
+            self.session.write_open_trades(trades)
+        except Exception as e:
+            print(f"[WB] {now_iso_et()} persist_open_trades error: {e!r}",
+                  flush=True)
+
+    def _persist_risk(self) -> None:
+        try:
+            self.session.write_risk(
+                daily_pnl=self.risk.daily_pnl,
+                daily_entries=self.risk.daily_entries,
+                consecutive_losses=self.risk.consecutive_losses,
+                closed_trades=self.risk.closed_trades,
+            )
+        except Exception as e:
+            print(f"[WB] {now_iso_et()} persist_risk error: {e!r}", flush=True)
+
+    def _periodic_flush_loop(self):
+        while not self._shutdown.is_set():
+            self._shutdown.wait(self.session.flush_sec)
+            if self._shutdown.is_set():
+                return
+            self._persist_open_trades()
+            self._persist_risk()
+
+    # ── Resume ────────────────────────────────────────────────────────
+
+    def _resume_rehydrate(self):
+        """Resume-mode startup: cancel any open orders, rehydrate WB
+        positions from disk, reconcile against Alpaca, restore risk.
+
+        Orphan policy: any Alpaca position the bot's state doesn't know
+        about gets adopted with conservative defaults (stop = entry × 0.99,
+        risk_dollars = 0). Never auto-flatten — per project rule.
+
+        Detector re-anchor: the WB detector is rebuilt from scratch on
+        boot and doesn't know it has an open position. After rehydrating
+        a position, we call det.mark_filled() to re-anchor the detector's
+        exit state machine. This recomputes trail_stop / hard_stop from
+        the persisted entry/stop/peak — so the next tick can fire the
+        appropriate exit if needed.
+        """
+        print(f"[WB] {now_iso_et()} RESUME: reconciling state", flush=True)
+
+        cancelled_buy = cancelled_sell = 0
+        try:
+            open_orders = self.broker.get_open_orders() or []
+        except Exception as e:
+            print(f"[WB] {now_iso_et()} RESUME: get_open_orders failed: {e!r}",
+                  flush=True)
+            open_orders = []
+        for o in open_orders:
+            try:
+                self.broker.cancel_order(o.order_id)
+                if o.side == "BUY":
+                    cancelled_buy += 1
+                else:
+                    cancelled_sell += 1
+            except Exception as e:
+                print(f"[WB] {now_iso_et()} RESUME: cancel {o.order_id} "
+                      f"failed: {e!r}", flush=True)
+        if cancelled_buy or cancelled_sell:
+            print(f"[WB] {now_iso_et()} RESUME: cancelled "
+                  f"{cancelled_buy} BUYs + {cancelled_sell} SELLs", flush=True)
+
+        persisted = self.session.read_open_trades()
+        # Only rehydrate WB positions — squeeze positions belong to the
+        # sibling bot. The setup_type field marks ownership.
+        wb_records = [r for r in persisted if r.get("setup_type") == "wave_breakout"]
+        by_symbol = {r["symbol"]: r for r in wb_records}
+
+        try:
+            broker_positions = self.broker.get_positions() or []
+        except Exception as e:
+            print(f"[WB] {now_iso_et()} RESUME: get_positions failed: {e!r}",
+                  flush=True)
+            broker_positions = []
+
+        rehydrated_symbols: set[str] = set()
+        for bp in broker_positions:
+            sym = bp.symbol
+            broker_qty = bp.qty
+            broker_entry = bp.avg_entry_price
+            qty_avail = bp.qty_available
+            if qty_avail == 0:
+                print(f"[WB] {now_iso_et()} RESUME: {sym} qty={broker_qty} "
+                      f"all held_for_orders — skip", flush=True)
+                continue
+
+            rec = by_symbol.get(sym)
+            if rec is None:
+                # Per-bot session_state means we only see OUR own
+                # persisted positions. A position we don't have a record
+                # for IS a WB orphan (or a cross-bot position; in that
+                # case the squeeze bot would adopt it from its own
+                # session_state subdir on its resume). Conservative
+                # adoption rather than auto-flatten.
+                print(f"[WB] {now_iso_et()} [ORPHAN_DETECTED] {sym} "
+                      f"qty={qty_avail} entry=${broker_entry:.4f} "
+                      f"— adopting as WB-orphan (stop=entry*0.99)",
+                      flush=True)
+                pos = _WBPosition(
+                    symbol=sym, qty=qty_avail,
+                    entry=float(broker_entry),
+                    stop=float(broker_entry) * 0.99,
+                    score=0, risk_dollars=0.0,
+                    entry_time=now_et(),
+                    order_id="adopted",
+                    peak=float(broker_entry),
+                    fill_confirmed=True,
+                )
+                self.positions[sym] = pos
+                # Re-anchor the detector so exits can fire on the next tick.
+                det = self._ensure_detector(sym)
+                try:
+                    det.mark_filled(float(broker_entry), datetime.now(UTC), score=0)
+                except Exception as e:
+                    print(f"[WB] {now_iso_et()} {sym} mark_filled (resume) error: "
+                          f"{e!r}", flush=True)
+                rehydrated_symbols.add(sym)
+                continue
+
+            pos = self._record_to_position(rec)
+            if pos.qty != broker_qty:
+                print(f"[WB] {now_iso_et()} RESUME: {sym} qty drift "
+                      f"persisted={pos.qty} broker={broker_qty} — trusting broker",
+                      flush=True)
+                pos.qty = broker_qty
+            self.positions[sym] = pos
+            # Re-anchor detector so its exit-trail recomputes from peak/R.
+            det = self._ensure_detector(sym)
+            try:
+                det.mark_filled(float(pos.entry), pos.entry_time.astimezone(UTC),
+                                score=int(pos.score))
+            except Exception as e:
+                print(f"[WB] {now_iso_et()} {sym} mark_filled (resume) error: "
+                      f"{e!r}", flush=True)
+            rehydrated_symbols.add(sym)
+            print(f"[WB] {now_iso_et()} RESUME: rehydrated {sym} qty={pos.qty} "
+                  f"entry=${pos.entry:.4f} stop=${pos.stop:.4f} peak=${pos.peak:.4f}",
+                  flush=True)
+
+        dropped = set(by_symbol.keys()) - rehydrated_symbols
+        for sym in dropped:
+            print(f"[WB] {now_iso_et()} RESUME: dropping persisted {sym} "
+                  f"(no live broker position)", flush=True)
+
+        risk_data = self.session.read_risk()
+        self.risk.daily_pnl = float(risk_data.get("daily_pnl", 0.0))
+        self.risk.daily_entries = int(risk_data.get("daily_entries", 0))
+        self.risk.consecutive_losses = int(risk_data.get("consecutive_losses", 0))
+        self.risk.closed_trades = list(risk_data.get("closed_trades", []))
+        print(f"[WB] {now_iso_et()} RESUME: risk restored "
+              f"daily_pnl=${self.risk.daily_pnl:+,.2f} "
+              f"entries={self.risk.daily_entries}", flush=True)
+        self._persist_open_trades()
+        self._persist_risk()
+        print(f"[WB] {now_iso_et()} RESUME: complete", flush=True)
 
     # ── Main loop ─────────────────────────────────────────────────────
 
@@ -433,6 +681,9 @@ class WBBot:
         self.state.stream_paused = True
         print(f"[WB] {now_iso_et()} connected to engine — fail-CLOSED until "
               f"first healthy heartbeat", flush=True)
+
+        threading.Thread(target=self._periodic_flush_loop, daemon=True,
+                         name="periodic-flush").start()
 
         t = threading.Thread(
             target=engine_reader_thread,
@@ -468,7 +719,36 @@ class WBBot:
 
 
 def main():
-    bot = WBBot()
+    """CLI:
+      --resume  Force resume from today's marker (cold-starts if no marker).
+      --fresh   Force cold start, scrubbing session_state_engine/<date>/wb_bot/.
+      (no flag) Auto-decide via marker presence.
+    """
+    import argparse
+    parser = argparse.ArgumentParser(description="Setup B wave-breakout bot")
+    parser.add_argument("--resume", action="store_true",
+                        help="Force resume from today's marker")
+    parser.add_argument("--fresh", action="store_true",
+                        help="Force cold start, wiping session_state_engine/wb_bot/")
+    args, _ = parser.parse_known_args()
+
+    session = EngineSession("wb_bot")
+    if args.fresh:
+        session.scrub_today()
+    boot_mode, boot_reason = decide_boot_mode(
+        session, fresh=args.fresh, resume=args.resume,
+    )
+    if boot_mode == "resume" and not SESSION_RESUME_ENABLED:
+        print(f"[WB] BOOT: would RESUME (reason={boot_reason}) but "
+              f"WB_SESSION_RESUME_ENABLED=0 — forcing COLD", flush=True)
+        boot_mode = "cold"
+        boot_reason = "resume_gate_off"
+    age = session.marker_age_seconds()
+    age_str = f"{age:.0f}s" if age is not None else "n/a"
+    print(f"[WB] BOOT: {boot_mode.upper()} (reason={boot_reason}, "
+          f"marker_age={age_str})", flush=True)
+
+    bot = WBBot(boot_mode=boot_mode, boot_reason=boot_reason)
     def _sig(*_):
         print(f"[WB] {now_iso_et()} signal received — shutting down", flush=True)
         bot.request_shutdown()

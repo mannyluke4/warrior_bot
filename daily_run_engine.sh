@@ -19,6 +19,34 @@
 
 set -euo pipefail
 
+# ── CLI flag parsing ────────────────────────────────────────────────────
+# The bots support --resume / --fresh; this launcher passes the same flag
+# through to BOTH bots so cron can choose the boot mode at the launcher
+# level. Usage:
+#   ./daily_run_engine.sh            # default — bots auto-decide via marker
+#   ./daily_run_engine.sh --resume   # force resume on both bots
+#   ./daily_run_engine.sh --fresh    # force cold start on both bots
+#
+# Cron's primary call (02:00 MT) should be the default (no flag) so the
+# bots auto-decide on whether a marker is present. Use --resume only for
+# manual intra-day relaunches after a crash; use --fresh to deliberately
+# wipe today's state before a re-test.
+BOT_FLAG=""
+case "${1:-}" in
+    --resume|--fresh)
+        BOT_FLAG="$1"
+        ;;
+    "")
+        ;;
+    *)
+        echo "Usage: $0 [--resume | --fresh]"
+        echo "  (no flag) — bots auto-decide via marker.json presence"
+        echo "  --resume — force resume from today's marker"
+        echo "  --fresh — force cold start (wipes session_state_engine/<date>/)"
+        exit 64
+        ;;
+esac
+
 # ── Paths ──────────────────────────────────────────────────────────────
 # WORKTREE is this script's directory — kept self-contained so a copy
 # of the worktree to another machine works without edits.
@@ -105,10 +133,13 @@ import engine_ipc, data_engine, squeeze_bot, wb_bot, engine_bot_common
 print('Setup B imports OK')
 " || { echo "FATAL: import check failed"; exit 1; }
 
-# Verify .env.engine is configured (not template placeholders).
-if grep -E '^APCA_API_(KEY_ID|SECRET_KEY)=<' "$WORKTREE/.env.engine" >/dev/null; then
-    echo "FATAL: .env.engine has placeholder Alpaca credentials. "
-    echo "Edit $WORKTREE/.env.engine and fill in PA-NEW key/secret before launching."
+# Verify Alpaca creds are configured. Prefer .env.engine.local (gitignored
+# secrets) over .env.engine (committed template with <FILL_IN> placeholders).
+ENV_FILE="$WORKTREE/.env.engine.local"
+[ -f "$ENV_FILE" ] || ENV_FILE="$WORKTREE/.env.engine"
+if grep -E '^APCA_API_(KEY_ID|SECRET_KEY)=<' "$ENV_FILE" >/dev/null; then
+    echo "FATAL: $ENV_FILE has placeholder Alpaca credentials. "
+    echo "Create $WORKTREE/.env.engine.local (gitignored) with real PA-NEW keys."
     exit 1
 fi
 
@@ -175,13 +206,19 @@ if [ "$SOCKET_READY" -eq 0 ]; then
 fi
 
 # ── Launch the 2 bots in parallel ──────────────────────────────────────
-echo "Starting squeeze_bot.py..."
-python3 "$WORKTREE/squeeze_bot.py" >> "$SQUEEZE_LOG" 2>&1 &
+# Pass the same boot-mode flag to both bots so they observe the same
+# session policy. With no flag, each bot auto-decides via its own
+# session_state_engine/<date>/<bot_id>/marker.json.
+if [ -n "$BOT_FLAG" ]; then
+    echo "Boot flag: $BOT_FLAG (passed to both bots)"
+fi
+echo "Starting squeeze_bot.py${BOT_FLAG:+ $BOT_FLAG}..."
+python3 "$WORKTREE/squeeze_bot.py" ${BOT_FLAG:+$BOT_FLAG} >> "$SQUEEZE_LOG" 2>&1 &
 SQUEEZE_PID=$!
 echo "Squeeze bot started (PID: $SQUEEZE_PID, log: $SQUEEZE_LOG)"
 
-echo "Starting wb_bot.py..."
-python3 "$WORKTREE/wb_bot.py" >> "$WB_LOG" 2>&1 &
+echo "Starting wb_bot.py${BOT_FLAG:+ $BOT_FLAG}..."
+python3 "$WORKTREE/wb_bot.py" ${BOT_FLAG:+$BOT_FLAG} >> "$WB_LOG" 2>&1 &
 WB_PID=$!
 echo "WB bot started (PID: $WB_PID, log: $WB_LOG)"
 

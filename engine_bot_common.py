@@ -646,6 +646,264 @@ def place_with_retry(
         attempt += 1
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Session persistence — engine-specific namespace (Phase 3)
+# ══════════════════════════════════════════════════════════════════════
+#
+# Layout (mirrors Setup A but isolated):
+#
+#   ~/warrior_bot_v2_engine/session_state_engine/<YYYY-MM-DD>/
+#       marker.json                 — boot-mode decision token
+#       watchlist.json              — symbols this engine subscribed to
+#       squeeze_bot/
+#           risk.json               — daily_pnl, counters, last-50 closed trades
+#           open_trades.json        — active squeeze position state (augmented)
+#       wb_bot/
+#           risk.json               — same shape, WB side
+#           open_trades.json        — active WB position state
+#
+# Setup A writes to ~/warrior_bot_v2/session_state/<date>/... directly;
+# we deliberately namespace under "session_state_engine/" so the A/B
+# comparison doesn't risk a cross-bot file-handle race or schema drift.
+# The tick cache stays at tick_cache_engine/ where the engine already
+# writes — no change to that here.
+#
+# Write policy:
+#   - open_trades.json: synchronously flushed on EVERY position state
+#     change (fill confirmed, peak advance, stop update, partial fill,
+#     bail-arm transition, close). Same as Setup A's policy.
+#   - risk.json: synchronously flushed on close (closes are infrequent
+#     enough that per-close is fine). Background flush thread also
+#     writes every 60s as a belt-and-suspenders against missed
+#     transitions.
+#   - watchlist.json: written on subscriptions message from engine.
+#   - marker.json: written on cold start; auto-rotates at the date
+#     boundary (decide_boot_mode keys on TODAY's directory only).
+#
+# Reads return typed defaults on any failure so the boot path can call
+# them unconditionally and degrade cleanly to cold start on corrupt JSON.
+
+ENGINE_SESSION_ROOT = os.path.join(_HERE, "session_state_engine")
+
+# Schema for an open-trade record. The engine bots are richer than Setup
+# A because the Position dataclass is the source of truth — every
+# trade-management field the ladder reads must persist or the resumed
+# bot won't make identical decisions on subsequent ticks.
+OPEN_TRADE_REQUIRED_FIELDS_ENGINE = {
+    "symbol", "setup_type", "entry_price", "entry_time", "qty", "r",
+    "stop", "score", "peak", "tp_hit", "partial_filled_qty",
+    "partial_filled_at", "runner_stop", "is_parabolic", "fill_confirmed",
+    "order_id",
+}
+
+
+def _atomic_write_json(path: str, data) -> None:
+    """tmpfile → fsync → os.replace. Same-dir tmpfile = atomic rename."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = f"{path}.tmp.{os.getpid()}"
+    try:
+        with open(tmp, "w") as f:
+            json.dump(data, f, indent=2, default=str)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    except Exception:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def _read_json_safe(path: str, default):
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return default
+
+
+class EngineSession:
+    """Per-bot persistence helper. Each bot constructs its own instance with
+    a `bot_id` ("squeeze_bot" / "wb_bot") which becomes the subdirectory
+    name. All paths derive lazily from today's date so a long-running bot
+    that crosses midnight cleanly rolls into a new session directory.
+    """
+
+    def __init__(self, bot_id: str, root: Optional[str] = None,
+                 flush_sec: Optional[float] = None):
+        self.bot_id = bot_id
+        self.root = root or ENGINE_SESSION_ROOT
+        # WB_SESSION_FLUSH_SEC mirrors Setup A's env var (kept as-is so a
+        # single tuning knob applies to both setups).
+        self.flush_sec = float(flush_sec if flush_sec is not None
+                               else os.getenv("WB_SESSION_FLUSH_SEC", "30"))
+        # Lock for read-modify-write under the periodic flush thread.
+        self._lock = threading.Lock()
+
+    # ── Path helpers ──────────────────────────────────────────────────
+    def _day_dir(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self.root, date_str or today_et_str())
+
+    def _bot_dir(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self._day_dir(date_str), self.bot_id)
+
+    def marker_path(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self._day_dir(date_str), "marker.json")
+
+    def watchlist_path(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self._day_dir(date_str), "watchlist.json")
+
+    def open_trades_path(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self._bot_dir(date_str), "open_trades.json")
+
+    def risk_path(self, date_str: Optional[str] = None) -> str:
+        return os.path.join(self._bot_dir(date_str), "risk.json")
+
+    # ── Marker (boot-mode decision) ───────────────────────────────────
+    def write_marker(self) -> None:
+        _atomic_write_json(self.marker_path(), {
+            "created_at": datetime.now(UTC).isoformat(),
+            "pid": os.getpid(), "bot_id": self.bot_id,
+        })
+
+    def marker_exists(self, date_str: Optional[str] = None) -> bool:
+        return os.path.exists(self.marker_path(date_str))
+
+    def marker_age_seconds(self, date_str: Optional[str] = None) -> Optional[float]:
+        data = _read_json_safe(self.marker_path(date_str), None)
+        if not isinstance(data, dict) or "created_at" not in data:
+            return None
+        try:
+            created = datetime.fromisoformat(data["created_at"])
+            return (datetime.now(UTC) - created).total_seconds()
+        except (ValueError, TypeError):
+            return None
+
+    # ── Watchlist (shared with sibling bot via the date dir) ─────────
+    def write_watchlist(self, symbols: list) -> None:
+        now_iso = datetime.now(UTC).isoformat()
+        entries = [{"symbol": s, "subscribed_at": now_iso} for s in sorted(set(symbols))]
+        _atomic_write_json(self.watchlist_path(), entries)
+
+    def read_watchlist(self, date_str: Optional[str] = None) -> list:
+        data = _read_json_safe(self.watchlist_path(date_str), [])
+        return data if isinstance(data, list) else []
+
+    # ── Open-trades (the trade-management state) ──────────────────────
+    def write_open_trades(self, trades: list) -> None:
+        # Validate before write — fail fast on missing fields rather than
+        # silently writing an unrehydratable record.
+        for t in trades:
+            missing = OPEN_TRADE_REQUIRED_FIELDS_ENGINE - set(t.keys())
+            if missing:
+                raise ValueError(
+                    f"EngineSession.write_open_trades: entry missing "
+                    f"required fields: {sorted(missing)} "
+                    f"(symbol={t.get('symbol')!r})"
+                )
+        with self._lock:
+            _atomic_write_json(self.open_trades_path(), trades)
+
+    def read_open_trades(self, date_str: Optional[str] = None) -> list:
+        data = _read_json_safe(self.open_trades_path(date_str), [])
+        if not isinstance(data, list):
+            return []
+        valid = []
+        for entry in data:
+            if not isinstance(entry, dict):
+                continue
+            missing = OPEN_TRADE_REQUIRED_FIELDS_ENGINE - set(entry.keys())
+            if missing:
+                print(f"[BOT] {now_iso_et()} {self.bot_id} dropping malformed "
+                      f"open_trade entry: missing {sorted(missing)} "
+                      f"sym={entry.get('symbol', '?')}", flush=True)
+                continue
+            valid.append(entry)
+        return valid
+
+    # ── Risk (daily counters + capped closed_trades) ─────────────────
+    def write_risk(self, *, daily_pnl: float, daily_entries: int,
+                   consecutive_losses: int, closed_trades: list) -> None:
+        # Cap closed_trades at 50 like Setup A — diagnostic, not load-bearing.
+        trimmed = closed_trades[-50:] if len(closed_trades) > 50 else closed_trades
+        with self._lock:
+            _atomic_write_json(self.risk_path(), {
+                "daily_pnl": float(daily_pnl),
+                "daily_entries": int(daily_entries),
+                "consecutive_losses": int(consecutive_losses),
+                "closed_trades": trimmed,
+                "updated_at": datetime.now(UTC).isoformat(),
+            })
+
+    def read_risk(self, date_str: Optional[str] = None) -> dict:
+        default = {
+            "daily_pnl": 0.0, "daily_entries": 0, "consecutive_losses": 0,
+            "closed_trades": [],
+        }
+        data = _read_json_safe(self.risk_path(date_str), default)
+        if not isinstance(data, dict):
+            return default
+        return {
+            "daily_pnl": float(data.get("daily_pnl", 0.0)),
+            "daily_entries": int(data.get("daily_entries", 0)),
+            "consecutive_losses": int(data.get("consecutive_losses", 0)),
+            "closed_trades": data.get("closed_trades", []) or [],
+        }
+
+    # ── Scrub (for --fresh / --scrub CLI flags) ───────────────────────
+    def scrub_today(self) -> None:
+        """Wipe today's session_state_engine/<date>/ subtree. Does NOT
+        touch tick_cache_engine — those are needed for backtest replay
+        regardless of cold/resume boot."""
+        import shutil
+        shutil.rmtree(self._day_dir(), ignore_errors=True)
+
+
+def decide_boot_mode(
+    session: "EngineSession",
+    fresh: bool = False,
+    resume: bool = False,
+) -> tuple[str, str]:
+    """Decide cold vs resume for a given EngineSession. Returns
+    (mode, reason) for logging.
+
+    `mode` ∈ {"cold", "resume"}.
+
+    Precedence (highest first):
+      --fresh CLI flag   → always cold (and write a NEW marker)
+      --resume CLI flag  → force resume if a marker exists, else cold
+                            with reason "resume_no_marker"
+      default            → resume if marker exists AND we have something
+                            durable to resume from (open_trades/risk);
+                            otherwise cold (avoids phantom-resume from an
+                            empty marker left by a never-traded session).
+
+    The Setup A pattern. Marker presence alone is not enough — Gap 4 in
+    Setup A's resume design: a session that started but produced no
+    durable state should cold-start cleanly rather than "phantom-resume".
+    """
+    if fresh:
+        return "cold", "fresh_flag"
+    if resume:
+        if session.marker_exists():
+            return "resume", "resume_flag"
+        return "cold", "resume_no_marker"
+    if not session.marker_exists():
+        return "cold", "no_marker"
+
+    # Auto-decide: only resume if we have something to resume from.
+    open_trades_path = session.open_trades_path()
+    risk_path = session.risk_path()
+    has_open = (os.path.exists(open_trades_path)
+                and os.path.getsize(open_trades_path) > 2)
+    has_risk = (os.path.exists(risk_path)
+                and os.path.getsize(risk_path) > 2)
+    if not (has_open or has_risk):
+        return "cold", "empty_state"
+    return "resume", "marker_present"
+
+
 __all__ = [
     "EngineState",
     "DailyRisk",
@@ -663,4 +921,8 @@ __all__ = [
     "wait_for_fill",
     "ET",
     "UTC",
+    # Session persistence (Phase 3)
+    "EngineSession",
+    "decide_boot_mode",
+    "ENGINE_SESSION_ROOT",
 ]
