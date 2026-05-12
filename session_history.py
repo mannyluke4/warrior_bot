@@ -1,13 +1,26 @@
 """session_history.py — per-symbol win/loss history across trading sessions.
 
-Used by chop_gate_v3 to enforce a cross-session "repeat-loser" veto: a
-symbol that has lost 3+ times in the last 10 trades (with fewer wins
-than losses) gets blacklisted for ~5 trading days from the latest loss.
+Used by chop_gate_v3's xsession_bl sub-gate. Two rule modes are supported,
+selected by the active sub-gate:
+
+  v1 (legacy)  — count losses in last N trades; blacklist for ~7 days if
+                 >= LOSS_THRESHOLD losses and wins < losses.
+  v2 (Cowork modular 2026-05-12, §5) — refined rule:
+       blacklist iff over the last LOOKBACK_DAYS *days* of trades on this
+       symbol (excluding today):
+           r_sum < 0  AND  losses > 2 * wins
+           AND  len(trades) >= MIN_TRADES
+       — R-multiple sum AND win-rate ratio. Drop recency decay (lookback
+       window already bounds recency).
+
+`record_trade` and the v1 blacklist computation are unchanged so the
+existing data-collection path (always-on, write-only from both bots)
+keeps producing the same trade-history file. The v2 rule is consumed by
+chop_gate_v3.sub_gate_xsession_bl via the new `get_trades()` accessor.
 
 Persists to <repo_root>/state/symbol_session_history.json by default;
-the actual path is configurable via WB_V3_SESSION_HISTORY_FILE so the
-engine bot can write to its own state dir without colliding with
-Setup A's.
+configurable via WB_V3_SESSION_HISTORY_FILE so the engine bot can write
+to its own state dir without colliding with Setup A's.
 
 Schema (per symbol):
     {
@@ -15,30 +28,23 @@ Schema (per symbol):
             {"date": "2026-05-08", "pnl": -771.6, "r_multiple": -1.04, "win": false},
             ...
         ],
-        "blacklisted_until": "2026-05-15"  // or null
+        "blacklisted_until": "2026-05-15"  // or null  (v1 rule)
     }
 
 Public API:
     SessionHistory(history_file=None)
-        history_file overrides the env var; defaults to
-        WB_V3_SESSION_HISTORY_FILE or 'state/symbol_session_history.json'
-        relative to this module's directory.
-
     record_trade(symbol, date, pnl, r_multiple)
-        Call from the exit-handling path AFTER pnl is finalized.
-        Append-only; rolls last 30 trades per symbol; recomputes blacklist.
-
-    is_blacklisted(symbol, today) -> (bool, reason)
-        Used by chop_gate_v3; auto-clears expired blacklists.
-
+    is_blacklisted(symbol, today) -> (bool, reason)        # v1 rule (legacy)
+    get_trades(symbol, lookback_days, exclude_today) -> [TradeRecord]
     manual_unblacklist(symbol)
-        Operator override.
 
-Thresholds are tunable from .env (see DIRECTIVE_CHOP_GATE_V3_BUILD.md):
-    WB_V3_SESSION_HISTORY_LOOKBACK       (default 10)
-    WB_V3_SESSION_HISTORY_LOSS_THRESHOLD (default 3)
-    WB_V3_SESSION_HISTORY_BLACKLIST_DAYS (default 7)
-    WB_V3_SESSION_HISTORY_FILE           (default state/symbol_session_history.json)
+Thresholds:
+    WB_V3_SESSION_HISTORY_LOOKBACK         (default 10)        v1
+    WB_V3_SESSION_HISTORY_LOSS_THRESHOLD   (default 3)         v1
+    WB_V3_SESSION_HISTORY_BLACKLIST_DAYS   (default 7)         v1
+    WB_V3_SESSION_HISTORY_FILE             (default state/symbol_session_history.json)
+    WB_CG3_XSESSION_LOOKBACK_DAYS          (default 7)         v2
+    WB_CG3_XSESSION_MIN_TRADES             (default 3)         v2
 """
 
 from __future__ import annotations
@@ -46,9 +52,25 @@ from __future__ import annotations
 import json
 import os
 import threading
+from dataclasses import dataclass
 from datetime import date as _date, datetime, timedelta
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
+
+
+@dataclass
+class TradeRecord:
+    """Lightweight record returned by SessionHistory.get_trades().
+
+    The xsession_bl sub-gate reads .pnl + .r_multiple; .win is derived.
+    """
+    date: str
+    pnl: float
+    r_multiple: float
+
+    @property
+    def win(self) -> bool:
+        return self.pnl > 0
 
 
 # Module-level lock so simultaneous record_trade calls from two threads
@@ -215,6 +237,61 @@ class SessionHistory:
                 self._data[symbol]["blacklisted_until"] = None
                 self._save()
 
+    def get_trades(
+        self,
+        symbol: str,
+        lookback_days: int = 7,
+        exclude_today: Optional[str] = None,
+    ) -> List[TradeRecord]:
+        """Return closed trades for `symbol` from the last `lookback_days`
+        calendar days, excluding any trade dated `exclude_today`.
+
+        Used by chop_gate_v3.sub_gate_xsession_bl (v2 rule per Cowork
+        modular directive 2026-05-12, §5). Pure read; does not mutate
+        state or trigger v1 blacklist recomputation.
+        """
+        entry = self._data.get(symbol)
+        if not entry:
+            return []
+        trades = entry.get("trades", [])
+        if not trades:
+            return []
+
+        try:
+            anchor = (
+                _parse_iso_date(str(exclude_today))
+                if exclude_today is not None
+                else datetime.utcnow().date()
+            )
+        except (ValueError, TypeError):
+            anchor = datetime.utcnow().date()
+        cutoff = anchor - timedelta(days=int(lookback_days))
+
+        out: List[TradeRecord] = []
+        for t in trades:
+            try:
+                d = _parse_iso_date(str(t.get("date")))
+            except (ValueError, TypeError):
+                continue
+            if exclude_today is not None:
+                try:
+                    if d == _parse_iso_date(str(exclude_today)):
+                        continue
+                except (ValueError, TypeError):
+                    pass
+            if d < cutoff:
+                continue
+            try:
+                pnl = float(t.get("pnl", 0.0))
+            except (TypeError, ValueError):
+                pnl = 0.0
+            try:
+                rm = float(t.get("r_multiple", 0.0))
+            except (TypeError, ValueError):
+                rm = 0.0
+            out.append(TradeRecord(date=str(t.get("date")), pnl=pnl, r_multiple=rm))
+        return out
+
     # ── Internals ───────────────────────────────────────────────────────
 
     def _maybe_update_blacklist(self, symbol: str) -> None:
@@ -245,4 +322,4 @@ class SessionHistory:
             entry["blacklisted_until"] = None
 
 
-__all__ = ["SessionHistory"]
+__all__ = ["SessionHistory", "TradeRecord"]
