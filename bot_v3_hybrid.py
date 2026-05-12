@@ -167,6 +167,13 @@ ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
 EXIT_SLIPPAGE_MIN = float(os.getenv("WB_EXIT_SLIPPAGE_MIN", "0.05"))
 EXIT_SLIPPAGE_PCT = float(os.getenv("WB_EXIT_SLIPPAGE_PCT", "0.005"))
 
+# Alpaca latency diagnostic (deployed 2026-05-11, see DIRECTIVE_ALPACA_LATENCY_DIAGNOSTIC.md)
+# Captures per-squeeze-signal Alpaca-vs-IBKR quote/timestamp/price snapshots and
+# round-trip submit/ack latency, writes JSONL records to logs/<date>_latency_diagnostic.jsonl.
+# Pure read-only logging — failures in diagnostic code MUST NOT block any order from
+# being placed (every callsite is wrapped in try/except). Squeeze entries ONLY.
+LATENCY_DIAGNOSTIC_ENABLED = os.getenv("WB_LATENCY_DIAGNOSTIC_ENABLED", "1") == "1"
+
 
 def _entry_slippage_for(price: float) -> float:
     """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
@@ -292,6 +299,10 @@ class BotState:
         self.ib: IB = None
         self.alpaca: TradingClient = None  # raw client, owned by AlpacaBroker; callers use state.broker
         self.broker = None  # BrokerClient — routes all execution. Initialized in main() after connect().
+        # Alpaca data REST client — owned by main(). Used for latency diagnostic
+        # snapshots (Phase 1) and the dormant compute_alpaca_aware_limit() helper
+        # (Phase 3). None until main() initializes it; callers must null-check.
+        self.alpaca_data_client = None
         self.active_symbols: set[str] = set()
         self.contracts: dict[str, Stock] = {}
         self.tickers: dict = {}
@@ -2249,7 +2260,18 @@ def check_triggers(symbol: str, price: float):
             return
         if sq_msg and "ENTRY SIGNAL" in sq_msg and armed_before:
             print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
-            enter_trade(symbol, armed_before, "squeeze")
+            # Latency diagnostic — create the per-signal record at signal
+            # detection moment, before any sizing or order submission. Threaded
+            # through enter_trade → _verify_fill_with_retry, finalized at the
+            # terminal state. Squeeze is the ONLY strategy this is wired into
+            # (per directive scope: "main bot only — squeeze path").
+            _lat_record = None
+            try:
+                if LATENCY_DIAGNOSTIC_ENABLED:
+                    _lat_record = _new_squeeze_latency_record(symbol, price, armed_before)
+            except Exception:
+                _lat_record = None
+            enter_trade(symbol, armed_before, "squeeze", latency_record=_lat_record)
             sq.notify_trade_opened()
             return
 
@@ -2309,8 +2331,156 @@ def check_triggers(symbol: str, price: float):
 # Order Execution
 # ══════════════════════════════════════════════════════════════════════
 
+# ─── Alpaca latency diagnostic helpers (Phase 1) ────────────────────────
+# Every callsite below is wrapped in try/except. A failure in diagnostic code
+# MUST NOT prevent an order from being placed or a retry from running. This
+# is the bot's primary directive: capture data without altering behavior.
+
+def _alpaca_snapshot(symbol: str):
+    """Fetch Alpaca's current (bid, ask, last) and quote timestamp + the round-
+    trip API latency in ms.
+
+    Returns: (bid, ask, last, quote_ts_iso, api_latency_ms)
+    On any failure or when diagnostic/data-client is unavailable, every field
+    is None. Never raises — callers always get a 5-tuple.
+    """
+    if not LATENCY_DIAGNOSTIC_ENABLED or state.alpaca_data_client is None:
+        return (None, None, None, None, None)
+    try:
+        # Imports are deferred so a missing alpaca-data install doesn't blow up
+        # module import. They're cheap after the first call.
+        from alpaca.data.requests import StockLatestQuoteRequest, StockLatestTradeRequest
+        t0 = time.perf_counter()
+        q_resp = state.alpaca_data_client.get_stock_latest_quote(
+            StockLatestQuoteRequest(symbol_or_symbols=symbol)
+        )
+        t_resp = state.alpaca_data_client.get_stock_latest_trade(
+            StockLatestTradeRequest(symbol_or_symbols=symbol)
+        )
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        q = q_resp.get(symbol) if isinstance(q_resp, dict) else None
+        t = t_resp.get(symbol) if isinstance(t_resp, dict) else None
+        bid = float(q.bid_price) if q is not None and getattr(q, "bid_price", None) else None
+        ask = float(q.ask_price) if q is not None and getattr(q, "ask_price", None) else None
+        last = float(t.price) if t is not None and getattr(t, "price", None) else None
+        ts = None
+        if q is not None and getattr(q, "timestamp", None) is not None:
+            try:
+                ts = q.timestamp.isoformat()
+            except Exception:
+                ts = str(q.timestamp)
+        return (bid, ask, last, ts, latency_ms)
+    except Exception as e:
+        # Never block on Alpaca quote-call failure
+        try:
+            print(f"  [ALPACA_QUOTE_FAIL] {symbol}: {e}", flush=True)
+        except Exception:
+            pass
+        return (None, None, None, None, None)
+
+
+def _write_latency_record(record: dict) -> None:
+    """Append a JSONL record to logs/<today>_latency_diagnostic.jsonl.
+    Failures are logged but never raised."""
+    if not LATENCY_DIAGNOSTIC_ENABLED:
+        return
+    try:
+        today = datetime.now(ET).strftime("%Y-%m-%d")
+        log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+        try:
+            os.makedirs(log_dir, exist_ok=True)
+        except Exception:
+            pass
+        path = os.path.join(log_dir, f"{today}_latency_diagnostic.jsonl")
+        with open(path, "a") as f:
+            f.write(json.dumps(record, default=str) + "\n")
+    except Exception as e:
+        try:
+            print(f"  [LATENCY_DIAG_WRITE_FAIL] {e}", flush=True)
+        except Exception:
+            pass
+
+
+def _new_squeeze_latency_record(symbol: str, signal_price_ibkr: float, armed) -> dict:
+    """Create the initial diagnostic record at squeeze ENTRY SIGNAL moment.
+    Populates the fields known at signal-detection time; later moments fill in
+    the rest. Returns the dict (mutate in place as the order progresses).
+    Pure helper — safe to call from inside check_triggers."""
+    now = datetime.now(ET)
+    try:
+        score = float(getattr(armed, "score", 0.0) or 0.0)
+    except Exception:
+        score = 0.0
+    try:
+        r_val = float(getattr(armed, "r", 0.0) or 0.0)
+    except Exception:
+        r_val = 0.0
+    return {
+        "symbol": symbol,
+        "setup_type": "squeeze",
+        "signal_time_ibkr_et": now.isoformat(),
+        "signal_price_ibkr": signal_price_ibkr,
+        "alpaca_bid_at_signal": None,
+        "alpaca_ask_at_signal": None,
+        "alpaca_last_at_signal": None,
+        "alpaca_quote_timestamp": None,
+        "alpaca_quote_api_latency_ms": None,
+        "limit_price_submitted": None,
+        "order_submit_time": None,
+        "order_ack_time": None,
+        "order_ack_latency_ms": None,
+        "ibkr_price_at_signal": signal_price_ibkr,
+        "ibkr_price_at_order_submit": None,
+        "ibkr_price_at_order_ack": None,
+        "ibkr_price_at_terminal": None,
+        "terminal_state": None,
+        "terminal_time": None,
+        "fill_qty": 0,
+        "fill_price": None,
+        "retries_attempted": 0,
+        "armed_score": score,
+        "armed_r": r_val,
+        "armed_qty": None,        # filled in once sizing computes
+        "no_order_reason": None,
+    }
+
+
+def _finalize_latency_record(record: dict, *, terminal_state: str,
+                             fill_qty: int = 0, fill_price=None,
+                             retries_attempted: int = 0,
+                             ibkr_price_at_terminal=None,
+                             no_order_reason: str = None) -> None:
+    """Stamp terminal fields onto the diagnostic record and write it. Always
+    wrapped in try/except by callers; this helper itself never raises."""
+    try:
+        record["terminal_state"] = terminal_state
+        record["terminal_time"] = datetime.now(ET).isoformat()
+        if fill_qty:
+            record["fill_qty"] = int(fill_qty)
+        if fill_price is not None:
+            try:
+                record["fill_price"] = float(fill_price)
+            except Exception:
+                record["fill_price"] = fill_price
+        record["retries_attempted"] = int(retries_attempted)
+        if ibkr_price_at_terminal is not None:
+            try:
+                record["ibkr_price_at_terminal"] = float(ibkr_price_at_terminal)
+            except Exception:
+                record["ibkr_price_at_terminal"] = ibkr_price_at_terminal
+        if no_order_reason is not None:
+            record["no_order_reason"] = no_order_reason
+        _write_latency_record(record)
+    except Exception as e:
+        try:
+            print(f"  [LATENCY_DIAG_FINALIZE_FAIL] {e}", flush=True)
+        except Exception:
+            pass
+
+
 def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
-                             original_limit, position_attr, log_prefix=""):
+                             original_limit, position_attr, log_prefix="",
+                             latency_record: dict = None):
     """Poll broker for fill. On timeout: cancel + reprice to current market +
     resubmit, up to ENTRY_MAX_RETRIES times. Aborts if market runs above
     original_limit × (1 + ENTRY_MAX_CHASE_PCT/100). See directive
@@ -2319,6 +2489,9 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
     cur_order_id = initial_order_id
     cur_limit = initial_limit
     attempt = 0
+    # Most-recently-known terminal status string from the broker, so the chase-
+    # cap / max-retries paths can distinguish a clean cancel from a reject.
+    last_terminal_status = None
     while True:
         deadline = time.time() + ENTRY_RETRY_TIMEOUT_SEC
         filled = False
@@ -2348,10 +2521,24 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
                         # Box positions are not persisted in v1 (deferred).
                         if position_attr == "open_position":
                             persist_open_trades()
+                    # Latency diagnostic — fill terminal state.
+                    try:
+                        if latency_record is not None:
+                            _finalize_latency_record(
+                                latency_record,
+                                terminal_state="fill" if actual_qty == latency_record.get("armed_qty", actual_qty)
+                                else "partial_fill",
+                                fill_qty=actual_qty, fill_price=actual_price,
+                                retries_attempted=attempt,
+                                ibkr_price_at_terminal=state.last_tick_price.get(symbol),
+                            )
+                    except Exception:
+                        pass
                     filled = True
                     break
                 if o.status in (STATUS_CANCELLED, STATUS_EXPIRED, STATUS_REJECTED):
                     print(f"  {log_prefix}ORDER {o.status.upper()}: {symbol} {cur_order_id}", flush=True)
+                    last_terminal_status = o.status
                     terminal = True
                     break
             time.sleep(0.5)
@@ -2363,6 +2550,17 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             if pos and pos.get("order_id") == cur_order_id:
                 setattr(state, position_attr, None)
                 state.pending_order = None
+            # Latency diagnostic — broker-side terminal (cancel/expire/reject).
+            try:
+                if latency_record is not None:
+                    _finalize_latency_record(
+                        latency_record,
+                        terminal_state=last_terminal_status or "cancelled",
+                        retries_attempted=attempt,
+                        ibkr_price_at_terminal=state.last_tick_price.get(symbol),
+                    )
+            except Exception:
+                pass
             return
 
         # Timed out — decide whether to retry
@@ -2375,6 +2573,17 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             if pos and pos.get("order_id") == cur_order_id:
                 setattr(state, position_attr, None)
                 state.pending_order = None
+            # Latency diagnostic — timeout (no fill within retries budget).
+            try:
+                if latency_record is not None:
+                    _finalize_latency_record(
+                        latency_record,
+                        terminal_state="timeout",
+                        retries_attempted=attempt,
+                        ibkr_price_at_terminal=state.last_tick_price.get(symbol),
+                    )
+            except Exception:
+                pass
             return
 
         # Retry: cancel current, reprice to current market, resubmit
@@ -2391,6 +2600,17 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             if pos and pos.get("order_id") == cur_order_id:
                 setattr(state, position_attr, None)
                 state.pending_order = None
+            # Latency diagnostic — chase-cap abort.
+            try:
+                if latency_record is not None:
+                    _finalize_latency_record(
+                        latency_record,
+                        terminal_state="chase_cap_aborted",
+                        retries_attempted=attempt,
+                        ibkr_price_at_terminal=cur_price,
+                    )
+            except Exception:
+                pass
             return
 
         slip = _entry_slippage_for(cur_price)
@@ -2418,13 +2638,40 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
             if pos and pos.get("order_id") == cur_order_id:
                 setattr(state, position_attr, None)
                 state.pending_order = None
+            # Latency diagnostic — retry submit failed (treat as no_order tail).
+            try:
+                if latency_record is not None:
+                    _finalize_latency_record(
+                        latency_record,
+                        terminal_state="rejected",
+                        retries_attempted=attempt,
+                        ibkr_price_at_terminal=state.last_tick_price.get(symbol),
+                        no_order_reason=f"retry_submit_failed: {e}",
+                    )
+            except Exception:
+                pass
             return
 
 
-def enter_trade(symbol: str, armed, setup_type: str):
-    """Place entry order via IBKR."""
+def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None):
+    """Place entry order via IBKR.
+
+    latency_record (Phase 1 diagnostic): if not None, this dict is mutated
+    in-place with submit/ack timestamps + Alpaca snapshot, then passed into
+    the fill-verify thread which finalizes the terminal state. Squeeze entries
+    are the only path that currently threads this in (per directive scope).
+    """
     if state.entry_halt_active:
         print(f"  SKIP {symbol}: entry halt active ({state.entry_halt_reason})", flush=True)
+        # Latency diagnostic — entry halted by reconcile-orphan safety.
+        try:
+            if latency_record is not None:
+                _finalize_latency_record(
+                    latency_record, terminal_state="no_order",
+                    no_order_reason=f"entry_halt:{state.entry_halt_reason}",
+                )
+        except Exception:
+            pass
         return
     entry = armed.trigger_high
     stop = armed.stop_low
@@ -2434,6 +2681,14 @@ def enter_trade(symbol: str, armed, setup_type: str):
 
     if r <= 0 or r < MIN_R:
         print(f"  SKIP: R={r:.4f} < min {MIN_R}", flush=True)
+        try:
+            if latency_record is not None:
+                _finalize_latency_record(
+                    latency_record, terminal_state="no_order",
+                    no_order_reason=f"r_below_min: R={r:.4f} < {MIN_R}",
+                )
+        except Exception:
+            pass
         return
 
     # Dynamic equity-based risk: 2.5% of current equity
@@ -2461,7 +2716,32 @@ def enter_trade(symbol: str, armed, setup_type: str):
         qty = max(1, int(math.floor(qty * size_mult)))
 
     if qty <= 0:
+        try:
+            if latency_record is not None:
+                latency_record["armed_qty"] = 0
+                _finalize_latency_record(
+                    latency_record, terminal_state="no_order",
+                    no_order_reason="qty_zero",
+                )
+        except Exception:
+            pass
         return
+
+    # Latency diagnostic — record sized qty + Alpaca snapshot pre-submit.
+    # All diagnostic work is in try/except so a failure here cannot block the
+    # order. The Alpaca snapshot call adds ~30-100ms of latency to the submit
+    # path; that's part of what we're measuring (intentional per directive).
+    try:
+        if latency_record is not None:
+            latency_record["armed_qty"] = int(qty)
+            _bid, _ask, _last, _qts, _alat = _alpaca_snapshot(symbol)
+            latency_record["alpaca_bid_at_signal"] = _bid
+            latency_record["alpaca_ask_at_signal"] = _ask
+            latency_record["alpaca_last_at_signal"] = _last
+            latency_record["alpaca_quote_timestamp"] = _qts
+            latency_record["alpaca_quote_api_latency_ms"] = _alat
+    except Exception:
+        pass
 
     # Place limit order with dynamic slippage (trigger + max(MIN, price × PCT))
     initial_slip = _entry_slippage_for(entry)
@@ -2472,13 +2752,49 @@ def enter_trade(symbol: str, armed, setup_type: str):
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
           f"type={setup_type}", flush=True)
 
+    # Latency diagnostic — capture pre-submit timestamps.
+    submit_t_perf = None
+    try:
+        if latency_record is not None:
+            latency_record["limit_price_submitted"] = float(limit_price)
+            latency_record["order_submit_time"] = datetime.now(ET).isoformat()
+            latency_record["ibkr_price_at_order_submit"] = state.last_tick_price.get(symbol)
+            submit_t_perf = time.perf_counter()
+    except Exception:
+        pass
+
     try:
         new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
         order_id = new_order.order_id
         print(f"  BROKER ORDER: {order_id} BUY {qty} {symbol} @ ${limit_price:.2f}", flush=True)
     except Exception as e:
         print(f"  BROKER ORDER FAILED: {e}", flush=True)
+        # Latency diagnostic — submit raised (rejection at submit time).
+        try:
+            if latency_record is not None:
+                _finalize_latency_record(
+                    latency_record, terminal_state="no_order",
+                    retries_attempted=0,
+                    ibkr_price_at_terminal=state.last_tick_price.get(symbol),
+                    no_order_reason=f"submit_exception: {e}",
+                )
+        except Exception:
+            pass
         return
+
+    # Latency diagnostic — capture ack timestamps (the broker.submit_limit
+    # synchronous return is treated as the "ack" moment: for AlpacaBroker it's
+    # the HTTP POST response from Alpaca's order endpoint; for IBKRBroker it's
+    # ib_insync's local Trade construction prior to async exchange ack).
+    try:
+        if latency_record is not None and submit_t_perf is not None:
+            latency_record["order_ack_time"] = datetime.now(ET).isoformat()
+            latency_record["order_ack_latency_ms"] = int(
+                (time.perf_counter() - submit_t_perf) * 1000
+            )
+            latency_record["ibkr_price_at_order_ack"] = state.last_tick_price.get(symbol)
+    except Exception:
+        pass
 
     state.open_position = {
         "symbol": symbol,
@@ -2497,11 +2813,13 @@ def enter_trade(symbol: str, armed, setup_type: str):
     }
     state.daily_entries += 1
 
-    # Store pending order for timeout check
+    # Store pending order for timeout check (latency_record threaded for the
+    # retry loop to update terminal fields).
     state.pending_order = {
         "order_id": order_id,
         "placed_time": datetime.now(ET),
         "timeout_seconds": 15,
+        "latency_record": latency_record,
     }
 
     # Verify fill in background — dynamic slippage + retry-on-timeout via
@@ -2511,6 +2829,7 @@ def enter_trade(symbol: str, armed, setup_type: str):
             symbol=symbol, qty=qty, r=r,
             initial_order_id=order_id, initial_limit=limit_price,
             original_limit=original_limit, position_attr="open_position",
+            latency_record=latency_record,
         )
 
     import threading
@@ -3923,6 +4242,19 @@ def main():
         sys.exit(1)
     state.alpaca = TradingClient(apca_key, apca_secret, paper=apca_paper)
     print(f"Alpaca connected ({'PAPER' if apca_paper else 'LIVE'})", flush=True)
+
+    # Alpaca data client — used for latency diagnostic snapshots and (when
+    # WB_ALPACA_AWARE_LIMITS=1) limit-pricing calibration. Separate from the
+    # trading client. Failures here MUST NOT block bot startup — diagnostic
+    # will then silently emit None for Alpaca fields.
+    try:
+        from alpaca.data.historical import StockHistoricalDataClient
+        state.alpaca_data_client = StockHistoricalDataClient(apca_key, apca_secret)
+        print(f"Alpaca data client connected (for latency diagnostic / aware-limits)", flush=True)
+    except Exception as _e:
+        print(f"  WARN: Alpaca data client init failed: {_e} — "
+              f"latency diagnostic will run without Alpaca snapshots", flush=True)
+        state.alpaca_data_client = None
 
     # Persist boot mode on state for downstream branching (seed_symbol →
     # tick-replay, order reconciliation, etc.). On cold boot we write/refresh
