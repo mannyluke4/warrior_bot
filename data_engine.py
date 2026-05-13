@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import gzip
 import json
 import math
 import os
@@ -114,6 +115,19 @@ TICK_CACHE_DIR = os.getenv(
     os.path.join(_HERE, "tick_cache_engine"),
 )
 TICK_FLUSH_SEC = int(os.getenv("ENGINE_TICK_FLUSH_SEC", "30"))
+
+# Seed cache dir — READ-ONLY consumption of Setup A's tick_cache so the
+# engine can replay today's ticks through bar_builder at boot. This
+# populates VWAP/HOD on the engine side AND broadcasts BarMessages to
+# all connected bots, which is the load-bearing fix for squeeze_bot
+# detector starvation (it needs accumulated avg_vol to compute vol_ratio,
+# which lives-only would never have at boot). Setup A's cache is the
+# most complete (subscribed since 04:00 ET + morning ibkr_tick_fetcher
+# refetches), so we inherit its seed data directly.
+SEED_TICK_CACHE_DIR = os.getenv(
+    "ENGINE_SEED_TICK_CACHE_DIR",
+    os.path.join(SETUP_A_ROOT, "tick_cache"),
+)
 
 # Heartbeat cadence.
 HEARTBEAT_SEC = 5
@@ -856,6 +870,23 @@ class DataEngine:
         from ib_insync import Stock
         for sym in symbols:
             try:
+                # SEED FIRST. Replay today's cached ticks through the
+                # engine's bar_builder before any live tick arrives so
+                # downstream detectors (squeeze_bot in particular) get
+                # the full historical bar stream and accumulate avg_vol
+                # baselines. Each bar close fires the normal
+                # _on_bar_close → BarMessage broadcast path, so connected
+                # bots see seed bars indistinguishably from live bars.
+                #
+                # This MUST run before reqMktData so live ticks layer on
+                # top of an already-populated bar_builder for this symbol
+                # (and so the first live bar's open/high/low/close/volume
+                # flow naturally from where the seed left off).
+                try:
+                    self._seed_symbol_from_cache(sym)
+                except Exception as e:
+                    print(f"[ENGINE] {now_iso_et()} seed exception {sym}: "
+                          f"{e!r} — continuing to live subscribe", flush=True)
                 c = Stock(sym, "SMART", "USD")
                 qualified = await self.ib.qualifyContractsAsync(c)
                 if not qualified:
@@ -960,6 +991,84 @@ class DataEngine:
 
         if ticks_this_cycle:
             self._rate_window.append((time.monotonic(), ticks_this_cycle))
+
+    def _seed_symbol_from_cache(self, symbol: str) -> int:
+        """Replay today's cached ticks through bar_builder before live
+        subscription starts. The resulting bar closes broadcast as normal
+        BarMessages to all connected clients, populating their detectors
+        with the accumulated avg_vol / VWAP / HOD baselines they need
+        (the squeeze detector's PRIME criterion is vol_ratio against
+        rolling avg_vol — without a seed it never primes).
+
+        Cache source: Setup A's tick_cache/<today>/<sym>.json.gz (the
+        most complete cache on the box — Setup A has been subscribed
+        since 04:00 ET and `ibkr_tick_fetcher` morning refetches feed
+        this same directory). Reading is best-effort: missing file =
+        skip (live ticks will build a baseline from now), corrupt file
+        = log + skip.
+
+        Returns the number of ticks replayed (0 on skip/error). The
+        engine's own tick_cache_engine/ is not touched here — that
+        directory is the engine's own observation record, kept separate
+        from the seed source for A/B comparison cleanliness.
+        """
+        today = today_et_str()
+        cache_path = os.path.join(
+            SEED_TICK_CACHE_DIR, today, f"{symbol}.json.gz",
+        )
+        if not os.path.exists(cache_path):
+            print(f"[ENGINE] {now_iso_et()} seed: no cache for {symbol} "
+                  f"at {cache_path} — skipping (live ticks will build baseline)",
+                  flush=True)
+            return 0
+        try:
+            with gzip.open(cache_path, "rt") as f:
+                ticks = json.load(f)
+        except (OSError, json.JSONDecodeError, gzip.BadGzipFile) as e:
+            print(f"[ENGINE] {now_iso_et()} seed: cache read error for "
+                  f"{symbol}: {e!r} — skipping", flush=True)
+            return 0
+        if not isinstance(ticks, list) or not ticks:
+            return 0
+
+        replayed = 0
+        skipped = 0
+        for t in ticks:
+            try:
+                price = float(t.get("p") or t.get("price") or 0)
+                size = int(t.get("s") or t.get("size") or 0)
+                ts_str = t.get("t") or t.get("ts") or t.get("time")
+                if price <= 0 or size <= 0 or not ts_str:
+                    skipped += 1
+                    continue
+                # Cache writes UTC ISO with offset (+00:00); fromisoformat
+                # in 3.11+ handles 'Z' suffix too, normalize defensively.
+                if isinstance(ts_str, str):
+                    ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                else:
+                    skipped += 1
+                    continue
+                # bar_builder.on_trade expects tz-aware ts — guarantee UTC.
+                if ts.tzinfo is None:
+                    ts = ts.replace(tzinfo=UTC)
+                # Allocate seq BEFORE on_trade so BarMessage emissions
+                # during seed pull from the per-symbol counter the same
+                # way live ticks would. Bars from seed share the symbol's
+                # sequence stream (interleaved monotonic) — bots can
+                # process them identically to live bars.
+                self.bar_builder.on_trade(symbol, price, size, ts)
+                replayed += 1
+            except (TypeError, ValueError) as e:
+                skipped += 1
+                if skipped <= 3:
+                    print(f"[ENGINE] {now_iso_et()} seed: bad tick {symbol}: "
+                          f"{e!r} (t={t!r})", flush=True)
+
+        vwap = self.bar_builder.get_vwap(symbol)
+        vwap_s = f"{vwap:.4f}" if vwap is not None else "n/a"
+        print(f"[ENGINE] {now_iso_et()} seeded {symbol}: {replayed} ticks "
+              f"({skipped} skipped) → bars (vwap={vwap_s})", flush=True)
+        return replayed
 
     def _on_bar_close(self, bar: Bar):
         """TradeBarBuilder callback. Emits BarMessage on every bucket
