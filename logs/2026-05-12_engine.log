@@ -1,0 +1,40 @@
+========================================================================
+[ENGINE] 2026-05-12T04:00:09.927197-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-12/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-12T04:00:10.545404-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-12T04:00:10.545516-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-12T04:00:10.955714-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-12T04:00:12.179534-04:00 IPC client connected (unknown#b560)
+[ENGINE] 2026-05-12T04:00:12.179975-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-12T04:00:12.183583-04:00 IPC client connected (unknown#6360)
+[ENGINE] 2026-05-12T04:00:12.183856-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-12T04:00:30.625372-04:00 subscribed ATRA (snapshot)
+[ENGINE] 2026-05-12T04:00:30.708220-04:00 subscribed CLNN (snapshot)
+[ENGINE] 2026-05-12T04:00:30.775140-04:00 subscribed ENSC (snapshot)
+[ENGINE] 2026-05-12T04:00:30.944328-04:00 subscribed FATN (snapshot)
+[ENGINE] 2026-05-12T04:00:31.114857-04:00 subscribed KBSX (snapshot)
+[ENGINE] 2026-05-12T04:00:31.284037-04:00 subscribed NVOX (snapshot)
+[ENGINE] 2026-05-12T04:00:31.454710-04:00 subscribed ODYS (snapshot)
+[ENGINE] 2026-05-12T04:00:31.627133-04:00 subscribed SST (snapshot)
+[ENGINE] 2026-05-12T04:00:31.801150-04:00 subscribed TRAW (snapshot)
+[ENGINE] 2026-05-12T04:00:31.801264-04:00 Alpaca quote sub: ATRA,CLNN,ENSC,FATN,KBSX,NVOX,ODYS,SST,TRAW
+[ENGINE] 2026-05-12T04:57:22.631252-04:00 subscribed XOS (snapshot)
+[ENGINE] 2026-05-12T04:57:22.632455-04:00 Alpaca quote sub: XOS
+[ENGINE] 2026-05-12T07:59:45.237344-04:00 subscribed CNCK (snapshot)
+[ENGINE] 2026-05-12T07:59:45.239434-04:00 Alpaca quote sub: CNCK
+[ENGINE] 2026-05-12T11:09:19.649669-04:00 IPC client disconnected (wb_bot#b560, dropped=0)
+[ENGINE] 2026-05-12T11:10:21.628967-04:00 IPC client connected (unknown#9f40)
+[ENGINE] 2026-05-12T11:10:21.629246-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-12T20:05:22.487568-04:00 signal received — requesting shutdown
+[ENGINE] 2026-05-12T20:05:22.487826-04:00 shutdown initiated
+[ENGINE] 2026-05-12T20:05:22.488379-04:00 IPC client disconnected (squeeze_bot#6360, dropped=0)
+[ENGINE] 2026-05-12T20:05:22.488853-04:00 IPC client disconnected (wb_bot#9f40, dropped=0)
+[ENGINE] 2026-05-12T20:05:23.604969-04:00 IBKR disconnected (event)
+[ENGINE] 2026-05-12T20:05:23.605378-04:00 shutdown complete

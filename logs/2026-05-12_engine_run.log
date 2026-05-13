@@ -1,0 +1,28 @@
+=== Setup B engine daily run started: Tue May 12 02:00:00 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 14900)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: 3ded443 (engine bots: wait_for_fill terminal-state handling — break retry loop on reject)
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 14960, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-12_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 14966, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-12_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 14967, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-12_wb_bot.log)
+engine OK (PID 14960)
+squeeze OK (PID 14966)
+wb OK (PID 14967)
+Watchdog: monitoring until Tue May 12 18:05:00 MDT 2026...
+ALERT: wb_bot.py died at Tue May 12 09:09:24 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-12_wb_bot.log.
+Trading windows closed. Proceeding to shutdown.
+=== Setup B engine daily run complete: Tue May 12 18:05:22 MDT 2026 ===
+=== TRAP: cleanup at Tue May 12 18:05:22 MDT 2026 ===
