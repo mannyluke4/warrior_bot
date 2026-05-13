@@ -848,16 +848,52 @@ class DataEngine:
     async def _watchlist_loop(self):
         """Poll Setup A's watchlist.json every WL_POLL_SEC; subscribe new
         symbols. Never unsubscribe (Setup A doesn't either; persistence
-        across the session is a feature)."""
+        across the session is a feature).
+
+        Boot gate: the first watchlist poll waits until at least one IPC
+        client has connected (or a short timeout elapses). This matters
+        because `_subscribe_new` SEEDS bar_builder from tick_cache and
+        broadcasts seed BarMessages — those messages must reach the bots
+        to populate their detectors. Without this gate, on a cold engine
+        boot the seed fires before any bot connects and the bars get
+        broadcast into an empty client set."""
+        first_pass = True
+        boot_wait_budget_s = 30.0   # hard cap: don't block subscriptions
+                                    # forever if bots never connect
+        boot_start = time.monotonic()
         while not self.shutdown_event.is_set():
             try:
+                if first_pass and self.ibkr_connected and not self.clients:
+                    # Hold the initial subscribe-and-seed fanout until a
+                    # bot is connected, capped at boot_wait_budget_s so
+                    # we don't stall the engine indefinitely on a misconfig.
+                    elapsed = time.monotonic() - boot_start
+                    if elapsed < boot_wait_budget_s:
+                        # Short sleep, re-check on next loop tick.
+                        try:
+                            await asyncio.wait_for(self.shutdown_event.wait(),
+                                                   timeout=0.5)
+                            return
+                        except asyncio.TimeoutError:
+                            continue
+                    else:
+                        print(f"[ENGINE] {now_iso_et()} watchlist loop: no IPC "
+                              f"clients after {boot_wait_budget_s:.0f}s — "
+                              f"proceeding with seed+subscribe anyway "
+                              f"(bars may broadcast into empty client set)",
+                              flush=True)
                 if self.ibkr_connected:
                     new = set(self._read_watchlist())
                     added = new - self.watchlist
                     if added:
+                        if first_pass:
+                            print(f"[ENGINE] {now_iso_et()} watchlist loop: "
+                                  f"first-pass fanout starting "
+                                  f"(clients={len(self.clients)})", flush=True)
                         await self._subscribe_new(sorted(added))
                         self.watchlist |= added
                         await self._broadcast_subscriptions()
+                    first_pass = False
             except Exception as e:
                 print(f"[ENGINE] {now_iso_et()} watchlist loop error: {e!r}", flush=True)
             try:
