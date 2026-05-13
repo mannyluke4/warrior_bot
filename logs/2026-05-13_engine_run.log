@@ -1,0 +1,32 @@
+=== Setup B engine daily run started: Wed May 13 02:00:00 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 30581)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: c6425a7 (auto: engine daily logs 2026-05-12)
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 30639, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 30650, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 30651, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_wb_bot.log)
+engine OK (PID 30639)
+squeeze OK (PID 30650)
+wb OK (PID 30651)
+Watchdog: monitoring until Wed May 13 18:05:00 MDT 2026...
+ALERT: data_engine.py died at Wed May 13 13:18:48 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_engine.log.
+       Bots will fail-CLOSED on socket close; no auto-restart per directive.
+ALERT: squeeze_bot.py died at Wed May 13 13:18:48 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_squeeze_bot.log.
+ALERT: wb_bot.py died at Wed May 13 13:18:48 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-13_wb_bot.log.
+All 3 processes are dead. Exiting watchdog.
+=== Setup B engine daily run complete: Wed May 13 13:18:48 MDT 2026 ===
+=== TRAP: cleanup at Wed May 13 13:18:48 MDT 2026 ===
+/Users/duffy/warrior_bot_v2_engine/daily_run_engine.sh: line 74: 30581 Terminated: 15          caffeinate -dims -w $$  (wd: ~)

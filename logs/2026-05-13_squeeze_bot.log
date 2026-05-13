@@ -1,0 +1,14 @@
+[SQUEEZE] BOOT: COLD (reason=no_marker, marker_age=n/a)
+[SQUEEZE] 2026-05-13T04:00:11.833825-04:00 starting equity $88,797 (third Alpaca paper account)
+[SQUEEZE] 2026-05-13T04:00:11.835129-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[SQUEEZE] 2026-05-13T04:00:15.020781-04:00 stream healthy — entries unlocked
+[SQUEEZE] 2026-05-13T15:18:01.811894-04:00 signal received — shutting down
+[SQUEEZE] 2026-05-13T15:18:01.812309-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0 (continuing to manage via cached last-tick prices when they arrive — none will arrive until engine reconnects). Manual intervention required to flatten if engine stays down.
+[SQUEEZE] 2026-05-13T15:18:01.812365-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)
+[SQUEEZE] BOOT: RESUME (reason=resume_flag, marker_age=40700s)
+[SQUEEZE] 2026-05-13T15:18:32.101836-04:00 starting equity $88,782 (third Alpaca paper account)
+[SQUEEZE] 2026-05-13T15:18:32.102085-04:00 RESUME: reconciling state
+[SQUEEZE] 2026-05-13T15:18:32.237392-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0 consec_losses=0
+[SQUEEZE] 2026-05-13T15:18:32.239280-04:00 RESUME: complete
+[SQUEEZE] 2026-05-13T15:18:32.239502-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[SQUEEZE] 2026-05-13T15:18:35.256804-04:00 stream healthy — entries unlocked

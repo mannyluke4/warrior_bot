@@ -1,0 +1,459 @@
+[WB] BOOT: COLD (reason=no_marker, marker_age=n/a)
+[WB] 2026-05-13T04:00:11.833826-04:00 starting equity $88,797 (third Alpaca paper account)
+[WB] 2026-05-13T04:00:11.834946-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[WB] 2026-05-13T04:00:15.444500-04:00 stream healthy — entries unlocked
+[WB] 2026-05-13T04:05:00.868533-04:00 ENSC WB_DOWNWAVE: wave_id=1 score=1 (< 7, no arm)
+[WB] 2026-05-13T04:13:02.193644-04:00 ENSC WB_DOWNWAVE: wave_id=2 score=6 (< 7, no arm)
+[WB] 2026-05-13T04:19:08.452096-04:00 SST WB_DOWNWAVE: wave_id=1 score=3 (< 7, no arm)
+[WB] 2026-05-13T04:21:15.287271-04:00 SST WB_OBSERVE: wave_id=2 dir=up mag=2.57%
+[WB] 2026-05-13T04:22:04.471479-04:00 ENSC WB_DOWNWAVE: wave_id=3 score=6 (< 7, no arm)
+[WB] 2026-05-13T04:23:04.476268-04:00 ENSC WB_OBSERVE: wave_id=4 dir=up mag=0.79%
+[WB] 2026-05-13T04:24:53.495774-04:00 SST WB_OBSERVE: wave_id=3 dir=up mag=2.72%
+[WB] 2026-05-13T04:28:10.771888-04:00 ODYS WB_OBSERVE: wave_id=1 dir=up mag=2.17%
+[WB] 2026-05-13T04:29:17.284849-04:00 ODYS WB_DOWNWAVE: wave_id=2 score=2 (< 7, no arm)
+[WB] 2026-05-13T04:33:40.306098-04:00 SST WB_DOWNWAVE: wave_id=4 score=3 (< 7, no arm)
+[WB] 2026-05-13T04:35:09.325553-04:00 ENSC WB_OBSERVE: wave_id=5 dir=up mag=0.86%
+[WB] 2026-05-13T04:36:04.772175-04:00 SST WB_DOWNWAVE: wave_id=5 score=5 (< 7, no arm)
+[WB] 2026-05-13T04:49:06.401350-04:00 SST WB_OBSERVE: wave_id=6 dir=up mag=2.11%
+[WB] 2026-05-13T04:50:19.206167-04:00 ODYS WB_DOWNWAVE: wave_id=3 score=5 (< 7, no arm)
+[WB] 2026-05-13T04:51:14.706272-04:00 ODYS WB_OBSERVE: wave_id=4 dir=up mag=2.22%
+[WB] 2026-05-13T04:58:09.894622-04:00 ODYS WB_ARMED: score=7 wave_id=5 prov_entry=4.5200 stop=4.5087
+[CHOP_REJECT] 2026-05-13T04:58:09.894903-04:00 ODYS: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-13T05:01:00.696962-04:00 ATRA WB_OBSERVE: wave_id=1 dir=up mag=1.51%
+[WB] 2026-05-13T05:02:05.966320-04:00 ODYS WB_DOWNWAVE: wave_id=6 score=5 (< 7, no arm)
+[WB] 2026-05-13T05:02:10.953994-04:00 ENSC WB_OBSERVE: wave_id=6 dir=up mag=1.13%
+[WB] 2026-05-13T05:04:10.176497-04:00 ENSC WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-13T05:04:13.968755-04:00 TRAW WB_OBSERVE: wave_id=1 dir=up mag=1.20%
+[WB] 2026-05-13T05:06:00.477579-04:00 ODYS WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-13T05:07:03.984660-04:00 ENSC WB_OBSERVE: wave_id=8 dir=up mag=2.61%
+[WB] 2026-05-13T05:11:27.839090-04:00 SST WB_ARMED: score=9 wave_id=7 prov_entry=3.3600 stop=3.3017
+[CHOP_REJECT] 2026-05-13T05:11:27.839314-04:00 SST: pre_threshold_time (now=05:11 ET < min=11:00 ET)
+[WB] 2026-05-13T05:15:00.003559-04:00 ODYS WB_ARMED: score=7 wave_id=8 prov_entry=4.4800 stop=4.4189
+[CHOP_REJECT] 2026-05-13T05:15:00.003756-04:00 ODYS: r_pct_below_floor (R%=1.36 < 1.5%)
+[WB] 2026-05-13T05:21:20.013696-04:00 SST WB_DOWNWAVE: wave_id=8 score=4 (< 7, no arm)
+[WB] 2026-05-13T05:22:13.307986-04:00 ENSC WB_DOWNWAVE: wave_id=9 score=6 (< 7, no arm)
+[WB] 2026-05-13T05:24:33.835474-04:00 ENSC WB_OBSERVE: wave_id=10 dir=up mag=1.51%
+[WB] 2026-05-13T05:25:00.297696-04:00 TRAW WB_DOWNWAVE: wave_id=2 score=4 (< 7, no arm)
+[WB] 2026-05-13T05:25:01.592317-04:00 ODYS WB_DOWNWAVE: wave_id=9 score=5 (< 7, no arm)
+[WB] 2026-05-13T05:29:05.322070-04:00 TRAW WB_DOWNWAVE: wave_id=3 score=4 (< 7, no arm)
+[WB] 2026-05-13T05:32:11.678084-04:00 SST WB_OBSERVE: wave_id=9 dir=up mag=1.52%
+[WB] 2026-05-13T05:35:05.681124-04:00 SST WB_ARMED: score=8 wave_id=10 prov_entry=3.3394 stop=3.2917
+[CHOP_REJECT] 2026-05-13T05:35:05.681319-04:00 SST: r_pct_below_floor (R%=1.43 < 1.5%)
+[WB] 2026-05-13T05:40:14.447086-04:00 SST WB_OBSERVE: wave_id=11 dir=up mag=1.21%
+[WB] 2026-05-13T05:46:38.979240-04:00 SST WB_DOWNWAVE: wave_id=12 score=4 (< 7, no arm)
+[WB] 2026-05-13T05:49:17.479811-04:00 ENSC WB_DOWNWAVE: wave_id=11 score=6 (< 7, no arm)
+[WB] 2026-05-13T05:50:00.985384-04:00 SST WB_DOWNWAVE: wave_id=13 score=6 (< 7, no arm)
+[WB] 2026-05-13T05:50:37.748382-04:00 ENSC WB_OBSERVE: wave_id=12 dir=up mag=0.95%
+[WB] 2026-05-13T05:51:41.190358-04:00 ODYS WB_OBSERVE: wave_id=10 dir=up mag=2.70%
+[WB] 2026-05-13T05:53:25.010880-04:00 TRAW WB_DOWNWAVE: wave_id=4 score=5 (< 7, no arm)
+[WB] 2026-05-13T05:53:32.014409-04:00 ENSC WB_ARMED: score=7 wave_id=13 prov_entry=0.3091 stop=0.3028
+[CHOP_REJECT] 2026-05-13T05:53:32.014611-04:00 ENSC: pre_threshold_time (now=05:53 ET < min=11:00 ET)
+[WB] 2026-05-13T05:56:06.279344-04:00 ODYS WB_DOWNWAVE: wave_id=11 score=6 (< 7, no arm)
+[WB] 2026-05-13T05:57:00.499570-04:00 ENSC WB_DOWNWAVE: wave_id=14 score=5 (< 7, no arm)
+[WB] 2026-05-13T06:12:21.877103-04:00 ODYS WB_OBSERVE: wave_id=12 dir=up mag=2.24%
+[WB] 2026-05-13T06:14:00.928994-04:00 ENSC WB_OBSERVE: wave_id=15 dir=up mag=1.40%
+[WB] 2026-05-13T06:17:20.861827-04:00 SST WB_OBSERVE: wave_id=14 dir=up mag=2.48%
+[WB] 2026-05-13T06:23:06.199793-04:00 SST WB_DOWNWAVE: wave_id=15 score=2 (< 7, no arm)
+[WB] 2026-05-13T06:29:22.735207-04:00 ENSC WB_DOWNWAVE: wave_id=16 score=6 (< 7, no arm)
+[WB] 2026-05-13T06:33:23.004932-04:00 ENSC WB_OBSERVE: wave_id=17 dir=up mag=2.73%
+[WB] 2026-05-13T06:40:36.989395-04:00 FATN WB_OBSERVE: wave_id=1 dir=up mag=2.22%
+[WB] 2026-05-13T06:42:49.828232-04:00 TRAW WB_OBSERVE: wave_id=5 dir=up mag=1.17%
+[WB] 2026-05-13T06:43:01.074949-04:00 ENSC WB_DOWNWAVE: wave_id=18 score=4 (< 7, no arm)
+[WB] 2026-05-13T06:47:04.529692-04:00 ENSC WB_DOWNWAVE: wave_id=19 score=2 (< 7, no arm)
+[WB] 2026-05-13T06:53:13.302946-04:00 ODYS WB_OBSERVE: wave_id=13 dir=up mag=1.12%
+[WB] 2026-05-13T06:55:17.397116-04:00 ENSC WB_OBSERVE: wave_id=20 dir=up mag=2.49%
+[WB] 2026-05-13T07:03:00.195712-04:00 TRAW WB_OBSERVE: wave_id=6 dir=up mag=1.21%
+[WB] 2026-05-13T07:04:21.962811-04:00 SST WB_OBSERVE: wave_id=16 dir=up mag=2.81%
+[WB] 2026-05-13T07:08:03.229456-04:00 ODYS WB_ARMED: score=8 wave_id=14 prov_entry=4.5800 stop=4.4688
+[CHOP_REJECT] 2026-05-13T07:08:03.229749-04:00 ODYS: pre_threshold_time (now=07:08 ET < min=11:00 ET)
+[WB] 2026-05-13T07:09:03.290003-04:00 ODYS WB_OBSERVE: wave_id=15 dir=up mag=2.46%
+[WB] 2026-05-13T07:09:08.723176-04:00 ENSC WB_DOWNWAVE: wave_id=21 score=5 (< 7, no arm)
+[WB] 2026-05-13T07:14:03.263274-04:00 ODYS WB_ARMED: score=7 wave_id=16 prov_entry=4.5100 stop=4.4588
+[CHOP_REJECT] 2026-05-13T07:14:03.263484-04:00 ODYS: r_pct_below_floor (R%=1.14 < 1.5%)
+[WB] 2026-05-13T07:14:21.029464-04:00 ENSC WB_DOWNWAVE: wave_id=22 score=4 (< 7, no arm)
+[WB] 2026-05-13T07:15:03.305875-04:00 ODYS WB_OBSERVE: wave_id=17 dir=up mag=1.79%
+[WB] 2026-05-13T07:21:52.775204-04:00 TRAW WB_DOWNWAVE: wave_id=7 score=1 (< 7, no arm)
+[WB] 2026-05-13T07:23:00.748307-04:00 ENSC WB_DOWNWAVE: wave_id=23 score=3 (< 7, no arm)
+[WB] 2026-05-13T07:23:05.638520-04:00 TRAW WB_OBSERVE: wave_id=8 dir=up mag=1.89%
+[WB] 2026-05-13T07:24:01.006369-04:00 TRAW WB_DOWNWAVE: wave_id=9 score=6 (< 7, no arm)
+[WB] 2026-05-13T07:26:05.318732-04:00 ENSC WB_DOWNWAVE: wave_id=24 score=3 (< 7, no arm)
+[WB] 2026-05-13T07:30:02.013197-04:00 TRAW WB_DOWNWAVE: wave_id=10 score=5 (< 7, no arm)
+[WB] 2026-05-13T07:31:08.836183-04:00 ODYS WB_ARMED: score=8 wave_id=18 prov_entry=4.5200 stop=4.4588
+[CHOP_REJECT] 2026-05-13T07:31:08.836449-04:00 ODYS: r_pct_below_floor (R%=1.35 < 1.5%)
+[WB] 2026-05-13T07:32:01.061299-04:00 ODYS WB_OBSERVE: wave_id=19 dir=up mag=1.12%
+[WB] 2026-05-13T07:32:05.083907-04:00 SST WB_DOWNWAVE: wave_id=17 score=5 (< 7, no arm)
+[WB] 2026-05-13T07:40:08.305471-04:00 TRAW WB_OBSERVE: wave_id=11 dir=up mag=1.27%
+[WB] 2026-05-13T07:44:06.920679-04:00 SST WB_OBSERVE: wave_id=18 dir=up mag=1.78%
+[WB] 2026-05-13T07:47:29.788629-04:00 ATRA WB_OBSERVE: wave_id=2 dir=up mag=1.72%
+[WB] 2026-05-13T07:50:14.405208-04:00 ATRA WB_OBSERVE: wave_id=3 dir=up mag=2.05%
+[WB] 2026-05-13T07:51:04.465771-04:00 ENSC WB_OBSERVE: wave_id=25 dir=up mag=2.80%
+[WB] 2026-05-13T07:51:44.636343-04:00 SST WB_OBSERVE: wave_id=19 dir=up mag=0.93%
+[WB] 2026-05-13T07:56:01.183789-04:00 TRAW WB_OBSERVE: wave_id=12 dir=up mag=1.26%
+[WB] 2026-05-13T07:58:48.700338-04:00 FATN WB_DOWNWAVE: wave_id=2 score=0 (< 7, no arm)
+[WB] 2026-05-13T07:59:07.472474-04:00 ENSC WB_ARMED: score=7 wave_id=26 prov_entry=0.2804 stop=0.2762
+[CHOP_REJECT] 2026-05-13T07:59:07.472658-04:00 ENSC: r_pct_below_floor (R%=1.50 < 1.5%)
+[WB] 2026-05-13T08:00:07.294177-04:00 ENSC WB_OBSERVE: wave_id=27 dir=up mag=2.46%
+[WB] 2026-05-13T08:03:03.935282-04:00 SST WB_OBSERVE: wave_id=20 dir=up mag=1.25%
+[WB] 2026-05-13T08:04:02.254666-04:00 TRAW WB_OBSERVE: wave_id=13 dir=up mag=1.88%
+[WB] 2026-05-13T08:05:29.858658-04:00 SST WB_DOWNWAVE: wave_id=21 score=2 (< 7, no arm)
+[WB] 2026-05-13T08:08:06.992679-04:00 ENSC WB_OBSERVE: wave_id=28 dir=up mag=2.06%
+[WB] 2026-05-13T08:08:37.311548-04:00 TRAW WB_DOWNWAVE: wave_id=14 score=6 (< 7, no arm)
+[WB] 2026-05-13T08:10:33.949646-04:00 ODYS WB_OBSERVE: wave_id=20 dir=up mag=1.34%
+[WB] 2026-05-13T08:11:19.003370-04:00 TRAW WB_OBSERVE: wave_id=15 dir=up mag=3.11%
+[WB] 2026-05-13T08:15:07.351641-04:00 TRAW WB_ARMED: score=8 wave_id=16 prov_entry=1.6700 stop=1.6359
+[CHOP_REJECT] 2026-05-13T08:15:07.351887-04:00 TRAW: pre_threshold_time (now=08:15 ET < min=11:00 ET)
+[WB] 2026-05-13T08:16:05.127889-04:00 ENSC WB_DOWNWAVE: wave_id=29 score=4 (< 7, no arm)
+[WB] 2026-05-13T08:18:24.630200-04:00 FATN WB_ARMED: score=7 wave_id=3 prov_entry=3.7100 stop=3.6808
+[CHOP_REJECT] 2026-05-13T08:18:24.630341-04:00 FATN: r_pct_below_floor (R%=1.32 < 1.5%)
+[WB] 2026-05-13T08:23:08.591451-04:00 FATN WB_OBSERVE: wave_id=4 dir=up mag=1.08%
+[WB] 2026-05-13T08:25:17.450732-04:00 CLNN WB_OBSERVE: wave_id=1 dir=up mag=1.75%
+[WB] 2026-05-13T08:28:03.150657-04:00 TRAW WB_DOWNWAVE: wave_id=17 score=3 (< 7, no arm)
+[WB] 2026-05-13T08:30:05.286022-04:00 TRAW WB_DOWNWAVE: wave_id=18 score=2 (< 7, no arm)
+[WB] 2026-05-13T08:33:04.687952-04:00 FATN WB_DOWNWAVE: wave_id=5 score=4 (< 7, no arm)
+[WB] 2026-05-13T08:39:14.351306-04:00 TRAW WB_ARMED: score=7 wave_id=19 prov_entry=1.6200 stop=1.6160
+[CHOP_REJECT] 2026-05-13T08:39:14.351523-04:00 TRAW: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-13T08:44:16.766347-04:00 ODYS WB_DOWNWAVE: wave_id=21 score=6 (< 7, no arm)
+[WB] 2026-05-13T08:46:02.129501-04:00 ENSC WB_OBSERVE: wave_id=30 dir=up mag=1.63%
+[WB] 2026-05-13T08:53:18.697448-04:00 SST WB_DOWNWAVE: wave_id=22 score=5 (< 7, no arm)
+[WB] 2026-05-13T08:54:49.232350-04:00 TRAW WB_OBSERVE: wave_id=20 dir=up mag=1.23%
+[WB] 2026-05-13T08:55:10.008438-04:00 TRAW WB_DOWNWAVE: wave_id=21 score=5 (< 7, no arm)
+[WB] 2026-05-13T08:55:15.013101-04:00 FATN WB_OBSERVE: wave_id=6 dir=up mag=1.08%
+[WB] 2026-05-13T08:57:00.382529-04:00 ENSC WB_DOWNWAVE: wave_id=31 score=5 (< 7, no arm)
+[WB] 2026-05-13T08:58:23.396325-04:00 TRAW WB_DOWNWAVE: wave_id=22 score=4 (< 7, no arm)
+[WB] 2026-05-13T09:00:14.089569-04:00 SST WB_ARMED: score=7 wave_id=23 prov_entry=3.3100 stop=3.2020
+[CHOP_REJECT] 2026-05-13T09:00:14.089767-04:00 SST: pre_threshold_time (now=09:00 ET < min=11:00 ET)
+[WB] 2026-05-13T09:05:01.202239-04:00 ENSC WB_OBSERVE: wave_id=32 dir=up mag=1.67%
+[WB] 2026-05-13T09:05:03.133728-04:00 TRAW WB_DOWNWAVE: wave_id=23 score=6 (< 7, no arm)
+[WB] 2026-05-13T09:15:01.689946-04:00 ODYS WB_DOWNWAVE: wave_id=22 score=5 (< 7, no arm)
+[WB] 2026-05-13T09:16:01.610598-04:00 ODYS WB_OBSERVE: wave_id=23 dir=up mag=1.34%
+[WB] 2026-05-13T09:17:34.973554-04:00 TRAW WB_OBSERVE: wave_id=24 dir=up mag=1.26%
+[WB] 2026-05-13T09:18:05.901995-04:00 SST WB_OBSERVE: wave_id=24 dir=up mag=3.75%
+[WB] 2026-05-13T09:20:11.117100-04:00 SST WB_DOWNWAVE: wave_id=25 score=5 (< 7, no arm)
+[WB] 2026-05-13T09:23:05.131986-04:00 NVOX WB_OBSERVE: wave_id=1 dir=up mag=1.12%
+[WB] 2026-05-13T09:25:00.449947-04:00 SST WB_OBSERVE: wave_id=26 dir=up mag=2.15%
+[WB] 2026-05-13T09:25:01.201280-04:00 ENSC WB_OBSERVE: wave_id=33 dir=up mag=1.90%
+[WB] 2026-05-13T09:26:00.273022-04:00 SST WB_ARMED: score=8 wave_id=27 prov_entry=3.3200 stop=3.2419
+[CHOP_REJECT] 2026-05-13T09:26:00.273234-04:00 SST: pre_threshold_time (now=09:26 ET < min=11:00 ET)
+[WB] 2026-05-13T09:26:12.036952-04:00 ODYS WB_OBSERVE: wave_id=24 dir=up mag=1.79%
+[WB] 2026-05-13T09:28:00.169042-04:00 CLNN WB_OBSERVE: wave_id=2 dir=up mag=2.85%
+[WB] 2026-05-13T09:29:09.129673-04:00 ODYS WB_DOWNWAVE: wave_id=25 score=6 (< 7, no arm)
+[WB] 2026-05-13T09:31:01.795073-04:00 ATRA WB_DOWNWAVE: wave_id=4 score=4 (< 7, no arm)
+[WB] 2026-05-13T09:31:01.976199-04:00 ODYS WB_OBSERVE: wave_id=26 dir=up mag=5.82%
+[WB] 2026-05-13T09:31:42.054826-04:00 FATN WB_OBSERVE: wave_id=7 dir=up mag=1.63%
+[WB] 2026-05-13T09:32:01.087687-04:00 TRAW WB_OBSERVE: wave_id=25 dir=up mag=2.50%
+[WB] 2026-05-13T09:32:03.092222-04:00 SST WB_DOWNWAVE: wave_id=28 score=6 (< 7, no arm)
+[WB] 2026-05-13T09:34:02.709039-04:00 SST WB_OBSERVE: wave_id=29 dir=up mag=14.15%
+[WB] 2026-05-13T09:35:00.319300-04:00 ATRA WB_OBSERVE: wave_id=5 dir=up mag=7.35%
+[WB] 2026-05-13T09:36:00.439585-04:00 NVOX WB_OBSERVE: wave_id=2 dir=up mag=0.94%
+[WB] 2026-05-13T09:40:03.746615-04:00 KBSX WB_OBSERVE: wave_id=1 dir=up mag=0.81%
+[WB] 2026-05-13T09:40:06.007203-04:00 ODYS WB_DOWNWAVE: wave_id=27 score=3 (< 7, no arm)
+[WB] 2026-05-13T09:42:03.520822-04:00 CLNN WB_DOWNWAVE: wave_id=3 score=2 (< 7, no arm)
+[WB] 2026-05-13T09:42:04.827855-04:00 FATN WB_OBSERVE: wave_id=8 dir=up mag=1.84%
+[WB] 2026-05-13T09:45:06.690081-04:00 ENSC WB_OBSERVE: wave_id=34 dir=up mag=3.21%
+[WB] 2026-05-13T09:47:07.528588-04:00 ATRA WB_DOWNWAVE: wave_id=6 score=4 (< 7, no arm)
+[WB] 2026-05-13T09:50:00.164028-04:00 FATN WB_OBSERVE: wave_id=9 dir=up mag=2.40%
+[WB] 2026-05-13T09:52:06.007148-04:00 ENSC WB_OBSERVE: wave_id=35 dir=up mag=2.80%
+[WB] 2026-05-13T09:52:07.009408-04:00 SST WB_ARMED: score=8 wave_id=30 prov_entry=3.3186 stop=3.2537
+[CHOP_REJECT] 2026-05-13T09:52:07.009565-04:00 SST: pre_threshold_time (now=09:52 ET < min=11:00 ET)
+[WB] 2026-05-13T09:53:07.522619-04:00 KBSX WB_DOWNWAVE: wave_id=2 score=4 (< 7, no arm)
+[WB] 2026-05-13T09:55:15.739097-04:00 CLNN WB_OBSERVE: wave_id=4 dir=up mag=1.92%
+[WB] 2026-05-13T09:57:01.329541-04:00 TRAW WB_DOWNWAVE: wave_id=26 score=3 (< 7, no arm)
+[WB] 2026-05-13T09:58:00.210947-04:00 NVOX WB_OBSERVE: wave_id=3 dir=up mag=1.06%
+[WB] 2026-05-13T09:58:38.664545-04:00 FATN WB_OBSERVE: wave_id=10 dir=up mag=2.15%
+[WB] 2026-05-13T10:00:00.710801-04:00 ATRA WB_DOWNWAVE: wave_id=7 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:00:08.316008-04:00 ENSC WB_DOWNWAVE: wave_id=36 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:01:29.043037-04:00 FATN WB_OBSERVE: wave_id=11 dir=up mag=2.65%
+[WB] 2026-05-13T10:02:13.191258-04:00 ODYS WB_OBSERVE: wave_id=28 dir=up mag=1.59%
+[WB] 2026-05-13T10:03:25.449059-04:00 SST WB_DOWNWAVE: wave_id=31 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:04:07.280879-04:00 ENSC WB_OBSERVE: wave_id=37 dir=up mag=2.11%
+[WB] 2026-05-13T10:05:00.488378-04:00 CLNN WB_OBSERVE: wave_id=5 dir=up mag=3.32%
+[WB] 2026-05-13T10:07:04.497142-04:00 FATN WB_DOWNWAVE: wave_id=12 score=2 (< 7, no arm)
+[WB] 2026-05-13T10:08:05.634822-04:00 ODYS WB_DOWNWAVE: wave_id=29 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:10:00.018133-04:00 NVOX WB_DOWNWAVE: wave_id=4 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:10:03.205906-04:00 ATRA WB_ARMED: score=7 wave_id=8 prov_entry=9.3000 stop=9.2768
+[CHOP_REJECT] 2026-05-13T10:10:03.206019-04:00 ATRA: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-13T10:12:00.350960-04:00 ENSC WB_DOWNWAVE: wave_id=38 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:12:02.537524-04:00 TRAW WB_OBSERVE: wave_id=27 dir=up mag=1.87%
+[WB] 2026-05-13T10:14:13.442582-04:00 ATRA WB_OBSERVE: wave_id=9 dir=up mag=4.71%
+[WB] 2026-05-13T10:16:00.206619-04:00 SST WB_DOWNWAVE: wave_id=32 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:17:02.183238-04:00 ODYS WB_OBSERVE: wave_id=30 dir=up mag=1.81%
+[WB] 2026-05-13T10:17:02.933268-04:00 FATN WB_DOWNWAVE: wave_id=13 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:18:00.942269-04:00 ENSC WB_DOWNWAVE: wave_id=39 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:22:03.319176-04:00 ODYS WB_ARMED: score=7 wave_id=31 prov_entry=4.4600 stop=4.4089
+[CHOP_REJECT] 2026-05-13T10:22:03.319385-04:00 ODYS: r_pct_below_floor (R%=1.15 < 1.5%)
+[WB] 2026-05-13T10:23:00.461648-04:00 ATRA WB_OBSERVE: wave_id=10 dir=up mag=1.82%
+[WB] 2026-05-13T10:25:00.523431-04:00 ODYS WB_DOWNWAVE: wave_id=32 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:28:02.919700-04:00 SST WB_OBSERVE: wave_id=33 dir=up mag=1.18%
+[WB] 2026-05-13T10:28:04.922359-04:00 ATRA WB_DOWNWAVE: wave_id=11 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:29:00.428911-04:00 FATN WB_OBSERVE: wave_id=14 dir=up mag=3.04%
+[WB] 2026-05-13T10:29:04.714993-04:00 ENSC WB_DOWNWAVE: wave_id=40 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:30:01.580690-04:00 CLNN WB_OBSERVE: wave_id=6 dir=up mag=2.25%
+[WB] 2026-05-13T10:32:23.848884-04:00 ENSC WB_DOWNWAVE: wave_id=41 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:33:02.083855-04:00 ODYS WB_OBSERVE: wave_id=33 dir=up mag=0.91%
+[WB] 2026-05-13T10:33:07.158387-04:00 CLNN WB_DOWNWAVE: wave_id=7 score=1 (< 7, no arm)
+[WB] 2026-05-13T10:35:05.857077-04:00 ODYS WB_DOWNWAVE: wave_id=34 score=5 (< 7, no arm)
+[WB] 2026-05-13T10:36:03.124734-04:00 SST WB_OBSERVE: wave_id=34 dir=up mag=3.68%
+[WB] 2026-05-13T10:37:10.019571-04:00 FATN WB_OBSERVE: wave_id=15 dir=up mag=1.97%
+[WB] 2026-05-13T10:40:08.655047-04:00 TRAW WB_OBSERVE: wave_id=28 dir=up mag=1.82%
+[WB] 2026-05-13T10:41:04.229270-04:00 SST WB_DOWNWAVE: wave_id=35 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:46:00.076448-04:00 TRAW WB_DOWNWAVE: wave_id=29 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:46:09.405916-04:00 ATRA WB_OBSERVE: wave_id=12 dir=up mag=2.30%
+[WB] 2026-05-13T10:47:00.653846-04:00 FATN WB_OBSERVE: wave_id=16 dir=up mag=1.71%
+[WB] 2026-05-13T10:48:01.659281-04:00 ODYS WB_OBSERVE: wave_id=35 dir=up mag=0.92%
+[WB] 2026-05-13T10:51:01.534358-04:00 ENSC WB_OBSERVE: wave_id=42 dir=up mag=3.71%
+[WB] 2026-05-13T10:51:28.318957-04:00 SST WB_DOWNWAVE: wave_id=36 score=6 (< 7, no arm)
+[WB] 2026-05-13T10:52:01.646883-04:00 ODYS WB_DOWNWAVE: wave_id=36 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:55:00.008769-04:00 ODYS WB_DOWNWAVE: wave_id=37 score=3 (< 7, no arm)
+[WB] 2026-05-13T10:55:03.263706-04:00 FATN WB_DOWNWAVE: wave_id=17 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:57:02.673339-04:00 FATN WB_OBSERVE: wave_id=18 dir=up mag=1.22%
+[WB] 2026-05-13T10:57:03.424578-04:00 SST WB_DOWNWAVE: wave_id=37 score=4 (< 7, no arm)
+[WB] 2026-05-13T10:58:00.749993-04:00 ENSC WB_OBSERVE: wave_id=43 dir=up mag=1.89%
+[WB] 2026-05-13T10:58:02.001741-04:00 ATRA WB_OBSERVE: wave_id=13 dir=up mag=1.18%
+[WB] 2026-05-13T11:00:00.130099-04:00 TRAW WB_DOWNWAVE: wave_id=30 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:02:02.724522-04:00 SST WB_ARMED: score=7 wave_id=38 prov_entry=3.4350 stop=3.4015
+[CHOP_REJECT] 2026-05-13T11:02:02.724648-04:00 SST: r_pct_below_floor (R%=0.98 < 1.5%)
+[WB] 2026-05-13T11:04:02.443125-04:00 ATRA WB_DOWNWAVE: wave_id=14 score=5 (< 7, no arm)
+[WB] 2026-05-13T11:04:07.989095-04:00 ODYS WB_OBSERVE: wave_id=38 dir=up mag=1.91%
+[WB] 2026-05-13T11:05:00.372677-04:00 FATN WB_OBSERVE: wave_id=19 dir=up mag=2.19%
+[WB] 2026-05-13T11:07:05.036002-04:00 SST WB_OBSERVE: wave_id=39 dir=up mag=1.47%
+[WB] 2026-05-13T11:07:20.556505-04:00 ATRA WB_OBSERVE: wave_id=15 dir=up mag=1.29%
+[WB] 2026-05-13T11:07:22.058157-04:00 ENSC WB_DOWNWAVE: wave_id=44 score=5 (< 7, no arm)
+[WB] 2026-05-13T11:09:02.178093-04:00 TRAW WB_DOWNWAVE: wave_id=31 score=4 (< 7, no arm)
+[WB] 2026-05-13T11:09:23.931667-04:00 ENSC WB_OBSERVE: wave_id=45 dir=up mag=1.12%
+[WB] 2026-05-13T11:11:09.239064-04:00 FATN WB_DOWNWAVE: wave_id=20 score=2 (< 7, no arm)
+[WB] 2026-05-13T11:12:23.838056-04:00 ENSC WB_OBSERVE: wave_id=46 dir=up mag=1.09%
+[WB] 2026-05-13T11:13:00.405695-04:00 ATRA WB_DOWNWAVE: wave_id=16 score=6 (< 7, no arm)
+[WB] 2026-05-13T11:14:03.907511-04:00 TRAW WB_OBSERVE: wave_id=32 dir=up mag=1.83%
+[WB] 2026-05-13T11:16:00.132188-04:00 NVOX WB_ARMED: score=8 wave_id=5 prov_entry=15.9900 stop=15.9101
+[CHOP_REJECT] 2026-05-13T11:16:00.132384-04:00 NVOX: r_pct_below_floor (R%=0.50 < 1.5%)
+[WB] 2026-05-13T11:17:10.656377-04:00 FATN WB_DOWNWAVE: wave_id=21 score=5 (< 7, no arm)
+[WB] 2026-05-13T11:19:06.730356-04:00 TRAW WB_OBSERVE: wave_id=33 dir=up mag=1.80%
+[WB] 2026-05-13T11:19:37.504181-04:00 ENSC WB_OBSERVE: wave_id=47 dir=up mag=1.12%
+[WB] 2026-05-13T11:26:10.234491-04:00 ATRA WB_ARMED: score=9 wave_id=17 prov_entry=9.3500 stop=9.2867
+[CHOP_REJECT] 2026-05-13T11:26:10.234714-04:00 ATRA: r_pct_below_floor (R%=0.68 < 1.5%)
+[WB] 2026-05-13T11:27:04.555737-04:00 FATN WB_DOWNWAVE: wave_id=22 score=6 (< 7, no arm)
+[WB] 2026-05-13T11:27:22.328985-04:00 ENSC WB_OBSERVE: wave_id=48 dir=up mag=1.24%
+[WB] 2026-05-13T11:31:00.475788-04:00 ENSC WB_DOWNWAVE: wave_id=49 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:31:12.490122-04:00 ODYS WB_OBSERVE: wave_id=39 dir=up mag=3.61%
+[WB] 2026-05-13T11:34:37.977283-04:00 ENSC WB_OBSERVE: wave_id=50 dir=up mag=2.85%
+[WB] 2026-05-13T11:35:27.292248-04:00 FATN WB_DOWNWAVE: wave_id=23 score=2 (< 7, no arm)
+[WB] 2026-05-13T11:38:09.252749-04:00 ENSC WB_DOWNWAVE: wave_id=51 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:40:00.719301-04:00 ATRA WB_OBSERVE: wave_id=18 dir=up mag=1.19%
+[WB] 2026-05-13T11:41:36.393222-04:00 FATN WB_DOWNWAVE: wave_id=24 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:41:54.914797-04:00 ODYS WB_DOWNWAVE: wave_id=40 score=4 (< 7, no arm)
+[WB] 2026-05-13T11:42:03.176057-04:00 TRAW WB_DOWNWAVE: wave_id=34 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:44:06.559727-04:00 ODYS WB_OBSERVE: wave_id=41 dir=up mag=1.90%
+[WB] 2026-05-13T11:45:05.694819-04:00 FATN WB_OBSERVE: wave_id=25 dir=up mag=2.24%
+[WB] 2026-05-13T11:47:06.215236-04:00 FATN WB_OBSERVE: wave_id=26 dir=up mag=1.23%
+[WB] 2026-05-13T11:47:26.240344-04:00 ODYS WB_OBSERVE: wave_id=42 dir=up mag=0.94%
+[WB] 2026-05-13T11:48:09.251676-04:00 ENSC WB_OBSERVE: wave_id=52 dir=up mag=2.14%
+[WB] 2026-05-13T11:51:02.821375-04:00 ODYS WB_OBSERVE: wave_id=43 dir=up mag=3.53%
+[WB] 2026-05-13T11:52:00.897988-04:00 FATN WB_OBSERVE: wave_id=27 dir=up mag=1.83%
+[WB] 2026-05-13T11:53:03.479602-04:00 TRAW WB_DOWNWAVE: wave_id=35 score=6 (< 7, no arm)
+[WB] 2026-05-13T11:53:19.000849-04:00 ENSC WB_ARMED: score=10 wave_id=53 prov_entry=0.3011 stop=0.2948
+[CG3_OBSERVE] symbol=ENSC sub=macd value=macd_ok would_veto=N enabled=Y
+[CG3_OBSERVE] symbol=ENSC sub=hod_recent value=hod_recent_ok(0<2) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=dead_bounce value=dead_bounce_reclaimed(price=$0.30>=mid=$0.30) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=vol_followthrough value=vol_ft_ok would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=xsession_bl value=xbl_insufficient_history(0<3) would_veto=N enabled=N
+[WB] 2026-05-13T11:53:19.003551-04:00 ENSC SKIP: qty<=0 (entry=0.3011 stop=0.2948 equity=$88,797)
+[WB] 2026-05-13T11:57:02.480408-04:00 ODYS WB_DOWNWAVE: wave_id=44 score=3 (< 7, no arm)
+[WB] 2026-05-13T11:57:54.800271-04:00 ENSC WB_DOWNWAVE: wave_id=54 score=4 (< 7, no arm)
+[WB] 2026-05-13T11:58:04.061322-04:00 ATRA WB_ARMED: score=8 wave_id=19 prov_entry=9.3400 stop=9.2468
+[CHOP_REJECT] 2026-05-13T11:58:04.061430-04:00 ATRA: r_pct_below_floor (R%=1.00 < 1.5%)
+[WB] 2026-05-13T11:58:07.862408-04:00 TRAW WB_ARMED: score=7 wave_id=36 prov_entry=1.6796 stop=1.6658
+[CHOP_REJECT] 2026-05-13T11:58:07.862540-04:00 TRAW: r_pct_below_floor (R%=0.85 < 1.5%)
+[WB] 2026-05-13T12:00:00.561013-04:00 FATN WB_DOWNWAVE: wave_id=28 score=3 (< 7, no arm)
+[WB] 2026-05-13T12:02:13.035441-04:00 ENSC WB_ARMED: score=8 wave_id=55 prov_entry=0.2987 stop=0.2935
+[CG3_OBSERVE] symbol=ENSC sub=macd value=macd_ok would_veto=N enabled=Y
+[CG3_OBSERVE] symbol=ENSC sub=hod_recent value=hod_recent_ok(0<2) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=dead_bounce value=dead_bounce_reclaimed(price=$0.30>=mid=$0.30) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=vol_followthrough value=vol_ft_ok would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=xsession_bl value=xbl_insufficient_history(0<3) would_veto=N enabled=N
+[WB] 2026-05-13T12:02:13.038162-04:00 ENSC SKIP: qty<=0 (entry=0.2987 stop=0.2935 equity=$88,797)
+[WB] 2026-05-13T12:04:01.941874-04:00 TRAW WB_OBSERVE: wave_id=37 dir=up mag=0.90%
+[WB] 2026-05-13T12:04:16.213265-04:00 SST WB_DOWNWAVE: wave_id=40 score=5 (< 7, no arm)
+[WB] 2026-05-13T12:05:59.269753-04:00 ODYS WB_ARMED: score=7 wave_id=45 prov_entry=4.3800 stop=4.3092
+[CHOP_REJECT] 2026-05-13T12:05:59.269979-04:00 ODYS: r_pct_below_floor (R%=1.17 < 1.5%)
+[WB] 2026-05-13T12:07:01.714290-04:00 ENSC WB_DOWNWAVE: wave_id=56 score=4 (< 7, no arm)
+[WB] 2026-05-13T12:07:07.161511-04:00 TRAW WB_OBSERVE: wave_id=38 dir=up mag=1.20%
+[WB] 2026-05-13T12:09:02.865052-04:00 SST WB_DOWNWAVE: wave_id=41 score=2 (< 7, no arm)
+[WB] 2026-05-13T12:09:23.451056-04:00 ODYS WB_OBSERVE: wave_id=46 dir=up mag=2.08%
+[WB] 2026-05-13T12:17:15.909702-04:00 ODYS WB_DOWNWAVE: wave_id=47 score=5 (< 7, no arm)
+[WB] 2026-05-13T12:22:45.362493-04:00 FATN WB_OBSERVE: wave_id=29 dir=up mag=1.50%
+[WB] 2026-05-13T12:24:00.117952-04:00 ATRA WB_OBSERVE: wave_id=20 dir=up mag=1.39%
+[WB] 2026-05-13T12:24:00.368299-04:00 TRAW WB_OBSERVE: wave_id=39 dir=up mag=1.19%
+[WB] 2026-05-13T12:26:06.595988-04:00 FATN WB_DOWNWAVE: wave_id=30 score=3 (< 7, no arm)
+[WB] 2026-05-13T12:27:01.185280-04:00 TRAW WB_OBSERVE: wave_id=40 dir=up mag=1.70%
+[WB] 2026-05-13T12:30:02.899352-04:00 ATRA WB_ARMED: score=7 wave_id=21 prov_entry=9.2800 stop=9.2568
+[CHOP_REJECT] 2026-05-13T12:30:02.899505-04:00 ATRA: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-13T12:31:05.778065-04:00 ODYS WB_DOWNWAVE: wave_id=48 score=5 (< 7, no arm)
+[WB] 2026-05-13T12:35:02.487669-04:00 TRAW WB_OBSERVE: wave_id=41 dir=up mag=1.75%
+[WB] 2026-05-13T12:35:02.671205-04:00 ENSC WB_ARMED: score=8 wave_id=57 prov_entry=0.2927 stop=0.2910
+[CHOP_REJECT] 2026-05-13T12:35:02.671346-04:00 ENSC: r_pct_below_floor (R%=0.58 < 1.5%)
+[WB] 2026-05-13T12:35:06.526230-04:00 ODYS WB_DOWNWAVE: wave_id=49 score=6 (< 7, no arm)
+[WB] 2026-05-13T12:36:16.832511-04:00 FATN WB_OBSERVE: wave_id=31 dir=up mag=5.05%
+[WB] 2026-05-13T12:40:03.800485-04:00 ATRA WB_DOWNWAVE: wave_id=22 score=3 (< 7, no arm)
+[WB] 2026-05-13T12:40:09.296993-04:00 ODYS WB_OBSERVE: wave_id=50 dir=up mag=2.82%
+[WB] 2026-05-13T12:40:09.548117-04:00 ENSC WB_DOWNWAVE: wave_id=58 score=3 (< 7, no arm)
+[WB] 2026-05-13T12:41:00.064497-04:00 VNET WB_OBSERVE: wave_id=1 dir=up mag=1.31%
+[WB] 2026-05-13T12:43:41.880108-04:00 ENSC WB_OBSERVE: wave_id=59 dir=up mag=1.54%
+[WB] 2026-05-13T12:44:13.770431-04:00 ATRA WB_DOWNWAVE: wave_id=23 score=5 (< 7, no arm)
+[WB] 2026-05-13T12:46:14.971434-04:00 TRAW WB_DOWNWAVE: wave_id=42 score=4 (< 7, no arm)
+[WB] 2026-05-13T12:46:36.481873-04:00 SST WB_DOWNWAVE: wave_id=42 score=6 (< 7, no arm)
+[WB] 2026-05-13T12:48:00.198040-04:00 SST WB_OBSERVE: wave_id=43 dir=up mag=2.41%
+[WB] 2026-05-13T12:49:00.768068-04:00 TRAW WB_OBSERVE: wave_id=43 dir=up mag=1.76%
+[WB] 2026-05-13T12:49:06.007987-04:00 ENSC WB_DOWNWAVE: wave_id=60 score=4 (< 7, no arm)
+[WB] 2026-05-13T12:50:15.668430-04:00 ATRA WB_OBSERVE: wave_id=24 dir=up mag=1.85%
+[WB] 2026-05-13T12:51:10.722625-04:00 FATN WB_ARMED: score=8 wave_id=32 prov_entry=4.1399 stop=4.0897
+[CHOP_REJECT] 2026-05-13T12:51:10.722847-04:00 FATN: r_pct_below_floor (R%=1.21 < 1.5%)
+[WB] 2026-05-13T12:51:13.555757-04:00 SST WB_DOWNWAVE: wave_id=44 score=2 (< 7, no arm)
+[WB] 2026-05-13T12:51:40.937751-04:00 CLNN WB_ARMED: score=8 wave_id=8 prov_entry=6.3120 stop=6.2942
+[CHOP_REJECT] 2026-05-13T12:51:40.937980-04:00 CLNN: r_pct_below_floor (R%=0.28 < 1.5%)
+[WB] 2026-05-13T12:56:01.696459-04:00 TRAW WB_DOWNWAVE: wave_id=44 score=4 (< 7, no arm)
+[WB] 2026-05-13T12:57:09.299652-04:00 ENSC WB_ARMED: score=7 wave_id=61 prov_entry=0.2932 stop=0.2888
+[CHOP_REJECT] 2026-05-13T12:57:09.299805-04:00 ENSC: r_pct_below_floor (R%=1.03 < 1.5%)
+[WB] 2026-05-13T12:58:24.004296-04:00 FATN WB_DOWNWAVE: wave_id=33 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:00:08.870057-04:00 ATRA WB_DOWNWAVE: wave_id=25 score=6 (< 7, no arm)
+[WB] 2026-05-13T13:00:26.991514-04:00 SST WB_OBSERVE: wave_id=45 dir=up mag=4.38%
+[WB] 2026-05-13T13:01:00.277332-04:00 ENSC WB_ARMED: score=8 wave_id=62 prov_entry=0.2941 stop=0.2928
+[CHOP_REJECT] 2026-05-13T13:01:00.277575-04:00 ENSC: r_pct_below_floor (R%=0.44 < 1.5%)
+[WB] 2026-05-13T13:03:08.584938-04:00 SST WB_DOWNWAVE: wave_id=46 score=2 (< 7, no arm)
+[WB] 2026-05-13T13:04:05.956207-04:00 TRAW WB_OBSERVE: wave_id=45 dir=up mag=1.17%
+[WB] 2026-05-13T13:05:00.276199-04:00 ENSC WB_DOWNWAVE: wave_id=63 score=4 (< 7, no arm)
+[WB] 2026-05-13T13:06:00.510275-04:00 VNET WB_OBSERVE: wave_id=2 dir=up mag=0.88%
+[WB] 2026-05-13T13:08:01.898163-04:00 ODYS WB_ARMED: score=8 wave_id=51 prov_entry=4.2900 stop=4.2493
+[CHOP_REJECT] 2026-05-13T13:08:01.898333-04:00 ODYS: r_pct_below_floor (R%=0.95 < 1.5%)
+[WB] 2026-05-13T13:08:05.849717-04:00 FATN WB_DOWNWAVE: wave_id=34 score=6 (< 7, no arm)
+[WB] 2026-05-13T13:09:56.381684-04:00 ATRA WB_DOWNWAVE: wave_id=26 score=4 (< 7, no arm)
+[WB] 2026-05-13T13:10:04.293331-04:00 ENSC WB_OBSERVE: wave_id=64 dir=up mag=1.57%
+[WB] 2026-05-13T13:12:01.302708-04:00 ENSC WB_ARMED: score=10 wave_id=65 prov_entry=0.2921 stop=0.2854
+[CG3_OBSERVE] symbol=ENSC sub=macd value=macd_ok would_veto=N enabled=Y
+[CG3_OBSERVE] symbol=ENSC sub=hod_recent value=hod_recent_ok(0<2) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=dead_bounce value=dead_bounce_strong_volume(ratio=2.54>= 0.70) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=vol_followthrough value=vol_ft_ok would_veto=N enabled=N
+[CG3_OBSERVE] symbol=ENSC sub=xsession_bl value=xbl_insufficient_history(0<3) would_veto=N enabled=N
+[WB] 2026-05-13T13:12:01.305010-04:00 ENSC SKIP: qty<=0 (entry=0.2906 stop=0.2854 equity=$88,797)
+[WB] 2026-05-13T13:12:01.370534-04:00 VNET WB_OBSERVE: wave_id=3 dir=up mag=0.79%
+[WB] 2026-05-13T13:15:04.448591-04:00 SST WB_DOWNWAVE: wave_id=47 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:15:18.283026-04:00 FATN WB_OBSERVE: wave_id=35 dir=up mag=0.96%
+[WB] 2026-05-13T13:15:39.494775-04:00 ODYS WB_OBSERVE: wave_id=52 dir=up mag=1.64%
+[WB] 2026-05-13T13:17:00.414339-04:00 VNET WB_DOWNWAVE: wave_id=4 score=2 (< 7, no arm)
+[WB] 2026-05-13T13:18:00.244898-04:00 ATRA WB_OBSERVE: wave_id=27 dir=up mag=1.63%
+[WB] 2026-05-13T13:19:00.571670-04:00 ENSC WB_OBSERVE: wave_id=66 dir=up mag=1.24%
+[WB] 2026-05-13T13:20:09.058923-04:00 FATN WB_OBSERVE: wave_id=36 dir=up mag=0.98%
+[WB] 2026-05-13T13:21:11.133327-04:00 ODYS WB_OBSERVE: wave_id=53 dir=up mag=2.33%
+[WB] 2026-05-13T13:23:19.546046-04:00 CLNN WB_DOWNWAVE: wave_id=9 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:24:04.922405-04:00 ENSC WB_OBSERVE: wave_id=67 dir=up mag=1.20%
+[WB] 2026-05-13T13:24:19.286404-04:00 CLNN WB_OBSERVE: wave_id=10 dir=up mag=1.44%
+[WB] 2026-05-13T13:26:31.530756-04:00 FATN WB_OBSERVE: wave_id=37 dir=up mag=1.73%
+[WB] 2026-05-13T13:28:00.830155-04:00 ATRA WB_ARMED: score=10 wave_id=28 prov_entry=9.3600 stop=9.2568
+[CHOP_REJECT] 2026-05-13T13:28:00.830305-04:00 ATRA: r_pct_below_floor (R%=1.10 < 1.5%)
+[WB] 2026-05-13T13:28:24.180003-04:00 CLNN WB_ARMED: score=8 wave_id=11 prov_entry=6.3990 stop=6.3541
+[CHOP_REJECT] 2026-05-13T13:28:24.180260-04:00 CLNN: r_pct_below_floor (R%=0.70 < 1.5%)
+[WB] 2026-05-13T13:29:00.974145-04:00 ATRA WB_OBSERVE: wave_id=29 dir=up mag=1.62%
+[WB] 2026-05-13T13:32:00.956451-04:00 VNET WB_DOWNWAVE: wave_id=5 score=5 (< 7, no arm)
+[WB] 2026-05-13T13:34:00.928139-04:00 ATRA WB_OBSERVE: wave_id=30 dir=up mag=1.28%
+[WB] 2026-05-13T13:35:17.760377-04:00 SST WB_DOWNWAVE: wave_id=48 score=4 (< 7, no arm)
+[WB] 2026-05-13T13:36:04.823372-04:00 FATN WB_OBSERVE: wave_id=38 dir=up mag=3.32%
+[WB] 2026-05-13T13:36:06.074908-04:00 ODYS WB_DOWNWAVE: wave_id=54 score=6 (< 7, no arm)
+[WB] 2026-05-13T13:37:00.580042-04:00 ODYS WB_OBSERVE: wave_id=55 dir=up mag=3.05%
+[WB] 2026-05-13T13:37:04.157816-04:00 ENSC WB_OBSERVE: wave_id=68 dir=up mag=3.48%
+[WB] 2026-05-13T13:39:00.681278-04:00 VNET WB_DOWNWAVE: wave_id=6 score=5 (< 7, no arm)
+[WB] 2026-05-13T13:40:05.757141-04:00 TRAW WB_DOWNWAVE: wave_id=46 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:44:01.805978-04:00 TRAW WB_DOWNWAVE: wave_id=47 score=4 (< 7, no arm)
+[WB] 2026-05-13T13:46:04.231108-04:00 ODYS WB_OBSERVE: wave_id=56 dir=up mag=2.57%
+[WB] 2026-05-13T13:48:03.138333-04:00 ENSC WB_OBSERVE: wave_id=69 dir=up mag=2.58%
+[WB] 2026-05-13T13:48:23.982794-04:00 FATN WB_DOWNWAVE: wave_id=39 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:50:15.756661-04:00 FATN WB_OBSERVE: wave_id=40 dir=up mag=1.20%
+[WB] 2026-05-13T13:52:11.657792-04:00 ATRA WB_OBSERVE: wave_id=31 dir=up mag=1.16%
+[WB] 2026-05-13T13:53:41.209252-04:00 SST WB_OBSERVE: wave_id=49 dir=up mag=1.38%
+[WB] 2026-05-13T13:57:17.330540-04:00 ATRA WB_DOWNWAVE: wave_id=32 score=3 (< 7, no arm)
+[WB] 2026-05-13T13:57:24.590095-04:00 ODYS WB_OBSERVE: wave_id=57 dir=up mag=1.40%
+[WB] 2026-05-13T13:58:02.707605-04:00 ENSC WB_DOWNWAVE: wave_id=70 score=4 (< 7, no arm)
+[WB] 2026-05-13T13:58:31.677563-04:00 CLNN WB_ARMED: score=8 wave_id=12 prov_entry=6.3600 stop=6.3042
+[CHOP_REJECT] 2026-05-13T13:58:31.677797-04:00 CLNN: r_pct_below_floor (R%=0.88 < 1.5%)
+[WB] 2026-05-13T13:59:14.764894-04:00 SST WB_OBSERVE: wave_id=50 dir=up mag=0.83%
+[WB] 2026-05-13T14:00:03.183361-04:00 FATN WB_OBSERVE: wave_id=41 dir=up mag=1.68%
+[WB] 2026-05-13T14:01:12.776094-04:00 ATRA WB_OBSERVE: wave_id=33 dir=up mag=2.41%
+[WB] 2026-05-13T14:02:04.344800-04:00 TRAW WB_DOWNWAVE: wave_id=48 score=4 (< 7, no arm)
+[WB] 2026-05-13T14:03:41.276041-04:00 ODYS WB_DOWNWAVE: wave_id=58 score=2 (< 7, no arm)
+[WB] 2026-05-13T14:04:01.052948-04:00 MEI WB_OBSERVE: wave_id=1 dir=up mag=1.00%
+[WB] 2026-05-13T14:04:16.574486-04:00 TRAW WB_OBSERVE: wave_id=49 dir=up mag=1.41%
+[WB] 2026-05-13T14:07:14.967131-04:00 CLNN WB_ARMED: score=8 wave_id=13 prov_entry=6.3050 stop=6.2493
+[CHOP_REJECT] 2026-05-13T14:07:14.967344-04:00 CLNN: r_pct_below_floor (R%=0.88 < 1.5%)
+[WB] 2026-05-13T14:10:44.677326-04:00 SST WB_ARMED: score=7 wave_id=51 prov_entry=3.6300 stop=3.6209
+[CHOP_REJECT] 2026-05-13T14:10:44.677512-04:00 SST: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-13T14:11:10.527518-04:00 FATN WB_DOWNWAVE: wave_id=42 score=4 (< 7, no arm)
+[WB] 2026-05-13T14:11:19.040207-04:00 SST WB_OBSERVE: wave_id=52 dir=up mag=0.83%
+[WB] 2026-05-13T14:13:42.634685-04:00 ODYS WB_OBSERVE: wave_id=59 dir=up mag=1.86%
+[WB] 2026-05-13T14:14:00.029450-04:00 VNET WB_DOWNWAVE: wave_id=7 score=6 (< 7, no arm)
+[WB] 2026-05-13T14:17:02.059893-04:00 ATRA WB_DOWNWAVE: wave_id=34 score=4 (< 7, no arm)
+[WB] 2026-05-13T14:18:01.950516-04:00 VNET WB_OBSERVE: wave_id=8 dir=up mag=1.37%
+[WB] 2026-05-13T14:18:02.134121-04:00 FATN WB_OBSERVE: wave_id=43 dir=up mag=1.67%
+[WB] 2026-05-13T14:19:55.214157-04:00 TRAW WB_OBSERVE: wave_id=50 dir=up mag=1.18%
+[WB] 2026-05-13T14:20:11.414296-04:00 ATRA WB_OBSERVE: wave_id=35 dir=up mag=1.33%
+[WB] 2026-05-13T14:20:39.535117-04:00 SST WB_ARMED: score=9 wave_id=53 prov_entry=3.6300 stop=3.6209
+[WB] 2026-05-13T14:20:39.535255-04:00 SST WB_DISARMED: live_entry(3.6200) <= stop(3.6209)
+[WB] 2026-05-13T14:21:06.130032-04:00 SST WB_OBSERVE: wave_id=54 dir=up mag=0.83%
+[WB] 2026-05-13T14:21:09.385950-04:00 FATN WB_OBSERVE: wave_id=44 dir=up mag=2.38%
+[WB] 2026-05-13T14:22:59.531782-04:00 ODYS WB_OBSERVE: wave_id=60 dir=up mag=2.32%
+[WB] 2026-05-13T14:24:00.796220-04:00 FATN WB_OBSERVE: wave_id=45 dir=up mag=1.63%
+[WB] 2026-05-13T14:26:02.303017-04:00 ATRA WB_DOWNWAVE: wave_id=36 score=6 (< 7, no arm)
+[WB] 2026-05-13T14:27:07.838978-04:00 FATN WB_DOWNWAVE: wave_id=46 score=2 (< 7, no arm)
+[WB] 2026-05-13T14:28:00.684766-04:00 VNET WB_OBSERVE: wave_id=9 dir=up mag=1.10%
+[WB] 2026-05-13T14:31:02.164610-04:00 VNET WB_DOWNWAVE: wave_id=10 score=4 (< 7, no arm)
+[WB] 2026-05-13T14:31:07.418773-04:00 ENSC WB_DOWNWAVE: wave_id=71 score=4 (< 7, no arm)
+[WB] 2026-05-13T14:33:03.323779-04:00 SST WB_DOWNWAVE: wave_id=55 score=5 (< 7, no arm)
+[WB] 2026-05-13T14:33:09.766772-04:00 ODYS WB_DOWNWAVE: wave_id=61 score=6 (< 7, no arm)
+[WB] 2026-05-13T14:34:01.084979-04:00 CLNN WB_OBSERVE: wave_id=14 dir=up mag=1.44%
+[WB] 2026-05-13T14:38:05.591727-04:00 ATRA WB_DOWNWAVE: wave_id=37 score=3 (< 7, no arm)
+[WB] 2026-05-13T14:40:05.477905-04:00 ODYS WB_OBSERVE: wave_id=62 dir=up mag=0.92%
+[WB] 2026-05-13T14:40:07.649614-04:00 FATN WB_OBSERVE: wave_id=47 dir=up mag=3.83%
+[WB] 2026-05-13T14:41:02.639964-04:00 SST WB_DOWNWAVE: wave_id=56 score=3 (< 7, no arm)
+[WB] 2026-05-13T14:41:06.144477-04:00 CLNN WB_DOWNWAVE: wave_id=15 score=6 (< 7, no arm)
+[WB] 2026-05-13T14:41:10.149630-04:00 ATRA WB_DOWNWAVE: wave_id=38 score=5 (< 7, no arm)
+[WB] 2026-05-13T14:43:14.062205-04:00 TRAW WB_DOWNWAVE: wave_id=51 score=3 (< 7, no arm)
+[WB] 2026-05-13T14:43:17.816913-04:00 ODYS WB_ARMED: score=7 wave_id=63 prov_entry=4.3600 stop=4.3491
+[CHOP_REJECT] 2026-05-13T14:43:17.817076-04:00 ODYS: r_pct_below_floor (R%=1.16 < 1.5%)
+[WB] 2026-05-13T14:45:00.080693-04:00 FATN WB_OBSERVE: wave_id=48 dir=up mag=1.62%
+[WB] 2026-05-13T14:45:03.935276-04:00 ENSC WB_DOWNWAVE: wave_id=72 score=3 (< 7, no arm)
+[WB] 2026-05-13T14:48:10.422778-04:00 CLNN WB_OBSERVE: wave_id=16 dir=up mag=2.23%
+[WB] 2026-05-13T14:50:12.298179-04:00 ENSC WB_OBSERVE: wave_id=73 dir=up mag=1.72%
+[WB] 2026-05-13T14:52:03.672203-04:00 FATN WB_OBSERVE: wave_id=49 dir=up mag=2.67%
+[WB] 2026-05-13T14:52:18.256870-04:00 TRAW WB_OBSERVE: wave_id=52 dir=up mag=1.75%
+[WB] 2026-05-13T14:53:05.319220-04:00 ODYS WB_DOWNWAVE: wave_id=64 score=6 (< 7, no arm)
+[WB] 2026-05-13T14:54:00.122631-04:00 ATRA WB_OBSERVE: wave_id=39 dir=up mag=3.58%
+[WB] 2026-05-13T14:56:28.925001-04:00 CLNN WB_OBSERVE: wave_id=17 dir=up mag=1.74%
+[WB] 2026-05-13T14:57:30.255709-04:00 CLNN WB_DOWNWAVE: wave_id=18 score=2 (< 7, no arm)
+[WB] 2026-05-13T14:57:51.032913-04:00 SST WB_OBSERVE: wave_id=57 dir=up mag=1.12%
+[WB] 2026-05-13T14:58:00.865503-04:00 ODYS WB_OBSERVE: wave_id=65 dir=up mag=1.38%
+[WB] 2026-05-13T15:00:01.706165-04:00 FATN WB_DOWNWAVE: wave_id=50 score=2 (< 7, no arm)
+[WB] 2026-05-13T15:01:07.338769-04:00 ENSC WB_ARMED: score=7 wave_id=74 prov_entry=0.2862 stop=0.2855
+[CHOP_REJECT] 2026-05-13T15:01:07.338954-04:00 ENSC: r_pct_below_floor (R%=0.24 < 1.5%)
+[WB] 2026-05-13T15:03:04.207192-04:00 TRAW WB_DOWNWAVE: wave_id=53 score=5 (< 7, no arm)
+[WB] 2026-05-13T15:03:05.458650-04:00 CLNN WB_DOWNWAVE: wave_id=19 score=5 (< 7, no arm)
+[WB] 2026-05-13T15:03:36.249337-04:00 SST WB_DOWNWAVE: wave_id=58 score=5 (< 7, no arm)
+[WB] 2026-05-13T15:07:02.586343-04:00 TRAW WB_OBSERVE: wave_id=54 dir=up mag=1.73%
+[WB] 2026-05-13T15:09:00.243240-04:00 VNET WB_OBSERVE: wave_id=11 dir=up mag=0.80%
+[WB] 2026-05-13T15:09:57.984036-04:00 FATN WB_OBSERVE: wave_id=51 dir=up mag=1.05%
+[WB] 2026-05-13T15:10:00.056167-04:00 ENSC WB_OBSERVE: wave_id=75 dir=up mag=1.94%
+[WB] 2026-05-13T15:10:07.346369-04:00 CLNN WB_DOWNWAVE: wave_id=20 score=5 (< 7, no arm)
+[WB] 2026-05-13T15:10:08.664842-04:00 SST WB_ARMED: score=7 wave_id=59 prov_entry=3.6250 stop=3.5874
+[CHOP_REJECT] 2026-05-13T15:10:08.664978-04:00 SST: r_pct_below_floor (R%=1.04 < 1.5%)
+[WB] 2026-05-13T15:11:21.912665-04:00 ATRA WB_OBSERVE: wave_id=40 dir=up mag=1.37%
+[WB] 2026-05-13T15:14:09.386068-04:00 TRAW WB_DOWNWAVE: wave_id=55 score=5 (< 7, no arm)
+[WB] 2026-05-13T15:15:12.428170-04:00 ATRA WB_DOWNWAVE: wave_id=41 score=2 (< 7, no arm)
+[WB] 2026-05-13T15:16:21.754196-04:00 SST WB_ARMED: score=10 wave_id=60 prov_entry=3.6500 stop=3.5711
+[CHOP_REJECT] 2026-05-13T15:16:21.754347-04:00 SST: r_pct_below_floor (R%=1.08 < 1.5%)
+[WB] 2026-05-13T15:17:07.563751-04:00 FATN WB_DOWNWAVE: wave_id=52 score=4 (< 7, no arm)
+[WB] 2026-05-13T15:18:01.811893-04:00 signal received — shutting down
+[WB] 2026-05-13T15:18:01.812406-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0
+[WB] 2026-05-13T15:18:01.812448-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)
+[WB] BOOT: RESUME (reason=resume_flag, marker_age=40700s)
+[WB] 2026-05-13T15:18:32.106321-04:00 starting equity $88,782 (third Alpaca paper account)
+[WB] 2026-05-13T15:18:32.106475-04:00 RESUME: reconciling state
+[WB] 2026-05-13T15:18:32.243289-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0
+[WB] 2026-05-13T15:18:32.244703-04:00 RESUME: complete
+[WB] 2026-05-13T15:18:32.244918-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[WB] 2026-05-13T15:18:35.267555-04:00 stream healthy — entries unlocked

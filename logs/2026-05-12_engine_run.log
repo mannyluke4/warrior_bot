@@ -26,3 +26,12 @@ ALERT: wb_bot.py died at Tue May 12 09:09:24 MDT 2026. See /Users/duffy/warrior_
 Trading windows closed. Proceeding to shutdown.
 === Setup B engine daily run complete: Tue May 12 18:05:22 MDT 2026 ===
 === TRAP: cleanup at Tue May 12 18:05:22 MDT 2026 ===
+/Users/duffy/warrior_bot_v2_engine/daily_run_engine.sh: line 74: 14900 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[data-engine-unified c6425a7] auto: engine daily logs 2026-05-12
+ 5 files changed, 832 insertions(+)
+ create mode 100644 logs/2026-05-12_engine.log
+ create mode 100644 logs/2026-05-12_engine_run.log
+ create mode 100644 logs/2026-05-12_squeeze_bot.log
+ create mode 100644 logs/2026-05-12_wb_bot.log
+ create mode 100644 logs/cron_2026-05-12.log
+=== Cleanup complete: Tue May 12 18:05:29 MDT 2026 ===
