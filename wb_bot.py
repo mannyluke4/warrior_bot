@@ -243,6 +243,15 @@ class WBBot:
         self.state = EngineState()
         self.detectors: dict[str, WaveBreakoutDetector] = {}
         self.positions: dict[str, _WBPosition] = {}
+        # Per-symbol seed state — same heuristic as squeeze_bot. The
+        # WaveBreakoutDetector doesn't expose seed_bar_close /
+        # end_seed / validate_arm_after_seed, so seed bars still go
+        # through on_bar_close_1m (they warm the wave/MACD history),
+        # but we MUST skip seed-time ticks so a setup that armed during
+        # seed-bar replay can't fire an entry mid-replay. Same fix
+        # structure as squeeze_bot's ATRA 2026-05-13 phantom-arm bug.
+        self.seeding: dict[str, bool] = {}
+        self.seed_last_price: dict[str, float] = {}
         # Hypothesis #11 — within-session same-symbol blacklist. Symbol →
         # count of closed losses this session. Incremented in _handle_exit
         # when pnl<0; checked in _handle_entry before chop gate v3. Persisted
@@ -276,6 +285,13 @@ class WBBot:
 
     def on_tick(self, msg: TickMessage):
         sym = msg.symbol
+        # Seed-time tick gate. During seed replay, ticks accompany the
+        # replayed bars; routing them through on_trade_price would let a
+        # setup that armed on a replayed bar fire an entry on a replayed
+        # tick (the ATRA 2026-05-13 pattern). Skip ticks until the
+        # seed→live transition flips this flag off in on_bar.
+        if self.seeding.get(sym, False):
+            return
         det = self._ensure_detector(sym)
         try:
             res = det.on_trade_price(msg.price)
@@ -342,6 +358,34 @@ class WBBot:
         sym = msg.symbol
         det = self._ensure_detector(sym)
         bar = bar_from_message(msg)
+
+        # ── Seed vs live routing ──────────────────────────────────────
+        # WaveBreakoutDetector doesn't expose a seed_bar_close /
+        # end_seed pair (unlike SqueezeDetector), so seed bars still
+        # flow through on_bar_close_1m (the detector needs the wave +
+        # MACD history populated either way). The seeding flag exists
+        # solely to gate on_tick so a setup that armed on a replayed
+        # bar can't fire an entry on a replayed tick. Same bar-age
+        # heuristic as squeeze_bot.
+        now_utc = datetime.now(UTC)
+        try:
+            ts_close_dt = datetime.fromisoformat(msg.ts_close)
+            bar_age_s = (now_utc - ts_close_dt.astimezone(UTC)).total_seconds()
+        except Exception:
+            bar_age_s = 0.0
+        is_seed_bar = bar_age_s > 30
+
+        was_seeding = self.seeding.get(sym, False)
+        if is_seed_bar:
+            self.seeding[sym] = True
+            self.seed_last_price[sym] = bar.close
+        elif was_seeding:
+            # Seed→live transition for this symbol.
+            self.seeding[sym] = False
+            last_price = self.seed_last_price.get(sym, bar.close)
+            print(f"[WB] {now_iso_et()} {sym} seed→live transition "
+                  f"(seed_last_price=${last_price:.4f})", flush=True)
+
         try:
             res = det.on_bar_close_1m(bar, vwap=msg.vwap)
         except Exception as e:

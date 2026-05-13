@@ -178,6 +178,20 @@ class SqueezeBot:
         self.state = EngineState()
         self.detectors: dict[str, SqueezeDetector] = {}
         self.positions: dict[str, _Position] = {}
+        # Per-symbol seed state. The engine seeds the bar-builder from
+        # tick_cache at boot + on intraday adds, then broadcasts those
+        # replayed bars to clients. Without this state the detector
+        # can't tell "seed bar" from "live bar" and its stale-arm
+        # safeguard (validate_arm_after_seed) never fires — see
+        # ATRA 2026-05-13 phantom-arm incident.
+        #
+        # Bar-age heuristic: a bar whose ts_close is >30s older than
+        # wall-clock is a replayed seed bar. Live bars arrive within
+        # ~5s of their bucket close. State machine per symbol:
+        #   cold → seeding (first seed bar) → live (first live bar,
+        #   at which point we call end_seed + validate_arm_after_seed)
+        self.seeding: dict[str, bool] = {}
+        self.seed_last_price: dict[str, float] = {}
         # RLock because `_persist_open_trades` re-enters the lock from
         # inside `_tick_manage_exit` (which is already holding it). A
         # plain Lock would deadlock the bot the first time the ladder
@@ -210,6 +224,12 @@ class SqueezeBot:
 
     def on_tick(self, msg: TickMessage):
         sym = msg.symbol
+        # During seed replay, ticks accompany bars; the detector's seed
+        # path handles warmup via seed_bar_close. Routing seed-time ticks
+        # through on_trade_price would let a stale armed setup fire an
+        # entry mid-replay (the ATRA 2026-05-13 phantom-arm bug). Skip.
+        if self.seeding.get(sym, False):
+            return
         det = self._ensure_detector(sym)
         # Tick path — detector returns "ENTRY SIGNAL ..." when an armed
         # squeeze trigger fires.
@@ -236,6 +256,72 @@ class SqueezeBot:
         sym = msg.symbol
         det = self._ensure_detector(sym)
         bar = bar_from_message(msg)
+
+        # ── Seed vs live routing ──────────────────────────────────────
+        # The engine seeds bar-builder from tick_cache at boot and on
+        # intraday adds, then broadcasts those replayed bars to clients.
+        # The detector has separate code paths for seed vs live (seed
+        # warms indicators silently; live can fire signals). Bar age
+        # tells us which: live bars arrive within ~5s of their ts_close;
+        # seed bars are minutes-to-hours old. Threshold 30s.
+        #
+        # State machine: cold → seeding (first seed bar) → live (first
+        # live bar). The seeding→live transition is the critical
+        # boundary where we call end_seed + validate_arm_after_seed to
+        # drop arms whose trigger is already far below current price.
+        now_utc = datetime.now(UTC)
+        try:
+            ts_close_dt = datetime.fromisoformat(msg.ts_close)
+            bar_age_s = (now_utc - ts_close_dt.astimezone(UTC)).total_seconds()
+        except Exception:
+            # Unparseable ts_close — assume live to preserve current behavior.
+            bar_age_s = 0.0
+        is_seed_bar = bar_age_s > 30
+
+        was_seeding = self.seeding.get(sym, False)
+
+        if is_seed_bar:
+            # Seed bar — route through detector's seed path (no signals).
+            if not was_seeding:
+                # Entering seed phase for this symbol — explicit begin_seed
+                # to keep the detector's internal flags consistent with
+                # Setup A's bot_v3_hybrid pattern.
+                try:
+                    det.begin_seed()
+                except Exception as e:
+                    print(f"[SQUEEZE] {now_iso_et()} {sym} begin_seed error: "
+                          f"{e!r}", flush=True)
+                self.seeding[sym] = True
+            try:
+                det.seed_bar_close(bar.open, bar.high, bar.low, bar.close,
+                                    bar.volume)
+            except Exception as e:
+                print(f"[SQUEEZE] {now_iso_et()} {sym} seed_bar_close error: "
+                      f"{e!r}", flush=True)
+            self.seed_last_price[sym] = bar.close
+            return  # No signal evaluation during seed
+
+        # Live bar — handle seed→live transition first.
+        if was_seeding:
+            try:
+                det.end_seed()
+            except Exception as e:
+                print(f"[SQUEEZE] {now_iso_et()} {sym} end_seed error: {e!r}",
+                      flush=True)
+            last_price = self.seed_last_price.get(sym, bar.close)
+            try:
+                validation = det.validate_arm_after_seed(last_price)
+                if validation:
+                    print(f"[BOT-SEED-VALIDATE] {now_iso_et()} {sym} "
+                          f"{validation}", flush=True)
+            except Exception as e:
+                print(f"[SQUEEZE] {now_iso_et()} {sym} validate_arm_after_seed "
+                      f"error: {e!r}", flush=True)
+            self.seeding[sym] = False
+            print(f"[SQUEEZE] {now_iso_et()} {sym} seed→live transition "
+                  f"(seed_last_price=${last_price:.4f})", flush=True)
+
+        # Now process the live bar normally.
         try:
             res = det.on_bar_close_1m(bar, vwap=msg.vwap)
         except Exception as e:
