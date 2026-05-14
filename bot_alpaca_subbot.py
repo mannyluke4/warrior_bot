@@ -180,6 +180,22 @@ WB_PRE_MARKET_BLOCK_ENABLED = os.getenv(
 WB_PRE_MARKET_BLOCK_MIN_ET = os.getenv(
     "WB_PRE_MARKET_BLOCK_MIN_ET", "11:00")
 
+# Hypothesis #16 — entry-time minimum price floor (2026-05-13).
+# WB_MIN_PRICE=$2 is only enforced in the scanner; once a symbol is on the
+# watchlist the bot would trade it regardless of current price. 2026-05-13
+# ENSC at $0.30 (R% < spread, impossible setup) was the canonical case. Data
+# across 5/8-5/13 (21 closed WB trades):
+#   sub-$6 WR 7.7% (1/13), net -$8,972
+#   $6+   WR 25%  (2/8),  net  +$345
+# The single sub-$6 winner (SST 5/11) had R% 2.07% AND took 6.8% of price —
+# exceptional setup that's hard to replicate. Reject arms whose entry price
+# falls below WB_WB_MIN_ENTRY_PRICE BEFORE chop gate v2/v3 — cheap and
+# applies in the score>=9 chop_bypass path too (same precedent as
+# H#10/H#11/H#14). Default-ON per directive — data is overwhelming.
+WB_WB_MIN_ENTRY_PRICE_ENABLED = os.getenv(
+    "WB_WB_MIN_ENTRY_PRICE_ENABLED", "1") == "1"
+WB_WB_MIN_ENTRY_PRICE = float(os.getenv("WB_WB_MIN_ENTRY_PRICE", "6.00"))
+
 
 def _parse_hh_mm(hhmm: str) -> time_cls:
     """Parse 'HH:MM' (24-hour ET) into a datetime.time. Defaults to 11:00
@@ -904,6 +920,23 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
             if symbol in state.wb_detectors:
                 state.wb_detectors[symbol].mark_entry_failed(
                     "pre_threshold_time")
+            return
+
+    # Hypothesis #16 — entry-time price floor (2026-05-13). The scanner's
+    # WB_MIN_PRICE=$2 is enforced only at watchlist build; once a symbol is
+    # on the list, the bot would trade it regardless of current price.
+    # 2026-05-13 ENSC at $0.30 (impossible setup) was the canonical case.
+    # Across 5/8-5/13: sub-$6 WR 7.7% net -$8,972, $6+ WR 25% net +$345.
+    # Runs BEFORE chop gate v2/v3 — cheapest possible check — and applies in
+    # the score>=9 chop_bypass path too (same precedent as H#10/H#11/H#14).
+    if WB_WB_MIN_ENTRY_PRICE_ENABLED:
+        if entry_price < WB_WB_MIN_ENTRY_PRICE:
+            print(f"[CHOP_REJECT] {symbol}: entry_price_below_floor "
+                  f"(${entry_price:.2f} < ${WB_WB_MIN_ENTRY_PRICE:.2f})",
+                  flush=True)
+            if symbol in state.wb_detectors:
+                state.wb_detectors[symbol].mark_entry_failed(
+                    "entry_price_below_floor")
             return
 
     # Tradability gate (DIRECTIVE_TRADABILITY_GATE.md). Per-day chop blacklist
