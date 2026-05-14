@@ -3837,3 +3837,1121 @@ done )
 === Cleanup complete: Thu May 14 07:31:35 MDT 2026 ===
 FATAL: bot_v3_hybrid.py crashed within 15s of launch. Check /Users/duffy/warrior_bot_v2/logs/2026-05-14_daily.log for details.
 === TRAP: cleanup at Thu May 14 07:31:41 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 69350 Terminated: 15          caffeinate -dims -w $$  (wd: ~/warrior_bot_v2_engine)
+[v2-ibkr-migration 83ea5f9] auto: v3 daily logs 2026-05-14
+ 3 files changed, 37 insertions(+)
+=== Cleanup complete: Thu May 14 07:31:43 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 72283)
+=== V3 Hybrid daily run started: Thu May 14 10:34:40 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 8dea71a (wb_persistence: Stage 0.2 — carry-forward WB-observed symbols 3 sessions)
+daily_run_v3.sh hash: 65da06c18b31a4ec91bdd54676b07711  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: b791e74733a22f2f3f4e569cfca8720d  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: 5231c9f9b299949e898fbc1bf353d9a5  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.031821 +/- 0.067347 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Thu May 14 16:34:41 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 72350)
+Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)...
+Bot started (PID: 72381)
+BOOT: RESUME mode (marker age=30871s, reason=marker_present)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+Alpaca data client connected (for latency diagnostic / aware-limits)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: ALPACA
+🔁 RESUME: reconciling orders + positions
+  RESUME: risk restored — daily_pnl=$+0.00 trades=0 losses=0 (closed_trades=0 cached)
+🔁 RESUME: reconcile complete
+Account equity: $30,000
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 12:34:50 ET (first scan — casting wide net)...
+⚠️ IBKR ERROR 2106: HMDS data farm connection is OK:ushmds (symbol=?)
+Error 162, reqId 31280: Historical Market Data Service error message:API scanner subscription cancelled: 31280
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31280 (reqId=31280, symbol=?)
+Error 162, reqId 31281: Historical Market Data Service error message:API scanner subscription cancelled: 31281
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31281 (reqId=31281, symbol=?)
+  Catchup: 47 unique symbols from 3 scanners
+    Catchup: processing 1/47 — AEHL...
+Error 162, reqId 31282: Historical Market Data Service error message:API scanner subscription cancelled: 31282
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31282 (reqId=31282, symbol=?)
+    Catchup: processing 2/47 — AIIO...
+    Catchup: processing 3/47 — BAC PRQ...
+    Catchup: processing 4/47 — BITO...
+  [FMP] BAC PRQ: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 5/47 — BMNU...
+    Catchup: processing 6/47 — BNKK...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+Bot health check passed (still running after 15s, PID: 72381)
+HEALTH_OK: Bot connected at 2026-05-14 16:35:04 UTC
+Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)...
+Sub-bot started (PID: 72399, log: /Users/duffy/warrior_bot_v2/logs/2026-05-14_subbot_alpaca.log)
+    Catchup: processing 7/47 — CSCS...
+    Catchup: processing 8/47 — EOSE...
+  [FMP] CSCS: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 9/47 — F...
+    Catchup: processing 10/47 — FENC...
+    Catchup: processing 11/47 — FRMI...
+    Catchup: processing 12/47 — GTEN...
+    Catchup: processing 13/47 — HUHU...
+    Catchup: processing 14/47 — IPHA...
+    Catchup: processing 15/47 — IPST...
+Sub-bot health check passed (still running after 15s, PID: 72399)
+Gateway watchdog started (PID: 72416)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu May 14 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+    Catchup: processing 16/47 — IPWR...
+  Tick cache: AEHL → +2 ticks (total 106)
+  Tick cache: AIIO → +2 ticks (total 114)
+  Tick cache: BAC PRQ → +3 ticks (total 3)
+  Tick cache: BITO → +3 ticks (total 3)
+  Tick cache: BMNU → +2 ticks (total 2)
+  Tick cache: BNKK → +1 ticks (total 115)
+  Tick cache: CSCS → +2 ticks (total 2)
+  Tick cache: EOSE → +2 ticks (total 2)
+  Tick cache: F → +3 ticks (total 3)
+  Tick cache: FENC → +3 ticks (total 3)
+  Tick cache: FRMI → +2 ticks (total 25)
+  Tick cache: GTEN → +2 ticks (total 2)
+  Tick cache: HUHU → +2 ticks (total 2)
+  Tick cache: IPHA → +2 ticks (total 2)
+  Tick cache: IPST → +2 ticks (total 39)
+  Tick cache: IPWR → +3 ticks (total 3)
+📦 Tick cache saved: 16 symbols → tick_cache/2026-05-14/
+    Catchup: processing 17/47 — IRHOU...
+    Catchup: processing 18/47 — LESL...
+  [FMP] IRHOU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  [EDGAR] IRHOU: 29.32M shares outstanding
+    Catchup: processing 19/47 — LNKS...
+    Catchup: processing 20/47 — MGNX...
+    Catchup: processing 21/47 — MOBX...
+    Catchup: processing 22/47 — MOGU...
+    Catchup: processing 23/47 — NOK...
+  [FMP] MOGU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 24/47 — NUG...
+    Catchup: processing 25/47 — NVD...
+  [FMP] NUG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 26/47 — ONDG...
+    Catchup: processing 27/47 — ONDS...
+  [FMP] ONDG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 28/47 — ONDU...
+    Catchup: processing 29/47 — OYSE...
+    Catchup: processing 30/47 — PLUG...
+  [FMP] OYSE: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 31/47 — PLUT...
+    Catchup: processing 32/47 — POET...
+    Catchup: processing 33/47 — QNTM...
+    Catchup: processing 34/47 — QSEA...
+    Catchup: processing 35/47 — QUCY...
+  Tick cache: IRHOU → +2 ticks (total 2)
+  Tick cache: LESL → +3 ticks (total 3)
+  Tick cache: LNKS → +2 ticks (total 13)
+  Tick cache: MGNX → +2 ticks (total 2)
+  Tick cache: MOBX → +1 ticks (total 26)
+  Tick cache: MOGU → +2 ticks (total 2)
+  Tick cache: NOK → +2 ticks (total 37)
+  Tick cache: NUG → +2 ticks (total 2)
+  Tick cache: NVD → +3 ticks (total 3)
+  Tick cache: ONDG → +2 ticks (total 94)
+  Tick cache: ONDS → +1 ticks (total 94)
+  Tick cache: ONDU → +2 ticks (total 24)
+  Tick cache: OYSE → +1 ticks (total 1)
+  Tick cache: PLUG → +2 ticks (total 2)
+  Tick cache: PLUT → +2 ticks (total 2)
+  Tick cache: POET → +2 ticks (total 44)
+  Tick cache: QNTM → +4 ticks (total 4)
+  Tick cache: QSEA → +2 ticks (total 2)
+  Tick cache: QUCY → +3 ticks (total 3)
+📦 Tick cache saved: 19 symbols → tick_cache/2026-05-14/
+    Catchup: processing 36/47 — RDW...
+    Catchup: processing 37/47 — RDWU...
+    Catchup: processing 38/47 — RGNX...
+    Catchup: processing 39/47 — SANA...
+    Catchup: processing 40/47 — SCO...
+    Catchup: processing 41/47 — SMX...
+    Catchup: processing 42/47 — SOFI...
+    Catchup: processing 43/47 — SOXS...
+    Catchup: processing 44/47 — TSLL...
+    Catchup: processing 45/47 — TVGN...
+    Catchup: processing 46/47 — TZA...
+    Catchup: processing 47/47 — XLO...
+  Catchup: 7 candidates after filters
+🔁 [RESUME] QUCY: 3 ticks → 0 bars | drift=0.3m
+✅ Subscribed: QUCY
+🔁 [RESUME] LNKS: 13 ticks → 6 bars, EMA=2.0883 | drift=0.8m
+✅ Subscribed: LNKS
+🔁 [RESUME] MOBX: 26 ticks → 14 bars, EMA=2.8538 | drift=0.7m
+✅ Subscribed: MOBX
+🔁 [RESUME] LESL: 3 ticks → 0 bars | drift=0.8m
+✅ Subscribed: LESL
+  [RESUME] AEHL: bridged gap (1.3m, capped 90m) → 105 ticks
+🔁 [RESUME] AEHL: 106 ticks → 50 bars, EMA=4.4867 | drift=1.3m
+✅ Subscribed: AEHL
+📊 Scanner: 7 new candidates, 5 new subs, 5 total watching
+
+🧠 WB_PERSIST: 2 symbols carried from prior sessions: ['ATRA', 'SST']
+🔥 Seeded ATRA: 2333 ticks → 50 bars, EMA=9.7981 (46 ticks/bar avg)
+✅ Subscribed: ATRA
+🔥 Seeded SST: 1383 ticks → 50 bars, EMA=3.3510 (27 ticks/bar avg)
+✅ Subscribed: SST
+
+Bot running. Windows: 04:00-20:00 ET. Ctrl+C to stop.
+  TICK AUDIT: AEHL: 9 ticks in last 60s, last_price=$3.84, last_tick_time=12:36:17
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.82, last_tick_time=12:36:11
+  TICK AUDIT: LESL: 60 ticks in last 60s, last_price=$4.41, last_tick_time=12:36:17
+  TICK AUDIT: LNKS: 20 ticks in last 60s, last_price=$2.04, last_tick_time=12:36:17
+  TICK AUDIT: MOBX: 34 ticks in last 60s, last_price=$3.31, last_tick_time=12:36:17
+  TICK AUDIT: QUCY: 86 ticks in last 60s, last_price=$2.71, last_tick_time=12:36:17
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$3.38, last_tick_time=12:36:12
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+⚠️ TICK DROUGHT: ATRA — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: RDW → +1 ticks (total 44)
+  Tick cache: RDWU → +2 ticks (total 52)
+  Tick cache: RGNX → +3 ticks (total 3)
+  Tick cache: SANA → +2 ticks (total 2)
+  Tick cache: SCO → +2 ticks (total 2)
+  Tick cache: SMX → +2 ticks (total 2)
+  Tick cache: SOFI → +2 ticks (total 2)
+  Tick cache: SOXS → +1 ticks (total 1)
+  Tick cache: TSLL → +2 ticks (total 2)
+  Tick cache: TVGN → +2 ticks (total 2)
+  Tick cache: TZA → +3 ticks (total 3)
+  Tick cache: XLO → +2 ticks (total 2)
+  Tick cache: QUCY → +120 ticks (total 123)
+  Tick cache: LNKS → +19 ticks (total 32)
+  Tick cache: MOBX → +38 ticks (total 64)
+  Tick cache: LESL → +82 ticks (total 85)
+  Tick cache: AEHL → +119 ticks (total 225)
+  Tick cache: ATRA → +2,334 ticks (total 2,334)
+  Tick cache: SST → +1,388 ticks (total 1,388)
+📦 Tick cache saved: 19 symbols → tick_cache/2026-05-14/
+[TIER] PROMOTE AEHL reason=wave_observing capacity=1/5
+[TIER] PROMOTE SST reason=volume_top2 capacity=2/5
+[TIER] STATUS tier1=['AEHL', 'SST'] tier2=5 capacity=2/5
+  Tick cache: LNKS → +41 ticks (total 73)
+  Tick cache: QUCY → +332 ticks (total 455)
+  Tick cache: LESL → +303 ticks (total 388)
+  Tick cache: MOBX → +101 ticks (total 165)
+  Tick cache: AEHL → +26 ticks (total 251)
+  Tick cache: ATRA → +2 ticks (total 2,336)
+  Tick cache: SST → +1 ticks (total 1,389)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['AEHL', 'SST'] tier2=5 capacity=2/5
+[12:37:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1122 | AEHL:80t/IDLE ATRA:2t/IDLE LESL:359t/IDLE LNKS:52t/IDLE MOBX:112t/IDLE QUCY:426t/IDLE SST:1t/IDLE
+[12:37:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1157 | AEHL:83t/IDLE ATRA:2t/IDLE LESL:375t/IDLE LNKS:52t/IDLE MOBX:113t/IDLE QUCY:441t/IDLE SST:1t/IDLE
+  TICK AUDIT: AEHL: 95 ticks in last 60s, last_price=$3.84, last_tick_time=12:37:17
+  TICK AUDIT: ATRA: 2 ticks in last 60s, last_price=$9.82, last_tick_time=12:36:34
+  TICK AUDIT: LESL: 571 ticks in last 60s, last_price=$4.42, last_tick_time=12:37:18
+  TICK AUDIT: LNKS: 80 ticks in last 60s, last_price=$2.09, last_tick_time=12:37:14
+  TICK AUDIT: MOBX: 158 ticks in last 60s, last_price=$3.31, last_tick_time=12:37:18
+  TICK AUDIT: QUCY: 648 ticks in last 60s, last_price=$2.74, last_tick_time=12:37:18
+  TICK AUDIT: SST: 1 ticks in last 60s, last_price=$3.38, last_tick_time=12:36:22
+  Tick cache: QUCY → +347 ticks (total 802)
+  Tick cache: LESL → +297 ticks (total 685)
+  Tick cache: AEHL → +73 ticks (total 324)
+  Tick cache: MOBX → +66 ticks (total 231)
+  Tick cache: LNKS → +42 ticks (total 115)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[TIER] PROMOTE QUCY reason=wave_observing capacity=3/5
+[TIER] PROMOTE LESL reason=volume_top2 capacity=4/5
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+  Tick cache: QUCY → +1,161 ticks (total 1,963)
+  Tick cache: LESL → +829 ticks (total 1,514)
+  Tick cache: MOBX → +125 ticks (total 356)
+  Tick cache: LNKS → +45 ticks (total 160)
+  Tick cache: AEHL → +245 ticks (total 569)
+  Tick cache: SST → +1 ticks (total 1,390)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+[12:38:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3782 | AEHL:250t/IDLE ATRA:0t/IDLE LESL:1380t/IDLE LNKS:56t/IDLE MOBX:181t/IDLE QUCY:1824t/IDLE SST:1t/IDLE
+[12:38:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3987 | AEHL:256t/IDLE ATRA:0t/IDLE LESL:1465t/IDLE LNKS:58t/IDLE MOBX:189t/IDLE QUCY:1928t/IDLE SST:1t/IDLE
+  TICK AUDIT: AEHL: 409 ticks in last 60s, last_price=$3.81, last_tick_time=12:38:16
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.82, last_tick_time=12:36:34
+  TICK AUDIT: LESL: 2011 ticks in last 60s, last_price=$4.30, last_tick_time=12:38:18
+  TICK AUDIT: LNKS: 84 ticks in last 60s, last_price=$2.08, last_tick_time=12:38:17
+  TICK AUDIT: MOBX: 234 ticks in last 60s, last_price=$3.27, last_tick_time=12:38:18
+  TICK AUDIT: QUCY: 2654 ticks in last 60s, last_price=$2.71, last_tick_time=12:38:18
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$3.36, last_tick_time=12:38:12
+⚠️ TICK DROUGHT: ATRA — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+  Tick cache: LESL → +1,227 ticks (total 2,741)
+  Tick cache: QUCY → +1,599 ticks (total 3,562)
+  Tick cache: MOBX → +108 ticks (total 464)
+  Tick cache: AEHL → +165 ticks (total 734)
+  Tick cache: LNKS → +40 ticks (total 200)
+  Tick cache: SST → +3 ticks (total 1,393)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+  Tick cache: LESL → +1,340 ticks (total 4,081)
+  Tick cache: QUCY → +463 ticks (total 4,025)
+  Tick cache: ATRA → +2 ticks (total 2,338)
+  Tick cache: SST → +4 ticks (total 1,397)
+  Tick cache: LNKS → +53 ticks (total 253)
+  Tick cache: MOBX → +122 ticks (total 586)
+  Tick cache: AEHL → +34 ticks (total 768)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+[12:39:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2621 | AEHL:52t/IDLE ATRA:3t/IDLE LESL:1571t/IDLE LNKS:59t/IDLE MOBX:181t/IDLE QUCY:661t/IDLE SST:4t/IDLE
+[12:39:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2647 | AEHL:52t/IDLE ATRA:3t/IDLE LESL:1579t/IDLE LNKS:61t/IDLE MOBX:191t/IDLE QUCY:667t/IDLE SST:4t/IDLE
+  TICK AUDIT: AEHL: 64 ticks in last 60s, last_price=$3.84, last_tick_time=12:39:17
+  TICK AUDIT: ATRA: 4 ticks in last 60s, last_price=$9.79, last_tick_time=12:39:04
+  TICK AUDIT: LESL: 1967 ticks in last 60s, last_price=$4.19, last_tick_time=12:39:18
+  TICK AUDIT: LNKS: 78 ticks in last 60s, last_price=$2.07, last_tick_time=12:39:11
+  TICK AUDIT: MOBX: 330 ticks in last 60s, last_price=$3.18, last_tick_time=12:39:18
+  TICK AUDIT: QUCY: 951 ticks in last 60s, last_price=$2.71, last_tick_time=12:39:18
+  TICK AUDIT: SST: 6 ticks in last 60s, last_price=$3.39, last_tick_time=12:39:18
+  Tick cache: MOBX → +223 ticks (total 809)
+  Tick cache: QUCY → +502 ticks (total 4,527)
+  Tick cache: LESL → +699 ticks (total 4,780)
+  Tick cache: AEHL → +31 ticks (total 799)
+  Tick cache: ATRA → +2 ticks (total 2,340)
+  Tick cache: LNKS → +25 ticks (total 278)
+  Tick cache: SST → +2 ticks (total 1,399)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+  Tick cache: MOBX → +269 ticks (total 1,078)
+  Tick cache: QUCY → +561 ticks (total 5,088)
+  Tick cache: LESL → +1,180 ticks (total 5,960)
+  Tick cache: AEHL → +641 ticks (total 1,440)
+  Tick cache: LNKS → +24 ticks (total 302)
+  Tick cache: SST → +7 ticks (total 1,406)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+
+🔄 Running scanner at 12:39:50 ET...
+Error 162, reqId 31404: Historical Market Data Service error message:API scanner subscription cancelled: 31404
+  [float_cache] Cleared 7 stale None entries — will re-attempt lookups
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31404 (reqId=31404, symbol=?)
+[12:40 ET] MOBX CHART | O=3.23 H=3.23 L=3.13 C=3.17 V=284,159 | EMA9=3.10 VWAP=3.20 (-1.0%) HOD=3.32 PM_H=3.20 | MACD=N/A vol_ratio=541.3x avg_vol=525 bars=18 | sq=IDLE armed=none
+[12:40 ET] QUCY CHART | O=2.69 H=2.75 L=2.69 C=2.74 V=323,244 | EMA9=2.71 VWAP=2.73 (+0.3%) HOD=2.79 PM_H=-inf | MACD=N/A vol_ratio=7.7x avg_vol=42,000 bars=4 | sq=IDLE armed=none
+[12:40 ET] LESL CHART | O=4.27 H=4.28 L=4.08 C=4.21 V=272,977 | EMA9=4.31 VWAP=4.31 (-2.3%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=65.0x avg_vol=4,200 bars=4 | sq=IDLE armed=none
+[12:40 ET] AEHL CHART | O=3.81 H=4.00 L=3.81 C=3.94 V=67,256 | EMA9=4.16 VWAP=4.09 (-3.7%) HOD=6.01 PM_H=6.01 | MACD=N/A vol_ratio=166.0x avg_vol=405 bars=50 | sq=IDLE armed=none
+[12:40 ET] LNKS CHART | O=2.08 H=2.08 L=2.06 C=2.06 V=6,190 | EMA9=2.08 VWAP=2.08 (-0.8%) HOD=2.17 PM_H=2.17 | MACD=N/A vol_ratio=6.9x avg_vol=898 bars=10 | sq=IDLE armed=none
+[12:40 ET] AIIO CHART | O=4.17 H=4.17 L=4.17 C=4.17 V=200 | EMA9=none VWAP=4.17 (+0.1%) HOD=4.17 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] SST CHART | O=3.38 H=3.40 L=3.37 C=3.37 V=1,808 | EMA9=3.37 VWAP=3.37 (+0.1%) HOD=3.50 PM_H=3.50 | MACD=N/A vol_ratio=4.3x avg_vol=421 bars=50 | sq=IDLE armed=none
+[12:40 ET] ATRA CHART | O=9.79 H=9.79 L=9.79 C=9.79 V=1 | EMA9=9.80 VWAP=10.01 (-2.2%) HOD=10.80 PM_H=10.40 | MACD=N/A vol_ratio=0.0x avg_vol=396 bars=50 | sq=IDLE armed=none
+[12:40 ET] IPHA CHART | O=2.09 H=2.09 L=2.09 C=2.09 V=200 | EMA9=none VWAP=2.10 (-0.5%) HOD=2.11 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] ONDG CHART | O=7.22 H=7.22 L=7.22 C=7.22 V=2,000 | EMA9=none VWAP=7.23 (-0.1%) HOD=7.39 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] ONDG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+  Tick cache: MOBX → +174 ticks (total 1,252)
+  Tick cache: QUCY → +587 ticks (total 5,675)
+  Tick cache: LESL → +704 ticks (total 6,664)
+  Tick cache: LNKS → +28 ticks (total 330)
+  Tick cache: AEHL → +89 ticks (total 1,529)
+  Tick cache: AIIO → +3 ticks (total 117)
+  Tick cache: SST → +1 ticks (total 1,407)
+  Tick cache: ATRA → +5 ticks (total 2,345)
+  Tick cache: IPHA → +3 ticks (total 5)
+  Tick cache: ONDG → +2 ticks (total 96)
+📦 Tick cache saved: 10 symbols → tick_cache/2026-05-14/
+[12:40 ET] ONDU CHART | O=11.64 H=11.64 L=11.64 C=11.64 V=800 | EMA9=none VWAP=11.67 (-0.2%) HOD=11.87 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] RDWU CHART | O=18.96 H=18.96 L=18.96 C=18.96 V=400 | EMA9=none VWAP=18.99 (-0.1%) HOD=19.09 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] TVGN CHART | O=9.25 H=9.25 L=9.25 C=9.25 V=200 | EMA9=none VWAP=9.26 (-0.1%) HOD=9.26 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] SMX CHART | O=11.48 H=11.48 L=11.48 C=11.48 V=200 | EMA9=none VWAP=11.39 (+0.8%) HOD=11.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] POET CHART | O=19.05 H=19.05 L=19.05 C=19.05 V=200 | EMA9=none VWAP=19.19 (-0.8%) HOD=19.34 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] IPWR CHART | O=7.10 H=7.10 L=7.10 C=7.10 V=600 | EMA9=none VWAP=7.16 (-0.9%) HOD=7.20 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] IPST CHART | O=7.48 H=7.48 L=7.48 C=7.48 V=800 | EMA9=none VWAP=7.49 (-0.1%) HOD=7.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] FRMI CHART | O=7.53 H=7.53 L=7.53 C=7.53 V=800 | EMA9=none VWAP=7.55 (-0.3%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] FENC CHART | O=8.50 H=8.50 L=8.50 C=8.50 V=1,200 | EMA9=none VWAP=8.51 (-0.2%) HOD=8.68 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] ONDS CHART | O=11.18 H=11.18 L=11.18 C=11.18 V=300 | EMA9=none VWAP=11.21 (-0.3%) HOD=11.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: MOBX → +146 ticks (total 1,398)
+  Tick cache: LESL → +767 ticks (total 7,431)
+  Tick cache: QUCY → +1,498 ticks (total 7,173)
+  Tick cache: AEHL → +1,109 ticks (total 2,638)
+  Tick cache: LNKS → +16 ticks (total 346)
+  Tick cache: ATRA → +1 ticks (total 2,346)
+  Tick cache: ONDU → +1 ticks (total 25)
+  Tick cache: RDWU → +1 ticks (total 53)
+  Tick cache: TVGN → +3 ticks (total 5)
+  Tick cache: SMX → +3 ticks (total 5)
+  Tick cache: POET → +3 ticks (total 47)
+  Tick cache: IPWR → +3 ticks (total 6)
+  Tick cache: IPST → +2 ticks (total 41)
+  Tick cache: SST → +4 ticks (total 1,411)
+  Tick cache: FRMI → +3 ticks (total 28)
+  Tick cache: FENC → +3 ticks (total 6)
+  Tick cache: ONDS → +2 ticks (total 96)
+📦 Tick cache saved: 17 symbols → tick_cache/2026-05-14/
+[12:40 ET] RDW CHART | O=14.54 H=14.54 L=14.54 C=14.54 V=100 | EMA9=none VWAP=14.51 (+0.2%) HOD=14.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:40 ET] MGNX CHART | O=4.24 H=4.24 L=4.24 C=4.24 V=400 | EMA9=none VWAP=4.24 (+0.0%) HOD=4.24 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:41 ET] AEHL SQ | SQ_REJECT: not_new_hod (bar_high=$4.2000 < HOD=$6.0126)
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-05-14.json (66 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 7 total watching
+  TICK AUDIT: AEHL: 1983 ticks in last 60s, last_price=$4.17, last_tick_time=12:41:00
+  TICK AUDIT: ATRA: 6 ticks in last 60s, last_price=$9.76, last_tick_time=12:40:23
+  TICK AUDIT: LESL: 2984 ticks in last 60s, last_price=$4.29, last_tick_time=12:41:00
+  TICK AUDIT: LNKS: 70 ticks in last 60s, last_price=$2.10, last_tick_time=12:40:57
+  TICK AUDIT: MOBX: 657 ticks in last 60s, last_price=$3.14, last_tick_time=12:40:59
+  TICK AUDIT: QUCY: 2897 ticks in last 60s, last_price=$2.65, last_tick_time=12:41:00
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$3.40, last_tick_time=12:40:59
+[TIER] STATUS tier1=['AEHL', 'LESL', 'QUCY', 'SST'] tier2=3 capacity=4/5
+[12:41:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=275 | AEHL:31t/IDLE ATRA:0t/IDLE LESL:40t/IDLE LNKS:5t/IDLE MOBX:2t/IDLE QUCY:66t/IDLE SST:0t/IDLE
+  Tick cache: QUCY → +569 ticks (total 7,742)
+  Tick cache: LESL → +713 ticks (total 8,144)
+  Tick cache: AEHL → +1,059 ticks (total 3,697)
+  Tick cache: MOBX → +139 ticks (total 1,537)
+  Tick cache: LNKS → +21 ticks (total 367)
+  Tick cache: RDW → +3 ticks (total 47)
+  Tick cache: PCT → +3 ticks (total 29)
+  Tick cache: MGNX → +3 ticks (total 5)
+  Tick cache: ATRA → +2 ticks (total 2,348)
+📦 Tick cache saved: 9 symbols → tick_cache/2026-05-14/
+[TIER] DEMOTE AEHL reason=dropped_from_target was_tier1_for=309s capacity=3/5
+[TIER] DEMOTE SST reason=dropped_from_target was_tier1_for=309s capacity=2/5
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+⚠️ HALT DETECTED: AEHL (volatility)
+  Tick cache: QUCY → +411 ticks (total 8,153)
+  Tick cache: AEHL → +51 ticks (total 3,748)
+  Tick cache: LESL → +354 ticks (total 8,498)
+  Tick cache: MOBX → +140 ticks (total 1,677)
+  Tick cache: LNKS → +18 ticks (total 385)
+  Tick cache: SST → +2 ticks (total 1,413)
+  Tick cache: ATRA → +1 ticks (total 2,349)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 967 ticks in last 60s, last_price=$4.42, last_tick_time=12:41:42
+  TICK AUDIT: ATRA: 3 ticks in last 60s, last_price=$9.82, last_tick_time=12:41:42
+  TICK AUDIT: LESL: 870 ticks in last 60s, last_price=$4.26, last_tick_time=12:42:00
+  TICK AUDIT: LNKS: 50 ticks in last 60s, last_price=$2.11, last_tick_time=12:42:00
+  TICK AUDIT: MOBX: 284 ticks in last 60s, last_price=$3.19, last_tick_time=12:42:00
+  TICK AUDIT: QUCY: 878 ticks in last 60s, last_price=$2.67, last_tick_time=12:42:00
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$3.38, last_tick_time=12:41:54
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+[12:42:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=131 | AEHL:0t/IDLE ATRA:0t/IDLE LESL:0t/IDLE LNKS:0t/IDLE MOBX:0t/IDLE QUCY:0t/IDLE SST:0t/IDLE
+  Tick cache: MOBX → +128 ticks (total 1,805)
+  Tick cache: LESL → +425 ticks (total 8,923)
+  Tick cache: QUCY → +424 ticks (total 8,577)
+  Tick cache: LNKS → +35 ticks (total 420)
+  Tick cache: SST → +1 ticks (total 1,414)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+[12:42 ET] AEHL SQ | SQ_REJECT: not_new_hod (bar_high=$4.4200 < HOD=$6.0126)
+  Tick cache: LESL → +3,045 ticks (total 11,968)
+  Tick cache: QUCY → +568 ticks (total 9,145)
+  Tick cache: MOBX → +93 ticks (total 1,898)
+  Tick cache: LNKS → +56 ticks (total 476)
+  Tick cache: AEHL → +5 ticks (total 3,753)
+  Tick cache: SST → +1 ticks (total 1,415)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[12:43:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=5314 | AEHL:6t/IDLE ATRA:0t/IDLE LESL:3900t/IDLE LNKS:86t/IDLE MOBX:185t/IDLE QUCY:1005t/IDLE SST:1t/IDLE
+  TICK AUDIT: AEHL: 7 ticks in last 60s, last_price=$4.42, last_tick_time=12:43:00
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.82, last_tick_time=12:41:42
+  TICK AUDIT: LESL: 3988 ticks in last 60s, last_price=$4.07, last_tick_time=12:43:01
+  TICK AUDIT: LNKS: 87 ticks in last 60s, last_price=$2.11, last_tick_time=12:43:00
+  TICK AUDIT: MOBX: 190 ticks in last 60s, last_price=$3.15, last_tick_time=12:43:00
+  TICK AUDIT: QUCY: 1058 ticks in last 60s, last_price=$2.74, last_tick_time=12:43:01
+  TICK AUDIT: SST: 1 ticks in last 60s, last_price=$3.38, last_tick_time=12:42:50
+⚠️ TICK DROUGHT: ATRA — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+[12:43:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=131 | AEHL:0t/IDLE ATRA:0t/IDLE LESL:0t/IDLE LNKS:0t/IDLE MOBX:0t/IDLE QUCY:0t/IDLE SST:0t/IDLE
+  Tick cache: LNKS → +20 ticks (total 496)
+  Tick cache: LESL → +1,402 ticks (total 13,370)
+  Tick cache: QUCY → +602 ticks (total 9,747)
+  Tick cache: MOBX → +102 ticks (total 2,000)
+  Tick cache: AEHL → +5 ticks (total 3,758)
+  Tick cache: ATRA → +1 ticks (total 2,350)
+  Tick cache: SST → +1 ticks (total 1,416)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LNKS → +25 ticks (total 521)
+  Tick cache: MOBX → +97 ticks (total 2,097)
+  Tick cache: LESL → +918 ticks (total 14,288)
+  Tick cache: QUCY → +778 ticks (total 10,525)
+  Tick cache: ATRA → +6 ticks (total 2,356)
+  Tick cache: SST → +2 ticks (total 1,418)
+  Tick cache: AEHL → +2 ticks (total 3,760)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:44:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=3341 | AEHL:7t/IDLE ATRA:7t/IDLE LESL:1800t/IDLE LNKS:37t/IDLE MOBX:198t/IDLE QUCY:1157t/IDLE SST:4t/IDLE
+  TICK AUDIT: AEHL: 7 ticks in last 60s, last_price=$4.42, last_tick_time=12:43:54
+  TICK AUDIT: ATRA: 7 ticks in last 60s, last_price=$9.90, last_tick_time=12:43:32
+  TICK AUDIT: LESL: 1831 ticks in last 60s, last_price=$4.10, last_tick_time=12:44:01
+  TICK AUDIT: LNKS: 38 ticks in last 60s, last_price=$2.10, last_tick_time=12:44:00
+  TICK AUDIT: MOBX: 199 ticks in last 60s, last_price=$3.17, last_tick_time=12:44:01
+  TICK AUDIT: QUCY: 1163 ticks in last 60s, last_price=$2.72, last_tick_time=12:44:01
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$3.38, last_tick_time=12:43:52
+[12:44:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=131 | AEHL:0t/IDLE ATRA:0t/IDLE LESL:0t/IDLE LNKS:0t/IDLE MOBX:0t/IDLE QUCY:0t/IDLE SST:0t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +636 ticks (total 14,924)
+  Tick cache: MOBX → +113 ticks (total 2,210)
+  Tick cache: QUCY → +239 ticks (total 10,764)
+  Tick cache: SST → +1 ticks (total 1,419)
+  Tick cache: LNKS → +24 ticks (total 545)
+  Tick cache: AEHL → +3 ticks (total 3,763)
+  Tick cache: ATRA → +1 ticks (total 2,357)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+
+🔄 Running scanner at 12:44:51 ET...
+Error 162, reqId 31486: Historical Market Data Service error message:API scanner subscription cancelled: 31486
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31486 (reqId=31486, symbol=?)
+  Tick cache: MOBX → +116 ticks (total 2,326)
+  Tick cache: LESL → +523 ticks (total 15,447)
+  Tick cache: QUCY → +665 ticks (total 11,429)
+  Tick cache: LNKS → +27 ticks (total 572)
+  Tick cache: SST → +2 ticks (total 1,421)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[12:45 ET] MOBX CHART | O=3.17 H=3.19 L=3.16 C=3.18 V=93,633 | EMA9=3.14 VWAP=3.19 (-0.4%) HOD=3.32 PM_H=3.20 | MACD=N/A vol_ratio=71.4x avg_vol=1,311 bars=23 | sq=IDLE armed=none
+[12:45 ET] QUCY CHART | O=2.72 H=2.73 L=2.64 C=2.67 V=237,813 | EMA9=2.71 VWAP=2.71 (-1.5%) HOD=2.79 PM_H=-inf | MACD=N/A vol_ratio=1.0x avg_vol=231,787 bars=9 | sq=IDLE armed=none
+[12:45 ET] LESL CHART | O=4.10 H=4.13 L=4.07 C=4.11 V=136,267 | EMA9=4.21 VWAP=4.21 (-2.3%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=2.3x avg_vol=58,118 bars=9 | sq=IDLE armed=none
+[12:45 ET] LNKS CHART | O=2.10 H=2.12 L=2.09 C=2.10 V=6,627 | EMA9=2.10 VWAP=2.09 (+0.5%) HOD=2.17 PM_H=2.17 | MACD=N/A vol_ratio=1.7x avg_vol=3,823 bars=15 | sq=IDLE armed=none
+[12:45 ET] AIIO CHART | O=4.17 H=4.17 L=4.17 C=4.17 V=1,200 | EMA9=none VWAP=4.21 (-1.1%) HOD=4.37 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] IPHA CHART | O=2.11 H=2.11 L=2.11 C=2.11 V=600 | EMA9=none VWAP=2.11 (+0.2%) HOD=2.11 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: LESL → +550 ticks (total 15,997)
+  Tick cache: QUCY → +608 ticks (total 12,037)
+  Tick cache: LNKS → +25 ticks (total 597)
+  Tick cache: MOBX → +83 ticks (total 2,409)
+  Tick cache: AIIO → +3 ticks (total 120)
+  Tick cache: IPHA → +3 ticks (total 8)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[12:45 ET] RDWU CHART | O=19.09 H=19.09 L=19.09 C=19.09 V=100 | EMA9=none VWAP=19.01 (+0.4%) HOD=19.14 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] ONDU CHART | O=11.87 H=11.87 L=11.87 C=11.87 V=100 | EMA9=none VWAP=11.68 (+1.6%) HOD=11.87 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] SST CHART | O=3.38 H=3.38 L=3.38 C=3.38 V=2 | EMA9=3.38 VWAP=3.37 (+0.4%) HOD=3.50 PM_H=3.50 | MACD=N/A vol_ratio=0.0x avg_vol=446 bars=50 | sq=IDLE armed=none
+[12:45 ET] ONDG CHART | O=7.39 H=7.39 L=7.39 C=7.39 V=200 | EMA9=none VWAP=7.24 (+2.0%) HOD=7.39 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] ONDG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+[12:45 ET] TVGN CHART | O=9.26 H=9.26 L=9.26 C=9.26 V=600 | EMA9=none VWAP=9.26 (-0.0%) HOD=9.29 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] IPWR CHART | O=7.20 H=7.20 L=7.20 C=7.20 V=3,000 | EMA9=none VWAP=7.18 (+0.3%) HOD=7.20 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] POET CHART | O=19.34 H=19.34 L=19.34 C=19.34 V=600 | EMA9=none VWAP=19.26 (+0.4%) HOD=19.34 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] ATRA CHART | O=9.90 H=9.90 L=9.90 C=9.90 V=600 | EMA9=9.82 VWAP=10.01 (-1.1%) HOD=10.80 PM_H=10.40 | MACD=N/A vol_ratio=1.6x avg_vol=378 bars=50 | sq=IDLE armed=none
+[12:45 ET] IPST CHART | O=7.54 H=7.54 L=7.54 C=7.54 V=200 | EMA9=none VWAP=7.50 (+0.5%) HOD=7.59 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] FENC CHART | O=8.68 H=8.68 L=8.68 C=8.68 V=300 | EMA9=none VWAP=8.55 (+1.5%) HOD=8.77 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] SMX CHART | O=11.20 H=11.20 L=11.20 C=11.20 V=300 | EMA9=none VWAP=11.03 (+1.5%) HOD=11.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] RDW CHART | O=14.48 H=14.48 L=14.48 C=14.48 V=300 | EMA9=none VWAP=14.51 (-0.2%) HOD=14.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: QUCY → +301 ticks (total 12,338)
+  Tick cache: LESL → +1,039 ticks (total 17,036)
+  Tick cache: RDWU → +2 ticks (total 55)
+  Tick cache: MOBX → +72 ticks (total 2,481)
+  Tick cache: LNKS → +15 ticks (total 612)
+  Tick cache: ONDU → +3 ticks (total 28)
+  Tick cache: SST → +1 ticks (total 1,422)
+  Tick cache: ONDG → +2 ticks (total 98)
+  Tick cache: ONDL → +3 ticks (total 118)
+  Tick cache: TVGN → +2 ticks (total 7)
+  Tick cache: IPWR → +2 ticks (total 8)
+  Tick cache: POET → +3 ticks (total 50)
+  Tick cache: ATRA → +1 ticks (total 2,358)
+  Tick cache: IPST → +2 ticks (total 43)
+  Tick cache: FENC → +2 ticks (total 8)
+  Tick cache: SMX → +3 ticks (total 8)
+  Tick cache: RDW → +2 ticks (total 49)
+📦 Tick cache saved: 17 symbols → tick_cache/2026-05-14/
+[12:45 ET] FRMI CHART | O=7.62 H=7.62 L=7.62 C=7.62 V=900 | EMA9=none VWAP=7.58 (+0.6%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] ONDS CHART | O=11.30 H=11.30 L=11.30 C=11.30 V=200 | EMA9=none VWAP=11.23 (+0.6%) HOD=11.30 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:45 ET] QNTM CHART | O=6.71 H=6.71 L=6.71 C=6.71 V=400 | EMA9=none VWAP=6.80 (-1.3%) HOD=6.92 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-05-14.json (67 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 7 total watching
+  TICK AUDIT: AEHL: 1 ticks in last 60s, last_price=$4.42, last_tick_time=12:44:10
+  TICK AUDIT: ATRA: 3 ticks in last 60s, last_price=$9.90, last_tick_time=12:46:02
+  TICK AUDIT: LESL: 2932 ticks in last 60s, last_price=$3.97, last_tick_time=12:46:02
+  TICK AUDIT: LNKS: 93 ticks in last 60s, last_price=$2.09, last_tick_time=12:45:54
+  TICK AUDIT: MOBX: 371 ticks in last 60s, last_price=$3.18, last_tick_time=12:46:02
+  TICK AUDIT: QUCY: 1889 ticks in last 60s, last_price=$2.69, last_tick_time=12:46:02
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$3.38, last_tick_time=12:45:53
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +75 ticks (total 2,556)
+  Tick cache: LESL → +1,139 ticks (total 18,175)
+  Tick cache: QUCY → +289 ticks (total 12,627)
+  Tick cache: LNKS → +20 ticks (total 632)
+  Tick cache: SST → +4 ticks (total 1,426)
+  Tick cache: FRMI → +3 ticks (total 31)
+  Tick cache: ONDS → +2 ticks (total 98)
+  Tick cache: QNTM → +3 ticks (total 7)
+  Tick cache: ATRA → +1 ticks (total 2,359)
+📦 Tick cache saved: 9 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +1,011 ticks (total 19,186)
+  Tick cache: QUCY → +155 ticks (total 12,782)
+  Tick cache: MOBX → +77 ticks (total 2,633)
+  Tick cache: LNKS → +19 ticks (total 651)
+  Tick cache: ATRA → +3 ticks (total 2,362)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[12:47:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2723 | AEHL:0t/IDLE ATRA:3t/IDLE LESL:1852t/IDLE LNKS:44t/IDLE MOBX:157t/IDLE QUCY:493t/IDLE SST:3t/IDLE
+[12:47:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2773 | AEHL:0t/IDLE ATRA:3t/IDLE LESL:1873t/IDLE LNKS:44t/IDLE MOBX:159t/IDLE QUCY:520t/IDLE SST:3t/IDLE
+  TICK AUDIT: AEHL: 0 ticks in last 60s, last_price=$4.42, last_tick_time=12:44:10
+  TICK AUDIT: ATRA: 4 ticks in last 60s, last_price=$9.83, last_tick_time=12:47:01
+  TICK AUDIT: LESL: 1889 ticks in last 60s, last_price=$4.11, last_tick_time=12:47:02
+  TICK AUDIT: LNKS: 44 ticks in last 60s, last_price=$2.07, last_tick_time=12:46:59
+  TICK AUDIT: MOBX: 159 ticks in last 60s, last_price=$3.17, last_tick_time=12:47:01
+  TICK AUDIT: QUCY: 545 ticks in last 60s, last_price=$2.70, last_tick_time=12:47:02
+  TICK AUDIT: SST: 3 ticks in last 60s, last_price=$3.38, last_tick_time=12:46:13
+⚠️ TICK DROUGHT: AEHL — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +84 ticks (total 2,717)
+  Tick cache: LESL → +428 ticks (total 19,614)
+  Tick cache: QUCY → +430 ticks (total 13,212)
+  Tick cache: LNKS → +35 ticks (total 686)
+  Tick cache: ATRA → +2 ticks (total 2,364)
+  Tick cache: AEHL → +1 ticks (total 3,764)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: QUCY → +628 ticks (total 13,840)
+  Tick cache: LESL → +522 ticks (total 20,136)
+  Tick cache: LNKS → +38 ticks (total 724)
+  Tick cache: MOBX → +56 ticks (total 2,773)
+📦 Tick cache saved: 4 symbols → tick_cache/2026-05-14/
+[12:48:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2110 | AEHL:1t/IDLE ATRA:0t/IDLE LESL:890t/IDLE LNKS:58t/IDLE MOBX:119t/IDLE QUCY:871t/IDLE SST:0t/IDLE
+[12:48:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2178 | AEHL:1t/IDLE ATRA:0t/IDLE LESL:905t/IDLE LNKS:58t/IDLE MOBX:119t/IDLE QUCY:924t/IDLE SST:0t/IDLE
+  TICK AUDIT: AEHL: 1 ticks in last 60s, last_price=$4.42, last_tick_time=12:47:04
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.83, last_tick_time=12:47:04
+  TICK AUDIT: LESL: 916 ticks in last 60s, last_price=$4.02, last_tick_time=12:48:02
+  TICK AUDIT: LNKS: 59 ticks in last 60s, last_price=$2.08, last_tick_time=12:48:02
+  TICK AUDIT: MOBX: 122 ticks in last 60s, last_price=$3.17, last_tick_time=12:48:02
+  TICK AUDIT: QUCY: 928 ticks in last 60s, last_price=$2.75, last_tick_time=12:48:02
+  TICK AUDIT: SST: 0 ticks in last 60s, last_price=$3.38, last_tick_time=12:46:13
+⚠️ TICK DROUGHT: SST — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LNKS → +14 ticks (total 738)
+  Tick cache: QUCY → +494 ticks (total 14,334)
+  Tick cache: LESL → +567 ticks (total 20,703)
+  Tick cache: MOBX → +58 ticks (total 2,831)
+  Tick cache: ATRA → +6 ticks (total 2,370)
+  Tick cache: SST → +9 ticks (total 1,435)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +605 ticks (total 21,308)
+  Tick cache: QUCY → +868 ticks (total 15,202)
+  Tick cache: LNKS → +16 ticks (total 754)
+  Tick cache: MOBX → +72 ticks (total 2,903)
+  Tick cache: SST → +6 ticks (total 1,441)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[12:49:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2733 | AEHL:0t/IDLE ATRA:4t/IDLE LESL:1113t/IDLE LNKS:24t/IDLE MOBX:119t/IDLE QUCY:1287t/IDLE SST:15t/IDLE
+[12:49:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=2807 | AEHL:0t/IDLE ATRA:4t/IDLE LESL:1174t/IDLE LNKS:25t/IDLE MOBX:119t/IDLE QUCY:1299t/IDLE SST:15t/IDLE
+  TICK AUDIT: AEHL: 0 ticks in last 60s, last_price=$4.42, last_tick_time=12:47:04
+  TICK AUDIT: ATRA: 4 ticks in last 60s, last_price=$9.83, last_tick_time=12:48:17
+  TICK AUDIT: LESL: 1218 ticks in last 60s, last_price=$4.00, last_tick_time=12:49:02
+  TICK AUDIT: LNKS: 26 ticks in last 60s, last_price=$2.09, last_tick_time=12:49:01
+  TICK AUDIT: MOBX: 121 ticks in last 60s, last_price=$3.19, last_tick_time=12:49:02
+  TICK AUDIT: QUCY: 1311 ticks in last 60s, last_price=$2.77, last_tick_time=12:49:02
+  TICK AUDIT: SST: 15 ticks in last 60s, last_price=$3.43, last_tick_time=12:48:50
+⚠️ TICK DROUGHT: AEHL — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +69 ticks (total 2,972)
+  Tick cache: QUCY → +668 ticks (total 15,870)
+  Tick cache: LESL → +525 ticks (total 21,833)
+  Tick cache: LNKS → +11 ticks (total 765)
+  Tick cache: AEHL → +1 ticks (total 3,765)
+  Tick cache: SST → +1 ticks (total 1,442)
+  Tick cache: ATRA → +2 ticks (total 2,372)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+
+🔄 Running scanner at 12:49:52 ET...
+Error 162, reqId 31570: Historical Market Data Service error message:API scanner subscription cancelled: 31570
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31570 (reqId=31570, symbol=?)
+  Tick cache: LESL → +1,081 ticks (total 22,914)
+  Tick cache: QUCY → +513 ticks (total 16,383)
+  Tick cache: MOBX → +169 ticks (total 3,141)
+  Tick cache: LNKS → +10 ticks (total 775)
+  Tick cache: SST → +2 ticks (total 1,444)
+📦 Tick cache saved: 5 symbols → tick_cache/2026-05-14/
+[12:50 ET] MOBX CHART | O=3.19 H=3.28 L=3.18 C=3.27 V=85,808 | EMA9=3.17 VWAP=3.19 (+2.5%) HOD=3.32 PM_H=3.20 | MACD=N/A vol_ratio=31.1x avg_vol=2,760 bars=28 | sq=IDLE armed=none
+[12:50 ET] MOBX SQ | SQ_REJECT: not_new_hod (bar_high=$3.2800 < HOD=$3.3200)
+[12:50 ET] LESL CHART | O=3.97 H=4.05 L=3.87 C=4.04 V=215,835 | EMA9=4.08 VWAP=4.15 (-2.7%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=1.9x avg_vol=110,708 bars=14 | sq=IDLE armed=none
+[12:50 ET] QUCY CHART | O=2.77 H=2.77 L=2.72 C=2.75 V=273,308 | EMA9=2.72 VWAP=2.72 (+1.1%) HOD=2.80 PM_H=-inf | MACD=N/A vol_ratio=1.2x avg_vol=225,559 bars=14 | sq=IDLE armed=none
+[12:50 ET] LNKS CHART | O=2.09 H=2.09 L=2.08 C=2.08 V=1,821 | EMA9=2.09 VWAP=2.09 (-0.0%) HOD=2.17 PM_H=2.17 | MACD=N/A vol_ratio=0.3x avg_vol=5,459 bars=20 | sq=IDLE armed=none
+[12:50 ET] AIIO CHART | O=4.37 H=4.37 L=4.37 C=4.37 V=1,200 | EMA9=none VWAP=4.28 (+2.0%) HOD=4.45 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] SST CHART | O=3.43 H=3.43 L=3.43 C=3.43 V=3 | EMA9=3.39 VWAP=3.37 (+1.9%) HOD=3.50 PM_H=3.50 | MACD=N/A vol_ratio=0.0x avg_vol=422 bars=50 | sq=IDLE armed=none
+[12:50 ET] IPHA CHART | O=2.11 H=2.11 L=2.11 C=2.11 V=300 | EMA9=none VWAP=2.11 (-0.1%) HOD=2.14 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] ONDG CHART | O=7.27 H=7.27 L=7.27 C=7.27 V=1,000 | EMA9=none VWAP=7.25 (+0.2%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] ONDU CHART | O=11.73 H=11.73 L=11.73 C=11.73 V=900 | EMA9=none VWAP=11.72 (+0.0%) HOD=11.97 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] ONDG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+[12:50 ET] ATRA CHART | O=9.84 H=9.84 L=9.84 C=9.84 V=2 | EMA9=9.83 VWAP=10.01 (-1.6%) HOD=10.80 PM_H=10.40 | MACD=N/A vol_ratio=0.0x avg_vol=372 bars=50 | sq=IDLE armed=none
+[12:50 ET] RDWU CHART | O=19.14 H=19.14 L=19.14 C=19.14 V=200 | EMA9=none VWAP=18.93 (+1.1%) HOD=19.14 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] TVGN CHART | O=9.29 H=9.29 L=9.29 C=9.29 V=200 | EMA9=none VWAP=9.41 (-1.2%) HOD=9.55 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] POET CHART | O=19.18 H=19.18 L=19.18 C=19.18 V=300 | EMA9=none VWAP=19.27 (-0.4%) HOD=19.51 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] IPST CHART | O=7.59 H=7.59 L=7.59 C=7.59 V=200 | EMA9=none VWAP=7.54 (+0.7%) HOD=7.88 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: MOBX → +221 ticks (total 3,362)
+  Tick cache: QUCY → +313 ticks (total 16,696)
+  Tick cache: LESL → +790 ticks (total 23,704)
+  Tick cache: LNKS → +18 ticks (total 793)
+  Tick cache: AIIO → +3 ticks (total 123)
+  Tick cache: SST → +9 ticks (total 1,453)
+  Tick cache: IPHA → +1 ticks (total 9)
+  Tick cache: ONDG → +2 ticks (total 100)
+  Tick cache: ONDU → +2 ticks (total 30)
+  Tick cache: ATRA → +8 ticks (total 2,380)
+  Tick cache: RDWU → +2 ticks (total 57)
+  Tick cache: TVGN → +2 ticks (total 9)
+  Tick cache: POET → +2 ticks (total 52)
+  Tick cache: IPST → +1 ticks (total 44)
+📦 Tick cache saved: 14 symbols → tick_cache/2026-05-14/
+[12:50 ET] IPWR CHART | O=7.16 H=7.16 L=7.16 C=7.16 V=600 | EMA9=none VWAP=7.18 (-0.3%) HOD=7.20 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] FENC CHART | O=8.77 H=8.77 L=8.77 C=8.77 V=200 | EMA9=none VWAP=8.58 (+2.2%) HOD=8.82 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] ONDS CHART | O=11.24 H=11.24 L=11.24 C=11.24 V=200 | EMA9=none VWAP=11.25 (-0.1%) HOD=11.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] QNTM CHART | O=6.92 H=6.92 L=6.92 C=6.92 V=900 | EMA9=none VWAP=6.87 (+0.7%) HOD=6.98 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] FRMI CHART | O=7.58 H=7.58 L=7.58 C=7.58 V=300 | EMA9=none VWAP=7.58 (+0.0%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] SMX CHART | O=10.89 H=10.89 L=10.89 C=10.89 V=3,000 | EMA9=none VWAP=10.95 (-0.6%) HOD=11.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] RDW CHART | O=14.53 H=14.53 L=14.53 C=14.53 V=1,000 | EMA9=none VWAP=14.51 (+0.1%) HOD=14.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:50 ET] PCT CHART | O=12.62 H=12.62 L=12.62 C=12.62 V=2,100 | EMA9=none VWAP=12.63 (-0.0%) HOD=12.74 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-05-14.json (68 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 7 total watching
+  TICK AUDIT: AEHL: 1 ticks in last 60s, last_price=$4.42, last_tick_time=12:49:05
+  TICK AUDIT: ATRA: 11 ticks in last 60s, last_price=$9.89, last_tick_time=12:50:41
+  TICK AUDIT: LESL: 2366 ticks in last 60s, last_price=$3.98, last_tick_time=12:50:47
+  TICK AUDIT: LNKS: 64 ticks in last 60s, last_price=$2.09, last_tick_time=12:50:46
+  TICK AUDIT: MOBX: 540 ticks in last 60s, last_price=$3.27, last_tick_time=12:50:47
+  TICK AUDIT: QUCY: 1595 ticks in last 60s, last_price=$2.78, last_tick_time=12:50:47
+  TICK AUDIT: SST: 13 ticks in last 60s, last_price=$3.49, last_tick_time=12:50:33
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +133 ticks (total 3,495)
+  Tick cache: LESL → +341 ticks (total 24,045)
+  Tick cache: QUCY → +279 ticks (total 16,975)
+  Tick cache: LNKS → +39 ticks (total 832)
+  Tick cache: IPWR → +2 ticks (total 10)
+  Tick cache: FENC → +2 ticks (total 10)
+  Tick cache: ONDS → +3 ticks (total 101)
+  Tick cache: SST → +1 ticks (total 1,454)
+  Tick cache: QNTM → +3 ticks (total 10)
+  Tick cache: FRMI → +3 ticks (total 34)
+  Tick cache: SMX → +1 ticks (total 9)
+  Tick cache: ATRA → +1 ticks (total 2,381)
+  Tick cache: RDW → +3 ticks (total 52)
+  Tick cache: PCT → +3 ticks (total 32)
+📦 Tick cache saved: 14 symbols → tick_cache/2026-05-14/
+[12:51:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1075 | AEHL:0t/IDLE ATRA:0t/IDLE LESL:163t/IDLE LNKS:25t/IDLE MOBX:62t/IDLE QUCY:618t/IDLE SST:1t/IDLE
+[12:51:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1099 | AEHL:0t/IDLE ATRA:0t/IDLE LESL:167t/IDLE LNKS:27t/IDLE MOBX:66t/IDLE QUCY:632t/IDLE SST:1t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +122 ticks (total 3,617)
+  Tick cache: QUCY → +1,543 ticks (total 18,518)
+  Tick cache: LESL → +1,126 ticks (total 25,171)
+  Tick cache: LNKS → +31 ticks (total 863)
+  Tick cache: SST → +5 ticks (total 1,459)
+  Tick cache: ATRA → +3 ticks (total 2,384)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+✅ HALT RESUMED: AEHL
+  TICK AUDIT: AEHL: 175 ticks in last 60s, last_price=$4.77, last_tick_time=12:51:48
+  TICK AUDIT: ATRA: 4 ticks in last 60s, last_price=$9.78, last_tick_time=12:51:41
+  TICK AUDIT: LESL: 1535 ticks in last 60s, last_price=$4.03, last_tick_time=12:51:48
+  TICK AUDIT: LNKS: 79 ticks in last 60s, last_price=$2.10, last_tick_time=12:51:47
+  TICK AUDIT: MOBX: 242 ticks in last 60s, last_price=$3.27, last_tick_time=12:51:47
+  TICK AUDIT: QUCY: 2318 ticks in last 60s, last_price=$2.79, last_tick_time=12:51:48
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$3.46, last_tick_time=12:51:47
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +123 ticks (total 3,740)
+  Tick cache: LESL → +458 ticks (total 25,629)
+  Tick cache: QUCY → +800 ticks (total 19,318)
+  Tick cache: LNKS → +38 ticks (total 901)
+  Tick cache: SST → +8 ticks (total 1,467)
+  Tick cache: AEHL → +234 ticks (total 3,999)
+  Tick cache: ATRA → +2 ticks (total 2,386)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:52 ET] AEHL SQ | SQ_REJECT: not_new_hod (bar_high=$4.8900 < HOD=$6.0126)
+[12:52:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=722 | AEHL:108t/IDLE ATRA:1t/IDLE LESL:185t/IDLE LNKS:2t/IDLE MOBX:46t/IDLE QUCY:168t/IDLE SST:6t/IDLE
+[12:52:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=752 | AEHL:118t/IDLE ATRA:1t/IDLE LESL:192t/IDLE LNKS:2t/IDLE MOBX:50t/IDLE QUCY:177t/IDLE SST:6t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +304 ticks (total 4,303)
+  Tick cache: QUCY → +331 ticks (total 19,649)
+  Tick cache: LESL → +415 ticks (total 26,044)
+  Tick cache: MOBX → +110 ticks (total 3,850)
+  Tick cache: ATRA → +2 ticks (total 2,388)
+  Tick cache: LNKS → +10 ticks (total 911)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 530 ticks in last 60s, last_price=$4.63, last_tick_time=12:52:48
+  TICK AUDIT: ATRA: 12 ticks in last 60s, last_price=$9.78, last_tick_time=12:52:48
+  TICK AUDIT: LESL: 774 ticks in last 60s, last_price=$3.97, last_tick_time=12:52:48
+  TICK AUDIT: LNKS: 39 ticks in last 60s, last_price=$2.10, last_tick_time=12:52:48
+  TICK AUDIT: MOBX: 228 ticks in last 60s, last_price=$3.23, last_tick_time=12:52:46
+  TICK AUDIT: QUCY: 816 ticks in last 60s, last_price=$2.74, last_tick_time=12:52:48
+  TICK AUDIT: SST: 12 ticks in last 60s, last_price=$3.44, last_tick_time=12:52:32
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +220 ticks (total 4,523)
+  Tick cache: LNKS → +33 ticks (total 944)
+  Tick cache: QUCY → +567 ticks (total 20,216)
+  Tick cache: LESL → +371 ticks (total 26,415)
+  Tick cache: ATRA → +10 ticks (total 2,398)
+  Tick cache: MOBX → +99 ticks (total 3,949)
+  Tick cache: SST → +6 ticks (total 1,473)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:53:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=819 | AEHL:101t/IDLE ATRA:1t/IDLE LESL:192t/IDLE LNKS:6t/IDLE MOBX:48t/IDLE QUCY:264t/IDLE SST:1t/IDLE
+[12:53:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=866 | AEHL:110t/IDLE ATRA:1t/IDLE LESL:224t/IDLE LNKS:7t/IDLE MOBX:51t/IDLE QUCY:266t/IDLE SST:1t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: QUCY → +990 ticks (total 21,206)
+  Tick cache: LESL → +649 ticks (total 27,064)
+  Tick cache: AEHL → +227 ticks (total 4,750)
+  Tick cache: MOBX → +106 ticks (total 4,055)
+  Tick cache: SST → +2 ticks (total 1,475)
+  Tick cache: LNKS → +8 ticks (total 952)
+  Tick cache: ATRA → +3 ticks (total 2,401)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 390 ticks in last 60s, last_price=$4.54, last_tick_time=12:53:48
+  TICK AUDIT: ATRA: 6 ticks in last 60s, last_price=$9.78, last_tick_time=12:53:37
+  TICK AUDIT: LESL: 988 ticks in last 60s, last_price=$3.95, last_tick_time=12:53:48
+  TICK AUDIT: LNKS: 31 ticks in last 60s, last_price=$2.12, last_tick_time=12:53:48
+  TICK AUDIT: MOBX: 236 ticks in last 60s, last_price=$3.26, last_tick_time=12:53:48
+  TICK AUDIT: QUCY: 1440 ticks in last 60s, last_price=$2.71, last_tick_time=12:53:48
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$3.45, last_tick_time=12:53:35
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +158 ticks (total 4,908)
+  Tick cache: LESL → +247 ticks (total 27,311)
+  Tick cache: QUCY → +331 ticks (total 21,537)
+  Tick cache: LNKS → +33 ticks (total 985)
+  Tick cache: MOBX → +137 ticks (total 4,192)
+  Tick cache: SST → +2 ticks (total 1,477)
+  Tick cache: ATRA → +2 ticks (total 2,403)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:54:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=882 | AEHL:74t/IDLE ATRA:1t/IDLE LESL:111t/IDLE LNKS:21t/IDLE MOBX:54t/IDLE QUCY:415t/IDLE SST:0t/IDLE
+[12:54:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=949 | AEHL:81t/IDLE ATRA:1t/IDLE LESL:154t/IDLE LNKS:22t/IDLE MOBX:61t/IDLE QUCY:424t/IDLE SST:0t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +390 ticks (total 27,701)
+  Tick cache: QUCY → +807 ticks (total 22,344)
+  Tick cache: MOBX → +146 ticks (total 4,338)
+  Tick cache: AEHL → +161 ticks (total 5,069)
+  Tick cache: LNKS → +33 ticks (total 1,018)
+  Tick cache: ATRA → +4 ticks (total 2,407)
+  Tick cache: SST → +5 ticks (total 1,482)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 293 ticks in last 60s, last_price=$4.48, last_tick_time=12:54:48
+  TICK AUDIT: ATRA: 4 ticks in last 60s, last_price=$9.78, last_tick_time=12:54:03
+  TICK AUDIT: LESL: 533 ticks in last 60s, last_price=$3.99, last_tick_time=12:54:48
+  TICK AUDIT: LNKS: 72 ticks in last 60s, last_price=$2.11, last_tick_time=12:54:46
+  TICK AUDIT: MOBX: 234 ticks in last 60s, last_price=$3.22, last_tick_time=12:54:48
+  TICK AUDIT: QUCY: 1276 ticks in last 60s, last_price=$2.71, last_tick_time=12:54:48
+  TICK AUDIT: SST: 7 ticks in last 60s, last_price=$3.47, last_tick_time=12:54:36
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+
+🔄 Running scanner at 12:54:53 ET...
+Error 162, reqId 31651: Historical Market Data Service error message:API scanner subscription cancelled: 31651
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31651 (reqId=31651, symbol=?)
+  Tick cache: QUCY → +743 ticks (total 23,087)
+  Tick cache: LESL → +223 ticks (total 27,924)
+  Tick cache: AEHL → +112 ticks (total 5,181)
+  Tick cache: MOBX → +101 ticks (total 4,439)
+  Tick cache: LNKS → +25 ticks (total 1,043)
+  Tick cache: SST → +7 ticks (total 1,489)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[12:55 ET] LESL CHART | O=3.99 H=4.03 L=3.93 C=4.01 V=65,558 | EMA9=4.02 VWAP=4.13 (-2.8%) HOD=4.50 PM_H=-inf | MACD=N/A vol_ratio=0.5x avg_vol=127,094 bars=19 | sq=IDLE armed=none
+[12:55 ET] QUCY CHART | O=2.67 H=2.72 L=2.67 C=2.70 V=260,999 | EMA9=2.73 VWAP=2.73 (-1.1%) HOD=2.82 PM_H=-inf | MACD=N/A vol_ratio=0.9x avg_vol=278,161 bars=19 | sq=IDLE armed=none
+[12:55 ET] MOBX CHART | O=3.28 H=3.28 L=3.21 C=3.23 V=102,889 | EMA9=3.23 VWAP=3.21 (+0.6%) HOD=3.32 PM_H=3.20 | MACD=N/A vol_ratio=19.9x avg_vol=5,167 bars=33 | sq=IDLE armed=none
+[12:55 ET] AEHL CHART | O=4.48 H=4.53 L=4.33 C=4.47 V=68,484 | EMA9=4.47 VWAP=4.37 (+2.4%) HOD=6.01 PM_H=6.01 | MACD=N/A vol_ratio=104.5x avg_vol=655 bars=50 | sq=IDLE armed=none
+[12:55 ET] LNKS CHART | O=2.13 H=2.13 L=2.11 C=2.11 V=15,138 | EMA9=2.10 VWAP=2.09 (+0.9%) HOD=2.17 PM_H=2.17 | MACD=N/A vol_ratio=2.4x avg_vol=6,406 bars=25 | sq=IDLE armed=none
+[12:55 ET] AIIO CHART | O=4.45 H=4.45 L=4.45 C=4.45 V=900 | EMA9=none VWAP=4.41 (+1.0%) HOD=4.47 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] IPHA CHART | O=2.14 H=2.14 L=2.14 C=2.14 V=200 | EMA9=none VWAP=2.11 (+1.5%) HOD=2.14 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] SST CHART | O=3.45 H=3.47 L=3.44 C=3.44 V=3,515 | EMA9=3.43 VWAP=3.37 (+2.0%) HOD=3.50 PM_H=3.50 | MACD=N/A vol_ratio=7.1x avg_vol=497 bars=50 | sq=IDLE armed=none
+[12:55 ET] ONDG CHART | O=7.44 H=7.44 L=7.44 C=7.44 V=200 | EMA9=none VWAP=7.26 (+2.4%) HOD=7.44 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] ONDU CHART | O=11.97 H=11.97 L=11.97 C=11.97 V=400 | EMA9=none VWAP=11.75 (+1.9%) HOD=11.97 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  [FMP] ONDG: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+[12:55 ET] RDWU CHART | O=18.84 H=18.84 L=18.84 C=18.84 V=1,600 | EMA9=none VWAP=18.88 (-0.2%) HOD=19.14 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] POET CHART | O=19.51 H=19.51 L=19.51 C=19.51 V=200 | EMA9=none VWAP=19.35 (+0.9%) HOD=19.51 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] TVGN CHART | O=9.55 H=9.55 L=9.55 C=9.55 V=2,000 | EMA9=none VWAP=9.44 (+1.1%) HOD=9.55 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] IPST CHART | O=7.88 H=7.88 L=7.88 C=7.88 V=100 | EMA9=none VWAP=7.55 (+4.4%) HOD=7.88 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Tick cache: LESL → +326 ticks (total 28,250)
+  Tick cache: QUCY → +1,217 ticks (total 24,304)
+  Tick cache: MOBX → +92 ticks (total 4,531)
+  Tick cache: AEHL → +97 ticks (total 5,278)
+  Tick cache: LNKS → +28 ticks (total 1,071)
+  Tick cache: AIIO → +2 ticks (total 125)
+  Tick cache: IPHA → +1 ticks (total 10)
+  Tick cache: SST → +2 ticks (total 1,491)
+  Tick cache: ONDG → +3 ticks (total 103)
+  Tick cache: ONDU → +3 ticks (total 33)
+  Tick cache: RDWU → +3 ticks (total 60)
+  Tick cache: POET → +3 ticks (total 55)
+  Tick cache: TVGN → +2 ticks (total 11)
+  Tick cache: IPST → +3 ticks (total 47)
+📦 Tick cache saved: 14 symbols → tick_cache/2026-05-14/
+[12:55 ET] IPWR CHART | O=7.12 H=7.12 L=7.12 C=7.12 V=200 | EMA9=none VWAP=7.17 (-0.8%) HOD=7.20 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] FENC CHART | O=8.82 H=8.82 L=8.82 C=8.82 V=200 | EMA9=none VWAP=8.60 (+2.5%) HOD=8.82 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] SMX CHART | O=11.00 H=11.00 L=11.00 C=11.00 V=200 | EMA9=none VWAP=10.96 (+0.3%) HOD=11.48 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] ONDS CHART | O=11.38 H=11.38 L=11.38 C=11.38 V=300 | EMA9=none VWAP=11.28 (+0.9%) HOD=11.38 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] QNTM CHART | O=6.98 H=6.98 L=6.98 C=6.98 V=600 | EMA9=none VWAP=6.89 (+1.2%) HOD=6.98 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] FRMI CHART | O=7.62 H=7.62 L=7.62 C=7.62 V=300 | EMA9=none VWAP=7.58 (+0.5%) HOD=7.62 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+[12:55 ET] RDW CHART | O=14.45 H=14.45 L=14.45 C=14.45 V=300 | EMA9=none VWAP=14.50 (-0.3%) HOD=14.54 PM_H=-inf | MACD=N/A vol_ratio=0.0x avg_vol=0 bars=0 | sq=N/A armed=none
+  Saved: /Users/duffy/warrior_bot_v2/scanner_results/2026-05-14.json (69 snapshots)
+📊 Scanner: 0 new candidates, 0 new subs, 7 total watching
+  TICK AUDIT: AEHL: 174 ticks in last 60s, last_price=$4.43, last_tick_time=12:55:48
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.78, last_tick_time=12:54:03
+  TICK AUDIT: LESL: 897 ticks in last 60s, last_price=$3.94, last_tick_time=12:55:50
+  TICK AUDIT: LNKS: 46 ticks in last 60s, last_price=$2.13, last_tick_time=12:55:46
+  TICK AUDIT: MOBX: 174 ticks in last 60s, last_price=$3.24, last_tick_time=12:55:50
+  TICK AUDIT: QUCY: 1682 ticks in last 60s, last_price=$2.69, last_tick_time=12:55:50
+  TICK AUDIT: SST: 10 ticks in last 60s, last_price=$3.44, last_tick_time=12:55:46
+⚠️ TICK DROUGHT: ATRA — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+[12:55 ET] ATRA CHART | O=9.78 H=9.78 L=9.78 C=9.78 V=4 | EMA9=9.81 VWAP=10.00 (-2.2%) HOD=10.80 PM_H=10.40 | MACD=N/A vol_ratio=0.0x avg_vol=360 bars=50 | sq=IDLE armed=none
+  Tick cache: MOBX → +60 ticks (total 4,591)
+  Tick cache: LESL → +648 ticks (total 28,898)
+  Tick cache: QUCY → +191 ticks (total 24,495)
+  Tick cache: LNKS → +18 ticks (total 1,089)
+  Tick cache: AEHL → +70 ticks (total 5,348)
+  Tick cache: IPWR → +1 ticks (total 11)
+  Tick cache: FENC → +3 ticks (total 13)
+  Tick cache: SST → +6 ticks (total 1,497)
+  Tick cache: SMX → +1 ticks (total 10)
+  Tick cache: ONDS → +2 ticks (total 103)
+  Tick cache: QCLS → +3 ticks (total 3)
+  Tick cache: QNTM → +2 ticks (total 12)
+  Tick cache: FRMI → +3 ticks (total 37)
+  Tick cache: RDW → +3 ticks (total 55)
+  Tick cache: ATRA → +1 ticks (total 2,408)
+📦 Tick cache saved: 15 symbols → tick_cache/2026-05-14/
+[12:56:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=503 | AEHL:30t/IDLE ATRA:1t/IDLE LESL:135t/IDLE LNKS:3t/IDLE MOBX:16t/IDLE QUCY:71t/IDLE SST:3t/IDLE
+[12:56:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=515 | AEHL:32t/IDLE ATRA:1t/IDLE LESL:142t/IDLE LNKS:4t/IDLE MOBX:16t/IDLE QUCY:73t/IDLE SST:3t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +77 ticks (total 5,425)
+  Tick cache: LESL → +287 ticks (total 29,185)
+  Tick cache: QUCY → +364 ticks (total 24,859)
+  Tick cache: LNKS → +28 ticks (total 1,117)
+  Tick cache: MOBX → +60 ticks (total 4,651)
+  Tick cache: SST → +6 ticks (total 1,503)
+  Tick cache: ATRA → +3 ticks (total 2,411)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 141 ticks in last 60s, last_price=$4.40, last_tick_time=12:56:50
+  TICK AUDIT: ATRA: 7 ticks in last 60s, last_price=$9.78, last_tick_time=12:56:46
+  TICK AUDIT: LESL: 782 ticks in last 60s, last_price=$3.91, last_tick_time=12:56:50
+  TICK AUDIT: LNKS: 43 ticks in last 60s, last_price=$2.10, last_tick_time=12:56:50
+  TICK AUDIT: MOBX: 132 ticks in last 60s, last_price=$3.23, last_tick_time=12:56:49
+  TICK AUDIT: QUCY: 702 ticks in last 60s, last_price=$2.69, last_tick_time=12:56:50
+  TICK AUDIT: SST: 9 ticks in last 60s, last_price=$3.44, last_tick_time=12:56:18
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +880 ticks (total 30,065)
+  Tick cache: QUCY → +341 ticks (total 25,200)
+  Tick cache: AEHL → +65 ticks (total 5,490)
+  Tick cache: MOBX → +76 ticks (total 4,727)
+  Tick cache: ATRA → +3 ticks (total 2,414)
+  Tick cache: LNKS → +25 ticks (total 1,142)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+[12:57:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=957 | AEHL:36t/IDLE ATRA:0t/IDLE LESL:594t/IDLE LNKS:12t/IDLE MOBX:22t/IDLE QUCY:49t/IDLE SST:0t/IDLE
+[12:57:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=1064 | AEHL:40t/IDLE ATRA:0t/IDLE LESL:691t/IDLE LNKS:12t/IDLE MOBX:24t/IDLE QUCY:53t/IDLE SST:0t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +130 ticks (total 5,620)
+  Tick cache: LNKS → +12 ticks (total 1,154)
+  Tick cache: LESL → +849 ticks (total 30,914)
+  Tick cache: QUCY → +800 ticks (total 26,000)
+  Tick cache: MOBX → +55 ticks (total 4,782)
+  Tick cache: ATRA → +1 ticks (total 2,415)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 212 ticks in last 60s, last_price=$4.47, last_tick_time=12:57:50
+  TICK AUDIT: ATRA: 2 ticks in last 60s, last_price=$9.78, last_tick_time=12:57:48
+  TICK AUDIT: LESL: 1686 ticks in last 60s, last_price=$3.83, last_tick_time=12:57:50
+  TICK AUDIT: LNKS: 40 ticks in last 60s, last_price=$2.10, last_tick_time=12:57:50
+  TICK AUDIT: MOBX: 123 ticks in last 60s, last_price=$3.22, last_tick_time=12:57:50
+  TICK AUDIT: QUCY: 2151 ticks in last 60s, last_price=$2.62, last_tick_time=12:57:50
+  TICK AUDIT: SST: 4 ticks in last 60s, last_price=$3.44, last_tick_time=12:57:41
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: LESL → +429 ticks (total 31,343)
+  Tick cache: QUCY → +1,392 ticks (total 27,392)
+  Tick cache: AEHL → +79 ticks (total 5,699)
+  Tick cache: MOBX → +92 ticks (total 4,874)
+  Tick cache: SST → +4 ticks (total 1,507)
+  Tick cache: LNKS → +19 ticks (total 1,173)
+  Tick cache: ATRA → +1 ticks (total 2,416)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:58:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=599 | AEHL:20t/IDLE ATRA:0t/IDLE LESL:192t/IDLE LNKS:2t/IDLE MOBX:51t/IDLE QUCY:90t/IDLE SST:0t/IDLE
+[12:58:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=669 | AEHL:23t/IDLE ATRA:0t/IDLE LESL:216t/IDLE LNKS:2t/IDLE MOBX:61t/IDLE QUCY:123t/IDLE SST:0t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: MOBX → +104 ticks (total 4,978)
+  Tick cache: AEHL → +71 ticks (total 5,770)
+  Tick cache: LESL → +1,044 ticks (total 32,387)
+  Tick cache: QUCY → +483 ticks (total 27,875)
+  Tick cache: SST → +1 ticks (total 1,508)
+  Tick cache: LNKS → +4 ticks (total 1,177)
+📦 Tick cache saved: 6 symbols → tick_cache/2026-05-14/
+  TICK AUDIT: AEHL: 162 ticks in last 60s, last_price=$4.41, last_tick_time=12:58:50
+  TICK AUDIT: ATRA: 0 ticks in last 60s, last_price=$9.78, last_tick_time=12:57:48
+  TICK AUDIT: LESL: 1624 ticks in last 60s, last_price=$4.02, last_tick_time=12:58:50
+  TICK AUDIT: LNKS: 40 ticks in last 60s, last_price=$2.10, last_tick_time=12:58:50
+  TICK AUDIT: MOBX: 198 ticks in last 60s, last_price=$3.22, last_tick_time=12:58:50
+  TICK AUDIT: QUCY: 866 ticks in last 60s, last_price=$2.63, last_tick_time=12:58:50
+  TICK AUDIT: SST: 8 ticks in last 60s, last_price=$3.43, last_tick_time=12:58:39
+⚠️ TICK DROUGHT: ATRA — 0 ticks in last audit period. Resubscribing (attempt 1/3)...
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+  Tick cache: AEHL → +92 ticks (total 5,862)
+  Tick cache: LESL → +615 ticks (total 33,002)
+  Tick cache: QUCY → +346 ticks (total 28,221)
+  Tick cache: MOBX → +86 ticks (total 5,064)
+  Tick cache: LNKS → +40 ticks (total 1,217)
+  Tick cache: SST → +10 ticks (total 1,518)
+  Tick cache: ATRA → +2 ticks (total 2,418)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+[12:59:00 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=432 | AEHL:14t/IDLE ATRA:2t/IDLE LESL:105t/IDLE LNKS:4t/IDLE MOBX:21t/IDLE QUCY:39t/IDLE SST:3t/IDLE
+[12:59:01 ET] ACTIVE | flat | daily=$+0 (0t) | conn=OK | ticks=452 | AEHL:20t/IDLE ATRA:3t/IDLE LESL:111t/IDLE LNKS:4t/IDLE MOBX:25t/IDLE QUCY:42t/IDLE SST:3t/IDLE
+[TIER] STATUS tier1=['LESL', 'QUCY'] tier2=5 capacity=2/5
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.
+  Tick cache: LESL → +351 ticks (total 33,353)
+  Tick cache: AEHL → +42 ticks (total 5,904)
+  Tick cache: QUCY → +259 ticks (total 28,480)
+  Tick cache: MOBX → +76 ticks (total 5,140)
+  Tick cache: ATRA → +1 ticks (total 2,419)
+  Tick cache: LNKS → +27 ticks (total 1,244)
+  Tick cache: SST → +3 ticks (total 1,521)
+📦 Tick cache saved: 7 symbols → tick_cache/2026-05-14/
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+============================================================
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 73098)
+=== V3 Hybrid daily run started: Thu May 14 10:59:38 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+   8dea71a..2288b23  v2-ibkr-migration -> origin/v2-ibkr-migration
+Updating 8dea71a..2288b23
+Fast-forward
+ DIRECTIVE_GO_STAGE_0_3.md                     | 199 ++++++++++++++++++++++++++
+ DIRECTIVE_WB_PERSISTENCE_ROLLOUT_DECISIONS.md | 154 ++++++++++++++++++++
+ 2 files changed, 353 insertions(+)
+ create mode 100644 DIRECTIVE_GO_STAGE_0_3.md
+ create mode 100644 DIRECTIVE_WB_PERSISTENCE_ROLLOUT_DECISIONS.md
+Code version: 2288b23 (GO Stage 0.3 — intraday WB adder in observe-only mode)
+daily_run_v3.sh hash: 65da06c18b31a4ec91bdd54676b07711  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 08c7172466fdda1b2b298a64d10ebdb4  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: 5231c9f9b299949e898fbc1bf353d9a5  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.034317 +/- 0.067008 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Thu May 14 16:59:40 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 73153)
+Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)...
+Bot started (PID: 73171)
+BOOT: RESUME mode (marker age=32370s, reason=marker_present)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+Alpaca data client connected (for latency diagnostic / aware-limits)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: ALPACA
+🔁 RESUME: reconciling orders + positions
+  RESUME: risk restored — daily_pnl=$+0.00 trades=0 losses=0 (closed_trades=0 cached)
+🔁 RESUME: reconcile complete
+Account equity: $30,000
+EPL initialized: 1 strategies registered
+
+🔄 CATCHUP SCAN at 12:59:49 ET (first scan — casting wide net)...
+Error 162, reqId 31280: Historical Market Data Service error message:API scanner subscription cancelled: 31280
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31280 (reqId=31280, symbol=?)
+Error 162, reqId 31281: Historical Market Data Service error message:API scanner subscription cancelled: 31281
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31281 (reqId=31281, symbol=?)
+  Catchup: 47 unique symbols from 3 scanners
+    Catchup: processing 1/47 — AIIO...
+Error 162, reqId 31282: Historical Market Data Service error message:API scanner subscription cancelled: 31282
+IBKR ERROR 162: Historical Market Data Service error message:API scanner subscription cancelled: 31282 (reqId=31282, symbol=?)
+    Catchup: processing 2/47 — BITO...
+    Catchup: processing 3/47 — BMNU...
+    Catchup: processing 4/47 — BNKK...
+  [FMP] BMNU: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 5/47 — CSCS...
+    Catchup: processing 6/47 — CUB...
+  [FMP] CSCS: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 7/47 — EOSE...
+  [FMP] CUB: 429 Client Error: Too Many Requests for url: https://financialmodelingprep.com/s
+    Catchup: processing 8/47 — F...
+Bot health check passed (still running after 15s, PID: 73171)
+HEALTH_OK: Bot connected at 2026-05-14 17:00:03 UTC
+Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)...
+Sub-bot started (PID: 73209, log: /Users/duffy/warrior_bot_v2/logs/2026-05-14_subbot_alpaca.log)
+    Catchup: processing 9/47 — FENC...
+    Catchup: processing 10/47 — FRMI...
+    Catchup: processing 11/47 — HUHU...
+    Catchup: processing 12/47 — IPHA...
+    Catchup: processing 13/47 — IPST...
+    Catchup: processing 14/47 — IPWR...
+    Catchup: processing 15/47 — IRHOU...
+    Catchup: processing 16/47 — JRSH...
+    Catchup: processing 17/47 — LESL...
+    Catchup: processing 18/47 — LNKS...
+Sub-bot health check passed (still running after 15s, PID: 73209)
+Gateway watchdog started (PID: 73243)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu May 14 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+  Tick cache: AIIO → +1 ticks (total 126)
+  Tick cache: BITO → +2 ticks (total 5)
+  Tick cache: BMNU → +2 ticks (total 4)
+  Tick cache: BNKK → +2 ticks (total 117)
+  Tick cache: CSCS → +2 ticks (total 4)
+  Tick cache: CUB → +2 ticks (total 2)
+  Tick cache: EOSE → +2 ticks (total 4)
+  Tick cache: F → +2 ticks (total 5)
+  Tick cache: FENC → +2 ticks (total 15)
+  Tick cache: FRMI → +2 ticks (total 39)
+  Tick cache: HUHU → +2 ticks (total 4)
+  Tick cache: IPHA → +1 ticks (total 11)
+  Tick cache: IPST → +2 ticks (total 49)
+  Tick cache: IPWR → +2 ticks (total 13)
+  Tick cache: IRHOU → +2 ticks (total 4)
+  Tick cache: JRSH → +2 ticks (total 2)
+  Tick cache: LESL → +1 ticks (total 33,354)
+  Tick cache: LNKS → +1 ticks (total 1,245)
+📦 Tick cache saved: 18 symbols → tick_cache/2026-05-14/
+    Catchup: processing 19/47 — MOBX...
+ALERT: bot_v3_hybrid.py died at Thu May 14 11:00:19 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-14_daily.log.
+=== Shutting down at Thu May 14 11:00:19 MDT 2026 ===
+    Catchup: processing 20/47 — NOK...
+    Catchup: processing 21/47 — NU...
+    Catchup: processing 22/47 — NUG...
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+Pushing logs...
