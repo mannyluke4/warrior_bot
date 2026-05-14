@@ -44,3 +44,75 @@
 [ENGINE] 2026-05-14T12:34:24.569636-04:00 IPC client disconnected (squeeze_bot#23f0, dropped=0)
 [ENGINE] 2026-05-14T12:34:24.570154-04:00 IBKR disconnected (event)
 [ENGINE] 2026-05-14T12:34:24.570434-04:00 shutdown complete
+========================================================================
+[ENGINE] 2026-05-14T12:34:44.582804-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-14/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-14T12:34:44.837345-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-14T12:34:44.837409-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-14T12:34:45.343613-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-14T12:34:46.181335-04:00 IPC client connected (unknown#4a70)
+[ENGINE] 2026-05-14T12:34:46.181477-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-14T12:34:46.186821-04:00 IPC client connected (unknown#2c00)
+[ENGINE] 2026-05-14T12:34:46.186921-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-14T12:36:14.843757-04:00 seeded AEHL: 106 ticks (0 skipped) → bars (vwap=5.0291)
+[ENGINE] 2026-05-14T12:36:15.037270-04:00 subscribed AEHL (snapshot)
+[ENGINE] 2026-05-14T12:36:15.037361-04:00 seed: no cache for ATRA at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-14/ATRA.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-14T12:36:15.209737-04:00 subscribed ATRA (snapshot)
+[ENGINE] 2026-05-14T12:36:15.210119-04:00 seeded LESL: 3 ticks (0 skipped) → bars (vwap=4.3100)
+[ENGINE] 2026-05-14T12:36:15.283197-04:00 subscribed LESL (snapshot)
+[ENGINE] 2026-05-14T12:36:15.283568-04:00 seeded LNKS: 13 ticks (0 skipped) → bars (vwap=2.0955)
+[ENGINE] 2026-05-14T12:36:15.356959-04:00 subscribed LNKS (snapshot)
+[ENGINE] 2026-05-14T12:36:15.357388-04:00 seeded MOBX: 26 ticks (0 skipped) → bars (vwap=2.4836)
+[ENGINE] 2026-05-14T12:36:15.432725-04:00 subscribed MOBX (snapshot)
+[ENGINE] 2026-05-14T12:36:15.432961-04:00 seeded QUCY: 3 ticks (0 skipped) → bars (vwap=2.7000)
+[ENGINE] 2026-05-14T12:36:15.602753-04:00 subscribed QUCY (snapshot)
+[ENGINE] 2026-05-14T12:36:15.602843-04:00 Alpaca quote sub: AEHL,ATRA,LESL,LNKS,MOBX,QUCY
+[ENGINE] 2026-05-14T12:36:25.621640-04:00 seeded SST: 1388 ticks (0 skipped) → bars (vwap=3.3668)
+[ENGINE] 2026-05-14T12:36:25.692897-04:00 subscribed SST (snapshot)
+[ENGINE] 2026-05-14T12:36:25.693611-04:00 Alpaca quote sub: SST
+[ENGINE] 2026-05-14T12:59:27.985955-04:00 signal received — requesting shutdown
+[ENGINE] 2026-05-14T12:59:27.986043-04:00 shutdown initiated
+[ENGINE] 2026-05-14T12:59:27.986434-04:00 IPC client disconnected (squeeze_bot#2c00, dropped=0)
+[ENGINE] 2026-05-14T12:59:27.986468-04:00 IPC client disconnected (wb_bot#4a70, dropped=0)
+[ENGINE] 2026-05-14T12:59:28.048213-04:00 IBKR disconnected (event)
+[ENGINE] 2026-05-14T12:59:28.048298-04:00 shutdown complete
+========================================================================
+[ENGINE] 2026-05-14T12:59:42.218514-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-14/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-14T12:59:42.459543-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-14T12:59:42.459598-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-14T12:59:42.763571-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-14T12:59:43.900429-04:00 IPC client connected (unknown#ca70)
+[ENGINE] 2026-05-14T12:59:43.900560-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-14T12:59:43.901899-04:00 IPC client connected (unknown#67e0)
+[ENGINE] 2026-05-14T12:59:43.902018-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-14T12:59:52.461006-04:00 watchlist loop: first-pass fanout starting (clients=2)
+[ENGINE] 2026-05-14T12:59:52.475418-04:00 seeded AEHL: 5884 ticks (20 skipped) → bars (vwap=4.3756)
+[ENGINE] 2026-05-14T12:59:52.546118-04:00 subscribed AEHL (snapshot)
+[ENGINE] 2026-05-14T12:59:52.554486-04:00 seeded ATRA: 2419 ticks (0 skipped) → bars (vwap=9.9986)
+[ENGINE] 2026-05-14T12:59:52.624015-04:00 subscribed ATRA (snapshot)
+[ENGINE] 2026-05-14T12:59:52.699976-04:00 seeded LESL: 33353 ticks (0 skipped) → bars (vwap=4.0842)
+[ENGINE] 2026-05-14T12:59:52.768418-04:00 subscribed LESL (snapshot)
+[ENGINE] 2026-05-14T12:59:52.772386-04:00 seeded LNKS: 1244 ticks (0 skipped) → bars (vwap=2.0922)
+[ENGINE] 2026-05-14T12:59:52.841942-04:00 subscribed LNKS (snapshot)
+[ENGINE] 2026-05-14T12:59:52.854779-04:00 seeded MOBX: 5140 ticks (0 skipped) → bars (vwap=3.2111)
+[ENGINE] 2026-05-14T12:59:52.924240-04:00 subscribed MOBX (snapshot)
+[ENGINE] 2026-05-14T12:59:52.987102-04:00 seeded QUCY: 28480 ticks (0 skipped) → bars (vwap=2.7132)
+[ENGINE] 2026-05-14T12:59:53.056574-04:00 subscribed QUCY (snapshot)
+[ENGINE] 2026-05-14T12:59:53.062483-04:00 seeded SST: 1521 ticks (0 skipped) → bars (vwap=3.3728)
+[ENGINE] 2026-05-14T12:59:53.133186-04:00 subscribed SST (snapshot)
+[ENGINE] 2026-05-14T12:59:53.133284-04:00 Alpaca quote sub: AEHL,ATRA,LESL,LNKS,MOBX,QUCY,SST

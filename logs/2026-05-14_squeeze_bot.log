@@ -15,3 +15,43 @@
 [SQUEEZE] 2026-05-14T12:34:24.569485-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0 (continuing to manage via cached last-tick prices when they arrive — none will arrive until engine reconnects). Manual intervention required to flatten if engine stays down.
 [SQUEEZE] 2026-05-14T12:34:24.582714-04:00 signal received — shutting down
 [SQUEEZE] 2026-05-14T12:34:24.582830-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)
+[SQUEEZE] BOOT: RESUME (reason=marker_present, marker_age=30873s)
+[SQUEEZE] 2026-05-14T12:34:46.037422-04:00 starting equity $87,773 (third Alpaca paper account)
+[SQUEEZE] 2026-05-14T12:34:46.037481-04:00 RESUME: reconciling state
+[SQUEEZE] 2026-05-14T12:34:46.186256-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0 consec_losses=0
+[SQUEEZE] 2026-05-14T12:34:46.186657-04:00 RESUME: complete
+[SQUEEZE] 2026-05-14T12:34:46.186711-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[SQUEEZE] 2026-05-14T12:34:50.210200-04:00 stream healthy — entries unlocked
+[SQUEEZE] 2026-05-14T12:36:15.357935-04:00 LNKS seed→live transition (seed_last_price=$2.1704)
+[SQUEEZE] 2026-05-14T12:36:15.433432-04:00 MOBX seed→live transition (seed_last_price=$3.0550)
+[SQUEEZE] 2026-05-14T12:36:25.626663-04:00 SST seed→live transition (seed_last_price=$3.3600)
+[SQUEEZE] 2026-05-14T12:37:00.629547-04:00 AEHL seed→live transition (seed_last_price=$3.8700)
+[SQUEEZE] 2026-05-14T12:39:04.084324-04:00 ATRA seed→live transition (seed_last_price=$9.8200)
+[SQUEEZE] 2026-05-14T12:39:27.124666-04:00 SST seed→live transition (seed_last_price=$3.3750)
+[SQUEEZE] 2026-05-14T12:41:24.300073-04:00 SST seed→live transition (seed_last_price=$3.3967)
+[SQUEEZE] 2026-05-14T12:43:15.812405-04:00 SST seed→live transition (seed_last_price=$3.3800)
+[SQUEEZE] 2026-05-14T12:44:01.632073-04:00 ATRA seed→live transition (seed_last_price=$9.8200)
+[SQUEEZE] 2026-05-14T12:45:26.636757-04:00 SST seed→live transition (seed_last_price=$3.3800)
+[SQUEEZE] 2026-05-14T12:46:02.181906-04:00 ATRA seed→live transition (seed_last_price=$9.9000)
+[SQUEEZE] 2026-05-14T12:49:05.528296-04:00 SST seed→live transition (seed_last_price=$3.3800)
+[SQUEEZE] 2026-05-14T12:50:00.065263-04:00 MOBX SQ_REJECT: not_new_hod (bar_high=$3.2800 < HOD=$3.3200)
+[SQUEEZE] 2026-05-14T12:52:00.258651-04:00 AEHL seed→live transition (seed_last_price=$4.4200)
+[SQUEEZE] 2026-05-14T12:52:00.258887-04:00 AEHL SQ_REJECT: not_new_hod (bar_high=$4.8900 < HOD=$6.0126)
+[SQUEEZE] 2026-05-14T12:57:03.133145-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[SQUEEZE] 2026-05-14T12:58:04.830265-04:00 SST seed→live transition (seed_last_price=$3.4450)
+[SQUEEZE] 2026-05-14T12:59:00.953402-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[SQUEEZE] 2026-05-14T12:59:27.986300-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0 (continuing to manage via cached last-tick prices when they arrive — none will arrive until engine reconnects). Manual intervention required to flatten if engine stays down.
+[SQUEEZE] 2026-05-14T12:59:27.999810-04:00 signal received — shutting down
+[SQUEEZE] 2026-05-14T12:59:27.999996-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)
+[SQUEEZE] BOOT: RESUME (reason=marker_present, marker_age=32371s)
+[SQUEEZE] 2026-05-14T12:59:43.768769-04:00 starting equity $87,773 (third Alpaca paper account)
+[SQUEEZE] 2026-05-14T12:59:43.768822-04:00 RESUME: reconciling state
+[SQUEEZE] 2026-05-14T12:59:43.899705-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0 consec_losses=0
+[SQUEEZE] 2026-05-14T12:59:43.900221-04:00 RESUME: complete
+[SQUEEZE] 2026-05-14T12:59:43.900283-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[SQUEEZE] 2026-05-14T12:59:47.909870-04:00 stream healthy — entries unlocked
+[SQUEEZE] 2026-05-14T13:00:00.162266-04:00 QUCY seed→live transition (seed_last_price=$2.6300)
+[SQUEEZE] 2026-05-14T13:00:00.426970-04:00 MOBX seed→live transition (seed_last_price=$3.2100)
+[SQUEEZE] 2026-05-14T13:00:00.427246-04:00 LESL seed→live transition (seed_last_price=$4.0100)
+[SQUEEZE] 2026-05-14T13:00:00.493931-04:00 AEHL seed→live transition (seed_last_price=$4.3900)
+[SQUEEZE] 2026-05-14T13:00:01.177697-04:00 LNKS seed→live transition (seed_last_price=$2.1000)
