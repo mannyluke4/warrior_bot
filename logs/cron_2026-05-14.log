@@ -269,3 +269,10 @@ Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu May 14 18:05:00 MDT 
 ALERT: bot_v3_hybrid.py died at Thu May 14 13:55:25 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-14_daily.log.
 === Shutting down at Thu May 14 13:55:25 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration 8a4cbc6] auto: v3 daily logs 2026-05-14
+ 7 files changed, 10437 insertions(+)
+ create mode 100644 logs/2026-05-14_latency_diagnostic.jsonl
+ create mode 100644 logs/2026-05-14_wb_intraday_adder_observe.jsonl
+WARNING: Gateway port 4002 dropped at 2026-05-14 19:55:31 UTC
+=== V3 Hybrid daily run complete: Thu May 14 13:55:32 MDT 2026 ===
+=== TRAP: cleanup at Thu May 14 13:55:32 MDT 2026 ===
