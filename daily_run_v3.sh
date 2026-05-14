@@ -171,6 +171,16 @@ pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
 pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true
 sleep 2
 
+# 6a-bis. Wipe yesterday's watchlist.txt before scanner runs.
+# Defense for H#17 (watchlist freshness 2026-05-13). The bot's
+# poll_watchlist() also mtime-checks the file, but actively truncating it
+# at boot ensures: (1) scanner's first write becomes today's authoritative
+# list, (2) if scanner fails (Databento outage, etc.), the file stays
+# empty rather than inheriting yesterday's symbols, (3) no edge cases
+# around mtime/timezone/clock drift on the mtime check.
+echo "Wiping yesterday's watchlist.txt for a fresh session..."
+: > ~/warrior_bot_v2/watchlist.txt
+
 # 6b. Start Databento live scanner (writes watchlist.txt for the bot)
 echo "Starting live_scanner.py..."
 cd ~/warrior_bot_v2
