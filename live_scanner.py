@@ -659,9 +659,11 @@ class LiveScanner:
         self.log.info(f"      Stream started, replaying from {premarket_start.strftime('%H:%M')} ET...")
 
         try:
-            # Step 3: Time-managed loop (continuous until 9:30 AM ET cutoff)
+            # Step 3: Time-managed loop (continuous until cutoff)
             last_update_minute = -1  # track last 1-min update write
-            _new_symbol_cutoff_h, _new_symbol_cutoff_m = 9, 30
+            _cutoff_hhmm = os.environ.get("WB_SCANNER_CUTOFF_HHMM", "0930")
+            _new_symbol_cutoff_h = int(_cutoff_hhmm[:2])
+            _new_symbol_cutoff_m = int(_cutoff_hhmm[2:])
             _seen_symbols: set = set()  # track symbols for post-cutoff filtering
             while True:
                 now_et = datetime.now(ET)
@@ -696,7 +698,7 @@ class LiveScanner:
                 # Stop at 9:30 AM ET — write final and exit
                 if h > _new_symbol_cutoff_h or (h == _new_symbol_cutoff_h and m >= _new_symbol_cutoff_m):
                     self.write_watchlist("final")
-                    self.log.info(f"Scanner cutoff reached (9:30 AM ET). Stopping stream.")
+                    self.log.info(f"Scanner cutoff reached ({_new_symbol_cutoff_h:02d}:{_new_symbol_cutoff_m:02d} ET). Stopping stream.")
                     break
 
                 time.sleep(5)
