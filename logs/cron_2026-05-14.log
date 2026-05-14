@@ -203,3 +203,15 @@ Pushing logs...
  4 files changed, 31353 insertions(+)
 === V3 Hybrid daily run complete: Thu May 14 11:00:27 MDT 2026 ===
 === TRAP: cleanup at Thu May 14 11:00:27 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 72283 Terminated: 15          caffeinate -dims -w $$  (wd: ~/warrior_bot_v2_engine)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 72416 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 8626942] auto: v3 daily logs 2026-05-14
+ 3 files changed, 24 insertions(+)
+=== Cleanup complete: Thu May 14 11:00:28 MDT 2026 ===
+ALERT: bot_v3_hybrid.py died at Thu May 14 11:01:18 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-14_daily.log.
+=== Shutting down at Thu May 14 11:01:18 MDT 2026 ===
+Pushing logs...
