@@ -29,3 +29,55 @@ ALERT: wb_bot.py died at Thu May 14 07:31:05 MDT 2026. See /Users/duffy/warrior_
 All 3 processes are dead. Exiting watchdog.
 === Setup B engine daily run complete: Thu May 14 07:31:05 MDT 2026 ===
 === TRAP: cleanup at Thu May 14 07:31:05 MDT 2026 ===
+/Users/duffy/warrior_bot_v2_engine/daily_run_engine.sh: line 74: 65770 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[data-engine-unified 76d3bd0] auto: engine daily logs 2026-05-14
+ 10 files changed, 2205 insertions(+)
+ create mode 100644 logs/2026-05-14_engine.log
+ create mode 100644 logs/2026-05-14_engine_run.log
+ create mode 100644 logs/2026-05-14_squeeze_bot.log
+ create mode 100644 logs/2026-05-14_wb_bot.log
+ create mode 100644 logs/cron_2026-05-14.log
+=== Cleanup complete: Thu May 14 07:31:12 MDT 2026 ===
+=== Setup B engine daily run started: Thu May 14 07:31:12 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 69355)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: 76d3bd0 (auto: engine daily logs 2026-05-14)
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 69400, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 69405, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 69406, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_wb_bot.log)
+engine OK (PID 69400)
+squeeze OK (PID 69405)
+wb OK (PID 69406)
+Watchdog: monitoring until Thu May 14 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Thu May 14 10:34:36 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+ALERT: data_engine.py died at Thu May 14 10:34:38 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_engine.log.
+       Bots will fail-CLOSED on socket close; no auto-restart per directive.
+ALERT: squeeze_bot.py died at Thu May 14 10:34:38 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_squeeze_bot.log.
+ALERT: wb_bot.py died at Thu May 14 10:34:38 MDT 2026. See /Users/duffy/warrior_bot_v2_engine/logs/2026-05-14_wb_bot.log.
+All 3 processes are dead. Exiting watchdog.
+=== Setup B engine daily run complete: Thu May 14 10:34:38 MDT 2026 ===
+=== TRAP: cleanup at Thu May 14 10:34:38 MDT 2026 ===
+Persistent caffeinate started (PID: 72289)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: a674009 (wb_bot: WB_OBSERVE → record_wb_observe (Cowork directive §0.2))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)

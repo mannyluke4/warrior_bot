@@ -5,3 +5,13 @@
 [WB] 2026-05-14T09:30:53.232622-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0
 [WB] 2026-05-14T09:30:53.263244-04:00 signal received — shutting down
 [WB] 2026-05-14T09:30:53.263473-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)
+[WB] BOOT: RESUME (reason=marker_present, marker_age=19870s)
+[WB] 2026-05-14T09:31:22.651880-04:00 starting equity $87,773 (third Alpaca paper account)
+[WB] 2026-05-14T09:31:22.651930-04:00 RESUME: reconciling state
+[WB] 2026-05-14T09:31:22.776552-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0
+[WB] 2026-05-14T09:31:22.777328-04:00 RESUME: complete
+[WB] 2026-05-14T09:31:22.777395-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[WB] 2026-05-14T09:31:26.791042-04:00 stream healthy — entries unlocked
+[WB] 2026-05-14T12:34:24.569465-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0
+[WB] 2026-05-14T12:34:24.597243-04:00 signal received — shutting down
+[WB] 2026-05-14T12:34:24.597467-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=0)

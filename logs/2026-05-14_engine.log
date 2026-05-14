@@ -21,3 +21,26 @@
 [ENGINE] 2026-05-14T09:30:53.232725-04:00 IPC client disconnected (wb_bot#d130, dropped=0)
 [ENGINE] 2026-05-14T09:30:53.233347-04:00 IBKR disconnected (event)
 [ENGINE] 2026-05-14T09:30:53.233544-04:00 shutdown complete
+========================================================================
+[ENGINE] 2026-05-14T09:31:21.154257-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-14/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-14T09:31:21.389104-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-14T09:31:21.389174-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-14T09:31:21.793681-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-14T09:31:22.777581-04:00 IPC client connected (unknown#6ed0)
+[ENGINE] 2026-05-14T09:31:22.777701-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-14T09:31:22.778132-04:00 IPC client connected (unknown#23f0)
+[ENGINE] 2026-05-14T09:31:22.778224-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-14T12:34:24.568807-04:00 signal received — requesting shutdown
+[ENGINE] 2026-05-14T12:34:24.569004-04:00 shutdown initiated
+[ENGINE] 2026-05-14T12:34:24.569587-04:00 IPC client disconnected (wb_bot#6ed0, dropped=0)
+[ENGINE] 2026-05-14T12:34:24.569636-04:00 IPC client disconnected (squeeze_bot#23f0, dropped=0)
+[ENGINE] 2026-05-14T12:34:24.570154-04:00 IBKR disconnected (event)
+[ENGINE] 2026-05-14T12:34:24.570434-04:00 shutdown complete
