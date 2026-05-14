@@ -30,3 +30,11 @@ All 3 processes are dead. Exiting watchdog.
 === Setup B engine daily run complete: Wed May 13 13:18:48 MDT 2026 ===
 === TRAP: cleanup at Wed May 13 13:18:48 MDT 2026 ===
 /Users/duffy/warrior_bot_v2_engine/daily_run_engine.sh: line 74: 30581 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[data-engine-unified bf02f74] auto: engine daily logs 2026-05-13
+ 8 files changed, 645 insertions(+)
+ create mode 100644 logs/2026-05-13_engine.log
+ create mode 100644 logs/2026-05-13_engine_run.log
+ create mode 100644 logs/2026-05-13_squeeze_bot.log
+ create mode 100644 logs/2026-05-13_wb_bot.log
+ create mode 100644 logs/cron_2026-05-13.log
+=== Cleanup complete: Wed May 13 13:18:55 MDT 2026 ===
