@@ -408,6 +408,13 @@ class WBBot:
             return
         if res:
             print(f"[WB] {now_iso_et()} {sym} {res}", flush=True)
+            if "WB_OBSERVE" in res:
+                try:
+                    import wb_persistence
+                    wb_persistence.record_wb_observe(sym)
+                except Exception as e:
+                    print(f"[WB] {now_iso_et()} {sym} WB_PERSIST "
+                          f"record_wb_observe failed: {e!r}", flush=True)
 
     def on_subscriptions(self, msg: SubscriptionsMessage):
         for sym in msg.watchlist:
