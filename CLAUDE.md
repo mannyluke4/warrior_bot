@@ -38,6 +38,25 @@ A Python trading bot that detects squeeze breakout and micro-pullback setups on 
 - Include `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
 - Cowork (Opus) updates docs (MASTER_TODO, COWORK_HANDOFF, CLAUDE.md, etc.) and commits locally — CC pushes on next run
 
+### Manual interventions (added 2026-05-14 per Cowork DIRECTIVE_GO_STAGE_0_3.md §3)
+Any manual mutation of `state/`, `session_state/`, `watchlist.txt`, or
+`wb_persistence.txt` outside scanner/bot code paths (e.g. `python -c` heredocs,
+direct file edits, ad-hoc symbol injection) MUST append a one-line entry to
+`logs/manual_interventions.log` with format:
+
+```
+YYYY-MM-DD HH:MM:SS ET  ACTOR  ACTION  SYMBOL(S)  REASON
+```
+
+Example:
+```
+2026-05-13 12:32:00 ET  cc-session-3a1f  inject-watchlist  MEI,NSTS,PTBD,VNET  databento crashed, bots idling, manual triage
+```
+
+The MEI 2026-05-13 winner came from an undocumented manual injection that burned
+investigation cycles to trace (see `cowork_reports/2026-05-14_mei_bypass_trace.md`).
+This convention closes the audit gap.
+
 ## Key Architecture
 
 ### Detection Flow

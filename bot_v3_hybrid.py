@@ -389,6 +389,8 @@ class BotState:
         # Scanner
         self.candidates: list[dict] = []
         self.last_scan_time: datetime = None
+        self.last_intraday_adder_time: datetime = None
+        self.intraday_adder_poll_n: int = 0
         self.in_dead_zone: bool = False  # True while between trading windows
 
         # Seed completion tracking (suppress stale signals after seeding)
@@ -1957,6 +1959,68 @@ def run_scanner():
 
     print(f"📊 Scanner: {len(state.candidates)} new candidates, "
           f"{new_subs} new subs, {len(state.active_symbols)} total watching", flush=True)
+
+
+def run_intraday_adder() -> None:
+    """Stage 0.3 — observe-only intraday WB candidate adder.
+
+    Cowork DIRECTIVE_GO_STAGE_0_3.md: poll the IBKR scanner every
+    WB_INTRADAY_ADDER_POLL_MIN minutes during RTH for symbols meeting
+    WB-friendly intraday thresholds. Writes one JSONL row per cycle
+    to `logs/<today>_wb_intraday_adder_observe.jsonl`. Does NOT inject
+    into the live watchlist unless WB_INTRADAY_ADDER_OBSERVE_ONLY=0.
+
+    Lives next to run_scanner() so the existing per-iteration cadence
+    in the main loop handles both. Throttling is internal — early
+    returns when env-disabled or the poll interval has not elapsed."""
+    try:
+        import wb_intraday_adder
+    except Exception as e:
+        print(f"⚠️  WB_INTRADAY_ADDER import failed: {e!r}", flush=True)
+        return
+    if not wb_intraday_adder.SHOULD_RUN:
+        return
+
+    now = datetime.now(ET)
+    poll_sec = wb_intraday_adder.POLL_MIN * 60
+    if state.last_intraday_adder_time and \
+            (now - state.last_intraday_adder_time).total_seconds() < poll_sec:
+        return
+
+    state.intraday_adder_poll_n += 1
+    state.last_intraday_adder_time = now
+
+    session_losses = getattr(state, "session_losses", None)
+    record = wb_intraday_adder.poll(
+        state.ib,
+        now_et=now,
+        poll_n=state.intraday_adder_poll_n,
+        session_losses=session_losses,
+        active_symbols=state.active_symbols,
+    )
+    if record is None:
+        return
+
+    n_pass = record["candidates_passing"]
+    n_eval = record["candidates_evaluated"]
+    print(f"🔭 WB_INTRADAY_ADDER poll #{state.intraday_adder_poll_n}: "
+          f"{n_eval} evaluated, {n_pass} passing "
+          f"(observe_only={record['observe_only']})", flush=True)
+    if n_pass:
+        syms = wb_intraday_adder.passing_symbols(record)
+        print(f"   would-add: {syms}", flush=True)
+
+    # Live mode (Stage 0.3+ only after Mon 5/18 review): subscribe the
+    # passing symbols. Guarded behind OBSERVE_ONLY=0 so today's run is
+    # pure telemetry.
+    if not record["observe_only"]:
+        for sym in wb_intraday_adder.passing_symbols(record):
+            if sym not in state.active_symbols:
+                try:
+                    subscribe_symbol(sym)
+                except Exception as e:
+                    print(f"⚠️  WB_INTRADAY_ADDER subscribe {sym} failed: {e!r}",
+                          flush=True)
 
 
 def poll_watchlist():
@@ -4536,6 +4600,7 @@ def main():
                 if momentum_active:
                     run_scanner()
                     poll_watchlist()
+                    run_intraday_adder()
 
                     # Check halts
                     check_halts()
