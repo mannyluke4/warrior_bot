@@ -108,6 +108,20 @@ WB_PRE_MARKET_BLOCK_ENABLED = os.getenv(
 WB_PRE_MARKET_BLOCK_MIN_ET = os.getenv(
     "WB_PRE_MARKET_BLOCK_MIN_ET", "11:00")
 
+# Hypothesis #16 — entry-time minimum price floor (2026-05-13).
+# WB_MIN_PRICE=$2 is only enforced in the scanner; once a symbol is on the
+# watchlist the bot would trade it regardless of current price. 2026-05-13
+# ENSC at $0.30 (R% < spread, impossible setup) was the canonical case. Data
+# across 5/8-5/13 (21 closed WB trades):
+#   sub-$6 WR 7.7% (1/13), net -$8,972
+#   $6+   WR 25%  (2/8),  net  +$345
+# Reject arms whose entry price falls below WB_WB_MIN_ENTRY_PRICE BEFORE
+# chop gate v3 — cheap, applies regardless of score (mirror Setup A).
+# Default-ON per directive — data is overwhelming.
+WB_WB_MIN_ENTRY_PRICE_ENABLED = os.getenv(
+    "WB_WB_MIN_ENTRY_PRICE_ENABLED", "1") == "1"
+WB_WB_MIN_ENTRY_PRICE = float(os.getenv("WB_WB_MIN_ENTRY_PRICE", "6.00"))
+
 
 def _parse_hh_mm_to_time(hhmm: str):
     """Parse 'HH:MM' (24-hour ET) into a datetime.time. Defaults to 11:00
@@ -489,6 +503,21 @@ class WBBot:
                       f"(now={now_et_dt.strftime('%H:%M')} ET < "
                       f"min={WB_PRE_MARKET_BLOCK_MIN_ET} ET)", flush=True)
                 det.mark_entry_failed("pre_threshold_time")
+                return
+
+        # Hypothesis #16 — entry-time price floor (2026-05-13). The scanner's
+        # WB_MIN_PRICE=$2 is enforced only at watchlist build; once a symbol
+        # is on the list, the bot would trade it regardless of current price.
+        # 2026-05-13 ENSC at $0.30 was the canonical case. Across 5/8-5/13:
+        # sub-$6 WR 7.7% net -$8,972, $6+ WR 25% net +$345. Runs BEFORE chop
+        # gate v3 — cheap, applies regardless of score (mirror Setup A).
+        if WB_WB_MIN_ENTRY_PRICE_ENABLED:
+            if entry < WB_WB_MIN_ENTRY_PRICE:
+                print(f"[CHOP_REJECT] {now_iso_et()} {symbol}: "
+                      f"entry_price_below_floor "
+                      f"(${entry:.2f} < ${WB_WB_MIN_ENTRY_PRICE:.2f})",
+                      flush=True)
+                det.mark_entry_failed("entry_price_below_floor")
                 return
 
         # Chop Gate v3 — second-layer check (DIRECTIVE_CHOP_GATE_V3_BUILD.md,
