@@ -79,6 +79,19 @@ if BOX_ENABLED:
 WATCHLIST_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "watchlist.txt")
 DATABENTO_BRIDGE = os.getenv("WB_DATABENTO_BRIDGE_ENABLED", "1") == "1"
 
+# Hypothesis #17 — fresh watchlist on cold start (2026-05-13).
+# When live_scanner crashes (e.g. Databento 402 on 2026-05-13), the
+# un-dated watchlist.txt is never rewritten, so a cold-start bot would
+# inherit yesterday's symbols (KBSX, CLNN, FATN, SST, NVOX, ATRA, TRAW,
+# ENSC, ODYS) and trade them without scanner validation. Today's ENSC
+# at $0.30 was the canonical case. Fix: on cold boot, refuse to read
+# watchlist.txt if its mtime is not today's date — wait for the scanner
+# to write a fresh one. Resume boots are unchanged (durable session_state
+# is rehydrated separately by resume_reconcile).
+# Default-ON for safety. Flip to 0 to revert to inheritance behavior.
+WB_FRESH_WATCHLIST_ON_COLD_START = os.getenv(
+    "WB_FRESH_WATCHLIST_ON_COLD_START", "1") == "1"
+
 # ── Strategy gates ───────────────────────────────────────────────────
 SQ_ENABLED = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
 MP_ENABLED = os.getenv("WB_MP_ENABLED", "0") == "1"
@@ -1947,11 +1960,44 @@ def run_scanner():
 
 
 def poll_watchlist():
-    """Read watchlist.txt (written by live_scanner.py / Databento) and subscribe to new symbols."""
+    """Read watchlist.txt (written by live_scanner.py / Databento) and subscribe to new symbols.
+
+    Hypothesis #17 (2026-05-13): on COLD START, if watchlist.txt was last
+    written before today, ignore it — yesterday's stale list would otherwise
+    feed losing trades on symbols that have not been re-validated by today's
+    scanner. Today's ENSC at $0.30 was the canonical case (Databento 402 →
+    live_scanner crashed → KBSX, CLNN, FATN, SST, NVOX, ATRA, TRAW, ENSC,
+    ODYS all carried over from 2026-05-11). Once the scanner writes a fresh
+    watchlist.txt later in the session, this check passes naturally. Resume
+    boots are unchanged: durable session_state/<today>/watchlist.json is
+    rehydrated by resume_reconcile, not by this function. Toggle via
+    WB_FRESH_WATCHLIST_ON_COLD_START.
+    """
     if not DATABENTO_BRIDGE:
         return
     if not os.path.exists(WATCHLIST_FILE):
         return
+
+    if (WB_FRESH_WATCHLIST_ON_COLD_START
+            and getattr(state, "boot_mode", "cold") == "cold"):
+        try:
+            mtime = os.path.getmtime(WATCHLIST_FILE)
+            file_date = datetime.fromtimestamp(mtime, tz=ET).date()
+            today_et = datetime.now(ET).date()
+            if file_date < today_et:
+                # Stale watchlist (scanner has not yet written today's file).
+                # Suppress repeat-log spam by stashing the last warning date.
+                last_warn = getattr(state, "_h17_stale_warn_date", None)
+                if last_warn != today_et:
+                    print(f"📡 H#17: skipping stale watchlist.txt "
+                          f"(mtime={file_date} < today={today_et}) — "
+                          f"waiting for scanner to write a fresh list",
+                          flush=True)
+                    state._h17_stale_warn_date = today_et
+                return
+        except Exception as e:
+            print(f"⚠️  H#17 mtime check failed: {e!r} — falling through "
+                  f"to legacy behavior", flush=True)
 
     try:
         with open(WATCHLIST_FILE, "r") as f:
