@@ -1,0 +1,54 @@
+02:00:12  Live Scanner starting — 2026-05-13 
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+02:00:12  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+02:00:12  Initialized Historical(gateway=https://hist.databento.com)
+02:00:12        Requesting OHLCV from 2026-04-14 to 2026-05-12...
+02:00:15        FAILED to load prev close: 402 account_delinquent_invoice
+Unable to submit the request because there is an unpaid invoice.
+documentation: https://databento.com/docs/portal/billing
+02:00:15        If EQUS.SUMMARY is not in your plan, confirm dataset access
+02:00:15        at https://databento.com/platform/datasets
+02:00:15        Scanner cannot run without prev close data — aborting
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 733, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 729, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 637, in run
+    self.load_prev_close()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 306, in load_prev_close
+    data = client.timeseries.get_range(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/historical/api/timeseries.py", line 127, in get_range
+    return self._stream(
+           ^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 134, in _stream
+    check_http_error(response)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 249, in check_http_error
+    raise BentoClientError(
+databento.common.error.BentoClientError: 402 account_delinquent_invoice
+Unable to submit the request because there is an unpaid invoice.
+documentation: https://databento.com/docs/portal/billing
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 29, in <module>
+    import databento as db
+ModuleNotFoundError: No module named 'databento'
+10:24:07  Live Scanner starting — 2026-05-13 
+10:24:07  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+10:24:07  Initialized Historical(gateway=https://hist.databento.com)
+10:24:07        Requesting OHLCV from 2026-04-14 to 2026-05-12...
+10:24:35        12,729 symbols with avg daily volume
+10:24:35        12,729 symbols with prev close loaded
+10:24:35  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+10:24:35  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-13 04:00:00-04:00 snapshot=False
+10:24:35  connecting to remote gateway
+10:24:37  authenticated session_id='1531262540'
+10:24:37  adding user callback on_event
+10:24:37  starting live client
+10:24:37        Stream started, replaying from 04:00 ET...
+10:24:37  [7_14] No candidates to write.
+10:24:37  [FINAL] No candidates to write.
+10:24:37  Scanner cutoff reached (9:30 AM ET). Stopping stream.
+10:24:37  stopping live client
+10:24:37  Done.
+10:24:37  connection closed
