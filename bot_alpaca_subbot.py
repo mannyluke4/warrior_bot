@@ -2459,6 +2459,13 @@ def on_bar_close_1m(bar):
         wb_msg = state.wb_detectors[symbol].on_bar_close_1m(bar, vwap=vwap)
         if wb_msg:
             print(f"[WB] [{now_str} ET] {symbol} {wb_msg}", flush=True)
+            if "WB_OBSERVE" in wb_msg:
+                try:
+                    import wb_persistence
+                    wb_persistence.record_wb_observe(symbol)
+                except Exception as e:
+                    print(f"⚠️  WB_PERSIST record_wb_observe({symbol}) failed: {e!r}",
+                          flush=True)
 
     # MP detection (standalone MP or V2 re-entry)
     if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:

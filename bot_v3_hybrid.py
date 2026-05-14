@@ -2017,6 +2017,23 @@ def poll_watchlist():
         for sym in new_syms:
             subscribe_symbol(sym)
 
+    # WB persistence layer (Cowork directive 2026-05-14 §0.2): inject
+    # symbols with recent WB_OBSERVE activity even when today's squeeze
+    # scanner filtered them out (typically for pm_volume < 30K). These
+    # symbols flow downstream to subbot + engine via session_state/
+    # watchlist.json.
+    try:
+        import wb_persistence
+        persist_syms = wb_persistence.active_persisted_symbols()
+        new_persist = sorted(persist_syms - state.active_symbols)
+        if new_persist:
+            print(f"\n🧠 WB_PERSIST: {len(new_persist)} symbols carried from "
+                  f"prior sessions: {new_persist}", flush=True)
+            for sym in new_persist:
+                subscribe_symbol(sym)
+    except Exception as e:
+        print(f"⚠️  WB_PERSIST poll_watchlist injection failed: {e!r}", flush=True)
+
 
 # ══════════════════════════════════════════════════════════════════════
 # Bar Building + Detection
