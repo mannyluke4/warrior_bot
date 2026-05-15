@@ -170,7 +170,19 @@ ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))  # 0.5% of price
 ENTRY_MAX_RETRIES = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
 ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
-ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # max % above original limit
+ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # legacy / fallback cap
+# Score-gated chase cap (Cowork directive 2026-05-14_SQUEEZE_FILL_RATE_FIX §2):
+# high-conviction signals (score >= threshold) get a wider cap, low-score keep
+# the legacy 2.0%. Default thresholds are the directive's recommended values.
+ENTRY_SCORE_HIGH_THRESHOLD = float(os.getenv("WB_ENTRY_SCORE_HIGH_THRESHOLD", "11"))
+ENTRY_MAX_CHASE_PCT_HIGH = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT_HIGH", "3.5"))
+ENTRY_MAX_CHASE_PCT_LOW = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT_LOW", "2.0"))
+# Entry time cutoff (user directive 2026-05-14 — FCHL filled 90s before 20:00 ET
+# extended-hours close, no time for bot to manage). Format: HH:MM ET.
+ENTRY_TIME_CUTOFF_ET = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+# Pre-submit buying-power check (Cowork directive #3): block BUY submits when
+# available BP < required init margin. Prevents Reg-T rejection class (ATRA 5/7).
+PRESUBMIT_BP_CHECK_ENABLED = os.getenv("WB_PRESUBMIT_BP_CHECK_ENABLED", "1") == "1"
 ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
 
 # Exit-side slippage budget. Exits use SELL LIMITs (per project rule: never
@@ -2680,13 +2692,66 @@ def compute_alpaca_aware_limit(symbol: str, signal_price: float, side: str,
         return base_limit
 
 
+def _entry_time_allowed(now_et: datetime = None) -> tuple[bool, str]:
+    """User directive 2026-05-14: no new entries after WB_ENTRY_TIME_CUTOFF_ET.
+    Mirrors H#14 pre-11 ET block on the other end. FCHL 2026-05-14 19:58 ET
+    filled 90s before extended-hours close — no time for the bot to manage
+    the position before scheduled session-end shutdown at 20:05 MT.
+
+    Returns (allowed, reason). On parse failure of the env var, fail-OPEN
+    (cutoff disabled) and log a warning, so a typo doesn't silently block."""
+    try:
+        hh, mm = ENTRY_TIME_CUTOFF_ET.strip().split(":")
+        cutoff = (int(hh), int(mm))
+    except Exception:
+        print(f"⚠️  WB_ENTRY_TIME_CUTOFF_ET bad value={ENTRY_TIME_CUTOFF_ET!r} — "
+              f"cutoff disabled (fail-open)", flush=True)
+        return True, "cutoff_unparseable"
+    now_et = now_et or datetime.now(ET)
+    if (now_et.hour, now_et.minute) >= cutoff:
+        return False, f"entry_after_cutoff (now={now_et.strftime('%H:%M')} ET >= {ENTRY_TIME_CUTOFF_ET} ET)"
+    return True, "ok"
+
+
+def _presubmit_bp_check(symbol: str, qty: int, limit_price: float,
+                        log_prefix: str = "") -> tuple[bool, str]:
+    """Pre-submit buying-power check (Cowork directive 2026-05-14_SQUEEZE_FILL_
+    RATE_FIX §3). Blocks BUY submits when available BP < notional + 5% safety
+    pad. Catches the Reg-T overnight-margin rejection class that bit ATRA 5/7.
+
+    Best-effort: if broker.get_buying_power() raises, returns (True, "bp_
+    unknown") to fail-open. Per directive: false positives are detectable
+    and recoverable; false negatives are the existing behavior we're trying
+    to reduce."""
+    if not PRESUBMIT_BP_CHECK_ENABLED:
+        return True, "disabled"
+    if not state.broker:
+        return True, "no_broker"
+    try:
+        bp = state.broker.get_buying_power()
+    except Exception as e:
+        print(f"  {log_prefix}BP_CHECK: get_buying_power failed: {e!r} — fail-open",
+              flush=True)
+        return True, "bp_unknown"
+    notional = qty * limit_price
+    required = notional * 1.05  # 5% safety pad for slippage between submit/fill
+    if bp < required:
+        return False, (f"insufficient_bp (bp=${bp:,.2f} < required=${required:,.2f}, "
+                       f"notional=${notional:,.2f})")
+    return True, f"ok (bp=${bp:,.2f}, notional=${notional:,.2f})"
+
+
 def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
                              original_limit, position_attr, log_prefix="",
-                             latency_record: dict = None):
+                             latency_record: dict = None, score: float = 0.0):
     """Poll broker for fill. On timeout: cancel + reprice to current market +
     resubmit, up to ENTRY_MAX_RETRIES times. Aborts if market runs above
-    original_limit × (1 + ENTRY_MAX_CHASE_PCT/100). See directive
+    original_limit × (1 + effective_chase_pct/100). See directive
     2026-04-15_directive_entry_slippage_retry.md.
+
+    Chase cap is score-gated (Cowork directive 2026-05-14_SQUEEZE_FILL_RATE_FIX
+    §2): score >= ENTRY_SCORE_HIGH_THRESHOLD uses ENTRY_MAX_CHASE_PCT_HIGH,
+    else ENTRY_MAX_CHASE_PCT_LOW. Default 0 score → low cap (conservative).
     """
     cur_order_id = initial_order_id
     cur_limit = initial_limit
@@ -2793,10 +2858,16 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
         time.sleep(0.3)
 
         cur_price = state.last_tick_price.get(symbol, cur_limit) or cur_limit
-        max_chase_price = original_limit * (1 + ENTRY_MAX_CHASE_PCT / 100.0)
+        effective_chase_pct = (
+            ENTRY_MAX_CHASE_PCT_HIGH
+            if score >= ENTRY_SCORE_HIGH_THRESHOLD
+            else ENTRY_MAX_CHASE_PCT_LOW
+        )
+        max_chase_price = original_limit * (1 + effective_chase_pct / 100.0)
         if cur_price > max_chase_price:
             print(f"  {log_prefix}ORDER TIMEOUT: {symbol} market ${cur_price:.2f} exceeds max chase "
-                  f"${max_chase_price:.2f} ({ENTRY_MAX_CHASE_PCT}% above original ${original_limit:.2f}) — giving up",
+                  f"${max_chase_price:.2f} ({effective_chase_pct}% above original ${original_limit:.2f}, "
+                  f"score={score:.1f}) — giving up",
                   flush=True)
             pos = getattr(state, position_attr)
             if pos and pos.get("order_id") == cur_order_id:
@@ -2965,6 +3036,18 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
     except Exception:
         pass
 
+    # Entry-time cutoff (user directive 2026-05-14 — no new entries after 19:30 ET).
+    _et_ok, _et_reason = _entry_time_allowed()
+    if not _et_ok:
+        print(f"  ENTRY BLOCKED: {symbol} {_et_reason}", flush=True)
+        return
+
+    # Pre-submit buying-power check (Cowork directive 2026-05-14 §3).
+    _bp_ok, _bp_reason = _presubmit_bp_check(symbol, qty, limit_price)
+    if not _bp_ok:
+        print(f"  ENTRY BLOCKED: {symbol} {_bp_reason}", flush=True)
+        return
+
     try:
         new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
         order_id = new_order.order_id
@@ -3031,7 +3114,7 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
             symbol=symbol, qty=qty, r=r,
             initial_order_id=order_id, initial_limit=limit_price,
             original_limit=original_limit, position_attr="open_position",
-            latency_record=latency_record,
+            latency_record=latency_record, score=score,
         )
 
     import threading
@@ -3058,6 +3141,16 @@ def _enter_epl_trade(symbol: str, signal):
     print(f"[{now_str} ET] [EPL] 🟩 ENTRY: {symbol} strategy={signal.strategy} "
           f"qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}) "
           f"stop=${stop:.4f} R=${r:.4f} reason={signal.reason}", flush=True)
+
+    # Entry-time cutoff + BP check (user directive 2026-05-14 + Cowork §3).
+    _et_ok, _et_reason = _entry_time_allowed()
+    if not _et_ok:
+        print(f"  [EPL] ENTRY BLOCKED: {symbol} {_et_reason}", flush=True)
+        return
+    _bp_ok, _bp_reason = _presubmit_bp_check(symbol, qty, limit_price, log_prefix="[EPL] ")
+    if not _bp_ok:
+        print(f"  [EPL] ENTRY BLOCKED: {symbol} {_bp_reason}", flush=True)
+        return
 
     try:
         new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
@@ -3086,7 +3179,7 @@ def _enter_epl_trade(symbol: str, signal):
             symbol=symbol, qty=qty, r=r,
             initial_order_id=order_id, initial_limit=limit_price,
             original_limit=original_limit, position_attr="open_position",
-            log_prefix="[EPL] ",
+            log_prefix="[EPL] ", score=signal.confidence * 10,
         )
     threading.Thread(target=verify_epl_fill, daemon=True).start()
 

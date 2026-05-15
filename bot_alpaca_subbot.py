@@ -296,13 +296,63 @@ ENTRY_SLIPPAGE_MIN = float(os.getenv("WB_ENTRY_SLIPPAGE_MIN", "0.05"))
 ENTRY_SLIPPAGE_PCT = float(os.getenv("WB_ENTRY_SLIPPAGE_PCT", "0.005"))  # 0.5% of price
 ENTRY_MAX_RETRIES = int(os.getenv("WB_ENTRY_MAX_RETRIES", "3"))
 ENTRY_RETRY_TIMEOUT_SEC = int(os.getenv("WB_ENTRY_RETRY_TIMEOUT_SEC", "10"))
-ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # max % above original limit
+ENTRY_MAX_CHASE_PCT = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT", "2.0"))  # legacy fallback
+# Score-gated chase cap (Cowork directive 2026-05-14_SQUEEZE_FILL_RATE_FIX §2)
+ENTRY_SCORE_HIGH_THRESHOLD = float(os.getenv("WB_ENTRY_SCORE_HIGH_THRESHOLD", "11"))
+ENTRY_MAX_CHASE_PCT_HIGH = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT_HIGH", "3.5"))
+ENTRY_MAX_CHASE_PCT_LOW = float(os.getenv("WB_ENTRY_MAX_CHASE_PCT_LOW", "2.0"))
 ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
+# User directive 2026-05-14: no new entries after this ET time (FCHL filled
+# 90s before 20:00 ET close, no time for bot management).
+ENTRY_TIME_CUTOFF_ET = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+# Pre-submit BP check (Cowork directive §3)
+PRESUBMIT_BP_CHECK_ENABLED = os.getenv("WB_PRESUBMIT_BP_CHECK_ENABLED", "1") == "1"
 
 
 def _entry_slippage_for(price: float) -> float:
     """Dynamic slippage: max(MIN, price * PCT). Matches manual bot pattern."""
     return max(ENTRY_SLIPPAGE_MIN, price * ENTRY_SLIPPAGE_PCT)
+
+
+def _entry_time_allowed(now_et: datetime = None) -> tuple[bool, str]:
+    """User directive 2026-05-14: no new entries after WB_ENTRY_TIME_CUTOFF_ET.
+    Symmetrical guard with H#14's pre-11 ET block on the morning end. Returns
+    (allowed, reason). Fail-open on env-var parse error."""
+    try:
+        hh, mm = ENTRY_TIME_CUTOFF_ET.strip().split(":")
+        cutoff = (int(hh), int(mm))
+    except Exception:
+        print(f"⚠️  WB_ENTRY_TIME_CUTOFF_ET bad={ENTRY_TIME_CUTOFF_ET!r} — disabled",
+              flush=True)
+        return True, "cutoff_unparseable"
+    now_et = now_et or datetime.now(ET)
+    if (now_et.hour, now_et.minute) >= cutoff:
+        return False, (f"entry_after_cutoff (now={now_et.strftime('%H:%M')} ET "
+                       f">= {ENTRY_TIME_CUTOFF_ET} ET)")
+    return True, "ok"
+
+
+def _presubmit_bp_check(symbol: str, qty: int, limit_price: float,
+                        log_prefix: str = "") -> tuple[bool, str]:
+    """Pre-submit buying-power check (Cowork directive 2026-05-14 §3). Returns
+    (ok, reason). Fail-open on broker exception (per directive: false positives
+    are detectable; false negatives are existing behavior)."""
+    if not PRESUBMIT_BP_CHECK_ENABLED:
+        return True, "disabled"
+    if not state.broker:
+        return True, "no_broker"
+    try:
+        bp = state.broker.get_buying_power()
+    except Exception as e:
+        print(f"  {log_prefix}BP_CHECK: get_buying_power failed: {e!r} — fail-open",
+              flush=True)
+        return True, "bp_unknown"
+    notional = qty * limit_price
+    required = notional * 1.05
+    if bp < required:
+        return False, (f"insufficient_bp (bp=${bp:,.2f} < required=${required:,.2f}, "
+                       f"notional=${notional:,.2f})")
+    return True, f"ok (bp=${bp:,.2f}, notional=${notional:,.2f})"
 
 
 def _exit_limit_price(price: float, side: str) -> float:
@@ -1037,6 +1087,23 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
 
     slippage = max(ENTRY_SLIPPAGE_MIN, entry_price * ENTRY_SLIPPAGE_PCT)
     limit_price = round(entry_price + slippage, 2)
+
+    # Entry-time cutoff (user directive 2026-05-14).
+    _et_ok, _et_reason = _entry_time_allowed()
+    if not _et_ok:
+        print(f"[WB] {symbol} ENTRY BLOCKED: {_et_reason}", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("entry_after_cutoff")
+        return
+
+    # Pre-submit BP check (Cowork directive 2026-05-14 §3).
+    _bp_ok, _bp_reason = _presubmit_bp_check(symbol, shares, limit_price, log_prefix="[WB] ")
+    if not _bp_ok:
+        print(f"[WB] {symbol} ENTRY BLOCKED: {_bp_reason}", flush=True)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_entry_failed("insufficient_bp")
+        return
+
     try:
         order = state.broker.submit_limit(
             symbol, shares, "BUY", limit_price, extended_hours=True,
