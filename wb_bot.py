@@ -500,6 +500,24 @@ class WBBot:
                 det.mark_entry_failed("r_pct_below_floor")
                 return
 
+        # Dead-tape gate (Cowork DIRECTIVE_2026-05-15_WB_DEAD_TAPE_GATE.md).
+        # Runs AFTER R% floor, BEFORE H#14 + chop_gate_v3. ATRA 5/15 case.
+        try:
+            import tape_quality
+            bars = getattr(det, "_bars", [])
+            alive, reason, telem = tape_quality.is_dead_tape(bars)
+            if not alive:
+                print(f"[CHOP_REJECT] {now_iso_et()} {symbol}: {reason}",
+                      flush=True)
+                det.mark_entry_failed(f"dead_tape:{reason}")
+                return
+            else:
+                print(f"[DEAD_TAPE_OBSERVE] {now_iso_et()} {symbol} {reason} "
+                      f"telem={telem}", flush=True)
+        except Exception as _e:
+            print(f"[DEAD_TAPE] {now_iso_et()} {symbol} eval failed: {_e!r} — "
+                  f"proceeding (fail-open)", flush=True)
+
         # Hypothesis #14 — pre-market time block (2026-05-12). 8 of 8 WB
         # entries fired before 11:00 ET / 9:00 MT across 5/8, 5/11, 5/12 were
         # losers. Zero winners ever fired pre-9 AM MT. Runs BEFORE chop gate
