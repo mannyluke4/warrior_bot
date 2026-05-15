@@ -145,10 +145,13 @@ async def _bg_fetch_l2_async(ib, symbol: str, num_rows: int,
         return None
 
     try:
-        try:
-            ticker = ib.reqMktDepth(contract, numRows=num_rows, isSmartDepth=True)
-        except TypeError:
-            ticker = ib.reqMktDepth(contract, numRows=num_rows)
+        # 2026-05-15 EOD: isSmartDepth=True triggers ib_insync's
+        # updateMktDepthL2 IndexError (the dom[position] = DOMLevel(...) line
+        # at wrapper.py:921 — Smart depth's marketMaker semantics overflow
+        # the fixed-size dom list). Until ib_insync ships a fix, use the
+        # plain (exchange-specific) depth which is sufficient for our
+        # verdict logic (imbalance/spread/stacking are aggregation-agnostic).
+        ticker = ib.reqMktDepth(contract, numRows=num_rows)
     except Exception as e:
         print(f"[L2] {symbol} reqMktDepth failed: {e!r}", flush=True)
         return None
