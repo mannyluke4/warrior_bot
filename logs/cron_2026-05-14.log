@@ -276,3 +276,50 @@ Pushing logs...
 WARNING: Gateway port 4002 dropped at 2026-05-14 19:55:31 UTC
 === V3 Hybrid daily run complete: Thu May 14 13:55:32 MDT 2026 ===
 === TRAP: cleanup at Thu May 14 13:55:32 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 73407 Terminated: 15          caffeinate -dims -w $$
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 73572 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration c90eaa0] auto: v3 daily logs 2026-05-14
+ 3 files changed, 15 insertions(+)
+=== Cleanup complete: Thu May 14 13:55:33 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 81322)
+=== V3 Hybrid daily run started: Thu May 14 13:58:23 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: c90eaa0 (auto: v3 daily logs 2026-05-14)
+daily_run_v3.sh hash: 65da06c18b31a4ec91bdd54676b07711  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 08c7172466fdda1b2b298a64d10ebdb4  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: 5231c9f9b299949e898fbc1bf353d9a5  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.036106 +/- 0.068162 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Thu May 14 19:58:24 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 81355)
+Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)...
+Bot started (PID: 81379)
+Bot health check passed (still running after 15s, PID: 81379)
+HEALTH_OK: Bot connected at 2026-05-14 19:58:47 UTC
+Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)...
+Sub-bot started (PID: 81420, log: /Users/duffy/warrior_bot_v2/logs/2026-05-14_subbot_alpaca.log)
+Sub-bot health check passed (still running after 15s, PID: 81420)
+Gateway watchdog started (PID: 81458)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu May 14 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
