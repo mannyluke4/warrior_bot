@@ -119,10 +119,11 @@ class IBKRFeed:
             contract = Stock(symbol, "SMART", "USD")
             self.ib.qualifyContracts(contract)
 
-            try:
-                ticker = self.ib.reqMktDepth(contract, numRows=num_rows, isSmartDepth=True)
-            except TypeError:  # older ib_insync without isSmartDepth kwarg
-                ticker = self.ib.reqMktDepth(contract, numRows=num_rows)
+            # isSmartDepth=True triggered ib_insync's updateMktDepthL2
+            # IndexError (wrapper.py:921 dom[position] assignment overflows
+            # the fixed-size list when multiple marketMakers report at the
+            # same position). Reverted to plain exchange-specific depth.
+            ticker = self.ib.reqMktDepth(contract, numRows=num_rows)
             ticker.updateEvent += lambda t: self._on_depth_update(symbol, t)
 
             self._subscriptions[symbol] = ticker
