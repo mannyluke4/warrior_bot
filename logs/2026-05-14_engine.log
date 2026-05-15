@@ -116,3 +116,99 @@
 [ENGINE] 2026-05-14T12:59:53.062483-04:00 seeded SST: 1521 ticks (0 skipped) → bars (vwap=3.3728)
 [ENGINE] 2026-05-14T12:59:53.133186-04:00 subscribed SST (snapshot)
 [ENGINE] 2026-05-14T12:59:53.133284-04:00 Alpaca quote sub: AEHL,ATRA,LESL,LNKS,MOBX,QUCY,SST
+========================================================================
+[ENGINE] 2026-05-14T13:01:48.174753-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-14/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-14T13:01:48.410428-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-14T13:01:48.410500-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-14T13:01:48.813596-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-14T13:01:49.733392-04:00 IPC client connected (unknown#3f20)
+[ENGINE] 2026-05-14T13:01:49.733517-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-14T13:01:49.740933-04:00 IPC client connected (unknown#18e0)
+[ENGINE] 2026-05-14T13:01:49.741021-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-14T13:01:58.412572-04:00 watchlist loop: first-pass fanout starting (clients=2)
+[ENGINE] 2026-05-14T13:01:58.426088-04:00 seeded AEHL: 5884 ticks (20 skipped) → bars (vwap=4.3756)
+[ENGINE] 2026-05-14T13:01:58.499764-04:00 subscribed AEHL (snapshot)
+[ENGINE] 2026-05-14T13:01:58.507552-04:00 seeded ATRA: 2419 ticks (0 skipped) → bars (vwap=9.9986)
+[ENGINE] 2026-05-14T13:01:58.583415-04:00 subscribed ATRA (snapshot)
+[ENGINE] 2026-05-14T13:01:58.655174-04:00 seeded LESL: 33354 ticks (0 skipped) → bars (vwap=4.0842)
+[ENGINE] 2026-05-14T13:01:58.722102-04:00 subscribed LESL (snapshot)
+[ENGINE] 2026-05-14T13:01:58.725857-04:00 seeded LNKS: 1245 ticks (0 skipped) → bars (vwap=2.0921)
+[ENGINE] 2026-05-14T13:01:58.802941-04:00 subscribed LNKS (snapshot)
+[ENGINE] 2026-05-14T13:01:58.814979-04:00 seeded MOBX: 5140 ticks (0 skipped) → bars (vwap=3.2111)
+[ENGINE] 2026-05-14T13:01:58.882744-04:00 subscribed MOBX (snapshot)
+[ENGINE] 2026-05-14T13:01:58.943546-04:00 seeded QUCY: 28480 ticks (0 skipped) → bars (vwap=2.7132)
+[ENGINE] 2026-05-14T13:01:59.017915-04:00 subscribed QUCY (snapshot)
+[ENGINE] 2026-05-14T13:01:59.023805-04:00 seeded SST: 1521 ticks (0 skipped) → bars (vwap=3.3728)
+[ENGINE] 2026-05-14T13:01:59.094555-04:00 subscribed SST (snapshot)
+[ENGINE] 2026-05-14T13:01:59.094674-04:00 Alpaca quote sub: AEHL,ATRA,LESL,LNKS,MOBX,QUCY,SST
+Error 10197, reqId 4: No market data during competing live session, contract: Stock(conId=860459783, symbol='AEHL', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='AEHL', tradingClass='SCM')
+Error 10197, reqId 16: No market data during competing live session, contract: Stock(conId=787980769, symbol='SST', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='SST', tradingClass='SST')
+Error 10197, reqId 8: No market data during competing live session, contract: Stock(conId=817966679, symbol='LESL', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='LESL', tradingClass='NMS')
+Error 10197, reqId 12: No market data during competing live session, contract: Stock(conId=870969511, symbol='MOBX', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='MOBX', tradingClass='SCM')
+Error 10197, reqId 6: No market data during competing live session, contract: Stock(conId=710196235, symbol='ATRA', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='ATRA', tradingClass='NMS')
+Error 10197, reqId 14: No market data during competing live session, contract: Stock(conId=745953288, symbol='QUCY', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='QUCY', tradingClass='SCM')
+Error 10197, reqId 10: No market data during competing live session, contract: Stock(conId=870512084, symbol='LNKS', exchange='SMART', primaryExchange='NASDAQ', currency='USD', localSymbol='LNKS', tradingClass='SCM')
+Peer closed connection.
+[ENGINE] 2026-05-14T15:55:22.690064-04:00 IBKR disconnected (event)
+[ENGINE] 2026-05-14T15:55:22.690197-04:00 connecting IBKR (attempt 1, after 0s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:22.690724-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 1s
+[ENGINE] 2026-05-14T15:55:23.691795-04:00 connecting IBKR (attempt 2, after 1s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:23.692082-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 2s
+[ENGINE] 2026-05-14T15:55:25.692431-04:00 connecting IBKR (attempt 3, after 3s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:25.693254-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 4s
+[ENGINE] 2026-05-14T15:55:29.693969-04:00 connecting IBKR (attempt 4, after 7s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:29.694934-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 8s
+[ENGINE] 2026-05-14T15:55:37.696008-04:00 connecting IBKR (attempt 5, after 15s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:37.697663-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 16s
+[ENGINE] 2026-05-14T15:55:53.698295-04:00 connecting IBKR (attempt 6, after 31s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:55:53.698744-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 30s
+[ENGINE] 2026-05-14T15:56:23.699897-04:00 connecting IBKR (attempt 7, after 61s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:56:23.700211-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 30s
+[ENGINE] 2026-05-14T15:56:53.701426-04:00 connecting IBKR (attempt 8, after 91s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:56:53.702068-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 30s
+[ENGINE] 2026-05-14T15:57:23.703400-04:00 connecting IBKR (attempt 9, after 121s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:57:23.704419-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 30s
+[ENGINE] 2026-05-14T15:57:53.705794-04:00 connecting IBKR (attempt 10, after 151s)…
+API connection failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)")
+Make sure API port on TWS/IBG is open
+[ENGINE] 2026-05-14T15:57:53.706741-04:00 IBKR connect failed: ConnectionRefusedError(61, "Connect call failed ('127.0.0.1', 4002)") — sleeping 30s
+[ENGINE] 2026-05-14T15:58:23.708036-04:00 connecting IBKR (attempt 11, after 181s)…
+[ENGINE] 2026-05-14T15:58:24.252754-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-14T16:00:51.303511-04:00 seeded FCHL: 59 ticks (0 skipped) → bars (vwap=2.7791)
+[ENGINE] 2026-05-14T16:00:51.380290-04:00 subscribed FCHL (snapshot)
+[ENGINE] 2026-05-14T16:00:51.381405-04:00 Alpaca quote sub: FCHL
+[ENGINE] 2026-05-14T20:00:54.507494-04:00 seeded ONDG: 287 ticks (0 skipped) → bars (vwap=6.9419)
+[ENGINE] 2026-05-14T20:00:54.581910-04:00 subscribed ONDG (snapshot)
+[ENGINE] 2026-05-14T20:00:54.582480-04:00 Alpaca quote sub: ONDG
+[ENGINE] 2026-05-14T20:05:11.654431-04:00 signal received — requesting shutdown
+[ENGINE] 2026-05-14T20:05:11.654667-04:00 shutdown initiated
+[ENGINE] 2026-05-14T20:05:11.655093-04:00 IPC client disconnected (squeeze_bot#3f20, dropped=0)
+[ENGINE] 2026-05-14T20:05:12.111358-04:00 IBKR disconnected (event)
+[ENGINE] 2026-05-14T20:05:12.111438-04:00 shutdown complete
+[ENGINE] 2026-05-14T20:05:12.111469-04:00 IPC client disconnected (wb_bot#18e0, dropped=0)

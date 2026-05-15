@@ -209,3 +209,529 @@
 [WB] 2026-05-14T13:00:00.427233-04:00 LESL seed→live transition (seed_last_price=$4.0100)
 [WB] 2026-05-14T13:00:00.493915-04:00 AEHL seed→live transition (seed_last_price=$4.3900)
 [WB] 2026-05-14T13:00:01.177674-04:00 LNKS seed→live transition (seed_last_price=$2.1000)
+[WB] 2026-05-14T13:00:22.115092-04:00 SST seed→live transition (seed_last_price=$3.4300)
+[WB] 2026-05-14T13:01:00.407760-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:01:28.378139-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 0
+[WB] BOOT: RESUME (reason=marker_present, marker_age=32497s)
+[WB] 2026-05-14T13:01:49.608231-04:00 starting equity $87,773 (third Alpaca paper account)
+[WB] 2026-05-14T13:01:49.608268-04:00 RESUME: reconciling state
+[WB] 2026-05-14T13:01:49.740399-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0
+[WB] 2026-05-14T13:01:49.740788-04:00 RESUME: complete
+[WB] 2026-05-14T13:01:49.740845-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[WB] 2026-05-14T13:01:53.763242-04:00 stream healthy — entries unlocked
+[WB] 2026-05-14T13:01:58.426737-04:00 AEHL WB_OBSERVE: wave_id=1 dir=up mag=6.01%
+[WB] 2026-05-14T13:01:58.435378-04:00 AEHL WB_DOWNWAVE: wave_id=2 score=0 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.435445-04:00 AEHL WB_OBSERVE: wave_id=3 dir=up mag=3.27%
+[WB] 2026-05-14T13:01:58.435659-04:00 AEHL WB_OBSERVE: wave_id=4 dir=up mag=3.40%
+[WB] 2026-05-14T13:01:58.435768-04:00 AEHL WB_DOWNWAVE: wave_id=5 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.435794-04:00 AEHL WB_OBSERVE: wave_id=6 dir=up mag=2.74%
+[WB] 2026-05-14T13:01:58.435866-04:00 AEHL WB_DOWNWAVE: wave_id=7 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.435886-04:00 AEHL WB_OBSERVE: wave_id=8 dir=up mag=6.57%
+[WB] 2026-05-14T13:01:58.435963-04:00 AEHL WB_DOWNWAVE: wave_id=9 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436023-04:00 AEHL WB_DOWNWAVE: wave_id=10 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436039-04:00 AEHL WB_OBSERVE: wave_id=11 dir=up mag=3.84%
+[WB] 2026-05-14T13:01:58.436107-04:00 AEHL WB_DOWNWAVE: wave_id=12 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436126-04:00 AEHL WB_OBSERVE: wave_id=13 dir=up mag=1.47%
+[WB] 2026-05-14T13:01:58.436190-04:00 AEHL WB_DOWNWAVE: wave_id=14 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436242-04:00 AEHL WB_DOWNWAVE: wave_id=15 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436262-04:00 AEHL WB_OBSERVE: wave_id=16 dir=up mag=14.74%
+[WB] 2026-05-14T13:01:58.436319-04:00 AEHL WB_DOWNWAVE: wave_id=17 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436335-04:00 AEHL WB_OBSERVE: wave_id=18 dir=up mag=2.05%
+[WB] 2026-05-14T13:01:58.436408-04:00 AEHL WB_DOWNWAVE: wave_id=19 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436452-04:00 AEHL WB_OBSERVE: wave_id=20 dir=up mag=2.35%
+[WB] 2026-05-14T13:01:58.436525-04:00 AEHL WB_DOWNWAVE: wave_id=21 score=1 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.436540-04:00 AEHL WB_OBSERVE: wave_id=22 dir=up mag=2.93%
+[WB] 2026-05-14T13:01:58.436690-04:00 AEHL WB_OBSERVE: wave_id=23 dir=up mag=18.22%
+[WB] 2026-05-14T13:01:58.508358-04:00 ATRA WB_DOWNWAVE: wave_id=1 score=0 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508468-04:00 ATRA WB_DOWNWAVE: wave_id=2 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508499-04:00 ATRA WB_DOWNWAVE: wave_id=3 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508521-04:00 ATRA WB_OBSERVE: wave_id=4 dir=up mag=2.19%
+[WB] 2026-05-14T13:01:58.508753-04:00 ATRA WB_DOWNWAVE: wave_id=5 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508804-04:00 ATRA WB_DOWNWAVE: wave_id=6 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508840-04:00 ATRA WB_DOWNWAVE: wave_id=7 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.508915-04:00 ATRA WB_OBSERVE: wave_id=8 dir=up mag=5.78%
+[WB] 2026-05-14T13:01:58.509159-04:00 ATRA WB_OBSERVE: wave_id=9 dir=up mag=2.04%
+[WB] 2026-05-14T13:01:58.509373-04:00 ATRA WB_OBSERVE: wave_id=10 dir=up mag=1.85%
+[WB] 2026-05-14T13:01:58.509442-04:00 ATRA WB_OBSERVE: wave_id=11 dir=up mag=3.36%
+[WB] 2026-05-14T13:01:58.509637-04:00 ATRA WB_OBSERVE: wave_id=12 dir=up mag=1.78%
+[WB] 2026-05-14T13:01:58.509738-04:00 ATRA WB_OBSERVE: wave_id=13 dir=up mag=1.49%
+[WB] 2026-05-14T13:01:58.509859-04:00 ATRA WB_DOWNWAVE: wave_id=14 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.509927-04:00 ATRA WB_OBSERVE: wave_id=15 dir=up mag=1.63%
+[WB] 2026-05-14T13:01:58.510257-04:00 ATRA WB_OBSERVE: wave_id=16 dir=up mag=1.30%
+[WB] 2026-05-14T13:01:58.510450-04:00 ATRA WB_OBSERVE: wave_id=17 dir=up mag=2.50%
+[WB] 2026-05-14T13:01:58.510535-04:00 ATRA WB_DOWNWAVE: wave_id=18 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.510610-04:00 ATRA WB_DOWNWAVE: wave_id=19 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.510636-04:00 ATRA WB_OBSERVE: wave_id=20 dir=up mag=2.58%
+[WB] 2026-05-14T13:01:58.510751-04:00 ATRA WB_OBSERVE: wave_id=21 dir=up mag=1.43%
+[WB] 2026-05-14T13:01:58.510846-04:00 ATRA WB_OBSERVE: wave_id=22 dir=up mag=2.05%
+[WB] 2026-05-14T13:01:58.726277-04:00 LNKS WB_OBSERVE: wave_id=1 dir=up mag=9.09%
+[WB] 2026-05-14T13:01:58.726515-04:00 LNKS WB_OBSERVE: wave_id=2 dir=up mag=2.87%
+[WB] 2026-05-14T13:01:58.815422-04:00 MOBX WB_OBSERVE: wave_id=1 dir=up mag=7.53%
+[WB] 2026-05-14T13:01:58.815574-04:00 MOBX WB_DOWNWAVE: wave_id=2 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.815665-04:00 MOBX WB_DOWNWAVE: wave_id=3 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:58.815784-04:00 MOBX WB_OBSERVE: wave_id=4 dir=up mag=3.47%
+[WB] 2026-05-14T13:01:59.024574-04:00 SST WB_DOWNWAVE: wave_id=1 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.024626-04:00 SST WB_DOWNWAVE: wave_id=2 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.024670-04:00 SST WB_OBSERVE: wave_id=3 dir=up mag=1.02%
+[WB] 2026-05-14T13:01:59.024778-04:00 SST WB_DOWNWAVE: wave_id=4 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.024858-04:00 SST WB_OBSERVE: wave_id=5 dir=up mag=1.18%
+[WB] 2026-05-14T13:01:59.024979-04:00 SST WB_DOWNWAVE: wave_id=6 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025016-04:00 SST WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025051-04:00 SST WB_DOWNWAVE: wave_id=8 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025073-04:00 SST WB_OBSERVE: wave_id=9 dir=up mag=2.32%
+[WB] 2026-05-14T13:01:59.025158-04:00 SST WB_DOWNWAVE: wave_id=10 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025200-04:00 SST WB_OBSERVE: wave_id=11 dir=up mag=2.00%
+[WB] 2026-05-14T13:01:59.025294-04:00 SST WB_DOWNWAVE: wave_id=12 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025317-04:00 SST WB_DOWNWAVE: wave_id=13 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025338-04:00 SST WB_OBSERVE: wave_id=14 dir=up mag=1.15%
+[WB] 2026-05-14T13:01:59.025407-04:00 SST WB_DOWNWAVE: wave_id=15 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.025423-04:00 SST WB_OBSERVE: wave_id=16 dir=up mag=1.30%
+[WB] 2026-05-14T13:01:59.025746-04:00 SST WB_OBSERVE: wave_id=17 dir=up mag=3.03%
+[WB] 2026-05-14T13:01:59.025839-04:00 SST WB_OBSERVE: wave_id=18 dir=up mag=1.36%
+[WB] 2026-05-14T13:01:59.026024-04:00 SST WB_DOWNWAVE: wave_id=19 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.026103-04:00 SST WB_OBSERVE: wave_id=20 dir=up mag=2.11%
+[WB] 2026-05-14T13:01:59.026250-04:00 SST WB_ARMED: score=7 wave_id=21 prov_entry=3.3600 stop=3.3466
+[WB] 2026-05-14T13:01:59.026291-04:00 SST WB_DOWNWAVE: wave_id=22 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.026344-04:00 SST WB_DOWNWAVE: wave_id=23 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.026392-04:00 SST WB_OBSERVE: wave_id=24 dir=up mag=0.90%
+[WB] 2026-05-14T13:01:59.026481-04:00 SST WB_DOWNWAVE: wave_id=25 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.026582-04:00 SST WB_DOWNWAVE: wave_id=26 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.026684-04:00 SST WB_OBSERVE: wave_id=27 dir=up mag=0.90%
+[WB] 2026-05-14T13:01:59.026796-04:00 SST WB_OBSERVE: wave_id=28 dir=up mag=1.21%
+[WB] 2026-05-14T13:01:59.026896-04:00 SST WB_OBSERVE: wave_id=29 dir=up mag=1.21%
+[WB] 2026-05-14T13:01:59.026969-04:00 SST WB_OBSERVE: wave_id=30 dir=up mag=0.90%
+[WB] 2026-05-14T13:01:59.027043-04:00 SST WB_DOWNWAVE: wave_id=31 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:01:59.027124-04:00 SST WB_ARMED: score=7 wave_id=32 prov_entry=3.3350 stop=3.3121
+[WB] 2026-05-14T13:01:59.027213-04:00 SST WB_ARMED: score=7 wave_id=33 prov_entry=3.3599 stop=3.3416
+[WB] 2026-05-14T13:01:59.027249-04:00 SST WB_OBSERVE: wave_id=34 dir=up mag=1.20%
+[WB] 2026-05-14T13:01:59.027325-04:00 SST WB_OBSERVE: wave_id=35 dir=up mag=1.19%
+[WB] 2026-05-14T13:01:59.027446-04:00 SST WB_OBSERVE: wave_id=36 dir=up mag=3.71%
+[WB] 2026-05-14T13:01:59.027525-04:00 SST WB_DOWNWAVE: wave_id=37 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:02:00.178411-04:00 MOBX seed→live transition (seed_last_price=$3.2200)
+[WB] 2026-05-14T13:02:00.178632-04:00 LESL seed→live transition (seed_last_price=$4.0300)
+[WB] 2026-05-14T13:02:00.428987-04:00 AEHL seed→live transition (seed_last_price=$4.3900)
+[WB] 2026-05-14T13:02:00.743317-04:00 LNKS seed→live transition (seed_last_price=$2.0820)
+[WB] 2026-05-14T13:02:00.929641-04:00 QUCY seed→live transition (seed_last_price=$2.6300)
+[WB] 2026-05-14T13:02:20.641210-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:03:00.024876-04:00 AEHL WB_OBSERVE: wave_id=24 dir=up mag=9.13%
+[WB] 2026-05-14T13:03:00.025676-04:00 MOBX WB_OBSERVE: wave_id=5 dir=up mag=2.80%
+[WB] 2026-05-14T13:03:00.344307-04:00 QUCY WB_DOWNWAVE: wave_id=1 score=0 (< 7, no arm)
+[WB] 2026-05-14T13:03:12.064726-04:00 SST seed→live transition (seed_last_price=$3.4500)
+[WB] 2026-05-14T13:04:02.588908-04:00 SST WB_OBSERVE: wave_id=38 dir=up mag=1.31%
+[WB] 2026-05-14T13:06:48.410632-04:00 ATRA WB_OBSERVE: wave_id=23 dir=up mag=1.12%
+[WB] 2026-05-14T13:07:06.972758-04:00 ATRA seed→live transition (seed_last_price=$9.7900)
+[WB] 2026-05-14T13:07:06.972899-04:00 ATRA WB_DOWNWAVE: wave_id=24 score=6 (< 7, no arm)
+[WB] 2026-05-14T13:11:05.225822-04:00 SST seed→live transition (seed_last_price=$3.4500)
+[WB] 2026-05-14T13:11:16.425395-04:00 ATRA seed→live transition (seed_last_price=$9.8500)
+[WB] 2026-05-14T13:12:45.493483-04:00 ATRA WB_OBSERVE: wave_id=25 dir=up mag=1.12%
+[WB] 2026-05-14T13:14:05.610321-04:00 ATRA seed→live transition (seed_last_price=$9.8900)
+[WB] 2026-05-14T13:16:26.380641-04:00 SST seed→live transition (seed_last_price=$3.4500)
+[WB] 2026-05-14T13:17:01.791527-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:17:02.109886-04:00 SST WB_DOWNWAVE: wave_id=39 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:20:01.709855-04:00 SST seed→live transition (seed_last_price=$3.4000)
+[WB] 2026-05-14T13:23:19.271869-04:00 SST seed→live transition (seed_last_price=$3.4000)
+[WB] 2026-05-14T13:24:11.443610-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:25:34.161330-04:00 SST WB_DOWNWAVE: wave_id=40 score=4 (< 7, no arm)
+[WB] 2026-05-14T13:26:11.231832-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:28:00.765045-04:00 MOBX WB_OBSERVE: wave_id=6 dir=up mag=1.48%
+[WB] 2026-05-14T13:29:11.968062-04:00 AEHL seed→live transition (seed_last_price=$5.6800)
+[WB] 2026-05-14T13:29:19.652456-04:00 SST seed→live transition (seed_last_price=$3.3800)
+[WB] 2026-05-14T13:30:00.042151-04:00 AEHL WB_OBSERVE: wave_id=25 dir=up mag=13.27%
+[WB] 2026-05-14T13:31:02.480465-04:00 ATRA seed→live transition (seed_last_price=$9.8100)
+[WB] 2026-05-14T13:33:05.827213-04:00 SST seed→live transition (seed_last_price=$3.3802)
+[WB] 2026-05-14T13:33:05.827388-04:00 SST WB_DOWNWAVE: wave_id=41 score=5 (< 7, no arm)
+[WB] 2026-05-14T13:34:00.022118-04:00 AEHL seed→live transition (seed_last_price=$5.2700)
+[WB] 2026-05-14T13:34:00.022368-04:00 AEHL WB_DOWNWAVE: wave_id=26 score=2 (< 7, no arm)
+[WB] 2026-05-14T13:35:00.677395-04:00 LNKS WB_OBSERVE: wave_id=3 dir=up mag=3.86%
+[WB] 2026-05-14T13:39:01.222244-04:00 LNKS WB_DOWNWAVE: wave_id=4 score=3 (< 7, no arm)
+[WB] 2026-05-14T13:40:03.118580-04:00 ATRA seed→live transition (seed_last_price=$9.7800)
+[WB] 2026-05-14T13:42:00.241151-04:00 SST seed→live transition (seed_last_price=$3.3700)
+[WB] 2026-05-14T13:47:16.391343-04:00 SST seed→live transition (seed_last_price=$3.3500)
+[WB] 2026-05-14T13:48:00.029260-04:00 LNKS WB_OBSERVE: wave_id=5 dir=up mag=6.57%
+[WB] 2026-05-14T13:57:19.830858-04:00 ATRA seed→live transition (seed_last_price=$9.7000)
+[WB] 2026-05-14T14:00:11.223140-04:00 ATRA seed→live transition (seed_last_price=$9.6400)
+[WB] 2026-05-14T14:00:20.065664-04:00 SST seed→live transition (seed_last_price=$3.3597)
+[WB] 2026-05-14T14:01:28.448944-04:00 ATRA WB_DOWNWAVE: wave_id=26 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:02:03.946860-04:00 SST seed→live transition (seed_last_price=$3.3500)
+[WB] 2026-05-14T14:06:00.054490-04:00 ATRA seed→live transition (seed_last_price=$9.4200)
+[WB] 2026-05-14T14:11:00.104239-04:00 LNKS WB_DOWNWAVE: wave_id=6 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:12:01.119962-04:00 SST seed→live transition (seed_last_price=$3.3550)
+[WB] 2026-05-14T14:13:08.711226-04:00 ATRA WB_OBSERVE: wave_id=27 dir=up mag=0.85%
+[WB] 2026-05-14T14:14:03.967638-04:00 SST seed→live transition (seed_last_price=$3.3600)
+[WB] 2026-05-14T14:16:00.371137-04:00 SST seed→live transition (seed_last_price=$3.3400)
+[WB] 2026-05-14T14:17:16.922227-04:00 ATRA WB_OBSERVE: wave_id=28 dir=up mag=0.85%
+[WB] 2026-05-14T14:19:22.615408-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T14:20:00.417133-04:00 LNKS seed→live transition (seed_last_price=$1.5700)
+[WB] 2026-05-14T14:20:01.166901-04:00 ATRA seed→live transition (seed_last_price=$9.4000)
+[WB] 2026-05-14T14:21:30.719457-04:00 ATRA WB_OBSERVE: wave_id=29 dir=up mag=2.02%
+[WB] 2026-05-14T14:22:02.011888-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T14:22:25.887073-04:00 ATRA seed→live transition (seed_last_price=$9.4600)
+[WB] 2026-05-14T14:25:00.514729-04:00 MOBX WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:25:06.425872-04:00 ATRA seed→live transition (seed_last_price=$9.4900)
+[WB] 2026-05-14T14:25:22.676150-04:00 SST seed→live transition (seed_last_price=$3.3200)
+[WB] 2026-05-14T14:25:49.123011-04:00 LNKS WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:26:00.072042-04:00 LNKS seed→live transition (seed_last_price=$1.2200)
+[WB] 2026-05-14T14:29:05.955038-04:00 ATRA seed→live transition (seed_last_price=$9.5000)
+[WB] 2026-05-14T14:30:05.305816-04:00 ATRA WB_OBSERVE: wave_id=30 dir=up mag=0.95%
+[WB] 2026-05-14T14:30:08.810622-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T14:31:12.559822-04:00 LNKS WB_DOWNWAVE: wave_id=8 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:32:00.127553-04:00 LNKS seed→live transition (seed_last_price=$1.4300)
+[WB] 2026-05-14T14:33:00.317356-04:00 LNKS WB_DOWNWAVE: wave_id=9 score=5 (< 7, no arm)
+[WB] 2026-05-14T14:35:00.133800-04:00 AEHL seed→live transition (seed_last_price=$4.3000)
+[WB] 2026-05-14T14:35:00.884211-04:00 QUCY WB_OBSERVE: wave_id=2 dir=up mag=1.96%
+[WB_PERSIST] record_wb_observe(QUCY) failed: FileNotFoundError(2, 'No such file or directory')
+[WB] 2026-05-14T14:36:00.530372-04:00 AEHL WB_DOWNWAVE: wave_id=27 score=4 (< 7, no arm)
+[WB] 2026-05-14T14:37:04.485215-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T14:37:11.960422-04:00 ATRA WB_DOWNWAVE: wave_id=31 score=4 (< 7, no arm)
+[WB] 2026-05-14T14:41:07.891994-04:00 SST seed→live transition (seed_last_price=$3.3199)
+[WB] 2026-05-14T14:41:07.892196-04:00 SST WB_DOWNWAVE: wave_id=42 score=3 (< 7, no arm)
+[WB] 2026-05-14T14:44:26.809159-04:00 ATRA seed→live transition (seed_last_price=$9.5000)
+[WB] 2026-05-14T14:44:26.809333-04:00 ATRA WB_OBSERVE: wave_id=32 dir=up mag=0.96%
+[WB] 2026-05-14T14:47:11.249940-04:00 SST seed→live transition (seed_last_price=$3.2974)
+[WB] 2026-05-14T14:52:00.047575-04:00 SST seed→live transition (seed_last_price=$3.2950)
+[WB] 2026-05-14T14:53:06.966505-04:00 ATRA seed→live transition (seed_last_price=$9.4600)
+[WB] 2026-05-14T14:57:00.205145-04:00 LESL WB_OBSERVE: wave_id=1 dir=up mag=1.27%
+[WB] 2026-05-14T14:57:00.955732-04:00 ATRA seed→live transition (seed_last_price=$9.4800)
+[WB] 2026-05-14T14:58:01.237698-04:00 ATRA WB_OBSERVE: wave_id=33 dir=up mag=3.20%
+[WB] 2026-05-14T14:58:27.050625-04:00 SST seed→live transition (seed_last_price=$3.3000)
+[WB] 2026-05-14T15:02:15.274384-04:00 SST seed→live transition (seed_last_price=$3.2800)
+[WB] 2026-05-14T15:07:26.527606-04:00 ATRA WB_OBSERVE: wave_id=34 dir=up mag=1.13%
+[WB] 2026-05-14T15:09:02.209940-04:00 SST seed→live transition (seed_last_price=$3.2900)
+[WB] 2026-05-14T15:11:07.039926-04:00 ATRA WB_OBSERVE: wave_id=35 dir=up mag=1.22%
+[WB] 2026-05-14T15:14:03.070648-04:00 ATRA seed→live transition (seed_last_price=$9.8200)
+[WB] 2026-05-14T15:14:05.574176-04:00 SST seed→live transition (seed_last_price=$3.2300)
+[WB] 2026-05-14T15:17:00.050135-04:00 SST seed→live transition (seed_last_price=$3.2600)
+[WB] 2026-05-14T15:17:04.301308-04:00 ATRA WB_DOWNWAVE: wave_id=36 score=3 (< 7, no arm)
+[WB] 2026-05-14T15:19:00.164204-04:00 QUCY WB_OBSERVE: wave_id=3 dir=up mag=2.22%
+[WB] 2026-05-14T15:21:03.662098-04:00 ATRA seed→live transition (seed_last_price=$9.7300)
+[WB] 2026-05-14T15:21:05.666649-04:00 SST seed→live transition (seed_last_price=$3.2600)
+[WB] 2026-05-14T15:23:15.859767-04:00 SST WB_DOWNWAVE: wave_id=43 score=3 (< 7, no arm)
+[WB] 2026-05-14T15:24:06.490194-04:00 SST seed→live transition (seed_last_price=$3.2200)
+[WB] 2026-05-14T15:25:21.767138-04:00 ATRA seed→live transition (seed_last_price=$9.7300)
+[WB] 2026-05-14T15:27:07.961472-04:00 ATRA WB_DOWNWAVE: wave_id=37 score=5 (< 7, no arm)
+[WB] 2026-05-14T15:29:01.103177-04:00 SST WB_OBSERVE: wave_id=44 dir=up mag=1.55%
+[WB] 2026-05-14T15:30:00.863605-04:00 ATRA seed→live transition (seed_last_price=$9.7200)
+[WB] 2026-05-14T15:31:00.260380-04:00 MOBX WB_OBSERVE: wave_id=8 dir=up mag=1.84%
+[WB] 2026-05-14T15:31:25.722051-04:00 ATRA WB_DOWNWAVE: wave_id=38 score=6 (< 7, no arm)
+[WB] 2026-05-14T15:34:06.665866-04:00 ATRA seed→live transition (seed_last_price=$9.6700)
+[WB] 2026-05-14T15:36:00.490594-04:00 MOBX WB_OBSERVE: wave_id=9 dir=up mag=2.22%
+[WB] 2026-05-14T15:37:50.357939-04:00 ATRA WB_OBSERVE: wave_id=39 dir=up mag=0.93%
+[WB] 2026-05-14T15:38:00.574447-04:00 ATRA seed→live transition (seed_last_price=$9.6700)
+[WB] 2026-05-14T15:39:03.302446-04:00 SST WB_OBSERVE: wave_id=45 dir=up mag=1.82%
+[WB] 2026-05-14T15:42:05.540390-04:00 ATRA seed→live transition (seed_last_price=$9.6700)
+[WB] 2026-05-14T15:43:18.944692-04:00 ATRA WB_DOWNWAVE: wave_id=40 score=4 (< 7, no arm)
+[WB] 2026-05-14T15:46:19.574169-04:00 SST seed→live transition (seed_last_price=$3.3200)
+[WB] 2026-05-14T15:48:07.068405-04:00 ATRA seed→live transition (seed_last_price=$9.7000)
+[WB] 2026-05-14T15:48:26.076273-04:00 SST seed→live transition (seed_last_price=$3.3262)
+[WB] 2026-05-14T15:49:02.057353-04:00 SST WB_DOWNWAVE: wave_id=46 score=3 (< 7, no arm)
+[WB] 2026-05-14T15:52:20.192312-04:00 ATRA WB_DOWNWAVE: wave_id=41 score=5 (< 7, no arm)
+[WB] 2026-05-14T15:53:00.254640-04:00 SST seed→live transition (seed_last_price=$3.2500)
+[WB] 2026-05-14T15:54:03.893521-04:00 SST WB_DOWNWAVE: wave_id=47 score=1 (< 7, no arm)
+[WB] 2026-05-14T15:59:00.024985-04:00 MOBX seed→live transition (seed_last_price=$3.1000)
+[WB] 2026-05-14T15:59:00.209893-04:00 SST seed→live transition (seed_last_price=$3.2500)
+[WB] 2026-05-14T15:59:00.210131-04:00 LESL seed→live transition (seed_last_price=$3.5400)
+[WB] 2026-05-14T15:59:00.279825-04:00 AEHL seed→live transition (seed_last_price=$4.6600)
+[WB] 2026-05-14T15:59:00.280027-04:00 AEHL WB_OBSERVE: wave_id=28 dir=up mag=3.94%
+[WB] 2026-05-14T15:59:00.528829-04:00 QUCY seed→live transition (seed_last_price=$3.0500)
+[WB] 2026-05-14T15:59:00.960774-04:00 LNKS seed→live transition (seed_last_price=$1.6000)
+[WB] 2026-05-14T15:59:00.960941-04:00 LNKS WB_OBSERVE: wave_id=10 dir=up mag=0.94%
+[WB] 2026-05-14T15:59:04.056526-04:00 ATRA seed→live transition (seed_last_price=$9.6100)
+[WB] 2026-05-14T16:00:00.087746-04:00 QUCY WB_DOWNWAVE: wave_id=4 score=2 (< 7, no arm)
+[WB] 2026-05-14T16:00:00.087980-04:00 LESL WB_OBSERVE: wave_id=2 dir=up mag=2.90%
+[WB] 2026-05-14T16:00:00.089504-04:00 MOBX WB_OBSERVE: wave_id=10 dir=up mag=2.29%
+[WB] 2026-05-14T16:00:00.157276-04:00 SST WB_DOWNWAVE: wave_id=48 score=4 (< 7, no arm)
+[WB] 2026-05-14T16:00:00.157503-04:00 ATRA WB_DOWNWAVE: wave_id=42 score=5 (< 7, no arm)
+[WB] 2026-05-14T16:00:51.304531-04:00 FCHL WB_DOWNWAVE: wave_id=1 score=0 (< 7, no arm)
+[WB] 2026-05-14T16:00:51.304723-04:00 FCHL WB_OBSERVE: wave_id=2 dir=up mag=2.60%
+[WB] 2026-05-14T16:00:51.306374-04:00 FCHL WB_DOWNWAVE: wave_id=3 score=5 (< 7, no arm)
+[WB] 2026-05-14T16:00:51.306457-04:00 FCHL WB_OBSERVE: wave_id=4 dir=up mag=5.25%
+[WB] 2026-05-14T16:00:51.306837-04:00 FCHL WB_OBSERVE: wave_id=5 dir=up mag=2.18%
+[WB] 2026-05-14T16:00:51.307114-04:00 FCHL WB_DOWNWAVE: wave_id=6 score=1 (< 7, no arm)
+[WB] 2026-05-14T16:00:51.307171-04:00 FCHL WB_OBSERVE: wave_id=7 dir=up mag=1.82%
+[WB] 2026-05-14T16:00:51.307396-04:00 FCHL WB_OBSERVE: wave_id=8 dir=up mag=0.95%
+[WB] 2026-05-14T16:01:08.828698-04:00 FCHL seed→live transition (seed_last_price=$2.6900)
+[WB] 2026-05-14T16:05:00.105501-04:00 SST seed→live transition (seed_last_price=$3.1800)
+[WB] 2026-05-14T16:08:23.351076-04:00 SST seed→live transition (seed_last_price=$3.2400)
+[WB] 2026-05-14T16:12:00.436025-04:00 AEHL WB_OBSERVE: wave_id=29 dir=up mag=3.31%
+[WB] 2026-05-14T16:15:09.524868-04:00 SST WB_OBSERVE: wave_id=49 dir=up mag=1.89%
+[WB] 2026-05-14T16:18:16.363049-04:00 SST seed→live transition (seed_last_price=$3.1800)
+[WB] 2026-05-14T16:20:29.936837-04:00 SST seed→live transition (seed_last_price=$3.1800)
+[WB] 2026-05-14T16:20:29.936919-04:00 SST WB_DOWNWAVE: wave_id=50 score=5 (< 7, no arm)
+[WB] 2026-05-14T16:21:04.985261-04:00 AEHL WB_OBSERVE: wave_id=30 dir=up mag=3.23%
+[WB] 2026-05-14T16:22:13.767793-04:00 SST seed→live transition (seed_last_price=$3.1500)
+[WB] 2026-05-14T16:23:01.150136-04:00 FCHL seed→live transition (seed_last_price=$2.4700)
+[WB] 2026-05-14T16:24:11.100982-04:00 FCHL WB_OBSERVE: wave_id=9 dir=up mag=4.89%
+[WB] 2026-05-14T16:25:01.482891-04:00 LNKS WB_OBSERVE: wave_id=11 dir=up mag=1.26%
+[WB] 2026-05-14T16:25:05.054862-04:00 SST seed→live transition (seed_last_price=$3.1500)
+[WB] 2026-05-14T16:27:03.210582-04:00 FCHL seed→live transition (seed_last_price=$2.4500)
+[WB] 2026-05-14T16:27:09.716248-04:00 LNKS seed→live transition (seed_last_price=$1.5900)
+[WB] 2026-05-14T16:29:46.607550-04:00 SST WB_ARMED: score=8 wave_id=51 prov_entry=3.2600 stop=3.1122
+[WB] 2026-05-14T16:30:22.907243-04:00 SST seed→live transition (seed_last_price=$3.2600)
+[WB] 2026-05-14T16:30:22.907385-04:00 SST WB_OBSERVE: wave_id=52 dir=up mag=5.77%
+[WB] 2026-05-14T16:31:01.210281-04:00 LNKS WB_DOWNWAVE: wave_id=12 score=3 (< 7, no arm)
+[WB] 2026-05-14T16:31:09.972057-04:00 AEHL WB_OBSERVE: wave_id=31 dir=up mag=1.92%
+[WB] 2026-05-14T16:34:03.202959-04:00 LNKS WB_DOWNWAVE: wave_id=13 score=3 (< 7, no arm)
+[WB] 2026-05-14T16:36:02.434495-04:00 AEHL WB_DOWNWAVE: wave_id=32 score=3 (< 7, no arm)
+[WB] 2026-05-14T16:36:03.000836-04:00 FCHL WB_DOWNWAVE: wave_id=10 score=2 (< 7, no arm)
+[WB] 2026-05-14T16:36:07.758017-04:00 MOBX WB_OBSERVE: wave_id=11 dir=up mag=1.75%
+[WB] 2026-05-14T16:39:06.031431-04:00 LNKS seed→live transition (seed_last_price=$1.4900)
+[WB] 2026-05-14T16:39:06.031873-04:00 LNKS WB_DOWNWAVE: wave_id=14 score=2 (< 7, no arm)
+[WB] 2026-05-14T16:40:18.691660-04:00 FCHL seed→live transition (seed_last_price=$2.4100)
+[WB] 2026-05-14T16:41:00.749729-04:00 FCHL WB_DOWNWAVE: wave_id=11 score=2 (< 7, no arm)
+[WB] 2026-05-14T16:43:00.163455-04:00 MOBX WB_DOWNWAVE: wave_id=12 score=1 (< 7, no arm)
+[WB] 2026-05-14T16:44:00.713442-04:00 AEHL WB_OBSERVE: wave_id=33 dir=up mag=0.99%
+[WB] 2026-05-14T16:45:05.892190-04:00 LNKS seed→live transition (seed_last_price=$1.5685)
+[WB] 2026-05-14T16:46:02.465934-04:00 LNKS WB_OBSERVE: wave_id=15 dir=up mag=5.37%
+[WB] 2026-05-14T16:48:06.695383-04:00 FCHL seed→live transition (seed_last_price=$2.3600)
+[WB] 2026-05-14T16:49:21.555643-04:00 FCHL WB_ARMED: score=8 wave_id=12 prov_entry=2.3600 stop=2.3342
+[CHOP_REJECT] 2026-05-14T16:49:21.555858-04:00 FCHL: r_pct_below_floor (R%=0.67 < 1.5%)
+[WB] 2026-05-14T16:52:03.213443-04:00 FCHL seed→live transition (seed_last_price=$2.3500)
+[WB] 2026-05-14T16:53:04.534570-04:00 AEHL WB_OBSERVE: wave_id=34 dir=up mag=1.49%
+[WB] 2026-05-14T16:54:09.145987-04:00 FCHL seed→live transition (seed_last_price=$2.3400)
+[WB] 2026-05-14T16:54:09.146123-04:00 FCHL WB_ARMED: score=8 wave_id=13 prov_entry=2.3600 stop=2.3342
+[CHOP_REJECT] 2026-05-14T16:54:09.146203-04:00 FCHL: r_pct_below_floor (R%=1.09 < 1.5%)
+[WB] 2026-05-14T16:55:00.880412-04:00 MOBX WB_OBSERVE: wave_id=13 dir=up mag=1.39%
+[WB] 2026-05-14T16:55:21.976301-04:00 SST seed→live transition (seed_last_price=$3.3000)
+[WB] 2026-05-14T16:56:08.536678-04:00 LNKS WB_OBSERVE: wave_id=16 dir=up mag=1.33%
+[WB] 2026-05-14T16:57:04.540359-04:00 FCHL seed→live transition (seed_last_price=$2.3600)
+[WB] 2026-05-14T17:00:03.097655-04:00 FCHL WB_ARMED: score=8 wave_id=14 prov_entry=2.3600 stop=2.3142
+[CG3_OBSERVE] symbol=FCHL sub=macd value=macd_ok would_veto=N enabled=Y
+[CG3_OBSERVE] symbol=FCHL sub=hod_recent value=hod_recent_ok(0<2) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=dead_bounce value=dead_bounce_hod_not_early(age=312m) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=vol_followthrough value=vol_ft_ok would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=xsession_bl value=xbl_insufficient_history(0<3) would_veto=N enabled=N
+[WB] 2026-05-14T17:00:03.098724-04:00 FCHL ENTRY qty=21186 ibkr_signal=$2.3600 stop=$2.3142 R=$0.0458 risk=$2194 notional=$49,999 score=8
+[FALLBACK] FCHL BUY limit=2.3800 reason=no_quote ibkr_signal=2.3600 buffer_pct=1.0
+[WB] 2026-05-14T17:00:03.296708-04:00 BROKER ORDER: d15bc0f0-c6ad-4430-8a75-556bc5b94f02 BUY 21186 FCHL @ $2.38
+[FALLBACK] FCHL BUY limit=2.3800 reason=no_quote ibkr_signal=2.3600 buffer_pct=1.0
+[WB] 2026-05-14T17:00:14.050517-04:00 BROKER ORDER: 439f3a7a-75ae-458c-a9ce-64eab171e357 BUY 21186 FCHL @ $2.38 [RETRY 1/3]
+[FALLBACK] FCHL BUY limit=2.3800 reason=no_quote ibkr_signal=2.3600 buffer_pct=1.0
+[WB] 2026-05-14T17:00:24.765685-04:00 BROKER ORDER: b12b9ee1-cc0c-4809-a8aa-814508b2a2aa BUY 21186 FCHL @ $2.38 [RETRY 2/3]
+[FALLBACK] FCHL BUY limit=2.3800 reason=no_quote ibkr_signal=2.3600 buffer_pct=1.0
+[WB] 2026-05-14T17:00:35.531211-04:00 BROKER ORDER: 2250845a-de6d-4f30-8c66-4ba0aa043806 BUY 21186 FCHL @ $2.38 [RETRY 3/3]
+[WB] 2026-05-14T17:00:37.145425-04:00 AEHL WB_DOWNWAVE: wave_id=35 score=5 (< 7, no arm)
+[WB] 2026-05-14T17:00:45.894382-04:00 FCHL ORDER TIMEOUT: BUY cancelling 2250845a-de6d-4f30-8c66-4ba0aa043806 after 3 retries
+[WB] 2026-05-14T17:01:00.176745-04:00 AEHL seed→live transition (seed_last_price=$4.0700)
+[WB] 2026-05-14T17:01:00.176890-04:00 AEHL WB_OBSERVE: wave_id=36 dir=up mag=1.59%
+[WB] 2026-05-14T17:01:00.177408-04:00 QUCY WB_DOWNWAVE: wave_id=5 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:03:01.843372-04:00 LESL WB_DOWNWAVE: wave_id=3 score=2 (< 7, no arm)
+[WB] 2026-05-14T17:03:13.609730-04:00 FCHL WB_OBSERVE: wave_id=15 dir=up mag=6.03%
+[WB] 2026-05-14T17:06:14.412914-04:00 FCHL seed→live transition (seed_last_price=$2.4600)
+[WB] 2026-05-14T17:08:01.982598-04:00 FCHL seed→live transition (seed_last_price=$2.4500)
+[WB] 2026-05-14T17:08:02.233119-04:00 MOBX WB_DOWNWAVE: wave_id=14 score=5 (< 7, no arm)
+[WB] 2026-05-14T17:10:28.066310-04:00 SST seed→live transition (seed_last_price=$3.3000)
+[WB] 2026-05-14T17:13:12.221605-04:00 FCHL WB_DOWNWAVE: wave_id=16 score=5 (< 7, no arm)
+[WB] 2026-05-14T17:15:14.273545-04:00 FCHL seed→live transition (seed_last_price=$2.4598)
+[WB] 2026-05-14T17:19:00.597775-04:00 LESL WB_ARMED: score=7 wave_id=4 prov_entry=3.4500 stop=3.4314
+[CHOP_REJECT] 2026-05-14T17:19:00.597929-04:00 LESL: r_pct_below_floor (R%=0.54 < 1.5%)
+[WB] 2026-05-14T17:20:14.213370-04:00 FCHL WB_OBSERVE: wave_id=17 dir=up mag=0.82%
+[WB] 2026-05-14T17:21:00.267423-04:00 FCHL WB_DOWNWAVE: wave_id=18 score=5 (< 7, no arm)
+[WB] 2026-05-14T17:23:00.087079-04:00 MOBX WB_DOWNWAVE: wave_id=15 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:23:00.337336-04:00 QUCY WB_DOWNWAVE: wave_id=6 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:25:03.821690-04:00 LNKS WB_OBSERVE: wave_id=17 dir=up mag=2.50%
+[WB] 2026-05-14T17:25:05.073246-04:00 AEHL WB_ARMED: score=7 wave_id=37 prov_entry=4.0600 stop=4.0099
+[CHOP_REJECT] 2026-05-14T17:25:05.073369-04:00 AEHL: r_pct_below_floor (R%=1.23 < 1.5%)
+[WB] 2026-05-14T17:26:02.214884-04:00 MOBX WB_DOWNWAVE: wave_id=16 score=1 (< 7, no arm)
+[WB] 2026-05-14T17:26:08.149717-04:00 AEHL WB_OBSERVE: wave_id=38 dir=up mag=0.99%
+[WB] 2026-05-14T17:26:24.671225-04:00 SST seed→live transition (seed_last_price=$3.3000)
+[WB] 2026-05-14T17:28:09.615519-04:00 LNKS seed→live transition (seed_last_price=$1.6700)
+[WB] 2026-05-14T17:29:03.183339-04:00 AEHL WB_OBSERVE: wave_id=39 dir=up mag=1.49%
+[WB] 2026-05-14T17:30:02.895894-04:00 QUCY WB_OBSERVE: wave_id=7 dir=up mag=3.00%
+[WB] 2026-05-14T17:30:04.577349-04:00 LESL WB_OBSERVE: wave_id=5 dir=up mag=1.45%
+[WB] 2026-05-14T17:32:08.554814-04:00 FCHL WB_DOWNWAVE: wave_id=19 score=4 (< 7, no arm)
+[WB] 2026-05-14T17:32:09.990138-04:00 LNKS seed→live transition (seed_last_price=$1.6700)
+[WB] 2026-05-14T17:33:14.820514-04:00 AEHL WB_OBSERVE: wave_id=40 dir=up mag=4.22%
+[WB] 2026-05-14T17:36:01.062699-04:00 QUCY WB_DOWNWAVE: wave_id=8 score=4 (< 7, no arm)
+[WB] 2026-05-14T17:36:29.409819-04:00 FCHL seed→live transition (seed_last_price=$2.5100)
+[WB] 2026-05-14T17:38:02.419249-04:00 LNKS WB_OBSERVE: wave_id=18 dir=up mag=2.77%
+[WB] 2026-05-14T17:38:10.470244-04:00 FCHL seed→live transition (seed_last_price=$2.5100)
+[WB] 2026-05-14T17:39:01.531909-04:00 AEHL WB_DOWNWAVE: wave_id=41 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:39:02.783408-04:00 QUCY WB_DOWNWAVE: wave_id=9 score=1 (< 7, no arm)
+[WB] 2026-05-14T17:40:03.143303-04:00 MOBX WB_ARMED: score=8 wave_id=17 prov_entry=2.7200 stop=2.7032
+[CHOP_REJECT] 2026-05-14T17:40:03.143422-04:00 MOBX: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-14T17:40:05.896983-04:00 FCHL seed→live transition (seed_last_price=$2.5100)
+[WB] 2026-05-14T17:41:18.993073-04:00 LNKS WB_DOWNWAVE: wave_id=19 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:42:00.864817-04:00 FCHL WB_OBSERVE: wave_id=20 dir=up mag=7.97%
+[WB] 2026-05-14T17:42:02.048778-04:00 MOBX WB_OBSERVE: wave_id=18 dir=up mag=1.48%
+[WB] 2026-05-14T17:43:02.941732-04:00 AEHL WB_DOWNWAVE: wave_id=42 score=3 (< 7, no arm)
+[WB] 2026-05-14T17:45:20.781639-04:00 SST seed→live transition (seed_last_price=$3.3000)
+[WB] 2026-05-14T17:49:02.002849-04:00 LESL WB_OBSERVE: wave_id=6 dir=up mag=3.15%
+[WB] 2026-05-14T17:49:06.508090-04:00 FCHL seed→live transition (seed_last_price=$2.6000)
+[WB] 2026-05-14T17:50:01.111024-04:00 QUCY WB_DOWNWAVE: wave_id=10 score=4 (< 7, no arm)
+[WB] 2026-05-14T17:50:05.114749-04:00 LNKS seed→live transition (seed_last_price=$1.6513)
+[WB] 2026-05-14T17:51:00.685882-04:00 AEHL WB_OBSERVE: wave_id=43 dir=up mag=1.47%
+[WB] 2026-05-14T17:52:00.512553-04:00 LNKS WB_OBSERVE: wave_id=20 dir=up mag=1.22%
+[WB] 2026-05-14T17:54:00.417075-04:00 FCHL seed→live transition (seed_last_price=$2.6000)
+[WB] 2026-05-14T17:55:00.238077-04:00 QUCY WB_DOWNWAVE: wave_id=11 score=5 (< 7, no arm)
+[WB] 2026-05-14T17:55:30.528732-04:00 FCHL WB_DOWNWAVE: wave_id=21 score=4 (< 7, no arm)
+[WB] 2026-05-14T17:56:06.894154-04:00 FCHL seed→live transition (seed_last_price=$2.5500)
+[WB] 2026-05-14T17:59:02.802365-04:00 LNKS seed→live transition (seed_last_price=$1.6500)
+[WB] 2026-05-14T18:00:00.614593-04:00 AEHL WB_OBSERVE: wave_id=44 dir=up mag=3.68%
+[WB] 2026-05-14T18:00:01.116177-04:00 QUCY WB_DOWNWAVE: wave_id=12 score=5 (< 7, no arm)
+[WB] 2026-05-14T18:00:35.250653-04:00 FCHL WB_OBSERVE: wave_id=22 dir=up mag=0.78%
+[WB] 2026-05-14T18:01:20.059682-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T18:04:01.765847-04:00 QUCY WB_OBSERVE: wave_id=13 dir=up mag=2.57%
+[WB] 2026-05-14T18:04:04.520271-04:00 AEHL WB_DOWNWAVE: wave_id=45 score=3 (< 7, no arm)
+[WB] 2026-05-14T18:04:12.346257-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T18:05:00.172246-04:00 MOBX WB_OBSERVE: wave_id=19 dir=up mag=1.41%
+[WB] 2026-05-14T18:07:00.149779-04:00 MOBX WB_DOWNWAVE: wave_id=20 score=3 (< 7, no arm)
+[WB] 2026-05-14T18:07:00.401043-04:00 AEHL WB_OBSERVE: wave_id=46 dir=up mag=2.43%
+[WB] 2026-05-14T18:09:10.391064-04:00 FCHL WB_OBSERVE: wave_id=23 dir=up mag=4.59%
+[WB] 2026-05-14T18:11:00.698533-04:00 QUCY WB_DOWNWAVE: wave_id=14 score=4 (< 7, no arm)
+[WB] 2026-05-14T18:11:04.703689-04:00 LNKS seed→live transition (seed_last_price=$1.7000)
+[WB] 2026-05-14T18:11:15.216313-04:00 FCHL seed→live transition (seed_last_price=$2.5100)
+[WB] 2026-05-14T18:12:01.774644-04:00 LESL WB_DOWNWAVE: wave_id=7 score=3 (< 7, no arm)
+[WB] 2026-05-14T18:14:01.427139-04:00 QUCY WB_DOWNWAVE: wave_id=15 score=5 (< 7, no arm)
+[WB] 2026-05-14T18:18:01.333561-04:00 AEHL WB_DOWNWAVE: wave_id=47 score=2 (< 7, no arm)
+[WB] 2026-05-14T18:18:06.019508-04:00 LESL WB_OBSERVE: wave_id=8 dir=up mag=1.43%
+[WB] 2026-05-14T18:18:11.026736-04:00 FCHL seed→live transition (seed_last_price=$2.4700)
+[WB] 2026-05-14T18:18:11.026857-04:00 FCHL WB_DOWNWAVE: wave_id=24 score=6 (< 7, no arm)
+[WB] 2026-05-14T18:20:02.548526-04:00 MOBX WB_OBSERVE: wave_id=21 dir=up mag=2.15%
+[WB] 2026-05-14T18:20:06.820003-04:00 ATRA seed→live transition (seed_last_price=$9.7000)
+[WB] 2026-05-14T18:20:14.996583-04:00 LNKS seed→live transition (seed_last_price=$1.7305)
+[WB] 2026-05-14T18:20:25.007047-04:00 FCHL seed→live transition (seed_last_price=$2.5600)
+[WB] 2026-05-14T18:21:06.559120-04:00 LNKS WB_OBSERVE: wave_id=21 dir=up mag=2.35%
+[WB] 2026-05-14T18:21:07.308916-04:00 AEHL WB_DOWNWAVE: wave_id=48 score=3 (< 7, no arm)
+[WB] 2026-05-14T18:22:14.143417-04:00 LESL WB_OBSERVE: wave_id=9 dir=up mag=2.56%
+[WB] 2026-05-14T18:23:46.833107-04:00 FCHL WB_OBSERVE: wave_id=25 dir=up mag=4.07%
+[WB] 2026-05-14T18:26:03.031688-04:00 AEHL WB_OBSERVE: wave_id=49 dir=up mag=1.05%
+[WB] 2026-05-14T18:28:09.753769-04:00 FCHL seed→live transition (seed_last_price=$2.4700)
+[WB] 2026-05-14T18:30:06.184466-04:00 LNKS seed→live transition (seed_last_price=$1.7500)
+[WB] 2026-05-14T18:31:01.397781-04:00 LNKS WB_OBSERVE: wave_id=22 dir=up mag=2.30%
+[WB] 2026-05-14T18:31:21.926210-04:00 AEHL WB_OBSERVE: wave_id=50 dir=up mag=4.06%
+[WB] 2026-05-14T18:33:00.801613-04:00 QUCY WB_DOWNWAVE: wave_id=16 score=5 (< 7, no arm)
+[WB] 2026-05-14T18:34:00.629869-04:00 MOBX WB_DOWNWAVE: wave_id=22 score=4 (< 7, no arm)
+[WB] 2026-05-14T18:34:12.897094-04:00 FCHL WB_ARMED: score=7 wave_id=26 prov_entry=2.4900 stop=2.4638
+[CHOP_REJECT] 2026-05-14T18:34:12.897233-04:00 FCHL: r_pct_below_floor (R%=1.05 < 1.5%)
+[WB] 2026-05-14T18:37:01.937944-04:00 FCHL WB_OBSERVE: wave_id=27 dir=up mag=0.81%
+[WB] 2026-05-14T18:38:19.852328-04:00 FCHL WB_DOWNWAVE: wave_id=28 score=4 (< 7, no arm)
+[WB] 2026-05-14T18:40:00.436357-04:00 LNKS WB_OBSERVE: wave_id=23 dir=up mag=1.14%
+[WB] 2026-05-14T18:40:05.785506-04:00 QUCY WB_OBSERVE: wave_id=17 dir=up mag=1.43%
+[WB] 2026-05-14T18:40:07.036544-04:00 LESL WB_OBSERVE: wave_id=10 dir=up mag=2.55%
+[WB] 2026-05-14T18:41:02.028558-04:00 FCHL seed→live transition (seed_last_price=$2.4600)
+[WB] 2026-05-14T18:42:00.598914-04:00 AEHL WB_OBSERVE: wave_id=51 dir=up mag=1.47%
+[WB] 2026-05-14T18:48:00.468912-04:00 AEHL WB_DOWNWAVE: wave_id=52 score=2 (< 7, no arm)
+[WB] 2026-05-14T18:49:07.375460-04:00 LNKS WB_OBSERVE: wave_id=24 dir=up mag=4.45%
+[WB] 2026-05-14T18:50:10.352103-04:00 FCHL seed→live transition (seed_last_price=$2.4500)
+[WB] 2026-05-14T18:51:06.222565-04:00 AEHL WB_DOWNWAVE: wave_id=53 score=2 (< 7, no arm)
+[WB] 2026-05-14T18:52:01.290964-04:00 FCHL seed→live transition (seed_last_price=$2.4500)
+[WB] 2026-05-14T18:53:01.365225-04:00 MOBX WB_DOWNWAVE: wave_id=23 score=4 (< 7, no arm)
+[WB] 2026-05-14T18:55:01.280899-04:00 AEHL seed→live transition (seed_last_price=$3.9800)
+[WB] 2026-05-14T18:56:03.131329-04:00 QUCY WB_DOWNWAVE: wave_id=18 score=1 (< 7, no arm)
+[WB] 2026-05-14T18:57:01.207218-04:00 AEHL seed→live transition (seed_last_price=$4.0300)
+[WB] 2026-05-14T18:57:08.214271-04:00 LNKS seed→live transition (seed_last_price=$1.8300)
+[WB] 2026-05-14T18:58:09.545318-04:00 FCHL seed→live transition (seed_last_price=$2.4300)
+[WB] 2026-05-14T18:58:15.552859-04:00 MOBX WB_OBSERVE: wave_id=24 dir=up mag=1.45%
+[WB] 2026-05-14T19:00:02.573235-04:00 LNKS WB_OBSERVE: wave_id=25 dir=up mag=1.09%
+[WB] 2026-05-14T19:00:08.677117-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T19:01:06.778265-04:00 MOBX WB_OBSERVE: wave_id=25 dir=up mag=1.44%
+[WB] 2026-05-14T19:01:13.533427-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T19:01:25.547935-04:00 AEHL WB_DOWNWAVE: wave_id=54 score=4 (< 7, no arm)
+[WB] 2026-05-14T19:02:03.344830-04:00 LESL WB_OBSERVE: wave_id=11 dir=up mag=0.95%
+[WB] 2026-05-14T19:05:27.811449-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T19:06:03.290282-04:00 LESL seed→live transition (seed_last_price=$3.6200)
+[WB] 2026-05-14T19:06:05.291877-04:00 QUCY WB_DOWNWAVE: wave_id=19 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:06:10.296619-04:00 AEHL WB_DOWNWAVE: wave_id=55 score=4 (< 7, no arm)
+[WB] 2026-05-14T19:08:04.190965-04:00 FCHL WB_OBSERVE: wave_id=29 dir=up mag=1.67%
+[WB] 2026-05-14T19:12:01.165548-04:00 QUCY WB_DOWNWAVE: wave_id=20 score=1 (< 7, no arm)
+[WB] 2026-05-14T19:12:16.683703-04:00 FCHL seed→live transition (seed_last_price=$2.3800)
+[WB] 2026-05-14T19:13:04.244360-04:00 AEHL seed→live transition (seed_last_price=$3.9900)
+[WB] 2026-05-14T19:15:14.681794-04:00 LNKS seed→live transition (seed_last_price=$1.8700)
+[WB] 2026-05-14T19:16:05.022728-04:00 AEHL seed→live transition (seed_last_price=$3.9500)
+[WB] 2026-05-14T19:17:02.090097-04:00 QUCY WB_DOWNWAVE: wave_id=21 score=6 (< 7, no arm)
+[WB] 2026-05-14T19:17:03.340213-04:00 AEHL WB_DOWNWAVE: wave_id=56 score=5 (< 7, no arm)
+[WB] 2026-05-14T19:19:11.302145-04:00 FCHL seed→live transition (seed_last_price=$2.3900)
+[WB] 2026-05-14T19:22:03.040805-04:00 LNKS WB_DOWNWAVE: wave_id=26 score=2 (< 7, no arm)
+[WB] 2026-05-14T19:22:08.370867-04:00 QUCY WB_ARMED: score=7 wave_id=22 prov_entry=2.7900 stop=2.7830
+[CHOP_REJECT] 2026-05-14T19:22:08.371111-04:00 QUCY: r_pct_below_floor (R%=0.25 < 1.5%)
+[WB] 2026-05-14T19:23:09.446962-04:00 MOBX WB_OBSERVE: wave_id=26 dir=up mag=1.79%
+[WB] 2026-05-14T19:24:01.443202-04:00 FCHL seed→live transition (seed_last_price=$2.4100)
+[WB] 2026-05-14T19:28:00.429354-04:00 QUCY WB_DOWNWAVE: wave_id=23 score=4 (< 7, no arm)
+[WB] 2026-05-14T19:28:01.113653-04:00 LNKS WB_DOWNWAVE: wave_id=27 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:29:00.439391-04:00 MOBX WB_OBSERVE: wave_id=27 dir=up mag=1.06%
+[WB] 2026-05-14T19:29:11.455104-04:00 FCHL seed→live transition (seed_last_price=$2.4100)
+[WB] 2026-05-14T19:30:00.118154-04:00 AEHL WB_ARMED: score=8 wave_id=57 prov_entry=3.9400 stop=3.9102
+[CHOP_REJECT] 2026-05-14T19:30:00.118280-04:00 AEHL: r_pct_below_floor (R%=0.76 < 1.5%)
+[WB] 2026-05-14T19:30:00.367049-04:00 LNKS seed→live transition (seed_last_price=$1.7500)
+[WB] 2026-05-14T19:32:02.371740-04:00 LNKS WB_OBSERVE: wave_id=28 dir=up mag=2.33%
+[WB] 2026-05-14T19:34:13.294367-04:00 FCHL seed→live transition (seed_last_price=$2.4600)
+[WB] 2026-05-14T19:36:03.049032-04:00 LNKS seed→live transition (seed_last_price=$1.7700)
+[WB] 2026-05-14T19:37:00.622707-04:00 FCHL seed→live transition (seed_last_price=$2.4600)
+[WB] 2026-05-14T19:37:02.123244-04:00 AEHL WB_DOWNWAVE: wave_id=58 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:38:28.488640-04:00 FCHL WB_DOWNWAVE: wave_id=30 score=5 (< 7, no arm)
+[WB] 2026-05-14T19:41:03.281234-04:00 AEHL WB_OBSERVE: wave_id=59 dir=up mag=2.62%
+[WB] 2026-05-14T19:41:04.030322-04:00 MOBX WB_DOWNWAVE: wave_id=28 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:41:16.798727-04:00 LESL WB_OBSERVE: wave_id=12 dir=up mag=3.66%
+[WB] 2026-05-14T19:42:01.355135-04:00 QUCY WB_DOWNWAVE: wave_id=24 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:43:00.681257-04:00 FCHL seed→live transition (seed_last_price=$2.4100)
+[WB] 2026-05-14T19:44:19.036365-04:00 AEHL WB_OBSERVE: wave_id=60 dir=up mag=1.31%
+[WB] 2026-05-14T19:44:24.794221-04:00 ATRA seed→live transition (seed_last_price=$9.8500)
+[WB] 2026-05-14T19:46:02.471216-04:00 LESL WB_DOWNWAVE: wave_id=13 score=2 (< 7, no arm)
+[WB] 2026-05-14T19:46:13.982120-04:00 FCHL seed→live transition (seed_last_price=$2.4100)
+[WB] 2026-05-14T19:46:16.670767-04:00 LNKS WB_OBSERVE: wave_id=29 dir=up mag=2.91%
+[WB] 2026-05-14T19:48:20.085920-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T19:52:00.720182-04:00 QUCY WB_DOWNWAVE: wave_id=25 score=3 (< 7, no arm)
+[WB] 2026-05-14T19:53:25.820500-04:00 FCHL seed→live transition (seed_last_price=$2.4000)
+[WB] 2026-05-14T19:55:00.736771-04:00 LNKS WB_ARMED: score=8 wave_id=30 prov_entry=1.7600 stop=1.7157
+[WB] 2026-05-14T19:55:22.070013-04:00 ATRA seed→live transition (seed_last_price=$9.8500)
+[WB] 2026-05-14T19:56:01.352108-04:00 MOBX WB_OBSERVE: wave_id=29 dir=up mag=1.08%
+[WB] 2026-05-14T19:56:06.107475-04:00 LNKS seed→live transition (seed_last_price=$1.7600)
+[CHOP_REJECT] 2026-05-14T19:56:06.107688-04:00 LNKS: r_pct_below_floor (R%=0.83 < 1.5%)
+[WB] 2026-05-14T19:57:19.955402-04:00 AEHL WB_OBSERVE: wave_id=61 dir=up mag=0.79%
+[WB] 2026-05-14T19:57:27.716537-04:00 FCHL WB_ARMED: score=8 wave_id=31 prov_entry=2.4900 stop=2.4040
+[WB] 2026-05-14T19:58:00.577539-04:00 LNKS WB_DOWNWAVE: wave_id=31 score=4 (< 7, no arm)
+[WB] 2026-05-14T19:58:01.262428-04:00 FCHL seed→live transition (seed_last_price=$2.4900)
+[CG3_OBSERVE] symbol=FCHL sub=macd value=macd_ok would_veto=N enabled=Y
+[CG3_OBSERVE] symbol=FCHL sub=hod_recent value=hod_recent_ok(0<2) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=dead_bounce value=dead_bounce_hod_not_early(age=312m) would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=vol_followthrough value=vol_ft_ok would_veto=N enabled=N
+[CG3_OBSERVE] symbol=FCHL sub=xsession_bl value=xbl_insufficient_history(0<3) would_veto=N enabled=N
+[WB] 2026-05-14T19:58:01.264179-04:00 FCHL ENTRY qty=20080 ibkr_signal=$2.4900 stop=$2.4040 R=$0.0860 risk=$2194 notional=$49,999 score=8
+[FALLBACK] FCHL BUY limit=2.5100 reason=no_quote ibkr_signal=2.4900 buffer_pct=1.0
+[WB] 2026-05-14T19:58:01.714561-04:00 BROKER ORDER: e9b779f5-8d84-4493-8ba4-5125e4ca204b BUY 20080 FCHL @ $2.51
+[WB] 2026-05-14T19:58:02.917459-04:00 FCHL FILL @ $2.5000 qty=20080
+[WB] 2026-05-14T19:59:54.409326-04:00 FCHL WB_OBSERVE: wave_id=32 dir=up (in-trade)
+[WB] 2026-05-14T20:00:00.239425-04:00 FCHL seed→live transition (seed_last_price=$2.4300)
+[WB] 2026-05-14T20:00:54.509822-04:00 ONDG WB_DOWNWAVE: wave_id=1 score=2 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.509898-04:00 ONDG WB_OBSERVE: wave_id=2 dir=up mag=1.15%
+[WB] 2026-05-14T20:00:54.510863-04:00 ONDG WB_DOWNWAVE: wave_id=3 score=6 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.510945-04:00 ONDG WB_DOWNWAVE: wave_id=4 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.511020-04:00 ONDG WB_OBSERVE: wave_id=5 dir=up mag=1.35%
+[WB] 2026-05-14T20:00:54.511216-04:00 ONDG WB_DOWNWAVE: wave_id=6 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.511402-04:00 ONDG WB_DOWNWAVE: wave_id=7 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.511445-04:00 ONDG WB_OBSERVE: wave_id=8 dir=up mag=2.50%
+[WB] 2026-05-14T20:00:54.511584-04:00 ONDG WB_DOWNWAVE: wave_id=9 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.511613-04:00 ONDG WB_OBSERVE: wave_id=10 dir=up mag=2.79%
+[WB] 2026-05-14T20:00:54.511791-04:00 ONDG WB_OBSERVE: wave_id=11 dir=up mag=1.49%
+[WB] 2026-05-14T20:00:54.511926-04:00 ONDG WB_DOWNWAVE: wave_id=12 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.511977-04:00 ONDG WB_DOWNWAVE: wave_id=13 score=5 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.512001-04:00 ONDG WB_OBSERVE: wave_id=14 dir=up mag=2.34%
+[WB] 2026-05-14T20:00:54.512104-04:00 ONDG WB_DOWNWAVE: wave_id=15 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.512139-04:00 ONDG WB_OBSERVE: wave_id=16 dir=up mag=2.46%
+[WB] 2026-05-14T20:00:54.512308-04:00 ONDG WB_OBSERVE: wave_id=17 dir=up mag=3.66%
+[WB] 2026-05-14T20:00:54.512440-04:00 ONDG WB_OBSERVE: wave_id=18 dir=up mag=2.19%
+[WB] 2026-05-14T20:00:54.512552-04:00 ONDG WB_OBSERVE: wave_id=19 dir=up mag=2.02%
+[WB] 2026-05-14T20:00:54.512663-04:00 ONDG WB_DOWNWAVE: wave_id=20 score=1 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.512770-04:00 ONDG WB_DOWNWAVE: wave_id=21 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.512892-04:00 ONDG WB_DOWNWAVE: wave_id=22 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.512929-04:00 ONDG WB_OBSERVE: wave_id=23 dir=up mag=0.79%
+[WB] 2026-05-14T20:00:54.513056-04:00 ONDG WB_DOWNWAVE: wave_id=24 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.513082-04:00 ONDG WB_OBSERVE: wave_id=25 dir=up mag=2.39%
+[WB] 2026-05-14T20:00:54.513194-04:00 ONDG WB_DOWNWAVE: wave_id=26 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.513242-04:00 ONDG WB_OBSERVE: wave_id=27 dir=up mag=1.46%
+[WB] 2026-05-14T20:00:54.513342-04:00 ONDG WB_DOWNWAVE: wave_id=28 score=4 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.513376-04:00 ONDG WB_OBSERVE: wave_id=29 dir=up mag=2.39%
+[WB] 2026-05-14T20:00:54.513516-04:00 ONDG WB_OBSERVE: wave_id=30 dir=up mag=1.24%
+[WB] 2026-05-14T20:00:54.513745-04:00 ONDG WB_DOWNWAVE: wave_id=31 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:00:54.513859-04:00 ONDG WB_OBSERVE: wave_id=32 dir=up mag=0.84%
+[WB] 2026-05-14T20:00:54.514051-04:00 ONDG WB_OBSERVE: wave_id=33 dir=up mag=1.39%
+[WB] 2026-05-14T20:01:01.487358-04:00 QUCY WB_DOWNWAVE: wave_id=26 score=3 (< 7, no arm)
+[WB] 2026-05-14T20:01:02.987392-04:00 ONDG seed→live transition (seed_last_price=$7.4000)
+[WB] 2026-05-14T20:01:06.742801-04:00 ATRA seed→live transition (seed_last_price=$9.8500)
+[WB] 2026-05-14T20:01:23.262677-04:00 SST seed→live transition (seed_last_price=$3.3100)
+[WB] 2026-05-14T20:02:01.312995-04:00 MOBX WB_OBSERVE: wave_id=30 dir=up mag=11.55%
+[WB] 2026-05-14T20:02:10.572873-04:00 FCHL seed→live transition (seed_last_price=$2.4300)
+[WB] 2026-05-14T20:05:09.300630-04:00 LNKS seed→live transition (seed_last_price=$1.6700)
+[WB] 2026-05-14T20:05:11.654125-04:00 signal received — shutting down
+[WB] 2026-05-14T20:05:11.654383-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 1
+[WB] 2026-05-14T20:05:11.654487-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=1)
