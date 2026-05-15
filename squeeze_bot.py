@@ -50,6 +50,8 @@ from engine_bot_common import (
     now_et,
     now_iso_et,
     place_with_retry,
+    presubmit_bp_check,
+    entry_time_allowed,
     starting_equity_from_broker,
     today_et_str,
     wait_for_fill,
@@ -421,6 +423,21 @@ class SqueezeBot:
               f"ibkr_signal=${entry:.4f} stop=${stop:.4f} R=${r:.4f} "
               f"risk=${risk_dollars:.0f} notional=${notional:,.0f} "
               f"score={score:.1f}", flush=True)
+
+        # Entry-time cutoff (user directive 2026-05-14).
+        _et_ok, _et_reason = entry_time_allowed()
+        if not _et_ok:
+            print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY BLOCKED: {_et_reason}",
+                  flush=True)
+            return
+
+        # Pre-submit BP check (Cowork directive 2026-05-14 §3).
+        _bp_ok, _bp_reason = presubmit_bp_check(self.broker, symbol, qty, entry,
+                                                 log_prefix="[SQUEEZE] ")
+        if not _bp_ok:
+            print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY BLOCKED: {_bp_reason}",
+                  flush=True)
+            return
 
         # Parabolic flag — Setup A reads this from `armed.score_detail`,
         # which we get via the ENTRY SIGNAL's `why=` suffix. The detector

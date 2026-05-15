@@ -143,6 +143,54 @@ def today_et_str() -> str:
 
 
 # ══════════════════════════════════════════════════════════════════════
+# Entry-time cutoff + pre-submit BP check (shared by squeeze_bot + wb_bot)
+# User directive 2026-05-14: no new entries after WB_ENTRY_TIME_CUTOFF_ET
+# (FCHL filled 90s before 20:00 ET close, no time for management).
+# Cowork directive 2026-05-14_SQUEEZE_FILL_RATE_FIX §3: pre-submit BP check
+# to catch Reg-T rejection before the broker submit.
+# ══════════════════════════════════════════════════════════════════════
+_ENTRY_TIME_CUTOFF_ET = os.environ.get("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+_PRESUBMIT_BP_CHECK_ENABLED = os.environ.get("WB_PRESUBMIT_BP_CHECK_ENABLED", "1") == "1"
+
+
+def entry_time_allowed(now_et_dt: Optional[datetime] = None) -> tuple[bool, str]:
+    """Returns (allowed, reason). Fail-open on env-var parse error."""
+    try:
+        hh, mm = _ENTRY_TIME_CUTOFF_ET.strip().split(":")
+        cutoff = (int(hh), int(mm))
+    except Exception:
+        print(f"⚠️  WB_ENTRY_TIME_CUTOFF_ET bad={_ENTRY_TIME_CUTOFF_ET!r} — disabled",
+              flush=True)
+        return True, "cutoff_unparseable"
+    n = now_et_dt or now_et()
+    if (n.hour, n.minute) >= cutoff:
+        return False, (f"entry_after_cutoff (now={n.strftime('%H:%M')} ET "
+                       f">= {_ENTRY_TIME_CUTOFF_ET} ET)")
+    return True, "ok"
+
+
+def presubmit_bp_check(broker, symbol: str, qty: int, limit_price: float,
+                       log_prefix: str = "") -> tuple[bool, str]:
+    """Pre-submit BP check. Fail-open on broker exception."""
+    if not _PRESUBMIT_BP_CHECK_ENABLED:
+        return True, "disabled"
+    if broker is None:
+        return True, "no_broker"
+    try:
+        bp = broker.get_buying_power()
+    except Exception as e:
+        print(f"  {log_prefix}BP_CHECK: get_buying_power failed: {e!r} — fail-open",
+              flush=True)
+        return True, "bp_unknown"
+    notional = qty * limit_price
+    required = notional * 1.05
+    if bp < required:
+        return False, (f"insufficient_bp (bp=${bp:,.2f} < required=${required:,.2f}, "
+                       f"notional=${notional:,.2f})")
+    return True, f"ok (bp=${bp:,.2f}, notional=${notional:,.2f})"
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Alpaca client (paper trading on the third account)
 # ══════════════════════════════════════════════════════════════════════
 
