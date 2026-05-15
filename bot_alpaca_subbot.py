@@ -44,6 +44,8 @@ Auto-start: launched alongside the main bot from daily_run_v3.sh.
 from __future__ import annotations
 
 import os
+# L2 Layer 1 P1.1 — per-process L2 clientId. Setup A subbot = 43.
+os.environ.setdefault("WB_L2_CLIENT_ID", "43")
 import sys
 
 # ── Sub-bot env overrides — MUST be set before any module-level imports

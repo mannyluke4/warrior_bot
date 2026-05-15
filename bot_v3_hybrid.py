@@ -21,6 +21,10 @@ Flow:
 from __future__ import annotations
 
 import os
+# L2 Layer 1 P1.1 — per-process L2 clientId so all 4 bots can run L2
+# concurrently without collision. Setup A main = 42. Set BEFORE l2_helper
+# is imported (lazy import inside the gate, runs after this line).
+os.environ.setdefault("WB_L2_CLIENT_ID", "42")
 import sys
 import time
 import math
