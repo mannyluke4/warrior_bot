@@ -2408,6 +2408,35 @@ def _seed_symbol_bars_fallback(symbol: str):
 # Scanner
 # ══════════════════════════════════════════════════════════════════════
 
+def _maybe_session_end_force_exit() -> None:
+    """Cowork directive 2026-05-15 P0.2 — flatten all WB positions before
+    extended-hours close. NEVER market orders (user constraint)."""
+    try:
+        import force_exit
+    except Exception as e:
+        print(f"⚠️  FORCE_EXIT import failed: {e!r}", flush=True)
+        return
+    if not force_exit.should_force_exit_now():
+        return
+    print(f"\n🟧 SESSION_END_FORCE_EXIT (subbot) triggered at "
+          f"{datetime.now(ET).strftime('%H:%M:%S')} ET", flush=True)
+    for symbol in list(state.wb_positions.keys()):
+        pos = state.wb_positions.get(symbol)
+        if not pos:
+            continue
+        qty = int(pos.get("qty", 0))
+        ref = float(pos.get("peak") or pos.get("entry") or 0.0)
+        if qty <= 0 or ref <= 0:
+            continue
+        res = force_exit.force_exit_position(state.broker, symbol, qty, ref,
+                                              log_prefix="[WB] ")
+        if res["filled"]:
+            pnl = (res["fill_price"] - pos["entry"]) * res["fill_qty"]
+            print(f"  🟥 EXIT: {symbol} qty={res['fill_qty']} @ ${res['fill_price']:.4f} "
+                  f"reason=session_end_force P&L=${pnl:+,.2f}", flush=True)
+            state.wb_positions.pop(symbol, None)
+
+
 def run_scanner():
     """Sub-bot does not run its own scanner. The main bot owns the universe;
     this sub-bot mirrors the main bot's watchlist via poll_watchlist().
@@ -4606,6 +4635,9 @@ def main():
 
                 # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
                 manage_tier1_subscriptions()
+
+                # Session-end force-exit (Cowork directive 2026-05-15 P0.2).
+                _maybe_session_end_force_exit()
 
                 # ── Box strategy logic ──
                 if box_active:

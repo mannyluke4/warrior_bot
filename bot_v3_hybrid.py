@@ -1973,6 +1973,61 @@ def run_scanner():
           f"{new_subs} new subs, {len(state.active_symbols)} total watching", flush=True)
 
 
+def _maybe_session_end_force_exit() -> None:
+    """Cowork directive 2026-05-15 P0.2 — flatten all open positions before
+    extended-hours close. Pairs with the FCHL session-resume fix; together
+    they eliminate the date-boundary orphan class.
+
+    NEVER market orders (user constraint). force_exit_position uses an
+    aggressive SELL LIMIT with chase-down ladder."""
+    try:
+        import force_exit
+    except Exception as e:
+        print(f"⚠️  FORCE_EXIT import failed: {e!r}", flush=True)
+        return
+    if not force_exit.should_force_exit_now():
+        return
+
+    print(f"\n🟧 SESSION_END_FORCE_EXIT triggered at {datetime.now(ET).strftime('%H:%M:%S')} ET",
+          flush=True)
+
+    # Squeeze position (state.open_position)
+    pos = state.open_position
+    if pos and pos.get("fill_confirmed"):
+        symbol = pos.get("symbol")
+        qty = int(pos.get("qty", 0))
+        ref = float(pos.get("peak") or pos.get("entry") or 0.0)
+        if symbol and qty > 0 and ref > 0:
+            res = force_exit.force_exit_position(state.broker, symbol, qty, ref,
+                                                  log_prefix="[SQ] ")
+            if res["filled"]:
+                pnl = (res["fill_price"] - pos["entry"]) * res["fill_qty"]
+                print(f"  🟥 EXIT: {symbol} qty={res['fill_qty']} @ ${res['fill_price']:.4f} "
+                      f"reason=session_end_force P&L=${pnl:+,.2f}", flush=True)
+                state.open_position = None
+                try:
+                    persist_open_trades()
+                except Exception:
+                    pass
+
+    # WB positions (state.wb_positions dict)
+    for symbol in list(state.wb_positions.keys()):
+        wb_pos = state.wb_positions.get(symbol)
+        if not wb_pos:
+            continue
+        qty = int(wb_pos.get("qty", 0))
+        ref = float(wb_pos.get("peak") or wb_pos.get("entry") or 0.0)
+        if qty <= 0 or ref <= 0:
+            continue
+        res = force_exit.force_exit_position(state.broker, symbol, qty, ref,
+                                              log_prefix="[WB] ")
+        if res["filled"]:
+            pnl = (res["fill_price"] - wb_pos["entry"]) * res["fill_qty"]
+            print(f"  🟥 EXIT: {symbol} qty={res['fill_qty']} @ ${res['fill_price']:.4f} "
+                  f"reason=session_end_force P&L=${pnl:+,.2f}", flush=True)
+            state.wb_positions.pop(symbol, None)
+
+
 def run_intraday_adder() -> None:
     """Stage 0.3 — observe-only intraday WB candidate adder.
 
@@ -4721,6 +4776,11 @@ def main():
 
                 # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
                 manage_tier1_subscriptions()
+
+                # Session-end force-exit (Cowork directive 2026-05-15 P0.2).
+                # Fires once at 19:55 ET. Flattens any open position via
+                # aggressive SELL LIMIT with chase-down ladder (no market orders).
+                _maybe_session_end_force_exit()
 
                 # ── Box strategy logic ──
                 if box_active:
