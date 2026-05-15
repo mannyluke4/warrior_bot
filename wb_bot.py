@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import math
 import os
+# L2 Layer 1 P1.1 — per-process L2 clientId. Engine wb_bot = 44.
+os.environ.setdefault("WB_L2_CLIENT_ID", "44")
 import signal
 import socket
 import sys
