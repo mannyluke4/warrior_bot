@@ -957,6 +957,27 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
                         "r_pct_below_floor")
                 return
 
+    # Dead-tape gate (Cowork DIRECTIVE_2026-05-15_WB_DEAD_TAPE_GATE.md).
+    # Runs AFTER score + R% floors, BEFORE chop_gate_v3. ATRA 5/15 13:21 ET
+    # case: avg bar vol ~1090, most prior bars 0-200 — high dead-bar rate.
+    try:
+        import tape_quality
+        det = state.wb_detectors.get(symbol)
+        bars = getattr(det, "_bars", []) if det is not None else []
+        alive, reason, telem = tape_quality.is_dead_tape(bars)
+        if not alive:
+            print(f"[CHOP_REJECT] {symbol}: {reason}", flush=True)
+            if det is not None:
+                det.mark_entry_failed(f"dead_tape:{reason}")
+            return
+        else:
+            # Telemetry log on every PASS so we can tune the threshold.
+            print(f"[DEAD_TAPE_OBSERVE] {symbol} {reason} "
+                  f"telem={telem}", flush=True)
+    except Exception as _e:
+        print(f"[DEAD_TAPE] {symbol} eval failed: {_e!r} — proceeding (fail-open)",
+              flush=True)
+
     # Hypothesis #14 — pre-market time block (2026-05-12). 8 of 8 WB entries
     # fired before 11:00 ET / 9:00 MT across 5/8, 5/11, 5/12 were losers.
     # Zero winners ever fired pre-9 AM MT. Runs BEFORE chop gate v2 and applies
