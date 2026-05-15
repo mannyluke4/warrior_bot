@@ -1072,7 +1072,22 @@ class EngineSession:
             _atomic_write_json(self.open_trades_path(), trades)
 
     def read_open_trades(self, date_str: Optional[str] = None) -> list:
-        data = _read_json_safe(self.open_trades_path(date_str), [])
+        # P0.1 (Cowork directive 2026-05-15) — if today's open_trades.json
+        # is empty/missing but decide_boot_mode stashed a prior-day path
+        # (because broker has positions), read from THAT path. Solves the
+        # FCHL date-boundary orphan: position was in yesterday's file but
+        # today's empty file got read first.
+        primary_path = self.open_trades_path(date_str)
+        primary_empty = (not os.path.exists(primary_path)
+                          or os.path.getsize(primary_path) <= 2)
+        lookback = getattr(self, "_lookback_open_trades_path", None)
+        if primary_empty and lookback and date_str is None:
+            print(f"[BOT] {now_iso_et()} {self.bot_id} read_open_trades: "
+                  f"today's file empty, using prior-day lookback {lookback}",
+                  flush=True)
+            data = _read_json_safe(lookback, [])
+        else:
+            data = _read_json_safe(primary_path, [])
         if not isinstance(data, list):
             return []
         valid = []
@@ -1147,10 +1162,54 @@ class EngineSession:
         shutil.rmtree(self._day_dir(), ignore_errors=True)
 
 
+def _broker_has_positions(broker) -> tuple[bool, list]:
+    """Best-effort: returns (has_positions, list_of_position_summaries).
+    Falls back to (False, []) on any broker error so callers can degrade
+    gracefully to the pre-existing decide_boot_mode logic."""
+    if broker is None:
+        return False, []
+    try:
+        positions = broker.get_positions() or []
+    except Exception as e:
+        try:
+            positions = broker.get_all_positions() or []
+        except Exception as e2:
+            print(f"[BOOT] reconcile: broker query failed: {e!r} / {e2!r}",
+                  flush=True)
+            return False, []
+    if not positions:
+        return False, []
+    summary = [(p.symbol, getattr(p, "qty", None),
+                getattr(p, "avg_entry_price", None)) for p in positions]
+    return True, summary
+
+
+def _lookback_open_trades_path(
+    session: "EngineSession", max_lookback_days: int = 7,
+) -> Optional[str]:
+    """Walk back day-by-day to find the most recent non-empty open_trades.json
+    for this session's bot_id. Returns the path or None.
+
+    Used by decide_boot_mode when broker has positions but today's
+    open_trades.json is empty/missing (FCHL 2026-05-15 case)."""
+    today = datetime.now(ET).date()
+    from datetime import timedelta as _td
+    for delta in range(1, max_lookback_days + 1):
+        d = (today - _td(days=delta)).strftime("%Y-%m-%d")
+        path = session.open_trades_path(d)
+        try:
+            if os.path.exists(path) and os.path.getsize(path) > 2:
+                return path
+        except Exception:
+            pass
+    return None
+
+
 def decide_boot_mode(
     session: "EngineSession",
     fresh: bool = False,
     resume: bool = False,
+    broker=None,
 ) -> tuple[str, str]:
     """Decide cold vs resume for a given EngineSession. Returns
     (mode, reason) for logging.
@@ -1158,17 +1217,17 @@ def decide_boot_mode(
     `mode` ∈ {"cold", "resume"}.
 
     Precedence (highest first):
-      --fresh CLI flag   → always cold (and write a NEW marker)
-      --resume CLI flag  → force resume if a marker exists, else cold
-                            with reason "resume_no_marker"
-      default            → resume if marker exists AND we have something
-                            durable to resume from (open_trades/risk);
-                            otherwise cold (avoids phantom-resume from an
-                            empty marker left by a never-traded session).
-
-    The Setup A pattern. Marker presence alone is not enough — Gap 4 in
-    Setup A's resume design: a session that started but produced no
-    durable state should cold-start cleanly rather than "phantom-resume".
+      --fresh CLI flag           → always cold (and write a NEW marker)
+      --resume CLI flag          → force resume if a marker exists, else cold
+                                   with reason "resume_no_marker"
+      **broker has positions**   → ALWAYS resume — broker is source of truth.
+                                   Cowork directive 2026-05-15 P0.1: prevents
+                                   the FCHL date-boundary orphan class.
+      default                    → resume if marker exists AND we have
+                                   something durable to resume from
+                                   (open_trades/risk); otherwise cold
+                                   (avoids phantom-resume from an empty
+                                   marker left by a never-traded session).
     """
     if fresh:
         return "cold", "fresh_flag"
@@ -1176,6 +1235,27 @@ def decide_boot_mode(
         if session.marker_exists():
             return "resume", "resume_flag"
         return "cold", "resume_no_marker"
+
+    # P0.1 — broker reconcile. Source-of-truth check BEFORE marker logic.
+    # If broker has any open positions, force "resume" mode so the bot's
+    # _resume_rehydrate path runs and adopts them (orphan-adoption code
+    # already exists at wb_bot._resume_rehydrate:~930 and squeeze_bot
+    # equivalent). If today's open_trades.json is empty but yesterday's
+    # has a matching record, the bot reads from the prior-day path.
+    has_pos, summary = _broker_has_positions(broker)
+    if has_pos:
+        print(f"[BOOT] reconcile: broker has {len(summary)} open position(s): "
+              f"{[s[0] for s in summary]} — forcing RESUME", flush=True)
+        prior = _lookback_open_trades_path(session)
+        if prior:
+            # Stash on session for the rehydrate path to pick up. The
+            # bot's read_open_trades() should prefer the prior-day path
+            # when today's is empty.
+            session._lookback_open_trades_path = prior
+            print(f"[BOOT] reconcile: using prior-day state from {prior}",
+                  flush=True)
+        return "resume", "broker_reconcile"
+
     if not session.marker_exists():
         return "cold", "no_marker"
 

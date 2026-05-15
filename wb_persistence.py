@@ -64,7 +64,11 @@ def _atomic_write(data: dict[str, str]) -> None:
     ]
     for sym in sorted(data):
         lines.append(f"{sym},{data[sym]}")
-    tmp = _FILE.with_suffix(".tmp")
+    # Per-process tmp suffix — Cowork 2026-05-15 daily response §3.5: eliminates
+    # the cross-process race where Setup A and Setup B both write to a shared
+    # `.tmp` and one process's replace() lands after the other has already
+    # moved the tmp into place (→ FileNotFoundError).
+    tmp = _FILE.with_name(f"{_FILE.stem}.{os.getpid()}.tmp")
     tmp.write_text("\n".join(lines) + "\n")
     tmp.replace(_FILE)
 

@@ -1105,6 +1105,46 @@ class SqueezeBot:
         threading.Thread(target=_hb_watcher, daemon=True,
                          name="hb-watcher").start()
 
+        # Session-end force-exit timer (Cowork directive 2026-05-15 P0.2).
+        # Mirror of wb_bot's timer; squeeze positions also force-flatten.
+        def _force_exit_watcher():
+            try:
+                import force_exit
+                print(f"[SQUEEZE] {now_iso_et()} {force_exit.env_summary()}",
+                      flush=True)
+            except Exception as e:
+                print(f"[SQUEEZE] FORCE_EXIT import failed: {e!r}", flush=True)
+                return
+            while not self._shutdown.is_set():
+                try:
+                    if force_exit.should_force_exit_now():
+                        print(f"[SQUEEZE] {now_iso_et()} 🟧 SESSION_END_FORCE_EXIT "
+                              f"triggered", flush=True)
+                        with self._positions_lock:
+                            symbols = list(self.positions.keys())
+                        for sym in symbols:
+                            with self._positions_lock:
+                                pos = self.positions.get(sym)
+                            if pos is None:
+                                continue
+                            ref = float(getattr(pos, "peak", None) or pos.entry)
+                            res = force_exit.force_exit_position(
+                                self.broker, sym, int(pos.qty), ref,
+                                log_prefix=f"[SQUEEZE] {now_iso_et()} ")
+                            if res["filled"]:
+                                pnl = (res["fill_price"] - pos.entry) * res["fill_qty"]
+                                print(f"[SQUEEZE] {now_iso_et()} {sym} CLOSED @ "
+                                      f"${res['fill_price']:.4f} pnl=${pnl:+,.2f} "
+                                      f"reason=session_end_force", flush=True)
+                                with self._positions_lock:
+                                    self.positions.pop(sym, None)
+                except Exception as e:
+                    print(f"[SQUEEZE] force_exit_watcher error: {e!r}",
+                          flush=True)
+                time.sleep(10)
+        threading.Thread(target=_force_exit_watcher, daemon=True,
+                         name="force-exit-watcher").start()
+
         # Block on shutdown signal.
         self._shutdown.wait()
         try:
@@ -1147,8 +1187,17 @@ def main():
     if args.fresh:
         # Wipe BEFORE deciding mode so empty-state logic fires cleanly.
         session.scrub_today()
+    # P0.1 — query broker BEFORE decide_boot_mode so the source-of-truth
+    # check runs. Best-effort: if broker construction fails, decide_boot_mode
+    # falls back to the original logic.
+    _boot_broker = None
+    try:
+        _boot_broker = make_alpaca_broker()
+    except Exception as _e:
+        print(f"[SQUEEZE] boot reconcile: make_alpaca_broker failed: {_e!r}",
+              flush=True)
     boot_mode, boot_reason = decide_boot_mode(
-        session, fresh=args.fresh, resume=args.resume,
+        session, fresh=args.fresh, resume=args.resume, broker=_boot_broker,
     )
     # Hard gate: WB_SESSION_RESUME_ENABLED=0 forces cold even if a marker
     # is present. Mirrors Setup A's two-gate design.

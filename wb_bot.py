@@ -1030,6 +1030,46 @@ class WBBot:
         threading.Thread(target=_hb_watcher, daemon=True,
                          name="hb-watcher").start()
 
+        # Session-end force-exit timer (Cowork directive 2026-05-15 P0.2).
+        # Polls every 10s; fires once at 19:55 ET via force_exit module's
+        # internal latch. Uses aggressive SELL LIMIT with chase (no market
+        # orders per user constraint).
+        def _force_exit_watcher():
+            try:
+                import force_exit
+                print(f"[WB] {now_iso_et()} {force_exit.env_summary()}", flush=True)
+            except Exception as e:
+                print(f"[WB] FORCE_EXIT import failed: {e!r}", flush=True)
+                return
+            while not self._shutdown.is_set():
+                try:
+                    if force_exit.should_force_exit_now():
+                        print(f"[WB] {now_iso_et()} 🟧 SESSION_END_FORCE_EXIT "
+                              f"triggered", flush=True)
+                        with self._positions_lock:
+                            symbols = list(self.positions.keys())
+                        for sym in symbols:
+                            with self._positions_lock:
+                                pos = self.positions.get(sym)
+                            if pos is None:
+                                continue
+                            ref = float(getattr(pos, "peak", None) or pos.entry)
+                            res = force_exit.force_exit_position(
+                                self.broker, sym, int(pos.qty), ref,
+                                log_prefix=f"[WB] {now_iso_et()} ")
+                            if res["filled"]:
+                                pnl = (res["fill_price"] - pos.entry) * res["fill_qty"]
+                                print(f"[WB] {now_iso_et()} {sym} CLOSED @ "
+                                      f"${res['fill_price']:.4f} pnl=${pnl:+,.2f} "
+                                      f"reason=session_end_force", flush=True)
+                                with self._positions_lock:
+                                    self.positions.pop(sym, None)
+                except Exception as e:
+                    print(f"[WB] force_exit_watcher error: {e!r}", flush=True)
+                time.sleep(10)
+        threading.Thread(target=_force_exit_watcher, daemon=True,
+                         name="force-exit-watcher").start()
+
         self._shutdown.wait()
         try:
             sock.close()
@@ -1060,8 +1100,17 @@ def main():
     session = EngineSession("wb_bot")
     if args.fresh:
         session.scrub_today()
+    # P0.1 — query broker BEFORE decide_boot_mode so the source-of-truth
+    # check runs. Best-effort: if broker construction fails, decide_boot_mode
+    # falls back to the original logic.
+    _boot_broker = None
+    try:
+        _boot_broker = make_alpaca_broker()
+    except Exception as _e:
+        print(f"[WB] boot reconcile: make_alpaca_broker failed: {_e!r}",
+              flush=True)
     boot_mode, boot_reason = decide_boot_mode(
-        session, fresh=args.fresh, resume=args.resume,
+        session, fresh=args.fresh, resume=args.resume, broker=_boot_broker,
     )
     if boot_mode == "resume" and not SESSION_RESUME_ENABLED:
         print(f"[WB] BOOT: would RESUME (reason={boot_reason}) but "
