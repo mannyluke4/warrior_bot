@@ -72,6 +72,18 @@ class IBKRFeed:
             self._connected = False
             return False
 
+    def attach(self, ib_instance) -> "IBKRFeed":
+        """Use an EXISTING ib_insync IB connection (L2 Layer 1 — share main bot's
+        connection to avoid extra clientId + EventLoop overhead). The caller
+        owns the connection lifecycle; this feed will NOT disconnect it."""
+        self.ib = ib_instance
+        self._connected = bool(ib_instance is not None and getattr(ib_instance, "isConnected", lambda: False)())
+        return self
+
+    @property
+    def is_connected(self) -> bool:
+        return self._connected
+
     def disconnect(self):
         """Disconnect from IB Gateway."""
         if self.ib and self._connected:
@@ -107,7 +119,10 @@ class IBKRFeed:
             contract = Stock(symbol, "SMART", "USD")
             self.ib.qualifyContracts(contract)
 
-            ticker = self.ib.reqMktDepth(contract, numRows=num_rows)
+            try:
+                ticker = self.ib.reqMktDepth(contract, numRows=num_rows, isSmartDepth=True)
+            except TypeError:  # older ib_insync without isSmartDepth kwarg
+                ticker = self.ib.reqMktDepth(contract, numRows=num_rows)
             ticker.updateEvent += lambda t: self._on_depth_update(symbol, t)
 
             self._subscriptions[symbol] = ticker

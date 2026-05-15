@@ -3048,6 +3048,21 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
         print(f"  ENTRY BLOCKED: {symbol} {_bp_reason}", flush=True)
         return
 
+    # L2 Layer 1 observe-only gate (Cowork DIRECTIVE_2026-05-15_L2_LAYER1_TODAY).
+    if os.environ.get("WB_SQ_L2_FILTER_ENABLED", "0") == "1":
+        try:
+            import l2_helper
+            _l2_state = l2_helper.request_l2_snapshot(symbol, getattr(state, "ib", None), timeout_sec=2.0)
+            _l2_verdict = l2_helper.evaluate_l2_filter(_l2_state)
+            print(f"[L2] SQ_ARM {symbol} state={l2_helper.summarize_l2(_l2_state)} "
+                  f"verdict={_l2_verdict.action} reason={_l2_verdict.reason}", flush=True)
+            if os.environ.get("WB_SQ_L2_FILTER_OBSERVE_ONLY", "1") != "1":
+                if _l2_verdict.action == "VETO":
+                    print(f"  ENTRY BLOCKED by L2: {symbol} {_l2_verdict.reason}", flush=True)
+                    return
+        except Exception as _e:
+            print(f"[L2] SQ_ARM {symbol} eval failed: {_e!r} — proceeding", flush=True)
+
     try:
         new_order = state.broker.submit_limit(symbol, qty, "BUY", limit_price)
         order_id = new_order.order_id

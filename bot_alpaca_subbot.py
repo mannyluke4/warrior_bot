@@ -1104,6 +1104,24 @@ def place_wave_breakout_entry(symbol: str, msg: str) -> None:
             state.wb_detectors[symbol].mark_entry_failed("insufficient_bp")
         return
 
+    # L2 Layer 1 observe-only gate (Cowork DIRECTIVE_2026-05-15_L2_LAYER1_TODAY).
+    # Today: log verdict, never veto. Monday: thresholds tune, OBSERVE_ONLY flips off.
+    if os.environ.get("WB_L2_FILTER_ENABLED", "0") == "1":
+        try:
+            import l2_helper
+            _l2_state = l2_helper.request_l2_snapshot(symbol, getattr(state, "ib", None), timeout_sec=2.0)
+            _l2_verdict = l2_helper.evaluate_l2_filter(_l2_state)
+            print(f"[L2] WB_ARM {symbol} state={l2_helper.summarize_l2(_l2_state)} "
+                  f"verdict={_l2_verdict.action} reason={_l2_verdict.reason}", flush=True)
+            if os.environ.get("WB_L2_FILTER_OBSERVE_ONLY", "1") != "1":
+                if _l2_verdict.action == "VETO":
+                    print(f"[WB] {symbol} ENTRY BLOCKED by L2: {_l2_verdict.reason}", flush=True)
+                    if symbol in state.wb_detectors:
+                        state.wb_detectors[symbol].mark_entry_failed(f"l2_{_l2_verdict.reason}")
+                    return
+        except Exception as _e:
+            print(f"[L2] WB_ARM {symbol} eval failed: {_e!r} — proceeding", flush=True)
+
     try:
         order = state.broker.submit_limit(
             symbol, shares, "BUY", limit_price, extended_hours=True,
