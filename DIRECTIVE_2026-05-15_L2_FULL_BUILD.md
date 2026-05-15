@@ -539,6 +539,16 @@ For each of the three features:
 
 ## Phase 7 — L2 as a strategy (resurrect `l2_entry.py`)
 
+**Status: PARKED.** Per Manny's decision 2026-05-15: Phase 7 is deferred until Phases 0-6 are fully stable. When it lands, L2 entry runs on a **4th Alpaca paper account** alongside the existing Setup A (subbot) + Setup B (engine) + the third paper account from the unified-data-engine work. We have a whole unused IBKR paper account capacity and an unused Alpaca paper account slot — that's the home for L2 strategy when its time comes.
+
+Do not begin Phase 7 work until told explicitly. Phases 0-6 are the current scope.
+
+Kept in this directive for context and so the architecture choices in Phases 1-2 (the L2SubscriptionManager primitive in particular) account for Phase 7's eventual needs.
+
+---
+
+### Phase 7 design (for reference — do not implement yet)
+
 This is the deep-dive's "Layer 3." Genuinely new strategy work. Ships after Phase 6 because:
 - Phases 1-2 give us the data plumbing
 - Phase 3-5 prove L2 signals are real and trustworthy
@@ -600,6 +610,14 @@ After 4+ weeks of paper:
 ---
 
 ## Phase 8 — L2-derived candidate scanner
+
+**Status: PARKED with Phase 7.** Same rationale — depends on persistent L2 subscriptions, scheduled for the 4th paper account work alongside Phase 7. Do not implement yet.
+
+Kept for context.
+
+---
+
+### Phase 8 design (for reference — do not implement yet)
 
 This is "Layer 4" from the deep-dive. Runs alongside or replaces the intraday adder depending on data.
 
@@ -749,6 +767,10 @@ These run in parallel because they touch different code paths.
 Begin at Phase 0. Don't write any new code until Phase 0 finishes. The subscription audit + Gateway version check + slot probe are pre-requisites — if any of those reveal a problem we don't expect, the design changes.
 
 When Phase 0 acceptance lands, work Phase 1. When Phase 1 acceptance lands, work Phase 2. And so on.
+
+**Current scope: Phases 0 through 6.** Phase 7 (L2 strategy) and Phase 8 (L2 scanner) are parked for the 4th-paper-account work later. Phase 9 (backtest) and Phase 10 (real-money) remain in scope as written.
+
+After Phase 6 acceptance, pause and check in. We'll decide together whether to begin Phase 7 prep, return to other workstreams (squeeze improvements, FCHL hardening, etc.), or just run Phases 0-6 in production for a stretch to see if anything else surfaces.
 
 If you hit something unexpected in any phase, pause and report. We'd rather understand the surprise than push through it.
 
