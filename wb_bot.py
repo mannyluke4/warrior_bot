@@ -588,6 +588,27 @@ class WBBot:
             det.mark_entry_failed("insufficient_bp")
             return
 
+        # L2 Layer 1 observe-only gate (Cowork DIRECTIVE_2026-05-15_L2_LAYER1_TODAY).
+        # Engine bots have no direct IBKR connection; pass None so the L2 feed
+        # dials its own (env-driven WB_IBKR_CLIENT_ID).
+        if os.environ.get("WB_L2_FILTER_ENABLED", "0") == "1":
+            try:
+                import l2_helper
+                _l2_state = l2_helper.request_l2_snapshot(symbol, None, timeout_sec=2.0)
+                _l2_verdict = l2_helper.evaluate_l2_filter(_l2_state)
+                print(f"[L2] WB_ARM {symbol} state={l2_helper.summarize_l2(_l2_state)} "
+                      f"verdict={_l2_verdict.action} reason={_l2_verdict.reason}",
+                      flush=True)
+                if os.environ.get("WB_L2_FILTER_OBSERVE_ONLY", "1") != "1":
+                    if _l2_verdict.action == "VETO":
+                        print(f"[WB] {now_iso_et()} {symbol} ENTRY BLOCKED by L2: "
+                              f"{_l2_verdict.reason}", flush=True)
+                        det.mark_entry_failed(f"l2_{_l2_verdict.reason}")
+                        return
+            except Exception as _e:
+                print(f"[L2] WB_ARM {symbol} eval failed: {_e!r} — proceeding",
+                      flush=True)
+
         # Off-loop retry-with-reprice loop (see engine_bot_common.place_with_retry).
         def _await_fill():
             res = place_with_retry(

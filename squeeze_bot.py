@@ -439,6 +439,24 @@ class SqueezeBot:
                   flush=True)
             return
 
+        # L2 Layer 1 observe-only gate (Cowork DIRECTIVE_2026-05-15_L2_LAYER1_TODAY).
+        if os.environ.get("WB_SQ_L2_FILTER_ENABLED", "0") == "1":
+            try:
+                import l2_helper
+                _l2_state = l2_helper.request_l2_snapshot(symbol, None, timeout_sec=2.0)
+                _l2_verdict = l2_helper.evaluate_l2_filter(_l2_state)
+                print(f"[L2] SQ_ARM {symbol} state={l2_helper.summarize_l2(_l2_state)} "
+                      f"verdict={_l2_verdict.action} reason={_l2_verdict.reason}",
+                      flush=True)
+                if os.environ.get("WB_SQ_L2_FILTER_OBSERVE_ONLY", "1") != "1":
+                    if _l2_verdict.action == "VETO":
+                        print(f"[SQUEEZE] {now_iso_et()} {symbol} ENTRY BLOCKED by L2: "
+                              f"{_l2_verdict.reason}", flush=True)
+                        return
+            except Exception as _e:
+                print(f"[L2] SQ_ARM {symbol} eval failed: {_e!r} — proceeding",
+                      flush=True)
+
         # Parabolic flag — Setup A reads this from `armed.score_detail`,
         # which we get via the ENTRY SIGNAL's `why=` suffix. The detector
         # appends "[PARABOLIC]" to score_detail when parabolic mode armed.
