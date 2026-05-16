@@ -1,0 +1,60 @@
+# Sample strategy YAML demonstrating every plugin section the framework
+# supports in Wave 1. This file is wired to the unit tests and is the
+# canonical "does the loader parse a minimal complete spec?" fixture.
+#
+# It is intentionally NOT a real, runnable strategy — level_source and
+# confirmation_rule resolve to Wave-1 stubs. Wave 2 replaces those with
+# concrete implementations.
+
+name: "Sample-Round-Number-Demo"
+enabled: true
+
+level_source:
+  type: round_number
+  params:
+    increments:
+      "10_50": [1.00, 5.00]
+      "50_150": [5.00]
+      "150_300": [5.00, 10.00]
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001       # 0.1% of price
+    proximity_dollar: 0.10     # OR 10 cents — whichever is larger applies
+
+confirmation_rule:
+  type: signal_candle
+  params:
+    patterns: [doji, hammer, shooting_star]
+    require_volume_increase: true
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.05
+
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 2.0
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "11:30"]
+  - ["13:30", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false
+  rules:
+    vix_lt_13: 0.5
+    vix_13_16: 0.75
+    vix_16_28: 1.0
+    vix_28_35: 0.75
+    vix_gt_45: 0.0
