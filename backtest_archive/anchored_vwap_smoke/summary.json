@@ -1,0 +1,110 @@
+{
+  "config": {
+    "start": "2024-01-01",
+    "end": "2024-03-31",
+    "fixed_risk": 1000.0,
+    "vix_max": 25.0,
+    "universe_n": 3
+  },
+  "strategies": {
+    "anchored_vwap_pullback": {
+      "n_trades": 67,
+      "n_wins": 28,
+      "n_losses": 39,
+      "win_rate": 0.417910447761194,
+      "profit_factor": 1.0722811409819,
+      "sharpe": 0.5725814827666584,
+      "avg_r": 0.026998264764243152,
+      "total_pnl": 1808.883739204294,
+      "max_drawdown_pct": -0.046198696508101926,
+      "starting_equity": 100000.0,
+      "ending_equity": 101808.88373920429,
+      "per_anchor": {
+        "gap_day": {
+          "n_trades": 67,
+          "n_wins": 28,
+          "n_losses": 39,
+          "win_rate": 0.417910447761194,
+          "profit_factor": 1.0722811409819,
+          "sharpe": 0.5725814827666584,
+          "avg_r": 0.026998264764243152,
+          "total_pnl": 1808.883739204294,
+          "max_drawdown_pct": -0.046198696508101926,
+          "starting_equity": 100000.0,
+          "ending_equity": 101808.88373920429
+        }
+      },
+      "per_year": {
+        "2024": {
+          "n_trades": 67,
+          "n_wins": 28,
+          "n_losses": 39,
+          "win_rate": 0.417910447761194,
+          "profit_factor": 1.0722811409819,
+          "sharpe": 0.5725814827666584,
+          "avg_r": 0.026998264764243152,
+          "total_pnl": 1808.883739204294,
+          "max_drawdown_pct": -0.046198696508101926,
+          "starting_equity": 100000.0,
+          "ending_equity": 101808.88373920429
+        }
+      }
+    },
+    "anchored_vwap_breakout": {
+      "n_trades": 33,
+      "n_wins": 10,
+      "n_losses": 23,
+      "win_rate": 0.30303030303030304,
+      "profit_factor": 0.5890634945930991,
+      "sharpe": -3.8335016994868947,
+      "avg_r": -0.20277045454545442,
+      "total_pnl": -6691.4249999999965,
+      "max_drawdown_pct": -0.10129968444142105,
+      "starting_equity": 100000.0,
+      "ending_equity": 93308.575,
+      "per_anchor": {
+        "earnings": {
+          "n_trades": 2,
+          "n_wins": 1,
+          "n_losses": 1,
+          "win_rate": 0.5,
+          "profit_factor": 2.9288652482267685,
+          "sharpe": 5.510868239151182,
+          "avg_r": 0.27196999999998467,
+          "total_pnl": 543.9399999999694,
+          "max_drawdown_pct": -0.0027968992900041408,
+          "starting_equity": 100000.0,
+          "ending_equity": 100543.93999999997
+        },
+        "gap_day": {
+          "n_trades": 31,
+          "n_wins": 9,
+          "n_losses": 22,
+          "win_rate": 0.2903225806451613,
+          "profit_factor": 0.547827980817877,
+          "sharpe": -4.3943009285158325,
+          "avg_r": -0.23339887096774084,
+          "total_pnl": -7235.364999999965,
+          "max_drawdown_pct": -0.0993684712968327,
+          "starting_equity": 100000.0,
+          "ending_equity": 92764.63500000004
+        }
+      },
+      "per_year": {
+        "2024": {
+          "n_trades": 33,
+          "n_wins": 10,
+          "n_losses": 23,
+          "win_rate": 0.30303030303030304,
+          "profit_factor": 0.5890634945930991,
+          "sharpe": -3.8335016994868947,
+          "avg_r": -0.20277045454545442,
+          "total_pnl": -6691.4249999999965,
+          "max_drawdown_pct": -0.10129968444142105,
+          "starting_equity": 100000.0,
+          "ending_equity": 93308.575
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "config": {
+    "mode": "depth_imbalance",
+    "min_imbalance": 1.2,
+    "top_n": 5,
+    "max_spread_pct": 1.0,
+    "year_filter": 2022
+  },
+  "baseline": {
+    "n_trades": 2151,
+    "sharpe": 0.3897148849991525,
+    "total_pnl": 92171.07000000062,
+    "win_rate": 0.1701534170153417,
+    "avg_r": 0.042850334728033755,
+    "profit_factor": 1.176921496887058,
+    "max_drawdown_pct": -28.96609598639935
+  },
+  "with_l2": {
+    "n_trades": 662,
+    "sharpe": 0.42115584251450755,
+    "total_pnl": 30055.950000000546,
+    "win_rate": 0.15709969788519637,
+    "avg_r": 0.04540173716012164,
+    "profit_factor": 1.1934371373470039,
+    "max_drawdown_pct": -21.487725032974488
+  },
+  "trade_count_reduction_pct": 69.2236169223617,
+  "sharpe_delta": 0.03144095751535503
+}

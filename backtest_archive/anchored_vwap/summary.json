@@ -1,0 +1,214 @@
+{
+  "config": {
+    "start": "2020-01-01",
+    "end": "2024-12-31",
+    "fixed_risk": 1000.0,
+    "vix_max": 25.0,
+    "universe_n": 36
+  },
+  "strategies": {
+    "anchored_vwap_pullback": {
+      "n_trades": 7844,
+      "n_wins": 3320,
+      "n_losses": 4489,
+      "win_rate": 0.4232534421213667,
+      "profit_factor": 1.0727417562248411,
+      "sharpe": 0.894918212881106,
+      "avg_r": 0.009320659009447207,
+      "total_pnl": 73111.2492701039,
+      "max_drawdown_pct": -0.1545057452474204,
+      "starting_equity": 100000.0,
+      "ending_equity": 173111.2492701039,
+      "per_anchor": {
+        "gap_day": {
+          "n_trades": 7844,
+          "n_wins": 3320,
+          "n_losses": 4489,
+          "win_rate": 0.4232534421213667,
+          "profit_factor": 1.0727417562248411,
+          "sharpe": 0.894918212881106,
+          "avg_r": 0.009320659009447207,
+          "total_pnl": 73111.2492701039,
+          "max_drawdown_pct": -0.1545057452474204,
+          "starting_equity": 100000.0,
+          "ending_equity": 173111.2492701039
+        }
+      },
+      "per_year": {
+        "2020": {
+          "n_trades": 1165,
+          "n_wins": 503,
+          "n_losses": 658,
+          "win_rate": 0.4317596566523605,
+          "profit_factor": 1.0831327041621726,
+          "sharpe": 1.0966072428105684,
+          "avg_r": 0.010743047505451986,
+          "total_pnl": 12515.650343851568,
+          "max_drawdown_pct": -0.10412511194468572,
+          "starting_equity": 100000.0,
+          "ending_equity": 112515.65034385156
+        },
+        "2021": {
+          "n_trades": 2027,
+          "n_wins": 865,
+          "n_losses": 1152,
+          "win_rate": 0.4267390231869758,
+          "profit_factor": 1.1974796482928045,
+          "sharpe": 2.232158457515799,
+          "avg_r": 0.023810217728373915,
+          "total_pnl": 48263.311335413935,
+          "max_drawdown_pct": -0.08027032984015864,
+          "starting_equity": 100000.0,
+          "ending_equity": 148263.31133541395
+        },
+        "2022": {
+          "n_trades": 548,
+          "n_wins": 227,
+          "n_losses": 319,
+          "win_rate": 0.4142335766423358,
+          "profit_factor": 0.8969654283407175,
+          "sharpe": -1.3849003704215304,
+          "avg_r": -0.012355194471736596,
+          "total_pnl": -6770.646570511658,
+          "max_drawdown_pct": -0.14033045233416083,
+          "starting_equity": 100000.0,
+          "ending_equity": 93229.35342948834
+        },
+        "2023": {
+          "n_trades": 1958,
+          "n_wins": 853,
+          "n_losses": 1098,
+          "win_rate": 0.43564862104187946,
+          "profit_factor": 1.0259161437845947,
+          "sharpe": 0.32842324216812296,
+          "avg_r": 0.003123325766642012,
+          "total_pnl": 6115.471851085053,
+          "max_drawdown_pct": -0.15033471799777298,
+          "starting_equity": 100000.0,
+          "ending_equity": 106115.47185108505
+        },
+        "2024": {
+          "n_trades": 2146,
+          "n_wins": 872,
+          "n_losses": 1262,
+          "win_rate": 0.4063373718546132,
+          "profit_factor": 1.0421057069768782,
+          "sharpe": 0.5238202906645242,
+          "avg_r": 0.006051939566759086,
+          "total_pnl": 12987.462310265,
+          "max_drawdown_pct": -0.22444849355128432,
+          "starting_equity": 100000.0,
+          "ending_equity": 112987.462310265
+        }
+      }
+    },
+    "anchored_vwap_breakout": {
+      "n_trades": 5790,
+      "n_wins": 2283,
+      "n_losses": 3479,
+      "win_rate": 0.394300518134715,
+      "profit_factor": 0.8904944838137963,
+      "sharpe": -1.3603912068229458,
+      "avg_r": -0.01810169861830777,
+      "total_pnl": -104808.83500000197,
+      "max_drawdown_pct": -1.0942006821473136,
+      "starting_equity": 100000.0,
+      "ending_equity": -4808.835000001971,
+      "per_anchor": {
+        "earnings": {
+          "n_trades": 159,
+          "n_wins": 68,
+          "n_losses": 91,
+          "win_rate": 0.4276729559748428,
+          "profit_factor": 0.9263189346495436,
+          "sharpe": -0.511870456025597,
+          "avg_r": -0.02342281446540802,
+          "total_pnl": -3724.227499999879,
+          "max_drawdown_pct": -0.14408626419617226,
+          "starting_equity": 100000.0,
+          "ending_equity": 96275.77250000012
+        },
+        "gap_day": {
+          "n_trades": 5631,
+          "n_wins": 2215,
+          "n_losses": 3388,
+          "win_rate": 0.3933581957023619,
+          "profit_factor": 0.8884971025514591,
+          "sharpe": -1.3543757083708525,
+          "avg_r": -0.01795144867696716,
+          "total_pnl": -101084.60750000208,
+          "max_drawdown_pct": -1.028985153608745,
+          "starting_equity": 100000.0,
+          "ending_equity": -1084.6075000020792
+        }
+      },
+      "per_year": {
+        "2020": {
+          "n_trades": 896,
+          "n_wins": 336,
+          "n_losses": 554,
+          "win_rate": 0.375,
+          "profit_factor": 0.8811306096454103,
+          "sharpe": -1.75317739246422,
+          "avg_r": -0.020845513392857694,
+          "total_pnl": -18677.580000000493,
+          "max_drawdown_pct": -0.29436505457323825,
+          "starting_equity": 100000.0,
+          "ending_equity": 81322.4199999995
+        },
+        "2021": {
+          "n_trades": 1490,
+          "n_wins": 593,
+          "n_losses": 892,
+          "win_rate": 0.39798657718120806,
+          "profit_factor": 0.8242535567093314,
+          "sharpe": -2.253115123152585,
+          "avg_r": -0.030987246644294853,
+          "total_pnl": -46170.99749999932,
+          "max_drawdown_pct": -0.4996297920943001,
+          "starting_equity": 100000.0,
+          "ending_equity": 53829.00250000068
+        },
+        "2022": {
+          "n_trades": 460,
+          "n_wins": 176,
+          "n_losses": 282,
+          "win_rate": 0.3826086956521739,
+          "profit_factor": 0.839041909440334,
+          "sharpe": -2.040848755663433,
+          "avg_r": -0.024480423913045155,
+          "total_pnl": -11260.995000000772,
+          "max_drawdown_pct": -0.15323308103877417,
+          "starting_equity": 100000.0,
+          "ending_equity": 88739.00499999923
+        },
+        "2023": {
+          "n_trades": 1394,
+          "n_wins": 573,
+          "n_losses": 813,
+          "win_rate": 0.41104734576757535,
+          "profit_factor": 0.9629481014613601,
+          "sharpe": -0.4148174056148824,
+          "avg_r": -0.005499090746055028,
+          "total_pnl": -7665.732500000711,
+          "max_drawdown_pct": -0.24292113328230835,
+          "starting_equity": 100000.0,
+          "ending_equity": 92334.26749999929
+        },
+        "2024": {
+          "n_trades": 1550,
+          "n_wins": 605,
+          "n_losses": 938,
+          "win_rate": 0.3903225806451613,
+          "profit_factor": 0.9192308674466106,
+          "sharpe": -0.9714005308108165,
+          "avg_r": -0.013570019354839154,
+          "total_pnl": -21033.53000000068,
+          "max_drawdown_pct": -0.2712535708304146,
+          "starting_equity": 100000.0,
+          "ending_equity": 78966.46999999932
+        }
+      }
+    }
+  }
+}
