@@ -1,0 +1,72 @@
+# Volume Profile Breakout — fast move through an LVN vacuum.
+#
+# Thesis: Low Volume Nodes (LVN) are gaps in the volume distribution where
+# little institutional inventory exists. When price probes an LVN edge with
+# a high-volume breakout candle, the move "vacuums" through to the next
+# HVN cluster — there's no participation to slow it down.
+#
+# This is the canonical "Trading Notes Signal Candle Model" complement to
+# the rejection spec: rejection trades the *edge* of an HVN, breakout
+# trades the *gap* between HVNs.
+#
+# Direction inferred from the breakout candle:
+#   - Close above the LVN's upper edge with volume confirmation -> long
+#   - Close below the LVN's lower edge with volume confirmation -> short
+#
+# Per Wave 3 universal finding: VIX > 25 is categorically worse. This spec
+# also defaults vix_size_multiplier ON.
+#
+# Design source:    DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.5
+# Build directive:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §5 Agent L
+
+name: "Volume-Profile-Breakout"
+enabled: true
+
+level_source:
+  type: volume_profile
+  params:
+    lookback_sessions: 5
+    bin_pct: 0.001
+    hvn_multiplier: 1.5
+    lvn_multiplier: 0.5
+    emit_poc: false               # breakout doesn't reference POC
+    emit_hvn: true                # need HVN levels to target
+    emit_lvn: true                # LVN is the trigger level
+    min_bars_for_signal: 3
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001          # 0.10% — tighter than rejection, want a clean tag
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 2.0             # 2x volume — the "vacuum" needs flow
+    min_breakout_pct: 0.0002      # 0.02% beyond the LVN edge
+    require_close_beyond: true
+
+stop_rule:
+  type: bar_low                   # entry-bar's low (long) / high (short) + pad
+  params:
+    pad_dollar: 0.05
+
+# Target: next HVN above for long, next HVN below for short. Fall back to a
+# 2.0R extension when no opposing HVN exists in the profile.
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 2.0
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+vix_size_multiplier:
+  use_vix: true
+  optimal_range: [16.0, 25.0]
+  extreme_threshold: 40.0

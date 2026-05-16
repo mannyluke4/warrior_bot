@@ -1,0 +1,69 @@
+# Volume Profile Rejection — mean-reversion fade at HVN edges.
+#
+# Thesis: Price probes a High Volume Node (acceptance area / institutional
+# inventory cluster) and fails to break through. The failed test signals
+# auction rotation back toward the opposite edge of the profile (next HVN
+# or POC).
+#
+# Direction is inferred from price's approach to the HVN:
+#   - Approach from below (resistance behavior) -> rejection_down -> short
+#   - Approach from above (support behavior)    -> rejection_up   -> long
+#
+# Per Wave 3 universal finding: VIX > 25 is categorically worse for fade
+# strategies. This spec defaults vix_size_multiplier ON (suppress when
+# regime != optimal) — overrides the framework default.
+#
+# Design source:    DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.5
+# Build directive:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §5 Agent L
+
+name: "Volume-Profile-Rejection"
+enabled: true
+
+level_source:
+  type: volume_profile
+  params:
+    lookback_sessions: 5          # 5 prior RTH sessions
+    bin_pct: 0.001                # 0.1% of reference price
+    hvn_multiplier: 1.5
+    lvn_multiplier: 0.5
+    emit_poc: true
+    emit_hvn: true
+    emit_lvn: false               # rejection spec only watches HVN edges
+    min_bars_for_signal: 3
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.0015         # 0.15% — slightly wider than PDH-Fade's 0.1%
+                                  # because HVN edges are clusters not points.
+
+confirmation_rule:
+  type: rejection
+  params:
+    lookback_bars: 2              # poked into HVN within last 2 bars, close back
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10              # 10 cents past the HVN edge
+
+# Edge-to-edge target: next HVN on the opposite side. Falls back to a 1.5R
+# extension when the profile has no opposing cluster (typical on trend days).
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# Per Wave 3 finding: enable VIX overlay by default for Phase 2 strategies.
+vix_size_multiplier:
+  use_vix: true
+  optimal_range: [16.0, 25.0]     # tighter cap than framework default (28)
+  extreme_threshold: 40.0

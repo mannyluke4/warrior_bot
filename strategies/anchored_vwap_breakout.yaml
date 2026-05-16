@@ -1,0 +1,63 @@
+# Anchored VWAP Breakout — AVWAP-reclaim breakout strategy.
+#
+# Thesis: Price retesting an AVWAP anchor from BELOW (recent low > below the
+# anchor reference) and reclaiming it on volume is the classic "first
+# institutional reclaim" signal — average participant cost has flipped from
+# unrealized loss to unrealized gain, often triggering follow-through buys.
+#
+# Multi-anchor variant (3 anchors): confluence across earnings AVWAP +
+# gap-day AVWAP + FOMC AVWAP (whichever apply within the lookback). The
+# strategy is permissive — any one of the 3 anchors being reclaimed with
+# the breakout criteria fires the signal.
+#
+# Design source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §5.2 (AVWAP Reclaim)
+# Build directive: DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §5 Agent M
+
+name: "AVWAP-Breakout"
+enabled: true
+
+level_source:
+  type: anchored_vwap
+  params:
+    anchor_type: earnings_or_gap   # earnings preferred; gap-day fallback
+    lookback_days: 30
+    multi_anchor_count: 3          # multi-anchor confluence
+    gap_threshold_pct: 0.02
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001           # tighter (0.10%): retesting from below
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 1.5              # 1.5x baseline 20-bar vol
+    min_breakout_pct: 0.0002       # 2 bps close beyond AVWAP
+    require_close_beyond: true
+
+stop_rule:
+  type: bar_low
+  params:
+    pad_dollar: 0.05               # 5 cents below the breakout bar low
+
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+regime_gate:
+  type: vix
+  vix_max: 25.0
+
+vix_size_multiplier:
+  use_vix: false

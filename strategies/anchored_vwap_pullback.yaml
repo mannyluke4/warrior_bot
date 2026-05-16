@@ -1,0 +1,67 @@
+# Anchored VWAP Pullback — pullback-to-AVWAP continuation strategy.
+#
+# Thesis: After a high-information event (gap day, earnings, FOMC), the
+# anchored VWAP from the event open acts as an institutional reference for
+# average participant cost since the catalyst. Price pulling back to that
+# reference and showing a signal-candle reaction is a continuation entry.
+#
+# Direction:
+#   - Pullback from above to AVWAP: long entry on hammer/doji reaction
+#     (price rejecting AVWAP as support, continuing higher).
+#   - Pullback from below to AVWAP: short entry on shooting-star/doji
+#     reaction (price rejecting AVWAP as resistance, continuing lower).
+#
+# Design source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §5.2 (AVWAP Pullback)
+# Build directive: DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §5 Agent M
+
+name: "AVWAP-Pullback"
+enabled: true
+
+level_source:
+  type: anchored_vwap
+  params:
+    anchor_type: gap_day        # most-recent gap day from the lookback window
+    lookback_days: 30
+    multi_anchor_count: 1       # single-anchor for pullback spec
+    gap_threshold_pct: 0.02     # 2% gap minimum
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.002        # within 0.20% of AVWAP price
+
+confirmation_rule:
+  type: signal_candle
+  params:
+    patterns: [hammer, doji, shooting_star]
+    require_volume_increase: true
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.15            # 15 cents past AVWAP
+
+# Target: opposite proximate level (e.g. prior swing extreme) when
+# available, fallback r_multiple 2.0 with ATR trailing after 1.5R.
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 2.0
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# VIX regime gate per Wave 3 synthesis: VIX < 25 entries only.
+regime_gate:
+  type: vix
+  vix_max: 25.0
+
+vix_size_multiplier:
+  use_vix: false

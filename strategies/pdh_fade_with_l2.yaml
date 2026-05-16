@@ -1,0 +1,80 @@
+# PDH/PDL Fade + L2 confirmation — Wave 5 Agent N
+#
+# Identical to `pdh_pdl_fade.yaml` (the Wave 3 sole survivor) but adds an
+# L2 depth-imbalance confirmation gate.  BOTH rejection AND L2 depth must
+# pass for entry.
+#
+# Backtest framing (HONEST):
+#   L2 historical data is NOT in our Databento Standard subscription.
+#   The accompanying backtest harness (`backtest/synthetic_l2.py`) feeds
+#   the plugin SYNTHETIC L2 derived from candle wicks + volume.  This
+#   yields directional intuition only.  Real validation is queued for
+#   Wave 6 once live L2 events are captured per `docs/l2_capture_spec.md`.
+#
+# Wave-5 schema note:
+#   The current `yaml_schema.py` does not yet validate the
+#   `confirmation_chain` field — it's read by the synthetic-L2 backtest
+#   harness directly.  When the registry gains chain support (Wave 6 P0),
+#   delete the `confirmation_rule` block and keep `confirmation_chain`.
+#   For now we keep `confirmation_rule: rejection` so the spec passes
+#   `validate_strategy_spec()` and the chain field is consumed manually.
+#
+# Design source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §5.3 + §4.3
+# Build directive: DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §5 Agent N
+
+name: "PDH-PDL-Fade-L2"
+enabled: true
+
+level_source:
+  type: pdh_pdl
+  params:
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001
+
+# Chain of confirmation rules — BOTH must pass.  The registry / harness
+# reads this list; the legacy `confirmation_rule` block is the first
+# entry, kept for schema compatibility until Wave 6 chain support lands.
+confirmation_chain:
+  - type: rejection
+    params:
+      lookback_bars: 2
+  - type: l2_confirm
+    params:
+      mode: depth_imbalance
+      min_imbalance: 1.5         # long: bid/ask ratio >= 1.5
+                                  # short auto-inverts to >= 1.5 ask/bid
+      top_n: 5                    # inspect top 5 levels
+      max_spread_pct: 1.0         # veto wide-spread regimes
+      pass_through_on_missing: false  # strict: no L2 -> no entry
+
+# Wave-1 schema requires a single confirmation_rule; this is the first
+# link of the chain.  Remove when registry adds chain support.
+confirmation_rule:
+  type: rejection
+  params:
+    lookback_bars: 2
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10
+
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false
