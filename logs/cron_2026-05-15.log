@@ -1,0 +1,171 @@
+=== Setup B engine daily run started: Fri May 15 02:00:00 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 19785)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: e47c6b6 (engine bots: entry-time cutoff + pre-submit BP check (bundle mirror))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 19842, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 19848, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 19849, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 19842)
+squeeze OK (PID 19848)
+wb OK (PID 19849)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 14:15:30 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 58690)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: c36eaa8 (engine: L2 Layer 1 modules + WB/squeeze ARM gate (observe-only))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 58731, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 58736, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 58737, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 58731)
+squeeze OK (PID 58736)
+wb OK (PID 58737)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 14:23:53 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 59332)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: c36eaa8 (engine: L2 Layer 1 modules + WB/squeeze ARM gate (observe-only))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 59365, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 59380, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 59381, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 59365)
+squeeze OK (PID 59380)
+wb OK (PID 59381)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 15:14:56 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 62510)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: 79d4be7 (engine: P0.1 + P0.2 + P1.3 — Cowork directive 2026-05-15 daily response)
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 62541, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 62544, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 62545, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 62541)
+squeeze OK (PID 62544)
+wb OK (PID 62545)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 15:24:04 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 63186)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: 0f0f729 (P1.2 — Dead-tape gate ship (engine WB))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 63231, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 63234, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 63235, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 63231)
+squeeze OK (PID 63234)
+wb OK (PID 63235)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 15:44:34 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 64538)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: bd0c955 (P1.1 — L2 async-thread refactor (engine))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 64569, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 64572, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 64573, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 64569)
+squeeze OK (PID 64572)
+wb OK (PID 64573)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+=== Setup B engine daily run started: Fri May 15 15:48:33 MDT 2026 ===
+  Worktree: /Users/duffy/warrior_bot_v2_engine
+  Logs dir: /Users/duffy/warrior_bot_v2_engine/logs
+Persistent caffeinate started (PID: 64916)
+From github.com:mannyluke4/warrior_bot
+ * branch            data-engine-unified -> FETCH_HEAD
+Already up to date.
+Code version: bd0c955 (P1.1 — L2 async-thread refactor (engine))
+Pre-flight: imports...
+Setup B imports OK
+Checking IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Starting data_engine.py...
+Engine started (PID: 64947, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_engine.log)
+Waiting for IPC socket at /tmp/warrior_engine.sock...
+IPC socket is up (after ~2s)
+Starting squeeze_bot.py...
+Squeeze bot started (PID: 64950, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_squeeze_bot.log)
+Starting wb_bot.py...
+WB bot started (PID: 64951, log: /Users/duffy/warrior_bot_v2_engine/logs/2026-05-15_wb_bot.log)
+engine OK (PID 64947)
+squeeze OK (PID 64950)
+wb OK (PID 64951)
+Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
+Trading windows closed. Proceeding to shutdown.
+=== Setup B engine daily run complete: Fri May 15 18:05:00 MDT 2026 ===
+=== TRAP: cleanup at Fri May 15 18:05:00 MDT 2026 ===
