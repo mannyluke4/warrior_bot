@@ -46,6 +46,7 @@ Author: CC Agent J (Wave 3 — Healthy Fluctuation Framework)
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from dataclasses import dataclass, field
 from datetime import date, datetime, time, timedelta
@@ -66,7 +67,7 @@ from framework.level_sources.opening_range import OpeningRangeSource
 from framework.level_sources.pdh_pdl import PDHPDLSource
 from framework.level_sources.round_number import RoundNumberSource, resolve_tier
 from framework.level_sources.vwap import VWAPSource
-from framework.sizing import HalfKellySizer
+from framework.sizing import HalfKellySizer, TieredSizer
 
 
 log = logging.getLogger("portfolio_backtest")
@@ -180,6 +181,10 @@ class Trade:
     pnl: float
     r_multiple: float
     exit_reason: str
+    # release_on_stop instrumentation: True when this trade fired only because
+    # an earlier (locked) trade's stop released the per-(symbol, day) lock.
+    # Lets attribution analysis isolate the $427K recovery cohort.
+    secondary_fill: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -198,6 +203,7 @@ class Trade:
             "pnl": self.pnl,
             "r_multiple": self.r_multiple,
             "exit_reason": self.exit_reason,
+            "secondary_fill": self.secondary_fill,
         }
 
 
@@ -208,10 +214,41 @@ class Trade:
 
 @dataclass
 class SizingMode:
-    name: str  # "half_kelly" | "fixed_dollar"
+    """Sizing mode adapter.
+
+    name: "half_kelly" | "fixed_dollar" | "tiered"
+        - half_kelly: per-trade Half-Kelly with bar-volume cap (Wave 1)
+        - fixed_dollar: fixed dollar risk per trade (Wave 2)
+        - tiered: 9-tier equity ladder (Wave 4 Phase C1).  Instantiate
+          via SizingMode.tiered(...) and the engine will route .size()
+          calls through the bound TieredSizer.  Tier transitions happen
+          on session boundaries — call tiered_sizer.on_session_close(...)
+          from the engine's session loop.
+    """
+
+    name: str
     fixed_dollar_risk: float = 1000.0
     risk_per_trade_pct: float = 1.0
     max_bar_volume_pct: float = 0.05
+    # Bound TieredSizer when name == "tiered"; None otherwise.
+    tiered_sizer: Optional[TieredSizer] = None
+
+    @classmethod
+    def tiered(
+        cls,
+        initial_tier: int = 1,
+        tier_lock: bool = False,
+        auto_advance: bool = True,
+        state_path: Optional[Path] = None,
+    ) -> "SizingMode":
+        """Build a SizingMode wired to a TieredSizer instance."""
+        ts = TieredSizer(
+            initial_tier=initial_tier,
+            tier_lock=tier_lock,
+            auto_advance=auto_advance,
+            state_path=state_path,
+        )
+        return cls(name="tiered", tiered_sizer=ts)
 
     def size(
         self,
@@ -224,6 +261,26 @@ class SizingMode:
         per_share = abs(entry_price - stop_price)
         if per_share <= 0:
             return 0, 0.0
+
+        if self.name == "tiered":
+            if self.tiered_sizer is None:
+                # Defensive: tiered mode requested but no sizer bound.
+                # Fall back to fixed-dollar at $300 (Tier-1 baseline).
+                risk_dollars = 300.0
+                qty = int(risk_dollars // per_share)
+                return max(qty, 0), risk_dollars
+            qty, risk_dollars = self.tiered_sizer.size(
+                equity=equity,
+                entry_price=entry_price,
+                stop_price=stop_price,
+                recent_bar_volume=recent_bar_volume,
+            )
+            # Apply same bar-vol cap as fixed_dollar for parity
+            if recent_bar_volume and self.max_bar_volume_pct > 0:
+                cap = int(self.max_bar_volume_pct * recent_bar_volume)
+                if cap > 0:
+                    qty = min(qty, cap)
+            return max(qty, 0), risk_dollars
 
         if self.name == "fixed_dollar":
             risk_dollars = self.fixed_dollar_risk
@@ -559,7 +616,137 @@ SIGNAL_FUNCS = {
     "pdh_pdl_fade.yaml": lambda b, s, prior: _pdh_pdl_signal(b, s, prior, mode="fade"),
     "pdh_pdl_breakout.yaml": lambda b, s, prior: _pdh_pdl_signal(b, s, prior, mode="breakout"),
     "round_number.yaml": _round_number_signal,
+    # Wave-4 Phase B1 filtered variants — reuse base signal logic; the
+    # Wave-4 filter knobs are evaluated AFTER signal generation in
+    # run_portfolio_backtest() via framework.filters.passes_pre_entry_filters.
+    "orb_aligned_300plus_monskip.yaml": _opening_range_signal,
+    "pdh_fade_filtered.yaml": lambda b, s, prior: _pdh_pdl_signal(b, s, prior, mode="fade"),
+    "pdh_breakout_f4.yaml": lambda b, s, prior: _pdh_pdl_signal(b, s, prior, mode="breakout"),
 }
+
+
+# YAML names that need prior-day bars (PDH/PDL family).
+_PDH_PDL_YAMLS = {
+    "pdh_pdl_fade.yaml",
+    "pdh_pdl_breakout.yaml",
+    "pdh_fade_filtered.yaml",
+    "pdh_breakout_f4.yaml",
+}
+
+
+def _yaml_needs_prior(yname: str) -> bool:
+    return yname in _PDH_PDL_YAMLS
+
+
+# ---------------------------------------------------------------------------
+# Wave-4 Phase B1: filter dispatcher
+# ---------------------------------------------------------------------------
+
+
+def _vwap_at_bar(bars: list[Bar], idx: int) -> Optional[float]:
+    """Cumulative session VWAP through bar idx (inclusive).
+
+    Uses the typical-price (HLC/3) weighted volume convention shared with
+    framework.level_sources.vwap. Returns None if cumulative volume is zero.
+    """
+    if idx < 0 or idx >= len(bars):
+        return None
+    cum_pv = 0.0
+    cum_v = 0.0
+    for j in range(idx + 1):
+        b = bars[j]
+        typical = (b.high + b.low + b.close) / 3.0
+        cum_pv += typical * b.volume
+        cum_v += b.volume
+    if cum_v <= 0:
+        return None
+    return cum_pv / cum_v
+
+
+def _or5_open_close(bars: list[Bar]) -> tuple[Optional[float], Optional[float]]:
+    """Return (open, close) of the OR5 (09:30-09:34) bar window.
+
+    The 5-min OR is the OHLC over the first 5 1-min bars of RTH. open is
+    the first bar's open; close is the 5th bar's close.
+    """
+    if not bars:
+        return None, None
+    session_date = bars[0].timestamp.date()
+    or_end_t = (datetime.combine(session_date, RTH_OPEN) + timedelta(minutes=5)).time()
+    in_range = [b for b in bars if b.timestamp.time() < or_end_t]
+    if not in_range:
+        return None, None
+    return in_range[0].open, in_range[-1].close
+
+
+def _signal_passes_wave4_filters(
+    *,
+    arm: "StrategyArm",
+    sig: EntrySignal,
+    sym: str,
+    bars: list[Bar],
+    session_date: date,
+) -> bool:
+    """Apply the Wave-4 YAML filter knobs to a candidate signal.
+
+    Returns True if the signal passes every configured filter; False otherwise.
+    Delegates the per-filter predicates to framework.filters.
+    """
+    spec = arm.spec
+    # Skip the cost if no filter knobs are configured on this YAML.
+    if not any(
+        k in spec
+        for k in (
+            "entry_time_window",
+            "tier_filter",
+            "opening_bar_alignment",
+            "skip_mondays",
+            "symbol_blacklist",
+            "require_vwap_alignment",
+            "pre_entry_consolidation_max_pct",
+            "volume_min_multiple",
+        )
+    ):
+        return True
+
+    from framework.filters import passes_pre_entry_filters
+
+    # Fill bar = signal.bar_idx + 1 (next bar's open is the entry price).
+    if sig.bar_idx + 1 >= len(bars):
+        return False
+    fill_bar = bars[sig.bar_idx + 1]
+    entry_ts = fill_bar.timestamp
+    entry_price = fill_bar.open
+
+    bars_before_entry = bars[: sig.bar_idx + 1]  # inclusive of confirm bar; excludes fill bar
+    entry_bar_volume = float(fill_bar.volume)
+
+    vwap_at_entry = _vwap_at_bar(bars, sig.bar_idx)
+    or5_open, or5_close = (
+        _or5_open_close(bars)
+        if (spec.get("opening_bar_alignment") or {}).get("required", False)
+        else (None, None)
+    )
+
+    ok, reason = passes_pre_entry_filters(
+        spec=spec,
+        entry_ts=entry_ts,
+        entry_price=entry_price,
+        direction=sig.direction,
+        symbol=sym,
+        session_date=session_date,
+        vwap_at_entry=vwap_at_entry,
+        bars_before_entry=bars_before_entry,
+        entry_bar_volume=entry_bar_volume,
+        or5_open=or5_open,
+        or5_close=or5_close,
+    )
+    if not ok:
+        log.debug(
+            "[wave4-filter] %s %s %s %s rejected by %s",
+            arm.name, sym, session_date, sig.direction, reason,
+        )
+    return ok
 
 
 # ---------------------------------------------------------------------------
@@ -684,8 +871,27 @@ def _replay_to_exit(
     stop_price: float,
     target_price: Optional[float],
     direction: str,
+    abandon_rule: Optional[dict[str, Any]] = None,
+    entry_ts: Optional[datetime] = None,
 ) -> tuple[float, datetime, str]:
-    """Forward replay from entry_idx+1 onwards, return (exit_price, exit_ts, reason)."""
+    """Forward replay from entry_idx+1 onwards, return (exit_price, exit_ts, reason).
+
+    If ``abandon_rule`` is provided, evaluates the Wave-4 abandon@N rule
+    (PDH-Fade F1+abandon@10): at entry_ts + N minutes, if the trade is NOT
+    in profit, exit at that bar's close (adverse slippage capped at
+    ``exit_cap_dollars`` per share, per the forensic's $300 assumption).
+    """
+    abandon_check_ts: Optional[datetime] = None
+    abandon_done = False
+    if (
+        abandon_rule
+        and abandon_rule.get("enabled", True)
+        and entry_ts is not None
+    ):
+        mins = int(abandon_rule.get("minutes_after_entry", 0))
+        if mins > 0:
+            abandon_check_ts = entry_ts + timedelta(minutes=mins)
+
     for j in range(entry_idx + 1, len(bars)):
         b = bars[j]
         if b.timestamp.time() >= TRADE_WINDOW_END:
@@ -700,6 +906,30 @@ def _replay_to_exit(
                 return stop_price, b.timestamp, "stop"
             if target_price is not None and b.low <= target_price:
                 return target_price, b.timestamp, "target"
+
+        # Abandon@N rule.
+        if (
+            not abandon_done
+            and abandon_check_ts is not None
+            and b.timestamp >= abandon_check_ts
+        ):
+            abandon_done = True
+            require_profit = bool(abandon_rule.get("exit_if_not_profit", True))
+            in_profit = (
+                b.close > entry_price
+                if direction == "long"
+                else b.close < entry_price
+            )
+            if require_profit and not in_profit:
+                exit_px = b.close
+                cap = abandon_rule.get("exit_cap_dollars")
+                if cap is not None:
+                    cap_f = float(cap)
+                    if direction == "long":
+                        exit_px = max(exit_px, entry_price - cap_f)
+                    else:
+                        exit_px = min(exit_px, entry_price + cap_f)
+                return exit_px, b.timestamp, "abandon"
     last = bars[-1]
     return last.close, last.timestamp, "session_close"
 
@@ -728,41 +958,36 @@ def run_single_strategy_single_day(
         arm=arm,
         bars=bars,
         prior_bars=load_prior_day_bars(symbol, session_date)
-        if "pdh_pdl" in strategy_yaml else [],
+        if _yaml_needs_prior(Path(strategy_yaml).name) else [],
         sizing_mode=SizingMode(name="half_kelly"),
         equity=starting_equity,
     )
 
 
-def _execute_one(
+def _build_trade_from_signal(
     arm: StrategyArm,
     bars: list[Bar],
-    prior_bars: list[Bar],
+    signal: EntrySignal,
     sizing_mode: SizingMode,
     equity: float,
-) -> list[dict[str, Any]]:
-    """Run one strategy on one symbol-day; return trades list (0 or 1 trade)."""
-    yname = Path(arm.yaml_path).name
-    fn = SIGNAL_FUNCS.get(yname)
-    if fn is None:
-        return []
-    if "pdh_pdl" in yname:
-        signal = fn(bars, arm.spec, prior_bars)
-    else:
-        signal = fn(bars, arm.spec)
-    if signal is None:
-        return []
+    secondary_fill: bool = False,
+) -> Optional[dict[str, Any]]:
+    """Materialize a Trade dict from a pre-computed EntrySignal.
 
+    Returns None if the signal cannot be executed (no fill bar, bad stop,
+    zero qty, etc.). Extracted from _execute_one so the conflict-rule
+    machinery can reuse it for re-armed (secondary) signals.
+    """
     # Fill at next bar's open (no look-ahead)
     if signal.bar_idx + 1 >= len(bars):
-        return []
+        return None
     fill_bar = bars[signal.bar_idx + 1]
     entry_price = fill_bar.open
     entry_ts = fill_bar.timestamp
 
     stop_price, target_price = _compute_stop_and_target(signal, bars, arm.spec)
     if stop_price is None:
-        return []
+        return None
 
     # Recent bar volume for the sizer cap
     recent_vol = float(bars[signal.bar_idx].volume) if bars else 0.0
@@ -773,7 +998,7 @@ def _execute_one(
         recent_bar_volume=recent_vol,
     )
     if qty <= 0:
-        return []
+        return None
 
     exit_price, exit_ts, reason = _replay_to_exit(
         bars=bars,
@@ -782,6 +1007,8 @@ def _execute_one(
         stop_price=stop_price,
         target_price=target_price,
         direction=signal.direction,
+        abandon_rule=arm.spec.get("abandon_rule"),
+        entry_ts=entry_ts,
     )
 
     pnl = (exit_price - entry_price) * qty if signal.direction == "long" \
@@ -804,8 +1031,41 @@ def _execute_one(
         pnl=pnl,
         r_multiple=r_mult,
         exit_reason=reason,
+        secondary_fill=secondary_fill,
     )
-    return [trade.to_dict()]
+    return trade.to_dict()
+
+
+def _execute_one(
+    arm: StrategyArm,
+    bars: list[Bar],
+    prior_bars: list[Bar],
+    sizing_mode: SizingMode,
+    equity: float,
+) -> list[dict[str, Any]]:
+    """Run one strategy on one symbol-day; return trades list (0 or 1 trade)."""
+    yname = Path(arm.yaml_path).name
+    fn = SIGNAL_FUNCS.get(yname)
+    if fn is None:
+        return []
+    if _yaml_needs_prior(yname):
+        signal = fn(bars, arm.spec, prior_bars)
+    else:
+        signal = fn(bars, arm.spec)
+    if signal is None:
+        return []
+
+    trade = _build_trade_from_signal(
+        arm=arm,
+        bars=bars,
+        signal=signal,
+        sizing_mode=sizing_mode,
+        equity=equity,
+        secondary_fill=False,
+    )
+    if trade is None:
+        return []
+    return [trade]
 
 
 # ---------------------------------------------------------------------------
@@ -823,6 +1083,59 @@ class PortfolioConfig:
     end_date: Optional[date] = None    # inclusive
     # Per-symbol-per-day lock: first-in-time strategy wins
     per_day_per_symbol_lock: bool = True
+    # Conflict resolution rule:
+    #   'first_in_time'    — original Wave 3 behavior. The earliest-filling
+    #                        strategy claims (symbol, day); all later candidate
+    #                        signals are blocked and (optionally) logged.
+    #   'release_on_stop'  — NEW DEFAULT (Wave 4). When the locked trade exits
+    #                        via stop, the lock releases at exit_ts and any
+    #                        queued candidates with fill_ts > exit_ts re-arm
+    #                        in fill_ts order. First re-armed candidate wins
+    #                        the lock again. Trades from re-armed signals are
+    #                        tagged secondary_fill=True. Target / session_close
+    #                        exits do NOT release the lock.
+    # Per `cowork_reports/2026-05-18_pdh_breakout_forensic.md` §H8 the structural
+    # gain from this rule is +$427K on the Wave 3 trade set.
+    conflict_rule: str = "release_on_stop"
+    # When set, every lock-blocked signal is written to this CSV
+    # (columns: fill_ts, symbol, session_date, winning_strategy, blocked_strategy,
+    #  blocked_direction, blocked_intended_entry_price). For release_on_stop,
+    # only signals that are FINALLY blocked (no successful re-arm) are logged —
+    # secondary fills are not collisions, they're recoveries.
+    # Set to None to skip logging — see WB_PORTFOLIO_LOG_LOCK_COLLISIONS env var.
+    lock_collisions_log_path: Optional[str] = None
+
+
+def _build_session_returns_series(
+    portfolio_events: list[tuple[datetime, float]],
+    starting_equity: float,
+) -> list[float]:
+    """Compress portfolio_events into per-session returns.
+
+    Each `portfolio_events` entry is (exit_ts, post-trade equity). For
+    each unique session date we take the LAST equity mark of the day,
+    then compute (end_eq / prior_eq - 1). The first session's prior is
+    `starting_equity`. Days with no trades are omitted (no equity mark).
+
+    Returns
+    -------
+    list[float]
+        Per-session returns, oldest first. Empty list if no events.
+    """
+    if not portfolio_events:
+        return []
+    by_day: dict[date, float] = {}
+    for ts, eq in portfolio_events:
+        by_day[ts.date()] = eq  # last wins per day (events are ordered)
+    days = sorted(by_day.keys())
+    out: list[float] = []
+    prev = starting_equity
+    for d in days:
+        end_eq = by_day[d]
+        if prev > 0:
+            out.append((end_eq / prev) - 1.0)
+        prev = end_eq
+    return out
 
 
 def _enumerate_sessions(cfg: PortfolioConfig) -> list[date]:
@@ -865,6 +1178,7 @@ def run_portfolio_backtest(cfg: PortfolioConfig) -> dict[str, Any]:
     portfolio_events: list[tuple[datetime, float]] = []
 
     lock_collisions = 0
+    lock_collision_events: list[dict[str, Any]] = []
 
     for d in sessions:
         # Preload per-symbol bars + prior_bars for this day
@@ -887,7 +1201,7 @@ def run_portfolio_backtest(cfg: PortfolioConfig) -> dict[str, Any]:
             if fn is None:
                 continue
             for sym, bars in bars_by_sym.items():
-                if "pdh_pdl" in yname:
+                if _yaml_needs_prior(yname):
                     sig = fn(bars, arm.spec, prior_by_sym.get(sym, []))
                 else:
                     sig = fn(bars, arm.spec)
@@ -897,34 +1211,127 @@ def run_portfolio_backtest(cfg: PortfolioConfig) -> dict[str, Any]:
                 if sig.bar_idx + 1 >= len(bars):
                     continue
                 fill_ts = bars[sig.bar_idx + 1].timestamp
+                # ---- Wave-4 Phase B1: apply YAML filter knobs at signal-generation time ----
+                if not _signal_passes_wave4_filters(
+                    arm=arm, sig=sig, sym=sym, bars=bars, session_date=d
+                ):
+                    continue
                 candidates.append((fill_ts, arm, sym, sig))
 
         # Sort by fill time so first-in-time wins the per-day-per-symbol lock
         candidates.sort(key=lambda x: x[0])
 
-        used_keys: set[tuple[str, date]] = set()
+        # Per-(symbol, day) lock state.
+        #   lock_holder[key]     — name of strategy currently holding the lock
+        #   lock_released_at[key] — exit_ts of the locked trade IF it exited via
+        #                           'stop' (so the lock can release). Absent if
+        #                           the trade is still notionally open, or if it
+        #                           exited via target/session_close (lock stays
+        #                           forever for that day).
+        lock_holder: dict[tuple[str, date], str] = {}
+        lock_released_at: dict[tuple[str, date], datetime] = {}
+
+        def _record_trade(arm_name: str, trade: dict[str, Any]) -> None:
+            """Persist a filled trade and update equity accounting."""
+            nonlocal portfolio_equity
+            trades_by_strategy[arm_name].append(trade)
+            equity_per_strategy[arm_name] += trade["pnl"]
+            portfolio_equity += trade["pnl"]
+            portfolio_events.append(
+                (pd.Timestamp(trade["exit_ts"]).to_pydatetime(), portfolio_equity)
+            )
+
         for fill_ts, arm, sym, sig in candidates:
             key = (sym, d)
-            if cfg.per_day_per_symbol_lock and key in used_keys:
-                lock_collisions += 1
+            if cfg.per_day_per_symbol_lock and key in lock_holder:
+                # Determine whether the existing lock has been released by a
+                # prior stop. Only release_on_stop ever sets lock_released_at.
+                released_ts = lock_released_at.get(key)
+                lock_active = (released_ts is None) or (fill_ts <= released_ts)
+                if lock_active:
+                    # FINAL block: this signal would have fired but the lock
+                    # was held at its fill_ts. Count + log it.
+                    lock_collisions += 1
+                    if cfg.lock_collisions_log_path:
+                        lock_collision_events.append({
+                            "fill_ts": fill_ts,
+                            "symbol": sym,
+                            "session_date": d.isoformat(),
+                            "winning_strategy": lock_holder[key],
+                            "blocked_strategy": arm.name,
+                            "blocked_direction": getattr(sig, "direction", ""),
+                            "blocked_intended_entry_price": getattr(
+                                sig, "entry_price", float("nan")
+                            ),
+                        })
+                    continue
+                # Lock has been released — this is a secondary fill candidate.
+                # Try to materialize the trade. If the signal can't execute
+                # (qty=0, bad stop, etc.) it doesn't claim the lock either.
+                bars = bars_by_sym[sym]
+                arm_equity = equity_per_strategy[arm.name]
+                trade = _build_trade_from_signal(
+                    arm=arm,
+                    bars=bars,
+                    signal=sig,
+                    sizing_mode=cfg.sizing_mode,
+                    equity=arm_equity,
+                    secondary_fill=True,
+                )
+                if trade is None:
+                    continue
+                # Lock transfers to this strategy. Determine new release ts.
+                lock_holder[key] = arm.name
+                if cfg.conflict_rule == "release_on_stop" and trade["exit_reason"] == "stop":
+                    lock_released_at[key] = pd.Timestamp(trade["exit_ts"]).to_pydatetime()
+                else:
+                    lock_released_at.pop(key, None)
+                _record_trade(arm.name, trade)
                 continue
-            used_keys.add(key)
+
+            # No prior lock holder — first arrival on this (symbol, day).
             bars = bars_by_sym[sym]
             arm_equity = equity_per_strategy[arm.name]
-            trades = _execute_one(
+            trade = _build_trade_from_signal(
                 arm=arm,
                 bars=bars,
-                prior_bars=prior_by_sym.get(sym, []),
+                signal=sig,
                 sizing_mode=cfg.sizing_mode,
                 equity=arm_equity,
+                secondary_fill=False,
             )
-            for t in trades:
-                trades_by_strategy[arm.name].append(t)
-                equity_per_strategy[arm.name] += t["pnl"]
-                portfolio_equity += t["pnl"]
-                portfolio_events.append(
-                    (pd.Timestamp(t["exit_ts"]).to_pydatetime(), portfolio_equity)
-                )
+            if trade is None:
+                continue
+            lock_holder[key] = arm.name
+            if cfg.conflict_rule == "release_on_stop" and trade["exit_reason"] == "stop":
+                lock_released_at[key] = pd.Timestamp(trade["exit_ts"]).to_pydatetime()
+            _record_trade(arm.name, trade)
+
+        # Wave-4 Phase C1: per-session tiered-sizer transition hook.
+        # Called once per session AFTER all trades for the day have settled.
+        # The portfolio_returns list is the per-session return relative to
+        # prior portfolio equity — used by the rolling-Sharpe gates.
+        if cfg.sizing_mode.name == "tiered" and cfg.sizing_mode.tiered_sizer is not None:
+            # Build a returns series from portfolio_events seen so far.
+            # We use end-of-session marks: the last portfolio_equity for each
+            # past session date. This is approximate but matches the rolling-
+            # Sharpe-over-session-returns semantics in SIZING_SCHEDULE §3.
+            session_returns = _build_session_returns_series(
+                portfolio_events, cfg.starting_equity
+            )
+            cfg.sizing_mode.tiered_sizer.on_session_close(
+                session_date=d,
+                equity=portfolio_equity,
+                portfolio_returns=session_returns,
+            )
+
+    # Write lock-collision log if requested (Wave-4 forensic-response §3.2)
+    if cfg.lock_collisions_log_path and lock_collision_events:
+        out_path = Path(cfg.lock_collisions_log_path)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(lock_collision_events).to_csv(out_path, index=False)
+        log.info("[portfolio] wrote %d lock-collision events → %s",
+                 len(lock_collision_events), out_path)
 
     # Build the equity curve dataframe — per strategy + portfolio
     return {
@@ -932,6 +1339,7 @@ def run_portfolio_backtest(cfg: PortfolioConfig) -> dict[str, Any]:
         "equity_per_strategy": equity_per_strategy,
         "portfolio_events": portfolio_events,
         "lock_collisions": lock_collisions,
+        "lock_collision_events": lock_collision_events,
         "sessions": sessions,
     }
 
@@ -946,7 +1354,11 @@ def _cli() -> None:
     p = argparse.ArgumentParser(description="Wave 3 multi-strategy portfolio backtest")
     p.add_argument("--start", type=str, default="2020-01-01")
     p.add_argument("--end", type=str, default="2024-12-31")
-    p.add_argument("--mode", choices=["half_kelly", "fixed_dollar"], default="half_kelly")
+    p.add_argument(
+        "--mode",
+        choices=["half_kelly", "fixed_dollar", "tiered"],
+        default=os.environ.get("WB_SIZING_MODE", "half_kelly"),
+    )
     p.add_argument("--out", type=str, default="backtest_archive/wave3_portfolio")
     p.add_argument("--strategies", type=str, nargs="*", default=None)
     args = p.parse_args()
@@ -961,15 +1373,47 @@ def _cli() -> None:
         str(REPO / "strategies" / "round_number.yaml"),
     ]
 
-    sizing = SizingMode(name=args.mode)
+    if args.mode == "tiered":
+        # Wave 4 Phase C1: env-var driven knobs
+        initial_tier = int(os.environ.get("WB_TIER_INITIAL", "1"))
+        tier_lock = os.environ.get("WB_TIER_LOCK", "0") == "1"
+        auto_advance = os.environ.get("WB_TIER_AUTO_ADVANCE", "1") == "1"
+        state_path_env = os.environ.get("WB_TIER_STATE_PATH")
+        state_path = Path(state_path_env) if state_path_env else None
+        sizing = SizingMode.tiered(
+            initial_tier=initial_tier,
+            tier_lock=tier_lock,
+            auto_advance=auto_advance,
+            state_path=state_path,
+        )
+        log.info(
+            "[portfolio] tiered sizing: initial_tier=%d tier_lock=%s auto_advance=%s",
+            initial_tier, tier_lock, auto_advance,
+        )
+    else:
+        sizing = SizingMode(name=args.mode)
+    out_dir = REPO / args.out
+    out_dir.mkdir(parents=True, exist_ok=True)
+    # WB_PORTFOLIO_LOG_LOCK_COLLISIONS=1 (default) writes lock_collisions.csv per run
+    log_lock = os.environ.get("WB_PORTFOLIO_LOG_LOCK_COLLISIONS", "1") == "1"
+    lock_log_path = str(out_dir / "lock_collisions.csv") if log_lock else None
+    # WB_PORTFOLIO_CONFLICT_RULE — 'release_on_stop' (default, recovers $427K)
+    #                              or 'first_in_time' (Wave 3 baseline behavior).
+    conflict_rule = os.environ.get(
+        "WB_PORTFOLIO_CONFLICT_RULE", "release_on_stop"
+    ).strip().lower()
+    if conflict_rule not in ("first_in_time", "release_on_stop"):
+        log.warning("[portfolio] unknown WB_PORTFOLIO_CONFLICT_RULE=%r; "
+                    "falling back to release_on_stop", conflict_rule)
+        conflict_rule = "release_on_stop"
     cfg = PortfolioConfig(
         sizing_mode=sizing,
         strategy_yamls=tuple(yamls),
         start_date=pd.Timestamp(args.start).date(),
         end_date=pd.Timestamp(args.end).date(),
+        lock_collisions_log_path=lock_log_path,
+        conflict_rule=conflict_rule,
     )
-    out_dir = REPO / args.out
-    out_dir.mkdir(parents=True, exist_ok=True)
     log.info("starting sweep -> %s", out_dir)
 
     result = run_portfolio_backtest(cfg)
@@ -987,13 +1431,19 @@ def _cli() -> None:
         eq_df = pd.DataFrame(result["portfolio_events"], columns=["ts", "equity"])
         eq_df.to_parquet(out_dir / f"portfolio_equity_{args.mode}.parquet", index=False)
 
+    secondary_counts = {
+        s: sum(1 for t in trades if t.get("secondary_fill"))
+        for s, trades in result["trades_by_strategy"].items()
+    }
     summary = {
         "mode": args.mode,
         "start": args.start,
         "end": args.end,
+        "conflict_rule": conflict_rule,
         "sessions": len(result["sessions"]),
         "lock_collisions": result["lock_collisions"],
         "trade_counts": {s: len(t) for s, t in result["trades_by_strategy"].items()},
+        "secondary_fill_counts": secondary_counts,
         "equity_per_strategy": result["equity_per_strategy"],
     }
     (out_dir / f"summary_{args.mode}.json").write_text(json.dumps(summary, indent=2))

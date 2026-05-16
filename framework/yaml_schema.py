@@ -204,3 +204,143 @@ def validate_strategy_spec(spec: Any) -> None:
 
     if "vix_size_multiplier" in spec:
         _require_type(spec["vix_size_multiplier"], dict, "$.vix_size_multiplier")
+
+    # ---- Wave-4 filter knobs (Phase B1, per DIRECTIVE_2026-05-17_GO_FOR_BUILD) ----
+    # All optional. Each block is shape-checked so a typo surfaces early; the
+    # backtest evaluator and live filter module consume them.
+    _validate_filter_extensions(spec)
+
+
+# ---- HH:MM:SS regex (for entry_time_window second-precision fields) ----
+_HHMMSS_RE = re.compile(r"^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$")
+
+
+def _validate_filter_extensions(spec: dict[str, Any]) -> None:
+    """Validate the Wave-4 optional filter blocks.
+
+    Knobs (each optional):
+      - entry_time_window: {start: HH:MM:SS, end: HH:MM:SS, tz: str}
+      - abandon_rule: {enabled?: bool, minutes_after_entry: int>0,
+                       exit_if_not_profit: bool, exit_cap_dollars: number>=0,
+                       exit_method?: str}
+      - tier_filter: {enabled?: bool, min_price: number>=0, max_price?: number>=0}
+      - opening_bar_alignment: {required: bool, allow_doji?: bool}
+      - skip_mondays: bool
+      - symbol_blacklist: list[str]
+      - require_vwap_alignment: bool
+      - pre_entry_consolidation_max_pct: number>=0
+      - volume_min_multiple: number>=0
+    """
+    if "entry_time_window" in spec:
+        etw = spec["entry_time_window"]
+        _require_type(etw, dict, "$.entry_time_window")
+        _require_keys(etw, ("start", "end"), "$.entry_time_window")
+        for key in ("start", "end"):
+            v = etw[key]
+            _require_type(v, str, f"$.entry_time_window.{key}")
+            _require(
+                bool(_HHMM_RE.match(v) or _HHMMSS_RE.match(v)),
+                f"entry_time_window.{key} must be HH:MM or HH:MM:SS, got '{v}'",
+                f"$.entry_time_window.{key}",
+            )
+        if "tz" in etw:
+            _require_type(etw["tz"], str, "$.entry_time_window.tz")
+
+    if "abandon_rule" in spec:
+        ar = spec["abandon_rule"]
+        _require_type(ar, dict, "$.abandon_rule")
+        if "enabled" in ar:
+            _require_type(ar["enabled"], bool, "$.abandon_rule.enabled")
+        _require_keys(ar, ("minutes_after_entry",), "$.abandon_rule")
+        _require_type(
+            ar["minutes_after_entry"], int, "$.abandon_rule.minutes_after_entry"
+        )
+        _require(
+            ar["minutes_after_entry"] > 0,
+            "minutes_after_entry must be > 0",
+            "$.abandon_rule.minutes_after_entry",
+        )
+        if "exit_if_not_profit" in ar:
+            _require_type(
+                ar["exit_if_not_profit"], bool, "$.abandon_rule.exit_if_not_profit"
+            )
+        if "exit_cap_dollars" in ar:
+            _require_type(
+                ar["exit_cap_dollars"],
+                (int, float),
+                "$.abandon_rule.exit_cap_dollars",
+            )
+            _require(
+                ar["exit_cap_dollars"] >= 0,
+                "exit_cap_dollars must be >= 0",
+                "$.abandon_rule.exit_cap_dollars",
+            )
+        if "exit_method" in ar:
+            _require_type(ar["exit_method"], str, "$.abandon_rule.exit_method")
+
+    if "tier_filter" in spec:
+        tf = spec["tier_filter"]
+        _require_type(tf, dict, "$.tier_filter")
+        if "enabled" in tf:
+            _require_type(tf["enabled"], bool, "$.tier_filter.enabled")
+        _require_keys(tf, ("min_price",), "$.tier_filter")
+        _require_type(tf["min_price"], (int, float), "$.tier_filter.min_price")
+        _require(
+            tf["min_price"] >= 0,
+            "tier_filter.min_price must be >= 0",
+            "$.tier_filter.min_price",
+        )
+        if "max_price" in tf:
+            _require_type(tf["max_price"], (int, float), "$.tier_filter.max_price")
+            _require(
+                tf["max_price"] >= 0,
+                "tier_filter.max_price must be >= 0",
+                "$.tier_filter.max_price",
+            )
+
+    if "opening_bar_alignment" in spec:
+        oba = spec["opening_bar_alignment"]
+        _require_type(oba, dict, "$.opening_bar_alignment")
+        if "required" in oba:
+            _require_type(oba["required"], bool, "$.opening_bar_alignment.required")
+        if "allow_doji" in oba:
+            _require_type(
+                oba["allow_doji"], bool, "$.opening_bar_alignment.allow_doji"
+            )
+
+    if "skip_mondays" in spec:
+        _require_type(spec["skip_mondays"], bool, "$.skip_mondays")
+
+    if "symbol_blacklist" in spec:
+        bl = spec["symbol_blacklist"]
+        _require_type(bl, list, "$.symbol_blacklist")
+        for i, sym in enumerate(bl):
+            _require_type(sym, str, f"$.symbol_blacklist[{i}]")
+            _require(
+                len(sym) > 0,
+                "symbol_blacklist entries must be non-empty",
+                f"$.symbol_blacklist[{i}]",
+            )
+
+    if "require_vwap_alignment" in spec:
+        _require_type(
+            spec["require_vwap_alignment"], bool, "$.require_vwap_alignment"
+        )
+
+    if "pre_entry_consolidation_max_pct" in spec:
+        v = spec["pre_entry_consolidation_max_pct"]
+        _require_type(v, (int, float), "$.pre_entry_consolidation_max_pct")
+        _require(
+            v >= 0,
+            "pre_entry_consolidation_max_pct must be >= 0",
+            "$.pre_entry_consolidation_max_pct",
+        )
+
+    if "volume_min_multiple" in spec:
+        v = spec["volume_min_multiple"]
+        _require_type(v, (int, float), "$.volume_min_multiple")
+        _require(
+            v >= 0,
+            "volume_min_multiple must be >= 0",
+            "$.volume_min_multiple",
+        )

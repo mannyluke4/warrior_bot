@@ -1,0 +1,113 @@
+# ORB-5min Tier-Filtered ($300+ AND or5_aligned, Monday skip)
+#
+# Phase B1 deliverable per DIRECTIVE_2026-05-17_GO_FOR_BUILD.md.
+# Inherits base orb_5min.yaml and adds the three filters discovered in
+# cowork_reports/2026-05-18_orb_forensic.md:
+#
+#   1. tier_filter   — only accept entries when entry_price ≥ $300
+#                      (Sharpe 1.85 alone, OOS 1.38; structural edge concentration
+#                      in mega-caps which produce clean ORB levels)
+#
+#   2. opening_bar_alignment — require or5_align ∈ {aligned, doji}
+#                      (long+green or short+red; doji days pass).
+#                      Tier+aligned: Sharpe 1.64 full, OOS 2.10, MaxDD 13.0%.
+#                      Test Sharpe > Train Sharpe — no overfit signature.
+#
+#   3. skip_mondays  — Mondays are catastrophic on this universe
+#                      (Sharpe -0.83, P&L -$37,762 across 2,947 trades,
+#                      negative every year 2022-2024).
+#                      Default also enforced via WB_FRAMEWORK_SKIP_MONDAYS=1
+#                      (per Decision 3 in directive).
+#
+# The catalyst-day filter (gap>2% AND or5_rvol>2×) — Zarattini paper spec —
+# was REJECTED by the forensic: Sharpe 0.77 vs 0.82 baseline; -1.68 with the
+# full paper overlay. The paper's edge does not transfer to this static
+# 27-symbol universe.
+#
+# VIX overlay is active via WB_VIX_OVERLAY=1 + VIX 25/22 thresholds (per
+# directive Decision 4) — applied at portfolio level, not in this YAML.
+#
+# Result on 9,790-trade dataset (filtered to 1,433 trades):
+#   Sharpe 0.82 → 1.64
+#   MaxDD -38.7% → -13.0%
+#   Net P&L $128K → $106K
+#   OOS 2023-2024 Sharpe: 2.10
+#   Win rate 46.4% → 50.7%
+#   Avg R 0.013 → 0.074 (+5.7x)
+#   Per-quarter concentration 39.9% → 20.4% (well under 40% gate)
+#
+# Status: PROPOSED for Wave 4 paper deployment.
+# Sources:
+#   cowork_reports/2026-05-18_orb_forensic.md — full forensic report
+#   DIRECTIVE_2026-05-17_GO_FOR_BUILD.md Phase B1
+#
+# Filter knobs in env-var form (live deployment):
+#   WB_ORB_TIER_GATE_ENABLED=1
+#   WB_ORB_TIER_ALLOWLIST="$300+"
+#   WB_ORB_ALIGN_GATE_ENABLED=1
+#   WB_ORB_ALIGN_INCLUDE_DOJI=1
+#   WB_FRAMEWORK_SKIP_MONDAYS=1
+
+name: "ORB-Aligned-300Plus-MonSkip"
+enabled: true
+status: candidate          # Wave 4 paper candidate; not yet production
+inherits_from: orb_5min.yaml
+
+level_source:
+  type: opening_range
+  params:
+    minutes: 5
+    use_5min_direction_bias: true
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001        # within 0.1% of ORH/ORL
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 2.0
+    min_breakout_pct: 0.0002
+    require_close_beyond: true
+
+stop_rule:
+  type: opposite_range
+
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0
+    fallback: session_close
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 5
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# Filter 1: price-tier gate at entry-bar close. Only entries where the
+# fill-bar price is >= $300 are eligible.
+tier_filter:
+  enabled: true
+  min_price: 300.0
+  # Tested alternative (uncomment for $200-300 inclusion — better trade
+  # count, weaker OOS):
+  # min_price: 200.0
+
+# Filter 2: opening-range direction alignment. Long entries require the
+# 5-min OR bar to be green (or a doji); short entries require red (or doji).
+# Doji = 5-min body < 0.05%.
+opening_bar_alignment:
+  required: true
+  allow_doji: true
+
+# Filter 3: skip Monday entries (default per directive Decision 3).
+# Also redundantly enforced by WB_FRAMEWORK_SKIP_MONDAYS=1.
+skip_mondays: true
+
+vix_size_multiplier:
+  use_vix: false                 # VIX overlay is global (WB_VIX_OVERLAY=1)

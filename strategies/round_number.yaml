@@ -1,5 +1,13 @@
 # Round Number — whole-dollar / $5 / $10 level-reaction strategy.
 #
+# STATUS: RETIRED 2026-05-16
+# Reason: forensic 5 (cowork_reports/2026-05-18_round_number_forensic.md) — the
+# "Q4-2020 57% concentration" decomposed to 5 outlier trades (AAPL 2020-12-15
+# alone carried 54% of the quarter). No bootstrap-stable filter exists across
+# year boundaries. H4 (options-anchor proxy) inverted. Do not load.
+# Reopen only if real options-OI data + structural mechanism hypothesis.
+status: retired
+
 # Per DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent I and
 # DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.4.
 #

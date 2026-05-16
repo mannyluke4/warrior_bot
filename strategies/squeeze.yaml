@@ -1,0 +1,149 @@
+# Squeeze — small-cap gapper breakout strategy (framework wrapper).
+#
+# Thesis: small-cap gappers that hold above VWAP / PM_HIGH / PDH and fire
+# a high-volume green bar above prior consolidation routinely run 50-200%
+# in the first hour of RTH. The strategy is mechanical: detect volume
+# explosion + body magnitude, prime, arm on level break, enter on trigger,
+# exit via the tiered dollar-loss → hard-stop → 2R partial → runner trail
+# chain.
+#
+# This YAML wires squeeze in as a framework-compatible plugin. The actual
+# detection logic is delegated 100% to `squeeze_detector_v2.SqueezeDetectorV2`
+# via the `framework.level_sources.squeeze.SqueezeSource` wrapper, so output
+# is bit-identical to the live squeeze code path (per
+# DIRECTIVE_2026-05-17_GO_FOR_BUILD §D1).
+#
+# Source: DIRECTIVE_2026-05-17_GO_FOR_BUILD.md Phase D1
+#         DIRECTIVE_2026-05-17_COMBINED_PORTFOLIO_BACKTEST.md §2.1 Path A
+#         CLAUDE.md "Current Live Config" (X01 tuning, 2026-04-08)
+# Companions: framework/level_sources/squeeze.py
+#             framework/confirmations/squeeze_breakout.py
+
+name: "Squeeze"
+enabled: true
+
+level_source:
+  type: squeeze
+  params:
+    # The wrapper auto-derives PM_HIGH from intraday history (04:00-09:29 ET
+    # bars) and PDH from prior RTH. The combined backtest harness sets
+    # `gap_pct` on the wrapper from its scanner output.
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    # Squeeze's arrival is the level-break itself (PM_HIGH / whole-dollar /
+    # PDH crossed by bar_high or tick price); the framework's ArrivalDetector
+    # is set tight so it fires only on true touches. The wrapper does its
+    # own level-break detection internally; this value exists for the
+    # framework's bookkeeping only.
+    proximity_pct: 0.001
+
+confirmation_rule:
+  type: squeeze_breakout
+  params:
+    # X01 tuning (2026-04-08 deployment, see CLAUDE.md).
+    min_vol_mult: 2.5       # WB_SQ_VOL_MULT
+    prime_bars: 4           # WB_SQ_PRIME_BARS
+    min_body_pct: 2.0       # WB_SQ_MIN_BODY_PCT
+    min_bar_vol: 50000      # WB_SQ_MIN_BAR_VOL
+
+# Stop is computed inside the wrapped detector (lowest low of the
+# consolidation window, with dynamic R cap + parabolic-mode override).
+# The framework stop-rule slot is set to a no-op placeholder so YAML
+# validation passes; actual stop comes off `ArmedTrade.stop_low`.
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.00        # detector emits the stop directly; pad unused
+
+# Target is also detector-managed: 2R partial then runner trail. The
+# framework target-rule slot is wired to the R-multiple primary so
+# attribution sees the 2R "headline" target; the actual exit is the
+# detector's `check_exit()` cascade.
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    fallback: r_multiple
+    r_multiple: 1.5         # WB_SQ_TARGET_R (X01 tuning)
+
+# Risk: 3.5% of equity per X01 tuning. TieredSizer overrides this with
+# tier-aware dollar caps; this is the upper bound when no tier is active.
+risk_per_trade_pct: 3.5
+
+# Squeeze runs at most one active position per symbol per day — the
+# detector's `_attempts` counter caps re-entries at WB_SQ_MAX_ATTEMPTS=5,
+# but that's an *intra-day re-entry cap*, not a concurrent-positions cap.
+# Cross-symbol concurrency lives at the portfolio level (combined harness).
+max_concurrent_positions: 3
+
+# Squeeze's golden hour: 07:00-12:00 ET per CLAUDE.md backtest convention.
+# Scanner checkpoints in `scanner_sim.py` favor 08:00-08:30 (71% WR).
+trade_windows:
+  - ["07:00", "12:00"]
+
+vix_size_multiplier:
+  # Squeeze edge does not correlate with VIX regime the way mean-reversion
+  # framework strategies do — leave the VIX overlay OFF for this slot.
+  use_vix: false
+
+# ---------------------------------------------------------------------------
+# Universe spec — small-cap gapper criteria (consumed by combined backtest)
+# ---------------------------------------------------------------------------
+# This block is NOT part of the standard framework schema (which uses
+# `framework.universe.UniverseConfig` for its $10-$300 universe). The
+# combined portfolio backtest harness (Phase D3) reads this block to
+# build the squeeze-side daily universe via the same scanner logic the
+# live `live_scanner.py` / `ibkr_scanner.py` use.
+#
+# All thresholds mirror the live `.env` (CLAUDE.md "Current Live Config")
+# so backtest universes match what the live bot would have seen.
+universe_spec:
+  # Price band: small-caps with enough range to move ~100% intraday.
+  price_min: 2.0            # WB_MIN_PRICE
+  price_max: 30.0            # 2026-05 expansion (was WB_MAX_PRICE=20)
+
+  # Premarket gap: >5% baseline; live config is +10% but historical
+  # backtests use 5% to admit the broader candidate pool the V1 megatest
+  # used.
+  premarket_gap_pct_min: 5.0  # backtest baseline; WB_MIN_GAP_PCT=10 for live
+  premarket_gap_pct_max: 500.0  # WB_MAX_GAP_PCT
+
+  # Relative volume: 2× the symbol's 20-day baseline (rolling).
+  relative_volume_min: 2.0  # WB_MIN_REL_VOLUME
+
+  # Float ceiling: small-cap definition. Live config WB_MAX_FLOAT=15M;
+  # combined backtest uses 30M to match the squeeze migration directive's
+  # spec ("float <30M"). The wider band catches the AMIX-style >10M
+  # winners (per CLAUDE.md note).
+  float_max_millions: 30.0   # millions of shares outstanding (free float)
+
+  # Minimum premarket dollar volume — filters out symbols with no
+  # real participation despite the gap.
+  premarket_volume_min: 50000  # WB_MIN_PM_VOLUME (shares)
+
+  # Excluded sectors: none. Squeeze trades whatever gaps + has volume.
+  sector_exclusions: []
+
+  # Data source for backfill: tick_cache/ first, Databento fallback.
+  # The combined backtest passes the tick path; the audit (Phase D2)
+  # verifies coverage.
+  data_source: tick_cache_databento
+
+  # Scanner checkpoint cadence — when in the session candidates can be
+  # discovered. Matches `scanner_sim.py` 2026-03-24 schedule.
+  scanner_checkpoints_et:
+    - "07:00"
+    - "07:15"
+    - "07:30"
+    - "07:45"
+    - "08:00"
+    - "08:10"
+    - "08:15"
+    - "08:30"
+    - "08:45"
+    - "09:00"
+    - "09:15"
+    - "09:30"

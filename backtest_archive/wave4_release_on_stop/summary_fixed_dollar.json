@@ -1,0 +1,29 @@
+{
+  "mode": "fixed_dollar",
+  "start": "2020-01-01",
+  "end": "2024-12-31",
+  "conflict_rule": "release_on_stop",
+  "sessions": 1307,
+  "lock_collisions": 23832,
+  "trade_counts": {
+    "ORB-5min": 15559,
+    "VWAP-Mean-Reversion": 4992,
+    "PDH-PDL-Fade": 12067,
+    "PDH-PDL-Breakout": 8397,
+    "Round-Number": 2366
+  },
+  "secondary_fill_counts": {
+    "ORB-5min": 5484,
+    "VWAP-Mean-Reversion": 1778,
+    "PDH-PDL-Fade": 1854,
+    "PDH-PDL-Breakout": 4437,
+    "Round-Number": 879
+  },
+  "equity_per_strategy": {
+    "ORB-5min": 255551.8349999998,
+    "VWAP-Mean-Reversion": 94734.75727704809,
+    "PDH-PDL-Fade": 670460.6399999902,
+    "PDH-PDL-Breakout": 210316.91000000093,
+    "Round-Number": 119224.61500000795
+  }
+}

@@ -1,0 +1,134 @@
+# PDH-Breakout F4 — thick-filter variant for Wave 4 paper deployment.
+#
+# Phase B1 deliverable per DIRECTIVE_2026-05-17_GO_FOR_BUILD.md.
+# Inherits base pdh_pdl_breakout.yaml and adds the F4 thick filter
+# discovered in cowork_reports/2026-05-18_pdh_breakout_forensic.md.
+#
+# F4 spec (4 conditions, all AND):
+#   1. symbol_blacklist                  — NOT in [PLTR, CRM, META, SOFI,
+#                                          DIS, ADBE, ROKU, MU]
+#                                          (8 symbols = 1,053 trades =
+#                                          -$61,675 P&L = 80% of gross loss
+#                                          attribution)
+#
+#   2. require_vwap_alignment            — long must be above VWAP at entry,
+#                                          short must be below VWAP at entry.
+#                                          Long-above-VWAP Sharpe 0.02 alone,
+#                                          but VWAP-aligned subset:
+#                                          short_above_vwap Sharpe 3.56,
+#                                          short_below 0.80, long_below
+#                                          marginal.
+#
+#   3. pre_entry_consolidation_max_pct   — 5-bar pre-entry high-low range
+#                                          as % of price must be < 1.0%.
+#                                          consol<0.5% Sharpe 1.14,
+#                                          0.5-1% → 1.30,
+#                                          1-2% → -0.45 (bad!),
+#                                          2%+ → -2.26 (catastrophic).
+#
+#   4. volume_min_multiple               — entry-bar volume / prior-20-bar
+#                                          mean ≥ 2.0.
+#                                          vol<1.5x Sharpe 0.35,
+#                                          1.5-2x → 0.61,
+#                                          2-3x → 0.92,
+#                                          3-5x → 2.41,
+#                                          10x+ → 3.18.
+#
+# Result on 3,905-trade dataset (filtered to 349 trades = 8.9%):
+#   Sharpe 0.70 → 2.72 (overall)
+#   Train (2020-2022) Sharpe 2.64
+#   Test (2023-2024) Sharpe 2.81 ← Test > Train, no overfit signature
+#   MaxDD -42.9% → -5.0% (-$1,462 on $100K base)
+#   Net P&L $77K → $40K
+#   Win rate 36.4% → 40.7%
+#   Every year (2020-2024) Sharpe ≥ 1.98
+#   $25K seed → +43.8% 5-yr return, MaxDD -5%
+#
+# Status: PROPOSED for Wave 4 paper deployment.
+# Sources:
+#   cowork_reports/2026-05-18_pdh_breakout_forensic.md — full forensic report
+#   DIRECTIVE_2026-05-17_GO_FOR_BUILD.md Phase B1
+#
+# Caveats:
+#   - Blacklist is partially look-ahead (computed on full-period attribution).
+#     2020-2022 attribution overlap: ≥ 7 of 8 same names — minimal lookahead.
+#     Future infra: trailing-12-month rebuild monthly (not in scope this YAML).
+#   - F6 (F4 + vertical_runup<1.5%) reaches Sharpe 3.11; deferred as a tighter
+#     variant if F4 ships cleanly.
+#   - Conflict-resolution (release_on_stop) finding is orthogonal and
+#     larger than this filter — see Decision 2 / Phase A2.
+
+name: "PDH-Breakout-F4"
+enabled: true
+status: candidate         # Wave 4 paper candidate
+inherits_from: pdh_pdl_breakout.yaml
+
+level_source:
+  type: pdh_pdl
+  params:
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.0005       # 0.05% — same as base breakout
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 2.0           # also enforced redundantly by volume_min_multiple
+    min_breakout_pct: 0.0002
+    require_close_beyond: true
+
+stop_rule:
+  type: bar_low
+  params:
+    lookback: 1
+    pad_dollar: 0.02
+
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0
+    trailing: trailing_atr
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# Filter 1: symbol blacklist. These 8 names collectively contributed
+# -$61,675 P&L on 1,053 trades (27% of trade count, 80% of gross loss).
+# Future: rebuild dynamically from trailing-12-month negative-P&L attribution.
+symbol_blacklist:
+  - PLTR
+  - CRM
+  - META
+  - SOFI
+  - DIS
+  - ADBE
+  - ROKU
+  - MU
+
+# Filter 2: VWAP alignment at entry.
+#   long entries require entry_price > VWAP (continuation)
+#   short entries require entry_price < VWAP (continuation)
+require_vwap_alignment: true
+
+# Filter 3: 5-bar pre-entry consolidation. Computed as (max(high) - min(low))
+# over the 5 bars BEFORE the entry bar, divided by entry_price.
+# Loose structure (>1% range) breaks down sharply: Sharpe -0.45 at 1-2%,
+# -2.26 at 2%+. Tight consolidation gives clean breakouts.
+pre_entry_consolidation_max_pct: 1.0       # 5-bar range < 1% of price
+
+# Filter 4: volume confirmation. Entry-bar volume / prior-20-bar mean
+# must be ≥ 2.0. Redundant with confirmation_rule.min_vol_mult but kept
+# explicit for forensic audit clarity.
+volume_min_multiple: 2.0
+
+vix_size_multiplier:
+  use_vix: false

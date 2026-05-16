@@ -1,5 +1,12 @@
 # strategies/vwap_mean_reversion.yaml
 #
+# STATUS: RETIRED 2026-05-16
+# Reason: forensic 4 (cowork_reports/2026-05-18_vwap_mr_forensic.md) — all 3,106
+# trades were shorts on mega-cap secular-drift tech. Mean-reverting into structural
+# drift is systematic loss by construction. Walk-forward OOS Sharpe -1.51.
+# Wave 2 synthetic +35.74 was a GBM-OU artifact. Do not load this strategy.
+status: retired
+#
 # VWAP Mean Reversion — Phase 1 strategy (Wave 2, Agent G).
 #
 # Source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.2 (Sub-B)

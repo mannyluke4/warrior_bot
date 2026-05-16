@@ -1,0 +1,94 @@
+# Tiered sizing ladder for the Healthy Fluctuation Framework.
+#
+# Source: DIRECTIVE_2026-05-17_SIZING_SCHEDULE.md §3 (the 9-tier ladder).
+# Loaded by `framework.sizing.TieredSizer`.
+#
+# Each tier defines:
+#   - equity_floor    : minimum combined-portfolio equity required to OCCUPY
+#                       this tier (used for advancement gate #1)
+#   - risk_per_signal : dollar risk per signal (the sizer's compute_risk output)
+#   - pct_per_trade   : informational — risk as % of equity at the floor
+#                       (used by reports / sanity checks; the sizer returns
+#                       absolute dollars, not %)
+#   - combined_session_max : informational — 3-strategy session ceiling at this tier
+#
+# Tier 1 is the start-of-track baseline (Wave 4 paper at $25K).
+# Tier 7 is "the $2,500 risk" target referenced in the SIZING_SCHEDULE TL;DR.
+# Tiers 8-9 reduce % of equity as account scales (capital preservation).
+#
+# DO NOT edit floors/risks without updating SIZING_SCHEDULE.md and refreshing
+# tests/framework/test_tiered_sizer.py.
+version: 1
+tiers:
+  - tier: 1
+    equity_floor: 25000
+    risk_per_signal: 300
+    pct_per_trade: 0.012
+    combined_session_max: 900
+  - tier: 2
+    equity_floor: 40000
+    risk_per_signal: 500
+    pct_per_trade: 0.0125
+    combined_session_max: 1500
+  - tier: 3
+    equity_floor: 60000
+    risk_per_signal: 750
+    pct_per_trade: 0.0125
+    combined_session_max: 2250
+  - tier: 4
+    equity_floor: 100000
+    risk_per_signal: 1000
+    pct_per_trade: 0.010
+    combined_session_max: 3000
+  - tier: 5
+    equity_floor: 150000
+    risk_per_signal: 1500
+    pct_per_trade: 0.010
+    combined_session_max: 4500
+  - tier: 6
+    equity_floor: 200000
+    risk_per_signal: 2000
+    pct_per_trade: 0.010
+    combined_session_max: 6000
+  - tier: 7
+    equity_floor: 250000
+    risk_per_signal: 2500
+    pct_per_trade: 0.010
+    combined_session_max: 7500
+  - tier: 8
+    equity_floor: 400000
+    risk_per_signal: 3500
+    pct_per_trade: 0.00875
+    combined_session_max: 10500
+  - tier: 9
+    equity_floor: 750000
+    risk_per_signal: 5000
+    pct_per_trade: 0.00667
+    combined_session_max: 15000
+
+# --- Advancement gates (per SIZING_SCHEDULE §3) ---
+# All four gates must be TRUE on a given session for the sizer to advance
+# one tier. `auto_advance=False` causes the sizer to compute these gates
+# and emit a log line but NOT mutate the tier.
+advancement:
+  # Gate 1: equity ≥ next-tier floor for ≥ this many consecutive sessions
+  consecutive_sessions_at_floor: 3
+  # Gate 2: rolling 30-session portfolio Sharpe ≥ this
+  rolling_sharpe_window: 30
+  rolling_sharpe_min: 1.0
+  # Gate 3: current equity ≥ trailing N-session average (no active drawdown)
+  drawdown_check_window: 5
+  # Gate 4: at most one advancement per N calendar days
+  min_days_between_advances: 14
+
+# --- Retreat triggers (per SIZING_SCHEDULE §3) ---
+# ANY ONE retreat trigger fires a one-tier retreat (additive — could go
+# from tier 5 to tier 4 to tier 3 across two sessions if multiple
+# triggers persist).
+retreat:
+  # Trigger A: equity drops this fraction below the tier's high-water mark
+  drawdown_from_hwm_pct: 0.15
+  # Trigger B: rolling 30-session Sharpe below this
+  rolling_sharpe_floor: 0.3
+  # Trigger C: this many consecutive losing weeks
+  consecutive_losing_weeks: 3

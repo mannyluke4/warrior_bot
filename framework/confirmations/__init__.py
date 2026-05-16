@@ -15,6 +15,7 @@ from framework.confirmations.breakout_candle import BreakoutCandle
 from framework.confirmations.l2_confirm import L2Confirm
 from framework.confirmations.rejection import Rejection
 from framework.confirmations.signal_candle import SignalCandle
+from framework.confirmations.squeeze_breakout import SqueezeBreakout
 from framework.confirmations.volume_confirm import VolumeConfirm
 
 __all__ = [
@@ -25,5 +26,6 @@ __all__ = [
     "L2Confirm",
     "Rejection",
     "SignalCandle",
+    "SqueezeBreakout",
     "VolumeConfirm",
 ]

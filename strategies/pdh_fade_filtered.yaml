@@ -1,0 +1,90 @@
+# PDH/PDL Fade — F1 + abandon@10 filtered variant.
+#
+# Phase B1 deliverable per DIRECTIVE_2026-05-17_GO_FOR_BUILD.md.
+# Inherits the base pdh_pdl_fade.yaml logic and adds the two filter rules
+# discovered in cowork_reports/2026-05-18_pdh_fade_forensic.md:
+#
+#   F1 — Entry-time window: only accept rejection entries between
+#        09:30:00 and 09:44:59 ET (first 15 minutes of RTH).
+#
+#   abandon@10 — Hold-time abandon rule: at minute 10 after entry, if the
+#        position is NOT in profit (bid > entry for long / ask < entry for short),
+#        exit immediately. The forensic assumes the realistic exit price is
+#        approximately -$300 (1/3rd of $1,000 risk dollar) below entry; this
+#        assumption is validated via bar-level replay in Phase A3 revalidation.
+#
+# Filter knobs in env-var form (live deployment):
+#   PDH_FADE_FIRST_15MIN_ONLY=1
+#   PDH_FADE_ABANDON_MIN=10
+#   PDH_FADE_ABANDON_REQUIRES_PROFIT=1
+#   PDH_FADE_ABANDON_EXIT_CAP_DOLLARS=300
+#
+# Source forensic: cowork_reports/2026-05-18_pdh_fade_forensic.md
+# Build directive:  DIRECTIVE_2026-05-17_GO_FOR_BUILD.md §3 Phase B1
+
+name: "PDH-PDL-Fade-Filtered"
+enabled: true
+status: candidate    # Wave 4 paper candidate; not yet production
+inherits_from: pdh_pdl_fade.yaml
+
+level_source:
+  type: pdh_pdl
+  params:
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001          # 0.1% of price — unchanged from base
+
+confirmation_rule:
+  type: rejection
+  params:
+    lookback_bars: 2
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10
+
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+# Filter F1: collapse the trade window to 09:30-09:44 (first 15 min of RTH).
+# Note: trade_windows uses HH:MM resolution per schema. The :59 second
+# refinement is enforced by the entry_time_window block below (parsed by
+# the framework filter evaluator at second-level precision).
+trade_windows:
+  - ["09:30", "09:45"]
+
+# Explicit entry-time-window filter (parsed by framework signal evaluator).
+entry_time_window:
+  start: "09:30:00"
+  end: "09:44:59"
+  tz: "America/New_York"
+
+# Filter abandon@10: exit at minute 10 if not in profit, cap loss at $300.
+#
+# DISABLED per Phase A3 revalidation (cowork_reports/2026-05-16_pdh_fade_nautilus_revalidation.md).
+# The forensic's Sharpe 2.01 number came from a look-ahead-biased clip; realistic
+# bar-level revalidation collapses it to Sharpe 1.50 (essentially F1-alone). The
+# abandon rule cuts 25% of recoverable winners (147 trades, $87K of winner P&L)
+# without materially improving aggregate loser behaviour. F1-alone (time-gate
+# only, Sharpe 1.56) is the recommended Wave 4 paper variant.
+abandon_rule:
+  enabled: false
+  minutes_after_entry: 10
+  exit_if_not_profit: true
+  exit_cap_dollars: 300        # forensic primary assumption (proven illusory at this cap)
+  # Conservative variant: set exit_cap_dollars: 500 (forensic Sharpe 1.82) —
+  # also illusory; realistic bar-level Sharpe at $500 cap is identical (1.50).
+
+vix_size_multiplier:
+  use_vix: false

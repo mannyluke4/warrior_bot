@@ -15,6 +15,7 @@ from framework.level_sources.base import (
     LevelSourceProtocol,
 )
 from framework.level_sources.pdh_pdl import PDHPDLSource
+from framework.level_sources.squeeze import SqueezeSource
 from framework.level_sources.vwap import SlopeRegime, VWAPSource, VWAPState
 
 __all__ = [
@@ -25,6 +26,7 @@ __all__ = [
     "LevelSet",
     "LevelSourceProtocol",
     "PDHPDLSource",
+    "SqueezeSource",
     "SlopeRegime",
     "VWAPSource",
     "VWAPState",
