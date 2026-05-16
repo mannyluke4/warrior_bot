@@ -1,0 +1,62 @@
+# strategies/orb_5min.yaml
+#
+# Opening Range Breakout (5-minute) — Phase 1 strategy.
+#
+# Source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.1
+# Build:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent F
+# Paper:  Zarattini et al. (2024) SSRN — Sharpe 2.81, 36% alpha
+#
+# The opening 5 minutes (09:30-09:35 ET) define ORH / ORL. Once the
+# window closes, the bot watches for a breakout candle that closes
+# beyond the relevant edge with ≥ 2× relative volume. The opening
+# bar's color biases direction (green → long-only at ORH;
+# red → short-only at ORL).
+#
+# Acceptance gates (DIRECTIVE §3 Agent F):
+#   * 2020-2024 OOS Sharpe ≥ 1.5
+#   * ≥ 100 trades OOS
+#   * Max drawdown ≤ 10%
+#   * Performance not concentrated in any single quarter (no >40%
+#     of P&L from one quarter)
+
+name: "ORB-5min"
+enabled: true
+
+level_source:
+  type: opening_range
+  params:
+    minutes: 5
+    use_5min_direction_bias: true
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001       # within 0.1% of ORH/ORL
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 2.0          # ≥2× the prior 20-bar baseline (Zarattini "stocks in play")
+    min_breakout_pct: 0.0002   # ≥2 bps beyond the level
+    require_close_beyond: true
+
+stop_rule:
+  type: opposite_range         # long breaks ORH, stop at ORL (and vice-versa)
+
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0
+    fallback: session_close
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 5
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false

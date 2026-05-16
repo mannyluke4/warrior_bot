@@ -14,6 +14,8 @@ from framework.level_sources.base import (
     LevelSet,
     LevelSourceProtocol,
 )
+from framework.level_sources.pdh_pdl import PDHPDLSource
+from framework.level_sources.vwap import SlopeRegime, VWAPSource, VWAPState
 
 __all__ = [
     "Bar",
@@ -22,4 +24,8 @@ __all__ = [
     "LevelKind",
     "LevelSet",
     "LevelSourceProtocol",
+    "PDHPDLSource",
+    "SlopeRegime",
+    "VWAPSource",
+    "VWAPState",
 ]

@@ -1,0 +1,55 @@
+# PDH/PDL Fade — failed-test (rejection) mean-reversion strategy.
+#
+# Thesis: Price probes the prior session's high (or low), fails to break,
+# and reverses back inside the range. We fade the failed test.
+#   - At PDH: short, target PDL.
+#   - At PDL: long,  target PDH.
+#
+# Direction is inferred from the level kind by the rejection-confirmation
+# plugin: PDH -> rejection_down (short bias), PDL -> rejection_up (long bias).
+#
+# Design source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.3
+# Build directive:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent H
+
+name: "PDH-PDL-Fade"
+enabled: true
+
+level_source:
+  type: pdh_pdl
+  params:
+    # No special params — prior RTH high/low; staleness gate inside the plugin.
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.001          # 0.1% of price — close enough that a touch is meaningful
+
+confirmation_rule:
+  type: rejection
+  params:
+    lookback_bars: 2              # touched the level within the last 2 bars and closed back on the wrong side
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10              # 10 cents past the level on the wrong side
+
+# Edge-to-edge target: PDL for a PDH fade, PDH for a PDL fade. If no opposite
+# level is available, fall back to a 1.5R extension per design §4.3.
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level
+    fallback: r_multiple
+    r_multiple: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+# Full RTH per Manny 5/17 decision; narrow from data after backtest.
+trade_windows:
+  - ["09:35", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false

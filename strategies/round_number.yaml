@@ -1,0 +1,85 @@
+# Round Number — whole-dollar / $5 / $10 level-reaction strategy.
+#
+# Per DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent I and
+# DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.4.
+#
+# Universe: $10-$300 (Path 1 defaults) — set by framework/universe.py.
+# Level structure varies by price tier:
+#   $10-50    →  whole-dollar AND $5 multiples (both psychologically sticky)
+#   $50-150   →  $5 multiples (whole dollars get noisy, share size shrinks)
+#   $150-300  →  $5 and $10 multiples (institutional benchmark anchors)
+#
+# Confirmation: signal-candle (doji / hammer / shooting star) with volume
+# increase at the level. L2 confirmation is currently disabled — Phase 2
+# Agent P (l2_confirm integration) wires it in once historical L2 data
+# from Databento MBP-10 is available.
+#
+# Stop:    just past the level on the wrong side, tier-aware pad.
+# Target:  next round number (opposite_level on the LevelSet), fallback
+#          to 2R if no further level exists in the window.
+#
+# Trade window: full RTH 09:30-15:55 (data-driven narrowing happens via
+# Wave 3 Agent K's time-of-day analysis).
+#
+# This spec is the Wave 2 deliverable; cross-strategy comparison vs
+# squeeze lives in cowork_reports/2026-05-16_round_number_backtest.md.
+
+name: "Round-Number"
+enabled: true
+
+level_source:
+  type: round_number
+  params:
+    increments:
+      "10_50": [1.00, 5.00]
+      "50_150": [5.00]
+      "150_300": [5.00, 10.00]
+    # ±$5 default window around current price — covers all per-tier
+    # increments without flooding the LevelSet (max ~10 levels in a window).
+    window_dollar: 5.0
+    options_oi_overlay: false  # Phase 2 enhancement — placeholder, ignored in Wave 2
+
+arrival_detector:
+  type: proximity
+  params:
+    # Absolute dollar proximity by tier — directive spec verbatim:
+    #   $10-50:   $0.10
+    #   $50-150:  $0.25
+    #   $150-300: $0.50
+    proximity_dollar:
+      "10_50": 0.10
+      "50_150": 0.25
+      "150_300": 0.50
+
+confirmation_rule:
+  type: signal_candle
+  params:
+    patterns: [doji, hammer, shooting_star]
+    require_volume_increase: true
+    require_l2_confirm: true               # uses existing l2_signals.py (Phase 2 wiring)
+
+stop_rule:
+  type: just_past_level
+  params:
+    # Tier-aware pad: stop sits past the level by the same dollar amount
+    # the arrival detector uses as proximity, ensuring stop_distance >=
+    # proximity (no immediate stop-out from arrival noise).
+    pad_dollar:
+      "10_50": 0.05
+      "50_150": 0.10
+      "150_300": 0.25
+
+target_rule:
+  type: composite
+  params:
+    primary: opposite_level                # next round number above/below entry
+    fallback: r_multiple
+    r_multiple: 2.0
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+trade_windows:
+  - ["09:30", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false                            # hooks built, default OFF per design §2.5

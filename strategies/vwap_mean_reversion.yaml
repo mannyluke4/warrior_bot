@@ -1,0 +1,70 @@
+# strategies/vwap_mean_reversion.yaml
+#
+# VWAP Mean Reversion — Phase 1 strategy (Wave 2, Agent G).
+#
+# Source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.2 (Sub-B)
+# Build:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent G
+#
+# Concept: in a non-trending session (VWAP slope ~ flat), price oscillates
+# around VWAP and overshoots the ±2σ bands. The mean-reversion trade is to
+# fade those overshoots back to VWAP. We arm on price arriving at either
+# the upper (short setup) or lower (long setup) 2σ band, confirm with a
+# rejection pattern (price touches the band and closes back inside), stop
+# 10 cents past the band on the wrong side, target VWAP center.
+#
+# Regime gate: only fires when VWAPSource.vwap_slope_classifier() returns
+# 'flat'. Pairs with vwap_trend_continuation under regime gating to deliver
+# the combined Sharpe ≥ better-of-either-alone acceptance criterion.
+#
+# Acceptance gates (DIRECTIVE §3 Agent G):
+#   * Per-strategy backtest Sharpe ≥ 1.2
+#   * ≥ 100 trades OOS
+#   * Max drawdown ≤ 10%
+#   * Combined-with-trend-continuation Sharpe ≥ better of either alone
+
+name: "VWAP-Mean-Reversion"
+enabled: true
+
+level_source:
+  type: vwap
+  params:
+    bands: [2.0]                 # ±2σ bands are the arming levels
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.003         # within 0.3% of upper_2 / lower_2 band
+    proximity_dollar: 0.05       # OR 5c absolute, whichever larger
+
+confirmation_rule:
+  type: rejection
+  params:
+    # Failed-test pattern: price touches the band, closes back inside.
+    # 'auto' side inference: VWAP_UPPER_2 → resistance (short),
+    # VWAP_LOWER_2 → support (long). Custom mapping handled by the
+    # strategy runner that consumes this YAML.
+    lookback_bars: 2
+    side: auto
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10             # 10 cents past the band on the wrong side
+
+target_rule:
+  type: opposite_level           # target the VWAP center (next level on opposite side)
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 5
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# Regime gate — only arm in flat regime (mean reversion edge).
+regime_gate:
+  source: vwap_slope
+  last_n_bars: 10
+  allowed: [flat]
+
+vix_size_multiplier:
+  use_vix: false

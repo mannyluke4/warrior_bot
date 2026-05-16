@@ -1,0 +1,62 @@
+# PDH/PDL Breakout — close-beyond-level + volume continuation strategy.
+#
+# Thesis: Price closes through the prior session's high (or low) with
+# above-average volume; we ride the continuation.
+#   - PDH break -> long, target 2R + trailing ATR after 1.5R.
+#   - PDL break -> short, target 2R + trailing ATR after 1.5R.
+#
+# Direction is inferred from the level kind by the breakout-candle plugin:
+# PDH -> long breakout, PDL -> short breakout.
+#
+# Tighter arrival (0.05%) than the fade strategy: a breakout needs clear
+# intent, not a casual touch. Stop is prior bar's low (long) or high
+# (short) — minimum noise tolerance per design §4.3.
+#
+# Design source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.3
+# Build directive:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent H
+
+name: "PDH-PDL-Breakout"
+enabled: true
+
+level_source:
+  type: pdh_pdl
+  params:
+    max_gap_days: 2
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.0005         # 0.05% — closer than fade; need clear breakout intent
+
+confirmation_rule:
+  type: breakout_candle
+  params:
+    min_vol_mult: 2.0             # entry bar volume ≥ 2× 20-bar avg
+    min_breakout_pct: 0.0002      # close beyond level by ≥ 2 bps
+    require_close_beyond: true
+
+stop_rule:
+  type: bar_low
+  params:
+    lookback: 1                   # prior bar low (long) / high (short)
+    pad_dollar: 0.02
+
+# 2R primary target + trailing ATR after 1.5R. Composite handles the
+# trailing activation.
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0
+    trailing: trailing_atr
+    activate_trailing_at_r: 1.5
+    trailing_atr_mult: 1.5
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 3
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+vix_size_multiplier:
+  use_vix: false

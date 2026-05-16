@@ -1,0 +1,79 @@
+# strategies/vwap_trend_continuation.yaml
+#
+# VWAP Trend Continuation — Phase 1 strategy (Wave 2, Agent G).
+#
+# Source: DESIGN_HEALTHY_FLUCTUATION_FRAMEWORK.md §4.2 (Sub-A)
+# Build:  DIRECTIVE_2026-05-17_FRAMEWORK_BUILD.md §3 Agent G
+#
+# Concept: in a trending session (VWAP slope materially up or down), price
+# routinely pulls back to VWAP and resumes the trend. We arm on proximity
+# to VWAP and confirm with a hammer (uptrend pullback) or shooting star
+# (downtrend pullback) signal candle with volume confirmation. Stop sits
+# just past VWAP on the wrong side, target is 2R with a trailing ATR
+# activated after 1.5R.
+#
+# Regime gate: only fires when VWAPSource.vwap_slope_classifier() returns
+# 'trending_up' or 'trending_down'. The flat-regime sister strategy
+# (vwap_mean_reversion) handles the opposite regime — combining both with
+# regime gating must Sharpe ≥ better of either individual (acceptance gate).
+#
+# Acceptance gates (DIRECTIVE §3 Agent G):
+#   * Per-strategy backtest Sharpe ≥ 1.2
+#   * ≥ 100 trades OOS
+#   * Max drawdown ≤ 10%
+#   * Combined-with-mean-reversion Sharpe ≥ better of either alone
+
+name: "VWAP-Trend-Continuation"
+enabled: true
+
+level_source:
+  type: vwap
+  params:
+    bands: [1.0]                 # ±1σ context (not strictly needed for trend,
+                                 # but useful for stretch detection)
+
+arrival_detector:
+  type: proximity
+  params:
+    proximity_pct: 0.002         # within 0.2% of VWAP
+
+confirmation_rule:
+  type: signal_candle
+  params:
+    # Hammer for long pullback to VWAP in uptrend regime;
+    # shooting star for short pullback to VWAP in downtrend regime.
+    # The signal_candle plugin tries patterns in order — direction is
+    # selected at runtime by the regime classifier in the strategy runner.
+    patterns: [hammer, shooting_star]
+    require_volume_increase: true
+
+stop_rule:
+  type: just_past_level
+  params:
+    pad_dollar: 0.10             # 10 cents past VWAP on the wrong side
+
+target_rule:
+  type: composite
+  params:
+    primary: r_multiple
+    r_multiple: 2.0              # primary 2R take-profit
+    fallback: session_close      # if no R-multiple price (shouldn't happen), ride to close
+    trailing: trailing_atr
+    activate_at_r: 1.5           # arm trailing once price reaches 1.5R
+    atr_mult: 1.5                # trail 1.5 × ATR
+
+risk_per_trade_pct: 1.0
+max_concurrent_positions: 5
+
+trade_windows:
+  - ["09:35", "15:55"]
+
+# Regime gate (consumed by the strategy runner, not core plugins).
+# Only arm when VWAP slope classifier returns one of these regimes.
+regime_gate:
+  source: vwap_slope
+  last_n_bars: 10
+  allowed: [trending_up, trending_down]
+
+vix_size_multiplier:
+  use_vix: false
