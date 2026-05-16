@@ -347,7 +347,7 @@ the framework's float backfill writes to a separate file.
 
 ---
 
-## 10. Manny decision (2026-05-18 EOD)
+## 10. Manny decision (2026-05-16 EOD)
 
 **Path #1 chosen — `float_max` raised 200M → 10B in `framework/universe.py:64`.**
 

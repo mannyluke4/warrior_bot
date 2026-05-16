@@ -61,7 +61,7 @@ class UniverseConfig:
     price_max: float = 300.0
     adv_dollar_min: float = 10_000_000.0  # $10M 20-day average daily $ volume
     float_min: int = 20_000_000           # 20M float shares
-    # 2026-05-18 Manny decision: float_max raised 200M → 10B to admit mega-caps
+    # 2026-05-16 Manny decision: float_max raised 200M → 10B to admit mega-caps
     # (AAPL, NVDA, TSLA etc) and reach the ~400-800-name/day universe size the
     # design doc estimated. The research-backed 200M ceiling produced only
     # ~10 names/day (e.g. 2024-01-16: SPXL/GOLD/SPOT/DKS) — too thin for Wave 2
