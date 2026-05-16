@@ -33,9 +33,11 @@ strategy = (level_source, arrival_detector, confirmation_rule, stop_rule, target
 
 ---
 
-## 2. Universe definition (research-backed)
+## 2. Universe definition (data-driven, expanded for backtesting)
 
 Manny's intuition — "higher prices fluctuate better" — has structural backing across five mechanisms documented in market microstructure literature: adverse selection compensation, HFT depth competition, institutional participation, fragmentation effects, and options-driven hedging flow.
+
+**Decision (per Manny 5/17 review):** **Expand backtest universe to $10-$300.** Narrow based on data showing where strategies actually perform. Sector exclusions and time-of-day windows also data-driven, not pre-imposed.
 
 ### 2.1 Price tier eligibility
 
@@ -43,74 +45,84 @@ Per universe research §1.5 and §2:
 
 | Price tier | Status | Reasoning |
 |---|---|---|
-| Sub-$5 (penny) | **EXCLUDE** | LULD ±75% bands trigger constantly. MM withdrawal. Penny-jumping HFT. Levels undefended. |
-| $5–$10 | **EXCLUDE** | LULD ±20% (under $3) or ±10% bands. Unreliable level structure. |
-| $10–$20 | **CONDITIONAL** | Acceptable with very strong RVOL filter (≥3×). Moderate level reliability. |
-| **$20–$100** | **PRIMARY UNIVERSE** | Strong MM participation, deep HFT, institutional flow, high level reliability. |
-| **$100–$200** | **PRIMARY UNIVERSE** | Deepest book. Options-driven round-number levels. Very high level reliability. |
-| $200+ | **CONDITIONAL** | Same edge, but reduced shares-per-position vs $50K notional means each lot is more expensive. |
+| Sub-$5 (penny) | **EXCLUDE** | LULD ±75% bands trigger constantly. MM withdrawal. Penny-jumping HFT. Levels undefended. Not in backtest universe. |
+| $5–$10 | **EXCLUDE** | LULD ±20% (under $3) or ±10% bands. Unreliable level structure. Not in backtest universe. |
+| **$10–$20** | **INCLUDE in backtest** | Moderate level reliability. Data will tell us if strategies work here. |
+| **$20–$100** | **INCLUDE in backtest** | Strong MM participation, deep HFT, institutional flow, high level reliability. |
+| **$100–$200** | **INCLUDE in backtest** | Deepest book. Options-driven round-number levels. Very high level reliability. |
+| **$200–$300** | **INCLUDE in backtest** | Same edge, reduced shares-per-position. Data will tell us if shares-per-trade is too constraining. |
+| $300+ | EXCLUDE | Each lot too expensive vs $50-100K notional. Future expansion possible. |
 
 ### 2.2 Liquidity filters
 
-Per universe research §3-4:
+Per universe research §3-4. Backtest sweep these to find optimal cuts:
 
 ```
-WB_UNIVERSE_PRICE_MIN=20.00
-WB_UNIVERSE_PRICE_MAX=200.00
-WB_UNIVERSE_ADV_DOLLAR_MIN=10_000_000          # $10M daily dollar volume avg
-WB_UNIVERSE_TODAY_DOLLAR_VOL_MIN=25_000_000     # $25M today (2.5x relative)
-WB_UNIVERSE_FLOAT_SHARES_MIN=20_000_000         # 20M float shares minimum
-WB_UNIVERSE_FLOAT_SHARES_MAX=500_000_000        # 500M maximum (below blunts day-range)
-WB_UNIVERSE_DAY_RANGE_PCT_MIN=2.0               # 2% intraday range minimum
+WB_UNIVERSE_PRICE_MIN=10.00                     # 5/17: expanded from 20
+WB_UNIVERSE_PRICE_MAX=300.00                    # 5/17: expanded from 200
+WB_UNIVERSE_ADV_DOLLAR_MIN=10_000_000           # $10M daily dollar volume avg (sweep: 5/10/25/50M)
+WB_UNIVERSE_TODAY_DOLLAR_VOL_MIN=25_000_000     # $25M today (sweep relative vol)
+WB_UNIVERSE_FLOAT_SHARES_MIN=20_000_000         # 20M float minimum (sweep: 10/20/50M)
+WB_UNIVERSE_FLOAT_SHARES_MAX=500_000_000        # 500M maximum
+WB_UNIVERSE_DAY_RANGE_PCT_MIN=2.0               # 2% intraday range minimum (sweep)
 ```
 
-For a $50-100K notional bot, target staying below 10% of ADV per session (institutional benchmark). The 1M-share ADV floor used by SMB Capital is the hard floor for considering a symbol at all.
+For a $50-100K notional bot, target staying below 10% of ADV per session (institutional benchmark). The 1M-share ADV floor is hard floor for considering a symbol at all.
 
-### 2.3 Sector exclusions
+**Backtest plan:** Run each Phase 1 strategy across the full $10-$300 universe. Bucket results by price tier ($10-20, $20-50, $50-100, $100-200, $200-300) and analyze Sharpe, win rate, R-multiple per bucket. Tighten universe to the tiers where strategies actually work.
 
-Per universe research §10:
+### 2.3 Sector exclusions (data-driven)
+
+**Decision (per Manny 5/17 review):** Don't pre-exclude sectors. Let backtest data tell us.
+
+Research §10 flagged biotech (FDA binary events), energy E&P (oil-driven multi-input noise), shipping (cargo-rate noise) as historically problematic for level-reaction strategies. We'll include all sectors in backtest and review per-sector Sharpe/drawdown. If biotech turns out to be drag, exclude. If it's neutral or positive, keep.
 
 ```
-WB_UNIVERSE_EXCLUDE_SECTORS = [
-    "biotechnology",   # FDA binary events break level logic
-    "energy_E&P",      # oil-driven multi-input noise
-    "shipping",        # cargo-rate noise
-]
+WB_UNIVERSE_EXCLUDE_SECTORS = []                # populated post-backtest
 ```
 
-These sectors generate 30-80% gaps through prior structure on news events, collapsing level-reaction logic.
+**Backtest analysis output should include:** per-sector P&L attribution, per-sector trade count, per-sector drawdown contribution. Exclude only sectors that demonstrably hurt portfolio metrics.
 
-### 2.4 Time-of-day windows
+### 2.4 Time-of-day windows (data-driven)
 
-Per universe research §11:
+**Decision (per Manny 5/17 review):** Trade the full RTH window for now. Backtest will reveal whether midday is structurally weaker.
 
 ```
 WB_TRADE_WINDOWS = [
-    ("10:00", "11:30"),  # primary morning trend window
-    ("13:30", "15:50"),  # afternoon resumption / power hour
+    ("09:30", "15:55"),  # full RTH minus the last 5 min for safety
 ]
-# 11:30-13:30: 50% size reduction OR pause (midday low-conviction zone)
-# Pre-10:00: 30-min warmup, no fresh entries (first-half-hour predicts direction, not entry signal)
-# Post-15:50: no new entries, manage existing positions to force-exit at 19:55
+# Backtest analysis: bucket trades by hour, identify P&L by time-of-day
+# Force-exit at 19:55 ET unchanged (no overnight holds)
 ```
 
-### 2.5 VIX regime overlay
+**Backtest analysis output should include:** P&L by 30-minute bucket. If midday (11:30-13:30) is demonstrably worse, pause it. If first-30-min is full of false-breakouts, push start to 10:00. Let data make the call.
 
-Per universe research §12:
+Research §11 evidence to keep in mind during analysis: first-half-hour return statistically predicts last-half-hour return; opening 30 min is the regime signal, not the entry zone.
+
+### 2.5 VIX regime overlay (build hooks, default OFF, validate from data)
+
+**Decision (per Manny 5/17 review):** Build the infrastructure to respect VIX-based size adjustment, but **default disabled**. Backtest with and without; flip on if data shows improvement.
 
 ```
+WB_USE_VIX_REGIME=0                             # default disabled, enable post-validation
 WB_VIX_REGIME_RULES:
   vix < 13          → 50% size or pause (insufficient realized range)
-  vix 13 - 16       → normal size
-  vix 16 - 28       → OPTIMAL — full size (levels defended with real money)
-  vix 28 - 35       → 75% size (elevated but tradeable)
-  vix > 35          → 50% size (chaos regime, level logic degrades)
-  vix > 45          → pause entirely (no trades)
+  vix 13 - 16       → 75% size
+  vix 16 - 28       → 100% size (optimal regime)
+  vix 28 - 35       → 75% size
+  vix 35 - 45       → 50% size
+  vix > 45          → pause
 ```
+
+**Rationale:** VIX is free, real-time, always available — the hooks cost nothing to build. The question is whether the regime classification improves portfolio Sharpe. Backtest with VIX-on vs VIX-off across the universe period; if VIX-on doesn't improve risk-adjusted returns by ≥10%, leave it off.
+
+**VIX definition recap:** CBOE Volatility Index, real-time 30-day expected S&P 500 volatility from options pricing. Free data via SPY options or direct VIX index quote. Updates every 15 seconds.
 
 ### 2.6 Universe estimated size
 
-Applying all filters above to US equities: **approximately 200-400 names per day** depending on regime. That's the scanner output going forward, not the current ~30-symbol watchlist.
+Applying the expanded $10-$300 filters to US equities: **approximately 400-800 names per day** depending on regime. The bot's scanner watches all of them, the framework selects trades from arrivals at qualifying levels.
+
+For reference: current ~30-symbol watchlist is 1-2% of the new universe size. This is the breadth advantage the bot was always supposed to have but didn't.
 
 ---
 
@@ -367,11 +379,18 @@ WB_PORTFOLIO_DAILY_LOSS_LIMIT_PCT=4.0           # halts ALL strategies
 
 On trigger: close that strategy's positions, halt that strategy's signal processing for the rest of the session, log state, alert.
 
-### 5.5 Capital allocation (architecture research §5)
+### 5.5 Capital allocation (data-driven)
 
-Phase 1: **Equal-weight across strategies, half-Kelly per strategy.** Each strategy gets 1/N of the bot's daily risk budget. Per-trade sizing is half-Kelly based on the strategy's measured win rate and average R-multiple (initially equal-weighted at risk_per_trade_pct=1.0%, then adjusted from paper data after 30 sessions).
+**Decision (per Manny 5/17 review):** Whatever the data supports.
 
-Phase 2 (post-validation): Sharpe-weighted dynamic allocation. Strategies with stronger paper Sharpe get larger weight.
+**Initial Phase 1 deployment:** Equal-weight across strategies, half-Kelly per strategy, 1% risk per trade as starting point. This is not a commitment — it's a starting baseline.
+
+**Backtest will inform actual weighting:**
+- Sharpe-weighted: strategies with stronger Sharpe get larger weight
+- Risk-parity: equal volatility contribution
+- Half-Kelly per strategy: per-strategy edge informs per-strategy sizing
+
+Whichever method produces the best out-of-sample portfolio Sharpe in backtest wins. Re-evaluated quarterly from paper/live data.
 
 ### 5.6 Configuration (architecture research §10)
 
@@ -384,21 +403,25 @@ Hybrid model:
 
 ## 6. Backtest infrastructure (research-backed)
 
-### 6.1 Framework selection (backtest research §11, §12)
+### 6.1 Framework selection — BACKTEST ONLY (clarified per Manny 5/17)
 
-**Production framework: NautilusTrader.**
+**Important clarification:** NautilusTrader is **not a replacement for IBKR.** IBKR is the broker (market data, order execution). NautilusTrader is a software framework that runs on our machine and connects to brokers (including IBKR).
 
-Reasoning:
-- Rust core processes 200K bars in ~3 seconds (vs vectorbt's 5 min, Backtrader's 10+ min)
-- Native multi-strategy portfolio management with per-strategy attribution
-- Native L2/L3 order book replay (NautilusTrader is the only framework that does this natively)
-- Native Databento adapter
-- Seamless backtest-to-live transition (swap BacktestEngine for LiveNode)
-- Built specifically for institutional-grade backtesting with the same codebase as production
+What NautilusTrader replaces in our stack: **`simulate.py`** (our homegrown backtest harness). Nothing more.
 
-**Research framework: vectorbt** for alpha research and parameter sweeps. Prototype variants in vectorbt, port confirmed alphas to NautilusTrader.
+What NautilusTrader does NOT replace:
+- IBKR connection (Nautilus has its own IBKR adapter, but we keep using our existing one for live)
+- Alpaca execution (live live)
+- `l2_signals.py`, `ibkr_feed.py` (our code, stays)
+- The current live bots (`bot_v3_hybrid.py`, `bot_alpaca_subbot.py`, engine bots) — stay
 
-**Do NOT use:** Backtrader, Zipline, or LEAN for our use case. Backtrader and Zipline have substantial intraday limitations; LEAN is heavyweight and locks us into QuantConnect ecosystem.
+NautilusTrader is open-source (LGPL-3.0), free, runs on our machine. **Cost: $0.**
+
+**Use as backtest engine only.** Build the framework architecture in our own code (per §5). Backtest strategy specs via NautilusTrader. Promote validated specs to the existing live stack.
+
+**Research framework: vectorbt** for parameter sweeps and alpha research. Vectorbt for quick iteration; NautilusTrader for realistic fill modeling and final validation.
+
+**Do NOT use:** Backtrader, Zipline, LEAN. Substantial limitations for our use case.
 
 ### 6.2 Data sources
 
@@ -561,27 +584,18 @@ Some strategies may validate faster than 30 sessions if performance is strong; o
 
 ---
 
-## 11. Open questions for Manny review
+## 11. Manny review decisions (5/17) — LOCKED
 
-1. **Does the price band $20-200 match your intuition for the "higher prices fluctuate better" universe?** Or should we expand to $10-300, $20-500, etc?
-
-2. **Sector exclusions** (biotech, energy_E&P, shipping) — agree, expand, or contract?
-
-3. **Time-of-day windows** (10:00-11:30 + 13:30-15:50 with midday pause) — match your experience?
-
-4. **VIX regime overlay** — willing to follow the VIX-based size adjustments, or prefer constant sizing?
-
-5. **Phase 1 strategy set** (ORB + VWAP + PDH/PDL + Round Number) — agree as the first build set, or substitute?
-
-6. **Capital allocation** — equal-weight across strategies in Phase 1, then Sharpe-weight in Phase 2 — agree?
-
-7. **Validation thresholds** — Sharpe ≥ 1.5 backtest, 30-session paper minimum, 3-tier real-money rollout — too strict, about right, too loose?
-
-8. **NautilusTrader as production framework** — agree to commit, or want to consider alternatives?
-
-9. **Databento subscription** — Standard plan ($199/mo) start, upgrade to Plus if L2 strategies validate — agree?
-
-10. **Anything missing from the framework or strategy set that you want included?**
+1. **Universe:** $10-$300 for backtest. Narrow based on data. ✓
+2. **Sector exclusions:** No pre-exclusion. Data-driven. ✓
+3. **Time windows:** Full RTH 09:30-15:55. Data-driven narrowing. ✓
+4. **VIX regime:** Build hooks, default OFF, validate from backtest. ✓
+5. **Phase 1 portfolio:** ORB + VWAP + PDH/PDL + Round Number ✓
+6. **Capital allocation:** Data-driven, no pre-committed weighting. ✓
+7. **Validation thresholds:** Sharpe ≥ 1.5 / 30 paper sessions / 3-tier rollout. Acceptable. ✓
+8. **NautilusTrader for BACKTEST ONLY** (clarified — NOT a replacement for IBKR or live stack). $0 cost, open-source. ✓
+9. **Databento Standard plan** ($199/mo). ✓
+10. **Nothing flagged as missing.** Build set is complete for Phase 1.
 
 ---
 
