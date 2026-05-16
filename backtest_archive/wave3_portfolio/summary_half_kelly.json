@@ -1,0 +1,21 @@
+{
+  "mode": "half_kelly",
+  "start": "2020-01-01",
+  "end": "2024-12-31",
+  "sessions": 1307,
+  "lock_collisions": 39569,
+  "trade_counts": {
+    "ORB-5min": 8579,
+    "VWAP-Mean-Reversion": 2197,
+    "PDH-PDL-Fade": 8021,
+    "PDH-PDL-Breakout": 3579,
+    "Round-Number": 1322
+  },
+  "equity_per_strategy": {
+    "ORB-5min": 97801.2399999998,
+    "VWAP-Mean-Reversion": 100281.34400476226,
+    "PDH-PDL-Fade": 103684.87499999983,
+    "PDH-PDL-Breakout": 99391.9299999997,
+    "Round-Number": 99773.26499999987
+  }
+}

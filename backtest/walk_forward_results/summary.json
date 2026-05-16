@@ -1,0 +1,83 @@
+{
+  "ORB-5min": {
+    "wf_win_pct": 0.8888888888888888,
+    "wf_total_months": 54,
+    "wf_win_months": 48,
+    "wf_pass": true,
+    "top_quarter_pct": 0.12832460937261964,
+    "conc_pass": true,
+    "boot_sharpe_point": 5.162394957575403,
+    "boot_sharpe_lo": 4.073371172971114,
+    "boot_sharpe_hi": 6.239619879098756,
+    "boot_pass": true,
+    "sens_pass": true,
+    "sens_cliffs": [
+      "orb_r_multiple"
+    ],
+    "overall_pass": true
+  },
+  "VWAP-MeanRev": {
+    "wf_win_pct": 0.35185185185185186,
+    "wf_total_months": 54,
+    "wf_win_months": 19,
+    "wf_pass": false,
+    "top_quarter_pct": 1.0,
+    "conc_pass": false,
+    "boot_sharpe_point": -1.4552497686367907,
+    "boot_sharpe_lo": -2.453636932952148,
+    "boot_sharpe_hi": -0.53100413493992,
+    "boot_pass": false,
+    "sens_pass": false,
+    "sens_cliffs": [
+      "vwap_band_sigma"
+    ],
+    "overall_pass": false
+  },
+  "PDH-Fade": {
+    "wf_win_pct": 1.0,
+    "wf_total_months": 54,
+    "wf_win_months": 54,
+    "wf_pass": true,
+    "top_quarter_pct": 0.09406132776086465,
+    "conc_pass": true,
+    "boot_sharpe_point": 11.028864797083655,
+    "boot_sharpe_lo": 10.073100505257884,
+    "boot_sharpe_hi": 11.993069284859844,
+    "boot_pass": true,
+    "sens_pass": true,
+    "sens_cliffs": [],
+    "overall_pass": true
+  },
+  "PDH-Breakout": {
+    "wf_win_pct": 1.0,
+    "wf_total_months": 54,
+    "wf_win_months": 54,
+    "wf_pass": true,
+    "top_quarter_pct": 0.09566521197275316,
+    "conc_pass": true,
+    "boot_sharpe_point": 10.144753484322713,
+    "boot_sharpe_lo": 8.914254433664489,
+    "boot_sharpe_hi": 11.311231783320425,
+    "boot_pass": true,
+    "sens_pass": true,
+    "sens_cliffs": [
+      "brk_r_multiple"
+    ],
+    "overall_pass": true
+  },
+  "RoundNumber-50-150": {
+    "wf_win_pct": 0.6481481481481481,
+    "wf_total_months": 54,
+    "wf_win_months": 35,
+    "wf_pass": false,
+    "top_quarter_pct": 0.20254869225980954,
+    "conc_pass": true,
+    "boot_sharpe_point": 3.266196922752347,
+    "boot_sharpe_lo": 2.438700315403065,
+    "boot_sharpe_hi": 4.067140815586203,
+    "boot_pass": true,
+    "sens_pass": true,
+    "sens_cliffs": [],
+    "overall_pass": false
+  }
+}

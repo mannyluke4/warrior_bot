@@ -1,0 +1,21 @@
+{
+  "mode": "fixed_dollar",
+  "start": "2020-01-01",
+  "end": "2024-12-31",
+  "sessions": 1307,
+  "lock_collisions": 39569,
+  "trade_counts": {
+    "ORB-5min": 9790,
+    "VWAP-Mean-Reversion": 3106,
+    "PDH-PDL-Fade": 9874,
+    "PDH-PDL-Breakout": 3905,
+    "Round-Number": 1449
+  },
+  "equity_per_strategy": {
+    "ORB-5min": 228336.12499999927,
+    "VWAP-Mean-Reversion": 99367.03274500473,
+    "PDH-PDL-Fade": 681896.1499999898,
+    "PDH-PDL-Breakout": 177107.87500000093,
+    "Round-Number": 94044.60000000514
+  }
+}
