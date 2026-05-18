@@ -8,13 +8,16 @@ A Python trading bot that detects squeeze breakout and micro-pullback setups on 
 ### Backtesting
 - **Always use `--ticks` mode** for backtests (matches live bot tick-by-tick replay)
 - **Backtest window: 07:00-12:00 ET** (Ross Cameron's active hours)
-- **Always run regression before pushing**: VERO +$34,479, ROLR +$54,654
+- **Always run regression before pushing**: VERO +$2,268, ROLR +$49,775 (run 2026-05-18, commit cc3e78d, X01 config 07:00-12:00 window)
   ```bash
-  WB_MP_ENABLED=1 python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
-  WB_MP_ENABLED=1 python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
+  WB_BT_RISK_PCT=0.035 WB_BT_DAILY_LOSS_SCALE=1 ./venv/bin/python simulate.py VERO 2026-01-16 07:00 12:00 --ticks --tick-cache tick_cache/
+  WB_BT_RISK_PCT=0.035 WB_BT_DAILY_LOSS_SCALE=1 ./venv/bin/python simulate.py ROLR 2026-01-14 07:00 12:00 --ticks --tick-cache tick_cache/
   ```
-  Note: `WB_MP_ENABLED=1` required since Item 1 (2026-03-22) gated MP off by default.
-- VERO target history: +$9,166 (pre-Fix 5) → +$18,583 (2026-03-18, Fix 5 TW profit gate) → +$15,692 (2026-03-27, system-wide optimization) → +$34,479 (2026-04-08, X01 tuning: 3.5% risk + 5 max attempts)
+  Full-day window (04:00-20:00) variants: VERO +$2,268 (same 5 trades), ROLR +$50,602 (+1 evening trade at 17:13).
+  Source: `cowork_reports/2026-05-18_d1_vero_rolr_reanchor.md`. Reproduced exactly in `cowork_reports/2026-05-18_april_to_may_replay_diff.md` §"Control replays".
+- **YTD compounding-equity baseline (X01 config, $30K starting equity, scanner sim_start → 12:00, Jan 02 → 2026-05-18): $290,502 final equity (+868%), 55 trades, 75% WR. Source: `cowork_reports/2026-05-18_ytd_honest_rebaseline.md` (run 2026-05-18, commit cc3e78d).** Per-day CSV: `cowork_reports/2026-05-18_ytd_honest_rebaseline_per_day.csv`. Per-trade CSV: `cowork_reports/2026-05-18_ytd_honest_rebaseline_trades.csv`. Caveats in narrative §"Honest assessment".
+- VERO target history: +$9,166 (pre-Fix 5) → +$18,583 (2026-03-18, Fix 5 TW profit gate) → +$15,692 (2026-03-27, system-wide optimization) → +$34,479 (2026-04-08, X01 tuning: 3.5% risk + 5 max attempts) — **STALE pre-2026-05-18; see above for verified target.**
+- Memory note: `~/.claude/projects/-Users-duffy/memory/project_current_state.md` references `+$21,024 / +$53,979` for VERO/ROLR — those are unverified orphans from a single 2026-04-03 box-session report and are **superseded** by the verified +$2,268 / +$49,775 numbers above.
 - GWAV and ANPA no longer produce trades in standalone mode (detector evolution)
 
 ### Code Changes
@@ -200,13 +203,26 @@ The exhaustion filter is enabled by default and works CORRECTLY for cascading st
 - **DO NOT implement a classifier-aware bypass** — it would break VERO regression
 - `WB_EXHAUSTION_ENABLED=0` HURTS cascading stocks due to LevelMap interaction (more early entries → more failed resistance levels recorded → optimal entry point blocked)
 
-### Regression Targets (as of 2026-04-08, X01 tuning)
-Primary standalone regression (deterministic, tick mode):
-- VERO 2026-01-16: +$34,479 ✅ (shifted from +$15,692 after X01 tuning: 3.5% risk, 5 max attempts, VOL_MULT 2.5, TARGET_R 1.5, CORE_PCT 90)
-- ROLR 2026-01-14: +$54,654 ✅ (shifted from +$6,444 after X01 tuning — compounding equity amplifies gains)
+### Regression Targets (verified 2026-05-18, commit cc3e78d, X01 config)
+Primary standalone regression (deterministic, tick mode, 07:00-12:00):
+- **VERO 2026-01-16: +$2,268** (5 trades, 4W/1L, 80% WR) — run 2026-05-18, X01 config, R-floor on
+- **ROLR 2026-01-14: +$49,775** (10 trades, 6W/4L, 60% WR) — run 2026-05-18, X01 config, R-floor on
+- Full-day (04:00-20:00) variants: VERO +$2,268 (same), ROLR +$50,602 (+$827 from a 17:13 evening trade)
+- Source narrative: `cowork_reports/2026-05-18_d1_vero_rolr_reanchor.md`
+- Reproduced exactly in: `cowork_reports/2026-05-18_april_to_may_replay_diff.md` §"Control replays"
+
+YTD compounding-equity baseline (run 2026-05-18, commit cc3e78d):
+- **Jan 02 → 2026-05-18, X01 config, $30K starting equity, scanner sim_start → 12:00: $290,502 final (+868%), 55 trades, 75% WR.**
+- Source: `cowork_reports/2026-05-18_ytd_honest_rebaseline.md`
+
+Prior standing targets (now-stale, kept for lineage):
+- VERO +$34,479 / ROLR +$54,654 — 2026-04-08 X01 tuning citation (commit `13d74d3`). Drift noted in 2026-04-15 autopsy (VERO +$35,623, ROLR +$50,602) but never reconciled until today's re-anchor.
+- The +$34,479 / +$54,654 numbers were heavily inflated relative to today's HEAD; per `cowork_reports/2026-05-18_regression_inventory.md` they were never re-verified against the contemporary code/data combo after 2026-04-15.
+
 Note: GWAV and ANPA no longer produce trades in standalone mode due to detector
-evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). The batch runner
-(run_ytd_v2_backtest.py) with tick cache produces +$19,832 (V1) across 49 days.
+evolution (R=0.04 < MIN_R=0.06 for GWAV, no ARMs for ANPA). Legacy batch runner
+(run_ytd_v2_backtest.py) with tick cache produced +$19,832 (V1) across 49 days
+in 2026-03 (pre-X01); use `run_backtest_v2.py` (X01) for current numbers.
 
 ## Current Study Status (as of 2026-03-24)
 
