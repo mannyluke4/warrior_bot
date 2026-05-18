@@ -88,9 +88,9 @@ The `max(1, …)` was almost certainly added as defensive coding against probe-r
 
 ---
 
-## 3. Why BP=$0
+## 3. Why BP=$0 — IBKR premarket margin behavior (CONFIRMED)
 
-The same session shows BP recovers within seconds. Sample later Sizing lines (same equity, same RISK_PCT):
+The same session shows BP recovers later. Sample Sizing lines from regular hours:
 
 ```
 Sizing: equity=$29,687 risk=$1,039 qty=7384 notional=$29,684 (BP 50% of $59,374 = max $29,687)
@@ -98,14 +98,75 @@ Sizing: equity=$29,207 risk=$1,022 qty=3931 notional=$24,097 (BP 50% of $58,414 
 Sizing: equity=$29,207 risk=$1,022 qty=9671 notional=$29,206 (BP 50% of $58,414 = max $29,207)
 ```
 
-BP is ~$58-59K (≈ 2× equity, normal Reg-T margin). **Only one Sizing line in the entire day shows BP=$0**, and it's exactly the SBFM moment.
+BP is ~$58-59K (≈ 2× equity, normal Reg-T margin). **Only one Sizing line in the entire day shows BP=$0**, and it's exactly the SBFM moment at 07:19 ET (premarket).
 
-This is a transient `get_buying_power()` failure mode. Likely causes:
-- IBKR `accountValues` callback hadn't refreshed mid-event
-- Brief gateway reconnect (we saw `⚠️ IBKR ERROR 2106: HMDS data farm connection is OK` earlier in the same minute window)
-- ib_insync request returned an empty AccountValue list
+**Root cause confirmed:** `broker.py:515-520` reads `BuyingPower` from `self._ib.accountValues()` and returns 0 if the tag isn't present. **IBKR doesn't extend day-trade margin outside regular hours.** Premarket, IBKR either reports `BuyingPower = $0` or omits the tag entirely.
 
-The transient itself is unavoidable. The bug is that the sizer doesn't *handle* it correctly.
+Evidence in today's log (timestamp-ordered):
+
+| Time | Symbol | BP reported | Phase |
+|---|---|---:|---|
+| **07:19 ET** | **SBFM** | **$0** | **Premarket — IBKR margin not extended** |
+| 09:35 ET | QUCY | $59,374 | RTH — Reg-T 2× active |
+| ~10:00 ET | CORD | $58,414 | RTH — Reg-T 2× active |
+| (now) | account | ~$57,000 | RTH — Reg-T 2× active |
+
+This is **not an IBKR bug** — it's correct margin behavior on a paper margin account outside RTH. The bug is the bot's sizer assuming `get_buying_power()` always returns a meaningful number.
+
+---
+
+## 3.5. Premarket sizing — the secondary fix
+
+The qty=1 floor (§7) is the primary bug to kill. But fixing only that means premarket signals like SBFM would **skip entirely** instead of trading — also wrong outcome. Premarket gappers are the highest-RVOL, highest-edge setups; we don't want to ship a fix that silently drops them.
+
+### Options for premarket sizing
+
+**(a) NetLiquidation fallback** (recommended)
+If `BuyingPower = 0` AND it's outside RTH (09:30-16:00 ET), use `NetLiquidation × 1` as the effective BP. No margin assumed — sizes to cash only. Roughly half normal RTH notional, but meaningful.
+
+```diff
+@@ -3032,7 +3032,18 @@
+     if SCALE_NOTIONAL:
+-        broker_bp = state.broker.get_buying_power() if state.broker else current_equity * 2
++        broker_bp = state.broker.get_buying_power() if state.broker else current_equity * 2
++        if broker_bp <= 0:
++            # IBKR doesn't extend day-trade margin in premarket / extended hours.
++            # Fall back to NetLiquidation (no margin — cash-only sizing).
++            now_et = datetime.now(ET).time()
++            in_rth = time_obj(9, 30) <= now_et < time_obj(16, 0)
++            if in_rth:
++                # RTH BP=$0 is a real transient — log and use last-known-good or 2× equity
++                broker_bp = state.last_known_bp if getattr(state, "last_known_bp", 0) > 0 else current_equity * 2
++                print(f"  BP_FALLBACK_RTH: get_buying_power()=0 transient; using ${broker_bp:,.0f}", flush=True)
++            else:
++                # Outside RTH — IBKR margin not extended yet. Cash-only sizing.
++                broker_bp = current_equity
++                print(f"  BP_FALLBACK_EXT_HOURS: extended-hours sizing (NetLiq cash-only): ${broker_bp:,.0f}", flush=True)
++        else:
++            state.last_known_bp = broker_bp
+         effective_notional = broker_bp * BUYING_POWER_PCT
+     else:
+         effective_notional = MAX_NOTIONAL
+```
+
+Effect on SBFM today (counterfactual):
+- `current_equity ≈ $29,687`
+- `effective_notional = $29,687 × 50% = $14,843`
+- `qty_notional = $14,843 / $2.02 = 7,348`
+- `qty = min(9,100, 7,348, MAX_SHARES) = 7,348`
+- Probe 50% → `qty = 3,674 shares`
+- Real trade instead of placebo.
+
+**(b) Skip premarket signals entirely** (rejected)
+Defer all entries to RTH open. Loses the premarket-gapper edge entirely. SBFM-class setups are exactly what we want to catch — skipping them is the wrong fix.
+
+**Recommended: ship (a).** Two-paragraph diff covers both the RTH transient case (last_known_bp fallback) and the premarket-margin-not-extended case (cash-only sizing).
+
+### Edge cases
+
+- **Cash account** (no margin): NetLiquidation × 50% is correct anyway — same behavior, no risk increase
+- **Post-close extended hours** (16:00-20:00 ET): same as premarket — IBKR doesn't extend margin. The fallback handles it.
+- **Equity drops mid-day**: `last_known_bp` could become stale upward. Mitigation: clamp `last_known_bp` to `current_equity × 4` before use. Or invalidate the cache on every fill (would update on next call).
 
 ---
 
@@ -242,12 +303,23 @@ The qty=1 floor is the highest-severity item in the open list **because the upsi
 
 ## 10. Decisions for Manny + Cowork
 
-1. **Approve the two-line diff** (remove `max(1, …)` from line 3048)?
-2. **Approve the optional sibling fix** (BP=$0 fallback at line 3033)?
+1. **Approve the two-line diff** (remove `max(1, …)` from line 3048) — the primary fix.
+2. **Approve the BP-fallback + premarket-cash-only diff** (§3.5 option (a)) — the structural fix that makes premarket gappers like SBFM size correctly without margin.
 3. **Rollout window** — post-close Tuesday 5/19 or weekend 5/24?
 4. **Bundle with the resume-boot patch and R-floor patch** into a single Wave-of-bug-fixes deployment, or deploy independently?
 
 Recommendation: **bundle all three patches** into a single post-close Tuesday or Saturday weekend deploy with full regression (VERO + ROLR + 30-session replay). All three are low-risk one-to-ten-liners. Single deploy minimizes the number of "did we break it this time?" cycles.
+
+**Bundled deploy contents:**
+- qty=1 floor removal (§7) — `bot_v3_hybrid.py:3048` + sibling files
+- BP-during-premarket fallback (§3.5) — `bot_v3_hybrid.py:3033` + sibling files
+- Resume-boot stale-signal fix — per `2026-05-18_resume_boot_stale_signal_fix.md`
+- R-floor gate (`WB_MIN_ABSOLUTE_R=$0.10`) — per `2026-05-18_r_floor_gate_design.md`
+
+Two regression dimensions to check before push:
+- **VERO 2026-01-16** target +$34,479 (X01 baseline) — no premarket entries → BP fallback shouldn't trigger; qty=1 fix shouldn't affect; R-floor unlikely to affect (R was probably $0.12+).
+- **ROLR 2026-01-14** target +$54,654 — same logic.
+- Plus a 30-session replay to confirm no historical trades have their behavior changed unexpectedly.
 
 ---
 
