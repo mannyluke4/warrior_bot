@@ -117,6 +117,10 @@ class AlpacaBroker:
         they're only surfaced through the normalized BrokerOrder /
         BrokerPosition shapes."""
         self._c = alpaca_client
+        self._last_known_bp: float = 0.0
+        self._last_known_bp_ts: float = 0.0
+        self._last_known_equity: float = 0.0
+        self._last_known_equity_ts: float = 0.0
 
     # ─ Status normalization ────────────────────────────────────────
     @staticmethod
@@ -243,20 +247,59 @@ class AlpacaBroker:
         return out
 
     def get_account_equity(self) -> float:
-        """Current account equity for dynamic risk sizing."""
+        """Current account equity for dynamic risk sizing.
+
+        On Alpaca API failure, returns last-known-good value rather than
+        silently zeroing. See get_buying_power() for the rationale."""
         try:
             acct = _with_timeout(self._c.get_account, timeout=5)
-            return float(acct.equity)
-        except Exception:
-            return 0.0
+            v = float(acct.equity)
+            self._last_known_equity = v
+            self._last_known_equity_ts = time.time()
+            return v
+        except Exception as e:
+            age = time.time() - self._last_known_equity_ts if self._last_known_equity_ts > 0 else -1
+            print(
+                f"  ⚠️ EQUITY_FETCH_FAIL: {type(e).__name__}: {e} — "
+                f"using last_known_equity=${self._last_known_equity:,.2f} "
+                f"(age={age:.0f}s)",
+                flush=True,
+            )
+            return self._last_known_equity
 
     def get_buying_power(self) -> float:
-        """Current buying power for position sizing."""
+        """Current buying power for position sizing.
+
+        On Alpaca API failure, returns last-known-good value rather than
+        silently returning 0. The 2026-05-18 SBFM premarket incident
+        (DNS resolution outage at 07:19 ET) showed that the previous
+        bare `except: return 0.0` produced an invisible BP=$0 at the
+        exact moment a signal fired — the qty math collapsed to 0 and
+        bot_v3_hybrid.py:3048's `max(1, …)` floor silently turned that
+        into a 1-share placebo trade.
+
+        Behavior:
+          • Success → update cache, return live value.
+          • Failure → log the exception visibly (was silent before),
+            return cached last-known-good. First-call failure returns
+            0.0 (cache empty), which downstream skip-on-zero handles
+            correctly once the qty=1 floor is removed.
+        See cowork_reports/2026-05-18_sbfm_qty1_incident.md §13."""
         try:
             acct = _with_timeout(self._c.get_account, timeout=5)
-            return float(acct.buying_power)
-        except Exception:
-            return 0.0
+            v = float(acct.buying_power)
+            self._last_known_bp = v
+            self._last_known_bp_ts = time.time()
+            return v
+        except Exception as e:
+            age = time.time() - self._last_known_bp_ts if self._last_known_bp_ts > 0 else -1
+            print(
+                f"  ⚠️ BP_FETCH_FAIL: {type(e).__name__}: {e} — "
+                f"using last_known_bp=${self._last_known_bp:,.2f} "
+                f"(age={age:.0f}s)",
+                flush=True,
+            )
+            return self._last_known_bp
 
     def is_shortable(self, symbol: str) -> bool:
         """Pre-trade check: can this name be sold short on this account?
@@ -513,25 +556,11 @@ class IBKRBroker:
         return self._account_value("NetLiquidation")
 
     def get_buying_power(self) -> float:
-        """IBKR buying power for position sizing.
-
-        Tag hierarchy (first non-zero wins):
-          1. BuyingPower         — day-trade extension. Populated during
-                                    RTH; $0 in premarket / after-hours /
-                                    for PDT-ineligible accounts.
-          2. AvailableFunds      — Reg-T cash + margin available now.
-          3. EquityWithLoanValue — total equity counted toward margin.
-
-        Fallback added 2026-05-18 after the SBFM premarket incident: the
-        bot was reading $0 BuyingPower at 07:30 ET and sizing qty=1.
-        The day-trade extension is RTH-only — actual spendable capital
-        lives in AvailableFunds / EquityWithLoanValue. Caller still
-        multiplies by WB_BUYING_POWER_PCT for the effective cap."""
-        for tag in ("BuyingPower", "AvailableFunds", "EquityWithLoanValue"):
-            v = self._account_value(tag)
-            if v > 0:
-                return v
-        return 0.0
+        """IBKR BuyingPower — the broker-reported max notional before
+        margin calls. Accounts under $25K get 2× (RegT); over $25K
+        get 4× (PDT). Caller multiplies by WB_BUYING_POWER_PCT to
+        get the effective position-size cap."""
+        return self._account_value("BuyingPower")
 
     def _account_value(self, tag: str) -> float:
         try:

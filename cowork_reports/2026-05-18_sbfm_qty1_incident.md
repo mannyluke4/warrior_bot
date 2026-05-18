@@ -416,3 +416,117 @@ No new env var. No time-of-day branch. No caller-side changes. The fix is invisi
 
 **Original framing preserved above for audit trail.** This section is the operative one going forward.
 
+---
+
+## 13. RE-CORRECTION (2026-05-18 PM, post-Cowork audit) — §12 was also wrong; SBFM ran on `AlpacaBroker`, not `IBKRBroker`
+
+§12's "wrong IBKR tag" framing is **also incomplete and lands in the wrong file**. Cowork's audit caught the misdiagnosis: the SBFM signal never touched `IBKRBroker.get_buying_power()`. The bot was running `Broker: ALPACA` at the moment of the trade.
+
+### 13.1 Evidence — which broker ran today
+
+**`.env` (pre-correction):** `WB_BROKER=ibkr`
+
+**`daily_run_v3.sh:208-211` (the actual launcher):**
+```bash
+APCA_API_KEY_ID="$MAIN_APCA_KEY" \
+APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
+WB_BROKER=alpaca \
+  python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+```
+The cron-launched bot inherits `WB_BROKER=alpaca` from the command-line injection, which overrides the `.env` value. The comment at line 193-197 documents the 2026-05-07 switch back to Alpaca (IBKR paper margin was rejecting squeeze entries — ATRA $202-short reject on 2026-05-07).
+
+**`logs/2026-05-18_daily.log:63` (runtime print from `bot_v3_hybrid.py:4651`):**
+```
+Broker: ALPACA
+```
+
+So `state.broker = AlpacaBroker(state.alpaca)`. The `state.broker.get_buying_power()` call at `bot_v3_hybrid.py:3033` resolved to `broker.py:253-259` (Alpaca path) — NOT the `broker.py:515-520` IBKR path that §3 / §3.5 / §12 all analyzed.
+
+### 13.2 Smoking gun — `AlpacaBroker.get_buying_power()` is a silent two-line failure
+
+```python
+def get_buying_power(self) -> float:
+    """Current buying power for position sizing."""
+    try:
+        acct = _with_timeout(self._c.get_account, timeout=5)
+        return float(acct.buying_power)
+    except Exception:
+        return 0.0
+```
+
+Any exception from `_c.get_account()` → returns 0.0 with **no log line**. The operator has no visibility into the failure. The qty=1 floor downstream papers over the symptom.
+
+### 13.3 What actually happened at 07:19 ET — the DNS-outage correlation
+
+The SBFM entry log:
+```
+[ALPACA_QUOTE_FAIL] SBFM: HTTPSConnectionPool(host='data.alpaca.markets', port=443):
+  Max retries exceeded with url: /v2/stocks/quotes/latest?symbols=SBFM
+  (Caused by NameResolutionError(... Failed to resolve 'data.alpaca.markets'
+  ([Errno 8] nodename nor servname provided, or not known)))
+🟩 ENTRY: SBFM qty=1 limit=$2.09 ...
+  BROKER ORDER: b25ce5d0-2831-4682-bace-4c6aa72b2e9c BUY 1 SBFM @ $2.09
+```
+
+Alpaca DNS resolution (`data.alpaca.markets`) was failing at the exact moment SBFM signaled. `api.alpaca.markets` shares the same DNS resolver path; almost certainly the `_c.get_account()` call inside `get_buying_power()` failed the same way during the same window. Because the order-submission call happened a fraction of a second later, DNS had recovered by then — only the BP fetch caught the outage, and it was swallowed silently.
+
+**§4's claim that ALPACA_QUOTE_FAIL is a "red herring" was wrong.** It is the smoking gun. The quote-fetch failure and the account-fetch failure are the same network event; one was logged loudly, the other was logged not at all.
+
+### 13.4 Corrected fix — `AlpacaBroker.get_buying_power()` (broker.py:253-274 after patch)
+
+Replace the silent `except Exception: return 0.0` with: cache last-known-good BP on every success, log the exception visibly on failure, return the cached value. Same treatment for `get_account_equity()` since it has the identical failure mode.
+
+```python
+def get_buying_power(self) -> float:
+    try:
+        acct = _with_timeout(self._c.get_account, timeout=5)
+        v = float(acct.buying_power)
+        self._last_known_bp = v
+        self._last_known_bp_ts = time.time()
+        return v
+    except Exception as e:
+        age = time.time() - self._last_known_bp_ts if self._last_known_bp_ts > 0 else -1
+        print(f"  ⚠️ BP_FETCH_FAIL: {type(e).__name__}: {e} — "
+              f"using last_known_bp=${self._last_known_bp:,.2f} (age={age:.0f}s)",
+              flush=True)
+        return self._last_known_bp
+```
+
+Why this is the right shape:
+- **Visible failure.** The next SBFM-class event leaves a forensic trail at the moment of the bug, not a $0 BP that requires reconstructing the network state hours later.
+- **Survivable transient.** A 5-second DNS blip no longer collapses sizing to placebo. The cached BP from the previous successful call (typically seconds earlier) carries through the window.
+- **Stale-data safety.** The cache age is logged with each failure so the operator can decide whether the cached value is still trustworthy. For real-money sizing, the qty=1 floor removal (§7) is the second line of defense if cache age becomes alarming.
+- **No env gate.** Pre-existing behavior was "silently return 0 on failure"; new behavior is "loudly return last-known on failure." No backwards-compatibility concern — the previous behavior was a bug.
+
+`get_account_equity()` gets the same treatment because it shares the failure path verbatim.
+
+### 13.5 `.env` vs `daily_run_v3.sh` drift — fixed in same commit
+
+`.env` saying `WB_BROKER=ibkr` while the cron launcher injects `WB_BROKER=alpaca` is a latent footgun: a manual launch (`python bot_v3_hybrid.py` for debugging or recovery) would silently use the IBKR path — different broker, different account, different code path, different bugs. Fixed in this commit by updating `.env` to `WB_BROKER=alpaca` and adding a comment pointing future readers at `daily_run_v3.sh:210` as the authoritative override location.
+
+### 13.6 Status — what shipped, what's open
+
+| Item | Status |
+|---|---|
+| IBKRBroker tag hierarchy (§12) | **REVERTED 2026-05-18 PM.** Misdiagnosed the broker. Re-apply when WB_BROKER actually flips back to ibkr. |
+| AlpacaBroker BP + equity log+cache (§13.4) | **Applied 2026-05-18 PM** to `broker.py:253-303` and `__init__`. |
+| `.env` WB_BROKER drift (§13.5) | **Applied 2026-05-18 PM** — `.env:503` now matches the runtime override. |
+| qty=1 floor removal (§7) | Still **UNAPPLIED.** Independent fix, scheduled for the bundled post-close Tuesday 5/19 or weekend 5/24 deploy. |
+| Runtime broker-mismatch assert | **TODO.** Add a check at boot that fails loud if WB_BROKER ≠ alpaca for the squeeze-paper window. Defer to bundled deploy. |
+
+### 13.7 What §12 got wrong vs. right
+
+**Right:** the *shape* of a tag-hierarchy fix to `IBKRBroker.get_buying_power()` is still correct **for any future IBKR-execution path**. Re-apply it the day `WB_BROKER` flips back to ibkr (or as a defensive patch before any IBKR-execution flip).
+
+**Wrong:** the diagnosis of the SBFM incident itself. SBFM ran through `AlpacaBroker`. The IBKR-path probe (probe_account_values.py) was useful for verifying tag names exist, but irrelevant to the actual incident.
+
+**Right framing for SBFM:** transient Alpaca API failure was silently swallowed by `AlpacaBroker.get_buying_power()`. The fix is visibility + cache, not field selection.
+
+### 13.8 Lessons (for the audit trail)
+
+1. **Verify which code path runs before diagnosing it.** "What does `state.broker` resolve to at runtime?" should have been the first question, not the last. The boot-line `Broker: ALPACA` was sitting in the same log file the whole investigation.
+2. **`.env` is not the source of truth** if a launcher overrides it on the command line. Trust runtime evidence over config-file evidence.
+3. **A silent `except: return 0.0` is a forensic bomb.** It buries failures at the moment they happen and forces reconstruction hours later from circumstantial evidence (correlated quote failures, DNS conditions). The visibility patch in §13.4 is more valuable than the BP fallback itself — it makes the next incident debuggable in minutes instead of hours.
+
+§13 is the operative diagnosis. §12 is preserved above for audit trail.
+
