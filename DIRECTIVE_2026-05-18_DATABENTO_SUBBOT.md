@@ -141,10 +141,56 @@ This is the deliverable that decides whether the migration is good.
 
 Before tomorrow's 02:00 MT cron picks up the new Setup B configuration:
 
-1. **Verify Databento Live subscription is active.** Run a 60-second smoke test: `db.Live().subscribe(dataset=..., schema="trades", symbols=["AAPL", "TSLA"])`, count messages, confirm the stream is delivering. Output to `cowork_reports/2026-05-18_databento_live_smoke.md`.
-2. **Verify Setup B can run end-to-end with the new feed against a small test universe.** Manual smoke test, 10 minutes, 3 symbols. Confirm no crashes, ticks flow, the existing detector wiring works against Databento ticker objects.
-3. **Verify Setup A is untouched.** `git diff` of `bot_v3_hybrid.py` shows zero changes.
-4. **Verify the launcher behavior.** Dry-run `daily_run_v3.sh` with `WB_DRYRUN=1` (or whatever exists) — confirm Setup A launches with IBKR, Setup B launches with Databento.
+### 0. **Databento subscription-limit reconnaissance** (CRITICAL — do this first)
+
+**Why this exists:** IBKR caps Tier 1 (`reqTickByTickData('AllLast')`) at **5 simultaneous subscriptions per client** (`bot_v3_hybrid.py:119` `TBT_MAX_SUBSCRIPTIONS=5`). The entire Tier 1/Tier 2 architecture — with `manage_tier1_subscriptions` rotating the 5 highest-volume symbols into the per-print stream while the rest ride on 250ms snapshots — exists because of this cap. **If Databento has analogous limits and we don't discover them until mid-session, we'll silently drop ticks on candidates and not know why.**
+
+CC must answer ALL of the following before any other Databento work proceeds. **No assumptions, no "probably unlimited."** Verify each against the actual `db.Live()` SDK behavior and Databento's published limits.
+
+1. **Per-connection symbol cap on `db.Live().subscribe(...)`.** Is there a maximum number of symbols a single Live session can subscribe to concurrently?
+2. **Per-account concurrent-stream cap.** How many simultaneous `db.Live()` sessions can our API key hold open? (Setup B + scanner already uses one for the scanner; what does adding a second do?)
+3. **Per-schema bandwidth / message-rate limits.** Does Databento throttle `trades` or `tbbo` streams above a certain msg/sec? Documented soft caps?
+4. **Subscription-modify behavior.** Can we add/remove symbols from an active subscription mid-session, or do we need to tear down and reconnect? (IBKR allows mid-session add/remove; Databento's behavior here drives the rotation logic.)
+5. **Dataset coverage.** Confirm the live tier of `XNAS.ITCH` and/or `DBEQ.BASIC` (or whichever datasets we're paying for on Standard) covers the small-cap squeeze universe. Our universe includes microfloat names — some discount data feeds gate access to harder-to-borrow / illiquid names. Verify against an actual subscription test, not the docs.
+6. **Latency floor.** What's Databento's documented or measured first-tick latency from venue trade to client receipt? (For comparison to IBKR's typical 1-2s consolidated tape.)
+7. **Authentication / session quirks.** Does the live API have time-of-day windows, quota refreshes, session-resume semantics, anything weird that would surprise us during a long-running session?
+8. **Failure modes.** What happens when the connection drops mid-session? Auto-reconnect, exponential backoff, manual reconnect required? How does `db.Live()` signal disconnection to client code?
+
+Output: `cowork_reports/2026-05-18_databento_subscription_limits.md`. Each question has a verified answer with citation (Databento docs URL + commit/section, or empirical test result with the actual SDK call). **"I think" or "probably" answers are not acceptable.**
+
+**If any answer reveals a limit tighter than IBKR's** (e.g., ≤5 symbol cap, or strict tear-down-to-modify behavior), CC pauses the build and reports. We design the bot's subscription strategy around the *real* constraints, not the assumed ones. The Tier 1/Tier 2 rotation logic in Setup A may need to be mirrored on Setup B if caps are present.
+
+**If limits are looser than IBKR's** (e.g., 100+ symbol cap, free mid-session add/remove), Setup B can flatten the architecture — just subscribe to the entire watchlist as Tier 1 equivalent. Different code path, different complexity profile.
+
+**Either outcome is fine.** What's not fine is finding out tomorrow during market hours.
+
+### 1. Verify Databento Live subscription is active
+
+Run a 60-second smoke test: `db.Live().subscribe(dataset=..., schema="trades", symbols=["AAPL", "TSLA"])`, count messages, confirm the stream is delivering. Output to `cowork_reports/2026-05-18_databento_live_smoke.md`.
+
+### 2. Verify Setup B can run end-to-end with the new feed against a small test universe
+
+Manual smoke test, 10 minutes, 3 symbols. Confirm no crashes, ticks flow, the existing detector wiring works against Databento ticker objects.
+
+### 3. Verify Setup A is untouched
+
+`git diff` of `bot_v3_hybrid.py` shows zero changes.
+
+### 4. Verify the launcher behavior
+
+Dry-run `daily_run_v3.sh` with `WB_DRYRUN=1` (or whatever exists) — confirm Setup A launches with IBKR, Setup B launches with Databento.
+
+### 5. Stress-test against the discovered limits
+
+Once step 0 has answered the limit questions, build a **subscribe-to-N-symbols-and-watch** test that pushes Setup B near the documented cap (or 50 symbols if no cap exists) for 5 minutes. Confirm:
+- All N streams deliver ticks at expected density
+- No silent drops or capped messages
+- Memory / CPU behavior is sane
+- Mid-session subscription add/remove works as documented
+
+Output: `cowork_reports/2026-05-18_databento_stress_test.md`. If we discover a real cap, this is also where we measure how the bot's existing watchlist-poll loop behaves at the limit — graceful rotation, hard refusal, or silent failure.
+
+### Failure handling
 
 If any pre-launch check fails, **roll back** to `WB_SUBBOT_DATA_FEED=ibkr` and report. **Do not flag it for tomorrow** — we'll catch up the next day.
 
@@ -152,14 +198,15 @@ If any pre-launch check fails, **roll back** to `WB_SUBBOT_DATA_FEED=ibkr` and r
 
 ## What we're learning tomorrow
 
-This is a **measurement run**, not a commitment. Tomorrow's data answers four questions:
+This is a **measurement run**, not a commitment. Tomorrow's data answers five questions:
 
 1. **Tick density:** does Databento match or beat IBKR for small-cap squeeze candidates?
 2. **Latency:** is signal-detection time on Databento competitive with IBKR?
 3. **Coverage:** does the squeeze detector fire on the same setups using Databento ticks as it does using IBKR ticks?
 4. **Reliability:** does the Databento live stream stay up cleanly through a full session, or are there drops/reconnects?
+5. **Subscription elasticity:** how does Databento behave at and around its discovered subscription limits during real market activity? (Pre-launch step 5 stresses this synthetically; tomorrow validates it under live load.)
 
-If all four are good → we have a path to retire IBKR data and the $500 minimum + market-data-subscription stack. **The decision happens after the data lands, not before.**
+If all five are good → we have a path to retire IBKR data and the $500 minimum + market-data-subscription stack. **The decision happens after the data lands, not before.**
 
 If any are bad → Setup B reverts to IBKR data, we keep the current architecture, and we know what we know.
 
