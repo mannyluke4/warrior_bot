@@ -1,0 +1,196 @@
+# Setup B → Databento Live Feed (Side-by-Side A/B)
+
+**Date:** 2026-05-18
+**Branch:** `v2-ibkr-migration`
+**Author:** Cowork (per Manny direction, Mon 5:07 PM MDT)
+**Status:** GO — wire Setup B (`bot_alpaca_subbot.py`) to Databento live ticks for tomorrow's market open. Setup A unchanged on IBKR. Run side-by-side, compare.
+
+---
+
+## Manny's direction
+
+> "IBKR requires $500 minimum just sitting there for us to actually use it. Then on top of that, we pay the market data subscriptions.
+>
+> Let's use the bot that WB was using for setup B. It's sitting unused today. We'll wire that one for Databento for data, and Alpaca for execution. Do we get live ticks from Databento? We should — we're paying for it.
+>
+> Let's set this up today, and run them side-by-side tomorrow."
+
+---
+
+## Pre-flight findings (verified by Cowork before drafting)
+
+- **Databento ships live ticks via `databento.Live()` SDK.** `live_scanner.py:650` already uses it (currently for Databento TBBO trade stream feeding the scanner). We're paying for it. The feed is real and active.
+- **`databento_feed.py` exists for historical only.** No live-feed module yet. Needs to be built.
+- **`alpaca_feed.py` exists as a dormant drop-in `ib_insync.IB` shim.** Built for the May 4 Alpaca-data experiment. Documented as: *"a drop-in replacement for ib_insync.IB market-data layer ... mirrors the subset of ib_insync's IB API that bot_v3_hybrid.py uses."* **The same shape applies to a Databento live feed.** Use `alpaca_feed.py` as the architectural template.
+- **Setup B bot (`bot_alpaca_subbot.py`) currently runs `IBKR data + Alpaca execution`.** It was switched FROM Alpaca data on 2026-05-04 after measurement showed Alpaca IEX captured **0.1–3.6% of the IBKR consolidated tick stream** on small-caps. **Databento is MBO-grade, not IEX-degraded — should match or beat IBKR on tick density.** Verifying this tomorrow is the entire point of the A/B.
+- **Setup B's watchlist comes from Setup A.** Per the bot header: *"This sub-bot does NOT run its own scanner. It polls session_state/<today>/watchlist.json that the main bot writes."* Same universe, same seeding, only the broker differs. **For the Databento experiment, this stays — same watchlist, same symbols, only the data source differs.**
+- **Setup B uses clientId=2 for IBKR.** Going to Databento means we drop the IBKR connection on Setup B entirely. No clientId conflict possible. Net simplification.
+
+---
+
+## What we're building
+
+A new file: **`databento_live_feed.py`** — the same architectural pattern as `alpaca_feed.py`, but backed by `databento.Live()` instead of Alpaca's `StockDataStream`.
+
+Mirrors the subset of `ib_insync.IB` that `bot_alpaca_subbot.py` reaches for. Specifically (from grep of the bot's IBKR usage):
+
+- `connect()` / `isConnected()` / `managedAccounts()` — connection lifecycle
+- `qualifyContracts(contract)` — symbol resolution (Databento uses raw symbols, no contract qualification needed; method becomes a no-op or lookup)
+- `reqMktData(contract, '233', ...)` — Tier 2 snapshot stream → Databento TBBO subscription
+- `reqTickByTickData(contract, "AllLast", ...)` — Tier 1 per-print stream → Databento `trades` schema subscription on MBO/TBBO
+- `cancelMktData(contract)` / `cancelTickByTickData(contract, "AllLast")` — unsubscribe
+- `reqHistoricalTicks(...)` — used for seed-replay → Databento `Historical()` (already proven)
+- `sleep(N)` — yield-and-drain pattern (per `alpaca_feed.py` pattern: stream thread enqueues, main thread drains on sleep, fires `pendingTickersEvent` with updated Ticker set)
+- Ticker objects with `.last`, `.lastSize`, `.time` fields
+
+Threading model: same as `alpaca_feed.py` — one daemon stream thread owning the asyncio loop, queue-passing to main thread, all ticker mutation on main thread.
+
+---
+
+## Account allocation tomorrow morning
+
+| Bot | Data | Execution | Status |
+|---|---|---|---|
+| **Setup A (`bot_v3_hybrid.py`)** | **IBKR** (unchanged) | Alpaca paper (clientId=51, MAIN_APCA keys) | Sacred — no changes |
+| **Setup B (`bot_alpaca_subbot.py`)** | **Databento** (NEW) | Alpaca paper (existing Setup B keys) | Migration target |
+| Engine paper (framework) | IBKR (unchanged) | Alpaca paper (separate clientId) | Wave 4 paper, untouched |
+| WB paper account | (idle) | (idle) | WB v2 research, no live deploy |
+
+Both Setup A and Setup B watch the same universe (Setup B mirrors A's watchlist). Tomorrow we get a clean A/B comparison: same symbols, same scanner, different data feeds.
+
+---
+
+## What CC builds
+
+### 1. `databento_live_feed.py`
+
+New file. Architectural template: `alpaca_feed.py`. Backing library: `databento.Live()` (already a project dependency).
+
+**Subscription shape:**
+- Schema: `trades` (per-print stream) for Tier 1 — equivalent to `reqTickByTickData('AllLast')`
+- Schema: `tbbo` (top-of-book bid/offer + trades) for Tier 2 — equivalent to `reqMktData('233')`
+- Dataset: confirm with CC which is included in our Standard subscription. Likely `XNAS.ITCH` (Nasdaq) and/or `DBEQ.BASIC` (consolidated). **Verify against billing before building, not after.**
+- Symbols: subscribed dynamically as Setup B's watchlist polls `session_state/<today>/watchlist.json`
+
+**Ticker shape compatibility:**
+- `Ticker.last` ← Databento trade event price
+- `Ticker.lastSize` ← Databento trade event size
+- `Ticker.time` ← Databento ts_event (nanosecond precision; convert to UTC datetime)
+- `pendingTickersEvent` fires on main thread sleep drain, same shape ib_insync delivers
+
+**Connection lifecycle:**
+- `connect()` → instantiate `db.Live(key=...)` and start daemon thread
+- `isConnected()` → check stream thread health
+- `disconnect()` → close stream cleanly, drain remaining queue
+
+**Resume support:**
+- `reqHistoricalTicks` → `db.Historical()` call, same data shape, already proven in `databento_feed.py`
+
+### 2. `bot_alpaca_subbot.py` modifications
+
+Minimal. Add a feed-selector gate at boot:
+
+```python
+WB_SUBBOT_DATA_FEED = os.getenv("WB_SUBBOT_DATA_FEED", "ibkr").lower()
+```
+
+When `WB_SUBBOT_DATA_FEED=databento`:
+- Skip IBKR Gateway connection entirely
+- Instantiate `DatabentoLiveFeed` instead of `IB()`
+- All other behavior identical (same watchlist polling, same Alpaca execution, same persistence, same logging)
+
+When `WB_SUBBOT_DATA_FEED=ibkr` (default): existing behavior.
+
+This way Setup B can flip back to IBKR data instantly if Databento has issues, no code re-deploy needed.
+
+### 3. `daily_run_v3.sh` — Setup B launch
+
+Update the Setup B launch block to set `WB_SUBBOT_DATA_FEED=databento`. Drop the IBKR clientId=2 dependency for Setup B since it's no longer needed.
+
+**Important: Setup A's launch block stays exactly as-is.** Same IBKR Gateway dependency, same clientId, same data path. Sacred.
+
+### 4. Parity validation harness
+
+Once running tomorrow, we need to compare Setup A (IBKR) vs Setup B (Databento) on:
+
+- **Tick count per symbol per minute** — does Databento see as many prints as IBKR?
+- **First-tick timing** — when a new candidate is added, how fast does each feed deliver the first tick?
+- **Trigger detection latency** — when both detectors see the same price level break, what's the timestamp delta between Setup A's signal and Setup B's signal?
+- **Signal-to-fill latency** — from each bot's ENTRY signal → broker order submission → broker fill timestamp. (Both bots execute on Alpaca, so the broker side is constant.)
+- **Trade counts** — same 10 symbols, same scanner, both bots running parallel: do they fire the same number of entries? Same ones?
+
+CC builds `scripts/compare_subbot_vs_main.py` (or extends existing latency-diagnostic tool) that parses both bots' logs after market close tomorrow and produces:
+- `cowork_reports/2026-05-19_databento_vs_ibkr_subbot_comparison.md`
+- `cowork_reports/2026-05-19_databento_vs_ibkr_subbot_per_symbol.csv`
+
+This is the deliverable that decides whether the migration is good.
+
+---
+
+## What CC must NOT do
+
+- **Do NOT modify `bot_v3_hybrid.py`** (Setup A). Setup A is sacred. The new `WB_SUBBOT_DATA_FEED` switch lives in `bot_alpaca_subbot.py` only.
+- **Do NOT modify `live_scanner.py`.** It already uses Databento; no change needed.
+- **Do NOT modify the framework Wave 4 paper deploy.** Engine paper bot still runs on IBKR.
+- **Do NOT touch `ibkr_feed.py` or `databento_feed.py` historical paths.** New file, new module.
+- **Do NOT push real-money execution to Databento data.** Squeeze 6/15 cutover stays on IBKR data + Alpaca exec stack. Databento experiment is paper-only until the A/B data justifies the cutover.
+
+---
+
+## Pre-launch validation (CC)
+
+Before tomorrow's 02:00 MT cron picks up the new Setup B configuration:
+
+1. **Verify Databento Live subscription is active.** Run a 60-second smoke test: `db.Live().subscribe(dataset=..., schema="trades", symbols=["AAPL", "TSLA"])`, count messages, confirm the stream is delivering. Output to `cowork_reports/2026-05-18_databento_live_smoke.md`.
+2. **Verify Setup B can run end-to-end with the new feed against a small test universe.** Manual smoke test, 10 minutes, 3 symbols. Confirm no crashes, ticks flow, the existing detector wiring works against Databento ticker objects.
+3. **Verify Setup A is untouched.** `git diff` of `bot_v3_hybrid.py` shows zero changes.
+4. **Verify the launcher behavior.** Dry-run `daily_run_v3.sh` with `WB_DRYRUN=1` (or whatever exists) — confirm Setup A launches with IBKR, Setup B launches with Databento.
+
+If any pre-launch check fails, **roll back** to `WB_SUBBOT_DATA_FEED=ibkr` and report. **Do not flag it for tomorrow** — we'll catch up the next day.
+
+---
+
+## What we're learning tomorrow
+
+This is a **measurement run**, not a commitment. Tomorrow's data answers four questions:
+
+1. **Tick density:** does Databento match or beat IBKR for small-cap squeeze candidates?
+2. **Latency:** is signal-detection time on Databento competitive with IBKR?
+3. **Coverage:** does the squeeze detector fire on the same setups using Databento ticks as it does using IBKR ticks?
+4. **Reliability:** does the Databento live stream stay up cleanly through a full session, or are there drops/reconnects?
+
+If all four are good → we have a path to retire IBKR data and the $500 minimum + market-data-subscription stack. **The decision happens after the data lands, not before.**
+
+If any are bad → Setup B reverts to IBKR data, we keep the current architecture, and we know what we know.
+
+---
+
+## Out of scope tomorrow
+
+These don't get touched:
+
+- Squeeze 6/15 real-money cutover — stays on the current stack regardless of Databento results
+- Setup A — sacred, no modifications
+- Engine framework Wave 4 — running independently on IBKR
+- WB v2 Stage 0 — research workstream, no deploy
+- Broker latency investigation (Tracks 1, 2, 3) — independent, ongoing
+
+A successful Databento A/B doesn't trigger an immediate IBKR rip-out. It builds the case for one, **post-6/15.**
+
+---
+
+## Reporting
+
+CC posts a status update when:
+- `databento_live_feed.py` is built and smoke-tested
+- Setup B is wired and dry-run-validated
+- Setup A is verified untouched
+- Tomorrow's session ends and the comparison report lands
+
+---
+
+## The reminder
+
+We're already paying for Databento. Setup B is sitting unused. Tomorrow's market open is 16 hours away. Building the data-source independence we'd need to drop IBKR is a few hours of work — the kind of work that pays compounding returns the moment we finish it. Even if we don't migrate, we have the *option* to migrate, and we have measurement data on what we'd be giving up or gaining.
+
+GO.
