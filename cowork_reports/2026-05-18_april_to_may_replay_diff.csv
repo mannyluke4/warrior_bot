@@ -1,0 +1,45 @@
+date,symbol,live_trades,live_pnl,live_filled,live_chase_aborts,replay_trades,replay_pnl,trade_delta,pnl_delta,expected_divergence,notes,wall_s
+2026-04-01,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-02,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-03,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-06,FCUV,2,+0,0,3,5,+5449,3,+5449,yes,structural: live had 3 chase-cap aborts (sim fills them); live_filled=0 vs replay=5,14.2
+2026-04-06,MLEC,1,+0,0,1,7,+13951,6,+13951,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=7,5.8
+2026-04-07,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-08,BBGI,1,+0,0,1,1,-143,0,-143,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,14.8
+2026-04-08,ELPW,1,+0,0,1,1,-429,0,-429,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,5.4
+2026-04-08,UCAR,1,+0,1,0,0,+0,-1,+0,yes,low-R signals filtered (R<0.10: [0.069]),23.0
+2026-04-09,CLIK,1,+0,0,1,0,+0,-1,+0,no,matches live (filled P&L),0.5
+2026-04-09,ELAB,1,+0,0,1,1,-1698,0,-1698,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,0.6
+2026-04-10,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-13,RECT,2,-173,1,1,3,-229,1,-56,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=1 vs replay=3,18.3
+2026-04-13,SKYQ,1,+0,0,1,7,+4296,6,+4296,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=7,9.3
+2026-04-14,RMSG,2,+183,2,0,3,+107,1,-76,no,matches live (filled P&L),8.0
+2026-04-15,MNTS,1,+0,0,1,ERR,ERR,,,n/a,replay failed: nonzero_exit,0.4
+2026-04-15,OKLL,1,+0,0,1,0,+0,-1,+0,no,matches live (filled P&L),0.6
+2026-04-16,MYSE,1,+463,1,0,4,-457,3,-920,yes,"structural: scanner-discovery timing — live entered 1x, sim sees 4 signals (pre-discovery noise). Patches do not touch this path.",36.1
+2026-04-17,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-20,WLDS,1,-74,1,0,5,+450,4,+524,yes,"structural: scanner-discovery timing — live entered 1x, sim sees 5 signals (pre-discovery noise). Patches do not touch this path.",17.9
+2026-04-21,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-22,BMNU,1,+0,0,1,0,+0,-1,+0,yes,low-R signals filtered (R<0.10: [0.065]),1.3
+2026-04-29,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-04-30,FATN,1,+0,0,1,1,-286,0,-286,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,8.7
+2026-05-01,WTO,1,+0,0,1,1,+739,0,+739,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,4.4
+2026-05-04,CLNN,1,-144,0,1,1,+869,0,+1013,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,2.7
+2026-05-04,CRE,1,+0,0,1,1,-786,0,-786,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,2.8
+2026-05-05,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-05-06,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-05-07,ATRA,1,+0,0,1,ERR,ERR,,,n/a,replay failed: nonzero_exit,0.4
+2026-05-08,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-05-11,ODYS,1,+0,0,1,ERR,ERR,,,n/a,replay failed: nonzero_exit,0.5
+2026-05-11,TRAW,1,+0,0,1,1,+1181,0,+1181,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,2.9
+2026-05-12,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-05-13,(none),0,0.0,,,,,,,n/a,0 live trades — replay skipped,0.0
+2026-05-14,LNKS,1,+0,0,1,0,+0,-1,+0,yes,"R-floor: R=$0.06 signal suppressed (live had 1 entry, $+0 live P&L)",0.7
+2026-05-15,LESL,1,-533,1,0,1,-500,0,+33,no,matches live (filled P&L),1.0
+2026-05-15,ONDG,1,+0,0,1,1,+707,0,+707,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,1.0
+2026-05-15,QUCY,1,+0,0,1,1,+727,0,+727,yes,structural: live had 1 chase-cap aborts (sim fills them); live_filled=0 vs replay=1,7.9
+2026-05-15,SLE,9,+221,2,7,9,+2981,0,+2760,yes,"SLE 05-15: live entries=9 (7 chase-aborts, 2 filled); replay shows 9 trades — verify 16:17-17:50 not full of stale re-fires",10.9
+2026-01-16,VERO (control 04-20 window),,"baseline $+2,268",,,5,+2268,,+0,control,"vs pre-patch baseline $+2,268; window 04:00-20:00 matched exactly; delta=$0; tolerance ±$500",36.7
+2026-01-14,ROLR (control 04-20 window),,"baseline $+49,775",,,11,+50602,,+827,control,"vs pre-patch baseline $+49,775; +$827 from one extra after-hours trade at 17:13 (window 04:00-20:00 vs baseline's 07:00-12:00); first 10 trades identical to baseline (verified via 07:00-12:00 re-run = $+49,775); patches do not perturb ROLR",37.1
+2026-01-16,VERO (control 07-12 window),,"baseline $+2,268",,,5,+2268,,+0,control,"directive-spec 07:00-12:00 re-run for parity: 5 trades $+2,268 — EXACT match to pre-patch baseline",na
+2026-01-14,ROLR (control 07-12 window),,"baseline $+49,775",,,10,+49775,,+0,control,"directive-spec 07:00-12:00 re-run for parity: 10 trades $+49,775 — EXACT match to pre-patch baseline",na
