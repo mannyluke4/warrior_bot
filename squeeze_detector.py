@@ -290,6 +290,17 @@ class SqueezeDetector:
         if not self.enabled or self.armed is None:
             return None
 
+        # Resume-boot race guard (2026-05-18): while seed replay is in flight,
+        # live ticks delivered through ib_insync's asyncio loop can race the
+        # seed_symbol_from_cache pipeline and fire ENTRY SIGNAL against a stale
+        # ARM that hasn't yet been validated by validate_arm_after_seed. Block
+        # entries during _seeding; the post-seed _seed_just_ended gate then
+        # takes over until WB_SEED_GATE_BARS live bars confirm. See
+        # cowork_reports/2026-05-18_resume_boot_stale_signal_fix.md
+        # (SLE 2026-05-15 evening, 6 chase-cap aborts).
+        if self._seeding:
+            return None
+
         if price >= self.armed.trigger_high:
             # Seed gate: suppress stale entries after seed replay
             if self._seed_gate_enabled and self._seed_just_ended:

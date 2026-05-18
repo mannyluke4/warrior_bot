@@ -120,6 +120,7 @@ class SimTradeManager:
         risk_dollars: float = 1000.0,
         scale_core: float = 0.65,
         min_r: float = 0.06,
+        min_absolute_r: float = 0.10,
         max_notional: float = 50000.0,
         max_shares: int = 100000,
         core_tp_r: float = 1.0,
@@ -147,6 +148,9 @@ class SimTradeManager:
         self.risk_dollars = risk_dollars
         self.scale_core = scale_core
         self.min_r = min_r
+        # Absolute R-distance floor (2026-05-18 — r_floor_gate_design).
+        # Combines with min_r via max(); set 0.0 to disable.
+        self.min_absolute_r = min_absolute_r
         self.max_notional = max_notional
         self.max_shares = max_shares
         self.core_tp_r = core_tp_r
@@ -348,7 +352,7 @@ class SimTradeManager:
         if self.open_trade is not None:
             return None
 
-        if r <= 0 or r < self.min_r:
+        if r <= 0 or r < max(self.min_r, self.min_absolute_r):
             return None
 
         # Per-symbol re-entry cooldown (entry-count based)
@@ -382,8 +386,11 @@ class SimTradeManager:
         qty = min(qty_risk, qty_notional, self.max_shares)
 
         # Apply size_mult (e.g. squeeze probe = 0.5x)
+        # qty=1 floor removed 2026-05-18 (SBFM incident parity — sim must
+        # mirror live's behavior of skipping when probe rounds to zero, not
+        # firing a 1-share placebo). The qty<=0 guard below catches it.
         if size_mult < 1.0:
-            qty = max(1, int(math.floor(qty * size_mult)))
+            qty = int(math.floor(qty * size_mult))
 
         # Buying power constraint (4x margin for PDT accounts)
         if self.account_equity > 0:
@@ -1772,6 +1779,7 @@ def run_simulation(
     _min_score = float(os.getenv("WB_MIN_SCORE", "3"))
     _scale_core = float(os.getenv("WB_SCALE_CORE", "0.65"))
     _min_r = float(os.getenv("WB_MIN_R", "0.06"))
+    _min_absolute_r = float(os.getenv("WB_MIN_ABSOLUTE_R", "0.10"))
     _max_notional = float(os.getenv("WB_MAX_NOTIONAL", "50000"))
     _max_shares = int(os.getenv("WB_MAX_SHARES", "100000"))
     _core_tp_r = float(os.getenv("WB_CORE_TP_R", "1.0"))
@@ -1949,6 +1957,7 @@ def run_simulation(
         risk_dollars=_risk,
         scale_core=_scale_core,
         min_r=_min_r,
+        min_absolute_r=_min_absolute_r,
         max_notional=_max_notional,
         max_shares=_max_shares,
         core_tp_r=_core_tp_r,

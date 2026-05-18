@@ -231,6 +231,9 @@ class PaperTradeManager:
         self.runner_trail_r = float(os.getenv("WB_RUNNER_TRAIL_R", "1.0"))
 
         self.min_r = float(os.getenv("WB_MIN_R", "0.03"))
+        # Absolute R-distance floor (2026-05-18 — r_floor_gate_design).
+        # Combines with min_r via max(); set 0.0 to disable.
+        self.min_absolute_r = float(os.getenv("WB_MIN_ABSOLUTE_R", "0.10"))
         self.max_notional = float(os.getenv("WB_MAX_NOTIONAL", "5000"))
         self.max_shares = int(os.getenv("WB_MAX_SHARES", "3000"))
         self.round_lot = os.getenv("WB_ROUND_LOT", "1") == "1"
@@ -768,7 +771,7 @@ class PaperTradeManager:
                         setup_type=setup_type, size_mult=size_mult)
 
     def size_qty(self, entry: float, r: float, conviction_mult: float = 1.0) -> int:
-        if r <= 0 or r < self.min_r:
+        if r <= 0 or r < max(self.min_r, self.min_absolute_r):
             return 0
 
         effective_risk = self._get_effective_risk() * conviction_mult

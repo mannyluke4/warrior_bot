@@ -67,6 +67,9 @@ RISK_PCT = float(os.getenv("WB_RISK_PCT", "0.025"))  # 2.5% of equity per trade
 MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "100000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
+# Absolute R-distance floor (2026-05-18 — Cowork r_floor_gate_design).
+# Combines with MIN_R via max(); set 0.0 to disable.
+MIN_ABSOLUTE_R = float(os.getenv("WB_MIN_ABSOLUTE_R", "0.10"))
 MAX_DAILY_LOSS = float(os.getenv("WB_MAX_DAILY_LOSS", "3000"))
 MAX_CONSECUTIVE_LOSSES = int(os.getenv("WB_MAX_CONSECUTIVE_LOSSES", "3"))
 BAIL_TIMER_ENABLED = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
@@ -683,8 +686,11 @@ def enter_trade(symbol: str, armed, setup_type: str):
     score = armed.score
     size_mult = getattr(armed, 'size_mult', 1.0)
 
-    if r <= 0 or r < MIN_R:
-        print(f"  SKIP: R={r:.4f} < min {MIN_R}", flush=True)
+    effective_min_r = max(MIN_R, MIN_ABSOLUTE_R)
+    if r <= 0 or r < effective_min_r:
+        floor_source = "abs_floor" if MIN_ABSOLUTE_R > MIN_R and r >= MIN_R else "min_r"
+        print(f"  SKIP: R={r:.4f} < floor {effective_min_r:.4f} ({floor_source}) "
+              f"reason=R_BELOW_FLOOR", flush=True)
         return
 
     # Dynamic equity-based risk: 2.5% of current equity

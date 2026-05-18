@@ -261,6 +261,9 @@ MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 SCALE_NOTIONAL = os.getenv("WB_SCALE_NOTIONAL", "0") == "1"
 BUYING_POWER_PCT = float(os.getenv("WB_BUYING_POWER_PCT", "0.50"))
 MIN_R = float(os.getenv("WB_MIN_R", "0.06"))
+# Absolute R-distance floor (2026-05-18 — Cowork r_floor_gate_design).
+# Combines with MIN_R via max(); set 0.0 to disable.
+MIN_ABSOLUTE_R = float(os.getenv("WB_MIN_ABSOLUTE_R", "0.10"))
 
 # PDT protection — limit entries per day to conserve day-trade slots.
 # Under $25K equity: 3 day trades per 5 rolling business days. Setting
@@ -2370,7 +2373,17 @@ def seed_symbol_from_cache(symbol: str) -> bool:
         armed = sq.armed if sq else None
 
         if sq and raw_ticks:
-            latest_price = float(raw_ticks[-1].get("p", 0))
+            # Prefer LIVE wall-clock price for staleness comparison
+            # (2026-05-18 resume-boot stale-signal fix). raw_ticks[-1] is the
+            # last cached tick at the moment of crash — can be minutes/hours
+            # stale relative to the current tape. state.last_tick_price[symbol]
+            # is refreshed by _process_trade_tick on every live print. Fall
+            # back to the cached tick if no live price has arrived yet.
+            live_price = state.last_tick_price.get(symbol)
+            if live_price and live_price > 0:
+                latest_price = float(live_price)
+            else:
+                latest_price = float(raw_ticks[-1].get("p", 0))
             stale_msg = sq.validate_arm_after_seed(latest_price)
             if stale_msg:
                 print(f"  [{symbol}] {stale_msg}", flush=True)
@@ -3020,8 +3033,11 @@ def enter_trade(symbol: str, armed, setup_type: str):
     score = armed.score
     size_mult = getattr(armed, 'size_mult', 1.0)
 
-    if r <= 0 or r < MIN_R:
-        print(f"  SKIP: R={r:.4f} < min {MIN_R}", flush=True)
+    effective_min_r = max(MIN_R, MIN_ABSOLUTE_R)
+    if r <= 0 or r < effective_min_r:
+        floor_source = "abs_floor" if MIN_ABSOLUTE_R > MIN_R and r >= MIN_R else "min_r"
+        print(f"  SKIP: R={r:.4f} < floor {effective_min_r:.4f} ({floor_source}) "
+              f"reason=R_BELOW_FLOOR", flush=True)
         return
 
     # Dynamic equity-based risk: 2.5% of current equity
@@ -3046,9 +3062,16 @@ def enter_trade(symbol: str, armed, setup_type: str):
           flush=True)
 
     if size_mult < 1.0:
-        qty = max(1, int(math.floor(qty * size_mult)))
+        # qty=1 floor removed 2026-05-18 (SBFM incident, §7+§13 of incident report).
+        # Previously max(1, ...) papered over BP=$0/probe-rounding-to-zero by
+        # firing a 1-share placebo order. Now zero is honestly reported and
+        # caught by the qty<=0 skip below. Visibility comes from broker.py's
+        # BP_FETCH_FAIL log (commit 27f54f8).
+        qty = int(math.floor(qty * size_mult))
 
     if qty <= 0:
+        print(f"  SKIP: qty={qty} after sizing (size_mult={size_mult:.2f}) — "
+              f"likely BP=$0 or probe-rounded-to-zero", flush=True)
         return
 
     # Place limit order with dynamic slippage (trigger + max(MIN, price × PCT))
@@ -3110,7 +3133,9 @@ def _enter_epl_trade(symbol: str, signal):
     entry = signal.entry_price
     stop = signal.stop_price
     r = entry - stop
-    if r <= 0 or r < MIN_R:
+    if r <= 0 or r < max(MIN_R, MIN_ABSOLUTE_R):
+        print(f"  [EPL] SKIP: {symbol} R={r:.4f} < floor {max(MIN_R, MIN_ABSOLUTE_R):.4f} "
+              f"reason=R_BELOW_FLOOR", flush=True)
         return
 
     qty = int(math.floor(EPL_MAX_NOTIONAL * signal.position_size_pct / max(entry, 0.01)))
@@ -3301,8 +3326,9 @@ def _enter_short_trade(symbol: str, detector, vwap: float, trigger_price: float 
     entry = trigger_price if trigger_price > 0 else arm.trigger_low
     stop = arm.stop
     r = stop - entry  # for shorts: R = stop (above) minus entry (below)
-    if r <= 0 or r < MIN_R:
-        print(f"  SKIP SHORT: R={r:.4f} < min {MIN_R}", flush=True)
+    if r <= 0 or r < max(MIN_R, MIN_ABSOLUTE_R):
+        print(f"  SKIP SHORT: R={r:.4f} < floor {max(MIN_R, MIN_ABSOLUTE_R):.4f} "
+              f"reason=R_BELOW_FLOOR", flush=True)
         return
 
     # Dynamic sizing — same risk % + notional cap as long, mirrors backtest
@@ -4533,6 +4559,22 @@ def main():
         BROKER_BACKEND, alpaca=state.alpaca, ib=state.ib, contracts=state.contracts,
     )
     print(f"Broker: {BROKER_BACKEND.upper()}", flush=True)
+
+    # Runtime broker-mismatch assert (2026-05-18 — Patch 4 of bundled deploy).
+    # Defends against the SBFM-class config drift where .env says one broker
+    # and daily_run_v3.sh injects another (or vice versa). When WB_EXPECTED_BROKER
+    # is set and doesn't match the runtime WB_BROKER, fail loud at boot rather
+    # than silently route orders to the wrong account. Unset = silently allow
+    # (no regression).
+    _expected_broker = os.getenv("WB_EXPECTED_BROKER", "").lower().strip()
+    if _expected_broker and _expected_broker != BROKER_BACKEND:
+        print(
+            f"  ❌ BROKER_MISMATCH: WB_BROKER={BROKER_BACKEND} but "
+            f"WB_EXPECTED_BROKER={_expected_broker} — refusing to start. "
+            f"Check daily_run_v3.sh injection vs .env vs WB_EXPECTED_BROKER.",
+            flush=True,
+        )
+        sys.exit(1)
 
     # Startup position reconciliation. Resume mode rehydrates trade state
     # from open_trades.json + reconciles qty/orders against the broker;

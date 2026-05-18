@@ -208,6 +208,7 @@ cd ~/warrior_bot_v2
 APCA_API_KEY_ID="$MAIN_APCA_KEY" \
 APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
 WB_BROKER=alpaca \
+WB_EXPECTED_BROKER=alpaca \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
