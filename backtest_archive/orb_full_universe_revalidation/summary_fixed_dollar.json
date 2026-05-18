@@ -1,0 +1,17 @@
+{
+  "mode": "fixed_dollar",
+  "start": "2020-01-01",
+  "end": "2024-12-31",
+  "conflict_rule": "release_on_stop",
+  "sessions": 1307,
+  "lock_collisions": 0,
+  "trade_counts": {
+    "ORB-Aligned-300Plus-MonSkip": 2424
+  },
+  "secondary_fill_counts": {
+    "ORB-Aligned-300Plus-MonSkip": 0
+  },
+  "equity_per_strategy": {
+    "ORB-Aligned-300Plus-MonSkip": 155827.8399999995
+  }
+}

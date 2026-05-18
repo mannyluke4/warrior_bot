@@ -221,34 +221,38 @@ fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-# 8a. RETIRED 2026-05-17 — sub-bot replaced by Healthy Fluctuation Framework.
-# Per DIRECTIVE_2026-05-18_ENGINE_FRAMEWORK_DEPLOY.md: the Alpaca paper account
-# previously used by bot_alpaca_subbot.py is now owned by framework/run_live.py.
-# Backup of the original sub-bot launch block: daily_run_v3.sh.backup.
-SUBBOT_PID=""
+# 8a. Start the Alpaca sub-bot in parallel (live A/B against IBKR data feed).
+# Reads main bot's session_state/<today>/watchlist.json for symbol selection.
+# Writes its own state to session_state_alpaca/ + tick_cache_alpaca/. Trades
+# on a separate Alpaca paper account; main bot is unaffected.
+# Failure here is NON-fatal — the main bot must keep running even if the
+# sub-bot can't start.
+SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_alpaca.log"
+# Sub-bot configuration for tomorrow's Phase 1: WB solo on the sub-bot
+# (squeeze stays on the main bot). The sub-bot's own startup forces
+# WB_BROKER=alpaca, IBKR_CLIENT_ID=2, and the *_alpaca state dirs.
+# Strategy gates we override here at launch:
+#   WB_SQUEEZE_ENABLED=0           — sub-bot does not run squeeze (main does)
+#   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB Phase 1 paper validation
+# To change tomorrow's split, edit these two lines.
+echo "Starting bot_alpaca_subbot.py (IBKR data + Alpaca exec; WB Phase 1 paper)..."
+# WB_TBT_ENABLED=0 on sub-bot per 2026-05-06: per-account TBT cap is 5
+# (verified via 10190 collisions). Main bot's squeeze is tick-density-
+# sensitive and gets all 5 slots; sub-bot runs WB on snapshot reqMktData
+# only — WB is bar-based and tolerates the live-tick gap.
+WB_SQUEEZE_ENABLED=0 WB_WAVE_BREAKOUT_ENABLED=1 WB_TBT_ENABLED=0 \
+  python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+SUBBOT_PID=$!
+echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
 
-# 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
-# Strategies: PDH-Fade-Filtered, ORB-Aligned-$300+, PDH-Breakout-F4.
-# IBKR data (clientId 51) + Alpaca exec (Setup B paper keys via .env).
-# TieredSizer locked at Tier 1 ($300/signal) for 60-day paper window.
-# release_on_stop conflict rule. VIX > 25 suppress. Monday skip (default).
-# Force-exit at 19:55 ET via SELL LIMIT chain. No market orders, no overnights.
-# Failure is NON-fatal — squeeze must keep running even if framework can't start.
-FRAMEWORK_LOG="$LOG_DIR/${TODAY}_framework.log"
-echo "Starting framework.run_live (Wave 4 paper deploy)..."
-WB_FRAMEWORK_IB_CLIENT_ID=51 \
-  python3 -m framework.run_live >> "$FRAMEWORK_LOG" 2>&1 &
-FRAMEWORK_PID=$!
-echo "Framework started (PID: $FRAMEWORK_PID, log: $FRAMEWORK_LOG)"
-
-# Framework health check — non-fatal (don't abort the session if it fails).
+# Sub-bot health check — non-fatal (don't abort the session if it fails).
 sleep 15
-if ! kill -0 "$FRAMEWORK_PID" 2>/dev/null; then
-    echo "WARN: framework.run_live crashed within 15s — continuing without framework."
-    echo "      See $FRAMEWORK_LOG for details."
-    FRAMEWORK_PID=""
+if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+    echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
+    echo "      See $SUBBOT_LOG for details."
+    SUBBOT_PID=""
 else
-    echo "Framework health check passed (still running after 15s, PID: $FRAMEWORK_PID)"
+    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
 fi
 
 # 8b. Gateway watchdog — detect if Gateway port drops during session
@@ -283,10 +287,10 @@ while true; do
         echo "ALERT: bot_v3_hybrid.py died at $(date)! Session ended early. Check $LOG_FILE."
         break
     fi
-    # Framework is non-critical — log if it dies but keep watching the main bot.
-    if [ -n "$FRAMEWORK_PID" ] && ! kill -0 "$FRAMEWORK_PID" 2>/dev/null; then
-        echo "WARN: framework.run_live died at $(date). Squeeze main bot continuing alone."
-        FRAMEWORK_PID=""
+    # Sub-bot is non-critical — log if it dies but keep watching the main bot.
+    if [ -n "$SUBBOT_PID" ] && ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+        echo "WARN: bot_alpaca_subbot.py died at $(date). Main bot continuing alone."
+        SUBBOT_PID=""
     fi
     sleep 60 || true
 done
@@ -294,11 +298,10 @@ done
 # 10. Shut down
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
-[ -n "$FRAMEWORK_PID" ] && kill "$FRAMEWORK_PID" 2>/dev/null || true
+[ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
 sleep 5
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
 pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true
-pkill -f "framework.run_live" 2>/dev/null || true
 
 # 11. Commit and push logs
 echo "Pushing logs..."

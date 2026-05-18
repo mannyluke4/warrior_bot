@@ -1,0 +1,421 @@
+{
+  "filter_verification": {
+    "min_entry_price": 300.08,
+    "max_entry_price": 2212.75,
+    "trades_under_300": 0,
+    "monday_trades": 0,
+    "dow_distribution": {
+      "1": 637,
+      "2": 626,
+      "3": 605,
+      "4": 556
+    }
+  },
+  "overall": {
+    "filter": "full_sample_2020_2024",
+    "n": 2424,
+    "trades_per_year": 484.8,
+    "wr": 0.48432343234323433,
+    "avg_r": 0.023031287128712805,
+    "net_pnl": 55827.839999999866,
+    "sharpe": 0.6213644767200495,
+    "max_dd_pct": -0.2474313136369143,
+    "max_dd_dollars": -27537.154999999897,
+    "max_q_concentration": 0.26902436449391026,
+    "profit_factor": 1.0736145980851035
+  },
+  "is": {
+    "filter": "IS_2020_2022",
+    "n": 1398,
+    "trades_per_year": 279.6,
+    "wr": 0.47639484978540775,
+    "avg_r": -0.0007715736766808643,
+    "net_pnl": -1078.6599999998507,
+    "sharpe": 0.09387690598664862,
+    "max_dd_pct": -0.2474313136369143,
+    "max_dd_dollars": -25798.755000000005,
+    "max_q_concentration": 0.678581796365467,
+    "profit_factor": 0.9976633964267858
+  },
+  "oos": {
+    "filter": "OOS_2023_2024",
+    "n": 1026,
+    "trades_per_year": 205.2,
+    "wr": 0.4951267056530214,
+    "avg_r": 0.055464424951266765,
+    "net_pnl": 56906.49999999971,
+    "sharpe": 1.5517850478283353,
+    "max_dd_pct": -0.13992041916966105,
+    "max_dd_dollars": -20033.835000000094,
+    "max_q_concentration": 0.29115573131533945,
+    "profit_factor": 1.1917695733552012
+  },
+  "per_year": {
+    "2020": {
+      "filter": "year_2020",
+      "n": 498,
+      "trades_per_year": 99.6,
+      "wr": 0.4879518072289157,
+      "avg_r": 0.007957389558233365,
+      "net_pnl": 3962.7800000001953,
+      "sharpe": 0.2966165781349946,
+      "max_dd_pct": -0.2474313136369143,
+      "max_dd_dollars": -25798.755000000005,
+      "max_q_concentration": 1.0,
+      "profit_factor": 1.024430828880225
+    },
+    "2021": {
+      "filter": "year_2021",
+      "n": 581,
+      "trades_per_year": 116.2,
+      "wr": 0.47160068846815834,
+      "avg_r": -0.003448846815834613,
+      "net_pnl": -2003.7799999999152,
+      "sharpe": 0.122823487165125,
+      "max_dd_pct": -0.15541061168810963,
+      "max_dd_dollars": -17752.02499999998,
+      "max_q_concentration": 0.5530685210589251,
+      "profit_factor": 0.9890649052755296
+    },
+    "2022": {
+      "filter": "year_2022",
+      "n": 319,
+      "trades_per_year": 63.8,
+      "wr": 0.4670846394984326,
+      "avg_r": -0.009522445141066272,
+      "net_pnl": -3037.660000000141,
+      "sharpe": -0.27526662996719986,
+      "max_dd_pct": -0.17442869767647987,
+      "max_dd_dollars": -20396.900000000096,
+      "max_q_concentration": 0.5852764042116312,
+      "profit_factor": 0.9738558153803957
+    },
+    "2023": {
+      "filter": "year_2023",
+      "n": 475,
+      "trades_per_year": 95.0,
+      "wr": 0.4884210526315789,
+      "avg_r": 0.0778889263157892,
+      "net_pnl": 36997.23999999987,
+      "sharpe": 1.95022374399873,
+      "max_dd_pct": -0.11423423731820677,
+      "max_dd_dollars": -12413.83000000003,
+      "max_q_concentration": 0.5319327989832904,
+      "profit_factor": 1.2609798627376285
+    },
+    "2024": {
+      "filter": "year_2024",
+      "n": 551,
+      "trades_per_year": 110.2,
+      "wr": 0.5009074410163339,
+      "avg_r": 0.03613295825771295,
+      "net_pnl": 19909.25999999984,
+      "sharpe": 1.107066814572833,
+      "max_dd_pct": -0.1371568138764821,
+      "max_dd_dollars": -13682.390000000043,
+      "max_q_concentration": 0.5875645248650928,
+      "profit_factor": 1.1284623039134891
+    }
+  },
+  "per_tier": {
+    "<$10": {
+      "filter": "tier_<$10",
+      "n": 0
+    },
+    "$10-20": {
+      "filter": "tier_$10-20",
+      "n": 0
+    },
+    "$20-50": {
+      "filter": "tier_$20-50",
+      "n": 0
+    },
+    "$50-100": {
+      "filter": "tier_$50-100",
+      "n": 0
+    },
+    "$100-200": {
+      "filter": "tier_$100-200",
+      "n": 0
+    },
+    "$200-300": {
+      "filter": "tier_$200-300",
+      "n": 0
+    },
+    "$300+": {
+      "filter": "tier_$300+",
+      "n": 2424,
+      "trades_per_year": 484.8,
+      "wr": 0.48432343234323433,
+      "avg_r": 0.023031287128712805,
+      "net_pnl": 55827.839999999866,
+      "sharpe": 0.6213644767200495,
+      "max_dd_pct": -0.2474313136369143,
+      "max_dd_dollars": -27537.154999999897,
+      "max_q_concentration": 0.26902436449391026,
+      "profit_factor": 1.0736145980851035
+    }
+  },
+  "per_symbol": {
+    "AAPL": {
+      "filter": "sym_AAPL",
+      "n": 48,
+      "trades_per_year": 9.6,
+      "wr": 0.5625,
+      "avg_r": 0.07210958333333402,
+      "net_pnl": 3461.2600000000334,
+      "sharpe": 1.4112539394138683,
+      "max_dd_pct": -0.06528044641443526,
+      "max_dd_dollars": -6489.929999999993,
+      "max_q_concentration": 1.0,
+      "profit_factor": 1.1942442692143458
+    },
+    "ADBE": {
+      "filter": "sym_ADBE",
+      "n": 528,
+      "trades_per_year": 105.6,
+      "wr": 0.4943181818181818,
+      "avg_r": 0.018960359848484792,
+      "net_pnl": 10011.069999999965,
+      "sharpe": 0.44900019631518134,
+      "max_dd_pct": -0.1755009694895952,
+      "max_dd_dollars": -17585.585000000006,
+      "max_q_concentration": 0.2948681376696473,
+      "profit_factor": 1.0703669691560622
+    },
+    "AVGO": {
+      "filter": "sym_AVGO",
+      "n": 465,
+      "trades_per_year": 93.0,
+      "wr": 0.4731182795698925,
+      "avg_r": 0.015397193548386947,
+      "net_pnl": 7159.6949999999315,
+      "sharpe": 0.36102360861132093,
+      "max_dd_pct": -0.112911969032662,
+      "max_dd_dollars": -12214.355000000025,
+      "max_q_concentration": 0.26322290386390873,
+      "profit_factor": 1.0557560878740913
+    },
+    "CRM": {
+      "filter": "sym_CRM",
+      "n": 21,
+      "trades_per_year": 4.2,
+      "wr": 0.38095238095238093,
+      "avg_r": 0.0491195238095231,
+      "net_pnl": 1031.5099999999857,
+      "sharpe": 1.4675403629700643,
+      "max_dd_pct": -0.030053652127919078,
+      "max_dd_dollars": -3005.1900000000023,
+      "max_q_concentration": 0.9657191961924918,
+      "profit_factor": 1.2008512974887477
+    },
+    "META": {
+      "filter": "sym_META",
+      "n": 137,
+      "trades_per_year": 27.4,
+      "wr": 0.5182481751824818,
+      "avg_r": -0.007147372262774209,
+      "net_pnl": -979.190000000066,
+      "sharpe": 0.06300599504260664,
+      "max_dd_pct": -0.15449190220432357,
+      "max_dd_dollars": -18093.16000000009,
+      "max_q_concentration": 0.6650896491895757,
+      "profit_factor": 0.978124681651888
+    },
+    "MSFT": {
+      "filter": "sym_MSFT",
+      "n": 230,
+      "trades_per_year": 46.0,
+      "wr": 0.5434782608695652,
+      "avg_r": 0.12828436956521577,
+      "net_pnl": 29505.404999999628,
+      "sharpe": 2.2676056573559094,
+      "max_dd_pct": -0.050305011366194904,
+      "max_dd_dollars": -5248.720000000074,
+      "max_q_concentration": 0.20830095843677576,
+      "profit_factor": 1.430306318328232
+    },
+    "NFLX": {
+      "filter": "sym_NFLX",
+      "n": 442,
+      "trades_per_year": 88.4,
+      "wr": 0.4683257918552036,
+      "avg_r": -0.004312386877828019,
+      "net_pnl": -1906.0749999999853,
+      "sharpe": -0.02218314985678531,
+      "max_dd_pct": -0.12939321480716648,
+      "max_dd_dollars": -13374.739999999947,
+      "max_q_concentration": 0.26602271438237,
+      "profit_factor": 0.987178803750759
+    },
+    "NVDA": {
+      "filter": "sym_NVDA",
+      "n": 219,
+      "trades_per_year": 43.8,
+      "wr": 0.4703196347031963,
+      "avg_r": 0.009425570776256262,
+      "net_pnl": 2064.200000000121,
+      "sharpe": 0.1957693984677237,
+      "max_dd_pct": -0.127071765297545,
+      "max_dd_dollars": -14063.659999999873,
+      "max_q_concentration": 0.4356195985837262,
+      "profit_factor": 1.0266121565677164
+    },
+    "ROKU": {
+      "filter": "sym_ROKU",
+      "n": 81,
+      "trades_per_year": 16.2,
+      "wr": 0.4567901234567901,
+      "avg_r": 0.01483882716049462,
+      "net_pnl": 1201.9450000000631,
+      "sharpe": 0.3050097195935482,
+      "max_dd_pct": -0.08280671503269776,
+      "max_dd_dollars": -8288.769999999975,
+      "max_q_concentration": 0.9659524832826151,
+      "profit_factor": 1.0408733907491348
+    },
+    "TSLA": {
+      "filter": "sym_TSLA",
+      "n": 253,
+      "trades_per_year": 50.6,
+      "wr": 0.45454545454545453,
+      "avg_r": 0.016909169960475003,
+      "net_pnl": 4278.020000000171,
+      "sharpe": 0.3282158349368925,
+      "max_dd_pct": -0.18571668534121116,
+      "max_dd_dollars": -22013.05999999994,
+      "max_q_concentration": 0.32483109059150456,
+      "profit_factor": 1.0446671410396513
+    }
+  },
+  "sample_trades": [
+    {
+      "symbol": "ADBE",
+      "session_date": "2020-03-05",
+      "dow": 3,
+      "direction": "long",
+      "entry_price": 357.69,
+      "exit_price": 353.0,
+      "tier": "$300+",
+      "pnl": -806.6799999999996,
+      "r_multiple": -0.8066799999999996,
+      "exit_reason": "stop"
+    },
+    {
+      "symbol": "ADBE",
+      "session_date": "2020-05-26",
+      "dow": 1,
+      "direction": "short",
+      "entry_price": 383.95,
+      "exit_price": 376.51,
+      "tier": "$300+",
+      "pnl": 1011.8399999999997,
+      "r_multiple": 1.0118399999999996,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "TSLA",
+      "session_date": "2020-10-13",
+      "dow": 1,
+      "direction": "short",
+      "entry_price": 440.74,
+      "exit_price": 443.65,
+      "tier": "$300+",
+      "pnl": -998.1299999999891,
+      "r_multiple": -0.9981299999999891,
+      "exit_reason": "stop"
+    },
+    {
+      "symbol": "NFLX",
+      "session_date": "2020-10-27",
+      "dow": 1,
+      "direction": "short",
+      "entry_price": 484.66,
+      "exit_price": 489.56,
+      "tier": "$300+",
+      "pnl": -837.8999999999961,
+      "r_multiple": -0.8378999999999961,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "ADBE",
+      "session_date": "2020-12-17",
+      "dow": 3,
+      "direction": "long",
+      "entry_price": 494.835,
+      "exit_price": 495.05,
+      "tier": "$300+",
+      "pnl": 57.62000000000853,
+      "r_multiple": 0.05762000000000853,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "MSFT",
+      "session_date": "2021-09-17",
+      "dow": 4,
+      "direction": "short",
+      "entry_price": 301.23,
+      "exit_price": 299.88,
+      "tier": "$300+",
+      "pnl": 396.9000000000067,
+      "r_multiple": 0.3969000000000067,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "MSFT",
+      "session_date": "2021-11-03",
+      "dow": 2,
+      "direction": "short",
+      "entry_price": 331.49,
+      "exit_price": 334.15,
+      "tier": "$300+",
+      "pnl": -997.4999999999881,
+      "r_multiple": -0.9974999999999881,
+      "exit_reason": "stop"
+    },
+    {
+      "symbol": "AVGO",
+      "session_date": "2022-11-01",
+      "dow": 1,
+      "direction": "short",
+      "entry_price": 469.99,
+      "exit_price": 468.3,
+      "tier": "$300+",
+      "pnl": 253.49999999999966,
+      "r_multiple": 0.25349999999999967,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "NFLX",
+      "session_date": "2023-01-26",
+      "dow": 3,
+      "direction": "short",
+      "entry_price": 364.12,
+      "exit_price": 364.945,
+      "tier": "$300+",
+      "pnl": -168.29999999999768,
+      "r_multiple": -0.16829999999999767,
+      "exit_reason": "session_close"
+    },
+    {
+      "symbol": "AVGO",
+      "session_date": "2023-05-03",
+      "dow": 2,
+      "direction": "long",
+      "entry_price": 621.19,
+      "exit_price": 614.92,
+      "tier": "$300+",
+      "pnl": -996.9300000000152,
+      "r_multiple": -0.9969300000000152,
+      "exit_reason": "stop"
+    }
+  ],
+  "gates": {
+    "OOS_Sharpe_>=_1.5": true,
+    "OOS_n_trades_>=_100": true,
+    "max_DD_<=_15pct": false,
+    "every_year_positive": false
+  },
+  "verdict": "GREEN",
+  "oos_sharpe": 1.5517850478283353
+}
