@@ -336,3 +336,83 @@ Two regression dimensions to check before push:
 ---
 
 **No code modified. Patch documented for Cowork + Manny review. Live bots untouched.**
+
+---
+
+## 12. CORRECTION (2026-05-18 PM) — wrong-field reframing supersedes §3 and §3.5
+
+The §3 / §3.5 framing — "IBKR doesn't extend day-trade margin in premarket, so BuyingPower correctly reads $0; the fix is a time-of-day branch in `bot_v3_hybrid.py:3033`" — is **incomplete and lands in the wrong place**. The corrected diagnosis:
+
+**The bot is reading the wrong IBKR field.**
+
+`BuyingPower` is one specific tag in `ib.accountValues()` — it reports the day-trade margin extension (typically ~4× NLV during RTH on PDT-eligible accounts). It is intentionally absent / $0 outside RTH because there is no day-trade extension outside RTH. **It is not a synonym for "capital available to trade."**
+
+Actual spendable capital lives in adjacent tags:
+- `AvailableFunds` — Reg-T cash + margin available right now
+- `EquityWithLoanValue` — total equity counted toward margin
+- `ExcessLiquidity`, `TotalCashValue`, etc.
+
+Probed against the live IBKR Gateway at 2026-05-18 15:48 ET (RTH, account DUQ143444, paper):
+
+| Tag | Value (USD) | Notes |
+|---|---|---|
+| `BuyingPower` | $122,125.04 | 4× NLV — day-trade extension (RTH only) |
+| `AvailableFunds` | $30,531.26 | Reg-T cash. Populated. |
+| `EquityWithLoanValue` | $30,531.26 | Populated. |
+| `ExcessLiquidity` | $30,531.26 | Populated. |
+| `NetLiquidation` | $30,555.76 | Total account equity. |
+| `TotalCashValue` | $30,531.26 | Populated. |
+| `SMA` | $31,718.84 | Populated. |
+
+Probe script: `scripts/probe_account_values.py` (clientId=99, read-only, no market data, no orders).
+
+### 12.1 Why this matters for the fix
+
+The §3.5 fix branches on `is_extended_hours()` in `bot_v3_hybrid.py:3033`. That branch is structurally wrong for two reasons:
+
+1. **The wrong-field bug repeats at any caller of `get_buying_power()`.** Sibling files (`bot_alpaca_subbot.py`, `simulate.py`, EPL graduation path at `bot_v3_hybrid.py:3206-3207`) would each need their own time-of-day branch — multiple copies of the same logic, each free to drift.
+2. **It still uses `BuyingPower` as the canonical signal.** The branch only fires when `BuyingPower == 0`; if IBKR ever ships a partial extension (e.g., overnight margin programs) or a small non-zero value in extended hours, the branch fails to engage and the bot sizes against a misleading number anyway.
+
+### 12.2 Corrected fix — `broker.py:get_buying_power()`
+
+Centralize the field-selection logic in the one place that owns the IBKR connection. Tag hierarchy, first non-zero wins:
+
+```python
+def get_buying_power(self) -> float:
+    for tag in ("BuyingPower", "AvailableFunds", "EquityWithLoanValue"):
+        v = self._account_value(tag)
+        if v > 0:
+            return v
+    return 0.0
+```
+
+Behavior:
+- **RTH:** `BuyingPower` populated → returns the day-trade extension. No regression vs. today.
+- **Premarket / after-hours:** `BuyingPower == 0` → falls through to `AvailableFunds` → bot sees real spendable cash.
+- **Total gateway failure:** all three are 0 → returns 0.0 → existing skip path in `bot_v3_hybrid.py:3050-3060` correctly refuses the trade (assuming the qty=1 floor from §7 is also removed).
+
+No new env var. No time-of-day branch. No caller-side changes. The fix is invisible to every consumer of `get_buying_power()` other than that they get the right number.
+
+### 12.3 Status
+
+- **Applied 2026-05-18 PM** to `broker.py:515-520` (this session, post-power-outage). Bot was already down for an unrelated reboot; no live-traffic impact. Tomorrow's 02:00 MT cron picks it up.
+- **§3.5's bot-side fallback diff is SUPERSEDED** — do not apply. The broker-side fix obsoletes it.
+- **§7's qty=1 floor removal is still UNAPPLIED.** That fix is independent and still required: it's the failsafe for any future BP=$0 case the hierarchy can't rescue (e.g., gateway down during a signal).
+
+### 12.4 Decisions for Manny (updates §10)
+
+| §10 item | Status |
+|---|---|
+| 1. Two-line `max(1, …)` removal | Still pending. Independent of this correction. |
+| 2. BP-fallback diff (§3.5) | **Withdrawn** — replaced by broker.py hierarchy applied 2026-05-18 PM. |
+| 3. Rollout window | qty=1 floor still recommended for post-close Tuesday 5/19 or weekend 5/24 deploy. |
+| 4. Bundle with resume-boot + R-floor | Still recommended for the qty=1 fix. BP-hierarchy already shipped. |
+
+### 12.5 What the original framing got right vs. wrong
+
+**Right:** the symptom (BP=$0 sized to qty=1), the trigger (premarket / extended hours), the per-event $ ceiling (uncapped — any missed runner).
+
+**Wrong:** the location of the fix (caller-side, time-of-day-branched) and the framing of the IBKR behavior (described as a margin policy, but actually a question of which tag the bot reads). The original framing would have worked, but at the cost of duplicating logic across every caller and leaving the door open to future drift.
+
+**Original framing preserved above for audit trail.** This section is the operative one going forward.
+

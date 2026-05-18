@@ -513,11 +513,25 @@ class IBKRBroker:
         return self._account_value("NetLiquidation")
 
     def get_buying_power(self) -> float:
-        """IBKR BuyingPower — the broker-reported max notional before
-        margin calls. Accounts under $25K get 2× (RegT); over $25K
-        get 4× (PDT). Caller multiplies by WB_BUYING_POWER_PCT to
-        get the effective position-size cap."""
-        return self._account_value("BuyingPower")
+        """IBKR buying power for position sizing.
+
+        Tag hierarchy (first non-zero wins):
+          1. BuyingPower         — day-trade extension. Populated during
+                                    RTH; $0 in premarket / after-hours /
+                                    for PDT-ineligible accounts.
+          2. AvailableFunds      — Reg-T cash + margin available now.
+          3. EquityWithLoanValue — total equity counted toward margin.
+
+        Fallback added 2026-05-18 after the SBFM premarket incident: the
+        bot was reading $0 BuyingPower at 07:30 ET and sizing qty=1.
+        The day-trade extension is RTH-only — actual spendable capital
+        lives in AvailableFunds / EquityWithLoanValue. Caller still
+        multiplies by WB_BUYING_POWER_PCT for the effective cap."""
+        for tag in ("BuyingPower", "AvailableFunds", "EquityWithLoanValue"):
+            v = self._account_value(tag)
+            if v > 0:
+                return v
+        return 0.0
 
     def _account_value(self, tag: str) -> float:
         try:
