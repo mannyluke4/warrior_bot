@@ -66,7 +66,7 @@ Also resolve the audit's outstanding hygiene item:
 ### Pre-launch checklist (CC, in this order)
 
 1. **ORB 36-name parity revalidation** (~30 min) — confirm 2.10 OOS holds on full universe. If it doesn't, halt and report. (B1 ran on slim 12-name; this is the proper full-universe check.)
-2. **Engine paper account stand-up** — Manny will provide new Alpaca paper keys for the engine account → `.env.framework.local` (gitignored). Launch with clientId 51 and the persistence file.
+2. **Engine paper account stand-up** — **REUSE the existing Setup B Alpaca paper keys** (Manny: "same alpaca paper keys that setup b is already using"). No new keys to provision. Wire them into the framework launch via the existing engine credentials. Launch with clientId 51 and the framework persistence file. **Critically: the previous engine-bot strategy on this account is retired — the framework replaces it. Confirm no orphaned engine-bot processes remain on the account before framework goes live.**
 3. **Dry-run verification** — start the framework process, confirm it connects to the engine paper account, confirm strategies arm, confirm TieredSizer reads Tier 1 locked, confirm `.env.framework` defaults loaded correctly. **Do NOT take live signals yet.** Just verify wiring.
 4. **Monday open soft launch** — strategies live, but the first session runs with extra-verbose logging (every signal, every conflict event, every tier-lock check). CC reviews evening report; if anything is off, freeze before Tuesday.
 
@@ -126,8 +126,14 @@ The old WB stays at `WB_STRATEGY_ENABLED=0`. No archival yet — wait until WB v
 
 ## What Manny needs to provide
 
-1. **Engine paper Alpaca API keys** (new — to land in `.env.framework.local`, gitignored). Without these, CC cannot stand up the account. Provide whenever ready.
+1. ~~Engine paper Alpaca API keys~~ — **resolved.** Reuse Setup B's existing Alpaca paper keys. No new credentials needed.
 2. **The WB v2 explainer.** No rush — CC is busy with the engine deploy.
+
+## Coordination note (engine bot retirement)
+
+The previous engine-bot strategy that ran on the Setup B Alpaca paper account is being retired in favor of the framework. CC must:
+- Confirm the old engine-bot process is stopped before framework launch (no two strategies on one account).
+- Decide whether old engine-bot code stays in repo (suggest: yes, with `ENGINE_BOT_ENABLED=0`, same pattern as old WB) or moves to a `_retired/` folder. Cowork suggests gating with env var for now; archive later if Manny wants the cleanup.
 
 ---
 
