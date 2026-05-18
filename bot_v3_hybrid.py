@@ -146,6 +146,28 @@ if SHORT_ENABLED:
 # All order flow in this file goes through state.broker — never state.alpaca.
 BROKER_BACKEND = os.getenv("WB_BROKER", "alpaca").lower()
 
+
+def _assert_broker_matches() -> None:
+    """Runtime broker-mismatch assert (2026-05-18 — Patch 4 of bundled deploy).
+
+    Defends against the SBFM-class config drift where .env says one broker
+    and daily_run_v3.sh injects another (or vice versa). When
+    WB_EXPECTED_BROKER is set and doesn't match the runtime WB_BROKER, fail
+    loud at boot rather than silently route orders to the wrong account.
+    Unset WB_EXPECTED_BROKER = silently allow (no regression for older
+    invocation paths).
+    """
+    expected = os.getenv("WB_EXPECTED_BROKER", "").lower().strip()
+    actual = os.getenv("WB_BROKER", "").lower().strip() or BROKER_BACKEND
+    if expected and expected != actual:
+        print(
+            f"  ❌ BROKER_MISMATCH: WB_BROKER={actual} but "
+            f"WB_EXPECTED_BROKER={expected} — refusing to start. "
+            f"Check daily_run_v3.sh injection vs .env vs WB_EXPECTED_BROKER.",
+            flush=True,
+        )
+        sys.exit(1)
+
 # ── IBKR connection ──────────────────────────────────────────────────
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
 IBKR_PORT = int(os.getenv("IBKR_PORT", "4002"))  # 4002 = Gateway paper
@@ -4679,20 +4701,7 @@ def main():
     print(f"Broker: {BROKER_BACKEND.upper()}", flush=True)
 
     # Runtime broker-mismatch assert (2026-05-18 — Patch 4 of bundled deploy).
-    # Defends against the SBFM-class config drift where .env says one broker
-    # and daily_run_v3.sh injects another (or vice versa). When WB_EXPECTED_BROKER
-    # is set and doesn't match the runtime WB_BROKER, fail loud at boot rather
-    # than silently route orders to the wrong account. Unset = silently allow
-    # (no regression).
-    _expected_broker = os.getenv("WB_EXPECTED_BROKER", "").lower().strip()
-    if _expected_broker and _expected_broker != BROKER_BACKEND:
-        print(
-            f"  ❌ BROKER_MISMATCH: WB_BROKER={BROKER_BACKEND} but "
-            f"WB_EXPECTED_BROKER={_expected_broker} — refusing to start. "
-            f"Check daily_run_v3.sh injection vs .env vs WB_EXPECTED_BROKER.",
-            flush=True,
-        )
-        sys.exit(1)
+    _assert_broker_matches()
 
     # Startup position reconciliation. Resume mode rehydrates trade state
     # from open_trades.json + reconciles qty/orders against the broker;
