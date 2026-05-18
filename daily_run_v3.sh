@@ -222,11 +222,48 @@ fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-# 8a. RETIRED 2026-05-17 — sub-bot replaced by Healthy Fluctuation Framework.
-# Per DIRECTIVE_2026-05-18_ENGINE_FRAMEWORK_DEPLOY.md: the Alpaca paper account
-# previously used by bot_alpaca_subbot.py is now owned by framework/run_live.py.
-# Backup of the original sub-bot launch block: daily_run_v3.sh.backup.
-SUBBOT_PID=""
+# 8a. Setup B sub-bot — revived 2026-05-18 against the Databento live feed
+# (DIRECTIVE_2026-05-18_DATABENTO_SUBBOT.md). The IBKR-driven sub-bot was
+# retired 2026-05-17 in favour of the Healthy Fluctuation Framework on the
+# same paper account; this revival runs the sub-bot on a SEPARATE data
+# path (Databento Live, XNAS.ITCH trades — no IBKR Gateway dependency) so
+# we can A/B Setup B's tick fidelity against Setup A in parallel.
+#
+# Setup A (above, bot_v3_hybrid.py) keeps the IBKR-data → Alpaca-exec
+# pipeline. Setup B (here) is IBKR-FREE on the data side: Databento Live
+# ticks → Alpaca-exec on the original APCA_API_* keys (separate paper
+# account from main bot). Per directive: WB_SUBBOT_DATA_FEED=databento
+# injected on the command line; the subbot's gate switches state.ib to
+# DatabentoLiveFeed instead of ib_insync.IB. IBKR_CLIENT_ID is NOT injected
+# (no IBKR Gateway dependency on this path; the subbot.py module-level
+# default still sets clientId=2 but it's unused on the databento branch).
+#
+# Failure here is NON-fatal — Setup A must keep running even if Setup B
+# can't start. Backup of the prior (IBKR-driven) launch block lives at
+# daily_run_v3.sh.backup.
+SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
+# Sub-bot strategy gates (mirrors the retired block's split, sans IBKR):
+#   WB_SQUEEZE_ENABLED=0           — sub-bot does not run squeeze (Setup A does)
+#   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB paper validation
+#   WB_TBT_ENABLED=0               — TBT is an IBKR concept; off on Databento path
+echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
+WB_SUBBOT_DATA_FEED=databento \
+WB_SQUEEZE_ENABLED=0 \
+WB_WAVE_BREAKOUT_ENABLED=1 \
+WB_TBT_ENABLED=0 \
+  python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+SUBBOT_PID=$!
+echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
+
+# Sub-bot health check — non-fatal (don't abort the session if it fails).
+sleep 15
+if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+    echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
+    echo "      See $SUBBOT_LOG for details."
+    SUBBOT_PID=""
+else
+    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
+fi
 
 # 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
 # Strategies: PDH-Fade-Filtered, ORB-Aligned-$300+, PDH-Breakout-F4.
@@ -289,6 +326,11 @@ while true; do
         echo "WARN: framework.run_live died at $(date). Squeeze main bot continuing alone."
         FRAMEWORK_PID=""
     fi
+    # Setup B sub-bot is non-critical — log if it dies but keep watching Setup A.
+    if [ -n "$SUBBOT_PID" ] && ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+        echo "WARN: bot_alpaca_subbot.py (Setup B) died at $(date). Setup A continuing alone."
+        SUBBOT_PID=""
+    fi
     sleep 60 || true
 done
 
@@ -296,6 +338,7 @@ done
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
 [ -n "$FRAMEWORK_PID" ] && kill "$FRAMEWORK_PID" 2>/dev/null || true
+[ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
 sleep 5
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
 pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true

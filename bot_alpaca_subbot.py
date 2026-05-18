@@ -58,6 +58,15 @@ os.environ["IBKR_CLIENT_ID"] = os.getenv("WB_SUBBOT_IBKR_CLIENT_ID", "2")
 os.environ.setdefault("WB_SESSION_DIR_NAME", "session_state_alpaca")
 os.environ.setdefault("WB_TICK_CACHE_DIR_NAME", "tick_cache_alpaca")
 
+# WB_SUBBOT_DATA_FEED selects the market-data backend (2026-05-18 directive
+# DIRECTIVE_2026-05-18_DATABENTO_SUBBOT.md). Setup B was retired on
+# 2026-05-17 and is being revived against Databento live ticks; the IBKR
+# gateway path remains the default and is bit-identical to before. Flip
+# back to "ibkr" via env to restore the IBKR-driven Setup B if needed.
+#   "ibkr"      → IBKR gateway via ib_insync.IB (legacy, default)
+#   "databento" → DatabentoLiveFeed shim (XNAS.ITCH trades)
+WB_SUBBOT_DATA_FEED = os.getenv("WB_SUBBOT_DATA_FEED", "ibkr").lower()
+
 import time
 import math
 import json
@@ -1726,7 +1735,35 @@ def wait_for_fill(order_id: str, timeout: int = 15):
 
 
 def connect():
-    """Connect to IBKR with retry logic."""
+    """Connect to the data feed with retry logic.
+
+    Per WB_SUBBOT_DATA_FEED (env): defaults to IBKR gateway (legacy
+    behavior); flip to "databento" to use the DatabentoLiveFeed shim
+    (XNAS.ITCH trades). The shim exposes the same surface as ib_insync.IB
+    so the rest of the subbot is feed-agnostic. See
+    DIRECTIVE_2026-05-18_DATABENTO_SUBBOT.md."""
+    if WB_SUBBOT_DATA_FEED == "databento":
+        # DatabentoLiveFeed: no gateway connect (just a TCP session to
+        # databento). host/port/clientId are accepted-and-ignored for
+        # IB.connect signature parity.
+        from databento_live_feed import DatabentoLiveFeed
+        state.ib = DatabentoLiveFeed()
+        for attempt in range(1, 4):
+            try:
+                state.ib.connect()
+                print(f"Connected (Databento): {state.ib.isConnected()}")
+                print(f"Account: {state.ib.managedAccounts()}")
+                return state.ib
+            except Exception as e:
+                print(f"Databento connection attempt {attempt}/3 failed: {e}", flush=True)
+                if attempt < 3:
+                    print(f"Retrying in 10 seconds...", flush=True)
+                    time.sleep(10)
+                else:
+                    raise
+        return state.ib
+
+    # Legacy IBKR path (default; preserved bit-identical to pre-directive).
     state.ib = IB()
     for attempt in range(1, 4):
         try:
