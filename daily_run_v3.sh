@@ -247,7 +247,12 @@ SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
 #   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB paper validation
 #   WB_TBT_ENABLED=0               — TBT is an IBKR concept; off on Databento path
 echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
+# WB_DATABENTO_DATASET=EQUS.MINI — Manny's API key is currently licensed for
+# EQUS.MINI only; XNAS.ITCH (the directive default with ~5× more ticks on
+# microcaps) requires a separate live-data license. Override here per
+# 2026-05-18 PM decision; revisit when license upgrades.
 WB_SUBBOT_DATA_FEED=databento \
+WB_DATABENTO_DATASET=EQUS.MINI \
 WB_SQUEEZE_ENABLED=0 \
 WB_WAVE_BREAKOUT_ENABLED=1 \
 WB_TBT_ENABLED=0 \
