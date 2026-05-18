@@ -1,5 +1,6 @@
 # Secrets — NEVER push
 .env
+.env.framework.local
 
 # Python
 venv/
