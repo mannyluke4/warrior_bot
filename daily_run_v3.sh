@@ -242,9 +242,12 @@ echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 # can't start. Backup of the prior (IBKR-driven) launch block lives at
 # daily_run_v3.sh.backup.
 SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
-# Sub-bot strategy gates (mirrors the retired block's split, sans IBKR):
-#   WB_SQUEEZE_ENABLED=0           — sub-bot does not run squeeze (Setup A does)
-#   WB_WAVE_BREAKOUT_ENABLED=1     — sub-bot runs WB paper validation
+# Sub-bot strategy gates — mirror Setup A's squeeze for the Databento A/B
+# (2026-05-19 pre-cron decision). Setup B's historical role was WB paper
+# validation; flipped tonight so the A/B compares "same strategy, same
+# universe, different data feed" rather than "different strategy."
+#   WB_SQUEEZE_ENABLED=1           — Setup B runs squeeze on Databento ticks
+#   WB_WAVE_BREAKOUT_ENABLED=0     — WB paper validation paused for the A/B
 #   WB_TBT_ENABLED=0               — TBT is an IBKR concept; off on Databento path
 echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
 # WB_DATABENTO_DATASET=EQUS.MINI — Manny's API key is currently licensed for
@@ -253,8 +256,8 @@ echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
 # 2026-05-18 PM decision; revisit when license upgrades.
 WB_SUBBOT_DATA_FEED=databento \
 WB_DATABENTO_DATASET=EQUS.MINI \
-WB_SQUEEZE_ENABLED=0 \
-WB_WAVE_BREAKOUT_ENABLED=1 \
+WB_SQUEEZE_ENABLED=1 \
+WB_WAVE_BREAKOUT_ENABLED=0 \
 WB_TBT_ENABLED=0 \
   python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
 SUBBOT_PID=$!
