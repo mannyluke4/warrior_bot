@@ -1,0 +1,25 @@
+2026-05-16 01:44:27,402 [INFO] Fetching 9 symbols 2020-01-01..2024-12-31 on XNAS.ITCH
+2026-05-16 01:44:27,599 [INFO] Initialized Historical(gateway=https://hist.databento.com)
+2026-05-16 01:44:27,599 [INFO] [orb_data_fetcher] fetching DAL XNAS.ITCH ohlcv-1m 2020-01-01..2024-12-31
+/Users/duffy/warrior_bot_v2/backtest/orb_data_fetcher.py:194: BentoWarning: The streaming request contained one or more days which have reduced quality: 2021-07-07 (degraded), 2021-10-26 (degraded), 2022-09-19 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  store = client.timeseries.get_range(
+2026-05-16 01:45:13,316 [INFO] [1/9] DAL: 1258 days (45.9s)
+2026-05-16 01:45:13,335 [INFO] Initialized Historical(gateway=https://hist.databento.com)
+2026-05-16 01:45:13,335 [INFO] [orb_data_fetcher] fetching PLTR XNAS.ITCH ohlcv-1m 2020-01-01..2024-12-31
+/Users/duffy/warrior_bot_v2/backtest/orb_data_fetcher.py:194: BentoWarning: The streaming request contained one or more days which have reduced quality: 2021-07-07 (degraded), 2021-10-26 (degraded), 2022-09-19 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  store = client.timeseries.get_range(
+2026-05-16 01:46:03,042 [INFO] [2/9] PLTR: 1070 days (49.7s)
+2026-05-16 01:46:03,061 [INFO] Initialized Historical(gateway=https://hist.databento.com)
+2026-05-16 01:46:03,061 [INFO] [orb_data_fetcher] fetching SOFI XNAS.ITCH ohlcv-1m 2020-01-01..2024-12-31
+/Users/duffy/warrior_bot_v2/backtest/orb_data_fetcher.py:194: BentoWarning: The streaming request contained one or more days which have reduced quality: 2021-07-07 (degraded), 2021-10-26 (degraded), 2022-09-19 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  store = client.timeseries.get_range(
+2026-05-16 01:46:30,335 [INFO] [3/9] SOFI: 903 days (27.3s)
+2026-05-16 01:46:30,352 [INFO] Initialized Historical(gateway=https://hist.databento.com)
+2026-05-16 01:46:30,352 [INFO] [orb_data_fetcher] fetching SNAP XNAS.ITCH ohlcv-1m 2020-01-01..2024-12-31
+/Users/duffy/warrior_bot_v2/backtest/orb_data_fetcher.py:194: BentoWarning: The streaming request contained one or more days which have reduced quality: 2021-07-07 (degraded), 2021-10-26 (degraded), 2022-09-19 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  store = client.timeseries.get_range(
+2026-05-16 01:46:55,179 [INFO] [4/9] SNAP: 1258 days (24.8s)
+2026-05-16 01:46:55,196 [INFO] Initialized Historical(gateway=https://hist.databento.com)
+2026-05-16 01:46:55,196 [INFO] [orb_data_fetcher] fetching ROKU XNAS.ITCH ohlcv-1m 2020-01-01..2024-12-31
+/Users/duffy/warrior_bot_v2/backtest/orb_data_fetcher.py:194: BentoWarning: The streaming request contained one or more days which have reduced quality: 2021-07-07 (degraded), 2021-10-26 (degraded), 2022-09-19 (degraded). See: https://databento.com/docs/api-reference-historical/metadata/metadata-get-dataset-condition
+  store = client.timeseries.get_range(

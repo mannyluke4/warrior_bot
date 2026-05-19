@@ -1,0 +1,43 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 54456)
+=== V3 Hybrid daily run started: Mon May 18 02:00:05 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+   5d86e5e..b50a782  v2-ibkr-migration -> origin/v2-ibkr-migration
+Updating 5d86e5e..b50a782
+Fast-forward
+ DIRECTIVE_2026-05-18_WB_V2_STAGE_0.md | 223 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 223 insertions(+)
+ create mode 100644 DIRECTIVE_2026-05-18_WB_V2_STAGE_0.md
+Code version: b50a782 (WB v2 Stage 0 directive - fluctuation-hunter research)
+daily_run_v3.sh hash: b6e76e5cff9b5e1dae64a6cfc8fb52cf8bd58a03
+bot_v3_hybrid.py hash: ed2786d36436fd69f9cc2b34eea09900b7459f10
+bot_alpaca_subbot.py hash: ac18fdeb4d868640624197a373ac56810d9816ec
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.031184 +/- 0.059802 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Mon May 18 08:00:08 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 54525)
+Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)...
+Bot started (PID: 54540)
+Bot health check passed (still running after 15s, PID: 54540)
+HEALTH_OK: Bot connected at 2026-05-18 08:00:32 UTC
+Starting framework.run_live (Wave 4 paper deploy)...
+Framework started (PID: 54559, log: /Users/duffy/warrior_bot_v2/logs/2026-05-18_framework.log)
+Framework health check passed (still running after 15s, PID: 54559)
+Gateway watchdog started (PID: 54584)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon May 18 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
