@@ -2971,6 +2971,34 @@ def run_simulation(
                 # Trigger check on every tick (like live bot's on_trade)
                 is_premarket = bb_1m.is_premarket(ts)
 
+                # --- Tick-level arming (WB_TICK_LEVEL_ARM, 2026-05-19) ---
+                # Evaluate prime/arm conditions mid-bar against the in-progress
+                # bar BEFORE the normal trigger path. When the flag is OFF
+                # (default), this is a no-op and behavior is bit-identical to
+                # bar-close-only arming. See squeeze_detector.try_arm_on_tick().
+                if sq_enabled and sq_det.armed is None and sim_mgr.open_trade is None:
+                    _ip_bar = bb_1m.get_in_progress_bar(symbol)
+                    if _ip_bar is not None:
+                        _ip_vwap = bb_1m.get_vwap(symbol)
+                        _ip_ticks = bb_1m.get_tick_count_in_bar(symbol)
+                        try:
+                            _ip_elapsed = (ts - _ip_bar.start_utc).total_seconds()
+                        except Exception:
+                            _ip_elapsed = 0.0
+                        _tick_arm_msg = sq_det.try_arm_on_tick(
+                            running_open=_ip_bar.open,
+                            running_high=_ip_bar.high,
+                            running_low=_ip_bar.low,
+                            running_close=_ip_bar.close,
+                            running_vol=float(_ip_bar.volume),
+                            tick_count=int(_ip_ticks),
+                            elapsed_sec=float(_ip_elapsed),
+                            vwap=_ip_vwap,
+                            bar_start_utc=_ip_bar.start_utc,
+                        )
+                        if _tick_arm_msg and verbose:
+                            print(f"  [{time_str}] SQ | {_tick_arm_msg}", flush=True)
+
                 # --- Squeeze trigger (priority over MP) ---
                 _sq_armed_before = sq_det.armed if sq_enabled else None
                 if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:

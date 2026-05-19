@@ -2494,6 +2494,43 @@ def check_triggers(symbol: str, price: float):
     # Squeeze trigger (priority)
     if SQ_ENABLED and symbol in state.sq_detectors:
         sq = state.sq_detectors[symbol]
+
+        # --- Tick-level arming (WB_TICK_LEVEL_ARM, 2026-05-19) ---
+        # Evaluate prime/arm mid-bar against the in-progress bar BEFORE
+        # checking on_trade_price. If the conditions are true on this tick,
+        # detector transitions IDLE/PRIMED → ARMED on this tick instead of
+        # at bar close. Then on_trade_price below fires ENTRY SIGNAL on the
+        # same tick when the price crosses trigger_high. This eliminates the
+        # MTVA/RUBI gap-up entry where bar-close arming arrived $0.15-$0.27
+        # past the intended arm price.
+        if sq.armed is None and not sq._in_trade and state.bar_builder_1m is not None:
+            in_progress = state.bar_builder_1m.get_in_progress_bar(symbol)
+            if in_progress is not None:
+                vwap = state.bar_builder_1m.get_vwap(symbol)
+                tick_count = state.bar_builder_1m.get_tick_count_in_bar(symbol)
+                # elapsed seconds since bar start; use now() rather than the
+                # tick's ts (we don't have ts here, and the call follows the
+                # bar builder update by microseconds — close enough).
+                try:
+                    elapsed_sec = (
+                        datetime.now(timezone.utc) - in_progress.start_utc
+                    ).total_seconds()
+                except Exception:
+                    elapsed_sec = 0.0
+                tick_arm_msg = sq.try_arm_on_tick(
+                    running_open=in_progress.open,
+                    running_high=in_progress.high,
+                    running_low=in_progress.low,
+                    running_close=in_progress.close,
+                    running_vol=float(in_progress.volume),
+                    tick_count=int(tick_count),
+                    elapsed_sec=float(elapsed_sec),
+                    vwap=vwap,
+                    bar_start_utc=in_progress.start_utc,
+                )
+                if tick_arm_msg:
+                    print(f"[{now_str} ET] {symbol} SQ | {tick_arm_msg}", flush=True)
+
         armed_before = sq.armed
         sq_msg = sq.on_trade_price(price, is_premarket=is_premarket)
         if sq_msg and "SQ_SEED_GATE" in sq_msg:

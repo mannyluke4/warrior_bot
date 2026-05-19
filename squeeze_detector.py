@@ -96,6 +96,28 @@ class SqueezeDetector:
         self._seed_stale_gate_enabled = os.getenv("WB_SQ_SEED_STALE_GATE_ENABLED", "1") == "1"
         self._seed_stale_pct = float(os.getenv("WB_SQ_SEED_STALE_PCT", "2.0"))
 
+        # --- Tick-level arming (2026-05-19, MTVA/RUBI gap-up entry fix) ---
+        # When ON, evaluate prime/arm conditions on every tick using the
+        # in-progress bar (running high/low/open/cumulative-vol/tick-count)
+        # instead of waiting for bar close. This catches the volume-spike bar
+        # at the level cross instead of the bar-close gap-up. Bar-close arming
+        # is preserved as a no-op fallback when already armed (idempotent).
+        # Stat-reliability mitigations:
+        #   - minimum elapsed seconds in bar before evaluating (default 5s)
+        #   - minimum tick count in bar before evaluating (default 10 prints)
+        #   - body% check is SKIPPED mid-bar (close not known) — re-evaluated
+        #     at bar close where the full body becomes known. If a tick-arm
+        #     fires but the bar closes failing the body gate, the arm stands
+        #     (caller already has an ARMED state and may have triggered).
+        #   - one IDLE → PRIMED transition per bar via tick path. If the arm
+        #     fires and the signal is later rejected by sizing (e.g. R too
+        #     small, BP), we DO NOT re-evaluate the same bar. _tick_arm_last_bar
+        #     stores the bar's start_utc to enforce this.
+        self._tick_level_arm_enabled = os.getenv("WB_TICK_LEVEL_ARM", "0") == "1"
+        self._tick_arm_min_elapsed_sec = float(os.getenv("WB_TICK_ARM_MIN_ELAPSED_SEC", "5.0"))
+        self._tick_arm_min_ticks = int(os.getenv("WB_TICK_ARM_MIN_TICKS", "10"))
+        self._tick_arm_last_bar = None  # bar start_utc of last tick-arm IDLE eval
+
     # ------------------------------------------------------------------
     # Seed (warm up indicators — no signals)
     # ------------------------------------------------------------------
@@ -324,6 +346,175 @@ class SqueezeDetector:
             return msg
 
         return None
+
+    # ------------------------------------------------------------------
+    # Tick-level arming (WB_TICK_LEVEL_ARM)
+    # ------------------------------------------------------------------
+    def try_arm_on_tick(
+        self,
+        running_open: float,
+        running_high: float,
+        running_low: float,
+        running_close: float,
+        running_vol: float,
+        tick_count: int,
+        elapsed_sec: float,
+        vwap: Optional[float],
+        bar_start_utc=None,
+    ) -> Optional[str]:
+        """Evaluate arming conditions mid-bar using the in-progress bar.
+
+        This mirrors the IDLE → PRIMED → ARM path of on_bar_close_1m but
+        operates against the not-yet-closed bar so the arm can fire as soon
+        as conditions become true — typically 30-60s before bar close —
+        avoiding the gap-up entry problem (MTVA/RUBI 2026-05-19).
+
+        Returns an arm/log message (or None if no state change). Caller is
+        responsible for printing the message and feeding the next tick to
+        on_trade_price() to fire ENTRY SIGNAL.
+
+        Gated by WB_TICK_LEVEL_ARM (default OFF). When OFF this method is a
+        no-op and the detector behaves identically to bar-close-only arming.
+        Stat-reliability gates: min elapsed seconds + min tick count.
+
+        Body-% check is intentionally skipped here (close unknown). The
+        existing on_bar_close_1m body-% gate still runs on the close bar;
+        if the bar closes failing body% but a tick-arm already fired, the
+        arm stands — by design, the empirical evidence (MTVA/RUBI tick
+        replay) shows mid-bar arms are correct even when the full bar
+        ultimately fails body%. Acceptable risk: documented in directive.
+        """
+        if not self.enabled:
+            return None
+        if not self._tick_level_arm_enabled:
+            return None
+
+        # No re-arming once ARMED (the next tick will trigger via on_trade_price)
+        if self._state == "ARMED":
+            return None
+
+        # Seed replay must not produce live signals
+        if self._seeding:
+            return None
+
+        # Don't try to arm while in an active trade
+        if self._in_trade:
+            return None
+
+        # Stat-reliability: require minimum bar maturity before we trust
+        # cumulative volume as a stable signal. A single huge first-tick
+        # block trade shouldn't fire an arm.
+        if elapsed_sec < self._tick_arm_min_elapsed_sec:
+            return None
+        if tick_count < self._tick_arm_min_ticks:
+            return None
+
+        # Need bar history for volume baseline and stop derivation
+        if len(self.bars_1m) < 3:
+            return None
+        if vwap is None:
+            return None
+
+        # --- PRIMED state: tick-level can complete the level-break leg ---
+        if self._state == "PRIMED":
+            # VWAP-lost reset is a bar-close concept (close < vwap). Skip
+            # mid-bar to avoid false resets on a transient dip below VWAP.
+            # The bar-close path still resets on a confirmed loss.
+            level_name, level_price = self._find_broken_level(running_high)
+            if level_name is not None:
+                # Synthesize a "bar" dict for _try_arm; running stats stand
+                # in for the would-be closed bar's fields.
+                bar_info = {
+                    "o": running_open,
+                    "h": running_high,
+                    "l": running_low,
+                    "c": running_close,
+                    "v": running_vol,
+                    "v_baseline": self._winsorize_volume(running_vol),
+                    "green": running_close >= running_open,
+                }
+                return self._try_arm(level_name, level_price, bar_info, vwap)
+            return None
+
+        # --- IDLE state: try to prime + optionally arm in same tick ---
+        # One IDLE-eval per bar via tick path. If we already armed on this
+        # bar (and the signal was rejected by downstream sizing/cooldown),
+        # don't re-fire on the same bar. The bar-close path is the fallback.
+        if bar_start_utc is not None and self._tick_arm_last_bar == bar_start_utc:
+            return None
+
+        # Volume gate (cumulative-so-far vs prior-bar avg)
+        avg_vol = self._avg_prior_vol()
+        if avg_vol <= 0:
+            return None
+        vol_ratio = running_vol / avg_vol
+        if vol_ratio < self.vol_mult:
+            return None
+        if running_vol < self.min_bar_vol:
+            return None
+
+        # Price above VWAP (running close stands in for bar close)
+        if running_close < vwap:
+            return None
+
+        # Green check (current_price >= bar_open)
+        if running_close < running_open:
+            return None
+
+        # Body-% check intentionally skipped mid-bar — close not yet final.
+        # See class docstring caveat.
+
+        # Max attempts gate (same as bar-close path)
+        if self.dynamic_attempts_enabled:
+            bonus = min(
+                self.attempts_bonus_cap,
+                int(max(0.0, self._cumulative_r) / max(self.attempts_r_per_bonus, 0.0001)),
+            )
+            effective_cap = self.max_attempts + bonus
+            if self._attempts >= effective_cap:
+                return None  # silent reject mid-bar; bar-close path will log
+        elif self._attempts >= self.max_attempts:
+            return None
+
+        # HOD gate
+        if self.new_hod_required:
+            if self.pm_hod_gate and self.premarket_high is not None and self.premarket_high > 0:
+                if running_high < self.premarket_high:
+                    return None
+            elif self._session_hod > 0:
+                if running_high < self._session_hod:
+                    return None
+
+        # --- Transition to PRIMED (mid-bar) ---
+        self._state = "PRIMED"
+        self._primed_bars_left = self.prime_bars
+        bar_info = {
+            "o": running_open,
+            "h": running_high,
+            "l": running_low,
+            "c": running_close,
+            "v": running_vol,
+            "v_baseline": self._winsorize_volume(running_vol),
+            "green": True,
+        }
+        self._primed_bar = dict(bar_info)
+        # Lock out further IDLE→PRIMED tick evaluations on this bar
+        self._tick_arm_last_bar = bar_start_utc
+
+        prime_msg = (
+            f"SQ_PRIMED_TICK: vol={vol_ratio:.1f}x avg, bar_vol={running_vol:,.0f}, "
+            f"price=${running_close:.4f} above VWAP (${vwap:.4f}) "
+            f"[elapsed={elapsed_sec:.0f}s ticks={tick_count}]"
+        )
+
+        # Try to arm on same tick if level already broken
+        level_name, level_price = self._find_broken_level(running_high)
+        if level_name is not None:
+            arm_msg = self._try_arm(level_name, level_price, bar_info, vwap)
+            if arm_msg:
+                return f"{prime_msg}\n  {arm_msg}"
+            return prime_msg
+        return prime_msg
 
     # ------------------------------------------------------------------
     # Premarket levels

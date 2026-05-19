@@ -45,6 +45,10 @@ class TradeBarBuilder:
 
         self._cur: Dict[str, Optional[Bar]] = {}
         self._last_bucket_start: Dict[str, Optional[datetime]] = {}
+        # Tick count in current in-progress bar (per symbol). Reset at bar
+        # boundary in on_trade(). Used by WB_TICK_LEVEL_ARM gating in
+        # SqueezeDetector — see squeeze_detector.try_arm_on_tick().
+        self._tick_count_in_bar: Dict[str, int] = {}
 
         # VWAP accumulators per symbol for the current ET session day
         self._vwap_pv: Dict[str, float] = {}
@@ -81,6 +85,18 @@ class TradeBarBuilder:
     def get_premarket_bull_flag_high(self, symbol: str) -> Optional[float]:
         """Get the premarket bull flag high if detected"""
         return self._premarket_bull_flag_high.get(symbol)
+
+    def get_in_progress_bar(self, symbol: str) -> Optional[Bar]:
+        """Return the current in-progress (not-yet-closed) bar for symbol.
+        Used by tick-level arming (WB_TICK_LEVEL_ARM) — see
+        squeeze_detector.try_arm_on_tick(). Returns None if no bar yet."""
+        return self._cur.get(symbol)
+
+    def get_tick_count_in_bar(self, symbol: str) -> int:
+        """Return the number of trade prints accumulated in the current
+        in-progress bar for symbol. Resets at each bar boundary. Used as a
+        stat-reliability gate for WB_TICK_LEVEL_ARM."""
+        return self._tick_count_in_bar.get(symbol, 0)
 
     def is_premarket(self, ts_utc: datetime) -> bool:
         """Check if timestamp is during premarket (4:00 AM - 9:30 AM ET)"""
@@ -208,17 +224,20 @@ class TradeBarBuilder:
         if last_b0 is None:
             self._last_bucket_start[symbol] = b0
             self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
+            self._tick_count_in_bar[symbol] = 1
             return
 
         if b0 == last_b0:
             b = self._cur.get(symbol)
             if b is None:
                 self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
+                self._tick_count_in_bar[symbol] = 1
             else:
                 b.high = max(b.high, price)
                 b.low = min(b.low, price)
                 b.close = price
                 b.volume += int(size)
+                self._tick_count_in_bar[symbol] = self._tick_count_in_bar.get(symbol, 0) + 1
             return
 
         prev_bar = self._cur.get(symbol)
@@ -233,3 +252,4 @@ class TradeBarBuilder:
 
         self._last_bucket_start[symbol] = b0
         self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
+        self._tick_count_in_bar[symbol] = 1
