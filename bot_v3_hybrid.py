@@ -3122,12 +3122,24 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
     except Exception:
         pass
 
-    # Place limit order with dynamic slippage (trigger + max(MIN, price × PCT))
-    initial_slip = _entry_slippage_for(entry)
-    limit_price = round(entry + initial_slip, 2)
-    original_limit = limit_price  # preserved for MAX_CHASE_PCT cap during retries
+    # Place limit order with dynamic slippage. Basis is max(arm, live_tape):
+    # on a clean trigger (tape ≈ arm), this is the arm price (original
+    # behavior). On a gap-up trigger (tape already above arm), use the live
+    # tape so the limit lands at a price the stock is actually for sale at
+    # rather than $0.08-0.16 below where the trigger-firing tick actually
+    # printed. 2026-05-19 fix per MTVA/RUBI missed-fills investigation.
+    live_tape = state.last_tick_price.get(symbol)
+    if not live_tape or live_tape <= 0:
+        live_tape = entry
+    basis = max(entry, live_tape)
+    initial_slip = _entry_slippage_for(basis)
+    limit_price = round(basis + initial_slip, 2)
+    original_limit = limit_price  # chase-cap is now relative to the price we
+                                   # actually submitted at, not the arm
 
-    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}) "
+    gap_pct = (basis - entry) / entry if entry > 0 else 0.0
+    gap_note = f" gap={gap_pct:.1%} above arm ${entry:.2f}" if gap_pct >= 0.005 else ""
+    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}{gap_note}) "
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
           f"type={setup_type}", flush=True)
 

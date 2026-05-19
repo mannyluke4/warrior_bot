@@ -3133,12 +3133,21 @@ def enter_trade(symbol: str, armed, setup_type: str):
               f"likely BP=$0 or probe-rounded-to-zero", flush=True)
         return
 
-    # Place limit order with dynamic slippage (trigger + max(MIN, price × PCT))
-    initial_slip = _entry_slippage_for(entry)
-    limit_price = round(entry + initial_slip, 2)
-    original_limit = limit_price  # preserved for MAX_CHASE_PCT cap during retries
+    # Place limit order with dynamic slippage. Basis is max(arm, live_tape) —
+    # mirrors the 2026-05-19 fix on bot_v3_hybrid.py:3127 (MTVA/RUBI
+    # missed-fills investigation). On gap-up triggers the limit lands at a
+    # fillable price rather than $0.08-0.16 below the trigger-firing tick.
+    live_tape = state.last_tick_price.get(symbol)
+    if not live_tape or live_tape <= 0:
+        live_tape = entry
+    basis = max(entry, live_tape)
+    initial_slip = _entry_slippage_for(basis)
+    limit_price = round(basis + initial_slip, 2)
+    original_limit = limit_price  # chase-cap relative to actual submit, not arm
 
-    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}) "
+    gap_pct = (basis - entry) / entry if entry > 0 else 0.0
+    gap_note = f" gap={gap_pct:.1%} above arm ${entry:.2f}" if gap_pct >= 0.005 else ""
+    print(f"🟩 ENTRY: {symbol} qty={qty} limit=${limit_price:.2f} (slip=${initial_slip:.3f}{gap_note}) "
           f"stop=${stop:.4f} R=${r:.4f} score={score:.1f} "
           f"type={setup_type}", flush=True)
 
