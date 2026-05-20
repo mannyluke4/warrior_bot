@@ -169,3 +169,12 @@ Watchdog: monitoring until Fri May 15 18:05:00 MDT 2026...
 Trading windows closed. Proceeding to shutdown.
 === Setup B engine daily run complete: Fri May 15 18:05:00 MDT 2026 ===
 === TRAP: cleanup at Fri May 15 18:05:00 MDT 2026 ===
+/Users/duffy/warrior_bot_v2_engine/daily_run_engine.sh: line 74: 64916 Terminated: 15          caffeinate -dims -w $$  (wd: ~/warrior_bot_v2)
+[data-engine-unified b5f5217] auto: engine daily logs 2026-05-15
+ 7 files changed, 7571 insertions(+)
+ create mode 100644 logs/2026-05-15_engine.log
+ create mode 100644 logs/2026-05-15_engine_run.log
+ create mode 100644 logs/2026-05-15_squeeze_bot.log
+ create mode 100644 logs/2026-05-15_wb_bot.log
+ create mode 100644 logs/cron_2026-05-15.log
+=== Cleanup complete: Fri May 15 18:05:07 MDT 2026 ===

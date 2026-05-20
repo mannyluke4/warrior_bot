@@ -1,0 +1,468 @@
+========================================================================
+[ENGINE] 2026-05-18T04:00:09.857081-04:00 Setup B Unified Data Engine starting
+[ENGINE]   IBKR target:    127.0.0.1:4002 clientId=3
+[ENGINE]   IPC socket:     /tmp/warrior_engine.sock
+[ENGINE]   A/B safety:     WB_ENGINE_AB_PERIOD=1 (TBT disabled)
+[ENGINE]   Tick cache:     /Users/duffy/warrior_bot_v2_engine/tick_cache_engine
+[ENGINE]   Watchlist src:  /Users/duffy/warrior_bot_v2/session_state/2026-05-18/watchlist.json
+[ENGINE]   Tier 1 (TBT):   0 slots used (A/B period — no TBT)
+[ENGINE]   Alpaca quotes:  ENABLED (feed=iex)
+========================================================================
+[ENGINE] 2026-05-18T04:00:10.608470-04:00 Alpaca quote stream started (feed=iex)
+[ENGINE] 2026-05-18T04:00:10.608608-04:00 connecting IBKR (attempt 1, after 0s)…
+[ENGINE] 2026-05-18T04:00:11.117212-04:00 IBKR connected (accounts: ['DUQ143444'])
+[ENGINE] 2026-05-18T04:00:12.169642-04:00 IPC client connected (unknown#23c0)
+[ENGINE] 2026-05-18T04:00:12.170082-04:00 hello from wb_bot v1.0
+[ENGINE] 2026-05-18T04:00:12.170405-04:00 IPC client connected (unknown#b5f0)
+[ENGINE] 2026-05-18T04:00:12.170572-04:00 hello from squeeze_bot v1.0
+[ENGINE] 2026-05-18T04:00:30.610411-04:00 seed: no cache for AEHL at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/AEHL.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:30.663880-04:00 subscribed AEHL (snapshot)
+[ENGINE] 2026-05-18T04:00:30.664255-04:00 seed: no cache for ATRA at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/ATRA.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:30.806693-04:00 subscribed ATRA (snapshot)
+[ENGINE] 2026-05-18T04:00:30.806964-04:00 seed: no cache for CORD at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/CORD.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:30.949172-04:00 subscribed CORD (snapshot)
+[ENGINE] 2026-05-18T04:00:30.949445-04:00 seed: no cache for FCHL at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/FCHL.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:30.996426-04:00 subscribed FCHL (snapshot)
+[ENGINE] 2026-05-18T04:00:30.996701-04:00 seed: no cache for LESL at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/LESL.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.043602-04:00 subscribed LESL (snapshot)
+[ENGINE] 2026-05-18T04:00:31.043826-04:00 seed: no cache for LNKS at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/LNKS.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.091313-04:00 subscribed LNKS (snapshot)
+[ENGINE] 2026-05-18T04:00:31.091585-04:00 seed: no cache for MOBX at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/MOBX.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.234997-04:00 subscribed MOBX (snapshot)
+[ENGINE] 2026-05-18T04:00:31.235230-04:00 seed: no cache for ONDG at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/ONDG.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.281508-04:00 subscribed ONDG (snapshot)
+[ENGINE] 2026-05-18T04:00:31.281775-04:00 seed: no cache for PIII at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/PIII.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.327674-04:00 subscribed PIII (snapshot)
+[ENGINE] 2026-05-18T04:00:31.327916-04:00 seed: no cache for QUCY at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/QUCY.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.375860-04:00 subscribed QUCY (snapshot)
+[ENGINE] 2026-05-18T04:00:31.376149-04:00 seed: no cache for SKK at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/SKK.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.519259-04:00 subscribed SKK (snapshot)
+[ENGINE] 2026-05-18T04:00:31.519390-04:00 seed: no cache for SKYQ at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/SKYQ.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.662017-04:00 subscribed SKYQ (snapshot)
+[ENGINE] 2026-05-18T04:00:31.662178-04:00 seed: no cache for SLE at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/SLE.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:31.805236-04:00 subscribed SLE (snapshot)
+[ENGINE] 2026-05-18T04:00:31.805324-04:00 Alpaca quote sub: AEHL,ATRA,CORD,FCHL,LESL,LNKS,MOBX,ONDG,PIII,QUCY,SKK,SKYQ,SLE
+[ENGINE] 2026-05-18T04:00:41.807370-04:00 seed: no cache for SST at /Users/duffy/warrior_bot_v2/tick_cache/2026-05-18/SST.json.gz — skipping (live ticks will build baseline)
+[ENGINE] 2026-05-18T04:00:41.851400-04:00 subscribed SST (snapshot)
+[ENGINE] 2026-05-18T04:00:41.852280-04:00 Alpaca quote sub: SST
+[ENGINE] 2026-05-18T07:02:14.489193-04:00 seeded SBFM: 1411 ticks (0 skipped) → bars (vwap=1.0286)
+[ENGINE] 2026-05-18T07:02:14.577039-04:00 subscribed SBFM (snapshot)
+[ENGINE] 2026-05-18T07:02:14.579103-04:00 Alpaca quote sub: SBFM
+[ENGINE] 2026-05-18T07:55:35.370635-04:00 seeded GOVX: 897 ticks (0 skipped) → bars (vwap=3.4130)
+[ENGINE] 2026-05-18T07:55:35.448809-04:00 subscribed GOVX (snapshot)
+[ENGINE] 2026-05-18T07:55:35.449856-04:00 Alpaca quote sub: GOVX
+data websocket error, restarting connection: no close frame received or sent
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+Error 1100, reqId -1: Connectivity between IBKR and Trader Workstation has been lost.
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+data websocket error, restarting connection: server rejected WebSocket connection: HTTP 429
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+error during websocket communication: connection limit exceeded
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 343, in _run_forever
+    await self._start_ws()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 135, in _start_ws
+    await self._auth()
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/alpaca/data/live/websocket.py", line 126, in _auth
+    raise ValueError(msg[0].get("msg", "auth failed"))
+ValueError: connection limit exceeded
+Error 1102, reqId -1: Connectivity between IBKR and Trader Workstation has been restored - data maintained. All data farms are connected: usfarm; ushmds; secdefil.

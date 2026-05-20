@@ -1,0 +1,127 @@
+[BOOT] reconcile: broker has 1 open position(s): ['MOBX'] — forcing RESUME
+[SQUEEZE] BOOT: RESUME (reason=broker_reconcile, marker_age=n/a)
+[SQUEEZE] 2026-05-19T04:00:12.747205-04:00 starting equity $67,169 (third Alpaca paper account)
+[SQUEEZE] 2026-05-19T04:00:12.747354-04:00 RESUME: reconciling state
+[SQUEEZE] 2026-05-19T04:00:12.880565-04:00 [ORPHAN_DETECTED] MOBX qty=20449 entry=$2.4500 — adopting with conservative defaults (stop=entry*0.99, R=entry*0.01)
+[SQUEEZE] 2026-05-19T04:00:12.880818-04:00 RESUME: risk restored daily_pnl=$+0.00 entries=0 consec_losses=0
+[SQUEEZE] 2026-05-19T04:00:12.882137-04:00 RESUME: complete
+[SQUEEZE] 2026-05-19T04:00:12.882364-04:00 connected to engine — fail-CLOSED until first healthy heartbeat
+[SQUEEZE] 2026-05-19T04:00:12.906728-04:00 force_exit: enabled=True end=20:00 ET trigger=19:55 ET first_offset=1.0% step=1.0% retries=3
+[SQUEEZE] 2026-05-19T04:00:16.116054-04:00 stream healthy — entries unlocked
+[SQUEEZE] 2026-05-19T04:00:32.809391-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($634) qty=20449 ref=$2.4190
+[FALLBACK] MOBX SELL limit=2.3900 reason=no_quote ibkr_signal=2.4190 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:00:32.879635-04:00 BROKER ORDER: 95f48184-590b-4dbc-8478-3efca4ff9394 SELL 20449 MOBX @ $2.39
+[FALLBACK] MOBX SELL limit=2.3900 reason=no_quote ibkr_signal=2.4190 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:00:43.951941-04:00 MOBX RETRY BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:00:43.953156-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:02.840673-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($613) qty=20449 ref=$2.4200
+[FALLBACK] MOBX SELL limit=2.4000 reason=no_quote ibkr_signal=2.4200 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:02.910630-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:02.911709-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:06.594535-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($1,840) qty=20449 ref=$2.3600
+[FALLBACK] MOBX SELL limit=2.3400 reason=no_quote ibkr_signal=2.3600 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:06.667845-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:06.669136-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:06.844740-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:06.911115-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:06.912462-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:07.094512-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:07.158307-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:07.159842-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:07.594596-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:07.660474-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:07.661912-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:07.845605-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:07.908973-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:07.910469-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:07.911213-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:07.973541-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:07.974956-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:08.344279-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:08.407462-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:08.408984-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:08.596062-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:08.657985-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:08.659954-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:08.846878-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:08.909008-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:08.910363-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:08.918455-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:08.982333-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:08.983903-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:09.095891-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:09.162953-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:09.164391-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:09.847647-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:09.911442-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:09.913185-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:09.914280-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:10.017949-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:10.019437-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:10.096585-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($1,022) qty=20449 ref=$2.4000
+[FALLBACK] MOBX SELL limit=2.3800 reason=no_quote ibkr_signal=2.4000 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:10.161799-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:10.163302-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:10.164241-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($818) qty=20449 ref=$2.4100
+[FALLBACK] MOBX SELL limit=2.3900 reason=no_quote ibkr_signal=2.4100 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:10.229222-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:10.230740-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:15.670980-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,454) qty=20449 ref=$2.3300
+[FALLBACK] MOBX SELL limit=2.3100 reason=no_quote ibkr_signal=2.3300 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:15.741499-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:15.743468-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:16.355152-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($1,227) qty=20449 ref=$2.3900
+[FALLBACK] MOBX SELL limit=2.3700 reason=no_quote ibkr_signal=2.3900 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:16.422040-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:16.423513-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:16.604319-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:16.667842-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:16.669852-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:17.857043-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:17.925989-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:17.927681-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:19.858877-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:19.927333-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:19.929295-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:20.926707-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:20.992306-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:20.994106-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:21.927280-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:21.996588-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:21.997716-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:31.440796-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:31.509301-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:31.511165-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:32.941857-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:33.013629-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:33.015169-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:01:58.725392-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:01:58.792557-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:01:58.793961-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:02:02.480651-04:00 MOBX EXIT submitting reason=sq_dollar_loss_cap ($2,249) qty=20449 ref=$2.3400
+[FALLBACK] MOBX SELL limit=2.3200 reason=no_quote ibkr_signal=2.3400 buffer_pct=1.0
+[SQUEEZE] 2026-05-19T04:02:02.547752-04:00 MOBX BROKER REJECT: APIError('{"available":"0","code":40310000,"existing_qty":"20449","held_for_orders":"20449","message":"insufficient qty available for order (requested: 20449, available: 0)","related_orders":["95f48184-590b-4dbc-8478-3efca4ff9394"],"symbol":"MOBX"}')
+[SQUEEZE] 2026-05-19T04:02:02.549688-04:00 MOBX EXIT FAILED — position still open, will retry on next adverse tick
+[SQUEEZE] 2026-05-19T04:02:06.329371-04:00 signal received — shutting down
+[SQUEEZE] 2026-05-19T04:02:06.329517-04:00 engine socket closed — fail-CLOSED, no new entries. Open positions: 1 (continuing to manage via cached last-tick prices when they arrive — none will arrive until engine reconnects). Manual intervention required to flatten if engine stays down.
+[SQUEEZE] 2026-05-19T04:02:06.329563-04:00 shutdown complete (daily_pnl=$+0.00, open_positions=1)
