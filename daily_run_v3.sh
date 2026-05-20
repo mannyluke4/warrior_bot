@@ -217,6 +217,7 @@ APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
 WB_BROKER=alpaca \
 WB_EXPECTED_BROKER=alpaca \
 WB_TICK_LEVEL_ARM=1 \
+WB_ENGINE_PUBLISH_ENABLED=1 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
@@ -230,33 +231,52 @@ fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-# 8a. Setup B sub-bot — DISABLED 2026-05-19 per Manny's call.
+# 8a. Setup B sub-bot — MOVE_STRIKE + HWM v6 (2026-05-20 deploy).
 #
-# Was running on Databento Live (separate data path, no IBKR competition);
-# an uncommitted retry patch in databento_live_feed.py addressed a
-# historical-end-lag 422 but wasn't shipped. Forward plan: rebuild Setup B
-# as an IBKR-shared in-process strategy inside bot_v3_hybrid.py — WB-only,
-# sub-bot Alpaca account, no separate IBKR session. Architecture survey
-# (2026-05-19 PM) showed the WB trade path is deeply coupled to
-# module-level `state` (~12 refs in place_wave_breakout_entry + 8 helpers);
-# safe build is a daylight task, not 4 hours before cron.
+# Architecture (no more Databento, no second IBKR session):
+#   Main bot publishes ticks via engine_publisher.py (Unix socket).
+#   This sub-bot connects as consumer, sees the SAME tick stream the main
+#   bot processes. Sub-bot runs MOVE_STRIKE entry + HWM exit v6 on the
+#   existing sub-bot Alpaca paper account (the original APCA_API_* keys
+#   in .env — main bot uses MAIN_APCA_API_* via the override above).
 #
-# Tomorrow's surface: main bot only (squeeze + tick-arm). Setup B revives
-# once the in-process refactor lands. Re-enable by uncommenting the launch
-# block below (and reverting the Databento retry patch decision).
-SUBBOT_PID=""
-echo "Setup B sub-bot: DISABLED (see comment above)"
+# Strategy (validated in 10-day backtest, +$618 net):
+#   - Entry: movement-anomaly trigger (intra-bar body > 2× rolling avg)
+#   - Stop:  consolidation low of last 10 closed bars (cons_stop)
+#   - Exit:  HWM trail 25% (widens to 50% on 2+ HHs), stop-prox bail at
+#            25% of R, 30-min noact backstop, hard stop
+#   - Risk:  $1000/trade, 50% probe sizing
+#
+# Failure here is NON-FATAL — main bot keeps running even if sub-bot
+# can't start (engine_publisher just has no consumer).
+SUBBOT_LOG="$LOG_DIR/${TODAY}_move_strike_subbot.log"
+echo "Starting move_strike_subbot.py (MOVE_STRIKE + HWM v6; Setup B)..."
+WB_BT_MOVE_STRIKE=1 \
+WB_BT_MOVE_HWM_EXIT=1 \
+WB_BT_MOVE_LOOKBACK=5 \
+WB_BT_MOVE_MULT=2.0 \
+WB_BT_MOVE_STOP_LOOKBACK=10 \
+WB_BT_MOVE_CHASE_PCT=2.0 \
+WB_BT_MOVE_HWM_DRAWDOWN_PCT=0.25 \
+WB_BT_MOVE_HWM_WIDE_DD_PCT=0.50 \
+WB_BT_MOVE_HWM_HH_THRESHOLD=2 \
+WB_BT_MOVE_HWM_MIN_GAIN_PCT=2.0 \
+WB_BT_MOVE_HWM_STOP_PROX_PCT=25 \
+WB_BT_MOVE_HWM_NOACT_MIN=30 \
+WB_SUBBOT_RISK_DOLLARS=1000 \
+  python3 move_strike_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+SUBBOT_PID=$!
+echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
 
-# # ── ORIGINAL LAUNCH BLOCK (kept for restore reference) ──
-# SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
-# echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
-# WB_SUBBOT_DATA_FEED=databento \
-# WB_DATABENTO_DATASET=EQUS.MINI \
-# WB_SQUEEZE_ENABLED=1 \
-# WB_WAVE_BREAKOUT_ENABLED=0 \
-# WB_TBT_ENABLED=0 \
-#   python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
-# SUBBOT_PID=$!
+# Sub-bot health check — non-fatal (don't abort the session if it fails).
+sleep 15
+if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+    echo "WARN: move_strike_subbot.py crashed within 15s — continuing without sub-bot."
+    echo "      See $SUBBOT_LOG for details."
+    SUBBOT_PID=""
+else
+    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
+fi
 # echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
 # sleep 15
 # if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then

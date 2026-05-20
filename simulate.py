@@ -86,6 +86,10 @@ class SimTrade:
     tp_hit: bool = False    # T1 hit
     peak: float = 0.0
     peak_time: str = ""
+    cum_low: float = 0.0   # lowest price seen since entry (2026-05-20 — stop-proximity bail)
+    prev_bar_high: float = 0.0   # for MOVE_STRIKE bar-structure exit (LH+LL)
+    prev_bar_low: float = 0.0
+    hh_count: int = 0   # consecutive higher-high bars (MOVE_STRIKE adaptive trail)
     runner_stop: float = 0.0
     highest_r: float = 0.0   # Peak R-multiple seen (for WB_TRAILING_STOP)
     closed: bool = False
@@ -203,6 +207,53 @@ class SimTradeManager:
         # --- Bail timer (matches live bot) ---
         self.bail_timer_enabled = os.getenv("WB_BAIL_TIMER_ENABLED", "1") == "1"
         self.bail_timer_minutes = float(os.getenv("WB_BAIL_TIMER_MINUTES", "5"))
+
+        # --- MOVE_STRIKE HWM exit (2026-05-20). Replaces all standard
+        # squeeze exits (bail_timer, vwap, time_exit, target_R, para_trail)
+        # for MOVE_STRIKE positions. Trail level = peak − dd × (peak − entry).
+        # Lock-in rate scales with the gain: small gains exit fast (less to
+        # give back), big gains get patient (more rope as they earn it).
+        self.move_hwm_exit_enabled = os.getenv("WB_BT_MOVE_HWM_EXIT", "0") == "1"
+        self.move_hwm_drawdown_pct = float(os.getenv("WB_BT_MOVE_HWM_DRAWDOWN_PCT", "0.25"))
+        # Don't enable the HWM trail until gain reaches this % above entry.
+        # Below the threshold the trade holds (only hard stop applies). Stops
+        # micro-noise from triggering exit when peak ≈ entry.
+        self.move_hwm_min_gain_pct = float(os.getenv("WB_BT_MOVE_HWM_MIN_GAIN_PCT", "2.0"))
+        # Time-based bail: if the trade hasn't reached the HWM activation
+        # threshold (min_gain_pct) within N minutes, exit at current price.
+        # Catches "sitting loser" trades that would otherwise hold all the
+        # way down to the hard stop (max -1R loss) without the bail_timer.
+        self.move_hwm_noact_minutes = float(os.getenv("WB_BT_MOVE_HWM_NOACT_MIN", "30"))
+        # Stop-proximity bail (2026-05-20): exit when cum_low has crept
+        # within X% of R from the hard stop. The signal: "we're not
+        # consolidating, we're dying — bail before −1R hard stop fires."
+        # Distinguishes slow-winning consolidations (low stays $0.04+ above
+        # stop) from dying losers (low hovers within $0.02 of stop).
+        # Set to 0 to disable.
+        self.move_hwm_stop_prox_pct = (
+            float(os.getenv("WB_BT_MOVE_HWM_STOP_PROX_PCT", "25")) / 100.0
+        )
+        # MOVE_STRIKE bar-structure exit (2026-05-20 — exit method #2).
+        # When enabled, replaces the HWM trail (post-activation) with a
+        # bar-close check: exit on first bar showing lower high AND lower
+        # low vs the previous bar — i.e. structural top confirmed.
+        # Pre-activation bails (hard stop + prox + noact) still apply.
+        # Implicitly enables move_hwm_exit_enabled tick path.
+        self.move_barstruct_exit_enabled = os.getenv("WB_BT_MOVE_BARSTRUCT_EXIT", "0") == "1"
+        if self.move_barstruct_exit_enabled:
+            self.move_hwm_exit_enabled = True  # reuse the pre-activation safeties
+        # Adaptive HWM drawdown (2026-05-20 hybrid): widen drawdown after
+        # N consecutive higher-high bars. The intuition — short bursty
+        # peaks (WNW) never produce the HH sequence, so they stay on the
+        # tight 25% trail. Sustained runs (VIDA, LESL) confirm momentum
+        # via HHs and earn the wider 50% trail = more rope to peak.
+        self.move_hwm_wide_dd_pct = float(os.getenv("WB_BT_MOVE_HWM_WIDE_DD_PCT", "0.50"))
+        self.move_hwm_hh_threshold = int(os.getenv("WB_BT_MOVE_HWM_HH_THRESHOLD", "2"))
+        # Alt confirmation: widen to wide_dd once gain_pct exceeds this
+        # threshold. Bar-based HH confirmation is too slow on fast moves —
+        # using the gain itself as the "earned room" signal works on tick
+        # path immediately. Set to 0 to disable. (e.g., 5.0 = widen at +5%)
+        self.move_hwm_wide_gain_pct = float(os.getenv("WB_BT_MOVE_HWM_WIDE_GAIN_PCT", "0"))
 
         # --- EPL graduation callback (set by caller) ---
         self._on_target_hit_cb = None
@@ -346,7 +397,15 @@ class SimTradeManager:
 
     def on_signal(self, symbol: str, entry: float, stop: float, r: float,
                   score: float, detail: str, time_str: str,
-                  setup_type: str = "micro_pullback", size_mult: float = 1.0) -> Optional[SimTrade]:
+                  setup_type: str = "micro_pullback", size_mult: float = 1.0,
+                  trigger_price: Optional[float] = None) -> Optional[SimTrade]:
+        # Realistic fill model (2026-05-20 task #21):
+        #   trigger_price is the actual tick that crossed the arm threshold.
+        #   When provided, mirrors live's basis = max(arm, live_tape) logic
+        #   and refuses to fill if the trigger gapped too far above arm —
+        #   live would have timed out trying to chase (CBRG/RUBI/CORD pattern).
+        #   When None (callers that haven't been updated), falls back to the
+        #   original "fill at entry + slippage" behavior.
         self.signals_received += 1
 
         if self.open_trade is not None:
@@ -376,12 +435,35 @@ class SimTradeManager:
                     and self.stock_info.float_shares < self.quality_min_float):
                 return None
 
-        fill_price = entry + self.slippage
-        actual_r = fill_price - stop
-        if actual_r <= 0:
+        # Fill model. With trigger_price supplied, fill at max(arm, trigger)
+        # — that approximates live's "limit submitted at basis + slip, then
+        # filled at the next ASK" by treating the trigger tick price itself
+        # as the fill (broker-side ASK drift in milliseconds is too small to
+        # model from trade-print-only data). If the trigger gapped above
+        # arm by more than the max-chase budget, refuse to fill — that's
+        # the CBRG/RUBI/CORD timeout pattern (ASK was above limit, never
+        # crossed back). Without trigger_price, keep the legacy
+        # "fill at entry + slippage" behavior for backwards compat.
+        max_trigger_gap_pct = float(os.getenv("WB_BT_MAX_TRIGGER_GAP_PCT", "2.0"))
+        if trigger_price is not None and trigger_price > 0:
+            basis = max(entry, trigger_price)
+            gap_pct = (basis - entry) / entry * 100.0 if entry > 0 else 0.0
+            if gap_pct > max_trigger_gap_pct:
+                return None  # timeout simulation — ASK was above limit
+            fill_price = basis
+        else:
+            fill_price = entry + self.slippage
+
+        # R is arm-based (passed in as `r` param), matching live's
+        # pos["r"] = armed.r. Do NOT recompute R from fill_price-stop —
+        # that artificially expands R when slippage > 0, makes the
+        # para_trail looser than live's, and shrinks qty below live's.
+        # (2026-05-20 parity fix; live uses armed.r at bot_v3_hybrid.py
+        # ~line 3082, NOT (limit_price - stop).)
+        if r <= 0:
             return None
 
-        qty_risk = int(math.floor(self.risk_dollars / actual_r))
+        qty_risk = int(math.floor(self.risk_dollars / r))
         qty_notional = int(math.floor(self.max_notional / max(fill_price, 0.01)))
         qty = min(qty_risk, qty_notional, self.max_shares)
 
@@ -447,11 +529,12 @@ class SimTradeManager:
             symbol=symbol,
             entry=fill_price,
             stop=stop,
-            r=actual_r,
+            r=r,  # arm-based R, matches live's pos["r"] (2026-05-20 parity fix)
             qty_total=qty,
             qty_core=qty_core,
             qty_t2=qty_t2,
             qty_runner=qty_runner,
+            cum_low=fill_price,  # init for stop-proximity bail tracking
             score=score,
             score_detail=detail,
             setup_type=setup_type,
@@ -487,11 +570,22 @@ class SimTradeManager:
         if price > t.peak:
             t.peak = price
             t.peak_time = time_str
+        if t.cum_low <= 0 or price < t.cum_low:
+            t.cum_low = price
             # Reset stall counter for squeeze / mp_reentry / vwap_reclaim
             if t.setup_type in ("squeeze", "mp_reentry", "continuation"):
                 self._sq_bars_no_new_high = 0
             elif t.setup_type == "vwap_reclaim":
                 self._vr_bars_no_new_high = 0
+
+        # --- MOVE_STRIKE HWM exit (2026-05-20). Routed BEFORE bail_timer
+        # and standard squeeze exits — those kill MOVE_STRIKE winners
+        # before the move completes. Only hard-stop + HWM trail apply.
+        if (self.move_hwm_exit_enabled
+                and t.setup_type == "squeeze"
+                and "[MOVE_STRIKE]" in (t.score_detail or "")):
+            self._hwm_exit(t, price, time_str)
+            return
 
         # --- Bail timer: exit if unprofitable after N minutes ---
         # Skip for DP trades (DP has its own time stop managed on 1m bars)
@@ -699,6 +793,111 @@ class SimTradeManager:
     # ------------------------------------------------------------------
     # Squeeze exit logic
     # ------------------------------------------------------------------
+    def _hwm_exit(self, t: SimTrade, price: float, time_str: str):
+        """High-water-mark trailing exit for MOVE_STRIKE positions.
+
+        Two exit triggers (only):
+          1. Hard stop — price <= t.stop (consolidation floor from entry).
+          2. HWM trail — price <= peak − dd × (peak − entry).
+                         Locks in (1 − dd) × gain as the move runs up.
+
+        No bail_timer, no vwap_exit, no time_exit, no R-target. Those are
+        the exits that killed MOVE_STRIKE winners on multi-minute moves.
+        """
+        # 1) Hard stop
+        if price <= t.stop:
+            t.core_exit_price = price
+            t.core_exit_time = time_str
+            t.core_exit_reason = "move_hard_stop"
+            if t.qty_runner > 0:
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "move_hard_stop"
+            self._close(t)
+            return
+
+        # 2) HWM trail — only kicks in once peak has gained at least
+        # min_gain_pct above entry. Prevents noise around entry from
+        # triggering exit when trail level would be ~zero distance from peak.
+        gain = t.peak - t.entry
+        gain_pct = (gain / t.entry * 100.0) if (gain > 0 and t.entry > 0) else 0.0
+        below_threshold = gain_pct < self.move_hwm_min_gain_pct
+
+        # 2a) Stop-proximity bail: if pre-activation and cum_low has
+        # come within prox_pct of R from the hard stop, exit. This is
+        # the "dying loser" signal — distinguishes a real consolidation
+        # (low stays comfortably above stop) from a position about to
+        # take a full −1R loss. Only fires before HWM activation.
+        if below_threshold and self.move_hwm_stop_prox_pct > 0 and t.r > 0:
+            buffer_to_stop = t.cum_low - t.stop
+            prox_threshold = self.move_hwm_stop_prox_pct * t.r
+            if buffer_to_stop <= prox_threshold:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = (
+                    f"move_stop_prox_bail(low={t.cum_low:.2f},"
+                    f"stop={t.stop:.2f},buf={buffer_to_stop:.3f})"
+                )
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = t.core_exit_reason
+                self._close(t)
+                return
+
+        # 2b) No-activation timeout: if we've been holding for
+        # noact_minutes without ever clearing the activation threshold,
+        # bail at current price. Backstop for trades that drift sideways
+        # forever without either activating or approaching the stop.
+        if below_threshold and t.entry_time:
+            try:
+                eh, em = t.entry_time.split(":")[:2]
+                nh, nm = time_str.split(":")[:2]
+                held_min = (int(nh) * 60 + int(nm)) - (int(eh) * 60 + int(em))
+            except Exception:
+                held_min = 0
+            if held_min >= self.move_hwm_noact_minutes:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = f"move_noact_bail({int(held_min)}min)"
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = f"move_noact_bail({int(held_min)}min)"
+                self._close(t)
+                return
+
+        if below_threshold:
+            return  # below activation threshold and within time budget — hold
+        # When bar-structure exit is active, skip the HWM trail — the
+        # exit decision lives in on_1m_bar_close_squeeze instead.
+        if self.move_barstruct_exit_enabled:
+            return
+        # Adaptive drawdown: widen on EITHER (a) HH-bar confirmation, OR
+        # (b) gain has exceeded the gain-based threshold. Tight default
+        # trail catches quick reversals; wider trail rides confirmed
+        # momentum (either by bar sequence or by raw progress).
+        widen_by_hh = t.hh_count >= self.move_hwm_hh_threshold
+        widen_by_gain = (self.move_hwm_wide_gain_pct > 0
+                         and gain_pct >= self.move_hwm_wide_gain_pct)
+        if widen_by_hh or widen_by_gain:
+            effective_dd = self.move_hwm_wide_dd_pct
+        else:
+            effective_dd = self.move_hwm_drawdown_pct
+        trail_level = t.peak - effective_dd * gain
+        if price <= trail_level:
+            reason = (f"move_hwm_exit(peak={t.peak:.2f},"
+                      f"dd={int(effective_dd*100)}%,hh={t.hh_count})")
+            t.core_exit_price = price
+            t.core_exit_time = time_str
+            t.core_exit_reason = reason
+            if t.qty_runner > 0:
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = reason
+            self._close(t)
+            return
+
     def _squeeze_tick_exits(self, t: SimTrade, price: float, time_str: str):
         """Tick-level exits for squeeze trades."""
         # 0) Absolute dollar loss cap (catches gap-throughs)
@@ -862,6 +1061,51 @@ class SimTradeManager:
                                 time_str: str):
         """1m bar-level exits for squeeze trades and mp_reentry (stall + VWAP loss)."""
         if t is None or t.closed or t.setup_type not in ("squeeze", "mp_reentry", "continuation"):
+            return
+
+        # MOVE_STRIKE bar-structure exit (2026-05-20 — exit method #2).
+        # Post-activation, exit on first bar showing both lower high AND
+        # lower low vs the previous bar — clear bearish structure break.
+        # Pre-activation, hold (the tick-level _hwm_exit handles bails).
+        if (self.move_barstruct_exit_enabled
+                and "[MOVE_STRIKE]" in (t.score_detail or "")):
+            self._sq_last_vwap = vwap
+            gain_pct = ((t.peak - t.entry) / t.entry * 100.0) if t.entry > 0 else 0.0
+            activated = gain_pct >= self.move_hwm_min_gain_pct
+            if (activated
+                    and t.prev_bar_high > 0 and t.prev_bar_low > 0
+                    and h < t.prev_bar_high
+                    and l < t.prev_bar_low):
+                t.core_exit_price = c
+                t.core_exit_time = time_str
+                t.core_exit_reason = (
+                    f"move_barstruct_exit(LH+LL,peak={t.peak:.2f})"
+                )
+                if t.qty_runner > 0:
+                    t.runner_exit_price = c
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = t.core_exit_reason
+                self._close(t)
+                return
+            # Update prev-bar tracking for next bar's comparison
+            t.prev_bar_high = h
+            t.prev_bar_low = l
+            return
+
+        # MOVE_STRIKE HWM exit owns all exit decisions for these positions —
+        # skip the bar-close exit logic (sq_time_exit, sq_vwap_exit, etc.)
+        # which were closing winners prematurely (2026-05-20).
+        if (self.move_hwm_exit_enabled
+                and "[MOVE_STRIKE]" in (t.score_detail or "")):
+            self._sq_last_vwap = vwap  # still cache vwap for other code paths
+            # Track consecutive higher-highs for adaptive drawdown widening.
+            if t.prev_bar_high > 0:
+                if h > t.prev_bar_high:
+                    t.hh_count += 1
+                else:
+                    t.hh_count = 0
+            t.prev_bar_high = h
+            t.prev_bar_low = l
             return
 
         self._sq_last_vwap = vwap
@@ -1907,6 +2151,23 @@ def run_simulation(
     sq_det.symbol = symbol
     sq_enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
     _sq_v2 = os.getenv("WB_SQUEEZE_VERSION", "1") == "2"
+
+    # Movement-anomaly strike (2026-05-20 experiment). When enabled,
+    # REPLACES the squeeze detector's price-level trigger: the detector
+    # still picks the setup (arm at level + 0.02), but entry fires when
+    # the in-progress bar's upward body exceeds a rolling avg of recent
+    # closed-bar bodies. Arm price is NOT used as a strike gate.
+    move_strike_enabled = os.getenv("WB_BT_MOVE_STRIKE", "0") == "1"
+    if move_strike_enabled:
+        from movement_strike import MovementStrike
+        _move_strike = MovementStrike(
+            lookback_bars=int(os.getenv("WB_BT_MOVE_LOOKBACK", "5")),
+            multiplier=float(os.getenv("WB_BT_MOVE_MULT", "2.0")),
+            stop_lookback_bars=int(os.getenv("WB_BT_MOVE_STOP_LOOKBACK", "10")),
+        )
+        _move_strike_prev_armed = None  # tracks arm transition for reset
+    else:
+        _move_strike = None
 
     # VWAP Reclaim detector (Strategy 4)
     from vwap_reclaim_detector import VwapReclaimDetector
@@ -2999,41 +3260,124 @@ def run_simulation(
                         if _tick_arm_msg and verbose:
                             print(f"  [{time_str}] SQ | {_tick_arm_msg}", flush=True)
 
+                # Movement-anomaly tracking (2026-05-20 experiment).
+                # Runs continuously when enabled; consulted only when
+                # squeeze is armed and we'd otherwise check the price trigger.
+                if _move_strike is not None:
+                    # Reset bar history on arm transition (None → armed)
+                    # so the rolling avg + cons stop only reflect bars
+                    # seen AFTER the setup was identified. Pre-arm noise
+                    # (e.g., the post-spike decline from the prime bar)
+                    # would otherwise pollute the avg and fire anomaly
+                    # on the first dead-cat bounce.
+                    if sq_det.armed is not None and _move_strike_prev_armed is None:
+                        _move_strike.reset_history()
+                    _move_strike_prev_armed = sq_det.armed
+                    _bar_minute_key = ts_et.hour * 60 + ts_et.minute
+                    _move_anomaly = _move_strike.update_and_check(price, _bar_minute_key)
+                else:
+                    _move_anomaly = False
+
                 # --- Squeeze trigger (priority over MP) ---
                 _sq_armed_before = sq_det.armed if sq_enabled else None
                 if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:
-                    sq_trigger = sq_det.on_trade_price(price, is_premarket=is_premarket)
-                    if sq_trigger and "ENTRY SIGNAL" in sq_trigger:
-                        trade = sim_mgr.on_signal(
-                            symbol=symbol,
-                            entry=_sq_armed_before.trigger_high,
-                            stop=_sq_armed_before.stop_low,
-                            r=_sq_armed_before.r,
-                            score=_sq_armed_before.score,
-                            detail=_sq_armed_before.score_detail,
-                            time_str=time_str,
-                            setup_type="squeeze",
-                            size_mult=_sq_armed_before.size_mult,
-                        )
-                        if trade:
-                            if _sq_v2:
-                                sq_det.notify_trade_opened(
-                                    entry=trade.entry, stop=trade.stop, r=trade.r,
-                                    qty=trade.qty_total, time_str=time_str,
-                                    is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
-                                )
-                            else:
-                                sq_det.notify_trade_opened()
-                            if verbose:
-                                print(
-                                    f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
-                                    f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
-                                    f"setup_type=squeeze",
-                                    flush=True,
-                                )
-                            # Ross exit: reset per-trade state on new squeeze entry
-                            if _ross_exit_mgr is not None:
-                                _ross_exit_mgr.reset()
+                    if _move_strike is not None:
+                        # Movement-anomaly path: ignore detector's price
+                        # trigger entirely. Fire only on upward intra-bar
+                        # body exceeding rolling avg.
+                        #
+                        # Entry  = anomaly tick price (the actual market
+                        #          price when momentum kicks in).
+                        # Stop   = low of last N closed bars (pre-uptick
+                        #          consolidation floor) — Manny's spec.
+                        # R      = entry - stop (recomputed; arm.r no
+                        #          longer applies once both entry+stop
+                        #          have shifted off the original setup).
+                        # Chase  = skip if anomaly tick is >2% above arm
+                        #          (mimics live's CBRG/RUBI timeout).
+                        _arm_price = _sq_armed_before.entry_price or 0.0
+                        _move_chase_cap = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
+                        _gap_above_arm = ((price - _arm_price) / _arm_price * 100.0
+                                          if _arm_price > 0 else 0.0)
+                        _cons_stop = _move_strike.get_consolidation_stop()
+                        if (_move_anomaly
+                                and _cons_stop is not None
+                                and price > _cons_stop
+                                and _gap_above_arm <= _move_chase_cap):
+                            _new_r = price - _cons_stop
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=price,
+                                stop=_cons_stop,
+                                r=_new_r,
+                                score=_sq_armed_before.score,
+                                detail=(_sq_armed_before.score_detail or "") + ";[MOVE_STRIKE]",
+                                time_str=time_str,
+                                setup_type="squeeze",
+                                size_mult=_sq_armed_before.size_mult,
+                                trigger_price=price,
+                            )
+                            if trade:
+                                sq_det.armed = None  # consume arm manually
+                                # When HWM exit owns the position, do NOT
+                                # call notify_trade_opened — the V2 detector
+                                # runs its own para-trail/candle exits from
+                                # that hook and would close the trade out
+                                # from under HWM (2026-05-20 ONDG bug).
+                                _hwm_owns = sim_mgr.move_hwm_exit_enabled
+                                if not _hwm_owns:
+                                    if _sq_v2:
+                                        sq_det.notify_trade_opened(
+                                            entry=trade.entry, stop=trade.stop, r=trade.r,
+                                            qty=trade.qty_total, time_str=time_str,
+                                            is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
+                                        )
+                                    else:
+                                        sq_det.notify_trade_opened()
+                                if verbose:
+                                    print(
+                                        f"  [{time_str}] SQ_ENTRY (MOVE): {trade.entry:.4f} stop={trade.stop:.4f} "
+                                        f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                        f"avg_body={_move_strike.avg_body:.4f}",
+                                        flush=True,
+                                    )
+                                if _ross_exit_mgr is not None:
+                                    _ross_exit_mgr.reset()
+                    else:
+                        # Original price-trigger path
+                        sq_trigger = sq_det.on_trade_price(price, is_premarket=is_premarket)
+                        if sq_trigger and "ENTRY SIGNAL" in sq_trigger:
+                            trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=_sq_armed_before.trigger_high,
+                                stop=_sq_armed_before.stop_low,
+                                r=_sq_armed_before.r,
+                                score=_sq_armed_before.score,
+                                detail=_sq_armed_before.score_detail,
+                                time_str=time_str,
+                                setup_type="squeeze",
+                                size_mult=_sq_armed_before.size_mult,
+                                trigger_price=price,  # 2026-05-20: realistic fill model
+                            )
+                            if trade:
+                                if _sq_v2:
+                                    sq_det.notify_trade_opened(
+                                        entry=trade.entry, stop=trade.stop, r=trade.r,
+                                        qty=trade.qty_total, time_str=time_str,
+                                        is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
+                                    )
+                                else:
+                                    sq_det.notify_trade_opened()
+                                if verbose:
+                                    print(
+                                        f"  [{time_str}] SQ_ENTRY: {trade.entry:.4f} stop={trade.stop:.4f} "
+                                        f"R={trade.r:.4f} qty={trade.qty_total} score={trade.score:.1f} "
+                                        f"setup_type=squeeze",
+                                        flush=True,
+                                    )
+                                # Ross exit: reset per-trade state on new squeeze entry
+                                if _ross_exit_mgr is not None:
+                                    _ross_exit_mgr.reset()
 
                 # --- Continuation trigger (after SQ, before VR/MP) ---
                 _ct_armed_before = ct_det.armed if ct_enabled else None

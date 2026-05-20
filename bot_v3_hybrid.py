@@ -110,6 +110,15 @@ WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
 if WAVE_BREAKOUT_ENABLED:
     from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
 
+# Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
+# via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
+# a Unix socket to subscriber bots (e.g., move_strike_subbot.py running
+# an alternate strategy on the same tick stream). When disabled
+# (default), this is a no-op — bit-identical to no-publish behavior.
+# No strategy logic is affected.
+from engine_publisher import get_publisher
+_engine_pub = get_publisher()
+
 # Tick-By-Tick migration (DIRECTIVE_TICKBYTICK_MIGRATION.md).
 # Stage 1 probe (2026-05-05): account capacity = 5 simultaneous
 # reqTickByTickData('AllLast') subscriptions. Override via WB_TBT_MAX if a
@@ -4058,6 +4067,16 @@ def _process_trade_tick(symbol: str, price: float, size: int, ts):
     """Shared trade-tick downstream — bar builders, detectors, EPL, exits, WB.
     Called by both _process_ticker (Tier 2 snapshot path) and
     _drain_tick_by_tick_ticker (Tier 1 per-print path)."""
+    # Engine publisher (2026-05-20). Gated; no-op when disabled.
+    # Broadcasts the tick over a Unix socket so subscriber bots see the
+    # exact same data stream. Non-blocking; never affects strategy.
+    if _engine_pub.enabled:
+        try:
+            ts_iso = ts.astimezone(timezone.utc).isoformat() if ts else None
+            _engine_pub.publish_tick(symbol, price, ts_iso=ts_iso, size=size)
+        except Exception:
+            pass  # never let publisher break the tick path
+
     # Record tick for backtest cache (exact same data the bot sees).
     # Lock serializes against the periodic flush swap — see _tick_flush_loop.
     with _tick_buffer_lock:
@@ -4639,6 +4658,11 @@ def _exit_box_trade(reason: str):
 
 def main():
     global STARTING_EQUITY  # Must be at top of function before any reference
+
+    # Engine publisher startup (2026-05-20). Idempotent + no-op when
+    # disabled. Started before anything else so the socket is up by the
+    # time the sub-bot tries to connect (sub-bot has its own retry loop).
+    _engine_pub.start()
 
     # Session-resume CLI flags (see cowork_reports/2026-04-15_greenlight_session_resume.md)
     import argparse
