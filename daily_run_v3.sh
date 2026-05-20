@@ -205,10 +205,18 @@ if [ -z "$MAIN_APCA_KEY" ] || [ -z "$MAIN_APCA_SECRET" ]; then
 fi
 echo "Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)..."
 cd ~/warrior_bot_v2
+# WB_TICK_LEVEL_ARM=1 — tick-level arming live as of 2026-05-19 per Manny's
+# call. Backtest with this flag shows -53% vs $290K mechanical baseline,
+# but backtest assumes fills at arm price which doesn't reflect live
+# gap-up reality (MTVA/RUBI chase-cap aborts pre-patch). Running live to
+# measure actual fill-and-profit performance against the theoretical
+# backtest. Flag-OFF behavior preserved bit-identical in code; flip back
+# by editing this line or env-override.
 APCA_API_KEY_ID="$MAIN_APCA_KEY" \
 APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
 WB_BROKER=alpaca \
 WB_EXPECTED_BROKER=alpaca \
+WB_TICK_LEVEL_ARM=1 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
@@ -274,28 +282,24 @@ else
 fi
 
 # 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
-# Strategies: PDH-Fade-Filtered, ORB-Aligned-$300+, PDH-Breakout-F4.
-# IBKR data (clientId 51) + Alpaca exec (Setup B paper keys via .env).
-# TieredSizer locked at Tier 1 ($300/signal) for 60-day paper window.
-# release_on_stop conflict rule. VIX > 25 suppress. Monday skip (default).
-# Force-exit at 19:55 ET via SELL LIMIT chain. No market orders, no overnights.
-# Failure is NON-fatal — squeeze must keep running even if framework can't start.
-FRAMEWORK_LOG="$LOG_DIR/${TODAY}_framework.log"
-echo "Starting framework.run_live (Wave 4 paper deploy)..."
-WB_FRAMEWORK_IB_CLIENT_ID=51 \
-  python3 -m framework.run_live >> "$FRAMEWORK_LOG" 2>&1 &
-FRAMEWORK_PID=$!
-echo "Framework started (PID: $FRAMEWORK_PID, log: $FRAMEWORK_LOG)"
-
-# Framework health check — non-fatal (don't abort the session if it fails).
-sleep 15
-if ! kill -0 "$FRAMEWORK_PID" 2>/dev/null; then
-    echo "WARN: framework.run_live crashed within 15s — continuing without framework."
-    echo "      See $FRAMEWORK_LOG for details."
-    FRAMEWORK_PID=""
-else
-    echo "Framework health check passed (still running after 15s, PID: $FRAMEWORK_PID)"
-fi
+# DISABLED 2026-05-19 per Manny's call — running squeeze-only tomorrow.
+# Framework was competing with Setup A for IBKR data subscriptions
+# (10197 "competing live session" errors all day). Re-enable by
+# uncommenting the launch block below.
+FRAMEWORK_PID=""
+# FRAMEWORK_LOG="$LOG_DIR/${TODAY}_framework.log"
+# echo "Starting framework.run_live (Wave 4 paper deploy)..."
+# WB_FRAMEWORK_IB_CLIENT_ID=51 \
+#   python3 -m framework.run_live >> "$FRAMEWORK_LOG" 2>&1 &
+# FRAMEWORK_PID=$!
+# echo "Framework started (PID: $FRAMEWORK_PID, log: $FRAMEWORK_LOG)"
+# sleep 15
+# if ! kill -0 "$FRAMEWORK_PID" 2>/dev/null; then
+#     echo "WARN: framework.run_live crashed within 15s — continuing without framework."
+#     FRAMEWORK_PID=""
+# else
+#     echo "Framework health check passed (still running after 15s, PID: $FRAMEWORK_PID)"
+# fi
 
 # 8b. Gateway watchdog — detect if Gateway port drops during session
 (
