@@ -19200,3 +19200,58 @@ Bot running. Windows: 04:00-20:00 ET. Ctrl+C to stop.
   Momentum Trades: 0
   Momentum P&L: $+0
 ============================================================
+BOOT: RESUME mode (marker age=35587s, reason=marker_present)
+============================================================
+  WARRIOR BOT — SUB-BOT (IBKR data + Alpaca exec hybrid)
+  Data:    IB Gateway port 4002 clientId=2
+  Exec:    AlpacaBroker (paper=true)
+  State:   session_state_alpaca/
+  Cache:   tick_cache_alpaca/
+  Squeeze: ON
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 50% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+  DatabentoLiveFeed: connected (dataset=EQUS.MINI, schema=trades, ts_out=on, reconnect=on, slow_reader=warn, stream thread armed)
+Connected (Databento): True
+Account: ['DATABENTO']
+Broker: ALPACA
+🔁 RESUME: reconciling orders + positions
+  RESUME: risk restored — daily_pnl=$+0.00 trades=0 losses=0 (closed_trades=0 cached)
+🔁 RESUME: reconcile complete
+Account equity: $27,574
+EPL initialized: 1 strategies registered
+
+📡 Sub-bot: 20 new symbols from main bot's watchlist: ['AEHL', 'ATRA', 'CBRG', 'CORD', 'FCHL', 'GIPR', 'GOVX', 'LESL', 'LNKS', 'MOBX', 'MTVA', 'ONDG', 'PIII', 'QUCY', 'RUBI', 'SBFM', 'SKK', 'SKYQ', 'SLE', 'SST']
+  DatabentoLiveFeed: live session started (first subscribe: AEHL)
+  [RESUME] AEHL: bridged gap (175.9m, capped 90m) → 22 ticks
+🔁 [RESUME] AEHL: 27 ticks → 33 bars, EMA=3.8801 | drift=176.0m
+✅ Subscribed: AEHL
+  [RESUME] ATRA: bridged gap (170.6m, capped 90m) → 5 ticks
+🔁 [RESUME] ATRA: 41 ticks → 34 bars, EMA=9.2930 | drift=170.8m
+✅ Subscribed: ATRA
+🔥 Seeded CBRG: 401 ticks → 50 bars, EMA=16.0096 (8 ticks/bar avg)
+✅ Subscribed: CBRG
+  Tick cache: AEHL → +22 ticks (total 49)
+  Tick cache: ATRA → +5 ticks (total 46)
+  Tick cache: CBRG → +401 ticks (total 401)
+📦 Tick cache saved: 3 symbols → tick_cache_alpaca/2026-05-19/
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  All positions flat. Clean shutdown.

@@ -56841,3 +56841,32 @@
 07:30:01  stopping live client
 07:30:01  Done.
 07:30:01  connection closed
+11:53:21  Live Scanner starting — 2026-05-19 
+11:53:21  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+11:53:21  Initialized Historical(gateway=https://hist.databento.com)
+11:53:21        Requesting OHLCV from 2026-04-20 to 2026-05-18...
+11:55:59        FAILED to load prev close: 504 The remote gateway timed out.
+11:55:59        If EQUS.SUMMARY is not in your plan, confirm dataset access
+11:55:59        at https://databento.com/platform/datasets
+11:55:59        Scanner cannot run without prev close data — aborting
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 735, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 731, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 637, in run
+    self.load_prev_close()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 315, in load_prev_close
+    symbology_json = data.request_symbology(client)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/dbnstore.py", line 784, in request_symbology
+    return client.symbology.resolve(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/historical/api/symbology.py", line 79, in resolve
+    response: Response = self._post(
+                         ^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 113, in _post
+    check_http_error(response)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/common/http.py", line 233, in check_http_error
+    raise BentoServerError(
+databento.common.error.BentoServerError: 504 The remote gateway timed out.
