@@ -139,3 +139,8 @@ WARN: bot_alpaca_subbot.py (Setup B) died at Tue May 19 11:55:10 MDT 2026. Setup
 ALERT: bot_v3_hybrid.py died at Tue May 19 18:00:16 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-19_daily.log.
 === Shutting down at Tue May 19 18:00:16 MDT 2026 ===
 Pushing logs...
+[v2-ibkr-migration 1081d27] auto: v3 daily logs 2026-05-19
+ 7 files changed, 39452 insertions(+)
+WARN: git push failed
+=== V3 Hybrid daily run complete: Tue May 19 18:00:23 MDT 2026 ===
+=== TRAP: cleanup at Tue May 19 18:00:23 MDT 2026 ===
