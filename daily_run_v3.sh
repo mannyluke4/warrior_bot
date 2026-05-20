@@ -230,56 +230,42 @@ fi
 echo "Bot health check passed (still running after 15s, PID: $BOT_PID)"
 echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-# 8a. Setup B sub-bot — revived 2026-05-18 against the Databento live feed
-# (DIRECTIVE_2026-05-18_DATABENTO_SUBBOT.md). The IBKR-driven sub-bot was
-# retired 2026-05-17 in favour of the Healthy Fluctuation Framework on the
-# same paper account; this revival runs the sub-bot on a SEPARATE data
-# path (Databento Live, XNAS.ITCH trades — no IBKR Gateway dependency) so
-# we can A/B Setup B's tick fidelity against Setup A in parallel.
+# 8a. Setup B sub-bot — DISABLED 2026-05-19 per Manny's call.
 #
-# Setup A (above, bot_v3_hybrid.py) keeps the IBKR-data → Alpaca-exec
-# pipeline. Setup B (here) is IBKR-FREE on the data side: Databento Live
-# ticks → Alpaca-exec on the original APCA_API_* keys (separate paper
-# account from main bot). Per directive: WB_SUBBOT_DATA_FEED=databento
-# injected on the command line; the subbot's gate switches state.ib to
-# DatabentoLiveFeed instead of ib_insync.IB. IBKR_CLIENT_ID is NOT injected
-# (no IBKR Gateway dependency on this path; the subbot.py module-level
-# default still sets clientId=2 but it's unused on the databento branch).
+# Was running on Databento Live (separate data path, no IBKR competition);
+# an uncommitted retry patch in databento_live_feed.py addressed a
+# historical-end-lag 422 but wasn't shipped. Forward plan: rebuild Setup B
+# as an IBKR-shared in-process strategy inside bot_v3_hybrid.py — WB-only,
+# sub-bot Alpaca account, no separate IBKR session. Architecture survey
+# (2026-05-19 PM) showed the WB trade path is deeply coupled to
+# module-level `state` (~12 refs in place_wave_breakout_entry + 8 helpers);
+# safe build is a daylight task, not 4 hours before cron.
 #
-# Failure here is NON-fatal — Setup A must keep running even if Setup B
-# can't start. Backup of the prior (IBKR-driven) launch block lives at
-# daily_run_v3.sh.backup.
-SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
-# Sub-bot strategy gates — mirror Setup A's squeeze for the Databento A/B
-# (2026-05-19 pre-cron decision). Setup B's historical role was WB paper
-# validation; flipped tonight so the A/B compares "same strategy, same
-# universe, different data feed" rather than "different strategy."
-#   WB_SQUEEZE_ENABLED=1           — Setup B runs squeeze on Databento ticks
-#   WB_WAVE_BREAKOUT_ENABLED=0     — WB paper validation paused for the A/B
-#   WB_TBT_ENABLED=0               — TBT is an IBKR concept; off on Databento path
-echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
-# WB_DATABENTO_DATASET=EQUS.MINI — Manny's API key is currently licensed for
-# EQUS.MINI only; XNAS.ITCH (the directive default with ~5× more ticks on
-# microcaps) requires a separate live-data license. Override here per
-# 2026-05-18 PM decision; revisit when license upgrades.
-WB_SUBBOT_DATA_FEED=databento \
-WB_DATABENTO_DATASET=EQUS.MINI \
-WB_SQUEEZE_ENABLED=1 \
-WB_WAVE_BREAKOUT_ENABLED=0 \
-WB_TBT_ENABLED=0 \
-  python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
-SUBBOT_PID=$!
-echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
+# Tomorrow's surface: main bot only (squeeze + tick-arm). Setup B revives
+# once the in-process refactor lands. Re-enable by uncommenting the launch
+# block below (and reverting the Databento retry patch decision).
+SUBBOT_PID=""
+echo "Setup B sub-bot: DISABLED (see comment above)"
 
-# Sub-bot health check — non-fatal (don't abort the session if it fails).
-sleep 15
-if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
-    echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
-    echo "      See $SUBBOT_LOG for details."
-    SUBBOT_PID=""
-else
-    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
-fi
+# # ── ORIGINAL LAUNCH BLOCK (kept for restore reference) ──
+# SUBBOT_LOG="$LOG_DIR/${TODAY}_subbot_databento.log"
+# echo "Starting bot_alpaca_subbot.py (Databento data + Alpaca exec; Setup B)..."
+# WB_SUBBOT_DATA_FEED=databento \
+# WB_DATABENTO_DATASET=EQUS.MINI \
+# WB_SQUEEZE_ENABLED=1 \
+# WB_WAVE_BREAKOUT_ENABLED=0 \
+# WB_TBT_ENABLED=0 \
+#   python3 bot_alpaca_subbot.py >> "$SUBBOT_LOG" 2>&1 &
+# SUBBOT_PID=$!
+# echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
+# sleep 15
+# if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
+#     echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
+#     echo "      See $SUBBOT_LOG for details."
+#     SUBBOT_PID=""
+# else
+#     echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
+# fi
 
 # 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
 # DISABLED 2026-05-19 per Manny's call — running squeeze-only tomorrow.
