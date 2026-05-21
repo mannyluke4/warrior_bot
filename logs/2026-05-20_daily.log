@@ -80291,3 +80291,12 @@ Pushing logs...
  4 files changed, 34588 insertions(+)
 === V3 Hybrid daily run complete: Wed May 20 18:00:49 MDT 2026 ===
 === TRAP: cleanup at Wed May 20 18:00:49 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 34375 Terminated: 15          caffeinate -dims -w $$
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 34427 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration da82380] auto: v3 daily logs 2026-05-20
+ 2 files changed, 8 insertions(+)
+=== Cleanup complete: Wed May 20 18:00:53 MDT 2026 ===
