@@ -178,6 +178,23 @@ class MoveStrikeSubBot:
         self.reentry_lookback = int(os.getenv("WB_BT_MOVE_REENTRY_LOOKBACK", "10"))
         self.reentry_window_min = float(os.getenv("WB_BT_MOVE_REENTRY_WINDOW_MIN", "30"))
         self.reentry_max_per_sym = int(os.getenv("WB_BT_MOVE_REENTRY_MAX_PER_SYM", "1"))
+        # Same-bar block (2026-05-21): refuse to re-enter on the bar we
+        # just exited. Sim-validated, mirrors Manny's day-trading principle.
+        self.reentry_block_same_bar = os.getenv("WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR", "1") == "1"
+        # Stay-armed (2026-05-21): after a successful MOVE_STRIKE entry,
+        # keep movement_strike monitoring continuously even when the
+        # squeeze detector hasn't re-armed. With cool-down + continuation
+        # gates to filter chop.
+        self.move_stay_armed = os.getenv("WB_BT_MOVE_STAY_ARMED", "0") == "1"
+        self.move_stay_armed_cooldown_min = float(os.getenv("WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN", "15"))
+        self.move_stay_armed_min_gap_pct = float(os.getenv("WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT", "2.0"))
+        self._move_stay_armed_symbols: set[str] = set()
+        self._move_stay_armed_last_exit_min: dict[str, int] = {}
+        self._move_stay_armed_last_exit_price: dict[str, float] = {}
+        # Max-below-arm filter (2026-05-21): skip MOVE_STRIKE if price
+        # has decayed too far below the real arm (PIII 2026-05-21 was
+        # -5.6% below arm). Default 0 = off; set to 3.0 to enable.
+        self.move_max_below_arm_pct = float(os.getenv("WB_BT_MOVE_MAX_BELOW_ARM_PCT", "0"))
         # Per-symbol watch state: {symbol → {"high","stop","expires_min"}}
         self._reentry_watches: dict[str, dict] = {}
         # Persistent per-symbol counter — survives watch pop so the cap
@@ -367,6 +384,9 @@ class MoveStrikeSubBot:
             "high": high,
             "stop": low,
             "expires_min": now_minute_et() + self.reentry_window_min,
+            # Same-bar guard: this minute is the exit bar. Block any
+            # re-entry attempt that fires before bar_minute advances.
+            "exit_bar_minute": now_minute_et(),
         }
         print(
             f"{LOG_TAG} [{now_iso_et()}] {t.symbol} REENTRY WATCH set: "
@@ -380,8 +400,13 @@ class MoveStrikeSubBot:
         watch = self._reentry_watches.get(symbol)
         if watch is None:
             return
-        if now_minute_et() > watch["expires_min"]:
+        cur_min = now_minute_et()
+        if cur_min > watch["expires_min"]:
             self._reentry_watches.pop(symbol, None)
+            return
+        # Same-bar guard — don't re-enter on the bar we just exited.
+        if (self.reentry_block_same_bar
+                and cur_min <= watch.get("exit_bar_minute", -1)):
             return
         # Guard: bar.close must clear the snapshotted stop (otherwise
         # we'd immediately stop out).
@@ -424,45 +449,80 @@ class MoveStrikeSubBot:
 
     def _maybe_enter(self, symbol: str, price: float) -> None:
         det = self.detectors.get(symbol)
-        if det is None or det.armed is None:
+        if det is None:
+            return
+        # Real arm OR stay-armed mode (no detector arm, but symbol
+        # previously fired MOVE_STRIKE today).
+        has_real_arm = det.armed is not None
+        stay_armed_active = (
+            not has_real_arm
+            and self.move_stay_armed
+            and symbol in self._move_stay_armed_symbols
+        )
+        if not (has_real_arm or stay_armed_active):
             return
         ms = self.move_strikes[symbol]
         bar_minute = now_minute_et()
         if not ms.update_and_check(price, bar_minute):
             return
-        # Movement anomaly fired. Apply guardrails matching simulate.py
-        # MOVE_STRIKE branch:
-        #   - stop = consolidation low of last N closed bars
-        #   - entry = anomaly tick price
-        #   - skip if entry below stop (would immediately stop out)
-        #   - skip if trigger > arm × (1 + chase_cap)  (gap too wide)
         cons_stop = ms.get_consolidation_stop()
         if cons_stop is None or price <= cons_stop:
             return
-        arm_price = det.armed.entry_price or 0.0
-        if arm_price > 0:
-            gap_above_arm = (price - arm_price) / arm_price * 100.0
-            if gap_above_arm > self.move_chase_cap_pct:
-                print(
-                    f"{LOG_TAG} [{now_iso_et()}] {symbol} CHASE-SKIP "
-                    f"trigger={price:.3f} arm={arm_price:.3f} "
-                    f"gap={gap_above_arm:.2f}%",
-                    flush=True,
-                )
-                # Consume the arm so we don't try again on every tick
-                det.armed = None
-                self.prev_arm_state[symbol] = None
-                return
+        # Real arm: apply chase cap + below-arm filter
+        if has_real_arm:
+            arm_price = det.armed.entry_price or 0.0
+            if arm_price > 0:
+                gap_above_arm = (price - arm_price) / arm_price * 100.0
+                if gap_above_arm > self.move_chase_cap_pct:
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] {symbol} CHASE-SKIP "
+                        f"trigger={price:.3f} arm={arm_price:.3f} "
+                        f"gap={gap_above_arm:.2f}%",
+                        flush=True,
+                    )
+                    det.armed = None
+                    self.prev_arm_state[symbol] = None
+                    return
+                # Below-arm filter (PIII 2026-05-21 saved $670 on
+                # backtest reconstruction).
+                if self.move_max_below_arm_pct > 0:
+                    below_arm_pct = (arm_price - price) / arm_price * 100.0
+                    if below_arm_pct > self.move_max_below_arm_pct:
+                        print(
+                            f"{LOG_TAG} [{now_iso_et()}] {symbol} BELOW-ARM-SKIP "
+                            f"trigger={price:.3f} arm={arm_price:.3f} "
+                            f"below={below_arm_pct:.2f}% (cap={self.move_max_below_arm_pct}%)",
+                            flush=True,
+                        )
+                        det.armed = None
+                        self.prev_arm_state[symbol] = None
+                        return
+        # Stay-armed gates: cool-down + continuation %
+        if stay_armed_active:
+            last_min = self._move_stay_armed_last_exit_min.get(symbol, -10000)
+            last_px = self._move_stay_armed_last_exit_price.get(symbol, 0.0)
+            if (bar_minute - last_min) < self.move_stay_armed_cooldown_min:
+                return  # within cooldown
+            if last_px > 0 and price < last_px * (1.0 + self.move_stay_armed_min_gap_pct / 100.0):
+                return  # not a continuation
         r = price - cons_stop
         if r <= 0:
             return
-        qty = self._compute_qty(price, r, det.armed.score)
+        if stay_armed_active:
+            score = 50.0  # synthetic
+        else:
+            score = det.armed.score
+        qty = self._compute_qty(price, r, score)
         if qty <= 0:
             return
-        self._open_position(symbol, price, cons_stop, r, qty, det.armed.score)
-        # Consume the arm
-        det.armed = None
-        self.prev_arm_state[symbol] = None
+        self._open_position(symbol, price, cons_stop, r, qty, score)
+        # Mark stay-armed (any MOVE_STRIKE entry flags the symbol)
+        if self.move_stay_armed:
+            self._move_stay_armed_symbols.add(symbol)
+        # Consume the arm (if real)
+        if has_real_arm:
+            det.armed = None
+            self.prev_arm_state[symbol] = None
 
     def _compute_qty(self, price: float, r: float, score: float) -> int:
         qty_risk = int(RISK_DOLLARS / max(r, 0.01))
@@ -552,6 +612,10 @@ class MoveStrikeSubBot:
         # Done BEFORE clearing self.position so the position fields are
         # still valid in the snapshot.
         self._register_reentry_watch(p)
+        # Record stay-armed close info for cool-down + continuation gate.
+        if self.move_stay_armed:
+            self._move_stay_armed_last_exit_min[p.symbol] = now_minute_et()
+            self._move_stay_armed_last_exit_price[p.symbol] = float(ref_price)
         self.position = None
 
     # ──────────────────────────────────────────────────────────────────

@@ -233,6 +233,59 @@ class SimTradeManager:
         self.move_hwm_stop_prox_pct = (
             float(os.getenv("WB_BT_MOVE_HWM_STOP_PROX_PCT", "25")) / 100.0
         )
+        # Bar-confirm prox-bail (2026-05-21): only fire the stop-proximity
+        # bail at bar close, using bar.close (not intra-tick cum_low).
+        # Addresses the wick-shakeout failure mode (QUCY 07:22: bot bailed
+        # on the $3.87 wick low; bar closed $4.00 and next bar ripped).
+        self.move_hwm_bar_confirm_bail = os.getenv("WB_BT_MOVE_HWM_BAR_CONFIRM_BAIL", "0") == "1"
+        # Same-bar re-entry block (2026-05-21): when 1, refuse to re-enter
+        # on the bar we just exited. Default on (matches Manny's spec)
+        # but kept gated so we can A/B against the legacy behavior.
+        self.move_reentry_block_same_bar = os.getenv("WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR", "1") == "1"
+        # Stay-armed (2026-05-21): once a symbol has fired any MOVE_STRIKE
+        # entry today, keep movement_strike monitoring continuously even
+        # when the squeeze detector hasn't re-armed. Catches continuation
+        # rips on previously-traded stocks (QUCY 9:30 ET ripper today).
+        self.move_stay_armed = os.getenv("WB_BT_MOVE_STAY_ARMED", "0") == "1"
+        # Cool-down between stay-armed entries (min). Default 15min so we
+        # don't fire on every anomaly tick in chop.
+        self.move_stay_armed_cooldown_min = float(os.getenv("WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN", "15"))
+        # Continuation gate: stay-armed entry must be at least N% above
+        # the prior exit price (filters out chop / fakeouts).
+        self.move_stay_armed_min_gap_pct = float(os.getenv("WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT", "2.0"))
+        self._move_stay_armed_symbols: set = set()
+        # Per-symbol: minute of last exit + last exit price for gate checks.
+        self._move_stay_armed_last_exit_min: dict = {}
+        self._move_stay_armed_last_exit_price: dict = {}
+        # Stay-in suppressors on the HWM trail exit (2026-05-21). The trail
+        # fires on tiny pullbacks (25% of gain). On strong-momentum bars
+        # those pullbacks are noise, and exiting churns us out of healthy
+        # moves only to re-enter on the same/next bar. These suppressors
+        # delay the trail-exit when bullish signals are still intact.
+        # Hard stop + prox-bail are NOT suppressed (those are losses, not
+        # profit-taking).
+        self.move_hwm_vol_suppress = os.getenv("WB_BT_MOVE_HWM_VOL_SUPPRESS", "0") == "1"
+        self.move_hwm_vol_suppress_mult = float(os.getenv("WB_BT_MOVE_HWM_VOL_SUPPRESS_MULT", "2.0"))
+        self.move_hwm_vwap_suppress = os.getenv("WB_BT_MOVE_HWM_VWAP_SUPPRESS", "0") == "1"
+        # MACD-bullish suppressor (2026-05-21): hold the trail when MACD is
+        # bullish (MACD line > signal line AND MACD > 0). Momentum-based
+        # stay-in signal. Updated on each bar close.
+        self.move_hwm_macd_suppress = os.getenv("WB_BT_MOVE_HWM_MACD_SUPPRESS", "0") == "1"
+        # Histogram threshold for "strongly bullish" — 0 means just
+        # require MACD > signal; positive value demands wider histogram.
+        self.move_hwm_macd_hist_threshold = float(os.getenv("WB_BT_MOVE_HWM_MACD_HIST_THRESHOLD", "0"))
+        # State updated on each bar close
+        from collections import deque
+        self._sq_recent_bar_volumes: deque = deque(maxlen=10)
+        self._sq_last_bar_close_volume: int = 0
+        # MACD state per symbol (EMAs persistent across bars)
+        self._sq_macd_state: dict = {}  # symbol → {"ema12","ema26","macd","signal","bars"}
+        # In-progress bar volume tracker (2026-05-21): the volume
+        # accumulating on the bar we're currently inside, so the
+        # vol-suppressor can react to the *current* climax bar, not
+        # the previously closed one. Reset on minute change.
+        self._sq_inprog_bar_minute: Optional[int] = None
+        self._sq_inprog_bar_volume: int = 0
         # Post-exit re-entry (2026-05-20). After a MOVE_STRIKE position
         # closes, snapshot the high + low of the last N closed bars and
         # arm one of two re-entry triggers (or both, independently).
@@ -846,7 +899,11 @@ class SimTradeManager:
         # the "dying loser" signal — distinguishes a real consolidation
         # (low stays comfortably above stop) from a position about to
         # take a full −1R loss. Only fires before HWM activation.
-        if below_threshold and self.move_hwm_stop_prox_pct > 0 and t.r > 0:
+        if (below_threshold and self.move_hwm_stop_prox_pct > 0 and t.r > 0
+                and not self.move_hwm_bar_confirm_bail):
+            # When bar-confirm bail is on, defer this check to bar close
+            # (uses bar.close instead of intra-tick cum_low). Filters out
+            # wick-shakeouts that recover before the bar finishes.
             buffer_to_stop = t.cum_low - t.stop
             prox_threshold = self.move_hwm_stop_prox_pct * t.r
             if buffer_to_stop <= prox_threshold:
@@ -904,6 +961,25 @@ class SimTradeManager:
             effective_dd = self.move_hwm_drawdown_pct
         trail_level = t.peak - effective_dd * gain
         if price <= trail_level:
+            # Stay-in suppressors (2026-05-21): hold the position when
+            # bullish signals are still intact — the trail-fire price
+            # is noise on momentum bars. Only suppress the TRAIL exit;
+            # hard stop + prox bail above are unaffected.
+            if self.move_hwm_vol_suppress and self._sq_recent_bar_volumes:
+                avg_vol = sum(self._sq_recent_bar_volumes) / len(self._sq_recent_bar_volumes)
+                # Use IN-PROGRESS bar volume so we react to the current
+                # climax bar, not the previous bar. Accumulated by
+                # update_inprog_bar_volume() from each tick's size.
+                if (avg_vol > 0
+                        and self._sq_inprog_bar_volume
+                            > avg_vol * self.move_hwm_vol_suppress_mult):
+                    return  # suppress — high volume = strong continuation
+            if (self.move_hwm_vwap_suppress
+                    and self._sq_last_vwap
+                    and price > self._sq_last_vwap):
+                return  # suppress — still above VWAP, bulls in control
+            if self.move_hwm_macd_suppress and self._macd_bullish(t.symbol):
+                return  # suppress — MACD bullish, hold for continuation
             reason = (f"move_hwm_exit(peak={t.peak:.2f},"
                       f"dd={int(effective_dd*100)}%,hh={t.hh_count})")
             t.core_exit_price = price
@@ -1116,6 +1192,11 @@ class SimTradeManager:
         if (self.move_hwm_exit_enabled
                 and "[MOVE_STRIKE]" in (t.score_detail or "")):
             self._sq_last_vwap = vwap  # still cache vwap for other code paths
+            # Track bar volume for the vol-suppressor on HWM trail.
+            self._sq_recent_bar_volumes.append(int(v))
+            self._sq_last_bar_close_volume = int(v)
+            # MACD is updated by the main on_1m_close callback (every bar,
+            # regardless of position state), so no update needed here.
             # Track consecutive higher-highs for adaptive drawdown widening.
             if t.prev_bar_high > 0:
                 if h > t.prev_bar_high:
@@ -1124,6 +1205,32 @@ class SimTradeManager:
                     t.hh_count = 0
             t.prev_bar_high = h
             t.prev_bar_low = l
+            # Bar-confirm prox bail (2026-05-21): pre-activation, if the
+            # bar CLOSED in proximity of stop, bail. Wicks that recover
+            # before close don't trigger — this is the fix for QUCY
+            # 07:22 where the $3.87 wick low triggered intra-bar bail
+            # even though the bar closed back at $4.00.
+            if self.move_hwm_bar_confirm_bail and t.r > 0:
+                gain = t.peak - t.entry
+                gain_pct = (gain / t.entry * 100.0) if (gain > 0 and t.entry > 0) else 0.0
+                below_threshold = gain_pct < self.move_hwm_min_gain_pct
+                if below_threshold and self.move_hwm_stop_prox_pct > 0:
+                    buffer_to_stop_close = c - t.stop
+                    prox_threshold = self.move_hwm_stop_prox_pct * t.r
+                    if buffer_to_stop_close <= prox_threshold:
+                        reason = (
+                            f"move_stop_prox_bail_barclose(close={c:.2f},"
+                            f"stop={t.stop:.2f},buf={buffer_to_stop_close:.3f})"
+                        )
+                        t.core_exit_price = c
+                        t.core_exit_time = time_str
+                        t.core_exit_reason = reason
+                        if t.qty_runner > 0:
+                            t.runner_exit_price = c
+                            t.runner_exit_time = time_str
+                            t.runner_exit_reason = reason
+                        self._close(t)
+                        return
             return
 
         self._sq_last_vwap = vwap
@@ -1455,6 +1562,48 @@ class SimTradeManager:
             if self._stop_hit_cooldown[sym] <= 0:
                 del self._stop_hit_cooldown[sym]
 
+    def update_macd(self, symbol: str, close: float) -> None:
+        """Per-bar MACD update. Standard 12/26/9 EMAs. Caller invokes on
+        each bar close. State is per-symbol so multi-symbol sim runs
+        track each instrument independently."""
+        st = self._sq_macd_state.get(symbol)
+        if st is None:
+            st = {"ema12": close, "ema26": close, "macd": 0.0,
+                  "signal": 0.0, "bars": 0}
+            self._sq_macd_state[symbol] = st
+            return
+        a12, a26, a9 = 2/13, 2/27, 2/10
+        st["ema12"] = close * a12 + st["ema12"] * (1 - a12)
+        st["ema26"] = close * a26 + st["ema26"] * (1 - a26)
+        st["macd"] = st["ema12"] - st["ema26"]
+        # First few bars: signal seeds from macd directly
+        if st["bars"] < 1:
+            st["signal"] = st["macd"]
+        else:
+            st["signal"] = st["macd"] * a9 + st["signal"] * (1 - a9)
+        st["bars"] += 1
+
+    def _macd_bullish(self, symbol: str) -> bool:
+        """True iff MACD is bullish on `symbol`: line > signal+threshold AND > 0."""
+        st = self._sq_macd_state.get(symbol)
+        if st is None or st["bars"] < 2:
+            return False  # not enough history
+        # Strict mode: require histogram (macd-signal) > threshold AND macd > 0
+        histogram = st["macd"] - st["signal"]
+        return histogram > self.move_hwm_macd_hist_threshold and st["macd"] > 0
+
+    def update_inprog_bar_volume(self, size: int, time_str: str) -> None:
+        """Called per tick from the outer loop. Accumulates volume into
+        the in-progress bar tracker; resets on minute transition so the
+        counter reflects ONLY the current bar's volume so far."""
+        if size <= 0:
+            return
+        m = self._time_to_minutes(time_str)
+        if m != self._sq_inprog_bar_minute:
+            self._sq_inprog_bar_minute = m
+            self._sq_inprog_bar_volume = 0
+        self._sq_inprog_bar_volume += int(size)
+
     def _fire_reentry(self, symbol: str, watch: dict, entry_price: float,
                       time_str: str, reason_tag: str):
         """Shared re-entry execution path for BREAK + GREEN modes."""
@@ -1468,6 +1617,12 @@ class SimTradeManager:
         r = entry_price - stop
         if r <= 0:
             return None
+        # Probe-size sym parity with sub-bot (2026-05-21): the sub-bot
+        # applies WB_SQ_PROBE_SIZE_MULT (default 0.5) to every position
+        # via _compute_qty unconditionally. Match that here so re-entry
+        # P&L magnitudes line up with live (previously the sim used 1.0,
+        # making re-entry sizes 2× live).
+        _reentry_size_mult = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
         trade = self.on_signal(
             symbol=symbol,
             entry=entry_price,
@@ -1477,7 +1632,7 @@ class SimTradeManager:
             detail=f"[MOVE_STRIKE];[REENTRY_{reason_tag}]",
             time_str=time_str,
             setup_type="squeeze",
-            size_mult=1.0,
+            size_mult=_reentry_size_mult,
             trigger_price=entry_price,
         )
         if trade:
@@ -1499,12 +1654,29 @@ class SimTradeManager:
         watch = self._reentry_watches.get(symbol)
         if watch is None:
             return None
-        if self._time_to_minutes(time_str) > watch["expires_min"]:
+        bar_minute = self._time_to_minutes(time_str)
+        if bar_minute > watch["expires_min"]:
             self._reentry_watches.pop(symbol, None)
+            return None
+        # Same-bar guard — don't re-enter on the bar we just exited.
+        if (self.move_reentry_block_same_bar
+                and bar_minute <= watch.get("exit_bar_minute", -1)):
             return None
         if price > watch["high"]:
             return self._fire_reentry(symbol, watch, price, time_str, "BREAK")
         return None
+
+    def record_stay_armed_close(self, t, time_str: str) -> None:
+        """Track per-symbol exit info for stay-armed gating. Called on
+        every MOVE_STRIKE close so we can enforce cool-down + continuation."""
+        if not self.move_stay_armed:
+            return
+        if "[MOVE_STRIKE]" not in (t.score_detail or ""):
+            return
+        exit_min = self._time_to_minutes(time_str)
+        exit_px = t.runner_exit_price or t.core_exit_price or t.entry
+        self._move_stay_armed_last_exit_min[t.symbol] = exit_min
+        self._move_stay_armed_last_exit_price[t.symbol] = exit_px
 
     def register_reentry_after_close(self, t, bar_history, time_str: str) -> None:
         """Called by the outer loop after a MOVE_STRIKE trade closes.
@@ -1543,6 +1715,11 @@ class SimTradeManager:
             "high": high,
             "stop": low,
             "expires_min": exit_min + self.move_reentry_window_min,
+            # Same-bar guard: re-entry can't fire on the bar we exited
+            # (2026-05-21: QUCY 07:15 — we exited and re-entered at the
+            # bar's close, putting us at the bar's local high right as
+            # the next bar reversed).
+            "exit_bar_minute": exit_min,
         }
 
     def try_reentry_on_bar_close(self, symbol: str, bar, time_str: str):
@@ -1554,8 +1731,13 @@ class SimTradeManager:
         watch = self._reentry_watches.get(symbol)
         if watch is None:
             return None
-        if self._time_to_minutes(time_str) > watch["expires_min"]:
+        bar_minute = self._time_to_minutes(time_str)
+        if bar_minute > watch["expires_min"]:
             self._reentry_watches.pop(symbol, None)
+            return None
+        # Same-bar guard — don't re-enter on the bar we just exited.
+        if (self.move_reentry_block_same_bar
+                and bar_minute <= watch.get("exit_bar_minute", -1)):
             return None
         if bar.close > bar.open:
             return self._fire_reentry(symbol, watch, bar.close, time_str, "GREEN")
@@ -2434,6 +2616,7 @@ def run_simulation(
                 sim_mgr.register_reentry_after_close(
                     t, sq_det.bars_1m, time_str,
                 )
+                sim_mgr.record_stay_armed_close(t, time_str)
             except Exception as _re_e:
                 if verbose:
                     print(
@@ -2822,6 +3005,11 @@ def run_simulation(
 
             vwap = bb_1m.get_vwap(symbol)
 
+            # MACD continuous tracking (2026-05-21) — update every bar
+            # so EMAs are warmed up by the time a trade opens. Used by
+            # the MACD-bullish trail suppressor.
+            sim_mgr.update_macd(symbol, float(bar.close))
+
             msg = det.on_bar_close_1m(bar, vwap=vwap)
 
             # GREEN re-entry check (2026-05-20). Runs at bar close before
@@ -2896,6 +3084,7 @@ def run_simulation(
                                     sim_mgr.register_reentry_after_close(
                                         closed_t, sq_det.bars_1m, time_str,
                                     )
+                                    sim_mgr.record_stay_armed_close(closed_t, time_str)
                                 except Exception:
                                     pass
                                 # CT: unlock continuation detection
@@ -3461,7 +3650,21 @@ def run_simulation(
 
                 # --- Squeeze trigger (priority over MP) ---
                 _sq_armed_before = sq_det.armed if sq_enabled else None
-                if sq_enabled and _sq_armed_before is not None and sim_mgr.open_trade is None:
+                # Stay-armed: if no detector arm but symbol was previously
+                # armed today, treat as if armed (synthetic). Allows
+                # continuation MOVE_STRIKE entries on stocks that have
+                # already proven they can prime + arm once.
+                _stay_armed_active = (
+                    sq_enabled
+                    and _sq_armed_before is None
+                    and sim_mgr.move_stay_armed
+                    and symbol in sim_mgr._move_stay_armed_symbols
+                )
+                _move_strike_ok = (
+                    sq_enabled and sim_mgr.open_trade is None
+                    and (_sq_armed_before is not None or _stay_armed_active)
+                )
+                if _move_strike_ok:
                     if _move_strike is not None:
                         # Movement-anomaly path: ignore detector's price
                         # trigger entirely. Fire only on upward intra-bar
@@ -3476,30 +3679,78 @@ def run_simulation(
                         #          have shifted off the original setup).
                         # Chase  = skip if anomaly tick is >2% above arm
                         #          (mimics live's CBRG/RUBI timeout).
-                        _arm_price = _sq_armed_before.entry_price or 0.0
+                        # Synthetic arm fields when in stay-armed mode
+                        # (no real `_sq_armed_before`).
+                        if _stay_armed_active:
+                            _arm_price = 0.0  # disable chase cap
+                            _stay_armed_score = 50.0
+                            _stay_armed_detail = "[MOVE_STRIKE];[STAY_ARMED]"
+                            _stay_armed_size = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
+                        else:
+                            _arm_price = _sq_armed_before.entry_price or 0.0
                         _move_chase_cap = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
                         _gap_above_arm = ((price - _arm_price) / _arm_price * 100.0
                                           if _arm_price > 0 else 0.0)
+                        # Max-below-arm filter (2026-05-21): if price has
+                        # decayed too far below the arm price, the setup
+                        # is dead. Default 0 = disabled. PIII today fired
+                        # at -5.6% below arm and lost; QUCY fired at -1.6%
+                        # and won. A 3% cap separates them. Only applies
+                        # to real arms (stay-armed uses _arm_price=0).
+                        _max_below_arm = float(os.getenv("WB_BT_MOVE_MAX_BELOW_ARM_PCT", "0"))
+                        _below_arm_pct = ((_arm_price - price) / _arm_price * 100.0
+                                          if _arm_price > 0 else 0.0)
+                        _below_arm_ok = (
+                            _max_below_arm <= 0
+                            or _arm_price <= 0
+                            or _below_arm_pct <= _max_below_arm
+                        )
                         _cons_stop = _move_strike.get_consolidation_stop()
+                        # Stay-armed gates: cool-down + continuation %
+                        _stay_armed_ok = True
+                        if _stay_armed_active:
+                            _now_min = sim_mgr._time_to_minutes(time_str)
+                            _last_min = sim_mgr._move_stay_armed_last_exit_min.get(symbol, -10000)
+                            _last_px = sim_mgr._move_stay_armed_last_exit_price.get(symbol, 0.0)
+                            if (_now_min - _last_min) < sim_mgr.move_stay_armed_cooldown_min:
+                                _stay_armed_ok = False  # within cooldown
+                            elif _last_px > 0 and price < _last_px * (1.0 + sim_mgr.move_stay_armed_min_gap_pct / 100.0):
+                                _stay_armed_ok = False  # not a continuation
                         if (_move_anomaly
                                 and _cons_stop is not None
                                 and price > _cons_stop
-                                and _gap_above_arm <= _move_chase_cap):
+                                and _gap_above_arm <= _move_chase_cap
+                                and _below_arm_ok
+                                and _stay_armed_ok):
                             _new_r = price - _cons_stop
+                            if _stay_armed_active:
+                                _score = _stay_armed_score
+                                _detail = _stay_armed_detail
+                                _size_mult = _stay_armed_size
+                            else:
+                                _score = _sq_armed_before.score
+                                _detail = (_sq_armed_before.score_detail or "") + ";[MOVE_STRIKE]"
+                                _size_mult = _sq_armed_before.size_mult
                             trade = sim_mgr.on_signal(
                                 symbol=symbol,
                                 entry=price,
                                 stop=_cons_stop,
                                 r=_new_r,
-                                score=_sq_armed_before.score,
-                                detail=(_sq_armed_before.score_detail or "") + ";[MOVE_STRIKE]",
+                                score=_score,
+                                detail=_detail,
                                 time_str=time_str,
                                 setup_type="squeeze",
-                                size_mult=_sq_armed_before.size_mult,
+                                size_mult=_size_mult,
                                 trigger_price=price,
                             )
                             if trade:
-                                sq_det.armed = None  # consume arm manually
+                                if not _stay_armed_active:
+                                    sq_det.armed = None  # consume arm manually
+                                # Flag symbol for stay-armed mode (future
+                                # arms will be synthetic). Persistent
+                                # across the day's trades.
+                                if sim_mgr.move_stay_armed:
+                                    sim_mgr._move_stay_armed_symbols.add(symbol)
                                 # When HWM exit owns the position, do NOT
                                 # call notify_trade_opened — the V2 detector
                                 # runs its own para-trail/candle exits from
@@ -3508,10 +3759,14 @@ def run_simulation(
                                 _hwm_owns = sim_mgr.move_hwm_exit_enabled
                                 if not _hwm_owns:
                                     if _sq_v2:
+                                        _is_para = (
+                                            "[PARABOLIC]" in (_sq_armed_before.score_detail or "")
+                                            if _sq_armed_before is not None else False
+                                        )
                                         sq_det.notify_trade_opened(
                                             entry=trade.entry, stop=trade.stop, r=trade.r,
                                             qty=trade.qty_total, time_str=time_str,
-                                            is_parabolic="[PARABOLIC]" in (_sq_armed_before.score_detail or ""),
+                                            is_parabolic=_is_para,
                                         )
                                     else:
                                         sq_det.notify_trade_opened()
@@ -3791,6 +4046,10 @@ def run_simulation(
 
                 # Halt-through: detect/manage halt state via tick timestamp gap
                 sim_mgr.handle_tick_halt(ts, last_ts_utc)
+
+                # In-progress bar volume — accumulates per tick, resets on
+                # minute change. Used by HWM vol-suppressor (2026-05-21).
+                sim_mgr.update_inprog_bar_volume(size, time_str)
 
                 # Stop/TP/trail check on every tick
                 sim_mgr.on_tick(price, time_str)
