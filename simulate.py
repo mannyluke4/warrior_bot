@@ -233,6 +233,24 @@ class SimTradeManager:
         self.move_hwm_stop_prox_pct = (
             float(os.getenv("WB_BT_MOVE_HWM_STOP_PROX_PCT", "25")) / 100.0
         )
+        # Post-exit re-entry (2026-05-20). After a MOVE_STRIKE position
+        # closes, snapshot the high + low of the last N closed bars and
+        # arm one of two re-entry triggers (or both, independently).
+        # Same HWM exit applies to the re-entered position. Stop = low
+        # of those same N bars (R recomputed from actual entry).
+        #
+        # BREAK mode: any tick > the snapshotted high → re-enter at tick.
+        # GREEN mode: next 1m bar that closes GREEN (close > open) → re-enter at bar close.
+        self.move_reentry_break = os.getenv("WB_BT_MOVE_REENTRY_BREAK", "0") == "1"
+        self.move_reentry_green = os.getenv("WB_BT_MOVE_REENTRY_GREEN", "0") == "1"
+        self.move_reentry_lookback = int(os.getenv("WB_BT_MOVE_REENTRY_LOOKBACK", "10"))
+        self.move_reentry_window_min = float(os.getenv("WB_BT_MOVE_REENTRY_WINDOW_MIN", "30"))
+        self.move_reentry_max_per_sym = int(os.getenv("WB_BT_MOVE_REENTRY_MAX_PER_SYM", "1"))
+        # symbol → {"high": float, "stop": float, "expires_min": int}
+        self._reentry_watches: dict[str, dict] = {}
+        # Persistent per-symbol re-entry counter — survives watch pop so
+        # max_per_sym is enforced across multiple close→watch cycles.
+        self._reentry_count_per_symbol: dict[str, int] = {}
         # MOVE_STRIKE bar-structure exit (2026-05-20 — exit method #2).
         # When enabled, replaces the HWM trail (post-activation) with a
         # bar-close check: exit on first bar showing lower high AND lower
@@ -1437,9 +1455,123 @@ class SimTradeManager:
             if self._stop_hit_cooldown[sym] <= 0:
                 del self._stop_hit_cooldown[sym]
 
+    def _fire_reentry(self, symbol: str, watch: dict, entry_price: float,
+                      time_str: str, reason_tag: str):
+        """Shared re-entry execution path for BREAK + GREEN modes."""
+        # Expiry check (also enforced by callers, defensive)
+        if self._time_to_minutes(time_str) > watch["expires_min"]:
+            self._reentry_watches.pop(symbol, None)
+            return None
+        stop = watch["stop"]
+        if entry_price <= stop:
+            return None
+        r = entry_price - stop
+        if r <= 0:
+            return None
+        trade = self.on_signal(
+            symbol=symbol,
+            entry=entry_price,
+            stop=stop,
+            r=r,
+            score=99.0,  # synthetic — pass the min-score gate
+            detail=f"[MOVE_STRIKE];[REENTRY_{reason_tag}]",
+            time_str=time_str,
+            setup_type="squeeze",
+            size_mult=1.0,
+            trigger_price=entry_price,
+        )
+        if trade:
+            self._reentry_count_per_symbol[symbol] = (
+                self._reentry_count_per_symbol.get(symbol, 0) + 1
+            )
+            # Pop the watch — register_reentry_after_close will set up a
+            # new one when this trade closes (subject to the persistent
+            # quota check, which now properly bounds re-entries).
+            self._reentry_watches.pop(symbol, None)
+        return trade
+
+    def try_reentry_on_tick(self, symbol: str, price: float, time_str: str):
+        """BREAK mode: any tick > snapshotted high triggers re-entry."""
+        if not self.move_reentry_break:
+            return None
+        if self.open_trade is not None:
+            return None
+        watch = self._reentry_watches.get(symbol)
+        if watch is None:
+            return None
+        if self._time_to_minutes(time_str) > watch["expires_min"]:
+            self._reentry_watches.pop(symbol, None)
+            return None
+        if price > watch["high"]:
+            return self._fire_reentry(symbol, watch, price, time_str, "BREAK")
+        return None
+
+    def register_reentry_after_close(self, t, bar_history, time_str: str) -> None:
+        """Called by the outer loop after a MOVE_STRIKE trade closes.
+        ``bar_history`` is the detector's persistent bars_1m deque
+        (info dicts with o/h/l/c/v keys). Sets up a re-entry watch if
+        either re-entry mode is enabled and the per-symbol quota allows.
+
+        Cycle semantics (2026-05-20 Manny refinement): each MOVE_STRIKE
+        cycle has its own re-entry budget. If this trade was the original
+        MOVE_STRIKE (no REENTRY tag in detail), the symbol's count resets
+        to 0 — a new cycle has begun. If it was a re-entry, the count
+        stays put and the cycle ends without re-arming. The symbol can
+        always be entered again via a fresh MOVE_STRIKE arm + anomaly.
+        """
+        if not (self.move_reentry_break or self.move_reentry_green):
+            return
+        if t.setup_type != "squeeze":
+            return
+        if "[MOVE_STRIKE]" not in (t.score_detail or ""):
+            return
+        # Fresh MOVE_STRIKE entry exiting → new cycle → reset budget.
+        # Re-entry exit → keep count so the cap is enforced this cycle.
+        is_reentry = "[REENTRY_" in (t.score_detail or "")
+        if not is_reentry:
+            self._reentry_count_per_symbol[t.symbol] = 0
+        # Persistent quota check — survives watch pop
+        if self._reentry_count_per_symbol.get(t.symbol, 0) >= self.move_reentry_max_per_sym:
+            return
+        last_n = list(bar_history)[-self.move_reentry_lookback:]
+        if len(last_n) < 3:
+            return
+        high = max(b["h"] for b in last_n)
+        low = min(b["l"] for b in last_n)
+        exit_min = self._time_to_minutes(time_str)
+        self._reentry_watches[t.symbol] = {
+            "high": high,
+            "stop": low,
+            "expires_min": exit_min + self.move_reentry_window_min,
+        }
+
+    def try_reentry_on_bar_close(self, symbol: str, bar, time_str: str):
+        """GREEN mode: first 1m bar that closes green (close > open) triggers re-entry."""
+        if not self.move_reentry_green:
+            return None
+        if self.open_trade is not None:
+            return None
+        watch = self._reentry_watches.get(symbol)
+        if watch is None:
+            return None
+        if self._time_to_minutes(time_str) > watch["expires_min"]:
+            self._reentry_watches.pop(symbol, None)
+            return None
+        if bar.close > bar.open:
+            return self._fire_reentry(symbol, watch, bar.close, time_str, "GREEN")
+        return None
+
     def _close(self, t: SimTrade):
         t.closed = True
         self.closed_trades.append(t)
+        # Post-exit breakout re-entry setup (2026-05-20). Only for
+        # MOVE_STRIKE positions, only if enabled, only if we haven't
+        # already used up the per-symbol re-entry quota for this session.
+        # Re-entry watch setup is now done in the outer sim loop after
+        # close, so we can read bars from sq_det.bars_1m (persistent
+        # across trades) instead of self._sq_completed_1m_bars (resets
+        # on each entry and is empty for fast trades). See
+        # `register_reentry_after_close()` below.
         # Release notional and update equity for buying power tracking
         if self.account_equity > 0:
             self.open_notional -= t.qty_total * t.entry  # release original notional
@@ -2295,6 +2427,19 @@ def run_simulation(
             sq_det.notify_trade_closed(symbol, t.pnl(), r_mult=t.r_multiple())
             # MP V2: unlock re-entry detection when squeeze trade closes
             det.notify_squeeze_closed(symbol, t.pnl())
+            # MOVE_STRIKE re-entry watch setup (2026-05-20). Uses
+            # sq_det.bars_1m (persistent across trades) so fast trades
+            # still have bar history to compute the snapshot from.
+            try:
+                sim_mgr.register_reentry_after_close(
+                    t, sq_det.bars_1m, time_str,
+                )
+            except Exception as _re_e:
+                if verbose:
+                    print(
+                        f"  [{time_str}] reentry-watch setup error: {_re_e!r}",
+                        flush=True,
+                    )
             # CT: unlock continuation detection when squeeze trade closes
             if ct_enabled:
                 _sq_hod = bar_builder.get_hod(symbol) or 0
@@ -2679,6 +2824,21 @@ def run_simulation(
 
             msg = det.on_bar_close_1m(bar, vwap=vwap)
 
+            # GREEN re-entry check (2026-05-20). Runs at bar close before
+            # the standard detector path so a green-bar re-enter owns the
+            # slot for any subsequent detection. Gated; no-op when off.
+            if (sim_mgr.move_reentry_green
+                    and sim_mgr.open_trade is None):
+                re_trade = sim_mgr.try_reentry_on_bar_close(symbol, bar, time_str)
+                if re_trade and verbose:
+                    print(
+                        f"  [{time_str}] SQ_REENTRY (GREEN): "
+                        f"{re_trade.entry:.4f} stop={re_trade.stop:.4f} "
+                        f"R={re_trade.r:.4f} qty={re_trade.qty_total} "
+                        f"bar_body={bar.close - bar.open:+.4f}",
+                        flush=True,
+                    )
+
             # --- Squeeze detection (only if not already in a trade) ---
             sq_msg = None
             if sq_enabled and sim_mgr.open_trade is None:
@@ -2731,6 +2891,13 @@ def run_simulation(
                                 sq_det.notify_trade_closed(symbol, closed_t.pnl(), r_mult=closed_t.r_multiple())
                                 # MP V2: unlock re-entry detection
                                 det.notify_squeeze_closed(symbol, closed_t.pnl())
+                                # MOVE_STRIKE re-entry watch (2026-05-20)
+                                try:
+                                    sim_mgr.register_reentry_after_close(
+                                        closed_t, sq_det.bars_1m, time_str,
+                                    )
+                                except Exception:
+                                    pass
                                 # CT: unlock continuation detection
                                 if ct_enabled:
                                     _sq_hod = bb_1m.get_hod(symbol) or 0
@@ -3277,6 +3444,20 @@ def run_simulation(
                     _move_anomaly = _move_strike.update_and_check(price, _bar_minute_key)
                 else:
                     _move_anomaly = False
+
+                # BREAK re-entry check (2026-05-20). Fires before normal
+                # squeeze trigger so a re-entered trade owns the slot for
+                # the rest of this tick. Gated; no-op when off.
+                if (sim_mgr.move_reentry_break
+                        and sim_mgr.open_trade is None):
+                    re_trade = sim_mgr.try_reentry_on_tick(symbol, price, time_str)
+                    if re_trade and verbose:
+                        print(
+                            f"  [{time_str}] SQ_REENTRY (BREAK): "
+                            f"{re_trade.entry:.4f} stop={re_trade.stop:.4f} "
+                            f"R={re_trade.r:.4f} qty={re_trade.qty_total}",
+                            flush=True,
+                        )
 
                 # --- Squeeze trigger (priority over MP) ---
                 _sq_armed_before = sq_det.armed if sq_enabled else None

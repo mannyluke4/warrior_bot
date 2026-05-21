@@ -99,11 +99,12 @@ class SubPosition:
         "symbol", "entry", "stop", "r", "qty", "score",
         "peak", "peak_time", "cum_low", "entry_time_et",
         "entry_time_min", "hh_count", "prev_bar_high",
-        "order_id_buy", "order_id_sell",
+        "order_id_buy", "order_id_sell", "is_reentry", "reentry_tag",
     )
 
     def __init__(self, symbol: str, entry: float, stop: float, r: float,
-                 qty: int, score: float, time_et: str):
+                 qty: int, score: float, time_et: str,
+                 is_reentry: bool = False, reentry_tag: str = ""):
         self.symbol = symbol
         self.entry = entry
         self.stop = stop
@@ -120,6 +121,8 @@ class SubPosition:
         self.prev_bar_high = 0.0
         self.order_id_buy: Optional[str] = None
         self.order_id_sell: Optional[str] = None
+        self.is_reentry = is_reentry
+        self.reentry_tag = reentry_tag
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -160,6 +163,26 @@ class MoveStrikeSubBot:
         # We pre-track on each bar so HH is correct at any moment.
         self._sym_prev_bar_high: dict[str, float] = {}
         self._sym_hh_count: dict[str, int] = defaultdict(int)
+        # Re-entry config (2026-05-20 deploy) — GREEN mode chosen as winner.
+        # BREAK kept gated for future flexibility. Cycle-reset semantics:
+        # each fresh MOVE_STRIKE cycle gets its own re-entry budget;
+        # re-entries don't.
+        self.reentry_green = os.getenv("WB_BT_MOVE_REENTRY_GREEN", "0") == "1"
+        self.reentry_break = os.getenv("WB_BT_MOVE_REENTRY_BREAK", "0") == "1"
+        self.reentry_lookback = int(os.getenv("WB_BT_MOVE_REENTRY_LOOKBACK", "10"))
+        self.reentry_window_min = float(os.getenv("WB_BT_MOVE_REENTRY_WINDOW_MIN", "30"))
+        self.reentry_max_per_sym = int(os.getenv("WB_BT_MOVE_REENTRY_MAX_PER_SYM", "1"))
+        # Per-symbol watch state: {symbol → {"high","stop","expires_min"}}
+        self._reentry_watches: dict[str, dict] = {}
+        # Persistent per-symbol counter — survives watch pop so the cap
+        # is enforced across multiple close→watch cycles within one
+        # MOVE_STRIKE cycle.
+        self._reentry_count_per_symbol: dict[str, int] = {}
+        # Per-symbol bar history for re-entry watch snapshot. Deque so
+        # we can take the last N efficiently. Bar dicts mirror sim format.
+        from collections import deque
+        self._bar_history_per_sym: dict[str, deque] = {}
+        self._bar_history_maxlen = max(20, self.reentry_lookback * 2)
         # Shutdown
         self._stop = False
         # Diagnostic — how many bars built per symbol
@@ -264,6 +287,22 @@ class MoveStrikeSubBot:
         if self.position is not None and self.position.symbol == symbol:
             self.position.hh_count = self._sym_hh_count[symbol]
 
+        # Per-symbol bar history for re-entry watch snapshot.
+        from collections import deque
+        if symbol not in self._bar_history_per_sym:
+            self._bar_history_per_sym[symbol] = deque(maxlen=self._bar_history_maxlen)
+        self._bar_history_per_sym[symbol].append({
+            "o": bar.open, "h": bar.high, "l": bar.low,
+            "c": bar.close, "v": bar.volume,
+        })
+
+        # GREEN re-entry trigger: at bar close, if no position AND watch
+        # exists for this symbol AND bar is green (close > open) → fire.
+        if (self.position is None and self.reentry_green
+                and symbol in self._reentry_watches
+                and bar.close > bar.open):
+            self._try_fire_green_reentry(symbol, bar)
+
     # ──────────────────────────────────────────────────────────────────
     # Per-tick processing
     # ──────────────────────────────────────────────────────────────────
@@ -294,6 +333,72 @@ class MoveStrikeSubBot:
         # If no position, check for new entry
         if self.position is None:
             self._maybe_enter(symbol, price)
+
+    # ──────────────────────────────────────────────────────────────────
+    # Re-entry helpers (GREEN mode + cycle reset, 2026-05-20)
+    # ──────────────────────────────────────────────────────────────────
+    def _register_reentry_watch(self, t: SubPosition) -> None:
+        """Called after a position closes. Sets up a re-entry watch if
+        the cap allows. Cycle semantics: a fresh MOVE_STRIKE exit resets
+        the per-symbol count to 0 (new cycle); a re-entry exit does not."""
+        if not (self.reentry_green or self.reentry_break):
+            return
+        # Cycle reset on fresh MOVE_STRIKE (non-reentry) exit
+        if not t.is_reentry:
+            self._reentry_count_per_symbol[t.symbol] = 0
+        # Cap check
+        if self._reentry_count_per_symbol.get(t.symbol, 0) >= self.reentry_max_per_sym:
+            return
+        bars = self._bar_history_per_sym.get(t.symbol)
+        if not bars:
+            return
+        last_n = list(bars)[-self.reentry_lookback:]
+        if len(last_n) < 3:
+            return
+        high = max(b["h"] for b in last_n)
+        low = min(b["l"] for b in last_n)
+        self._reentry_watches[t.symbol] = {
+            "high": high,
+            "stop": low,
+            "expires_min": now_minute_et() + self.reentry_window_min,
+        }
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] {t.symbol} REENTRY WATCH set: "
+            f"high={high:.3f} stop={low:.3f} "
+            f"expires_in={int(self.reentry_window_min)}min",
+            flush=True,
+        )
+
+    def _try_fire_green_reentry(self, symbol: str, bar) -> None:
+        """At bar close, if watch exists and bar is green, fire re-entry."""
+        watch = self._reentry_watches.get(symbol)
+        if watch is None:
+            return
+        if now_minute_et() > watch["expires_min"]:
+            self._reentry_watches.pop(symbol, None)
+            return
+        # Guard: bar.close must clear the snapshotted stop (otherwise
+        # we'd immediately stop out).
+        if bar.close <= watch["stop"]:
+            return
+        entry_price = bar.close
+        stop = watch["stop"]
+        r = entry_price - stop
+        if r <= 0:
+            return
+        qty = self._compute_qty(entry_price, r, 99.0)
+        if qty <= 0:
+            return
+        # Open re-entry position. Same code path as primary open but
+        # tagged so the close handler knows not to reset the count.
+        self._open_position_with_tag(
+            symbol, entry_price, stop, r, qty, 99.0,
+            is_reentry=True, reentry_tag="GREEN",
+        )
+        self._reentry_count_per_symbol[symbol] = (
+            self._reentry_count_per_symbol.get(symbol, 0) + 1
+        )
+        self._reentry_watches.pop(symbol, None)
 
     def _maintain_position(self, price: float) -> None:
         p = self.position
@@ -366,11 +471,22 @@ class MoveStrikeSubBot:
     # ──────────────────────────────────────────────────────────────────
     def _open_position(self, symbol: str, entry: float, stop: float,
                        r: float, qty: int, score: float) -> None:
-        # Slippage buffer above current price for the BUY limit
+        """Primary entry from MOVE_STRIKE arm + anomaly fire."""
+        self._open_position_with_tag(
+            symbol, entry, stop, r, qty, score,
+            is_reentry=False, reentry_tag="",
+        )
+
+    def _open_position_with_tag(
+        self, symbol: str, entry: float, stop: float,
+        r: float, qty: int, score: float,
+        is_reentry: bool, reentry_tag: str,
+    ) -> None:
         slip = max(0.07, entry * 0.01)
         limit = round(entry + slip, 2)
+        tag_str = f" REENTRY({reentry_tag})" if is_reentry else ""
         print(
-            f"{LOG_TAG} [{now_iso_et()}] 🟩 ENTRY {symbol} qty={qty} "
+            f"{LOG_TAG} [{now_iso_et()}] 🟩 ENTRY{tag_str} {symbol} qty={qty} "
             f"limit=${limit:.2f} (anomaly@${entry:.2f}) stop=${stop:.2f} "
             f"R=${r:.4f} score={score:.1f}",
             flush=True,
@@ -385,12 +501,10 @@ class MoveStrikeSubBot:
         except Exception as e:
             print(f"{LOG_TAG} ENTRY REJECT {symbol}: {e!r}", flush=True)
             return
-        # Position is "open" — we'll book the fill price as the entry
-        # for HWM math (close approximation; precise fill may differ).
-        # Block other entries until this position closes.
         self.position = SubPosition(
             symbol=symbol, entry=entry, stop=stop, r=r, qty=qty,
             score=score, time_et=now_iso_et(),
+            is_reentry=is_reentry, reentry_tag=reentry_tag,
         )
         self.position.order_id_buy = str(order.id) if hasattr(order, "id") else None
         # Sync HH count from current per-symbol tracker
@@ -428,6 +542,10 @@ class MoveStrikeSubBot:
             f"(trade #{self.daily_trades_closed})",
             flush=True,
         )
+        # Set up re-entry watch (cycle reset is inside _register_reentry_watch).
+        # Done BEFORE clearing self.position so the position fields are
+        # still valid in the snapshot.
+        self._register_reentry_watch(p)
         self.position = None
 
     # ──────────────────────────────────────────────────────────────────
