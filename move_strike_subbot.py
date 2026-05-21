@@ -49,6 +49,12 @@ from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 
+# Load .env BEFORE we read any APCA_API_* env vars. daily_run_v3.sh only
+# injects credentials inline for the main bot launch — the sub-bot has
+# to source its own (2026-05-21 fix).
+from dotenv import load_dotenv
+load_dotenv()
+
 # ── Imports of project modules ────────────────────────────────────────
 from engine_ipc import (
     DEFAULT_SOCKET_PATH,
