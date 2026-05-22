@@ -1530,3 +1530,27 @@
 [MOVE_SUB] [09:55:36] new symbol USAR — detector + movement_strike instantiated
 [MOVE_SUB] socket closed by peer — reconnecting
 [MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB] [09:57:08] connected to engine (/tmp/warrior_engine.sock) attempt=45
+[MOVE_SUB] [09:57:11] STATS ticks=1148181 symbols=116 pos=no daily_pnl=+0
+[MOVE_SUB] [09:57:16] new symbol BBAI — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:19] new symbol CAQ — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:22] new symbol F — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:25] new symbol FUTG — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:28] new symbol GRF — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:39] new symbol KPDD — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:42] new symbol LKSP — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:45] new symbol NGEN — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:47] new symbol NIO — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:51] new symbol PLUG — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:53] new symbol QBTZ — detector + movement_strike instantiated
+[MOVE_SUB] [09:57:57] new symbol RGTZ — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:00] new symbol SOXS — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:05] new symbol SY — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:07] new symbol TE — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:08] new symbol TIGR — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:11] new symbol TSLL — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:13] new symbol TZA — detector + movement_strike instantiated
+[MOVE_SUB] [09:58:13] STATS ticks=1148254 symbols=134 pos=no daily_pnl=+0
+[MOVE_SUB] [09:58:16] new symbol UVIX — detector + movement_strike instantiated
+[MOVE_SUB] signal 15 received — stopping
+[MOVE_SUB] consume loop exited
