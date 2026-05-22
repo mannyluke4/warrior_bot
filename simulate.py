@@ -84,6 +84,7 @@ class SimTrade:
     runner_exit_reason: str = ""
     # State
     tp_hit: bool = False    # T1 hit
+    move_partial_fired: bool = False  # MOVE_STRIKE partial-exit fired (X01 Direction B)
     peak: float = 0.0
     peak_time: str = ""
     cum_low: float = 0.0   # lowest price seen since entry (2026-05-20 — stop-proximity bail)
@@ -325,6 +326,27 @@ class SimTradeManager:
         # using the gain itself as the "earned room" signal works on tick
         # path immediately. Set to 0 to disable. (e.g., 5.0 = widen at +5%)
         self.move_hwm_wide_gain_pct = float(os.getenv("WB_BT_MOVE_HWM_WIDE_GAIN_PCT", "0"))
+        # Fixed R-distance trail (2026-05-21 PCLA experiment). When > 0,
+        # trail = peak - N*R instead of peak - dd*gain. Provides constant
+        # follow distance regardless of how far the move runs. PCLA-style
+        # vertical moves benefit; chop suffers from the wider stop.
+        self.move_hwm_fixed_trail_r = float(os.getenv("WB_BT_MOVE_HWM_FIXED_TRAIL_R", "0"))
+        # Dynamic trail widening (2026-05-21): when gain crosses
+        # WB_BT_MOVE_HWM_WIDE_AT_R (e.g. 1.5R), switch from HWM %-trail
+        # to a fixed R-distance trail (peak - WIDE_TRAIL_R × t.r).
+        # Losers never reach 1.5R so they stay protected by the tight
+        # %-trail; winners crossing 1.5R get room to ride.
+        self.move_hwm_wide_at_r = float(os.getenv("WB_BT_MOVE_HWM_WIDE_AT_R", "0"))
+        self.move_hwm_wide_trail_r = float(os.getenv("WB_BT_MOVE_HWM_WIDE_TRAIL_R", "2.0"))
+        # X01 Direction B (2026-05-22): scale-out partial at NR + HWM runner.
+        # When enabled, on MOVE_STRIKE positions: at gain >= partial_at_R × R,
+        # close `partial_pct` of qty at current price (core); remaining
+        # qty becomes a runner that continues with normal HWM trail.
+        # Captures the certain N-R win, leaves a small runner for PCLA-class
+        # verticals. Direction A (X01-exit framework swap) was killed.
+        self.move_partial_enabled = os.getenv("WB_BT_MOVE_PARTIAL_ENABLED", "0") == "1"
+        self.move_partial_at_r = float(os.getenv("WB_BT_MOVE_PARTIAL_AT_R", "1.5"))
+        self.move_partial_pct = float(os.getenv("WB_BT_MOVE_PARTIAL_PCT", "0.75"))
 
         # --- EPL graduation callback (set by caller) ---
         self._on_target_hit_cb = None
@@ -874,9 +896,38 @@ class SimTradeManager:
 
         No bail_timer, no vwap_exit, no time_exit, no R-target. Those are
         the exits that killed MOVE_STRIKE winners on multi-minute moves.
+
+        X01 Direction B (2026-05-22): when move_partial_enabled, at gain
+        >= partial_at_r × R fire a scale-out — close qty_core at current
+        price (the "certain N-R win"), runner continues with HWM trail.
         """
+        # 0) Partial-exit fire (X01 Direction B) — pre-empts everything else.
+        # Fires once when peak crosses the threshold. Subsequent exits
+        # (hard stop, trail, prox bail) operate on the runner only.
+        if (self.move_partial_enabled and not t.move_partial_fired
+                and t.r > 0 and t.qty_runner > 0):
+            partial_threshold = t.entry + self.move_partial_at_r * t.r
+            if price >= partial_threshold:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = (
+                    f"move_partial({self.move_partial_at_r:.1f}R,"
+                    f"qty={t.qty_core})"
+                )
+                t.move_partial_fired = True
+                # Don't close — runner continues. Fall through so
+                # current tick can also evaluate hard stop / trail on
+                # the runner (rare but possible if the same tick is
+                # the peak AND a stop trigger).
         # 1) Hard stop
         if price <= t.stop:
+            if t.move_partial_fired:
+                # Core already exited at partial; only set runner.
+                t.runner_exit_price = price
+                t.runner_exit_time = time_str
+                t.runner_exit_reason = "move_hard_stop"
+                self._close(t)
+                return
             t.core_exit_price = price
             t.core_exit_time = time_str
             t.core_exit_reason = "move_hard_stop"
@@ -907,16 +958,23 @@ class SimTradeManager:
             buffer_to_stop = t.cum_low - t.stop
             prox_threshold = self.move_hwm_stop_prox_pct * t.r
             if buffer_to_stop <= prox_threshold:
-                t.core_exit_price = price
-                t.core_exit_time = time_str
-                t.core_exit_reason = (
+                reason = (
                     f"move_stop_prox_bail(low={t.cum_low:.2f},"
                     f"stop={t.stop:.2f},buf={buffer_to_stop:.3f})"
                 )
-                if t.qty_runner > 0:
+                if t.move_partial_fired:
+                    # Core already exited at partial; only set runner.
                     t.runner_exit_price = price
                     t.runner_exit_time = time_str
-                    t.runner_exit_reason = t.core_exit_reason
+                    t.runner_exit_reason = reason
+                else:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = reason
+                    if t.qty_runner > 0:
+                        t.runner_exit_price = price
+                        t.runner_exit_time = time_str
+                        t.runner_exit_reason = reason
                 self._close(t)
                 return
 
@@ -932,13 +990,19 @@ class SimTradeManager:
             except Exception:
                 held_min = 0
             if held_min >= self.move_hwm_noact_minutes:
-                t.core_exit_price = price
-                t.core_exit_time = time_str
-                t.core_exit_reason = f"move_noact_bail({int(held_min)}min)"
-                if t.qty_runner > 0:
+                reason = f"move_noact_bail({int(held_min)}min)"
+                if t.move_partial_fired:
                     t.runner_exit_price = price
                     t.runner_exit_time = time_str
-                    t.runner_exit_reason = f"move_noact_bail({int(held_min)}min)"
+                    t.runner_exit_reason = reason
+                else:
+                    t.core_exit_price = price
+                    t.core_exit_time = time_str
+                    t.core_exit_reason = reason
+                    if t.qty_runner > 0:
+                        t.runner_exit_price = price
+                        t.runner_exit_time = time_str
+                        t.runner_exit_reason = reason
                 self._close(t)
                 return
 
@@ -959,7 +1023,21 @@ class SimTradeManager:
             effective_dd = self.move_hwm_wide_dd_pct
         else:
             effective_dd = self.move_hwm_drawdown_pct
-        trail_level = t.peak - effective_dd * gain
+        # Dynamic trail widening: once peak crosses wide_at_r threshold,
+        # switch from HWM %-trail to fixed R-distance trail. State is
+        # implicit in t.peak — once peak goes high enough, stays in wide
+        # mode for the rest of the trade.
+        _wide_mode = (self.move_hwm_wide_at_r > 0
+                      and t.r > 0
+                      and (t.peak - t.entry) >= self.move_hwm_wide_at_r * t.r)
+        if _wide_mode:
+            trail_level = t.peak - self.move_hwm_wide_trail_r * t.r
+        elif self.move_hwm_fixed_trail_r > 0:
+            # Fixed R-distance trail: peak - N*R. Bigger absolute room
+            # for larger R trades; constant follow distance.
+            trail_level = t.peak - self.move_hwm_fixed_trail_r * t.r
+        else:
+            trail_level = t.peak - effective_dd * gain
         if price <= trail_level:
             # Stay-in suppressors (2026-05-21): hold the position when
             # bullish signals are still intact — the trail-fire price
@@ -982,13 +1060,19 @@ class SimTradeManager:
                 return  # suppress — MACD bullish, hold for continuation
             reason = (f"move_hwm_exit(peak={t.peak:.2f},"
                       f"dd={int(effective_dd*100)}%,hh={t.hh_count})")
-            t.core_exit_price = price
-            t.core_exit_time = time_str
-            t.core_exit_reason = reason
-            if t.qty_runner > 0:
+            if t.move_partial_fired:
+                # Core already exited at partial; only set runner.
                 t.runner_exit_price = price
                 t.runner_exit_time = time_str
                 t.runner_exit_reason = reason
+            else:
+                t.core_exit_price = price
+                t.core_exit_time = time_str
+                t.core_exit_reason = reason
+                if t.qty_runner > 0:
+                    t.runner_exit_price = price
+                    t.runner_exit_time = time_str
+                    t.runner_exit_reason = reason
             self._close(t)
             return
 
@@ -3746,6 +3830,19 @@ def run_simulation(
                             if trade:
                                 if not _stay_armed_active:
                                     sq_det.armed = None  # consume arm manually
+                                # X01 Direction B partial-exit override: when
+                                # WB_BT_MOVE_PARTIAL_ENABLED=1, override the
+                                # default qty split so the partial fires at
+                                # `partial_pct` of the position.
+                                if (sim_mgr.move_partial_enabled
+                                        and trade.qty_total > 0):
+                                    _partial_qty = max(1, int(round(
+                                        trade.qty_total * sim_mgr.move_partial_pct
+                                    )))
+                                    _partial_qty = min(_partial_qty, trade.qty_total - 1) \
+                                        if trade.qty_total > 1 else trade.qty_total
+                                    trade.qty_core = _partial_qty
+                                    trade.qty_runner = trade.qty_total - _partial_qty
                                 # Flag symbol for stay-armed mode (future
                                 # arms will be synthetic). Persistent
                                 # across the day's trades.
