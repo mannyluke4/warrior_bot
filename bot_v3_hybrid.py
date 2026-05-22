@@ -743,7 +743,11 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
     # Reference price for the limit: prefer the trigger tick, fall back to the
     # position's tracked peak if the message didn't carry one.
     ref_price = exit_price_signal if exit_price_signal > 0 else float(pos.get("peak") or pos["entry"])
-    limit_price = _exit_limit_price(ref_price, "SELL")
+    base_limit = _exit_limit_price(ref_price, "SELL")
+    # Alpaca-aware sell limit (2026-05-22): tighten to min(base, alpaca_bid × 0.995)
+    # when WB_ALPACA_AWARE_LIMITS=1. Helps avoid sells stuck above Alpaca's bid.
+    aware_limit = compute_alpaca_aware_limit(symbol, ref_price, "SELL")
+    limit_price = min(aware_limit, base_limit)
     print(f"[WB] {symbol} EXIT reason={reason} signal=${exit_price_signal:.4f} "
           f"qty={qty} limit=${limit_price:.4f}", flush=True)
     try:
@@ -3179,7 +3183,15 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
         live_tape = entry
     basis = max(entry, live_tape)
     initial_slip = _entry_slippage_for(basis)
-    limit_price = round(basis + initial_slip, 2)
+    base_limit = round(basis + initial_slip, 2)
+    # Alpaca-aware limit (activated 2026-05-22 per p0_go_live_stack):
+    # widens to max(base, alpaca_ask × 1.005) when WB_ALPACA_AWARE_LIMITS=1.
+    # Falls back to base on stale/divergent Alpaca quotes (5% guard).
+    # Today's LFS 07:09:41 case: IBKR $4.39 / Alpaca ASK $4.45 (1.4% gap) →
+    # base would have been $4.44, Alpaca-aware widens to $4.47.
+    aware_limit = compute_alpaca_aware_limit(symbol, basis, "BUY")
+    limit_price = max(aware_limit, base_limit)
+    initial_slip = round(limit_price - basis, 4)
     original_limit = limit_price  # chase-cap is now relative to the price we
                                    # actually submitted at, not the arm
 
@@ -4637,8 +4649,10 @@ def _exit_box_trade(reason: str):
           f"reason={reason} P&L=${pnl:+,.2f}", flush=True)
 
     try:
-        state.broker.submit_limit(symbol, qty, "SELL",
-                                  _exit_limit_price(exit_price, "SELL"),
+        base = _exit_limit_price(exit_price, "SELL")
+        aware = compute_alpaca_aware_limit(symbol, exit_price, "SELL")
+        sell_limit = min(aware, base)
+        state.broker.submit_limit(symbol, qty, "SELL", sell_limit,
                                   extended_hours=True)
     except Exception as e:
         # Per project rule: no market fallback. Box exits retry on the next

@@ -106,6 +106,7 @@ class SubPosition:
         "peak", "peak_time", "cum_low", "entry_time_et",
         "entry_time_min", "hh_count", "prev_bar_high",
         "order_id_buy", "order_id_sell", "is_reentry", "reentry_tag",
+        "fill_entry_price", "fill_entry_qty",
     )
 
     def __init__(self, symbol: str, entry: float, stop: float, r: float,
@@ -129,6 +130,9 @@ class SubPosition:
         self.order_id_sell: Optional[str] = None
         self.is_reentry = is_reentry
         self.reentry_tag = reentry_tag
+        # Actual fills (populated by _wait_for_fill after order submit).
+        self.fill_entry_price: Optional[float] = None
+        self.fill_entry_qty: Optional[int] = None
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -210,6 +214,85 @@ class MoveStrikeSubBot:
         self._stop = False
         # Diagnostic — how many bars built per symbol
         self._bars_per_sym: dict[str, int] = defaultdict(int)
+        # Alpaca-aware limit pricing (2026-05-22). Mirrors main bot's
+        # compute_alpaca_aware_limit() helper. Gated by WB_ALPACA_AWARE_LIMITS.
+        self.alpaca_aware_limits = os.getenv("WB_ALPACA_AWARE_LIMITS", "0") == "1"
+
+    def _wait_for_fill(self, order_id: str, timeout: int = 15):
+        """Poll Alpaca for the order's fill. Returns (filled_avg_price, filled_qty)
+        or (None, 0) on timeout/cancel/reject. Mirrors bot_v3_hybrid.py:1195
+        wait_for_fill pattern."""
+        if not order_id:
+            return None, 0
+        try:
+            from alpaca.trading.enums import OrderStatus
+        except Exception:
+            OrderStatus = None
+        for _ in range(timeout * 2):
+            try:
+                o = self.alpaca.get_order_by_id(order_id)
+            except Exception:
+                o = None
+            if o is not None:
+                status = getattr(o, "status", None)
+                status_val = status.value if hasattr(status, "value") else str(status)
+                if status_val == "filled":
+                    return float(o.filled_avg_price or 0), int(o.filled_qty or 0)
+                if status_val in ("canceled", "cancelled", "expired", "rejected"):
+                    return None, 0
+            time.sleep(0.5)
+        # Timeout — cancel and final check.
+        try:
+            self.alpaca.cancel_order_by_id(order_id)
+        except Exception:
+            pass
+        try:
+            o = self.alpaca.get_order_by_id(order_id)
+        except Exception:
+            o = None
+        if o is not None:
+            status = getattr(o, "status", None)
+            status_val = status.value if hasattr(status, "value") else str(status)
+            if status_val == "filled":
+                return float(o.filled_avg_price or 0), int(o.filled_qty or 0)
+        return None, 0
+
+    def _compute_alpaca_aware_limit(self, symbol: str, signal_price: float,
+                                     side: str, buffer_pct: float = 0.005) -> float:
+        """Sub-bot copy of compute_alpaca_aware_limit (see bot_v3_hybrid.py:2775).
+        For BUY: max(signal × (1+buffer), alpaca_ask × (1+buffer)).
+        For SELL: min(signal × (1-buffer), alpaca_bid × (1-buffer)).
+        Falls back to base on >5% divergence or quote failure."""
+        side_u = side.upper()
+        base_limit = round(signal_price * (1 + buffer_pct), 2) if side_u == "BUY" \
+            else round(signal_price * (1 - buffer_pct), 2)
+        if not self.alpaca_aware_limits or self.alpaca_data is None:
+            return base_limit
+        try:
+            from alpaca.data.requests import StockLatestQuoteRequest
+            q_resp = self.alpaca_data.get_stock_latest_quote(
+                StockLatestQuoteRequest(symbol_or_symbols=symbol)
+            )
+            q = q_resp.get(symbol) if isinstance(q_resp, dict) else None
+            if q is None:
+                return base_limit
+            if side_u == "BUY":
+                alpaca_ref = float(q.ask_price) if getattr(q, "ask_price", None) else None
+            else:
+                alpaca_ref = float(q.bid_price) if getattr(q, "bid_price", None) else None
+            if alpaca_ref is None or signal_price <= 0:
+                return base_limit
+            if abs(alpaca_ref - signal_price) / signal_price > 0.05:
+                print(f"{LOG_TAG} ALPACA_QUOTE_DIVERGENT {symbol}: "
+                      f"alpaca_ref={alpaca_ref:.4f} signal={signal_price:.4f} "
+                      f">5% gap, using base", flush=True)
+                return base_limit
+            if side_u == "BUY":
+                return round(max(base_limit, alpaca_ref * (1 + buffer_pct)), 2)
+            return round(min(base_limit, alpaca_ref * (1 - buffer_pct)), 2)
+        except Exception as e:
+            print(f"{LOG_TAG} ALPACA_AWARE_FAIL {symbol}: {e!r} — using base", flush=True)
+            return base_limit
 
     def _init_alpaca(self) -> None:
         key = os.getenv("WB_SUBBOT_APCA_API_KEY_ID") or os.getenv("APCA_API_KEY_ID")
@@ -221,6 +304,15 @@ class MoveStrikeSubBot:
             print(f"{LOG_TAG} FATAL: no Alpaca credentials in env", flush=True)
             sys.exit(1)
         self.alpaca = TradingClient(key, secret, paper=True)
+        # Separate data client for latest-quote lookups (Alpaca-aware
+        # limit pricing). Falls back to None if init fails — helper
+        # gracefully returns base limit when data_client is None.
+        try:
+            from alpaca.data.historical import StockHistoricalDataClient
+            self.alpaca_data = StockHistoricalDataClient(key, secret)
+        except Exception as e:
+            print(f"{LOG_TAG} WARN: Alpaca data client init failed: {e!r}", flush=True)
+            self.alpaca_data = None
         try:
             acct = self.alpaca.get_account()
             print(
@@ -253,6 +345,73 @@ class MoveStrikeSubBot:
             f"movement_strike instantiated",
             flush=True,
         )
+        # Seed from tick cache (2026-05-22 per p0_go_live_stack item 3).
+        # If main bot has been running and writing tick_cache for this
+        # symbol, replay those ticks through our detector + bar builder
+        # so a sub-bot restart mid-session doesn't start blind. Gated by
+        # WB_SUBBOT_SEED_FROM_CACHE (default 1).
+        if os.getenv("WB_SUBBOT_SEED_FROM_CACHE", "1") == "1":
+            self._seed_symbol_from_cache(symbol)
+
+    def _seed_symbol_from_cache(self, symbol: str) -> None:
+        """Replay today's tick_cache for `symbol` through the detector +
+        bar builder + movement_strike. Mirrors main bot's
+        seed_symbol_from_cache (bot_v3_hybrid.py:1823). Idempotent — call
+        on first encounter of a symbol after a restart."""
+        import gzip
+        from datetime import datetime as _dt
+        today = _dt.now(ET).strftime("%Y-%m-%d")
+        cache_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "tick_cache", today, f"{symbol}.json.gz",
+        )
+        if not os.path.exists(cache_path):
+            return
+        try:
+            with gzip.open(cache_path, "rt") as f:
+                raw_ticks = json.load(f)
+        except Exception as e:
+            print(f"{LOG_TAG} SEED {symbol} cache read failed: {e!r}", flush=True)
+            return
+        if not raw_ticks:
+            return
+        # Cutoff: replay only ticks earlier than NOW (live ticks will
+        # cover the rest as they arrive on the engine socket).
+        now_utc = _dt.now(timezone.utc)
+        replayed = 0
+        try:
+            det = self.detectors.get(symbol)
+            if det is None:
+                return
+            # Suppress signals during seed if the detector supports it
+            # (SqueezeDetector v1 doesn't; v2 has begin_seed/end_seed).
+            seed_aware = hasattr(det, "begin_seed") and hasattr(det, "end_seed")
+            if seed_aware:
+                det.begin_seed()
+            for tk in raw_ticks:
+                try:
+                    price = float(tk["p"])
+                    size = int(tk.get("s") or 0)
+                    ts_utc = _dt.fromisoformat(tk["t"])
+                except (KeyError, ValueError, TypeError):
+                    continue
+                if ts_utc >= now_utc:
+                    break  # don't seed into the future
+                try:
+                    # TradeBarBuilder.on_trade(symbol, price, size, ts) —
+                    # the single shared bar_builder routes by symbol.
+                    self.bar_builder.on_trade(symbol, price, size, ts_utc)
+                except Exception:
+                    pass
+                replayed += 1
+            if seed_aware:
+                det.end_seed()
+            print(
+                f"{LOG_TAG} SEED {symbol} replayed {replayed:,} ticks from cache",
+                flush=True,
+            )
+        except Exception as e:
+            print(f"{LOG_TAG} SEED {symbol} failed: {e!r}", flush=True)
 
     # ──────────────────────────────────────────────────────────────────
     # Bar-close hook (called by TradeBarBuilder when a 1m bar closes)
@@ -549,7 +708,11 @@ class MoveStrikeSubBot:
         is_reentry: bool, reentry_tag: str,
     ) -> None:
         slip = max(0.07, entry * 0.01)
-        limit = round(entry + slip, 2)
+        base_limit = round(entry + slip, 2)
+        # Alpaca-aware limit (2026-05-22): widen to alpaca_ask + buffer
+        # when our IBKR-derived limit is below Alpaca's actual ask.
+        aware_limit = self._compute_alpaca_aware_limit(symbol, entry, "BUY")
+        limit = max(aware_limit, base_limit)
         tag_str = f" REENTRY({reentry_tag})" if is_reentry else ""
         print(
             f"{LOG_TAG} [{now_iso_et()}] 🟩 ENTRY{tag_str} {symbol} qty={qty} "
@@ -573,6 +736,30 @@ class MoveStrikeSubBot:
             is_reentry=is_reentry, reentry_tag=reentry_tag,
         )
         self.position.order_id_buy = str(order.id) if hasattr(order, "id") else None
+        # Wait for fill so we can book real entry price (2026-05-22).
+        fill_px, fill_qty = self._wait_for_fill(self.position.order_id_buy, timeout=15)
+        if fill_px is not None and fill_qty > 0:
+            self.position.fill_entry_price = fill_px
+            self.position.fill_entry_qty = fill_qty
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} entry FILLED "
+                f"@ ${fill_px:.4f} qty={fill_qty} (limit was ${limit:.2f})",
+                flush=True,
+            )
+            # If partial fill, shrink the position's qty so the exit
+            # doesn't try to sell shares we don't own.
+            if fill_qty < qty:
+                self.position.qty = fill_qty
+        else:
+            # Order didn't fill (timeout/cancel/reject). Clear position
+            # so we don't track ghost shares — and don't manage exits.
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} entry order NOT FILLED "
+                f"(timeout/cancel/reject) — abandoning trade",
+                flush=True,
+            )
+            self.position = None
+            return
         # Sync HH count from current per-symbol tracker
         self.position.hh_count = self._sym_hh_count.get(symbol, 0)
 
@@ -583,12 +770,18 @@ class MoveStrikeSubBot:
         # Exit SELL LIMIT slightly below current price for likely fill
         # (sub-bot mirrors main bot's never-market-order rule).
         slip = max(0.05, ref_price * 0.005)
-        limit = round(ref_price - slip, 2)
+        base_limit = round(ref_price - slip, 2)
+        # Alpaca-aware sell limit (2026-05-22): tighten toward alpaca_bid
+        # when our IBKR-derived sell limit is above Alpaca's actual bid.
+        aware_limit = self._compute_alpaca_aware_limit(p.symbol, ref_price, "SELL")
+        limit = min(aware_limit, base_limit)
         print(
             f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {p.symbol} qty={p.qty} "
             f"limit=${limit:.2f} (ref=${ref_price:.2f}) reason={reason}",
             flush=True,
         )
+        sell_fill_px = None
+        sell_fill_qty = 0
         try:
             req = LimitOrderRequest(
                 symbol=p.symbol, qty=p.qty, side=OrderSide.SELL,
@@ -597,15 +790,26 @@ class MoveStrikeSubBot:
             )
             order = self.alpaca.submit_order(order_data=req)
             p.order_id_sell = str(order.id) if hasattr(order, "id") else None
+            sell_fill_px, sell_fill_qty = self._wait_for_fill(p.order_id_sell, timeout=15)
         except Exception as e:
             print(f"{LOG_TAG} EXIT REJECT {p.symbol}: {e!r}", flush=True)
-        # Book the P&L approximation (entry → ref_price, not actual fills)
-        approx_pnl = (ref_price - p.entry) * p.qty
-        self.daily_pnl += approx_pnl
+        # Real-fill P&L (2026-05-22): use actual entry + exit fill prices when
+        # both are known. Falls back to anomaly→ref approximation if either
+        # fill price is missing (order didn't fill cleanly).
+        entry_basis = p.fill_entry_price if p.fill_entry_price is not None else p.entry
+        exit_basis = sell_fill_px if sell_fill_px is not None else ref_price
+        qty_basis = sell_fill_qty if sell_fill_qty > 0 else p.qty
+        real_pnl = (exit_basis - entry_basis) * qty_basis
+        self.daily_pnl += real_pnl
         self.daily_trades_closed += 1
+        if p.fill_entry_price is not None and sell_fill_px is not None:
+            tag = "real"
+        else:
+            tag = "approx"
         print(
-            f"{LOG_TAG} approx P&L={approx_pnl:+,.0f} daily={self.daily_pnl:+,.0f} "
-            f"(trade #{self.daily_trades_closed})",
+            f"{LOG_TAG} {tag} P&L={real_pnl:+,.0f} daily={self.daily_pnl:+,.0f} "
+            f"(trade #{self.daily_trades_closed}) "
+            f"entry=${entry_basis:.4f} exit=${exit_basis:.4f} qty={qty_basis}",
             flush=True,
         )
         # Set up re-entry watch (cycle reset is inside _register_reentry_watch).
