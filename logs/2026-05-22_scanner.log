@@ -73966,3 +73966,41 @@ Traceback (most recent call last):
   File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/requests/adapters.py", line 677, in send
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='hist.databento.com', port=443): Max retries exceeded with url: /v0/timeseries.get_range (Caused by NameResolutionError("HTTPSConnection(host='hist.databento.com', port=443): Failed to resolve 'hist.databento.com' ([Errno 8] nodename nor servname provided, or not known)"))
+12:53:05  Live Scanner starting — 2026-05-22 
+  [float_cache] Cleared 2 stale None entries — will re-attempt lookups
+12:53:05  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+12:53:05  Initialized Historical(gateway=https://hist.databento.com)
+12:53:05        Requesting OHLCV from 2026-04-23 to 2026-05-21...
+12:53:14        12,792 symbols with avg daily volume
+12:53:14        12,792 symbols with prev close loaded
+12:53:14  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+12:53:14  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-22 04:00:00-04:00 snapshot=False
+12:53:14  connecting to remote gateway
+12:53:16  authenticated session_id='3805697021'
+12:53:16  adding user callback on_event
+12:53:16  starting live client
+12:53:16        Stream started, replaying from 04:00 ET...
+12:53:16  [7_14] No candidates to write.
+12:53:16  [FINAL] No candidates to write.
+12:53:16  Scanner cutoff reached (09:30 ET). Stopping stream.
+12:53:16  stopping live client
+12:53:16  Done.
+17:31:00  Live Scanner starting — 2026-05-22 
+17:31:00  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+17:31:00  Initialized Historical(gateway=https://hist.databento.com)
+17:31:00        Requesting OHLCV from 2026-04-23 to 2026-05-21...
+17:31:15        12,792 symbols with avg daily volume
+17:31:15        12,792 symbols with prev close loaded
+17:31:15  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+17:31:15  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-22 04:00:00-04:00 snapshot=False
+17:31:15  connecting to remote gateway
+17:31:17  authenticated session_id='3805748868'
+17:31:17  adding user callback on_event
+17:31:17  starting live client
+17:31:17        Stream started, replaying from 04:00 ET...
+17:31:17  [7_14] No candidates to write.
+17:31:17  [FINAL] No candidates to write.
+17:31:17  Scanner cutoff reached (09:30 ET). Stopping stream.
+17:31:17  stopping live client
+17:31:17  Done.
+17:31:17  connection closed
