@@ -616,6 +616,18 @@ class MoveStrikeSubBot:
         det = self.detectors.get(symbol)
         if det is None:
             return
+        # Entry-time cutoff (2026-05-22 Manny directive: no new entries
+        # after 19:30 ET). Mirrors main bot's WB_ENTRY_TIME_CUTOFF_ET
+        # at bot_v3_hybrid.py:223. PCLA 2026-05-22 19:55 entry triggered
+        # this rule — 25 min past cutoff, forced flatten.
+        _cutoff = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+        try:
+            _ch, _cm = (int(x) for x in _cutoff.split(":")[:2])
+            _now_min = now_minute_et()
+            if _now_min >= _ch * 60 + _cm:
+                return  # past entry cutoff
+        except Exception:
+            pass  # bad cutoff value — allow entry
         # Real arm OR stay-armed mode (no detector arm, but symbol
         # previously fired MOVE_STRIKE today).
         has_real_arm = det.armed is not None
