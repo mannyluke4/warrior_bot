@@ -347,6 +347,16 @@ class SimTradeManager:
         self.move_partial_enabled = os.getenv("WB_BT_MOVE_PARTIAL_ENABLED", "0") == "1"
         self.move_partial_at_r = float(os.getenv("WB_BT_MOVE_PARTIAL_AT_R", "1.5"))
         self.move_partial_pct = float(os.getenv("WB_BT_MOVE_PARTIAL_PCT", "0.75"))
+        # Stay-armed cool-down variants (2026-05-22, X01 follow-up).
+        # CD2: anchor cool-down to entry time (so long trades have shorter
+        # post-exit cool-down). CD3: bypass cool-down to N minutes if the
+        # partial fired (strength-gated bypass — proves the symbol moved).
+        self.move_stay_armed_cooldown_from_entry = (
+            os.getenv("WB_BT_MOVE_STAY_ARMED_COOLDOWN_FROM_ENTRY", "0") == "1"
+        )
+        self.move_stay_armed_bypass_on_partial_min = float(
+            os.getenv("WB_BT_MOVE_STAY_ARMED_BYPASS_ON_PARTIAL_MIN", "0")
+        )
 
         # --- EPL graduation callback (set by caller) ---
         self._on_target_hit_cb = None
@@ -1759,7 +1769,25 @@ class SimTradeManager:
             return
         exit_min = self._time_to_minutes(time_str)
         exit_px = t.runner_exit_price or t.core_exit_price or t.entry
-        self._move_stay_armed_last_exit_min[t.symbol] = exit_min
+        # CD2: anchor cool-down to entry time (long trades shorten the
+        # post-exit cool-down). When this is on, set last_exit_min to
+        # the entry minute so the cool-down clock effectively measures
+        # from entry, not exit.
+        anchor_min = exit_min
+        if self.move_stay_armed_cooldown_from_entry and t.entry_time:
+            try:
+                anchor_min = self._time_to_minutes(t.entry_time)
+            except Exception:
+                pass
+        # CD3: strength-gated bypass — if the partial fired (i.e. the
+        # trade reached 1.5R), shorten the cool-down to the bypass window.
+        # Computed as `exit_min - (cooldown - bypass)` so only `bypass`
+        # minutes remain on the clock.
+        if (self.move_stay_armed_bypass_on_partial_min > 0
+                and getattr(t, "move_partial_fired", False)):
+            shortfall = self.move_stay_armed_cooldown_min - self.move_stay_armed_bypass_on_partial_min
+            anchor_min = exit_min - shortfall
+        self._move_stay_armed_last_exit_min[t.symbol] = anchor_min
         self._move_stay_armed_last_exit_price[t.symbol] = exit_px
 
     def register_reentry_after_close(self, t, bar_history, time_str: str) -> None:
