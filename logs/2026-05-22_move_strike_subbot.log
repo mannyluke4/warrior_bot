@@ -800,3 +800,4 @@
 [MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
 [MOVE_SUB] signal 15 received — stopping
 [MOVE_SUB] consume loop exited
+[MOVE_SUB] FATAL: Alpaca auth failed: ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'paper-api.alpaca.markets\', port=443): Max retries exceeded with url: /v2/account (Caused by NameResolutionError("HTTPSConnection(host=\'paper-api.alpaca.markets\', port=443): Failed to resolve \'paper-api.alpaca.markets\' ([Errno 8] nodename nor servname provided, or not known)"))'))
