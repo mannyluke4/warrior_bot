@@ -1390,3 +1390,5 @@
 [MOVE_SUB] SEED NGEN replayed 5 ticks from cache
 [MOVE_SUB] [19:31:48] new symbol NIO — detector + movement_strike instantiated
 [MOVE_SUB] SEED NIO replayed 6 ticks from cache
+[MOVE_SUB] socket closed by peer — reconnecting
+[MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
