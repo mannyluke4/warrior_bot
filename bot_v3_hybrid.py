@@ -31,6 +31,7 @@ import math
 import json
 import gzip
 import threading
+import queue
 import traceback
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from datetime import datetime, timedelta, timezone, time as time_cls
@@ -1570,8 +1571,69 @@ def cancel_all_tick_by_tick(reason: str = "shutdown") -> None:
         state.tier[sym] = "snapshot"
 
 
+# Resubscribe queue + worker (2026-05-22 watchdog freeze fix).
+# Three 120s+ main-thread freezes today were all preceded by TICK DROUGHT
+# resubscribes that did cancelMktData + state.ib.sleep(2) + reqMktData
+# inline. With multiple droughts in one audit cycle the cumulative sync
+# work blew past the 120s watchdog limit. Moving the work to a background
+# worker keeps the main thread responsive while preserving IBKR's required
+# inter-call timing.
+_resubscribe_queue: queue.Queue = queue.Queue()
+_resubscribe_worker_started: bool = False
+_resubscribe_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ibkr-resub")
+
+
+def _ibkr_call_with_timeout(fn, *args, timeout=20, **kwargs):
+    """Run an IBKR SDK call with a hard timeout via the resubscribe executor.
+    Mirrors _alpaca_call() pattern (line 506). Raises TimeoutError on hang."""
+    future = _resubscribe_executor.submit(fn, *args, **kwargs)
+    return future.result(timeout=timeout)
+
+
+def _resubscribe_worker():
+    """Background worker: drain _resubscribe_queue serially. Preserves the
+    2s gap between cancel and req that IBKR seems to require. Each IBKR
+    call is wall-clock-guarded so a hang on one symbol doesn't stall others."""
+    while True:
+        try:
+            symbol, contract = _resubscribe_queue.get()
+        except Exception:
+            continue
+        try:
+            try:
+                _ibkr_call_with_timeout(state.ib.cancelMktData, contract, timeout=20)
+            except FuturesTimeoutError:
+                print(f"  Resubscribe: cancelMktData({symbol}) timed out 20s — skipping",
+                      flush=True)
+                continue
+            time.sleep(2)  # IBKR-required gap between cancel + req
+            try:
+                ticker = _ibkr_call_with_timeout(
+                    state.ib.reqMktData, contract, '233', False, False, timeout=20
+                )
+                state.tickers[symbol] = ticker
+                print(f"  Resubscribed {symbol} (background)", flush=True)
+            except FuturesTimeoutError:
+                print(f"  Resubscribe: reqMktData({symbol}) timed out 20s — skipping",
+                      flush=True)
+        except Exception as e:
+            print(f"  Resubscription failed for {symbol}: {e}", flush=True)
+        finally:
+            try:
+                _resubscribe_queue.task_done()
+            except Exception:
+                pass
+
+
 def check_subscription_health():
-    """Check that all subscribed symbols are receiving ticks. Resubscribe if not."""
+    """Detect tick droughts and queue resubscribes for the background worker.
+    Non-blocking on the main thread (2026-05-22 fix per watchdog_freeze_directive)."""
+    global _resubscribe_worker_started
+    if not _resubscribe_worker_started:
+        threading.Thread(target=_resubscribe_worker, daemon=True,
+                         name="ibkr-resubscribe-worker").start()
+        _resubscribe_worker_started = True
+
     for symbol in list(state.active_symbols):
         count = state.tick_counts.get(symbol, 0)
         retries = state.sub_retry_counts.get(symbol, 0)
@@ -1581,14 +1643,9 @@ def check_subscription_health():
                 continue
             state.sub_retry_counts[symbol] = retries + 1
             print(f"⚠️ TICK DROUGHT: {symbol} — 0 ticks in last audit period. "
-                  f"Resubscribing (attempt {retries + 1}/3)...", flush=True)
-            try:
-                state.ib.cancelMktData(contract)
-                state.ib.sleep(2)
-                ticker = state.ib.reqMktData(contract, '233', False, False)
-                state.tickers[symbol] = ticker
-            except Exception as e:
-                print(f"  Resubscription failed for {symbol}: {e}", flush=True)
+                  f"Queued for resubscription (attempt {retries + 1}/3)...",
+                  flush=True)
+            _resubscribe_queue.put((symbol, contract))
         elif count == 0 and retries >= 3:
             print(f"🔴 CRITICAL: {symbol} — no ticks after 3 resubscription attempts", flush=True)
         else:
