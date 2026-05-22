@@ -2,9 +2,12 @@
 
 **Date**: 2026-05-21
 **Branch**: `v2-ibkr-migration`
+
+> **✅ UNBLOCKED (2026-05-22 PM)**: The chase-skip arm preservation fix (`cowork_reports/2026-05-22_chase_skip_arm_preservation_directive.md`) shipped in commit `1c3ce24`. Re-baseline showed the bug was sub-bot-only — sim was always correct — so the post-fix baseline is **+$2,489** (the same as the previously-shipped config with below-arm 3% filter; the $9 delta from the "+$2,489" reference comes from the below-arm filter, not the chase-skip fix). Full report at `cowork_reports/2026-05-22_post_fix_10d_baseline.md`. Success criteria below updated.
+
 **Reporting context**: Sub-bot (MOVE_STRIKE) paper session 2026-05-21. PCLA went **$2.95 → $6.45 (~119% / ~23R)** in 13 minutes (16:54–17:07 ET). Bot captured only **+$540 live / +$622 sim** out of a possible **$5,000+** because HWM 25% trail exited on the first intra-bar pullback.
 
-**Goal of this directive**: figure out how to make the sub-bot capture vertical PCLA-class moves *without* destroying its performance on the broader sample (10-day historical +$2,498 with the current HWM + same-bar + stay-armed + below-arm config).
+**Goal of this directive**: figure out how to make the sub-bot capture vertical PCLA-class moves *without* destroying its performance on the broader sample (10-day historical +$2,489 with the current HWM + same-bar + stay-armed + below-arm config — note this baseline is pre-chase-skip-fix, see block notice above).
 
 ---
 
@@ -14,7 +17,7 @@ These results are confirmed and shipped (commit `b034a10`). Read [[project_alpac
 
 | Config | 10-day total | PCLA 2026-05-21 |
 |---|---|---|
-| **HWM 25% + same-bar block + stay-armed + below-arm 3%** *(current)* | **+$2,498** | +$622 |
+| **HWM 25% + same-bar block + stay-armed + below-arm 3%** *(current)* | **+$2,489** | +$622 |
 | Legacy (no fixes) | +$1,759 | −$122 |
 
 ### What I tested today and ruled out
@@ -27,7 +30,7 @@ These results are confirmed and shipped (commit `b034a10`). Read [[project_alpac
 
 4. **Volume / VWAP / MACD-bullish suppressors** (`WB_BT_MOVE_HWM_VOL_SUPPRESS`, `_VWAP_SUPPRESS`, `_MACD_SUPPRESS`): all tested today, all proved net-flat or net-negative on the 10d sample. The MACD/signal cross had already turned bearish at the trail-fire moment (mathematically correct — momentum had turned). VWAP suppressor held losses too long. Vol suppressor (even with in-progress bar tracking) didn't change the exit price.
 
-5. **Full X01 exits** (`WB_BT_MOVE_HWM_EXIT=0`, letting the squeeze framework's `sq_target_hit` + runner trail take over): captured PCLA +$1,819 today (vs HWM's $622) BUT lost on the 10d sample (−$577 vs HWM +$2,498). The bail_timer (5-min unprofitable exit) over-traded on chop days (5/18 had 11 trades vs 2 with HWM, mostly losers).
+5. **Full X01 exits** (`WB_BT_MOVE_HWM_EXIT=0`, letting the squeeze framework's `sq_target_hit` + runner trail take over): captured PCLA +$1,819 today (vs HWM's $622) BUT lost on the 10d sample (−$577 vs HWM +$2,489). The bail_timer (5-min unprofitable exit) over-traded on chop days (5/18 had 11 trades vs 2 with HWM, mostly losers).
 
 ### Discriminator analysis (at-entry-time signals)
 
@@ -52,9 +55,9 @@ The full X01 exit framework captured PCLA +$1,819 cleanly but lost $3,075 vs HWM
    - All other current fixes (same-bar block, stay-armed, below-arm)
 2. Then with `WB_BAIL_TIMER_MINUTES=15` (still on but more permissive)
 3. Then with `WB_BAIL_TIMER_MINUTES=10`
-4. Compare to baseline HWM +$2,498 and full-X01 −$577
+4. Compare to baseline HWM +$2,489 and full-X01 −$577
 
-**Success criteria**: any config that beats +$2,498 on 10d AND captures >+$1,500 on PCLA 2026-05-21. If found, ship it.
+**Success criteria**: any config that beats +$2,489 on 10d AND captures >+$1,500 on PCLA 2026-05-21. If found, ship it.
 
 ### Direction B: Scale-out partial at 1.5R + HWM runner
 
