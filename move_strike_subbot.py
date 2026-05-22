@@ -640,13 +640,15 @@ class MoveStrikeSubBot:
                 gap_above_arm = (price - arm_price) / arm_price * 100.0
                 if gap_above_arm > self.move_chase_cap_pct:
                     print(
-                        f"{LOG_TAG} [{now_iso_et()}] {symbol} CHASE-SKIP "
+                        f"{LOG_TAG} [{now_iso_et()}] {symbol} CHASE-SKIP (arm preserved) "
                         f"trigger={price:.3f} arm={arm_price:.3f} "
                         f"gap={gap_above_arm:.2f}%",
                         flush=True,
                     )
-                    det.armed = None
-                    self.prev_arm_state[symbol] = None
+                    # Arm survives — wait for price to come back in range
+                    # (matches sim's behavior at simulate.py:3745-3771).
+                    # 2026-05-22 fix per chase_skip_arm_preservation_directive
+                    # — MTVA 6-hour silence root cause.
                     return
                 # Below-arm filter (PIII 2026-05-21 saved $670 on
                 # backtest reconstruction).
@@ -654,13 +656,12 @@ class MoveStrikeSubBot:
                     below_arm_pct = (arm_price - price) / arm_price * 100.0
                     if below_arm_pct > self.move_max_below_arm_pct:
                         print(
-                            f"{LOG_TAG} [{now_iso_et()}] {symbol} BELOW-ARM-SKIP "
+                            f"{LOG_TAG} [{now_iso_et()}] {symbol} BELOW-ARM-SKIP (arm preserved) "
                             f"trigger={price:.3f} arm={arm_price:.3f} "
                             f"below={below_arm_pct:.2f}% (cap={self.move_max_below_arm_pct}%)",
                             flush=True,
                         )
-                        det.armed = None
-                        self.prev_arm_state[symbol] = None
+                        # Arm survives — same fix as chase-skip path.
                         return
         # Stay-armed gates: cool-down + continuation %
         if stay_armed_active:
