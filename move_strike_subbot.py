@@ -217,6 +217,12 @@ class MoveStrikeSubBot:
         # Alpaca-aware limit pricing (2026-05-22). Mirrors main bot's
         # compute_alpaca_aware_limit() helper. Gated by WB_ALPACA_AWARE_LIMITS.
         self.alpaca_aware_limits = os.getenv("WB_ALPACA_AWARE_LIMITS", "0") == "1"
+        # engine_seq gap audit (2026-05-22 per engine_seq_audit_directive).
+        # Per-symbol last-seen engine_seq → detect dropped ticks from the
+        # publisher's overflow path. Cumulative drops surfaced in STATS.
+        self.seq_audit_enabled = os.getenv("WB_SUBBOT_SEQ_AUDIT", "1") == "1"
+        self._last_engine_seq: dict[str, int] = {}
+        self._dropped_tick_count: int = 0
 
     def _wait_for_fill(self, order_id: str, timeout: int = 15):
         """Poll Alpaca for the order's fill. Returns (filled_avg_price, filled_qty)
@@ -873,7 +879,7 @@ class MoveStrikeSubBot:
                 print(
                     f"{LOG_TAG} [{now_iso_et()}] STATS ticks={self.ticks_received} "
                     f"symbols={len(self.symbols_seen)} pos={'YES' if self.position else 'no'} "
-                    f"daily_pnl={self.daily_pnl:+,.0f}",
+                    f"daily_pnl={self.daily_pnl:+,.0f} drops={self._dropped_tick_count}",
                     flush=True,
                 )
                 last_stats = time.time()
@@ -885,6 +891,11 @@ class MoveStrikeSubBot:
             try:
                 s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 s.connect(SOCKET_PATH)
+                # On (re)connect, the publisher may have restarted with
+                # a fresh seq counter. Clear last-seen state so we don't
+                # log a spurious gap on the first tick of the new stream.
+                if self.seq_audit_enabled:
+                    self._last_engine_seq.clear()
                 print(
                     f"{LOG_TAG} [{now_iso_et()}] connected to engine "
                     f"({SOCKET_PATH}) attempt={attempt}",
@@ -907,6 +918,23 @@ class MoveStrikeSubBot:
             print(f"{LOG_TAG} engine hello: {msg}", flush=True)
             return
         if isinstance(msg, TickMessage):
+            # engine_seq gap detection (2026-05-22). Publisher drops the
+            # oldest tick when its 10K queue overflows. With this check
+            # we can see drops in the log immediately and reason about
+            # whether silent arm-state divergences correlate with drops.
+            if self.seq_audit_enabled and hasattr(msg, "engine_seq"):
+                seq = getattr(msg, "engine_seq", None)
+                if seq is not None:
+                    last = self._last_engine_seq.get(msg.symbol)
+                    if last is not None and seq > last + 1:
+                        gap = seq - last - 1
+                        self._dropped_tick_count += gap
+                        print(
+                            f"{LOG_TAG} [{now_iso_et()}] ENGINE_SEQ_GAP {msg.symbol} "
+                            f"expected={last + 1} got={seq} dropped={gap}",
+                            flush=True,
+                        )
+                    self._last_engine_seq[msg.symbol] = seq
             self.on_tick(msg.symbol, msg.price, msg.ts, msg.size)
 
 

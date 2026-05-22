@@ -216,7 +216,22 @@ class EnginePublisher:
             )
 
     def _broadcast_loop(self) -> None:
+        import time as _time
+        last_stats_log = _time.time()
         while not self._stop_event.is_set():
+            # Periodic publisher STATS — exposes drop count for the
+            # engine_seq audit (2026-05-22). Default ON via env.
+            if _time.time() - last_stats_log > 60:
+                if os.getenv("WB_SUBBOT_SEQ_AUDIT", "1") == "1":
+                    with self._stats_lock:
+                        pub = self._stats_published
+                        drp = self._stats_dropped
+                    print(
+                        f"[ENGINE_PUB] STATS published={pub:,} dropped={drp:,} "
+                        f"clients={len(self._clients)}",
+                        flush=True,
+                    )
+                last_stats_log = _time.time()
             try:
                 data = self._queue.get(timeout=1.0)
             except queue.Empty:
