@@ -117,6 +117,93 @@ class SimTrade:
         return self.pnl() / (self.r * self.qty_total)
 
 
+class SimRegimeShiftDetector:
+    """Second-order body-anomaly detector for vertical-class moves.
+
+    Per cowork_reports/2026-05-22_regime_shift_strategy_directive.md.
+    On each 1-min bar close, computes body / median(last_N closed bar bodies).
+    Fires when ratio exceeds threshold AND bar is green (close > open).
+    Guards: baseline_min, body_min, time-of-day, green-bar requirement.
+
+    Companion to MovementStrike (first-order anomalies) — uses the same
+    family of math but at a higher threshold to catch regime shifts
+    like PCLA 2026-05-21 17:05 (body $1.44 = 9× baseline).
+    """
+
+    def __init__(
+        self,
+        ratio_threshold: float = 3.0,
+        baseline_bars: int = 5,
+        baseline_min: float = 0.02,
+        body_min: float = 0.05,
+        require_green: bool = True,
+    ) -> None:
+        from collections import deque
+        self.ratio_threshold = ratio_threshold
+        self.baseline_bars = baseline_bars
+        self.baseline_min = baseline_min
+        self.body_min = body_min
+        self.require_green = require_green
+        # Rolling window of (signed) bar bodies (positive = green, neg = red)
+        # for baseline computation. We use absolute body for the baseline
+        # so a series of red bars still provides a meaningful "typical movement"
+        # baseline.
+        self._bar_bodies: deque = deque(maxlen=baseline_bars)
+
+    def check_on_bar_close(self, bar) -> dict:
+        """Returns a dict describing the trigger state. Always updates the
+        rolling baseline regardless of whether the trigger fires.
+
+        Returns:
+            {
+                "fired": bool,
+                "body": float,
+                "baseline": float,
+                "ratio": float,
+                "reason": str | None  (when fired=False, why)
+            }
+        """
+        try:
+            # Per directive: body = bar.high - bar.low (range, not c-o)
+            # Tracks total bar movement, agnostic to red/green direction.
+            body = float(bar.high) - float(bar.low)
+            close_open_signed = float(bar.close) - float(bar.open)
+        except Exception:
+            return {"fired": False, "body": 0.0, "baseline": 0.0,
+                    "ratio": 0.0, "reason": "bar_parse_error"}
+        abs_body = abs(body)
+        # Compute baseline BEFORE appending this bar's body — the bar
+        # being evaluated should NOT be in its own baseline.
+        if len(self._bar_bodies) < max(2, self.baseline_bars // 2):
+            self._bar_bodies.append(abs_body)
+            return {"fired": False, "body": body, "baseline": 0.0,
+                    "ratio": 0.0, "reason": "baseline_warmup"}
+        bodies_sorted = sorted(self._bar_bodies)
+        n = len(bodies_sorted)
+        baseline = bodies_sorted[n // 2] if n % 2 == 1 else (
+            (bodies_sorted[n // 2 - 1] + bodies_sorted[n // 2]) / 2.0
+        )
+        # Update rolling window AFTER baseline calculation
+        self._bar_bodies.append(abs_body)
+
+        if baseline < self.baseline_min:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": 0.0, "reason": "baseline_below_min"}
+        if abs_body < self.body_min:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": 0.0, "reason": "body_below_min"}
+        ratio = abs_body / baseline
+        if ratio < self.ratio_threshold:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": ratio, "reason": "ratio_below_threshold"}
+        # Green-bar gate uses CLOSE-OPEN direction (range is always +).
+        if self.require_green and close_open_signed <= 0:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": ratio, "reason": "not_green_bar"}
+        return {"fired": True, "body": body, "baseline": baseline,
+                "ratio": ratio, "reason": None}
+
+
 class SimTradeManager:
     """Lightweight trade manager that mirrors the live exit logic without Alpaca API."""
 
@@ -357,6 +444,39 @@ class SimTradeManager:
         self.move_stay_armed_bypass_on_partial_min = float(
             os.getenv("WB_BT_MOVE_STAY_ARMED_BYPASS_ON_PARTIAL_MIN", "0")
         )
+        # REGIME-SHIFT strategy (2026-05-22) — second strategy alongside
+        # MOVE_STRIKE for vertical-class explosions. Body anomaly bar-close
+        # detection + X01-style target_hit + runner. Per
+        # cowork_reports/2026-05-22_regime_shift_strategy_directive.md.
+        self.regime_shift_enabled = os.getenv("WB_REGIME_SHIFT_ENABLED", "0") == "1"
+        self.regime_shift_ratio_threshold = float(
+            os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "3.0")
+        )
+        self.regime_shift_baseline_bars = int(
+            os.getenv("WB_REGIME_SHIFT_BASELINE_BARS", "5")
+        )
+        self.regime_shift_target_r = float(os.getenv("WB_REGIME_SHIFT_TARGET_R", "1.5"))
+        self.regime_shift_partial_pct = float(
+            os.getenv("WB_REGIME_SHIFT_PARTIAL_PCT", "0.9")
+        )
+        self.regime_shift_require_armed = (
+            os.getenv("WB_REGIME_SHIFT_REQUIRE_ARMED", "1") == "1"
+        )
+        self.regime_shift_require_green_bar = (
+            os.getenv("WB_REGIME_SHIFT_REQUIRE_GREEN_BAR", "1") == "1"
+        )
+        self.regime_shift_runner_stop_to_be = (
+            os.getenv("WB_REGIME_SHIFT_RUNNER_STOP_TO_BE", "1") == "1"
+        )
+        # Max regime-shift entries per symbol per day (default 1 — pick the
+        # first qualifying anomaly to avoid chasing each subsequent fire).
+        self.regime_shift_max_per_symbol = int(
+            os.getenv("WB_REGIME_SHIFT_MAX_PER_SYMBOL", "1")
+        )
+        # Track which symbols have ever ARMED today (for require_armed gate)
+        self._regime_shift_armed_today: set = set()
+        # Per-symbol regime-shift entry counter (enforces max_per_symbol cap)
+        self._regime_shift_entries_per_symbol: dict[str, int] = {}
 
         # --- EPL graduation callback (set by caller) ---
         self._on_target_hit_cb = None
@@ -681,12 +801,19 @@ class SimTradeManager:
             elif t.setup_type == "vwap_reclaim":
                 self._vr_bars_no_new_high = 0
 
-        # --- MOVE_STRIKE HWM exit (2026-05-20). Routed BEFORE bail_timer
-        # and standard squeeze exits — those kill MOVE_STRIKE winners
-        # before the move completes. Only hard-stop + HWM trail apply.
+        # --- MOVE_STRIKE / REGIME_SHIFT HWM exit (2026-05-20, 2026-05-22).
+        # Routed BEFORE bail_timer and standard squeeze exits — those
+        # kill MOVE_STRIKE winners before the move completes. REGIME_SHIFT
+        # trades also need the partial + HWM-runner machinery, not the
+        # default squeeze exits.
+        _is_hwm_owned = (
+            "[MOVE_STRIKE]" in (t.score_detail or "")
+            or "[REGIME_SHIFT]" in (t.score_detail or "")
+            or t.setup_type == "regime_shift"
+        )
         if (self.move_hwm_exit_enabled
-                and t.setup_type == "squeeze"
-                and "[MOVE_STRIKE]" in (t.score_detail or "")):
+                and (t.setup_type == "squeeze" or t.setup_type == "regime_shift")
+                and _is_hwm_owned):
             self._hwm_exit(t, price, time_str)
             return
 
@@ -911,20 +1038,37 @@ class SimTradeManager:
         >= partial_at_r × R fire a scale-out — close qty_core at current
         price (the "certain N-R win"), runner continues with HWM trail.
         """
-        # 0) Partial-exit fire (X01 Direction B) — pre-empts everything else.
+        # 0) Partial-exit fire — pre-empts everything else.
         # Fires once when peak crosses the threshold. Subsequent exits
         # (hard stop, trail, prox bail) operate on the runner only.
-        if (self.move_partial_enabled and not t.move_partial_fired
+        # For MOVE_STRIKE: gated by move_partial_enabled.
+        # For REGIME_SHIFT: always-on (it's the strategy's exit framework).
+        _is_regime_shift = "[REGIME_SHIFT]" in (t.score_detail or "")
+        _partial_active = (
+            (_is_regime_shift) or (self.move_partial_enabled)
+        )
+        if (_partial_active and not t.move_partial_fired
                 and t.r > 0 and t.qty_runner > 0):
-            partial_threshold = t.entry + self.move_partial_at_r * t.r
+            # Regime-shift uses its own target_r; MOVE_STRIKE uses move_partial_at_r.
+            _partial_at_r = (
+                self.regime_shift_target_r if _is_regime_shift
+                else self.move_partial_at_r
+            )
+            partial_threshold = t.entry + _partial_at_r * t.r
             if price >= partial_threshold:
                 t.core_exit_price = price
                 t.core_exit_time = time_str
+                _tag = "regime_partial" if _is_regime_shift else "move_partial"
                 t.core_exit_reason = (
-                    f"move_partial({self.move_partial_at_r:.1f}R,"
-                    f"qty={t.qty_core})"
+                    f"{_tag}({_partial_at_r:.1f}R,qty={t.qty_core})"
                 )
                 t.move_partial_fired = True
+                # Regime-shift: tighten stop to break-even on partial fire
+                # so the runner has free option (open question #3 in
+                # regime_shift directive — default ON).
+                if _is_regime_shift and self.regime_shift_runner_stop_to_be:
+                    if t.stop < t.entry:
+                        t.stop = t.entry  # runner can't lose now
                 # Don't close — runner continues. Fall through so
                 # current tick can also evaluate hard stop / trail on
                 # the runner (rare but possible if the same tick is
@@ -1033,6 +1177,16 @@ class SimTradeManager:
             effective_dd = self.move_hwm_wide_dd_pct
         else:
             effective_dd = self.move_hwm_drawdown_pct
+        # REGIME-SHIFT pre-partial trail suppression: don't let HWM trail
+        # fire until partial has hit (= trade has reached 1.5R target).
+        # Otherwise a small first-bar pullback exits the trade before the
+        # vertical move develops. Per the regime-shift directive's design
+        # ("min_gain_pct set such that the trail can't fire until the
+        # move has extended"), applied as a structural skip rather than
+        # a tuning value.
+        _is_regime_shift_local = "[REGIME_SHIFT]" in (t.score_detail or "")
+        if _is_regime_shift_local and not t.move_partial_fired:
+            return  # only hard stop is active for regime-shift pre-partial
         # Dynamic trail widening: once peak crosses wide_at_r threshold,
         # switch from HWM %-trail to fixed R-distance trail. State is
         # implicit in t.peak — once peak goes high enough, stays in wide
@@ -1280,11 +1434,12 @@ class SimTradeManager:
             t.prev_bar_low = l
             return
 
-        # MOVE_STRIKE HWM exit owns all exit decisions for these positions —
-        # skip the bar-close exit logic (sq_time_exit, sq_vwap_exit, etc.)
-        # which were closing winners prematurely (2026-05-20).
+        # MOVE_STRIKE / REGIME_SHIFT HWM exit owns all exit decisions for
+        # these positions — skip the bar-close exit logic (sq_time_exit,
+        # sq_vwap_exit, etc.) which were closing winners prematurely.
         if (self.move_hwm_exit_enabled
-                and "[MOVE_STRIKE]" in (t.score_detail or "")):
+                and ("[MOVE_STRIKE]" in (t.score_detail or "")
+                     or "[REGIME_SHIFT]" in (t.score_detail or ""))):
             self._sq_last_vwap = vwap  # still cache vwap for other code paths
             # Track bar volume for the vol-suppressor on HWM trail.
             self._sq_recent_bar_volumes.append(int(v))
@@ -2595,6 +2750,18 @@ def run_simulation(
     else:
         _move_strike = None
 
+    # REGIME-SHIFT detector (2026-05-22) — second strategy for vertical moves.
+    # Instantiated per symbol so each builds its own baseline rolling window.
+    # Read env vars directly here since sim_mgr isn't constructed yet.
+    if os.getenv("WB_REGIME_SHIFT_ENABLED", "0") == "1":
+        _regime_shift = SimRegimeShiftDetector(
+            ratio_threshold=float(os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "3.0")),
+            baseline_bars=int(os.getenv("WB_REGIME_SHIFT_BASELINE_BARS", "5")),
+            require_green=os.getenv("WB_REGIME_SHIFT_REQUIRE_GREEN_BAR", "1") == "1",
+        )
+    else:
+        _regime_shift = None
+
     # VWAP Reclaim detector (Strategy 4)
     from vwap_reclaim_detector import VwapReclaimDetector
     vr_det = VwapReclaimDetector()
@@ -2998,6 +3165,14 @@ def run_simulation(
                 )
 
             def _should_suppress_pattern_exit() -> tuple[bool, str]:
+                # REGIME_SHIFT (2026-05-22): HWM-owned positions don't use
+                # bar pattern exits. The strategy's own partial + runner +
+                # hard stop framework handles the exit.
+                _open = sim_mgr.open_trade
+                if (_open is not None and
+                        ("[REGIME_SHIFT]" in (_open.score_detail or "")
+                         or "[MOVE_STRIKE]" in (_open.score_detail or ""))):
+                    return True, "hwm_owned_strategy"
                 # Continuation hold runs BEFORE signal mode check — it applies to
                 # all exit modes because its purpose is suppressing premature TW/BE
                 # exits on high-conviction setups regardless of mode
@@ -3148,6 +3323,77 @@ def run_simulation(
                     print(f"  [{time_str}] {sq_msg}", flush=True)
                 if sq_msg and "ARMED" in sq_msg:
                     tick_sim_state["armed_count"] += 1
+                    # Track for regime-shift require_armed gate
+                    if sim_mgr.regime_shift_enabled:
+                        sim_mgr._regime_shift_armed_today.add(symbol)
+
+            # --- REGIME-SHIFT detection (2026-05-22) ---
+            # Second-order body anomaly on bar close. Fires its own trade
+            # with X01-style target_hit + runner. Skips if MOVE_STRIKE
+            # position is open (MOVE_STRIKE owns symbol in-trade per v1
+            # coexistence rule). Skips if any open trade exists.
+            if (_regime_shift is not None
+                    and sim_mgr.open_trade is None):
+                rs_result = _regime_shift.check_on_bar_close(bar)
+                if rs_result["fired"]:
+                    rs_allowed = True
+                    if (sim_mgr.regime_shift_require_armed
+                            and symbol not in sim_mgr._regime_shift_armed_today):
+                        rs_allowed = False
+                    # Per-symbol max-entries cap
+                    _rs_count = sim_mgr._regime_shift_entries_per_symbol.get(symbol, 0)
+                    if _rs_count >= sim_mgr.regime_shift_max_per_symbol:
+                        rs_allowed = False
+                    if rs_allowed:
+                        # Entry: bar close. Stop: bar low. R: entry - stop.
+                        rs_entry = float(bar.close)
+                        rs_stop = float(bar.low)
+                        rs_r = rs_entry - rs_stop
+                        # Min-R sanity check (uses existing MIN_R floor)
+                        _rs_min_r = max(
+                            sim_mgr.min_r,
+                            sim_mgr.min_absolute_r,
+                        )
+                        if rs_r >= _rs_min_r:
+                            rs_trade = sim_mgr.on_signal(
+                                symbol=symbol,
+                                entry=rs_entry,
+                                stop=rs_stop,
+                                r=rs_r,
+                                score=11.0,
+                                detail="[REGIME_SHIFT]",
+                                time_str=time_str,
+                                setup_type="regime_shift",
+                                size_mult=float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5")),
+                                trigger_price=rs_entry,
+                            )
+                            if rs_trade:
+                                # Increment per-symbol counter
+                                sim_mgr._regime_shift_entries_per_symbol[symbol] = (
+                                    sim_mgr._regime_shift_entries_per_symbol.get(symbol, 0) + 1
+                                )
+                                # Override qty split to use regime-shift partial pct
+                                _rs_partial_qty = max(1, int(round(
+                                    rs_trade.qty_total * sim_mgr.regime_shift_partial_pct
+                                )))
+                                if rs_trade.qty_total > 1:
+                                    _rs_partial_qty = min(
+                                        _rs_partial_qty, rs_trade.qty_total - 1
+                                    )
+                                rs_trade.qty_core = _rs_partial_qty
+                                rs_trade.qty_runner = rs_trade.qty_total - _rs_partial_qty
+                                if verbose:
+                                    print(
+                                        f"  [{time_str}] REGIME_SHIFT entry "
+                                        f"sym={symbol} entry={rs_entry:.4f} "
+                                        f"stop={rs_stop:.4f} R={rs_r:.4f} "
+                                        f"qty={rs_trade.qty_total} "
+                                        f"(core={rs_trade.qty_core}, runner={rs_trade.qty_runner}) "
+                                        f"body={rs_result['body']:+.4f} "
+                                        f"baseline={rs_result['baseline']:.4f} "
+                                        f"ratio={rs_result['ratio']:.2f}",
+                                        flush=True,
+                                    )
 
             # --- Continuation detection (only if not in a trade AND SQ is fully idle) ---
             ct_msg = None
