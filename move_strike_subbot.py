@@ -96,6 +96,69 @@ def now_minute_et() -> int:
 
 
 # ══════════════════════════════════════════════════════════════════════
+# REGIME-SHIFT detector (Stage 2 — 2026-05-23)
+# ══════════════════════════════════════════════════════════════════════
+class RegimeShiftDetector:
+    """Per-symbol bar-close anomaly detector. Mirror of
+    simulate.SimRegimeShiftDetector — keep parity with that class.
+
+    Per cowork_reports/2026-05-22_regime_shift_stage2_directive.md.
+    On each 1-min bar close, computes body / median(last_N closed bar
+    bodies). Fires when ratio exceeds threshold AND bar is green
+    (close > open). body = bar.high - bar.low (range)."""
+
+    def __init__(
+        self,
+        ratio_threshold: float = 4.0,
+        baseline_bars: int = 5,
+        baseline_min: float = 0.02,
+        body_min: float = 0.05,
+        require_green: bool = True,
+    ) -> None:
+        from collections import deque
+        self.ratio_threshold = ratio_threshold
+        self.baseline_bars = baseline_bars
+        self.baseline_min = baseline_min
+        self.body_min = body_min
+        self.require_green = require_green
+        self._bar_bodies: deque = deque(maxlen=baseline_bars)
+
+    def check_on_bar_close(self, bar) -> dict:
+        try:
+            body = float(bar.high) - float(bar.low)
+            close_open_signed = float(bar.close) - float(bar.open)
+        except Exception:
+            return {"fired": False, "body": 0.0, "baseline": 0.0,
+                    "ratio": 0.0, "reason": "bar_parse_error"}
+        abs_body = abs(body)
+        if len(self._bar_bodies) < max(2, self.baseline_bars // 2):
+            self._bar_bodies.append(abs_body)
+            return {"fired": False, "body": body, "baseline": 0.0,
+                    "ratio": 0.0, "reason": "baseline_warmup"}
+        bodies_sorted = sorted(self._bar_bodies)
+        n = len(bodies_sorted)
+        baseline = bodies_sorted[n // 2] if n % 2 == 1 else (
+            (bodies_sorted[n // 2 - 1] + bodies_sorted[n // 2]) / 2.0
+        )
+        self._bar_bodies.append(abs_body)
+        if baseline < self.baseline_min:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": 0.0, "reason": "baseline_below_min"}
+        if abs_body < self.body_min:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": 0.0, "reason": "body_below_min"}
+        ratio = abs_body / baseline
+        if ratio < self.ratio_threshold:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": ratio, "reason": "ratio_below_threshold"}
+        if self.require_green and close_open_signed <= 0:
+            return {"fired": False, "body": body, "baseline": baseline,
+                    "ratio": ratio, "reason": "not_green_bar"}
+        return {"fired": True, "body": body, "baseline": baseline,
+                "ratio": ratio, "reason": None}
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Position state
 # ══════════════════════════════════════════════════════════════════════
 class SubPosition:
@@ -107,11 +170,13 @@ class SubPosition:
         "entry_time_min", "hh_count", "prev_bar_high",
         "order_id_buy", "order_id_sell", "is_reentry", "reentry_tag",
         "fill_entry_price", "fill_entry_qty",
+        "setup_type", "move_partial_fired", "partial_pnl",
     )
 
     def __init__(self, symbol: str, entry: float, stop: float, r: float,
                  qty: int, score: float, time_et: str,
-                 is_reentry: bool = False, reentry_tag: str = ""):
+                 is_reentry: bool = False, reentry_tag: str = "",
+                 setup_type: str = "move_strike"):
         self.symbol = symbol
         self.entry = entry
         self.stop = stop
@@ -133,6 +198,12 @@ class SubPosition:
         # Actual fills (populated by _wait_for_fill after order submit).
         self.fill_entry_price: Optional[float] = None
         self.fill_entry_qty: Optional[int] = None
+        # Stage 2 regime-shift fields (2026-05-23). setup_type routes
+        # the exit handler; move_partial_fired tracks the 1.5R partial
+        # mechanism for regime-shift trades.
+        self.setup_type = setup_type
+        self.move_partial_fired = False
+        self.partial_pnl = 0.0
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -223,6 +294,68 @@ class MoveStrikeSubBot:
         self.seq_audit_enabled = os.getenv("WB_SUBBOT_SEQ_AUDIT", "1") == "1"
         self._last_engine_seq: dict[str, int] = {}
         self._dropped_tick_count: int = 0
+
+        # --- REGIME-SHIFT Stage 2 (2026-05-23) ---
+        # Mirror of simulate.py's regime-shift config. Per
+        # cowork_reports/2026-05-22_regime_shift_stage2_directive.md.
+        self.regime_shift_enabled = (
+            os.getenv("WB_REGIME_SHIFT_ENABLED", "0") == "1"
+        )
+        self.regime_shift_ratio_threshold = float(
+            os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "4.0")
+        )
+        self.regime_shift_baseline_bars = int(
+            os.getenv("WB_REGIME_SHIFT_BASELINE_BARS", "5")
+        )
+        self.regime_shift_target_r = float(
+            os.getenv("WB_REGIME_SHIFT_TARGET_R", "1.5")
+        )
+        self.regime_shift_partial_pct = float(
+            os.getenv("WB_REGIME_SHIFT_PARTIAL_PCT", "0.9")
+        )
+        self.regime_shift_require_armed = (
+            os.getenv("WB_REGIME_SHIFT_REQUIRE_ARMED", "1") == "1"
+        )
+        self.regime_shift_require_green_bar = (
+            os.getenv("WB_REGIME_SHIFT_REQUIRE_GREEN_BAR", "1") == "1"
+        )
+        self.regime_shift_runner_stop_to_be = (
+            os.getenv("WB_REGIME_SHIFT_RUNNER_STOP_TO_BE", "1") == "1"
+        )
+        self.regime_shift_max_per_symbol = int(
+            os.getenv("WB_REGIME_SHIFT_MAX_PER_SYMBOL", "1")
+        )
+        # Per-symbol detector + state
+        self.regime_shift_detectors: dict[str, RegimeShiftDetector] = {}
+        # Symbols that have ARMED (via squeeze detector) earlier today
+        self._regime_shift_armed_today: set = set()
+        # Per-symbol entry counter
+        self._regime_shift_entries_per_symbol: dict[str, int] = {}
+
+        # --- MOVE_STRIKE Fade-Environment Gate (2026-05-23) ---
+        # Mirror of simulate.py's fade-gate logic. Each enabled signal
+        # blocks new MOVE_STRIKE entries on that symbol for the rest of
+        # the session once triggered. Regime-shift entries are NOT gated.
+        # Per cowork_reports/2026-05-23_movestrike_fade_gate_directive.md.
+        self.move_fade_vwap_enabled = (
+            os.getenv("WB_MOVE_FADE_VWAP_ENABLED", "0") == "1"
+        )
+        self.move_fade_open_drawdown_pct = float(
+            os.getenv("WB_MOVE_FADE_OPEN_DRAWDOWN_PCT", "0")
+        )
+        self.move_fade_downtrend_bars = int(
+            os.getenv("WB_MOVE_FADE_DOWNTREND_BARS", "0")
+        )
+        self.move_fade_body_cv_threshold = float(
+            os.getenv("WB_MOVE_FADE_BODY_CV_THRESHOLD", "0")
+        )
+        self.move_fade_combine_mode = (
+            os.getenv("WB_MOVE_FADE_COMBINE_MODE", "any").lower()
+        )
+        from collections import deque as _deque_fade
+        self._move_fade_session_open: dict[str, float] = {}
+        self._move_fade_recent_bars: dict[str, _deque_fade] = {}
+        self._move_fade_blocked_symbols: set = set()
 
     def _wait_for_fill(self, order_id: str, timeout: int = 15):
         """Poll Alpaca for the order's fill. Returns (filled_avg_price, filled_qty)
@@ -344,6 +477,14 @@ class MoveStrikeSubBot:
             multiplier=self.move_mult,
             stop_lookback_bars=self.move_stop_lookback,
         )
+        # Regime-shift detector (Stage 2 — 2026-05-23). Independent of
+        # MovementStrike; consumes 1m bar closes via on_bar_close_1m.
+        if self.regime_shift_enabled:
+            self.regime_shift_detectors[symbol] = RegimeShiftDetector(
+                ratio_threshold=self.regime_shift_ratio_threshold,
+                baseline_bars=self.regime_shift_baseline_bars,
+                require_green=self.regime_shift_require_green_bar,
+            )
         self.prev_arm_state[symbol] = None
         self.symbols_seen.add(symbol)
         print(
@@ -420,6 +561,76 @@ class MoveStrikeSubBot:
             print(f"{LOG_TAG} SEED {symbol} failed: {e!r}", flush=True)
 
     # ──────────────────────────────────────────────────────────────────
+    # Fade-environment gate (Stage parallel — 2026-05-23)
+    # Mirror of simulate.py logic. Maintains per-symbol session_open and
+    # last-10 (open, close) bars; helper returns block/reason.
+    # ──────────────────────────────────────────────────────────────────
+    def update_fade_environment_state(self, symbol: str, bar) -> None:
+        if symbol not in self._move_fade_session_open:
+            self._move_fade_session_open[symbol] = float(bar.open)
+        from collections import deque as _deque
+        dq = self._move_fade_recent_bars.get(symbol)
+        if dq is None:
+            dq = _deque(maxlen=10)
+            self._move_fade_recent_bars[symbol] = dq
+        dq.append((float(bar.open), float(bar.close)))
+
+    def is_in_fade_environment(self, symbol: str, price: float,
+                                vwap: Optional[float]):
+        """Returns (blocked, reason). Sticky once triggered."""
+        if symbol in self._move_fade_blocked_symbols:
+            return (True, "session-blocked")
+        vwap_on = self.move_fade_vwap_enabled
+        dd_on = self.move_fade_open_drawdown_pct > 0
+        dt_on = self.move_fade_downtrend_bars > 0
+        cv_on = self.move_fade_body_cv_threshold > 0
+        enabled_count = int(vwap_on) + int(dd_on) + int(dt_on) + int(cv_on)
+        if enabled_count == 0:
+            return (False, "")
+        signals = []
+        if vwap_on and vwap is not None and vwap > 0:
+            if price < vwap:
+                signals.append("vwap")
+        if dd_on:
+            open_px = self._move_fade_session_open.get(symbol, 0.0)
+            if open_px > 0:
+                dd_pct = (open_px - price) / open_px * 100.0
+                if dd_pct >= self.move_fade_open_drawdown_pct:
+                    signals.append("drawdown")
+        if dt_on:
+            bars = self._move_fade_recent_bars.get(symbol)
+            n = self.move_fade_downtrend_bars
+            if bars is not None and len(bars) >= n:
+                last_n = list(bars)[-n:]
+                all_red = all(c < o for (o, c) in last_n)
+                closes = [c for (_o, c) in last_n]
+                desc = all(closes[i] < closes[i - 1] for i in range(1, n))
+                if all_red and desc:
+                    signals.append("downtrend")
+        if cv_on:
+            bars = self._move_fade_recent_bars.get(symbol)
+            if bars is not None and len(bars) >= 10:
+                bodies = [abs(c - o) for (o, c) in bars]
+                try:
+                    import statistics as _stats
+                    m = _stats.mean(bodies)
+                    if m > 0:
+                        s = _stats.stdev(bodies)
+                        if s / m > self.move_fade_body_cv_threshold:
+                            signals.append("cv")
+                except Exception:
+                    pass
+        if not signals:
+            return (False, "")
+        if self.move_fade_combine_mode == "all":
+            if len(signals) == enabled_count:
+                self._move_fade_blocked_symbols.add(symbol)
+                return (True, "+".join(signals))
+            return (False, "")
+        self._move_fade_blocked_symbols.add(symbol)
+        return (True, "+".join(signals))
+
+    # ──────────────────────────────────────────────────────────────────
     # Bar-close hook (called by TradeBarBuilder when a 1m bar closes)
     # ──────────────────────────────────────────────────────────────────
     def _on_bar_close_internal(self, bar) -> None:
@@ -436,6 +647,9 @@ class MoveStrikeSubBot:
         """``bar`` is a Bar dataclass with .open/.high/.low/.close/.volume."""
         self._bars_per_sym[symbol] += 1
         self._ensure_symbol(symbol)
+        # Fade-gate per-bar state update (2026-05-23). Tracks first-bar
+        # open + rolling (open, close) deque for the entry-time fade check.
+        self.update_fade_environment_state(symbol, bar)
         det = self.detectors[symbol]
         try:
             vwap = self.bar_builder.get_vwap(symbol)
@@ -461,6 +675,9 @@ class MoveStrikeSubBot:
                 f"movement_strike history reset",
                 flush=True,
             )
+            # Track for regime-shift require_armed gate.
+            if self.regime_shift_enabled:
+                self._regime_shift_armed_today.add(symbol)
         self.prev_arm_state[symbol] = det.armed
 
         # HH tracking — global per-symbol (for an active position's exit)
@@ -490,6 +707,23 @@ class MoveStrikeSubBot:
                 and symbol in self._reentry_watches
                 and bar.close > bar.open):
             self._try_fire_green_reentry(symbol, bar)
+
+        # REGIME-SHIFT detection (Stage 2 — 2026-05-23). Second-order
+        # body anomaly on bar close. Skips if any position is open.
+        # Skips if symbol has not armed today (require_armed gate).
+        # Per-symbol max-1 by default.
+        if self.regime_shift_enabled and self.position is None:
+            rs_det = self.regime_shift_detectors.get(symbol)
+            if rs_det is not None:
+                # Past entry-time cutoff?
+                _cutoff = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+                try:
+                    _ch, _cm = (int(x) for x in _cutoff.split(":")[:2])
+                    _past_cutoff = now_minute_et() >= _ch * 60 + _cm
+                except Exception:
+                    _past_cutoff = False
+                if not _past_cutoff:
+                    self._maybe_fire_regime_shift(symbol, bar, rs_det)
 
     # ──────────────────────────────────────────────────────────────────
     # Per-tick processing
@@ -606,11 +840,194 @@ class MoveStrikeSubBot:
         # Sync HH count from per-symbol tracker (updated on bar closes)
         p.hh_count = self._sym_hh_count.get(p.symbol, 0)
 
+        # Regime-shift positions: pre-partial uses hard-stop + 1.5R target
+        # only. HWM trail is suppressed until partial fires (sim parity —
+        # PCLA-class trades need runway). After partial fires, runner is
+        # managed by hwm_evaluate at BE stop.
+        if p.setup_type == "regime_shift" and not p.move_partial_fired:
+            # Hard stop
+            if price <= p.stop:
+                self._close_position("regime_shift_hard_stop", price)
+                return
+            # Target = entry + target_R * R. Fire partial when crossed.
+            target_price = p.entry + self.regime_shift_target_r * p.r
+            if price >= target_price:
+                self._fire_regime_shift_partial(p, price)
+            return  # no trail pre-partial
+
         decision = hwm_evaluate(p, price, now_minute_et(), self.hwm_cfg)
         if decision is None:
             return
         reason, exit_price = decision
         self._close_position(reason, exit_price)
+
+    # ──────────────────────────────────────────────────────────────────
+    # REGIME-SHIFT entry + partial mechanism (Stage 2 — 2026-05-23)
+    # ──────────────────────────────────────────────────────────────────
+    def _maybe_fire_regime_shift(self, symbol: str, bar,
+                                  rs_det: RegimeShiftDetector) -> None:
+        """Run the regime-shift detector on this 1m bar close. If it
+        fires AND all gates pass, open a regime-shift position."""
+        rs_result = rs_det.check_on_bar_close(bar)
+        if not rs_result.get("fired"):
+            return
+        # require_armed gate — only fire on symbols that have armed for
+        # MOVE_STRIKE earlier today.
+        if (self.regime_shift_require_armed
+                and symbol not in self._regime_shift_armed_today):
+            return
+        # Per-symbol entry cap
+        cur = self._regime_shift_entries_per_symbol.get(symbol, 0)
+        if cur >= self.regime_shift_max_per_symbol:
+            return
+        # Trigger event log
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] REGIME_SHIFT_TRIGGER {symbol} "
+            f"bar_body=${rs_result['body']:.4f} "
+            f"baseline=${rs_result['baseline']:.4f} "
+            f"ratio={rs_result['ratio']:.2f}",
+            flush=True,
+        )
+        self._open_regime_shift_position(symbol, bar, rs_result)
+
+    def _open_regime_shift_position(self, symbol: str, bar, rs_result) -> None:
+        """Open a regime-shift position. Entry = bar.close, stop = bar.low.
+        R = entry - stop. Probe-sized qty. Alpaca-aware limit. Sets
+        setup_type='regime_shift' so _maintain_position routes through
+        the partial mechanism."""
+        entry = float(bar.close)
+        stop = float(bar.low)
+        r = entry - stop
+        if r <= 0.01:
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} regime_shift skip — "
+                f"r={r:.4f} too small",
+                flush=True,
+            )
+            return
+        qty = self._compute_qty(entry, r, 99.0)
+        if qty <= 0:
+            return
+        # Alpaca-aware buy limit, mirroring _open_position_with_tag.
+        slip = max(0.07, entry * 0.01)
+        base_limit = round(entry + slip, 2)
+        aware_limit = self._compute_alpaca_aware_limit(symbol, entry, "BUY")
+        limit = max(aware_limit, base_limit)
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] 🚀 ENTRY REGIME_SHIFT {symbol} "
+            f"qty={qty} limit=${limit:.2f} (anomaly@${entry:.2f}) "
+            f"stop=${stop:.2f} R=${r:.4f} "
+            f"body=${rs_result['body']:.4f} ratio={rs_result['ratio']:.2f}",
+            flush=True,
+        )
+        try:
+            req = LimitOrderRequest(
+                symbol=symbol, qty=qty, side=OrderSide.BUY,
+                time_in_force=TimeInForce.DAY, limit_price=limit,
+                extended_hours=True,
+            )
+            order = self.alpaca.submit_order(order_data=req)
+        except Exception as e:
+            print(f"{LOG_TAG} REGIME_SHIFT ENTRY REJECT {symbol}: {e!r}",
+                  flush=True)
+            return
+        self.position = SubPosition(
+            symbol=symbol, entry=entry, stop=stop, r=r, qty=qty,
+            score=99.0, time_et=now_iso_et(),
+            is_reentry=False, reentry_tag="",
+            setup_type="regime_shift",
+        )
+        self.position.order_id_buy = str(order.id) if hasattr(order, "id") else None
+        fill_px, fill_qty = self._wait_for_fill(self.position.order_id_buy, timeout=15)
+        if fill_px is not None and fill_qty > 0:
+            self.position.fill_entry_price = fill_px
+            self.position.fill_entry_qty = fill_qty
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} regime_shift entry "
+                f"FILLED @ ${fill_px:.4f} qty={fill_qty} (limit was ${limit:.2f})",
+                flush=True,
+            )
+            if fill_qty < qty:
+                self.position.qty = fill_qty
+            # Bump the per-symbol counter on a real fill so partial fills
+            # don't burn the cap.
+            self._regime_shift_entries_per_symbol[symbol] = (
+                self._regime_shift_entries_per_symbol.get(symbol, 0) + 1
+            )
+        else:
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} regime_shift entry "
+                f"NOT FILLED (timeout/cancel/reject) — abandoning trade",
+                flush=True,
+            )
+            self.position = None
+            return
+        self.position.hh_count = self._sym_hh_count.get(symbol, 0)
+
+    def _fire_regime_shift_partial(self, p: "SubPosition", price: float) -> None:
+        """Sell partial_pct of the position at entry + target_R*R - slip.
+        After fill: raise stop to BE, mark move_partial_fired=True,
+        runner continues with HWM trail."""
+        partial_qty = max(1, int(round(p.qty * self.regime_shift_partial_pct)))
+        if p.qty > 1:
+            # Always leave at least 1 share as runner.
+            partial_qty = min(partial_qty, p.qty - 1)
+        runner_qty = p.qty - partial_qty
+        # Sell limit: floor at entry + 1.5R - slip (don't price above
+        # current price — that would never fill).
+        slip = max(0.05, price * 0.005)
+        target_limit = round(p.entry + self.regime_shift_target_r * p.r - slip, 2)
+        # Tighten toward alpaca_bid via aware-limit helper.
+        aware_limit = self._compute_alpaca_aware_limit(p.symbol, price, "SELL")
+        limit = min(aware_limit, target_limit, round(price - slip, 2))
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] 🎯 PARTIAL REGIME_SHIFT {p.symbol} "
+            f"qty={partial_qty} limit=${limit:.2f} "
+            f"(target={self.regime_shift_target_r}R={p.entry + self.regime_shift_target_r*p.r:.2f}, "
+            f"runner={runner_qty})",
+            flush=True,
+        )
+        try:
+            req = LimitOrderRequest(
+                symbol=p.symbol, qty=partial_qty, side=OrderSide.SELL,
+                time_in_force=TimeInForce.DAY, limit_price=limit,
+                extended_hours=True,
+            )
+            order = self.alpaca.submit_order(order_data=req)
+        except Exception as e:
+            print(f"{LOG_TAG} PARTIAL REJECT {p.symbol}: {e!r}", flush=True)
+            return
+        order_id = str(order.id) if hasattr(order, "id") else None
+        fill_px, fill_qty = self._wait_for_fill(order_id, timeout=15)
+        if fill_px is None or fill_qty <= 0:
+            # Partial order didn't fill — keep position intact, will
+            # re-try on next tick that exceeds target.
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {p.symbol} regime_shift partial "
+                f"NOT FILLED — will retry on next target-cross tick",
+                flush=True,
+            )
+            return
+        # Real-fill P&L for the partial leg.
+        cost_basis = float(p.fill_entry_price or p.entry)
+        partial_pnl = (fill_px - cost_basis) * fill_qty
+        p.partial_pnl = partial_pnl
+        self.daily_pnl += partial_pnl
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] {p.symbol} partial FILLED @ ${fill_px:.4f} "
+            f"qty={fill_qty} pnl=${partial_pnl:+,.2f}",
+            flush=True,
+        )
+        # Shrink position to runner, raise stop to BE.
+        p.qty = p.qty - fill_qty
+        if self.regime_shift_runner_stop_to_be:
+            p.stop = float(p.fill_entry_price or p.entry)
+        p.move_partial_fired = True
+        # Reset peak so HWM trail starts from current price (post-partial
+        # — the runner's HWM should track from here, not from pre-partial
+        # peak which is already booked).
+        p.peak = price
+        p.cum_low = price
 
     def _maybe_enter(self, symbol: str, price: float) -> None:
         det = self.detectors.get(symbol)
@@ -645,6 +1062,27 @@ class MoveStrikeSubBot:
         cons_stop = ms.get_consolidation_stop()
         if cons_stop is None or price <= cons_stop:
             return
+        # Fade-environment gate (2026-05-23). Blocks new MOVE_STRIKE
+        # entries on faded symbols. Sticky once triggered; regime-shift
+        # entries are NOT gated.
+        try:
+            _fade_vwap = self.bar_builder.get_vwap(symbol)
+        except Exception:
+            _fade_vwap = None
+        _fade_blocked, _fade_reason = self.is_in_fade_environment(
+            symbol, price, _fade_vwap,
+        )
+        if _fade_blocked and _fade_reason != "session-blocked":
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] MOVE_FADE_GATE_BLOCK {symbol} "
+                f"reason={_fade_reason} (price=${price:.4f} "
+                f"vwap={'$%.4f' % _fade_vwap if _fade_vwap else 'n/a'} "
+                f"open=${self._move_fade_session_open.get(symbol, 0):.4f})",
+                flush=True,
+            )
+            return
+        if _fade_blocked:
+            return  # session-blocked, silent
         # Real arm: apply chase cap + below-arm filter
         if has_real_arm:
             arm_price = det.armed.entry_price or 0.0
@@ -794,8 +1232,9 @@ class MoveStrikeSubBot:
         # when our IBKR-derived sell limit is above Alpaca's actual bid.
         aware_limit = self._compute_alpaca_aware_limit(p.symbol, ref_price, "SELL")
         limit = min(aware_limit, base_limit)
+        _tag = "REGIME_SHIFT" if p.setup_type == "regime_shift" else "MOVE_STRIKE"
         print(
-            f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {p.symbol} qty={p.qty} "
+            f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {_tag} {p.symbol} qty={p.qty} "
             f"limit=${limit:.2f} (ref=${ref_price:.2f}) reason={reason}",
             flush=True,
         )

@@ -478,6 +478,31 @@ class SimTradeManager:
         # Per-symbol regime-shift entry counter (enforces max_per_symbol cap)
         self._regime_shift_entries_per_symbol: dict[str, int] = {}
 
+        # --- MOVE_STRIKE Fade-Environment Gate (2026-05-23) ---
+        # Each enabled signal blocks new MOVE_STRIKE entries on that symbol
+        # for the rest of the session once triggered. Regime-shift entries
+        # are NOT gated. Per cowork_reports/2026-05-23_movestrike_fade_gate_directive.md
+        self.move_fade_vwap_enabled = (
+            os.getenv("WB_MOVE_FADE_VWAP_ENABLED", "0") == "1"
+        )
+        self.move_fade_open_drawdown_pct = float(
+            os.getenv("WB_MOVE_FADE_OPEN_DRAWDOWN_PCT", "0")
+        )
+        self.move_fade_downtrend_bars = int(
+            os.getenv("WB_MOVE_FADE_DOWNTREND_BARS", "0")
+        )
+        self.move_fade_body_cv_threshold = float(
+            os.getenv("WB_MOVE_FADE_BODY_CV_THRESHOLD", "0")
+        )
+        self.move_fade_combine_mode = (
+            os.getenv("WB_MOVE_FADE_COMBINE_MODE", "any").lower()
+        )
+        # Per-symbol state
+        from collections import deque as _deque
+        self._move_fade_session_open: dict[str, float] = {}
+        self._move_fade_recent_bars: dict[str, _deque] = {}
+        self._move_fade_blocked_symbols: set = set()
+
         # --- EPL graduation callback (set by caller) ---
         self._on_target_hit_cb = None
 
@@ -1894,6 +1919,91 @@ class SimTradeManager:
             self._reentry_watches.pop(symbol, None)
         return trade
 
+    def update_fade_environment_state(self, symbol: str, bar) -> None:
+        """Per-1m-bar update for the MOVE_STRIKE fade-gate. Tracks the
+        session's first-bar open and the last 10 (open, close) pairs."""
+        if symbol not in self._move_fade_session_open:
+            self._move_fade_session_open[symbol] = float(bar.open)
+        from collections import deque as _deque
+        dq = self._move_fade_recent_bars.get(symbol)
+        if dq is None:
+            dq = _deque(maxlen=10)
+            self._move_fade_recent_bars[symbol] = dq
+        dq.append((float(bar.open), float(bar.close)))
+
+    def is_in_fade_environment(self, symbol: str, price: float, vwap: Optional[float]):
+        """Returns (blocked: bool, reason: str). Evaluates all enabled
+        fade signals and combines per WB_MOVE_FADE_COMBINE_MODE.
+
+        Once any combination fires, the symbol is permanently blocked
+        for the rest of the session (sticky)."""
+        if symbol in self._move_fade_blocked_symbols:
+            return (True, "session-blocked")
+
+        # Determine which signals are enabled
+        vwap_on = self.move_fade_vwap_enabled
+        dd_on = self.move_fade_open_drawdown_pct > 0
+        dt_on = self.move_fade_downtrend_bars > 0
+        cv_on = self.move_fade_body_cv_threshold > 0
+        enabled_count = int(vwap_on) + int(dd_on) + int(dt_on) + int(cv_on)
+        if enabled_count == 0:
+            return (False, "")
+
+        signals = []
+
+        # Signal 1: price below session VWAP
+        if vwap_on and vwap is not None and vwap > 0:
+            if price < vwap:
+                signals.append("vwap")
+
+        # Signal 2: open-drawdown threshold
+        if dd_on:
+            open_px = self._move_fade_session_open.get(symbol, 0.0)
+            if open_px > 0:
+                dd_pct = (open_px - price) / open_px * 100.0
+                if dd_pct >= self.move_fade_open_drawdown_pct:
+                    signals.append("drawdown")
+
+        # Signal 3: N-bar downtrend (all closed red AND descending closes)
+        if dt_on:
+            bars = self._move_fade_recent_bars.get(symbol)
+            n = self.move_fade_downtrend_bars
+            if bars is not None and len(bars) >= n:
+                last_n = list(bars)[-n:]
+                all_red = all(c < o for (o, c) in last_n)
+                closes = [c for (_o, c) in last_n]
+                descending = all(closes[i] < closes[i - 1] for i in range(1, n))
+                if all_red and descending:
+                    signals.append("downtrend")
+
+        # Signal 4: bar-body coefficient of variation
+        if cv_on:
+            bars = self._move_fade_recent_bars.get(symbol)
+            if bars is not None and len(bars) >= 10:
+                bodies = [abs(c - o) for (o, c) in bars]
+                try:
+                    import statistics as _stats
+                    mean_b = _stats.mean(bodies)
+                    if mean_b > 0:
+                        std_b = _stats.stdev(bodies)
+                        cv = std_b / mean_b
+                        if cv > self.move_fade_body_cv_threshold:
+                            signals.append("cv")
+                except Exception:
+                    pass
+
+        if not signals:
+            return (False, "")
+
+        if self.move_fade_combine_mode == "all":
+            if len(signals) == enabled_count:
+                self._move_fade_blocked_symbols.add(symbol)
+                return (True, "+".join(signals))
+            return (False, "")
+        # default "any"
+        self._move_fade_blocked_symbols.add(symbol)
+        return (True, "+".join(signals))
+
     def try_reentry_on_tick(self, symbol: str, price: float, time_str: str):
         """BREAK mode: any tick > snapshotted high triggers re-entry."""
         if not self.move_reentry_break:
@@ -3285,6 +3395,10 @@ def run_simulation(
             ts_et = bar.start_utc.astimezone(ET)
             time_str = ts_et.strftime("%H:%M")
 
+            # Fade-gate state (2026-05-23): track first-bar open and
+            # rolling (open, close) for MOVE_STRIKE fade-environment check.
+            sim_mgr.update_fade_environment_state(symbol, bar)
+
             # Update premarket levels
             pm_high = bb_1m.get_premarket_high(symbol)
             pm_bf_high = bb_1m.get_premarket_bull_flag_high(symbol)
@@ -4074,12 +4188,29 @@ def run_simulation(
                                 _stay_armed_ok = False  # within cooldown
                             elif _last_px > 0 and price < _last_px * (1.0 + sim_mgr.move_stay_armed_min_gap_pct / 100.0):
                                 _stay_armed_ok = False  # not a continuation
+                        # Fade-environment gate (2026-05-23). Each fade
+                        # signal blocks new MOVE_STRIKE entries on this
+                        # symbol for the rest of the session once
+                        # triggered. Disabled by default.
+                        _fade_vwap = bb_1m.get_vwap(symbol)
+                        _fade_blocked, _fade_reason = sim_mgr.is_in_fade_environment(
+                            symbol, price, _fade_vwap,
+                        )
+                        if _fade_blocked and _fade_reason != "session-blocked" and verbose:
+                            print(
+                                f"  [{time_str}] MOVE_FADE_GATE_BLOCK {symbol} "
+                                f"reason={_fade_reason} "
+                                f"(price=${price:.4f} vwap={'$%.4f' % _fade_vwap if _fade_vwap else 'n/a'} "
+                                f"open=${sim_mgr._move_fade_session_open.get(symbol, 0):.4f})",
+                                flush=True,
+                            )
                         if (_move_anomaly
                                 and _cons_stop is not None
                                 and price > _cons_stop
                                 and _gap_above_arm <= _move_chase_cap
                                 and _below_arm_ok
-                                and _stay_armed_ok):
+                                and _stay_armed_ok
+                                and not _fade_blocked):
                             _new_r = price - _cons_stop
                             if _stay_armed_active:
                                 _score = _stay_armed_score
