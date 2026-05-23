@@ -74004,3 +74004,22 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='hist.databento.co
 17:31:17  stopping live client
 17:31:17  Done.
 17:31:17  connection closed
+17:33:00  Live Scanner starting — 2026-05-22 
+17:33:00  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+17:33:00  Initialized Historical(gateway=https://hist.databento.com)
+17:33:00        Requesting OHLCV from 2026-04-23 to 2026-05-21...
+17:33:12        12,792 symbols with avg daily volume
+17:33:12        12,792 symbols with prev close loaded
+17:33:12  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+17:33:12  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-22 04:00:00-04:00 snapshot=False
+17:33:12  connecting to remote gateway
+17:33:13  authenticated session_id='3805749259'
+17:33:13  adding user callback on_event
+17:33:13  starting live client
+17:33:13        Stream started, replaying from 04:00 ET...
+17:33:13  [7_14] No candidates to write.
+17:33:13  [FINAL] No candidates to write.
+17:33:13  Scanner cutoff reached (09:30 ET). Stopping stream.
+17:33:13  stopping live client
+17:33:13  Done.
+17:33:13  connection closed

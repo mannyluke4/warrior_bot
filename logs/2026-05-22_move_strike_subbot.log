@@ -1394,3 +1394,346 @@
 [MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
 [MOVE_SUB] signal 15 received — stopping
 [MOVE_SUB] consume loop exited
+[MOVE_SUB] Alpaca PAPER connected — account=PA3700N6RNS2 equity=$30,000
+[MOVE_SUB] starting consume loop
+[MOVE_SUB] [19:33:20] connected to engine (/tmp/warrior_engine.sock) attempt=1
+[MOVE_SUB] [19:33:21] new symbol CPSH — detector + movement_strike instantiated
+[MOVE_SUB] SEED CPSH replayed 232 ticks from cache
+[MOVE_SUB] [19:33:22] new symbol F — detector + movement_strike instantiated
+[MOVE_SUB] SEED F replayed 8 ticks from cache
+[MOVE_SUB] [19:33:24] new symbol FABC — detector + movement_strike instantiated
+[MOVE_SUB] SEED FABC replayed 116 ticks from cache
+[MOVE_SUB] [19:33:25] new symbol FJET — detector + movement_strike instantiated
+[MOVE_SUB] SEED FJET replayed 267 ticks from cache
+[MOVE_SUB] [19:33:27] new symbol FRGT — detector + movement_strike instantiated
+[MOVE_SUB] SEED FRGT replayed 17 ticks from cache
+[MOVE_SUB] [19:33:28] new symbol FUTG — detector + movement_strike instantiated
+[MOVE_SUB] SEED FUTG replayed 8 ticks from cache
+[MOVE_SUB] [19:33:30] new symbol GOVX — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:30] GOVX ARMED entry=4.0200 stop=3.9200 R=0.1000 score=7.0 — movement_strike history reset
+[MOVE_SUB] SEED GOVX replayed 18,660 ticks from cache
+[MOVE_SUB] [19:33:31] new symbol GRF — detector + movement_strike instantiated
+[MOVE_SUB] SEED GRF replayed 8 ticks from cache
+[MOVE_SUB] [19:33:33] new symbol HAVAU — detector + movement_strike instantiated
+[MOVE_SUB] SEED HAVAU replayed 3 ticks from cache
+[MOVE_SUB] [19:33:34] new symbol HLIT — detector + movement_strike instantiated
+[MOVE_SUB] SEED HLIT replayed 291 ticks from cache
+[MOVE_SUB] [19:33:36] new symbol HOVR — detector + movement_strike instantiated
+[MOVE_SUB] SEED HOVR replayed 224 ticks from cache
+[MOVE_SUB] [19:33:37] new symbol HYLN — detector + movement_strike instantiated
+[MOVE_SUB] SEED HYLN replayed 285 ticks from cache
+[MOVE_SUB] [19:33:39] new symbol IMRX — detector + movement_strike instantiated
+[MOVE_SUB] SEED IMRX replayed 142 ticks from cache
+[MOVE_SUB] [19:33:40] new symbol INFQ — detector + movement_strike instantiated
+[MOVE_SUB] SEED INFQ replayed 259 ticks from cache
+[MOVE_SUB] [19:33:42] new symbol KULR — detector + movement_strike instantiated
+[MOVE_SUB] SEED KULR replayed 161 ticks from cache
+[MOVE_SUB] [19:33:43] new symbol LFS — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:44] LFS ARMED entry=3.0200 stop=2.9000 R=0.1200 score=10.0 — movement_strike history reset
+[MOVE_SUB] SEED LFS replayed 526,806 ticks from cache
+[MOVE_SUB] [19:33:45] new symbol MTVA — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:45] MTVA ARMED entry=4.0200 stop=3.9000 R=0.1200 score=9.0 — movement_strike history reset
+[MOVE_SUB] SEED MTVA replayed 312,219 ticks from cache
+[MOVE_SUB] [19:33:46] new symbol NGEN — detector + movement_strike instantiated
+[MOVE_SUB] SEED NGEN replayed 5 ticks from cache
+[MOVE_SUB] [19:33:48] new symbol NIO — detector + movement_strike instantiated
+[MOVE_SUB] SEED NIO replayed 6 ticks from cache
+[MOVE_SUB] [19:33:49] new symbol NOK — detector + movement_strike instantiated
+[MOVE_SUB] SEED NOK replayed 12 ticks from cache
+[MOVE_SUB] [19:33:51] new symbol ONDS — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:52] new symbol PALD — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:54] new symbol PCLA — detector + movement_strike instantiated
+[MOVE_SUB] [19:33:54] PCLA ARMED entry=6.0200 stop=5.9000 R=0.1200 score=11.0 — movement_strike history reset
+[MOVE_SUB] SEED PCLA replayed 134,520 ticks from cache
+[MOVE_SUB] [19:33:55] new symbol PLRZ — detector + movement_strike instantiated
+[MOVE_SUB] SEED PLRZ replayed 55 ticks from cache
+[MOVE_SUB] [19:33:57] new symbol PLUG — detector + movement_strike instantiated
+[MOVE_SUB] SEED PLUG replayed 6 ticks from cache
+[MOVE_SUB] [19:33:59] new symbol QBTZ — detector + movement_strike instantiated
+[MOVE_SUB] SEED QBTZ replayed 3 ticks from cache
+[MOVE_SUB] [19:34:00] new symbol QUBT — detector + movement_strike instantiated
+[MOVE_SUB] SEED QUBT replayed 47 ticks from cache
+[MOVE_SUB] [19:34:02] new symbol RGTZ — detector + movement_strike instantiated
+[MOVE_SUB] SEED RGTZ replayed 6 ticks from cache
+[MOVE_SUB] [19:34:03] new symbol RYOJ — detector + movement_strike instantiated
+[MOVE_SUB] [19:34:03] RYOJ ARMED entry=4.0200 stop=3.9000 R=0.1200 score=10.0 — movement_strike history reset
+[MOVE_SUB] SEED RYOJ replayed 306,633 ticks from cache
+[MOVE_SUB] [19:34:05] new symbol SBXE — detector + movement_strike instantiated
+[MOVE_SUB] SEED SBXE replayed 2 ticks from cache
+[MOVE_SUB] [19:34:06] new symbol SIDU — detector + movement_strike instantiated
+[MOVE_SUB] SEED SIDU replayed 105 ticks from cache
+[MOVE_SUB] [19:34:08] new symbol SOFI — detector + movement_strike instantiated
+[MOVE_SUB] SEED SOFI replayed 2 ticks from cache
+[MOVE_SUB] [19:34:09] new symbol SOXS — detector + movement_strike instantiated
+[MOVE_SUB] SEED SOXS replayed 5 ticks from cache
+[MOVE_SUB] [19:34:11] new symbol SVRN — detector + movement_strike instantiated
+[MOVE_SUB] SEED SVRN replayed 3,236 ticks from cache
+[MOVE_SUB] [19:34:12] new symbol TE — detector + movement_strike instantiated
+[MOVE_SUB] SEED TE replayed 5 ticks from cache
+[MOVE_SUB] [19:34:14] new symbol TIGR — detector + movement_strike instantiated
+[MOVE_SUB] SEED TIGR replayed 4 ticks from cache
+[MOVE_SUB] [19:34:15] new symbol TKLF — detector + movement_strike instantiated
+[MOVE_SUB] SEED TKLF replayed 21 ticks from cache
+[MOVE_SUB] [19:34:17] new symbol TSLL — detector + movement_strike instantiated
+[MOVE_SUB] SEED TSLL replayed 5 ticks from cache
+[MOVE_SUB] [19:34:18] new symbol TZA — detector + movement_strike instantiated
+[MOVE_SUB] SEED TZA replayed 5 ticks from cache
+[MOVE_SUB] [19:34:20] new symbol UPAR — detector + movement_strike instantiated
+[MOVE_SUB] SEED UPAR replayed 4 ticks from cache
+[MOVE_SUB] [19:34:21] new symbol UVIX — detector + movement_strike instantiated
+[MOVE_SUB] SEED UVIX replayed 4 ticks from cache
+[MOVE_SUB] [19:34:21] STATS ticks=61 symbols=41 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:34:23] new symbol WW — detector + movement_strike instantiated
+[MOVE_SUB] SEED WW replayed 179 ticks from cache
+[MOVE_SUB] [19:34:30] new symbol AEHL — detector + movement_strike instantiated
+[MOVE_SUB] SEED AEHL replayed 5,763 ticks from cache
+[MOVE_SUB] [19:34:31] new symbol ATRA — detector + movement_strike instantiated
+[MOVE_SUB] SEED ATRA replayed 2,297 ticks from cache
+[MOVE_SUB] [19:34:31] new symbol CBRG — detector + movement_strike instantiated
+[MOVE_SUB] SEED CBRG replayed 28,920 ticks from cache
+[MOVE_SUB] [19:34:32] new symbol CODX — detector + movement_strike instantiated
+[MOVE_SUB] SEED CODX replayed 41,655 ticks from cache
+[MOVE_SUB] [19:34:32] new symbol CORD — detector + movement_strike instantiated
+[MOVE_SUB] SEED CORD replayed 28,893 ticks from cache
+[MOVE_SUB] [19:34:33] new symbol EDSA — detector + movement_strike instantiated
+[MOVE_SUB] SEED EDSA replayed 2,187 ticks from cache
+[MOVE_SUB] [19:34:34] new symbol FCHL — detector + movement_strike instantiated
+[MOVE_SUB] SEED FCHL replayed 1,774 ticks from cache
+[MOVE_SUB] [19:34:34] new symbol GIPR — detector + movement_strike instantiated
+[MOVE_SUB] SEED GIPR replayed 6,188 ticks from cache
+[MOVE_SUB] [19:34:35] new symbol LESL — detector + movement_strike instantiated
+[MOVE_SUB] SEED LESL replayed 4,354 ticks from cache
+[MOVE_SUB] [19:34:37] new symbol LNKS — detector + movement_strike instantiated
+[MOVE_SUB] SEED LNKS replayed 1,486 ticks from cache
+[MOVE_SUB] [19:34:37] new symbol MOBX — detector + movement_strike instantiated
+[MOVE_SUB] SEED MOBX replayed 8,986 ticks from cache
+[MOVE_SUB] [19:34:38] new symbol NOWL — detector + movement_strike instantiated
+[MOVE_SUB] SEED NOWL replayed 32,127 ticks from cache
+[MOVE_SUB] [19:34:38] new symbol ONDG — detector + movement_strike instantiated
+[MOVE_SUB] SEED ONDG replayed 19,621 ticks from cache
+[MOVE_SUB] [19:34:43] new symbol PIII — detector + movement_strike instantiated
+[MOVE_SUB] SEED PIII replayed 4,986 ticks from cache
+[MOVE_SUB] [19:34:43] new symbol QUCY — detector + movement_strike instantiated
+[MOVE_SUB] SEED QUCY replayed 27,455 ticks from cache
+[MOVE_SUB] [19:34:44] new symbol RUBI — detector + movement_strike instantiated
+[MOVE_SUB] SEED RUBI replayed 4,197 ticks from cache
+[MOVE_SUB] [19:34:45] new symbol SBFM — detector + movement_strike instantiated
+[MOVE_SUB] SEED SBFM replayed 32,151 ticks from cache
+[MOVE_SUB] [19:34:49] new symbol SKK — detector + movement_strike instantiated
+[MOVE_SUB] SEED SKK replayed 1,551 ticks from cache
+[MOVE_SUB] [19:34:49] new symbol SKYQ — detector + movement_strike instantiated
+[MOVE_SUB] SEED SKYQ replayed 4,400 ticks from cache
+[MOVE_SUB] [19:34:50] new symbol SLE — detector + movement_strike instantiated
+[MOVE_SUB] SEED SLE replayed 4,881 ticks from cache
+[MOVE_SUB] [19:34:55] new symbol SST — detector + movement_strike instantiated
+[MOVE_SUB] SEED SST replayed 4,530 ticks from cache
+[MOVE_SUB] [19:34:55] new symbol SUGP — detector + movement_strike instantiated
+[MOVE_SUB] SEED SUGP replayed 2,479 ticks from cache
+[MOVE_SUB] [19:35:01] new symbol WNW — detector + movement_strike instantiated
+[MOVE_SUB] SEED WNW replayed 3,546 ticks from cache
+[MOVE_SUB] [19:35:21] STATS ticks=212 symbols=65 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:36:22] STATS ticks=336 symbols=65 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:37:23] STATS ticks=480 symbols=65 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:38:07] new symbol AKTX — detector + movement_strike instantiated
+[MOVE_SUB] SEED AKTX replayed 386 ticks from cache
+[MOVE_SUB] [19:38:12] PCLA BELOW-ARM-SKIP (arm preserved) trigger=5.780 arm=6.020 below=3.99% (cap=3.0%)
+[MOVE_SUB] [19:38:23] STATS ticks=648 symbols=66 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:38:27] PCLA BELOW-ARM-SKIP (arm preserved) trigger=5.780 arm=6.020 below=3.99% (cap=3.0%)
+[MOVE_SUB] [19:38:37] new symbol AIB — detector + movement_strike instantiated
+[MOVE_SUB] SEED AIB replayed 380 ticks from cache
+[MOVE_SUB] [19:38:39] PCLA BELOW-ARM-SKIP (arm preserved) trigger=5.780 arm=6.020 below=3.99% (cap=3.0%)
+[MOVE_SUB] [19:38:59] new symbol AMTX — detector + movement_strike instantiated
+[MOVE_SUB] SEED AMTX replayed 195 ticks from cache
+[MOVE_SUB] [19:39:23] STATS ticks=770 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:40:03] LFS CHASE-SKIP (arm preserved) trigger=3.200 arm=3.020 gap=5.96%
+[MOVE_SUB] [19:40:03] LFS CHASE-SKIP (arm preserved) trigger=3.200 arm=3.020 gap=5.96%
+[MOVE_SUB] [19:40:04] LFS CHASE-SKIP (arm preserved) trigger=3.200 arm=3.020 gap=5.96%
+[MOVE_SUB] [19:40:21] LFS CHASE-SKIP (arm preserved) trigger=3.200 arm=3.020 gap=5.96%
+[MOVE_SUB] [19:40:24] STATS ticks=911 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:40:28] LFS CHASE-SKIP (arm preserved) trigger=3.200 arm=3.020 gap=5.96%
+[MOVE_SUB] [19:40:33] LFS CHASE-SKIP (arm preserved) trigger=3.199 arm=3.020 gap=5.94%
+[MOVE_SUB] [19:41:08] LFS CHASE-SKIP (arm preserved) trigger=3.180 arm=3.020 gap=5.30%
+[MOVE_SUB] [19:41:20] LFS CHASE-SKIP (arm preserved) trigger=3.180 arm=3.020 gap=5.30%
+[MOVE_SUB] [19:41:24] STATS ticks=1065 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:42:03] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:03] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:09] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:23] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:25] STATS ticks=1200 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:42:33] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:37] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:37] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:37] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:42:44] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.620 arm=4.020 below=9.95% (cap=3.0%)
+[MOVE_SUB] [19:43:26] STATS ticks=1302 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:43:38] LFS CHASE-SKIP (arm preserved) trigger=3.170 arm=3.020 gap=4.96%
+[MOVE_SUB] [19:44:06] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.650 arm=4.020 below=9.20% (cap=3.0%)
+[MOVE_SUB] [19:44:06] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.660 arm=4.020 below=8.96% (cap=3.0%)
+[MOVE_SUB] [19:44:07] LFS CHASE-SKIP (arm preserved) trigger=3.170 arm=3.020 gap=4.97%
+[MOVE_SUB] [19:44:15] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.659 arm=4.020 below=8.98% (cap=3.0%)
+[MOVE_SUB] [19:44:26] STATS ticks=1445 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:44:34] PCLA BELOW-ARM-SKIP (arm preserved) trigger=5.800 arm=6.020 below=3.65% (cap=3.0%)
+[MOVE_SUB] [19:45:07] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.660 arm=4.020 below=8.96% (cap=3.0%)
+[MOVE_SUB] [19:45:07] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.660 arm=4.020 below=8.96% (cap=3.0%)
+[MOVE_SUB] [19:45:27] STATS ticks=1577 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:45:33] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.654 arm=4.020 below=9.12% (cap=3.0%)
+[MOVE_SUB] [19:45:35] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.660 arm=4.020 below=8.96% (cap=3.0%)
+[MOVE_SUB] [19:45:48] LFS CHASE-SKIP (arm preserved) trigger=3.160 arm=3.020 gap=4.64%
+[MOVE_SUB] [19:45:48] LFS CHASE-SKIP (arm preserved) trigger=3.160 arm=3.020 gap=4.64%
+[MOVE_SUB] [19:45:48] LFS CHASE-SKIP (arm preserved) trigger=3.160 arm=3.020 gap=4.62%
+[MOVE_SUB] [19:45:53] MTVA BELOW-ARM-SKIP (arm preserved) trigger=3.660 arm=4.020 below=8.96% (cap=3.0%)
+[MOVE_SUB] [19:45:55] LFS CHASE-SKIP (arm preserved) trigger=3.160 arm=3.020 gap=4.64%
+[MOVE_SUB] [19:45:59] LFS CHASE-SKIP (arm preserved) trigger=3.160 arm=3.020 gap=4.64%
+[MOVE_SUB] [19:46:27] STATS ticks=1717 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:46:38] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:38] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:38] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:38] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:40] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:40] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:40] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:41] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:41] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:41] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:41] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:42] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:42] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:42] RYOJ CHASE-SKIP (arm preserved) trigger=4.200 arm=4.020 gap=4.48%
+[MOVE_SUB] [19:46:43] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:43] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:43] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:43] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:43] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:45] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:46] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:46] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:46] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:47] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:48] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:48] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:52] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:54] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:55] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:57] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:46:58] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:47:17] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:17] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:27] STATS ticks=1901 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:47:33] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:33] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:34] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:41] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:47:54] GOVX BELOW-ARM-SKIP (arm preserved) trigger=3.619 arm=4.020 below=9.97% (cap=3.0%)
+[MOVE_SUB] [19:48:15] LFS CHASE-SKIP (arm preserved) trigger=3.130 arm=3.020 gap=3.64%
+[MOVE_SUB] [19:48:16] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:16] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:16] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:16] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:20] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:21] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:27] STATS ticks=2051 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:48:30] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:32] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:43] LFS CHASE-SKIP (arm preserved) trigger=3.140 arm=3.020 gap=3.97%
+[MOVE_SUB] [19:48:57] LFS CHASE-SKIP (arm preserved) trigger=3.130 arm=3.020 gap=3.64%
+[MOVE_SUB] [19:48:57] LFS CHASE-SKIP (arm preserved) trigger=3.130 arm=3.020 gap=3.64%
+[MOVE_SUB] [19:48:58] LFS CHASE-SKIP (arm preserved) trigger=3.130 arm=3.020 gap=3.64%
+[MOVE_SUB] [19:49:28] STATS ticks=2209 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:50:28] STATS ticks=2365 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:51:07] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:09] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:10] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:10] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:14] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:15] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:16] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:21] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:28] STATS ticks=2523 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:51:41] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:51:59] RYOJ CHASE-SKIP (arm preserved) trigger=4.190 arm=4.020 gap=4.23%
+[MOVE_SUB] [19:52:30] STATS ticks=2619 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:53:30] PCLA BELOW-ARM-SKIP (arm preserved) trigger=5.780 arm=6.020 below=3.99% (cap=3.0%)
+[MOVE_SUB] [19:53:30] STATS ticks=2742 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:54:33] STATS ticks=2886 symbols=68 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB] [19:55:00] 🟩 ENTRY PCLA qty=1612 limit=$6.02 (anomaly@$5.95) stop=$5.64 R=$0.3100 score=11.0
+[MOVE_SUB] [19:55:03] PCLA entry FILLED @ $5.9500 qty=1612 (limit was $6.02)
+[MOVE_SUB] [19:55:34] STATS ticks=3023 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB] [19:56:35] STATS ticks=3183 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB] [19:57:35] STATS ticks=3358 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB] [19:58:35] STATS ticks=3608 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB] signal 15 received — stopping
+[MOVE_SUB] consume loop exited
+[MOVE_SUB] Alpaca PAPER connected — account=PA3700N6RNS2 equity=$29,758
+[MOVE_SUB] starting consume loop
+[MOVE_SUB] [19:59:17] connected to engine (/tmp/warrior_engine.sock) attempt=1
+[MOVE_SUB] [19:59:17] new symbol SBFM — detector + movement_strike instantiated
+[MOVE_SUB] SEED SBFM replayed 32,327 ticks from cache
+[MOVE_SUB] [19:59:17] new symbol CBRG — detector + movement_strike instantiated
+[MOVE_SUB] SEED CBRG replayed 28,994 ticks from cache
+[MOVE_SUB] [19:59:17] new symbol LFS — detector + movement_strike instantiated
+[MOVE_SUB] SEED LFS cache read failed: EOFError('Compressed file ended before the end-of-stream marker was reached')
+[MOVE_SUB] [19:59:17] new symbol SKYQ — detector + movement_strike instantiated
+[MOVE_SUB] SEED SKYQ replayed 4,625 ticks from cache
+[MOVE_SUB] [19:59:17] new symbol PCLA — detector + movement_strike instantiated
+[MOVE_SUB] [19:59:18] PCLA ARMED entry=6.0200 stop=5.9000 R=0.1200 score=11.0 — movement_strike history reset
+[MOVE_SUB] SEED PCLA replayed 134,806 ticks from cache
+[MOVE_SUB] [19:59:18] new symbol CODX — detector + movement_strike instantiated
+[MOVE_SUB] SEED CODX replayed 41,942 ticks from cache
+[MOVE_SUB] [19:59:18] new symbol GOVX — detector + movement_strike instantiated
+[MOVE_SUB] [19:59:18] GOVX ARMED entry=4.0200 stop=3.9200 R=0.1000 score=7.0 — movement_strike history reset
+[MOVE_SUB] SEED GOVX replayed 18,988 ticks from cache
+[MOVE_SUB] [19:59:20] new symbol AEHL — detector + movement_strike instantiated
+[MOVE_SUB] SEED AEHL replayed 5,836 ticks from cache
+[MOVE_SUB] [19:59:20] new symbol PIII — detector + movement_strike instantiated
+[MOVE_SUB] SEED PIII replayed 5,016 ticks from cache
+[MOVE_SUB] [19:59:20] new symbol ONDG — detector + movement_strike instantiated
+[MOVE_SUB] SEED ONDG replayed 19,655 ticks from cache
+[MOVE_SUB] [19:59:20] new symbol GIPR — detector + movement_strike instantiated
+[MOVE_SUB] SEED GIPR replayed 6,287 ticks from cache
+[MOVE_SUB] [19:59:22] new symbol MTVA — detector + movement_strike instantiated
+[MOVE_SUB] [19:59:22] MTVA ARMED entry=4.0200 stop=3.9000 R=0.1200 score=9.0 — movement_strike history reset
+[MOVE_SUB] SEED MTVA replayed 312,371 ticks from cache
+[MOVE_SUB] [19:59:22] new symbol SVRN — detector + movement_strike instantiated
+[MOVE_SUB] SEED SVRN replayed 3,268 ticks from cache
+[MOVE_SUB] [19:59:23] new symbol CORD — detector + movement_strike instantiated
+[MOVE_SUB] SEED CORD replayed 28,961 ticks from cache
+[MOVE_SUB] [19:59:24] new symbol MOBX — detector + movement_strike instantiated
+[MOVE_SUB] SEED MOBX replayed 9,020 ticks from cache
+[MOVE_SUB] [19:59:25] new symbol RYOJ — detector + movement_strike instantiated
+[MOVE_SUB] [19:59:25] RYOJ ARMED entry=4.0200 stop=3.9000 R=0.1200 score=10.0 — movement_strike history reset
+[MOVE_SUB] SEED RYOJ replayed 307,171 ticks from cache
+[MOVE_SUB] [19:59:29] new symbol QUCY — detector + movement_strike instantiated
+[MOVE_SUB] SEED QUCY replayed 27,710 ticks from cache
+[MOVE_SUB] [19:59:30] new symbol WNW — detector + movement_strike instantiated
+[MOVE_SUB] SEED WNW replayed 3,568 ticks from cache
+[MOVE_SUB] [19:59:34] new symbol NOWL — detector + movement_strike instantiated
+[MOVE_SUB] SEED NOWL replayed 32,236 ticks from cache
+[MOVE_SUB] [19:59:34] new symbol RUBI — detector + movement_strike instantiated
+[MOVE_SUB] SEED RUBI replayed 4,244 ticks from cache
+[MOVE_SUB] [19:59:58] new symbol SKK — detector + movement_strike instantiated
+[MOVE_SUB] SEED SKK replayed 1,559 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol ATRA — detector + movement_strike instantiated
+[MOVE_SUB] SEED ATRA replayed 2,305 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol LNKS — detector + movement_strike instantiated
+[MOVE_SUB] SEED LNKS replayed 1,500 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol SUGP — detector + movement_strike instantiated
+[MOVE_SUB] SEED SUGP replayed 2,483 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol SLE — detector + movement_strike instantiated
+[MOVE_SUB] SEED SLE replayed 4,900 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol LESL — detector + movement_strike instantiated
+[MOVE_SUB] SEED LESL replayed 4,384 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol SST — detector + movement_strike instantiated
+[MOVE_SUB] SEED SST replayed 4,535 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol FCHL — detector + movement_strike instantiated
+[MOVE_SUB] SEED FCHL replayed 1,802 ticks from cache
+[MOVE_SUB] [20:00:00] new symbol EDSA — detector + movement_strike instantiated
+[MOVE_SUB] SEED EDSA replayed 2,198 ticks from cache
+[MOVE_SUB] socket closed by peer — reconnecting
+[MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
