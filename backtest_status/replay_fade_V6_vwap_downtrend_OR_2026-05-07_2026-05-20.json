@@ -1,0 +1,192 @@
+{
+  "label": "fade_V6_vwap_downtrend_OR",
+  "start": "2026-05-07",
+  "end": "2026-05-20",
+  "trades": [
+    {
+      "time": "08:57",
+      "entry": 4.05,
+      "stop": 3.88,
+      "r": 0.17,
+      "score": 11.0,
+      "exit": 3.9015,
+      "reason": "move_stop_prox_bail(low=3.90,stop=3.88,buf=0.022)",
+      "pnl": -437,
+      "symbol": "LESL",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:30",
+      "entry": 7.45,
+      "stop": 6.73,
+      "r": 0.72,
+      "score": 11.0,
+      "exit": 7.16,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -181,
+      "symbol": "ONDG",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "10:10",
+      "entry": 3.42,
+      "stop": 3.42,
+      "r": 0.325,
+      "score": 11.0,
+      "exit": 3.93,
+      "reason": "regime_partial(1.5R,qty=1384)",
+      "pnl": 761,
+      "symbol": "QUCY",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:30",
+      "entry": 6.25,
+      "stop": 5.98,
+      "r": 0.27,
+      "score": 11.0,
+      "exit": 6.47,
+      "reason": "topping_wicky_exit_full",
+      "pnl": 367,
+      "symbol": "CORD",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "09:07",
+      "entry": 3.01,
+      "stop": 2.85,
+      "r": 0.16,
+      "score": 11.0,
+      "exit": 3.0,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -28,
+      "symbol": "GOVX",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "08:30",
+      "entry": 4.21,
+      "stop": 4.09,
+      "r": 0.12,
+      "score": 11.0,
+      "exit": 4.11,
+      "reason": "move_stop_prox_bail(low=4.11,stop=4.09,buf=0.020)",
+      "pnl": -417,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "09:54",
+      "entry": 2.355,
+      "stop": 2.355,
+      "r": 0.105,
+      "score": 11.0,
+      "exit": 2.52,
+      "reason": "regime_partial(1.5R,qty=4285)",
+      "pnl": 790,
+      "symbol": "RUBI",
+      "date": "2026-05-19"
+    },
+    {
+      "time": "10:45",
+      "entry": 2.31,
+      "stop": 2.17,
+      "r": 0.14,
+      "score": 11.0,
+      "exit": 2.37,
+      "reason": "topping_wicky_exit_full",
+      "pnl": 193,
+      "symbol": "CODX",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:03",
+      "entry": 2.28,
+      "stop": 2.07,
+      "r": 0.21,
+      "score": 11.0,
+      "exit": 2.27,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -21,
+      "symbol": "MTVA",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:16",
+      "entry": 3.0501,
+      "stop": 2.885,
+      "r": 0.1651,
+      "score": 11.0,
+      "exit": 3.03,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -55,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "09:30",
+      "entry": 1.0697,
+      "stop": 0.91,
+      "r": 0.1597,
+      "score": 11.0,
+      "exit": 1.04,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -84,
+      "symbol": "RUBI",
+      "date": "2026-05-20"
+    }
+  ],
+  "per_day": [
+    {
+      "date": "2026-05-07",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-08",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-11",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-12",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-13",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-14",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-15",
+      "trades": 3,
+      "pnl": 143
+    },
+    {
+      "date": "2026-05-18",
+      "trades": 3,
+      "pnl": -78
+    },
+    {
+      "date": "2026-05-19",
+      "trades": 1,
+      "pnl": 790
+    },
+    {
+      "date": "2026-05-20",
+      "trades": 4,
+      "pnl": 33
+    }
+  ],
+  "total_pnl": 888
+}

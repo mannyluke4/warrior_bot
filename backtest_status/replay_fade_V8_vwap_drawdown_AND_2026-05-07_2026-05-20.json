@@ -1,0 +1,444 @@
+{
+  "label": "fade_V8_vwap_drawdown_AND",
+  "start": "2026-05-07",
+  "end": "2026-05-20",
+  "trades": [
+    {
+      "time": "08:57",
+      "entry": 4.05,
+      "stop": 3.88,
+      "r": 0.17,
+      "score": 11.0,
+      "exit": 3.9015,
+      "reason": "move_stop_prox_bail(low=3.90,stop=3.88,buf=0.022)",
+      "pnl": -437,
+      "symbol": "LESL",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:06",
+      "entry": 3.94,
+      "stop": 3.75,
+      "r": 0.19,
+      "score": 11.0,
+      "exit": 3.9815,
+      "reason": "move_hwm_exit(peak=4.03,dd=50%,hh=3)",
+      "pnl": 109,
+      "symbol": "LESL",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:16",
+      "entry": 4.0246,
+      "stop": 3.75,
+      "r": 0.2746,
+      "score": 99.0,
+      "exit": 4.05,
+      "reason": "move_hwm_exit(peak=4.12,dd=25%,hh=1)",
+      "pnl": 46,
+      "symbol": "LESL",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:30",
+      "entry": 7.45,
+      "stop": 6.73,
+      "r": 0.72,
+      "score": 11.0,
+      "exit": 7.16,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -181,
+      "symbol": "ONDG",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "10:18",
+      "entry": 7.16,
+      "stop": 7.01,
+      "r": 0.15,
+      "score": 12.0,
+      "exit": 7.04,
+      "reason": "move_stop_prox_bail(low=7.04,stop=7.01,buf=0.030)",
+      "pnl": -400,
+      "symbol": "ONDG",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "10:30",
+      "entry": 7.13,
+      "stop": 6.68,
+      "r": 0.45,
+      "score": 99.0,
+      "exit": 7.25,
+      "reason": "move_hwm_exit(peak=7.30,dd=25%,hh=1)",
+      "pnl": 133,
+      "symbol": "ONDG",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "10:10",
+      "entry": 3.42,
+      "stop": 3.42,
+      "r": 0.325,
+      "score": 11.0,
+      "exit": 3.93,
+      "reason": "regime_partial(1.5R,qty=1384)",
+      "pnl": 761,
+      "symbol": "QUCY",
+      "date": "2026-05-15"
+    },
+    {
+      "time": "09:30",
+      "entry": 6.25,
+      "stop": 5.98,
+      "r": 0.27,
+      "score": 11.0,
+      "exit": 6.47,
+      "reason": "topping_wicky_exit_full",
+      "pnl": 367,
+      "symbol": "CORD",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "09:07",
+      "entry": 3.01,
+      "stop": 2.85,
+      "r": 0.16,
+      "score": 11.0,
+      "exit": 3.0,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -28,
+      "symbol": "GOVX",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "08:03",
+      "entry": 4.09,
+      "stop": 3.84,
+      "r": 0.25,
+      "score": 7.5,
+      "exit": 4.15,
+      "reason": "move_hwm_exit(peak=4.18,dd=25%,hh=1)",
+      "pnl": 120,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "08:26",
+      "entry": 4.1303,
+      "stop": 3.84,
+      "r": 0.2903,
+      "score": 99.0,
+      "exit": 4.19,
+      "reason": "move_hwm_exit(peak=4.23,dd=25%,hh=0)",
+      "pnl": 103,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "08:55",
+      "entry": 4.29,
+      "stop": 4.06,
+      "r": 0.23,
+      "score": 50.0,
+      "exit": 4.35,
+      "reason": "move_hwm_exit(peak=4.39,dd=25%,hh=0)",
+      "pnl": 130,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "08:59",
+      "entry": 4.2405,
+      "stop": 4.06,
+      "r": 0.1805,
+      "score": 99.0,
+      "exit": 4.31,
+      "reason": "move_hwm_exit(peak=4.35,dd=25%,hh=1)",
+      "pnl": 193,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "09:27",
+      "entry": 4.43,
+      "stop": 4.16,
+      "r": 0.27,
+      "score": 50.0,
+      "exit": 4.22,
+      "reason": "move_stop_prox_bail(low=4.22,stop=4.16,buf=0.060)",
+      "pnl": -389,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "10:17",
+      "entry": 4.31,
+      "stop": 3.85,
+      "r": 0.46,
+      "score": 50.0,
+      "exit": 3.94,
+      "reason": "move_stop_prox_bail(low=3.94,stop=3.85,buf=0.090)",
+      "pnl": -402,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "10:37",
+      "entry": 3.95,
+      "stop": 3.85,
+      "r": 0.1,
+      "score": 99.0,
+      "exit": 4.02,
+      "reason": "move_hwm_exit(peak=4.05,dd=25%,hh=1)",
+      "pnl": 350,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "11:34",
+      "entry": 4.04,
+      "stop": 3.78,
+      "r": 0.26,
+      "score": 11.0,
+      "exit": 3.9315,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -188,
+      "symbol": "QUCY",
+      "date": "2026-05-18"
+    },
+    {
+      "time": "09:54",
+      "entry": 2.355,
+      "stop": 2.355,
+      "r": 0.105,
+      "score": 11.0,
+      "exit": 2.52,
+      "reason": "regime_partial(1.5R,qty=4285)",
+      "pnl": 790,
+      "symbol": "RUBI",
+      "date": "2026-05-19"
+    },
+    {
+      "time": "10:16",
+      "entry": 15.49,
+      "stop": 15.05,
+      "r": 0.44,
+      "score": 12.0,
+      "exit": 15.81,
+      "reason": "move_hwm_exit(peak=15.94,dd=25%,hh=0)",
+      "pnl": 364,
+      "symbol": "CBRG",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:24",
+      "entry": 15.8,
+      "stop": 15.05,
+      "r": 0.75,
+      "score": 99.0,
+      "exit": 15.21,
+      "reason": "move_stop_prox_bail(low=15.21,stop=15.05,buf=0.160)",
+      "pnl": -393,
+      "symbol": "CBRG",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:45",
+      "entry": 2.31,
+      "stop": 2.17,
+      "r": 0.14,
+      "score": 11.0,
+      "exit": 2.37,
+      "reason": "topping_wicky_exit_full",
+      "pnl": 193,
+      "symbol": "CODX",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:03",
+      "entry": 2.28,
+      "stop": 2.07,
+      "r": 0.21,
+      "score": 11.0,
+      "exit": 2.27,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -21,
+      "symbol": "MTVA",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "09:56",
+      "entry": 2.76,
+      "stop": 2.6506,
+      "r": 0.1094,
+      "score": 12.0,
+      "exit": 2.8101,
+      "reason": "move_hwm_exit(peak=2.85,dd=25%,hh=1)",
+      "pnl": 229,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:00",
+      "entry": 2.82,
+      "stop": 2.6506,
+      "r": 0.1694,
+      "score": 99.0,
+      "exit": 2.87,
+      "reason": "move_hwm_exit(peak=2.91,dd=25%,hh=1)",
+      "pnl": 148,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:16",
+      "entry": 3.0501,
+      "stop": 2.885,
+      "r": 0.1651,
+      "score": 11.0,
+      "exit": 3.03,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -55,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:39",
+      "entry": 3.04,
+      "stop": 2.94,
+      "r": 0.1,
+      "score": 50.0,
+      "exit": 3.1,
+      "reason": "move_hwm_exit(peak=3.14,dd=25%,hh=0)",
+      "pnl": 300,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:45",
+      "entry": 3.2402,
+      "stop": 2.94,
+      "r": 0.3002,
+      "score": 99.0,
+      "exit": 3.35,
+      "reason": "move_hwm_exit(peak=3.39,dd=25%,hh=1)",
+      "pnl": 183,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "11:24",
+      "entry": 3.429,
+      "stop": 3.23,
+      "r": 0.199,
+      "score": 50.0,
+      "exit": 3.48,
+      "reason": "move_hwm_exit(peak=3.50,dd=25%,hh=1)",
+      "pnl": 128,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "11:46",
+      "entry": 3.33,
+      "stop": 3.23,
+      "r": 0.1,
+      "score": 99.0,
+      "exit": 3.4,
+      "reason": "move_hwm_exit(peak=3.43,dd=25%,hh=0)",
+      "pnl": 350,
+      "symbol": "QUCY",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "09:30",
+      "entry": 1.0697,
+      "stop": 0.91,
+      "r": 0.1597,
+      "score": 11.0,
+      "exit": 1.04,
+      "reason": "topping_wicky_exit_full",
+      "pnl": -84,
+      "symbol": "RUBI",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:07",
+      "entry": 5.99,
+      "stop": 5.67,
+      "r": 0.32,
+      "score": 11.0,
+      "exit": 6.08,
+      "reason": "move_hwm_exit(peak=6.13,dd=25%,hh=0)",
+      "pnl": 141,
+      "symbol": "WNW",
+      "date": "2026-05-20"
+    },
+    {
+      "time": "10:11",
+      "entry": 6.4,
+      "stop": 5.67,
+      "r": 0.73,
+      "score": 99.0,
+      "exit": 6.49,
+      "reason": "move_hwm_exit(peak=6.53,dd=25%,hh=0)",
+      "pnl": 62,
+      "symbol": "WNW",
+      "date": "2026-05-20"
+    }
+  ],
+  "per_day": [
+    {
+      "date": "2026-05-07",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-08",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-11",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-12",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-13",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-14",
+      "trades": 0,
+      "pnl": 0
+    },
+    {
+      "date": "2026-05-15",
+      "trades": 7,
+      "pnl": 31
+    },
+    {
+      "date": "2026-05-18",
+      "trades": 10,
+      "pnl": 256
+    },
+    {
+      "date": "2026-05-19",
+      "trades": 1,
+      "pnl": 790
+    },
+    {
+      "date": "2026-05-20",
+      "trades": 14,
+      "pnl": 1545
+    }
+  ],
+  "total_pnl": 2622
+}
