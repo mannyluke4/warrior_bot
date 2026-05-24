@@ -83,7 +83,8 @@ RISK_DOLLARS = float(os.getenv("WB_SUBBOT_RISK_DOLLARS", "1000"))
 PROBE_SIZE_MULT = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
 MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "50000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
-LOG_TAG = "[MOVE_SUB]"
+_SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
+LOG_TAG = f"[MOVE_SUB_{_SUBBOT_LOG_SUFFIX}]" if _SUBBOT_LOG_SUFFIX else "[MOVE_SUB]"
 
 
 def now_iso_et() -> str:

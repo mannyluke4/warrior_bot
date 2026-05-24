@@ -21,7 +21,10 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 cleanup() {
     echo "=== TRAP: cleanup at $(date) ==="
     [ -n "$BOT_PID" ] && kill "$BOT_PID" 2>/dev/null || true
-    [ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
+    # A/B/C sub-bot variants (2026-05-23+)
+    [ -n "$SUBBOT_PID_A" ] && kill "$SUBBOT_PID_A" 2>/dev/null || true
+    [ -n "$SUBBOT_PID_B" ] && kill "$SUBBOT_PID_B" 2>/dev/null || true
+    [ -n "$SUBBOT_PID_C" ] && kill "$SUBBOT_PID_C" 2>/dev/null || true
     [ -n "$SCANNER_PID" ] && kill "$SCANNER_PID" 2>/dev/null || true
     [ -n "$GW_WATCHDOG_PID" ] && kill "$GW_WATCHDOG_PID" 2>/dev/null || true
     [ -n "$CAFFEINE_PID" ] && kill "$CAFFEINE_PID" 2>/dev/null || true
@@ -34,7 +37,9 @@ cleanup() {
 trap cleanup EXIT
 
 BOT_PID=""
-SUBBOT_PID=""
+SUBBOT_PID_A=""
+SUBBOT_PID_B=""
+SUBBOT_PID_C=""
 SCANNER_PID=""
 GW_WATCHDOG_PID=""
 CAFFEINE_PID=""   # init early so cleanup trap can reference safely under set -u
@@ -218,7 +223,15 @@ WB_BROKER=alpaca \
 WB_EXPECTED_BROKER=alpaca \
 WB_TICK_LEVEL_ARM=1 \
 WB_ENGINE_PUBLISH_ENABLED=1 \
+WB_SQUEEZE_ENABLED=0 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+# NB 2026-05-23: WB_SQUEEZE_ENABLED=0 disables main bot's own squeeze
+# entries for the 3-4 week A/B/C fade-gate test. This frees the
+# MAIN_APCA account for Variant B sub-bot use (otherwise both processes
+# would manage positions on the same Alpaca paper account → conflict).
+# Per cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md
+# §"Change 1" escape hatch. Engine publisher stays ON so sub-bots
+# still get tick stream. Re-enable squeeze on 6/22 after A/B/C ends.
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 
@@ -249,62 +262,115 @@ echo "HEALTH_OK: Bot connected at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 #
 # Failure here is NON-FATAL — main bot keeps running even if sub-bot
 # can't start (engine_publisher just has no consumer).
-SUBBOT_LOG="$LOG_DIR/${TODAY}_move_strike_subbot.log"
-echo "Starting move_strike_subbot.py (MOVE_STRIKE + HWM v6; Setup B)..."
-WB_BT_MOVE_STRIKE=1 \
-WB_BT_MOVE_HWM_EXIT=1 \
-WB_BT_MOVE_LOOKBACK=5 \
-WB_BT_MOVE_MULT=2.0 \
-WB_BT_MOVE_STOP_LOOKBACK=10 \
-WB_BT_MOVE_CHASE_PCT=2.0 \
-WB_BT_MOVE_HWM_DRAWDOWN_PCT=0.25 \
-WB_BT_MOVE_HWM_WIDE_DD_PCT=0.50 \
-WB_BT_MOVE_HWM_HH_THRESHOLD=2 \
-WB_BT_MOVE_HWM_MIN_GAIN_PCT=2.0 \
-WB_BT_MOVE_HWM_STOP_PROX_PCT=25 \
-WB_BT_MOVE_HWM_NOACT_MIN=30 \
-WB_BT_MOVE_REENTRY_GREEN=1 \
-WB_BT_MOVE_REENTRY_LOOKBACK=10 \
-WB_BT_MOVE_REENTRY_WINDOW_MIN=30 \
-WB_BT_MOVE_REENTRY_MAX_PER_SYM=1 \
-WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR=1 \
-WB_BT_MOVE_STAY_ARMED=1 \
-WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN=15 \
-WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT=2.0 \
-WB_BT_MOVE_MAX_BELOW_ARM_PCT=3.0 \
-WB_SUBBOT_RISK_DOLLARS=1000 \
-WB_REGIME_SHIFT_ENABLED=1 \
-WB_REGIME_SHIFT_RATIO_THRESHOLD=4.0 \
-WB_REGIME_SHIFT_BASELINE_BARS=5 \
-WB_REGIME_SHIFT_TARGET_R=1.5 \
-WB_REGIME_SHIFT_PARTIAL_PCT=0.9 \
-WB_REGIME_SHIFT_REQUIRE_ARMED=1 \
-WB_REGIME_SHIFT_REQUIRE_GREEN_BAR=1 \
-WB_REGIME_SHIFT_RUNNER_STOP_TO_BE=1 \
-WB_REGIME_SHIFT_MAX_PER_SYMBOL=1 \
-WB_MOVE_FADE_VWAP_ENABLED=1 \
-  python3 move_strike_subbot.py >> "$SUBBOT_LOG" 2>&1 &
-SUBBOT_PID=$!
-echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
+# ════════════════════════════════════════════════════════════════════
+# 8a. Live A/B/C Fade-Gate Test (2026-05-23 deploy, ends ~2026-06-17).
+# Per cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md.
+#
+# Three parallel sub-bot processes, each connected to the engine socket
+# (multi-reader) and authenticated to its OWN Alpaca paper account.
+# Same code, same strategy stack — only the fade-gate config differs.
+#
+#   Variant A (control):  regime-shift ON, no fade-gate
+#   Variant B (V1 VWAP):  regime-shift ON, VWAP fade-gate
+#   Variant C (V4 BodyCV): regime-shift ON, body-CV fade-gate
+#
+# 3-4 weeks of live paper data settles V1 vs V4 (YTD said V1, Stage-1
+# said V4, $100K disagreement). Real-money go-live pushed 6/04 → 6/22.
+#
+# Account assignment — keys come from .env:
+#   A → APCA_API_KEY_ID / APCA_API_SECRET_KEY
+#       (original sub-bot account, account PA3700N6RNS2)
+#   B → MAIN_APCA_API_KEY_ID / MAIN_APCA_API_SECRET_KEY
+#       (main bot's Alpaca, account PA3TP2ZON4MF — main bot's squeeze
+#        is paused for the duration so this account is free)
+#   C → VARIANT_C_APCA_API_KEY_ID / VARIANT_C_APCA_API_SECRET_KEY
+#       (new account, keys provided 2026-05-23+)
+# ════════════════════════════════════════════════════════════════════
 
-# Sub-bot health check — non-fatal (don't abort the session if it fails).
+# Extract variant C keys from .env (variants A and B use existing keys).
+VARIANT_C_KEY=$(grep "^VARIANT_C_APCA_API_KEY_ID=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+VARIANT_C_SECRET=$(grep "^VARIANT_C_APCA_API_SECRET_KEY=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+A_KEY=$(grep "^APCA_API_KEY_ID=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+A_SECRET=$(grep "^APCA_API_SECRET_KEY=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
+
+# Shared MOVE_STRIKE + HWM + regime-shift env block. The only thing
+# that varies across variants is the fade-gate vars (added per-launch).
+# Exported here so each `env ... python` invocation inherits.
+launch_subbot() {
+    local suffix="$1"
+    local apca_key="$2"
+    local apca_secret="$3"
+    local fade_extra="$4"
+    local log_path="$LOG_DIR/${TODAY}_move_strike_subbot_${suffix}.log"
+    echo "Starting sub-bot variant $suffix (log: $log_path)..."
+    if [ -z "$apca_key" ] || [ -z "$apca_secret" ]; then
+        echo "WARN: variant $suffix has no API keys in .env — skipping launch."
+        return 0
+    fi
+    # shellcheck disable=SC2086  # fade_extra intentionally splits
+    env \
+        WB_BT_MOVE_STRIKE=1 \
+        WB_BT_MOVE_HWM_EXIT=1 \
+        WB_BT_MOVE_LOOKBACK=5 \
+        WB_BT_MOVE_MULT=2.0 \
+        WB_BT_MOVE_STOP_LOOKBACK=10 \
+        WB_BT_MOVE_CHASE_PCT=2.0 \
+        WB_BT_MOVE_HWM_DRAWDOWN_PCT=0.25 \
+        WB_BT_MOVE_HWM_WIDE_DD_PCT=0.50 \
+        WB_BT_MOVE_HWM_HH_THRESHOLD=2 \
+        WB_BT_MOVE_HWM_MIN_GAIN_PCT=2.0 \
+        WB_BT_MOVE_HWM_STOP_PROX_PCT=25 \
+        WB_BT_MOVE_HWM_NOACT_MIN=30 \
+        WB_BT_MOVE_REENTRY_GREEN=1 \
+        WB_BT_MOVE_REENTRY_LOOKBACK=10 \
+        WB_BT_MOVE_REENTRY_WINDOW_MIN=30 \
+        WB_BT_MOVE_REENTRY_MAX_PER_SYM=1 \
+        WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR=1 \
+        WB_BT_MOVE_STAY_ARMED=1 \
+        WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN=15 \
+        WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT=2.0 \
+        WB_BT_MOVE_MAX_BELOW_ARM_PCT=3.0 \
+        WB_SUBBOT_RISK_DOLLARS=1000 \
+        WB_REGIME_SHIFT_ENABLED=1 \
+        WB_REGIME_SHIFT_RATIO_THRESHOLD=4.0 \
+        WB_REGIME_SHIFT_BASELINE_BARS=5 \
+        WB_REGIME_SHIFT_TARGET_R=1.5 \
+        WB_REGIME_SHIFT_PARTIAL_PCT=0.9 \
+        WB_REGIME_SHIFT_REQUIRE_ARMED=1 \
+        WB_REGIME_SHIFT_REQUIRE_GREEN_BAR=1 \
+        WB_REGIME_SHIFT_RUNNER_STOP_TO_BE=1 \
+        WB_REGIME_SHIFT_MAX_PER_SYMBOL=1 \
+        WB_SUBBOT_LOG_SUFFIX="$suffix" \
+        WB_SUBBOT_APCA_API_KEY_ID="$apca_key" \
+        WB_SUBBOT_APCA_API_SECRET_KEY="$apca_secret" \
+        $fade_extra \
+        python3 move_strike_subbot.py >> "$log_path" 2>&1 &
+    eval "SUBBOT_PID_$suffix=\$!"
+    local pid_var="SUBBOT_PID_$suffix"
+    eval "echo \"  variant $suffix PID: \$$pid_var\""
+}
+
+# Launch all three.
+launch_subbot A "$A_KEY" "$A_SECRET" ""
+launch_subbot B "$MAIN_APCA_KEY" "$MAIN_APCA_SECRET" "WB_MOVE_FADE_VWAP_ENABLED=1"
+launch_subbot C "$VARIANT_C_KEY" "$VARIANT_C_SECRET" "WB_MOVE_FADE_BODY_CV_THRESHOLD=2.0"
+
+# Health check — non-fatal (any single variant crash doesn't abort the test).
 sleep 15
-if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
-    echo "WARN: move_strike_subbot.py crashed within 15s — continuing without sub-bot."
-    echo "      See $SUBBOT_LOG for details."
-    SUBBOT_PID=""
-else
-    echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
-fi
-# echo "Sub-bot started (PID: $SUBBOT_PID, log: $SUBBOT_LOG)"
-# sleep 15
-# if ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
-#     echo "WARN: bot_alpaca_subbot.py crashed within 15s — continuing without sub-bot."
-#     echo "      See $SUBBOT_LOG for details."
-#     SUBBOT_PID=""
-# else
-#     echo "Sub-bot health check passed (still running after 15s, PID: $SUBBOT_PID)"
-# fi
+for suffix in A B C; do
+    pid_var="SUBBOT_PID_$suffix"
+    pid="${!pid_var}"
+    if [ -z "$pid" ]; then
+        echo "  variant $suffix not launched (missing keys)"
+        continue
+    fi
+    if ! kill -0 "$pid" 2>/dev/null; then
+        echo "WARN: variant $suffix crashed within 15s — see logs/${TODAY}_move_strike_subbot_${suffix}.log"
+        eval "SUBBOT_PID_$suffix=\"\""
+    else
+        echo "  variant $suffix health-check OK (PID $pid)"
+    fi
+done
 
 # 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
 # DISABLED 2026-05-19 per Manny's call — running squeeze-only tomorrow.
@@ -363,11 +429,15 @@ while true; do
         echo "WARN: framework.run_live died at $(date). Squeeze main bot continuing alone."
         FRAMEWORK_PID=""
     fi
-    # Setup B sub-bot is non-critical — log if it dies but keep watching Setup A.
-    if [ -n "$SUBBOT_PID" ] && ! kill -0 "$SUBBOT_PID" 2>/dev/null; then
-        echo "WARN: bot_alpaca_subbot.py (Setup B) died at $(date). Setup A continuing alone."
-        SUBBOT_PID=""
-    fi
+    # A/B/C sub-bot variants are non-critical — log if any die but keep watching the others.
+    for suffix in A B C; do
+        pid_var="SUBBOT_PID_$suffix"
+        pid="${!pid_var}"
+        if [ -n "$pid" ] && ! kill -0 "$pid" 2>/dev/null; then
+            echo "WARN: sub-bot variant $suffix died at $(date)."
+            eval "SUBBOT_PID_$suffix=\"\""
+        fi
+    done
     sleep 60 || true
 done
 
@@ -375,16 +445,27 @@ done
 echo "=== Shutting down at $(date) ==="
 kill "$BOT_PID" 2>/dev/null || true
 [ -n "$FRAMEWORK_PID" ] && kill "$FRAMEWORK_PID" 2>/dev/null || true
-[ -n "$SUBBOT_PID" ] && kill "$SUBBOT_PID" 2>/dev/null || true
+[ -n "$SUBBOT_PID_A" ] && kill "$SUBBOT_PID_A" 2>/dev/null || true
+[ -n "$SUBBOT_PID_B" ] && kill "$SUBBOT_PID_B" 2>/dev/null || true
+[ -n "$SUBBOT_PID_C" ] && kill "$SUBBOT_PID_C" 2>/dev/null || true
 sleep 5
 pkill -f "bot_v3_hybrid.py" 2>/dev/null || true
-pkill -f "bot_alpaca_subbot.py" 2>/dev/null || true
+pkill -f "move_strike_subbot.py" 2>/dev/null || true
 pkill -f "framework.run_live" 2>/dev/null || true
+
+# 10a. A/B/C daily comparison report (2026-05-23+, runs for ~3-4 weeks).
+# Non-fatal — failure here doesn't block log push.
+echo "Generating A/B/C daily comparison report..."
+cd ~/warrior_bot_v2
+./venv/bin/python scripts/abc_compare_daily.py "${TODAY}" \
+    > "$LOG_DIR/${TODAY}_abc_compare.log" 2>&1 \
+    || echo "WARN: abc_compare_daily.py failed — see $LOG_DIR/${TODAY}_abc_compare.log"
 
 # 11. Commit and push logs
 echo "Pushing logs..."
 cd ~/warrior_bot_v2
 git add -f logs/ 2>/dev/null || true
+git add -f cowork_reports/${TODAY}_abc_daily_report.md cowork_reports/abc_running_totals.json 2>/dev/null || true
 git commit -m "auto: v3 daily logs ${TODAY}" 2>/dev/null || true
 git push origin v2-ibkr-migration 2>/dev/null || echo "WARN: git push failed"
 
