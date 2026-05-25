@@ -1737,3 +1737,5 @@
 [MOVE_SUB] SEED EDSA replayed 2,198 ticks from cache
 [MOVE_SUB] socket closed by peer — reconnecting
 [MOVE_SUB] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB] signal 15 received — stopping
+[MOVE_SUB] consume loop exited
