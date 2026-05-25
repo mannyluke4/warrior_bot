@@ -195,11 +195,14 @@ echo "Live scanner started (PID: $SCANNER_PID)"
 sleep 5
 
 # 7. Start the V3 hybrid bot
-# 2026-05-07: switched to Alpaca execution on a dedicated paper account
-# (PA3VP0LB4OID) — IBKR paper margin requirements were rejecting squeeze
-# entries (e.g. ATRA $202-short reject on 2026-05-07). MAIN_APCA_API_*
-# keys come from .env. Sub-bot continues to use the original APCA_API_*
-# keys for its own account.
+# 2026-05-26: main bot routes orders to IBKR paper (port 4002) via
+# WB_BROKER=ibkr. This frees the MAIN_APCA Alpaca account to host
+# Variant B of the live A/B/C fade-gate test (see launch_subbot B below)
+# while keeping the main bot's squeeze strategy running in parallel.
+# Replaces the 2026-05-23 escape hatch (WB_SQUEEZE_ENABLED=0). The
+# Alpaca creds are still injected because state.alpaca is constructed at
+# startup regardless of backend; order flow goes through state.broker
+# (IBKRBroker) per bot_v3_hybrid.py:4842.
 # .env is not sourced by this script (the bot uses load_dotenv internally),
 # so extract the main-bot keys inline for the env-var injection below.
 MAIN_APCA_KEY=$(grep "^MAIN_APCA_API_KEY_ID=" ~/warrior_bot_v2/.env | cut -d'=' -f2 | tr -d ' ')
@@ -208,7 +211,7 @@ if [ -z "$MAIN_APCA_KEY" ] || [ -z "$MAIN_APCA_SECRET" ]; then
     echo "FATAL: MAIN_APCA_API_KEY_ID / MAIN_APCA_API_SECRET_KEY missing from .env"
     exit 1
 fi
-echo "Starting bot_v3_hybrid.py (Alpaca execution — main bot account PA3VP0LB4OID)..."
+echo "Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)..."
 cd ~/warrior_bot_v2
 # WB_TICK_LEVEL_ARM=1 — tick-level arming live as of 2026-05-19 per Manny's
 # call. Backtest with this flag shows -53% vs $290K mechanical baseline,
@@ -219,19 +222,11 @@ cd ~/warrior_bot_v2
 # by editing this line or env-override.
 APCA_API_KEY_ID="$MAIN_APCA_KEY" \
 APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
-WB_BROKER=alpaca \
-WB_EXPECTED_BROKER=alpaca \
+WB_BROKER=ibkr \
+WB_EXPECTED_BROKER=ibkr \
 WB_TICK_LEVEL_ARM=1 \
 WB_ENGINE_PUBLISH_ENABLED=1 \
-WB_SQUEEZE_ENABLED=0 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
-# NB 2026-05-23: WB_SQUEEZE_ENABLED=0 disables main bot's own squeeze
-# entries for the 3-4 week A/B/C fade-gate test. This frees the
-# MAIN_APCA account for Variant B sub-bot use (otherwise both processes
-# would manage positions on the same Alpaca paper account → conflict).
-# Per cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md
-# §"Change 1" escape hatch. Engine publisher stays ON so sub-bots
-# still get tick stream. Re-enable squeeze on 6/22 after A/B/C ends.
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 
