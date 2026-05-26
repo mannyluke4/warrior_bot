@@ -226,7 +226,15 @@ WB_BROKER=ibkr \
 WB_EXPECTED_BROKER=ibkr \
 WB_TICK_LEVEL_ARM=1 \
 WB_ENGINE_PUBLISH_ENABLED=1 \
+WB_SUB_WATCHDOG_ENABLED=1 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+# WB_SUB_WATCHDOG_ENABLED=1 — observability watchdog for IBKR Tier-2
+# subscription wedges, shipped 2026-05-26 per
+# cowork_reports/2026-05-26_subscription_watchdog_directive.md.
+# Emits SUBSCRIPTION_AUDIT JSON lines into $LOG_FILE; consumed by
+# scripts/abc_compare_daily.py. Side-effect-free for v1 — no
+# auto-resubscribe action until 1-2 days of data prove the trigger
+# heuristics are sound.
 BOT_PID=$!
 echo "Bot started (PID: $BOT_PID)"
 

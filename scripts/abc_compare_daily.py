@@ -155,6 +155,81 @@ def parse_log(log_path: Path) -> dict:
     }
 
 
+SUBSCRIPTION_AUDIT_PREFIX = "SUBSCRIPTION_AUDIT "
+
+
+def parse_subscription_audit(log_path: Path) -> dict:
+    """Scan the main bot daily log for SUBSCRIPTION_AUDIT JSON lines.
+    Returns aggregated per-symbol stats for the Data Quality Audit
+    section of the report. Per cowork_reports/2026-05-26_subscription_watchdog_directive.md.
+    """
+    if not log_path.exists():
+        return {"error": "no_main_bot_log", "log_path": str(log_path)}
+
+    per_sym: dict[str, dict] = {}
+    total_lines = 0
+    parse_errors = 0
+    try:
+        with open(log_path, "r", errors="replace") as f:
+            for line in f:
+                idx = line.find(SUBSCRIPTION_AUDIT_PREFIX)
+                if idx < 0:
+                    continue
+                payload_str = line[idx + len(SUBSCRIPTION_AUDIT_PREFIX):].strip()
+                try:
+                    p = json.loads(payload_str)
+                except Exception:
+                    parse_errors += 1
+                    continue
+                total_lines += 1
+                sym = p.get("sym")
+                if not sym:
+                    continue
+                rec = per_sym.setdefault(sym, {
+                    "ok": 0, "suspect": 0, "wedge": 0,
+                    "min_ratio_obs_to_truth": None,
+                    "max_ratio_obs_to_median": None,
+                    "last_truth_v_5m": None,
+                    "last_obs_v_5m": None,
+                })
+                status = p.get("status", "")
+                if status == "OK":
+                    rec["ok"] += 1
+                elif status == "HEURISTIC_SUSPECT":
+                    rec["suspect"] += 1
+                elif status == "DIRECT_QUERY_WEDGE":
+                    rec["wedge"] += 1
+                elif status == "DIRECT_QUERY_OK":
+                    rec["ok"] += 1
+                r_obs_truth = p.get("ratio_obs_to_truth")
+                if r_obs_truth is not None:
+                    cur = rec["min_ratio_obs_to_truth"]
+                    if cur is None or r_obs_truth < cur:
+                        rec["min_ratio_obs_to_truth"] = r_obs_truth
+                    rec["last_truth_v_5m"] = p.get("truth_v_5m")
+                r_obs_med = p.get("ratio_obs_to_median")
+                if r_obs_med is not None:
+                    cur = rec["max_ratio_obs_to_median"]
+                    if cur is None or r_obs_med > cur:
+                        rec["max_ratio_obs_to_median"] = r_obs_med
+                if p.get("obs_v_5m") is not None:
+                    rec["last_obs_v_5m"] = p["obs_v_5m"]
+    except Exception as e:
+        return {"error": str(e), "log_path": str(log_path)}
+
+    suspect_syms = sorted(s for s, r in per_sym.items() if r["suspect"] > 0)
+    wedge_syms = sorted(s for s, r in per_sym.items() if r["wedge"] > 0)
+    return {
+        "per_sym": per_sym,
+        "total_audit_lines": total_lines,
+        "parse_errors": parse_errors,
+        "suspect_symbols": suspect_syms,
+        "wedge_symbols": wedge_syms,
+        "any_wedge": bool(wedge_syms),
+        "log_path": str(log_path),
+    }
+
+
 def load_running_totals() -> dict:
     if RUNNING_TOTALS_PATH.exists():
         with open(RUNNING_TOTALS_PATH) as f:
@@ -191,12 +266,24 @@ def main():
             "alpaca": alpaca, "logs": logs,
         })
 
+    # Subscription watchdog audit (main bot log, not per-variant)
+    main_bot_log = LOG_DIR / f"{target_date}_daily.log"
+    sub_audit = parse_subscription_audit(main_bot_log)
+
     # Build report
     lines = []
     lines.append(f"# A/B/C Daily Report — {target_date}")
     lines.append("")
     lines.append("Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.")
     lines.append("")
+    # Top-line data-quality flag — banner only if direct-query wedges occurred.
+    if sub_audit.get("any_wedge"):
+        lines.append(
+            "⚠️ **DATA QUALITY DEGRADED** — one or more symbols had "
+            "`DIRECT_QUERY_WEDGE` audit events today. Variant comparison "
+            "below reflects partial data. See Data Quality Audit section."
+        )
+        lines.append("")
     lines.append("## Account / log snapshot")
     lines.append("")
     lines.append("| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Fade blocks | Regime triggers |")
@@ -238,6 +325,56 @@ def main():
             if syms:
                 lines.append(f"- Symbols traded: {', '.join(syms)}")
         lines.append("")
+
+    # Data Quality Audit (subscription watchdog ingest)
+    lines.append("## Data Quality Audit")
+    lines.append("")
+    if sub_audit.get("error"):
+        lines.append(f"- audit log error: `{sub_audit['error']}` "
+                     f"(path: `{sub_audit.get('log_path')}`)")
+        lines.append("")
+    elif sub_audit.get("total_audit_lines", 0) == 0:
+        lines.append("- No `SUBSCRIPTION_AUDIT` lines found in the main bot log. "
+                     "Watchdog likely disabled (`WB_SUB_WATCHDOG_ENABLED=0`) "
+                     "or bot not started.")
+        lines.append("")
+    else:
+        suspect_syms = sub_audit.get("suspect_symbols", [])
+        wedge_syms = sub_audit.get("wedge_symbols", [])
+        lines.append(
+            f"- Audit lines parsed: {sub_audit['total_audit_lines']}"
+            + (f" (parse errors: {sub_audit['parse_errors']})"
+               if sub_audit.get("parse_errors") else "")
+        )
+        lines.append(f"- Symbols flagged HEURISTIC_SUSPECT: {len(suspect_syms)}")
+        lines.append(f"- Symbols with DIRECT_QUERY_WEDGE events: {len(wedge_syms)}")
+        lines.append("")
+        # Per-symbol detail table — sorted by wedge count desc, then suspect count desc.
+        per_sym = sub_audit.get("per_sym", {}) or {}
+        flagged = [
+            (s, r) for s, r in per_sym.items()
+            if r["suspect"] > 0 or r["wedge"] > 0
+        ]
+        if flagged:
+            flagged.sort(key=lambda x: (-x[1]["wedge"], -x[1]["suspect"], x[0]))
+            lines.append("| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |")
+            lines.append("|---|---:|---:|---:|---:|---|")
+            for sym, r in flagged:
+                obs_truth = (
+                    "n/a" if r["min_ratio_obs_to_truth"] is None
+                    else f"{r['min_ratio_obs_to_truth']:.3f}"
+                )
+                last_pair = "n/a"
+                if r.get("last_obs_v_5m") is not None and r.get("last_truth_v_5m") is not None:
+                    last_pair = f"{r['last_obs_v_5m']} / {r['last_truth_v_5m']}"
+                lines.append(
+                    f"| {sym} | {r['ok']} | {r['suspect']} | {r['wedge']} | "
+                    f"{obs_truth} | {last_pair} |"
+                )
+            lines.append("")
+        else:
+            lines.append("All symbols clean — no `SUBSCRIPTION_AUDIT` flags fired today.")
+            lines.append("")
 
     # Running totals
     totals = load_running_totals()

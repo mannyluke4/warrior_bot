@@ -69,6 +69,7 @@ from epl_framework import (
     GraduationContext, EPLWatchlist, StrategyRegistry, PositionArbitrator,
 )
 from epl_mp_reentry import EPLMPReentry, EPL_MP_ENABLED
+from subscription_watchdog import SubscriptionWatchdog
 import session_state as ss
 
 ET = pytz.timezone("US/Eastern")
@@ -4844,6 +4845,17 @@ def main():
     )
     print(f"Broker: {BROKER_BACKEND.upper()}", flush=True)
 
+    # Subscription watchdog (observability for Tier-2 reqMktData wedges).
+    # Per cowork_reports/2026-05-26_subscription_watchdog_directive.md.
+    # Gated by WB_SUB_WATCHDOG_ENABLED; emits SUBSCRIPTION_AUDIT JSON lines
+    # consumed by scripts/abc_compare_daily.py.
+    state.subscription_watchdog = SubscriptionWatchdog(state, state.ib)
+    print(
+        f"SubscriptionWatchdog: "
+        f"{'ENABLED' if state.subscription_watchdog.enabled else 'disabled'}",
+        flush=True,
+    )
+
     # Runtime broker-mismatch assert (2026-05-18 — Patch 4 of bundled deploy).
     _assert_broker_matches()
 
@@ -4977,6 +4989,11 @@ def main():
 
                 # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
                 manage_tier1_subscriptions()
+
+                # Subscription wedge audit (every 60s heuristic, 300s direct
+                # query when WB_SUB_WATCHDOG_ENABLED=1). Side-effect-free —
+                # emits SUBSCRIPTION_AUDIT JSON for downstream ingest.
+                state.subscription_watchdog.tick(now)
 
                 # Session-end force-exit (Cowork directive 2026-05-15 P0.2).
                 # Fires once at 19:55 ET. Flattens any open position via
