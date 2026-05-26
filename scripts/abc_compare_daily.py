@@ -157,6 +157,32 @@ def parse_log(log_path: Path) -> dict:
 
 SUBSCRIPTION_AUDIT_PREFIX = "SUBSCRIPTION_AUDIT "
 
+# 2026-05-26: orphan-position accounting bug corrupted bot's reported
+# daily_pnl. From this date forward, we cross-check bot-reported P&L
+# against broker-truth equity delta. See:
+# cowork_reports/2026-05-26_sub_bot_orphan_audit.md
+# cowork_reports/2026-05-26_sub_bot_orphan_fix_directive.md
+ORPHAN_BUG_INCIDENT_DATE = "2026-05-26"
+BOT_VS_BROKER_DIVERGENCE_THRESHOLD = 50.0  # USD
+
+
+def extract_bot_daily_pnl(log_path: Path) -> float | None:
+    """Grep the last STATS line of a sub-bot log for daily_pnl. None on
+    missing log or no STATS line. Used to cross-check against broker truth."""
+    if not log_path.exists():
+        return None
+    last = None
+    try:
+        with open(log_path, "r", errors="replace") as f:
+            for line in f:
+                if "STATS" in line and "daily_pnl=" in line:
+                    m = re.search(r"daily_pnl=([-+,\d]+)", line)
+                    if m:
+                        last = float(m.group(1).replace(",", ""))
+    except Exception:
+        return None
+    return last
+
 
 def parse_subscription_audit(log_path: Path) -> dict:
     """Scan the main bot daily log for SUBSCRIPTION_AUDIT JSON lines.
@@ -270,6 +296,26 @@ def main():
     main_bot_log = LOG_DIR / f"{target_date}_daily.log"
     sub_audit = parse_subscription_audit(main_bot_log)
 
+    # Bot-reported vs broker-truth P&L cross-check (post-orphan-bug 2026-05-26).
+    bot_vs_broker = []
+    any_divergent = False
+    for r in rows:
+        bot_pnl = extract_bot_daily_pnl(
+            LOG_DIR / f"{target_date}_move_strike_subbot_{r['suffix']}.log"
+        )
+        broker_pnl = r["alpaca"].get("day_pnl")
+        gap = None
+        divergent = False
+        if bot_pnl is not None and broker_pnl is not None:
+            gap = broker_pnl - bot_pnl
+            if abs(gap) > BOT_VS_BROKER_DIVERGENCE_THRESHOLD:
+                divergent = True
+                any_divergent = True
+        bot_vs_broker.append({
+            "suffix": r["suffix"], "bot_pnl": bot_pnl,
+            "broker_pnl": broker_pnl, "gap": gap, "divergent": divergent,
+        })
+
     # Build report
     lines = []
     lines.append(f"# A/B/C Daily Report — {target_date}")
@@ -283,6 +329,55 @@ def main():
             "`DIRECT_QUERY_WEDGE` audit events today. Variant comparison "
             "below reflects partial data. See Data Quality Audit section."
         )
+        lines.append("")
+
+    # 2026-05-26: orphan-bug special-case (excluded for variant comparison).
+    if target_date == ORPHAN_BUG_INCIDENT_DATE:
+        lines.append("## ⚠️ Variant P&L — 2026-05-26 (DATA CORRUPTED BY ORPHAN BUG)")
+        lines.append("")
+        lines.append("| Variant | Bot reported | Broker truth | Gap | Note |")
+        lines.append("|---|---:|---:|---:|---|")
+        for x in bot_vs_broker:
+            bp = fmt_money(x["bot_pnl"])
+            br = fmt_money(x["broker_pnl"])
+            gp = fmt_money(x["gap"]) if x["gap"] is not None else "n/a"
+            if x["gap"] is None:
+                note = "missing log or alpaca error"
+            elif x["gap"] > 0:
+                note = f"Bot under-reported by ${abs(x['gap']):,.0f}"
+            elif x["gap"] < 0:
+                note = f"Bot over-reported by ${abs(x['gap']):,.0f}"
+            else:
+                note = "matched within rounding"
+            lines.append(f"| {x['suffix']} | {bp} | {br} | {gp} | {note} |")
+        lines.append("")
+        lines.append("**Variant comparison excluded for 2026-05-26.** Orphan-position "
+                     "accounting bug (audit: `2026-05-26_sub_bot_orphan_audit.md`, "
+                     "fix: `2026-05-26_sub_bot_orphan_fix_directive.md`) silently "
+                     "corrupted bot's reported P&L. Broker-truth numbers above are "
+                     "documented for historical record; they should NOT be used to "
+                     "inform the variant decision because per-variant orphan exposure "
+                     "varied (different exits = different orphan timing = different "
+                     "lucky-flatten outcomes).")
+        lines.append("")
+    elif any_divergent:
+        # Post-fix divergence flag — should be rare after 2026-05-26 fix.
+        lines.append("## ⚠️ Bot vs Broker P&L divergence detected")
+        lines.append("")
+        lines.append("| Variant | Bot reported | Broker truth | Gap |")
+        lines.append("|---|---:|---:|---:|")
+        for x in bot_vs_broker:
+            tag = "⚠️" if x["divergent"] else "✓"
+            lines.append(
+                f"| {x['suffix']} {tag} | {fmt_money(x['bot_pnl'])} | "
+                f"{fmt_money(x['broker_pnl'])} | "
+                f"{fmt_money(x['gap']) if x['gap'] is not None else 'n/a'} |"
+            )
+        lines.append("")
+        lines.append(f"Divergence threshold: ±${BOT_VS_BROKER_DIVERGENCE_THRESHOLD:.0f}. "
+                     "Investigate any flagged variant — likely partial-fill or "
+                     "orphan-class accounting issue. Bot's daily_pnl is no longer "
+                     "the canonical signal; broker truth is.")
         lines.append("")
     lines.append("## Account / log snapshot")
     lines.append("")
@@ -378,8 +473,16 @@ def main():
 
     # Running totals
     totals = load_running_totals()
+    # 2026-05-26 orphan-bug: mark today's record as excluded for comparison.
+    if target_date == ORPHAN_BUG_INCIDENT_DATE:
+        data_corrected = "excluded_for_orphan_bug"
+    elif any_divergent:
+        data_corrected = "broker_truth_used"
+    else:
+        data_corrected = False
     day_record = {
         "date": target_date,
+        "data_corrected": data_corrected,
         "variants": {
             r["suffix"]: {
                 "day_pnl": r["alpaca"].get("day_pnl", 0),

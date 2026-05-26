@@ -304,6 +304,12 @@ class MoveStrikeSubBot:
         # Lever 3 (2026-05-26): periodic broker reconciliation.
         self.reconcile_interval_sec = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
         self._last_reconcile_at: Optional[float] = None
+        # Lever 2 (2026-05-26): active cancel + replace on slow exits.
+        self.exit_retry_enabled = os.getenv("WB_EXIT_RETRY_ENABLED", "1") == "1"
+        self.exit_max_retries = int(os.getenv("WB_EXIT_MAX_RETRIES", "3"))
+        self.exit_aggressive_discount_pct = float(os.getenv("WB_EXIT_AGGRESSIVE_DISCOUNT_PCT", "0.005"))
+        self.exit_retry_timeout_sec = int(os.getenv("WB_EXIT_RETRY_TIMEOUT_SEC", "10"))
+        self.exit_safety_floor_pct = float(os.getenv("WB_EXIT_SAFETY_FLOOR_PCT", "0.50"))
 
         # --- REGIME-SHIFT Stage 2 (2026-05-23) ---
         # Mirror of simulate.py's regime-shift config. Per
@@ -442,6 +448,25 @@ class MoveStrikeSubBot:
         except Exception as e:
             print(f"{LOG_TAG} ALPACA_AWARE_FAIL {symbol}: {e!r} — using base", flush=True)
             return base_limit
+
+    def _get_current_bid(self, symbol: str) -> Optional[float]:
+        """Fetch current bid from Alpaca data API for Lever 2 retry pricing.
+        Returns None on quote failure (caller falls back to keep-alive)."""
+        if self.alpaca_data is None:
+            return None
+        try:
+            from alpaca.data.requests import StockLatestQuoteRequest
+            q_resp = self.alpaca_data.get_stock_latest_quote(
+                StockLatestQuoteRequest(symbol_or_symbols=symbol)
+            )
+            q = q_resp.get(symbol) if isinstance(q_resp, dict) else None
+            if q is None:
+                return None
+            bid = float(q.bid_price) if getattr(q, "bid_price", None) else 0.0
+            return bid if bid > 0 else None
+        except Exception as e:
+            print(f"{LOG_TAG} BID FETCH FAIL {symbol}: {e!r}", flush=True)
+            return None
 
     def _init_alpaca(self) -> None:
         key = os.getenv("WB_SUBBOT_APCA_API_KEY_ID") or os.getenv("APCA_API_KEY_ID")
@@ -1234,22 +1259,15 @@ class MoveStrikeSubBot:
         """Submit an exit SELL LIMIT and reconcile the bot's position state
         against the actual fill outcome.
 
-        Lever 1 (2026-05-26, per 2026-05-26_sub_bot_orphan_fix_directive.md):
-        handle three outcomes distinctly so we never clear self.position
-        while the broker is still holding shares.
+        Lever 1 (2026-05-26): three-case handling so we never clear
+        self.position while the broker holds shares.
+        Lever 2 (2026-05-26): on zero-fill, cancel + chase the bid up to
+        WB_EXIT_MAX_RETRIES times before falling through to keep-alive.
 
-          - FULL fill (sell_fill_qty == p.qty): flatten position, record
-            realized P&L on the actual fills.
-          - PARTIAL fill (0 < sell_fill_qty < p.qty): record realized P&L on
-            the filled portion, decrement p.qty by sell_fill_qty, keep the
-            position alive. exit_pending=False so the next tick can re-attempt.
-          - ZERO fill (sell_fill_qty == 0): no P&L recorded, position
-            untouched. exit_pending=False so the next tick can re-attempt.
+        Per cowork_reports/2026-05-26_sub_bot_orphan_fix_directive.md.
 
         Gate: if a previous SELL is still pending (p.exit_pending), bail
-        without re-submitting. Avoids stacking multiple SELLs on the same
-        residual qty (Alpaca would reject the duplicate, but logging is
-        cleaner if we don't even try).
+        without re-submitting. Avoids stacking SELLs on the same residual.
         """
         p = self.position
         if p is None:
@@ -1258,41 +1276,87 @@ class MoveStrikeSubBot:
             # A previous SELL is still parked at the broker. Don't stack a
             # second one — wait for that one to fill or be cancelled.
             return
-        # Exit SELL LIMIT slightly below current price for likely fill
-        # (sub-bot mirrors main bot's never-market-order rule).
+        # Initial limit: SELL slightly below ref_price for likely fill.
         slip = max(0.05, ref_price * 0.005)
         base_limit = round(ref_price - slip, 2)
-        # Alpaca-aware sell limit (2026-05-22): tighten toward alpaca_bid
-        # when our IBKR-derived sell limit is above Alpaca's actual bid.
         aware_limit = self._compute_alpaca_aware_limit(p.symbol, ref_price, "SELL")
         limit = min(aware_limit, base_limit)
+        ordered_qty = p.qty
         _tag = "REGIME_SHIFT" if p.setup_type == "regime_shift" else "MOVE_STRIKE"
         print(
-            f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {_tag} {p.symbol} qty={p.qty} "
+            f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {_tag} {p.symbol} qty={ordered_qty} "
             f"limit=${limit:.2f} (ref=${ref_price:.2f}) reason={reason}",
             flush=True,
         )
+        entry_basis = p.fill_entry_price if p.fill_entry_price is not None else p.entry
+        safety_floor = round(entry_basis * self.exit_safety_floor_pct, 4)
+
+        max_attempts = 1 + (self.exit_max_retries if self.exit_retry_enabled else 0)
+        attempt = 0
         sell_fill_px: Optional[float] = None
         sell_fill_qty = 0
-        ordered_qty = p.qty
-        try:
-            req = LimitOrderRequest(
-                symbol=p.symbol, qty=ordered_qty, side=OrderSide.SELL,
-                time_in_force=TimeInForce.DAY, limit_price=limit,
-                extended_hours=True,
-            )
-            p.exit_pending = True
-            order = self.alpaca.submit_order(order_data=req)
-            p.order_id_sell = str(order.id) if hasattr(order, "id") else None
-            sell_fill_px, sell_fill_qty = self._wait_for_fill(p.order_id_sell, timeout=15)
-        except Exception as e:
-            # Submission itself failed. No order at broker → no exit pending.
-            p.exit_pending = False
-            p.order_id_sell = None
-            print(f"{LOG_TAG} EXIT REJECT {p.symbol}: {e!r}", flush=True)
-            return
+        timeout = 15  # initial timeout per directive
+        prev_order_id: Optional[str] = None
 
-        entry_basis = p.fill_entry_price if p.fill_entry_price is not None else p.entry
+        while attempt < max_attempts:
+            attempt += 1
+            try:
+                req = LimitOrderRequest(
+                    symbol=p.symbol, qty=ordered_qty, side=OrderSide.SELL,
+                    time_in_force=TimeInForce.DAY, limit_price=limit,
+                    extended_hours=True,
+                )
+                p.exit_pending = True
+                order = self.alpaca.submit_order(order_data=req)
+                p.order_id_sell = str(order.id) if hasattr(order, "id") else None
+                prev_order_id = p.order_id_sell
+                sell_fill_px, sell_fill_qty = self._wait_for_fill(p.order_id_sell, timeout=timeout)
+            except Exception as e:
+                p.exit_pending = False
+                p.order_id_sell = None
+                print(f"{LOG_TAG} EXIT REJECT {p.symbol}: {e!r}", flush=True)
+                return
+
+            # Outcome dispatch — break out of retry loop on terminal results.
+            if sell_fill_px is not None and sell_fill_qty > 0:
+                # Full or partial — exit retry loop, handle below.
+                break
+
+            # Zero fill. Either retry or fall through to keep-alive.
+            if attempt >= max_attempts:
+                break
+
+            # Lever 2 retry path: cancel the stuck order, fetch new bid,
+            # re-price aggressively.
+            try:
+                if prev_order_id:
+                    self.alpaca.cancel_order_by_id(prev_order_id)
+                    time.sleep(0.5)
+            except Exception as e:
+                # Cancel failure is non-fatal — the order may have already
+                # been filled or cancelled between our wait and now. Log + continue.
+                print(f"{LOG_TAG} EXIT CANCEL FAIL {p.symbol}: {e!r}", flush=True)
+
+            new_bid = self._get_current_bid(p.symbol)
+            if new_bid is None:
+                # No bid available → can't chase. Break to keep-alive.
+                print(
+                    f"{LOG_TAG} EXIT RETRY {p.symbol} attempt={attempt}: "
+                    f"no bid available, falling through to keep-alive",
+                    flush=True,
+                )
+                break
+
+            new_limit = round(new_bid * (1 - self.exit_aggressive_discount_pct), 2)
+            new_limit = max(new_limit, safety_floor)
+            print(
+                f"{LOG_TAG} EXIT RETRY {p.symbol} attempt={attempt}/{max_attempts - 1} "
+                f"bid=${new_bid:.4f} new_limit=${new_limit:.4f} (floor=${safety_floor:.4f})",
+                flush=True,
+            )
+            limit = new_limit
+            timeout = self.exit_retry_timeout_sec  # shorter on retries — bid moves fast
+            # Loop continues; new SELL submitted at the head of next iteration.
 
         # ── CASE 1: Full fill — flatten position. ─────────────────────────
         if sell_fill_px is not None and sell_fill_qty >= ordered_qty:
@@ -1316,8 +1380,6 @@ class MoveStrikeSubBot:
         if sell_fill_px is not None and sell_fill_qty > 0:
             realized_pnl = (sell_fill_px - entry_basis) * sell_fill_qty
             self.daily_pnl += realized_pnl
-            # daily_trades_closed not incremented for partials — counts
-            # logical close events, not broker fill legs.
             residual = ordered_qty - sell_fill_qty
             p.qty = residual
             p.order_id_sell = None
@@ -1331,18 +1393,13 @@ class MoveStrikeSubBot:
             )
             return
 
-        # ── CASE 3: Zero fill — position untouched. ──────────────────────
-        # No P&L. Order ID cleared so next exit attempt creates a fresh one.
-        # The previous SELL may still be parked at broker — Lever 2
-        # (cancel+replace) will handle cleanup; for now we accept that a
-        # duplicate SELL on next tick may get rejected with insufficient_qty
-        # until the parked order is cancelled or fills naturally.
+        # ── CASE 3: Zero fill (after all retries) — keep-alive + CRITICAL. ─
         p.order_id_sell = None
         p.exit_pending = False
         print(
-            f"{LOG_TAG} EXIT NO-FILL {p.symbol} qty={ordered_qty} "
-            f"ref=${ref_price:.2f} reason={reason} — position alive, "
-            f"will retry exit on next tick",
+            f"{LOG_TAG} 🔥 EXIT NO-FILL {p.symbol} qty={ordered_qty} "
+            f"ref=${ref_price:.2f} reason={reason} after {attempt} attempt(s) — "
+            f"position alive, will retry exit on next tick",
             flush=True,
         )
         return
