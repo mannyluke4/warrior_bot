@@ -172,6 +172,11 @@ class SubPosition:
         "order_id_buy", "order_id_sell", "is_reentry", "reentry_tag",
         "fill_entry_price", "fill_entry_qty",
         "setup_type", "move_partial_fired", "partial_pnl",
+        # Lever 1 (2026-05-26): track exit-in-flight to gate against
+        # double-submission when a SELL is still parked at the broker
+        # awaiting fill. Set True before submit; cleared on full fill
+        # (position itself goes away) or partial/no-fill (retry next tick).
+        "exit_pending",
     )
 
     def __init__(self, symbol: str, entry: float, stop: float, r: float,
@@ -205,6 +210,7 @@ class SubPosition:
         self.setup_type = setup_type
         self.move_partial_fired = False
         self.partial_pnl = 0.0
+        self.exit_pending = False
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -295,6 +301,9 @@ class MoveStrikeSubBot:
         self.seq_audit_enabled = os.getenv("WB_SUBBOT_SEQ_AUDIT", "1") == "1"
         self._last_engine_seq: dict[str, int] = {}
         self._dropped_tick_count: int = 0
+        # Lever 3 (2026-05-26): periodic broker reconciliation.
+        self.reconcile_interval_sec = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
+        self._last_reconcile_at: Optional[float] = None
 
         # --- REGIME-SHIFT Stage 2 (2026-05-23) ---
         # Mirror of simulate.py's regime-shift config. Per
@@ -1222,8 +1231,32 @@ class MoveStrikeSubBot:
         self.position.hh_count = self._sym_hh_count.get(symbol, 0)
 
     def _close_position(self, reason: str, ref_price: float) -> None:
+        """Submit an exit SELL LIMIT and reconcile the bot's position state
+        against the actual fill outcome.
+
+        Lever 1 (2026-05-26, per 2026-05-26_sub_bot_orphan_fix_directive.md):
+        handle three outcomes distinctly so we never clear self.position
+        while the broker is still holding shares.
+
+          - FULL fill (sell_fill_qty == p.qty): flatten position, record
+            realized P&L on the actual fills.
+          - PARTIAL fill (0 < sell_fill_qty < p.qty): record realized P&L on
+            the filled portion, decrement p.qty by sell_fill_qty, keep the
+            position alive. exit_pending=False so the next tick can re-attempt.
+          - ZERO fill (sell_fill_qty == 0): no P&L recorded, position
+            untouched. exit_pending=False so the next tick can re-attempt.
+
+        Gate: if a previous SELL is still pending (p.exit_pending), bail
+        without re-submitting. Avoids stacking multiple SELLs on the same
+        residual qty (Alpaca would reject the duplicate, but logging is
+        cleaner if we don't even try).
+        """
         p = self.position
         if p is None:
+            return
+        if p.exit_pending:
+            # A previous SELL is still parked at the broker. Don't stack a
+            # second one — wait for that one to fill or be cancelled.
             return
         # Exit SELL LIMIT slightly below current price for likely fill
         # (sub-bot mirrors main bot's never-market-order rule).
@@ -1239,47 +1272,164 @@ class MoveStrikeSubBot:
             f"limit=${limit:.2f} (ref=${ref_price:.2f}) reason={reason}",
             flush=True,
         )
-        sell_fill_px = None
+        sell_fill_px: Optional[float] = None
         sell_fill_qty = 0
+        ordered_qty = p.qty
         try:
             req = LimitOrderRequest(
-                symbol=p.symbol, qty=p.qty, side=OrderSide.SELL,
+                symbol=p.symbol, qty=ordered_qty, side=OrderSide.SELL,
                 time_in_force=TimeInForce.DAY, limit_price=limit,
                 extended_hours=True,
             )
+            p.exit_pending = True
             order = self.alpaca.submit_order(order_data=req)
             p.order_id_sell = str(order.id) if hasattr(order, "id") else None
             sell_fill_px, sell_fill_qty = self._wait_for_fill(p.order_id_sell, timeout=15)
         except Exception as e:
+            # Submission itself failed. No order at broker → no exit pending.
+            p.exit_pending = False
+            p.order_id_sell = None
             print(f"{LOG_TAG} EXIT REJECT {p.symbol}: {e!r}", flush=True)
-        # Real-fill P&L (2026-05-22): use actual entry + exit fill prices when
-        # both are known. Falls back to anomaly→ref approximation if either
-        # fill price is missing (order didn't fill cleanly).
+            return
+
         entry_basis = p.fill_entry_price if p.fill_entry_price is not None else p.entry
-        exit_basis = sell_fill_px if sell_fill_px is not None else ref_price
-        qty_basis = sell_fill_qty if sell_fill_qty > 0 else p.qty
-        real_pnl = (exit_basis - entry_basis) * qty_basis
-        self.daily_pnl += real_pnl
-        self.daily_trades_closed += 1
-        if p.fill_entry_price is not None and sell_fill_px is not None:
-            tag = "real"
-        else:
-            tag = "approx"
+
+        # ── CASE 1: Full fill — flatten position. ─────────────────────────
+        if sell_fill_px is not None and sell_fill_qty >= ordered_qty:
+            real_pnl = (sell_fill_px - entry_basis) * sell_fill_qty
+            self.daily_pnl += real_pnl
+            self.daily_trades_closed += 1
+            print(
+                f"{LOG_TAG} real P&L={real_pnl:+,.0f} daily={self.daily_pnl:+,.0f} "
+                f"(trade #{self.daily_trades_closed}) "
+                f"entry=${entry_basis:.4f} exit=${sell_fill_px:.4f} qty={sell_fill_qty}",
+                flush=True,
+            )
+            self._register_reentry_watch(p)
+            if self.move_stay_armed:
+                self._move_stay_armed_last_exit_min[p.symbol] = now_minute_et()
+                self._move_stay_armed_last_exit_price[p.symbol] = float(ref_price)
+            self.position = None
+            return
+
+        # ── CASE 2: Partial fill — record realized, keep residual alive. ──
+        if sell_fill_px is not None and sell_fill_qty > 0:
+            realized_pnl = (sell_fill_px - entry_basis) * sell_fill_qty
+            self.daily_pnl += realized_pnl
+            # daily_trades_closed not incremented for partials — counts
+            # logical close events, not broker fill legs.
+            residual = ordered_qty - sell_fill_qty
+            p.qty = residual
+            p.order_id_sell = None
+            p.exit_pending = False
+            print(
+                f"{LOG_TAG} EXIT PARTIAL {p.symbol}: filled {sell_fill_qty} "
+                f"@ ${sell_fill_px:.4f} (entry=${entry_basis:.4f}) realized "
+                f"P&L=${realized_pnl:+,.2f}; residual {residual} kept alive, "
+                f"will retry exit on next tick",
+                flush=True,
+            )
+            return
+
+        # ── CASE 3: Zero fill — position untouched. ──────────────────────
+        # No P&L. Order ID cleared so next exit attempt creates a fresh one.
+        # The previous SELL may still be parked at broker — Lever 2
+        # (cancel+replace) will handle cleanup; for now we accept that a
+        # duplicate SELL on next tick may get rejected with insufficient_qty
+        # until the parked order is cancelled or fills naturally.
+        p.order_id_sell = None
+        p.exit_pending = False
         print(
-            f"{LOG_TAG} {tag} P&L={real_pnl:+,.0f} daily={self.daily_pnl:+,.0f} "
-            f"(trade #{self.daily_trades_closed}) "
-            f"entry=${entry_basis:.4f} exit=${exit_basis:.4f} qty={qty_basis}",
+            f"{LOG_TAG} EXIT NO-FILL {p.symbol} qty={ordered_qty} "
+            f"ref=${ref_price:.2f} reason={reason} — position alive, "
+            f"will retry exit on next tick",
             flush=True,
         )
-        # Set up re-entry watch (cycle reset is inside _register_reentry_watch).
-        # Done BEFORE clearing self.position so the position fields are
-        # still valid in the snapshot.
-        self._register_reentry_watch(p)
-        # Record stay-armed close info for cool-down + continuation gate.
-        if self.move_stay_armed:
-            self._move_stay_armed_last_exit_min[p.symbol] = now_minute_et()
-            self._move_stay_armed_last_exit_price[p.symbol] = float(ref_price)
-        self.position = None
+        return
+
+    # ──────────────────────────────────────────────────────────────────
+    # Lever 3 (2026-05-26): periodic broker reconciliation.
+    # ──────────────────────────────────────────────────────────────────
+    def _reconcile_with_broker(self) -> None:
+        """Compare bot's view of position state against the broker's truth.
+
+        Two divergence cases handled:
+          - Broker has a position the bot doesn't track → adopt with
+            conservative ±5% stop/target defaults, mark setup_type as
+            'orphan_adopted'. Only adopts when self.position is None
+            (sub-bot is single-position; can't manage two).
+          - Bot tracks a position the broker doesn't have → flatten the
+            bot's internal state (no broker exposure to manage).
+
+        Idempotent: prints only on state change. Read-only call to Alpaca
+        wrapped in try/except so a transient network error doesn't crash
+        the loop.
+
+        Per cowork_reports/2026-05-26_sub_bot_orphan_fix_directive.md
+        §Lever 3 sub-bot.
+        """
+        if self.alpaca is None:
+            return
+        try:
+            broker_positions = self.alpaca.get_all_positions()
+        except Exception as e:
+            print(f"{LOG_TAG} RECONCILE FAIL: {e!r}", flush=True)
+            return
+
+        broker_syms = {p.symbol: p for p in broker_positions}
+        bot_sym = self.position.symbol if self.position else None
+
+        # Case A: bot tracks something broker doesn't have → flatten locally.
+        if bot_sym is not None and bot_sym not in broker_syms:
+            print(
+                f"{LOG_TAG} RECONCILE FLATTEN {bot_sym}: bot tracked but "
+                f"broker has no shares — clearing local state",
+                flush=True,
+            )
+            self.position = None
+            bot_sym = None
+
+        # Case B: broker has positions the bot doesn't track.
+        for sym, bpos in broker_syms.items():
+            if sym == bot_sym:
+                continue  # bot already manages this one
+            try:
+                adopted_qty = int(float(bpos.qty))
+                avg_entry = float(bpos.avg_entry_price)
+            except (ValueError, TypeError, AttributeError):
+                continue
+            if adopted_qty <= 0:
+                # Short position — out of scope; sub-bot is long-only.
+                continue
+            if self.position is not None:
+                # Already managing a different symbol; can't adopt a second.
+                # Log once per cycle so operator sees the unhandled orphan.
+                print(
+                    f"{LOG_TAG} RECONCILE ORPHAN-UNHANDLED {sym} qty={adopted_qty} "
+                    f"avg=${avg_entry:.4f} (bot busy with {self.position.symbol}) — "
+                    f"manual intervention required",
+                    flush=True,
+                )
+                continue
+            # Adopt with conservative ±5% defaults. Mark setup_type so
+            # exit handlers (if they branch on setup_type) treat it as a
+            # special case rather than MOVE_STRIKE / regime_shift logic.
+            adopted_stop = round(avg_entry * 0.95, 4)
+            adopted = SubPosition(
+                symbol=sym, entry=avg_entry, stop=adopted_stop,
+                r=avg_entry - adopted_stop, qty=adopted_qty, score=0.0,
+                time_et=now_iso_et(), setup_type="orphan_adopted",
+            )
+            # Treat broker's avg as the canonical entry-fill price.
+            adopted.fill_entry_price = avg_entry
+            adopted.fill_entry_qty = adopted_qty
+            self.position = adopted
+            print(
+                f"{LOG_TAG} RECONCILE ADOPT {sym} qty={adopted_qty} "
+                f"avg=${avg_entry:.4f} stop=${adopted_stop:.4f} "
+                f"setup=orphan_adopted — managing residual until exit",
+                flush=True,
+            )
 
     # ──────────────────────────────────────────────────────────────────
     # Socket consumer loop
@@ -1327,7 +1477,7 @@ class MoveStrikeSubBot:
                     print(f"{LOG_TAG} decode error: {e!r} on {line[:120]!r}", flush=True)
                     continue
                 self._dispatch(msg)
-            # Periodic stats
+            # Periodic stats + broker reconciliation (Lever 3, 2026-05-26).
             if time.time() - last_stats > 60:
                 print(
                     f"{LOG_TAG} [{now_iso_et()}] STATS ticks={self.ticks_received} "
@@ -1336,6 +1486,15 @@ class MoveStrikeSubBot:
                     flush=True,
                 )
                 last_stats = time.time()
+                # Lever 3: periodic broker reconcile to catch any orphans
+                # the exit code path left behind. Idempotent — logs only
+                # on state change.
+                if (
+                    self._last_reconcile_at is None
+                    or (time.time() - self._last_reconcile_at) >= self.reconcile_interval_sec
+                ):
+                    self._reconcile_with_broker()
+                    self._last_reconcile_at = time.time()
 
     def _connect_with_retry(self) -> Optional[socket.socket]:
         attempt = 0

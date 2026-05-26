@@ -130,6 +130,8 @@ TBT_ENABLED = os.getenv("WB_TBT_ENABLED", "0") == "1"
 TBT_MAX_SUBSCRIPTIONS = int(os.getenv("WB_TBT_MAX", "5"))
 # Stage 3 — promotion/demotion policy.
 TBT_MANAGE_INTERVAL_SEC = int(os.getenv("WB_TBT_MANAGE_SEC", "30"))   # how often to re-rank
+# Lever 3 (2026-05-26): periodic broker reconciliation cadence.
+RECONCILE_INTERVAL_SEC = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
 TBT_COOLDOWN_SEC = int(os.getenv("WB_TBT_COOLDOWN_SEC", "300"))        # min Tier-1 hold time
 TBT_VOLUME_RESERVE_N = max(1, TBT_MAX_SUBSCRIPTIONS // 2)              # "active hunt" reserve
 # Priority weights — see DIRECTIVE_TICKBYTICK_MIGRATION.md.
@@ -412,6 +414,8 @@ class BotState:
         self.tbt_subscribed_at: dict = {}           # symbol → datetime promoted (cooldown reference)
         # Stage 3 — promotion/demotion management state.
         self.last_tier1_manage = None                       # datetime of last manage_tier1 cycle
+        # Lever 3 (2026-05-26) — periodic broker reconciliation last-run.
+        self.last_reconcile_at = None
         self.tier1_volume_buckets: dict = {}                # symbol → list[(ts, vol)] last 5 1m bars
         self.tier1_volume_rank: dict = {}                   # symbol → 1-based rank in top-N volume reserve
         # Short strategy detector (WB_SHORT_ENABLED). Separate from long path.
@@ -759,7 +763,12 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
         return
 
     fill_price, filled_qty = wait_for_fill(sell.order_id, timeout=15)
-    if filled_qty > 0 and fill_price is not None:
+
+    # Lever 1 (2026-05-26, per 2026-05-26_sub_bot_orphan_fix_directive.md):
+    # handle full vs partial vs zero fill distinctly so we never pop the
+    # position while the broker still holds shares.
+    if filled_qty >= qty and fill_price is not None:
+        # ── CASE 1: Full fill — flatten. ───────────────────────────────
         pnl = (fill_price - pos["entry"]) * filled_qty
         r = (fill_price - pos["entry"]) / max(pos["entry"] - pos["stop"], 0.0001)
         print(f"[WB] {symbol} EXITED @ ${fill_price:.4f} pnl=${pnl:+,.2f} r_mult={r:+.2f}",
@@ -770,18 +779,90 @@ def place_wave_breakout_exit(symbol: str, msg: str) -> None:
             "pnl": pnl, "r_mult": r, "reason": reason,
             "entry_time": pos["entry_time"], "exit_time": datetime.now(ET),
         })
-    else:
-        print(f"[WB] {symbol} EXIT NO-FILL — manual review", flush=True)
-
-    state.wb_positions.pop(symbol, None)
-    if symbol in state.wb_detectors:
-        state.wb_detectors[symbol].mark_exited()
-    persist_wb_state()
+        state.wb_positions.pop(symbol, None)
+        if symbol in state.wb_detectors:
+            state.wb_detectors[symbol].mark_exited()
+        persist_wb_state()
+        return
+    if filled_qty > 0 and fill_price is not None:
+        # ── CASE 2: Partial fill — record realized P&L, decrement qty. ─
+        pnl = (fill_price - pos["entry"]) * filled_qty
+        r = (fill_price - pos["entry"]) / max(pos["entry"] - pos["stop"], 0.0001)
+        state.wb_closed_trades.append({
+            "symbol": symbol, "setup_type": "wave_breakout",
+            "entry": pos["entry"], "exit": fill_price, "qty": filled_qty,
+            "pnl": pnl, "r_mult": r, "reason": reason + "_partial",
+            "entry_time": pos["entry_time"], "exit_time": datetime.now(ET),
+        })
+        residual = qty - filled_qty
+        pos["qty"] = residual
+        print(f"[WB] {symbol} EXIT PARTIAL filled={filled_qty} @ ${fill_price:.4f} "
+              f"residual={residual} kept alive (pnl=${pnl:+,.2f} on filled portion)",
+              flush=True)
+        persist_wb_state()
+        return
+    # ── CASE 3: Zero fill — position untouched, retry next tick. ───────
+    print(f"[WB] {symbol} EXIT NO-FILL — position alive, will retry next tick "
+          f"(reason={reason} ref=${ref_price:.4f})", flush=True)
+    return
 
 
 # ══════════════════════════════════════════════════════════════════════
 # Position Safety (Fixes 1-5 from DIRECTIVE_V3_POSITION_SYNC.md)
 # ══════════════════════════════════════════════════════════════════════
+
+def reconcile_positions_periodic():
+    """Lever 3 (2026-05-26): periodic broker reconciliation.
+
+    Compares state.open_position (and state.wb_positions) against the
+    broker's truth. Handles the two divergence cases:
+      1. Bot tracks position the broker doesn't have → clear local state
+         (no broker exposure remains; the bot was holding a phantom).
+      2. Broker has position the bot doesn't track → delegate to
+         reconcile_positions_on_startup() to adopt or halt.
+
+    Idempotent for periodic invocation: prints only when state diverges,
+    not on every clean check. Gated by `state.last_reconcile_at` so it
+    only runs every WB_RECONCILE_INTERVAL_SEC.
+
+    Per cowork_reports/2026-05-26_sub_bot_orphan_fix_directive.md
+    §Lever 3 main bot.
+    """
+    try:
+        broker_positions = state.broker.get_positions()
+    except Exception as e:
+        print(f"  RECONCILE FAIL: {e!r}", flush=True)
+        return
+    broker_syms = {p.symbol for p in broker_positions}
+
+    # Case 1: bot has open_position broker doesn't → flatten locally.
+    op = state.open_position
+    if op is not None and op.get("symbol") not in broker_syms:
+        sym = op.get("symbol")
+        print(f"  RECONCILE FLATTEN: {sym} — bot tracked but broker has no shares; "
+              f"clearing state.open_position", flush=True)
+        state.open_position = None
+
+    # Case 2: bot has wb_positions broker doesn't → flatten locally.
+    if state.wb_positions:
+        wb_syms = list(state.wb_positions.keys())
+        for sym in wb_syms:
+            if sym not in broker_syms:
+                print(f"  RECONCILE FLATTEN WB: {sym} — bot tracked but broker "
+                      f"has no shares; clearing wb_positions", flush=True)
+                state.wb_positions.pop(sym, None)
+        if any(s for s in wb_syms if s not in broker_syms):
+            try:
+                persist_wb_state()
+            except Exception:
+                pass
+
+    # Case 3: broker has positions the bot doesn't track — adopt-or-halt.
+    # Reuse the startup function's logic (it already handles WB-vs-squeeze
+    # split + adopt + halt). The function prints "Clean start" if there's
+    # nothing to do, but that's acceptable noise once per minute.
+    reconcile_positions_on_startup()
+
 
 def reconcile_positions_on_startup():
     """Fix 1: Check broker for positions the bot doesn't know about."""
@@ -3445,6 +3526,13 @@ def manage_exit(symbol: str, price: float):
     if not pos.get('fill_confirmed', False):
         return
 
+    # Lever 1 gate (2026-05-26): if a previous exit submission is still
+    # awaiting verification (async fill-poll in progress), don't stack
+    # another SELL. The verify thread clears exit_in_flight on terminal
+    # status (filled / partial / no-fill).
+    if pos.get('exit_in_flight', False):
+        return
+
     # Update peak (persist on advance — see cowork review note on write
     # frequency: peaks advance only on new highs, not every tick, so ~10–50
     # writes per active trade is the realistic upper bound).
@@ -3870,26 +3958,15 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
     entry_price = pos["entry"]
     setup_type = pos["setup_type"]
 
-    # Synchronous state update: clear / decrement position IMMEDIATELY so
-    # the next manage_exit tick doesn't see stale qty and try to double-exit.
-    # P&L accounting is separately deferred to the verify thread below.
-    remaining = pos["qty"] - qty
-    if remaining <= 0:
-        state.open_position = None
-    else:
-        pos["qty"] = remaining
+    # Lever 1 (2026-05-26, per 2026-05-26_sub_bot_orphan_fix_directive.md):
+    # do NOT mutate state.open_position synchronously. Set exit_in_flight
+    # to gate manage_exit() against double-exits, then defer the state
+    # change to verify_exit_fill where we have authoritative fill info.
+    # Old behavior (cleared on `remaining <= 0`) created orphans when the
+    # broker only partial-filled or didn't fill at all — bot thought flat,
+    # broker still held shares.
+    pos["exit_in_flight"] = True
 
-    # Async verify-and-book: poll broker for the exit order's final state,
-    # then record P&L using the ACTUAL filled_avg_price and filled_qty
-    # (not the intended `price` / `qty` we passed in). This eliminates the
-    # ~$125 over-report seen on today's MYSE trade where bot booked the
-    # target exit at $6.20 but Alpaca filled at $6.17.
-    #
-    # Defense-in-depth: status in (rejected, expired) with filled_qty=0
-    # records NOTHING. The earlier dual-submission-failure guard caught
-    # most of this, but this catches the async case where the broker
-    # accepts the submission then later rejects (e.g. insufficient_qty
-    # surfacing after a race).
     intended_price = price
     intended_qty = qty
 
@@ -3916,12 +3993,25 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
                     break
             time.sleep(0.5)
 
+        # Re-fetch the pos reference; state.open_position could have been
+        # adopted/changed by reconcile in the interim. Match by symbol.
+        cur_pos = state.open_position
+        if cur_pos is None or cur_pos.get("symbol") != symbol:
+            # Position already gone (reconcile flatten or external close).
+            # Just log the fill outcome; nothing to mutate.
+            cur_pos = None
+
         if actual_qty == 0:
-            print(f"  ⚠️ EXIT UNFILLED: {symbol} order {exit_order.order_id} "
-                  f"status={status_final} — no shares filled, no P&L recorded "
-                  f"(intended qty={intended_qty} reason={reason})", flush=True)
+            # No fill — clear the in-flight flag so manage_exit can re-attempt.
+            # Position itself untouched (the broker still holds the shares).
+            if cur_pos is not None:
+                cur_pos["exit_in_flight"] = False
+            print(f"  ⚠️ EXIT NO-FILL: {symbol} order {exit_order.order_id} "
+                  f"status={status_final} — position kept alive at qty={intended_qty}, "
+                  f"will retry on next tick (reason={reason})", flush=True)
             return
 
+        # Fill happened (full or partial). Compute P&L on ACTUAL fills.
         pnl = (actual_price - entry_price) * actual_qty
         state.daily_pnl += pnl
         state.daily_trades += 1
@@ -3940,13 +4030,23 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
               f"reason={reason} P&L=${pnl:+,.0f} daily=${state.daily_pnl:+,.0f}",
               flush=True)
 
+        # Lever 1: mutate state.open_position HERE based on ACTUAL fill qty
+        # (not the intended qty). Full fill → flatten; partial fill →
+        # decrement and clear in-flight so manage_exit can chase residual.
+        if cur_pos is not None:
+            if actual_qty >= cur_pos.get("qty", 0):
+                state.open_position = None
+            else:
+                cur_pos["qty"] -= actual_qty
+                cur_pos["exit_in_flight"] = False
+
         state.closed_trades.append({
             "symbol": symbol,
             "entry": entry_price,
             "exit": actual_price,
             "qty": actual_qty,
             "pnl": pnl,
-            "reason": reason,
+            "reason": reason if actual_qty >= intended_qty else reason + "_partial",
             "setup_type": setup_type,
             "time": datetime.now(ET).strftime("%H:%M:%S"),
         })
@@ -4986,6 +5086,15 @@ def main():
 
                 # Fix 3: Periodic position sync with Alpaca (every 60s)
                 periodic_position_sync()
+
+                # Lever 3 (2026-05-26): periodic broker reconciliation.
+                # Catches orphan positions that survived past the exit path's
+                # Lever 1 keep-alive (e.g., bot restart between exit submit
+                # and verify) by comparing bot state vs broker truth.
+                if (state.last_reconcile_at is None
+                        or (now - state.last_reconcile_at).total_seconds() >= RECONCILE_INTERVAL_SEC):
+                    reconcile_positions_periodic()
+                    state.last_reconcile_at = now
 
                 # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
                 manage_tier1_subscriptions()
