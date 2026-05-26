@@ -1,0 +1,16 @@
+22:19:10  Live Scanner starting — 2026-05-26 
+22:19:10  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+22:19:10  Initialized Historical(gateway=https://hist.databento.com)
+22:19:10        Requesting OHLCV from 2026-04-27 to 2026-05-25...
+22:19:34        12,801 symbols with avg daily volume
+22:19:34        12,801 symbols with prev close loaded
+22:19:34  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+22:19:34  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-05-26 04:00:00-04:00 snapshot=False
+22:19:34  connecting to remote gateway
+22:19:35  authenticated session_id='30530020'
+22:19:35  adding user callback on_event
+22:19:35  starting live client
+22:19:35        Stream started, replaying from 04:00 ET...
+22:19:35  gateway error code=unset err='Invalid start time in the future'
+22:19:35  received EOF from remote
+22:19:35  gateway error: None

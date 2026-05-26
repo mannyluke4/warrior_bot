@@ -108,3 +108,99 @@ Waiting for IB Gateway on port 4002...
   attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 within 360 seconds. Aborting.
 === TRAP: cleanup at Mon May 25 02:06:50 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  1905 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 7fd26ff] auto: v3 daily logs 2026-05-25
+ 5 files changed, 240 insertions(+)
+ create mode 100644 logs/2026-05-25_daily.log
+ create mode 100644 logs/cron_2026-05-25.log
+=== Cleanup complete: Mon May 25 02:06:53 MDT 2026 ===
+/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 77:  1961 Terminated: 15          "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 10887)
+=== V3 Hybrid daily run started: Mon May 25 22:18:28 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 7fd26ff (auto: v3 daily logs 2026-05-25)
+daily_run_v3.sh hash: 3524e83573a6ee903276aaa4f288e9fb  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: d6b918b668ed6efbacd47a83a9cb2a9d  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EDBF9D96.6824E592 (3988757910.406812999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF89203134.CBED8D3700000000 (-1994378955.203406572)
+         delay: FFFFFFFF12406269.97DB1A6E00000000 (-3988757910.406813145)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:3000::31
+}
++0.033158 +/- 0.065730 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Tue May 26 04:18:31 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 10970)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 10982)
+Bot health check passed (still running after 15s, PID: 10982)
+HEALTH_OK: Bot connected at 2026-05-26 04:19:29 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-05-25_move_strike_subbot_A.log)...
+  variant A PID: 11005
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-05-25_move_strike_subbot_B.log)...
+  variant B PID: 11006
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-05-25_move_strike_subbot_C.log)...
+  variant C PID: 11007
+  variant A health-check OK (PID 11005)
+  variant B health-check OK (PID 11006)
+  variant C health-check OK (PID 11007)
+Gateway watchdog started (PID: 11012)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon May 25 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Mon May 25 22:19:44 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...

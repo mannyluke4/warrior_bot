@@ -1,0 +1,43 @@
+# A/B/C Daily Report — 2026-05-25
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Fade blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | control | +$29,757.93 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+| B | V1 VWAP | +$30,000.00 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+| C | V4 BodyCV | +$30,000.00 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+
+### Variant A — control
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+### Variant B — V1 VWAP
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+### Variant C — V4 BodyCV
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 1 | +$0.00 |
+| B | 1 | +$0.00 |
+| C | 1 | +$0.00 |
