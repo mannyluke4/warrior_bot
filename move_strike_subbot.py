@@ -304,6 +304,21 @@ class MoveStrikeSubBot:
         # Lever 3 (2026-05-26): periodic broker reconciliation.
         self.reconcile_interval_sec = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
         self._last_reconcile_at: Optional[float] = None
+        # REENTRY-HWM-gate (2026-05-27, Variant C live test).
+        # When enabled, blocks REENTRY GREEN entries whose most-recent
+        # prior exit on the same symbol was a move_hwm_exit within
+        # WB_MOVE_REENTRY_HWM_GATE_WINDOW_MIN. Per Day-1 deep-dive
+        # hypothesis: HWM-drawdown exits signal the prior move topped;
+        # green continuation bar is more likely the exhaustion bar
+        # than a re-entry signal. Live A/B/C tests the hypothesis.
+        self.reentry_hwm_gate_enabled = (
+            os.getenv("WB_MOVE_REENTRY_HWM_GATE_ENABLED", "0") == "1"
+        )
+        self.reentry_hwm_gate_window_min = float(
+            os.getenv("WB_MOVE_REENTRY_HWM_GATE_WINDOW_MIN", "30")
+        )
+        # symbol → (exit_reason, exit_minute_et). Populated in _close_position.
+        self._last_exit_reason_by_symbol: dict[str, tuple[str, int]] = {}
         # Lever 2 (2026-05-26): active cancel + replace on slow exits.
         self.exit_retry_enabled = os.getenv("WB_EXIT_RETRY_ENABLED", "1") == "1"
         self.exit_max_retries = int(os.getenv("WB_EXIT_MAX_RETRIES", "3"))
@@ -850,6 +865,27 @@ class MoveStrikeSubBot:
         # we'd immediately stop out).
         if bar.close <= watch["stop"]:
             return
+        # REENTRY-HWM-gate (2026-05-27, Variant C live test): if the
+        # most-recent exit on this symbol was a move_hwm_exit AND it
+        # happened within WINDOW_MIN, refuse the re-entry. Per Day-1
+        # deep-dive hypothesis: HWM-drawdown exits signal the prior
+        # move topped; green continuation bars in that window are
+        # more often the exhaustion bar than a re-entry signal.
+        if self.reentry_hwm_gate_enabled:
+            prev = self._last_exit_reason_by_symbol.get(symbol)
+            if prev is not None:
+                prev_reason, prev_min = prev
+                if (prev_reason.startswith("move_hwm_exit")
+                        and (cur_min - prev_min) <= self.reentry_hwm_gate_window_min):
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] REENTRY_HWM_GATE_BLOCK "
+                        f"{symbol} prior_exit={prev_reason} "
+                        f"min_ago={cur_min - prev_min}",
+                        flush=True,
+                    )
+                    # Pop the watch — gate is decisive for this cycle.
+                    self._reentry_watches.pop(symbol, None)
+                    return
         entry_price = bar.close
         stop = watch["stop"]
         r = entry_price - stop
@@ -1377,6 +1413,9 @@ class MoveStrikeSubBot:
             if self.move_stay_armed:
                 self._move_stay_armed_last_exit_min[p.symbol] = now_minute_et()
                 self._move_stay_armed_last_exit_price[p.symbol] = float(ref_price)
+            # REENTRY-HWM-gate tracking: capture exit reason + minute for
+            # the gate's decision on subsequent REENTRY GREEN attempts.
+            self._last_exit_reason_by_symbol[p.symbol] = (reason, now_minute_et())
             self.position = None
             return
 
