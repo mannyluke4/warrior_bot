@@ -1,0 +1,81 @@
+{
+  "label": "VALIDATE_VARIANT_A_PHASE3B",
+  "start": "2026-05-27",
+  "end": "2026-05-27",
+  "trades": [
+    {
+      "time": "13:32",
+      "entry": 5.93,
+      "stop": 5.61,
+      "r": 0.25,
+      "score": 99.0,
+      "exit": 5.56,
+      "reason": "regime_shift_hard_stop",
+      "pnl": -740,
+      "symbol": "AMSS",
+      "date": "2026-05-27"
+    },
+    {
+      "time": "10:37",
+      "entry": 7.03,
+      "stop": 7.03,
+      "r": 0.54,
+      "score": 99.0,
+      "exit": 7.72,
+      "reason": "regime_shift_partial",
+      "pnl": 574,
+      "symbol": "ASTC",
+      "date": "2026-05-27"
+    },
+    {
+      "time": "10:37",
+      "entry": 7.03,
+      "stop": 7.03,
+      "r": 0.54,
+      "score": 99.0,
+      "exit": 7.69,
+      "reason": "move_hwm_exit(peak=8.00,dd=25%,hh=0)",
+      "pnl": 61,
+      "symbol": "ASTC",
+      "date": "2026-05-27"
+    },
+    {
+      "time": "04:27",
+      "entry": 3.24,
+      "stop": 3.24,
+      "r": 0.22,
+      "score": 99.0,
+      "exit": 3.45,
+      "reason": "regime_shift_partial",
+      "pnl": 429,
+      "symbol": "FGL",
+      "date": "2026-05-27"
+    },
+    {
+      "time": "04:27",
+      "entry": 3.24,
+      "stop": 3.24,
+      "r": 0.22,
+      "score": 99.0,
+      "exit": 3.48,
+      "reason": "move_hwm_exit(peak=3.76,dd=25%,hh=0)",
+      "pnl": 54,
+      "symbol": "FGL",
+      "date": "2026-05-27"
+    }
+  ],
+  "per_day": [
+    {
+      "date": "2026-05-27",
+      "trades": 5,
+      "pnl": 378,
+      "symbols_watched": 113,
+      "symbols_traded": 3,
+      "symbols_skipped": 0
+    }
+  ],
+  "skipped_by_date": {
+    "2026-05-27": []
+  },
+  "total_pnl": 378
+}
