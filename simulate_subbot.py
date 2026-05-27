@@ -57,14 +57,14 @@ os.environ.setdefault("WB_SUBBOT_APCA_API_KEY_ID", "sim")
 os.environ.setdefault("WB_SUBBOT_APCA_API_SECRET_KEY", "sim")
 # Disable Alpaca-aware-limit features in sim (no real quote feed available).
 os.environ.setdefault("WB_ALPACA_AWARE_LIMITS", "0")
-# CRITICAL for sim correctness: disable live's seed-from-cache behavior.
-# In live, the sub-bot reads today's tick_cache on first subscription to
-# warm up detectors. In sim, my replay_ticks() IS the tick stream — if
-# seed is on, the bot double-counts: cache replay fires entries on
-# historical highs, then the live-replayed ticks immediately stop them out.
-# Seen during smoke: AMSS seeded at $10 peak, fired regime_shift entry,
-# then first real replayed tick at $7.11 stopped it -$730.
-os.environ.setdefault("WB_SUBBOT_SEED_FROM_CACHE", "0")
+# Seed-from-cache IS enabled in sim (default), but with a cutoff. The
+# subclass installs self._seed_cutoff_utc = replay_window_start_utc, and
+# the patched _seed_symbol_from_cache uses it instead of "now()" for the
+# cutoff. Result: cache replay loads ticks up to (but not including)
+# the replay window start, then my replay_ticks() feeds ticks from the
+# window onward. No double-counting, full historical warm-up — matches
+# live behavior at first-subscription.
+os.environ.setdefault("WB_SUBBOT_SEED_FROM_CACHE", "1")
 
 from move_strike_subbot import MoveStrikeSubBot, SubPosition, LOG_TAG  # noqa: E402
 
@@ -195,11 +195,21 @@ class SubBotSim(MoveStrikeSubBot):
         """Capture a closed trade in simulate.py-compatible format. Called
         from inside our consume/exit overrides; sub-bot's own close logic
         prints its own log lines, but those don't survive into the
-        replay harness's TRADE_LINE_RE parser."""
+        replay harness's TRADE_LINE_RE parser.
+
+        Phase 3b fix: `time` field is now the ENTRY time, matching
+        simulate.py's convention (replay_live_universe.py's TRADE_LINE_RE
+        expects entry time). Live's _open_position_with_tag stores
+        entry_time_et via now_iso_et() which is WALL CLOCK in sim;
+        the _open_with_tag_capture_time monkey-patch overwrites it
+        with our historical _current_time_str_et at position-open time."""
         entry_basis = p.fill_entry_price if p.fill_entry_price is not None else p.entry
         pnl = int(round((exit_px - entry_basis) * p.qty))
+        # Use entry time, not exit time. Fall back to current time if
+        # the entry-time-capture monkey-patch didn't fire (defensive).
+        entry_time = (p.entry_time_et or self._current_time_str_et)[:5]
         rec = {
-            "time": self._current_time_str_et[:5],  # HH:MM
+            "time": entry_time,  # HH:MM (entry time)
             "entry": round(entry_basis, 4),
             "stop": round(p.stop, 4),
             "r": round(p.r, 4),
@@ -251,6 +261,20 @@ class SubBotSim(MoveStrikeSubBot):
         from zoneinfo import ZoneInfo
         ET = ZoneInfo("America/New_York")
 
+        # Phase 3b: set the seed-from-cache cutoff to the replay window
+        # start (in UTC). Live's _seed_symbol_from_cache will read cache
+        # ticks earlier than this cutoff during _ensure_symbol's first
+        # call for each symbol; my replay loop below feeds ticks at or
+        # after the cutoff. Pre-window context is loaded the same way
+        # live's bot loads it at first-subscription, but without
+        # double-counting our forward stream.
+        try:
+            y, m, d = (int(x) for x in date_str.split("-"))
+            window_start_local = datetime(y, m, d, sh, sm, tzinfo=ET)
+            self._seed_cutoff_utc = window_start_local.astimezone(timezone.utc)
+        except Exception:
+            self._seed_cutoff_utc = None
+
         # Track previous tick capture to compute existing _wait_for_fill
         # synchronously (each on_tick may trigger an entry/exit that calls
         # _wait_for_fill, which in sim returns instantly from MockAlpaca).
@@ -280,6 +304,14 @@ class SubBotSim(MoveStrikeSubBot):
             self._current_time_str_et = ts_et.strftime("%H:%M:%S")
             # Feed the tick through the sub-bot's normal pipeline.
             # NOTE: on_tick takes an ISO string; we re-stringify for safety.
+            #
+            # Detect new-position transitions to stamp historical entry
+            # time on the SubPosition (live uses now_iso_et() which is
+            # wall-clock — meaningless in sim). Both MOVE_STRIKE entry
+            # paths (via _open_position_with_tag) AND regime_shift
+            # (direct SubPosition construction in _maybe_fire_regime_shift)
+            # go through here.
+            had_pos = self.position is not None
             try:
                 self.on_tick(symbol, p, ts.isoformat(), s)
             except Exception as e:
@@ -287,6 +319,9 @@ class SubBotSim(MoveStrikeSubBot):
                 # just log + continue.
                 print(f"[SIM] {symbol} on_tick error: {e!r} (tick={tick})", flush=True)
                 continue
+            if (not had_pos and self.position is not None
+                    and self._current_time_str_et):
+                self.position.entry_time_et = self._current_time_str_et
             replayed += 1
         # NOTE: TradeBarBuilder has no flush API — the last in-flight bar
         # won't fire its on_bar_close callback. Acceptable: a partial
@@ -301,6 +336,10 @@ class SubBotSim(MoveStrikeSubBot):
 # Trade-line emission monkey-patch — wrap _close_position so we capture
 # the trade record at close-time (the base method clears self.position).
 # ════════════════════════════════════════════════════════════════════════
+# Entry-time stamping: handled in SubBotSim.replay_ticks itself
+# (had_pos transition detection covers both MOVE_STRIKE and REGIME_SHIFT
+# entry paths). No monkey-patch needed.
+
 _original_close_position = MoveStrikeSubBot._close_position
 
 def _close_position_with_capture(self, reason: str, ref_price: float) -> None:

@@ -559,7 +559,11 @@ class MoveStrikeSubBot:
             return
         # Cutoff: replay only ticks earlier than NOW (live ticks will
         # cover the rest as they arrive on the engine socket).
-        now_utc = _dt.now(timezone.utc)
+        # Overridable for sim use (simulate_subbot.py sets self._seed_cutoff_utc
+        # to the replay window's start, so seed loads cache up to window start
+        # and the replay loop feeds the rest. Prevents double-counting when
+        # cache + live stream overlap).
+        now_utc = getattr(self, "_seed_cutoff_utc", None) or _dt.now(timezone.utc)
         replayed = 0
         try:
             det = self.detectors.get(symbol)
