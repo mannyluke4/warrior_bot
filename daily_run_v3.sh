@@ -227,6 +227,8 @@ WB_EXPECTED_BROKER=ibkr \
 WB_TICK_LEVEL_ARM=1 \
 WB_ENGINE_PUBLISH_ENABLED=1 \
 WB_SUB_WATCHDOG_ENABLED=1 \
+WB_BAR_STREAM_LOG_ENABLED=1 \
+WB_BAR_STREAM_LABEL=main_bot \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
 # WB_SUB_WATCHDOG_ENABLED=1 — observability watchdog for IBKR Tier-2
 # subscription wedges, shipped 2026-05-26 per
@@ -346,6 +348,8 @@ launch_subbot() {
         WB_SUBBOT_LOG_SUFFIX="$suffix" \
         WB_SUBBOT_APCA_API_KEY_ID="$apca_key" \
         WB_SUBBOT_APCA_API_SECRET_KEY="$apca_secret" \
+        WB_BAR_STREAM_LOG_ENABLED=1 \
+        WB_BAR_STREAM_LABEL="subbot_$suffix" \
         $fade_extra \
         python3 move_strike_subbot.py >> "$log_path" 2>&1 &
     eval "SUBBOT_PID_$suffix=\$!"

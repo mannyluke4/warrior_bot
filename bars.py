@@ -1,8 +1,49 @@
 from __future__ import annotations
 
+import json
+import os
 from dataclasses import dataclass
 from datetime import datetime, timezone, time
+from pathlib import Path
 from typing import Callable, Dict, Optional
+
+
+# Phase 3c (2026-05-27): bar-stream diagnostic logger. Per
+# cowork_reports/2026-05-27_phase3c_bar_construction_investigation_directive.md.
+# Env-gated, default OFF. When enabled, emits one JSONL line per
+# bar-close to logs/bar_stream/<YYYY-MM-DD>.jsonl. Designed to be
+# byte-identical when disabled. Used to diff live vs sim bar streams
+# and identify whether divergence is from bar-builder code (fixable)
+# or from tick-stream content (cache vs live-engine difference).
+_BAR_STREAM_ENABLED = os.getenv("WB_BAR_STREAM_LOG_ENABLED", "0") == "1"
+_BAR_STREAM_LABEL = os.getenv("WB_BAR_STREAM_LABEL", "default")
+_BAR_STREAM_DIR = Path(__file__).parent.resolve() / "logs" / "bar_stream"
+
+
+def _bar_stream_emit(symbol: str, bar, first_tick_ts, last_tick_ts, tick_count: int):
+    """Write one JSONL line per bar-close when WB_BAR_STREAM_LOG_ENABLED=1.
+    Filename includes the bar's ET date so multi-day runs partition cleanly.
+    LABEL env var lets sim and live write to distinct files for diffing."""
+    if not _BAR_STREAM_ENABLED:
+        return
+    try:
+        date_str = bar.start_utc.strftime("%Y-%m-%d")
+        _BAR_STREAM_DIR.mkdir(parents=True, exist_ok=True)
+        out_path = _BAR_STREAM_DIR / f"{date_str}_{_BAR_STREAM_LABEL}.jsonl"
+        payload = {
+            "ts": bar.start_utc.isoformat(),
+            "sym": symbol,
+            "o": bar.open, "h": bar.high, "l": bar.low, "c": bar.close,
+            "v": int(bar.volume),
+            "tick_count": int(tick_count),
+            "first_tick_ts": first_tick_ts.isoformat() if first_tick_ts else None,
+            "last_tick_ts": last_tick_ts.isoformat() if last_tick_ts else None,
+        }
+        with open(out_path, "a") as f:
+            f.write(json.dumps(payload, separators=(",", ":")) + "\n")
+    except Exception:
+        # Logger failure must NEVER affect bot behavior. Swallow silently.
+        pass
 
 
 @dataclass
@@ -68,6 +109,13 @@ class TradeBarBuilder:
 
         # Premarket bar tracking for bull flag detection
         self._premarket_bars: Dict[str, list] = {}  # list of highs during premarket
+
+        # Phase 3c bar-stream diagnostic: track first/last tick timestamps
+        # per in-progress bar so we can emit them at bar-close. Only used
+        # when WB_BAR_STREAM_LOG_ENABLED=1 — overhead is minimal otherwise
+        # (two dict assignments per tick).
+        self._bar_first_tick_ts: Dict[str, datetime] = {}
+        self._bar_last_tick_ts: Dict[str, datetime] = {}
 
     def get_vwap(self, symbol: str) -> Optional[float]:
         vol = self._vwap_vol.get(symbol, 0)
@@ -225,6 +273,8 @@ class TradeBarBuilder:
             self._last_bucket_start[symbol] = b0
             self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
             self._tick_count_in_bar[symbol] = 1
+            self._bar_first_tick_ts[symbol] = ts_utc
+            self._bar_last_tick_ts[symbol] = ts_utc
             return
 
         if b0 == last_b0:
@@ -232,16 +282,27 @@ class TradeBarBuilder:
             if b is None:
                 self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
                 self._tick_count_in_bar[symbol] = 1
+                self._bar_first_tick_ts[symbol] = ts_utc
             else:
                 b.high = max(b.high, price)
                 b.low = min(b.low, price)
                 b.close = price
                 b.volume += int(size)
                 self._tick_count_in_bar[symbol] = self._tick_count_in_bar.get(symbol, 0) + 1
+            self._bar_last_tick_ts[symbol] = ts_utc
             return
 
         prev_bar = self._cur.get(symbol)
         if prev_bar is not None:
+            # Phase 3c bar-stream: emit BEFORE calling on_bar_close so the
+            # logger captures the bar's tick-count and first/last timestamps
+            # exactly as the bar was built (callback may mutate counters).
+            _bar_stream_emit(
+                symbol, prev_bar,
+                self._bar_first_tick_ts.get(symbol),
+                self._bar_last_tick_ts.get(symbol),
+                self._tick_count_in_bar.get(symbol, 0),
+            )
             self.on_bar_close(prev_bar)
 
             # Track premarket bars for bull flag detection
@@ -253,3 +314,5 @@ class TradeBarBuilder:
         self._last_bucket_start[symbol] = b0
         self._cur[symbol] = Bar(symbol, b0, price, price, price, price, int(size))
         self._tick_count_in_bar[symbol] = 1
+        self._bar_first_tick_ts[symbol] = ts_utc
+        self._bar_last_tick_ts[symbol] = ts_utc
