@@ -4360,8 +4360,18 @@ def save_tick_cache(source: dict | None = None):
             except Exception:
                 existing = []
         merged = existing + ticks
-        with gzip.open(out_path, "wt") as f:
+        # Atomic write (2026-05-27, per orphan-fix & harness directive):
+        # write to a temp path first, then os.replace() to swap atomically.
+        # Prevents concurrent readers (intraday backtests, sub-bot replays,
+        # the subscription_watchdog if it ever reads cache) from seeing a
+        # partial gzip stream during the write. Without this, mid-write
+        # reads produce EOFError("Compressed file ended before the
+        # end-of-stream marker was reached") and silently corrupt
+        # backtests on today's date.
+        tmp_path = out_path + ".tmp"
+        with gzip.open(tmp_path, "wt") as f:
             json.dump(merged, f)
+        os.replace(tmp_path, out_path)
         saved += 1
         new_count = len(ticks)
         total_count = len(merged)

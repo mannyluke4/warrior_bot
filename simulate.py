@@ -389,6 +389,12 @@ class SimTradeManager:
         self.move_reentry_max_per_sym = int(os.getenv("WB_BT_MOVE_REENTRY_MAX_PER_SYM", "1"))
         # symbol → {"high": float, "stop": float, "expires_min": int}
         self._reentry_watches: dict[str, dict] = {}
+        # TEMPORARY for REENTRY GREEN backtest (2026-05-27 directive):
+        # tracks the most recent exit reason per symbol so we can gate
+        # REENTRY GREEN against prior HWM exits. Not shipped to live —
+        # backtest only. Gated by WB_BT_REENTRY_HWM_GATE env var.
+        self._last_exit_reason_by_symbol: dict[str, str] = {}
+        self.reentry_hwm_gate = os.getenv("WB_BT_REENTRY_HWM_GATE", "0") == "1"
         # Persistent per-symbol re-entry counter — survives watch pop so
         # max_per_sym is enforced across multiple close→watch cycles.
         self._reentry_count_per_symbol: dict[str, int] = {}
@@ -449,8 +455,14 @@ class SimTradeManager:
         # detection + X01-style target_hit + runner. Per
         # cowork_reports/2026-05-22_regime_shift_strategy_directive.md.
         self.regime_shift_enabled = os.getenv("WB_REGIME_SHIFT_ENABLED", "0") == "1"
+        # Default 4.0 (matches live move_strike_subbot.py:321). Previously
+        # defaulted to 3.0 in sim — drift documented in
+        # cowork_reports/2026-05-27_subbot_vs_sim_audit.md §Drift 1. The
+        # YTD backtest earlier today ran on the old default, so its
+        # regime_shift entries fired on weaker signals than live ever
+        # would. Aligned 2026-05-27 per harness rebuild directive.
         self.regime_shift_ratio_threshold = float(
-            os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "3.0")
+            os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "4.0")
         )
         self.regime_shift_baseline_bars = int(
             os.getenv("WB_REGIME_SHIFT_BASELINE_BARS", "5")
@@ -2116,6 +2128,18 @@ class SimTradeManager:
         if (self.move_reentry_block_same_bar
                 and bar_minute <= watch.get("exit_bar_minute", -1)):
             return None
+        # TEMPORARY for REENTRY GREEN backtest gate (2026-05-27 directive):
+        # if prior exit on this symbol was move_hwm_exit, the prior move
+        # already topped — the "green continuation" bar is likely the
+        # exhaustion bar of the topped move, not a re-entry signal.
+        if self.reentry_hwm_gate:
+            prev_reason = self._last_exit_reason_by_symbol.get(symbol, "")
+            if prev_reason.startswith("move_hwm_exit"):
+                print(f"  [{time_str}] REENTRY_GREEN_SKIPPED {symbol} "
+                      f"prior_exit={prev_reason} (HWM-gate active)", flush=True)
+                # Pop the watch so we don't re-evaluate on subsequent bars.
+                self._reentry_watches.pop(symbol, None)
+                return None
         if bar.close > bar.open:
             return self._fire_reentry(symbol, watch, bar.close, time_str, "GREEN")
         return None
@@ -2123,6 +2147,18 @@ class SimTradeManager:
     def _close(self, t: SimTrade):
         t.closed = True
         self.closed_trades.append(t)
+        # TEMPORARY for REENTRY GREEN backtest gate (2026-05-27 directive):
+        # capture the exit reason so we can decide whether to skip a
+        # subsequent REENTRY GREEN trigger on the same symbol. Prefer
+        # runner_exit_reason (final close) over core_exit_reason (partial)
+        # so the gate keys off the LAST tape event.
+        _final_reason = (
+            getattr(t, "runner_exit_reason", None)
+            or getattr(t, "core_exit_reason", None)
+            or ""
+        )
+        if _final_reason and getattr(t, "symbol", None):
+            self._last_exit_reason_by_symbol[t.symbol] = _final_reason
         # Post-exit breakout re-entry setup (2026-05-20). Only for
         # MOVE_STRIKE positions, only if enabled, only if we haven't
         # already used up the per-symbol re-entry quota for this session.
