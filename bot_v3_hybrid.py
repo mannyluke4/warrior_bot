@@ -1661,61 +1661,62 @@ def cancel_all_tick_by_tick(reason: str = "shutdown") -> None:
 # worker keeps the main thread responsive while preserving IBKR's required
 # inter-call timing.
 _resubscribe_queue: queue.Queue = queue.Queue()
-_resubscribe_worker_started: bool = False
-_resubscribe_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ibkr-resub")
+# Background worker + executor removed 2026-05-27 — ib_insync requires the
+# calling thread to own an asyncio event loop, which a ThreadPoolExecutor
+# worker doesn't have. Drained inline from the main loop now; see
+# drain_resubscribe_queue() below.
 
 
-def _ibkr_call_with_timeout(fn, *args, timeout=20, **kwargs):
-    """Run an IBKR SDK call with a hard timeout via the resubscribe executor.
-    Mirrors _alpaca_call() pattern (line 506). Raises TimeoutError on hang."""
-    future = _resubscribe_executor.submit(fn, *args, **kwargs)
-    return future.result(timeout=timeout)
+def drain_resubscribe_queue():
+    """Drain ONE queued resubscribe per call. Replaces _resubscribe_worker
+    (2026-05-27 fix): the background worker thread was raising
+    "There is no current event loop in thread 'ibkr-resub_0'" on every
+    invocation, leaving tick droughts unrecovered for the entire day's
+    session. Confirmed 2026-05-27: 12 failures across 4 symbols, all
+    silent except for the log line.
 
+    ib_insync's sync methods (cancelMktData / reqMktData) require the
+    calling thread to own the asyncio event loop. The bot's main thread
+    does; ThreadPoolExecutor workers don't. Same root cause as the
+    smoke-test bug we hit when shipping subscription_watchdog.py — the
+    fix there was identical (drop the executor wrap, call inline).
 
-def _resubscribe_worker():
-    """Background worker: drain _resubscribe_queue serially. Preserves the
-    2s gap between cancel and req that IBKR seems to require. Each IBKR
-    call is wall-clock-guarded so a hang on one symbol doesn't stall others."""
-    while True:
+    Cost: ~2-3 seconds of main-thread blocking per drained entry (mostly
+    the IBKR-required cancel-to-req gap). Mitigated by processing only
+    ONE entry per call. Multiple droughts in one cycle get spread across
+    multiple cycles. Worst-case latency to recover one symbol: ~3 seconds
+    after audit detects the drought. Well under the 120s watchdog.
+    """
+    try:
+        symbol, contract = _resubscribe_queue.get_nowait()
+    except queue.Empty:
+        return
+    try:
         try:
-            symbol, contract = _resubscribe_queue.get()
-        except Exception:
-            continue
-        try:
-            try:
-                _ibkr_call_with_timeout(state.ib.cancelMktData, contract, timeout=20)
-            except FuturesTimeoutError:
-                print(f"  Resubscribe: cancelMktData({symbol}) timed out 20s — skipping",
-                      flush=True)
-                continue
-            time.sleep(2)  # IBKR-required gap between cancel + req
-            try:
-                ticker = _ibkr_call_with_timeout(
-                    state.ib.reqMktData, contract, '233', False, False, timeout=20
-                )
-                state.tickers[symbol] = ticker
-                print(f"  Resubscribed {symbol} (background)", flush=True)
-            except FuturesTimeoutError:
-                print(f"  Resubscribe: reqMktData({symbol}) timed out 20s — skipping",
-                      flush=True)
+            state.ib.cancelMktData(contract)
         except Exception as e:
-            print(f"  Resubscription failed for {symbol}: {e}", flush=True)
-        finally:
-            try:
-                _resubscribe_queue.task_done()
-            except Exception:
-                pass
+            print(f"  Resubscribe: cancelMktData({symbol}) failed: {e!r}", flush=True)
+            return
+        time.sleep(2)  # IBKR-required gap between cancel + req
+        try:
+            ticker = state.ib.reqMktData(contract, '233', False, False)
+            state.tickers[symbol] = ticker
+            print(f"  Resubscribed {symbol} (inline)", flush=True)
+        except Exception as e:
+            print(f"  Resubscribe: reqMktData({symbol}) failed: {e!r}", flush=True)
+    except Exception as e:
+        print(f"  Resubscription failed for {symbol}: {e}", flush=True)
+    finally:
+        try:
+            _resubscribe_queue.task_done()
+        except Exception:
+            pass
 
 
 def check_subscription_health():
-    """Detect tick droughts and queue resubscribes for the background worker.
-    Non-blocking on the main thread (2026-05-22 fix per watchdog_freeze_directive)."""
-    global _resubscribe_worker_started
-    if not _resubscribe_worker_started:
-        threading.Thread(target=_resubscribe_worker, daemon=True,
-                         name="ibkr-resubscribe-worker").start()
-        _resubscribe_worker_started = True
-
+    """Detect tick droughts and queue resubscribes for inline drain on
+    the next main-loop pass. The drain runs on the main thread (where
+    ib_insync's event loop lives) — see drain_resubscribe_queue."""
     for symbol in list(state.active_symbols):
         count = state.tick_counts.get(symbol, 0)
         retries = state.sub_retry_counts.get(symbol, 0)
@@ -1755,6 +1756,8 @@ def audit_tick_health():
 
     # Check subscription health and resubscribe if needed
     check_subscription_health()
+    # Drain ONE queued resubscribe inline on main thread (2026-05-27 fix).
+    drain_resubscribe_queue()
 
     # Reset counters for next interval
     for symbol in state.active_symbols:
