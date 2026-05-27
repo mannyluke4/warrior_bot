@@ -18152,3 +18152,9 @@ ALERT: bot_v3_hybrid.py died at Tue May 26 18:00:17 MDT 2026! Session ended earl
 === Shutting down at Tue May 26 18:00:17 MDT 2026 ===
 Generating A/B/C daily comparison report...
 Pushing logs...
+[v2-ibkr-migration 274a8cc] auto: v3 daily logs 2026-05-26
+ 9 files changed, 24941 insertions(+)
+ create mode 100644 logs/2026-05-26_abc_compare.log
+ create mode 100644 logs/2026-05-26_latency_diagnostic.jsonl
+=== V3 Hybrid daily run complete: Tue May 26 18:00:26 MDT 2026 ===
+=== TRAP: cleanup at Tue May 26 18:00:26 MDT 2026 ===
