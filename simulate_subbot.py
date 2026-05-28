@@ -200,6 +200,21 @@ class SubBotSim(MoveStrikeSubBot):
         # (symbol, current_date_str) → prior-day-close cache
         self._firestorm_prior_close: dict[tuple[str, str], Optional[float]] = {}
 
+        # FT exit sweep knobs (Phase 3 Stage 1.5). All default to
+        # Stage 1 behavior (zero = use bar_low * 0.99 stop, no force flatten).
+        # Run B: WB_FT_STOP_FLOOR_ABS=0.10 WB_FT_STOP_FLOOR_PCT=0.05
+        # Run C: WB_FT_DRAWDOWN_FLOOR_PCT=0.25 WB_FT_FORCE_FLATTEN_TIME=15:30
+        # Run D: union of B + C
+        self.ft_stop_floor_abs = float(os.getenv("WB_FT_STOP_FLOOR_ABS", "0"))
+        self.ft_stop_floor_pct = float(os.getenv("WB_FT_STOP_FLOOR_PCT", "0"))
+        # Force-flatten ET time HH:MM. Empty/0 = disabled.
+        ft_ff_str = os.getenv("WB_FT_FORCE_FLATTEN_TIME", "")
+        try:
+            fh, fm = ft_ff_str.split(":")
+            self.ft_force_flatten_min = int(fh) * 60 + int(fm)
+        except Exception:
+            self.ft_force_flatten_min = 0  # disabled
+
     def _wait_for_fill(self, order_id: str, timeout: int = 15):
         """Override: read from MockAlpaca's deterministic fill record."""
         if not order_id:
@@ -304,9 +319,21 @@ class SubBotSim(MoveStrikeSubBot):
         via setup_type='firestorm_trigger' (dispatched in the patched
         _maintain_position below)."""
         entry = float(fire.trigger_price)
-        # Stop at 1% below the firestorm bar's low (the "if this bar's low
-        # fails, the move is over" floor per the directive spec).
-        stop = round(fire.bar_low * 0.99, 4)
+        # Stop at 1% below the firestorm bar's low — Stage 1 default.
+        # Stage 1.5 Run B / D: if either WB_FT_STOP_FLOOR_ABS or _PCT is
+        # set, widen the stop so that R is at least the larger of the
+        # two floors. Sub-$5 stocks otherwise generate $0.04 R that puts
+        # 1800+ shares behind a 4-cent stop — see Stage 1 POLA case.
+        baseline_stop = fire.bar_low * 0.99
+        if self.ft_stop_floor_abs > 0 or self.ft_stop_floor_pct > 0:
+            stop_floor_abs = self.ft_stop_floor_abs
+            stop_floor_pct_abs = entry * self.ft_stop_floor_pct
+            min_r = max(stop_floor_abs, stop_floor_pct_abs)
+            # Widen stop so R = max(baseline_R, min_r)
+            widened_stop = entry - min_r
+            stop = round(min(baseline_stop, widened_stop), 4)
+        else:
+            stop = round(baseline_stop, 4)
         r = entry - stop
         if r <= 0.01:
             print(
@@ -376,15 +403,12 @@ class SubBotSim(MoveStrikeSubBot):
         """Override to add FIRESTORM_TRIGGER check AFTER the base on_tick
         finishes. The base call handles bar building, MovementStrike,
         RegimeShiftDetector, _maintain_position, and _maybe_enter. If
-        none of those opened a position, FT gets a chance to arm."""
-        super().on_tick(symbol, price, ts_iso, size)
-        if not self.firestorm_trigger_enabled:
-            return
-        if self.position is not None:
-            # Either an existing position is being managed, or one of the
-            # base entry paths just opened. Either way, FT does not arm.
-            return
-        # Parse ET minute from ts_iso (tolerate UTC strings).
+        none of those opened a position, FT gets a chance to arm.
+
+        Stage 1.5: also check FT force-flatten time. If an FT position is
+        open and current ET minute >= ft_force_flatten_min, close it.
+        """
+        # Parse ET minute once — used by both force-flatten and FT arm.
         try:
             from zoneinfo import ZoneInfo
             ts = datetime.fromisoformat(ts_iso)
@@ -393,6 +417,27 @@ class SubBotSim(MoveStrikeSubBot):
             ts_et = ts.astimezone(ZoneInfo("America/New_York"))
             cur_min = ts_et.hour * 60 + ts_et.minute
         except Exception:
+            cur_min = None
+
+        # FT force-flatten check BEFORE base on_tick — guarantees we don't
+        # let an FT position survive past the cutoff even if the base
+        # path's _maintain_position would have held it.
+        if (cur_min is not None
+                and self.ft_force_flatten_min > 0
+                and self.position is not None
+                and self.position.setup_type == "firestorm_trigger"
+                and self.position.symbol == symbol
+                and cur_min >= self.ft_force_flatten_min):
+            self._close_position("firestorm_trigger_force_flatten", price)
+
+        super().on_tick(symbol, price, ts_iso, size)
+        if not self.firestorm_trigger_enabled:
+            return
+        if self.position is not None:
+            # Either an existing position is being managed, or one of the
+            # base entry paths just opened. Either way, FT does not arm.
+            return
+        if cur_min is None:
             return
         self._maybe_fire_firestorm_trigger(symbol, price, cur_min)
 

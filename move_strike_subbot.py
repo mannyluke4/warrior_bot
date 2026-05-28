@@ -946,10 +946,28 @@ class MoveStrikeSubBot:
         # firestorm_trigger positions.
         if (p.setup_type in ("regime_shift", "firestorm_trigger")
                 and not p.move_partial_fired):
-            # Hard stop
-            if price <= p.stop:
-                self._close_position(f"{p.setup_type}_hard_stop", price)
-                return
+            # Phase 3 Stage 1.5 (sim-only): if firestorm_trigger position
+            # AND WB_FT_DRAWDOWN_FLOOR_PCT > 0, replace the hard stop with
+            # a wide drawdown floor (% from entry). Test of the "trust the
+            # fluctuation" philosophy — no exit on noise within the
+            # initial runway, only on catastrophic drawdown. Defaults to
+            # 0 (hard stop active, bit-identical to Stage 1 behavior).
+            ft_dd_floor_pct = float(
+                os.getenv("WB_FT_DRAWDOWN_FLOOR_PCT", "0")
+            ) if p.setup_type == "firestorm_trigger" else 0.0
+            if ft_dd_floor_pct > 0:
+                drawdown = (p.entry - price) / p.entry if p.entry > 0 else 0
+                if drawdown >= ft_dd_floor_pct:
+                    self._close_position(
+                        "firestorm_trigger_drawdown_floor", price)
+                    return
+                # Skip the hard stop check — drawdown floor replaces it.
+            else:
+                # Hard stop (default behavior — regime_shift always uses
+                # this path; FT also uses it when the env var is unset).
+                if price <= p.stop:
+                    self._close_position(f"{p.setup_type}_hard_stop", price)
+                    return
             # Target = entry + target_R * R. Fire partial when crossed.
             target_price = p.entry + self.regime_shift_target_r * p.r
             if price >= target_price:
