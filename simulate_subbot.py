@@ -45,7 +45,7 @@ import gzip
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -66,7 +66,8 @@ os.environ.setdefault("WB_ALPACA_AWARE_LIMITS", "0")
 # live behavior at first-subscription.
 os.environ.setdefault("WB_SUBBOT_SEED_FROM_CACHE", "1")
 
-from move_strike_subbot import MoveStrikeSubBot, SubPosition, LOG_TAG  # noqa: E402
+from move_strike_subbot import MoveStrikeSubBot, SubPosition, LOG_TAG, now_iso_et  # noqa: E402
+from firestorm_trigger import FirestormTrigger  # noqa: E402
 
 
 # Patch _init_alpaca BEFORE any SubBotSim instance is created. The base
@@ -170,6 +171,35 @@ class SubBotSim(MoveStrikeSubBot):
         self._current_minute_et: int = 0
         self._current_time_str_et: str = "00:00:00"
 
+        # FIRESTORM_TRIGGER prototype (Phase 3 Stage 1). Per-symbol
+        # detector instances + state. Independent of MovementStrike /
+        # RegimeShift — adds a third arming path that fires on quiet→
+        # firestorm tick-rate transitions. NOT wired into live in this
+        # iteration; sim-only.
+        self.firestorm_trigger_enabled = (
+            os.getenv("WB_FIRESTORM_TRIGGER_ENABLED", "0") == "1"
+        )
+        self.firestorm_trigger_min_ticks = int(
+            os.getenv("WB_FIRESTORM_TRIGGER_MIN_TICKS", "6000")
+        )
+        self.firestorm_trigger_min_gap_pct = float(
+            os.getenv("WB_FIRESTORM_TRIGGER_MIN_GAP_PCT", "5.0")
+        )
+        self.firestorm_trigger_max_per_sym = int(
+            os.getenv("WB_FIRESTORM_TRIGGER_MAX_PER_SYM", "3")
+        )
+        # Time cutoff HH:MM ET — no FT arms after this time.
+        cutoff_str = os.getenv("WB_FIRESTORM_TRIGGER_TIME_CUTOFF", "12:00")
+        try:
+            ch, cm = cutoff_str.split(":")
+            self.firestorm_trigger_time_cutoff_min = int(ch) * 60 + int(cm)
+        except Exception:
+            self.firestorm_trigger_time_cutoff_min = 12 * 60  # 12:00 ET
+        self._firestorm_triggers: dict[str, FirestormTrigger] = {}
+        self._firestorm_entries_per_symbol: dict[str, int] = {}
+        # (symbol, current_date_str) → prior-day-close cache
+        self._firestorm_prior_close: dict[tuple[str, str], Optional[float]] = {}
+
     def _wait_for_fill(self, order_id: str, timeout: int = 15):
         """Override: read from MockAlpaca's deterministic fill record."""
         if not order_id:
@@ -189,6 +219,182 @@ class SubBotSim(MoveStrikeSubBot):
         base_limit = round(signal_price * (1 + buffer_pct), 2) if side_u == "BUY" \
             else round(signal_price * (1 - buffer_pct), 2)
         return base_limit
+
+    # ─── FIRESTORM_TRIGGER helpers ───────────────────────────────────────
+    def _firestorm_prior_close_for(self, symbol: str, date_str: str,
+                                    tick_cache_root: Path) -> Optional[float]:
+        """Return the last tick price from the most recent prior trading
+        day's tick cache for `symbol`. None if no prior cache exists
+        within the look-back window. Cached per (symbol, date)."""
+        key = (symbol, date_str)
+        if key in self._firestorm_prior_close:
+            return self._firestorm_prior_close[key]
+        # Look back up to 7 calendar days for a prior cache (skips weekends/holidays).
+        try:
+            y, m, d = (int(x) for x in date_str.split("-"))
+            cur = datetime(y, m, d)
+        except Exception:
+            self._firestorm_prior_close[key] = None
+            return None
+        for delta_days in range(1, 8):
+            prev = cur - timedelta(days=delta_days)
+            prev_str = prev.strftime("%Y-%m-%d")
+            prev_path = tick_cache_root / prev_str / f"{symbol}.json.gz"
+            if not prev_path.exists():
+                continue
+            try:
+                with gzip.open(prev_path, "rt") as f:
+                    prev_ticks = json.load(f)
+                if not prev_ticks:
+                    continue
+                last_tick = prev_ticks[-1]
+                if isinstance(last_tick, dict):
+                    px = float(last_tick.get("p") or last_tick.get("price") or 0)
+                elif isinstance(last_tick, (list, tuple)) and len(last_tick) > 1:
+                    px = float(last_tick[1])
+                else:
+                    continue
+                if px > 0:
+                    self._firestorm_prior_close[key] = px
+                    return px
+            except Exception:
+                continue
+        # No prior cache found.
+        self._firestorm_prior_close[key] = None
+        return None
+
+    def _maybe_fire_firestorm_trigger(self, symbol: str, price: float,
+                                       cur_min_et: int) -> None:
+        """Per-tick FT check. Called from on_tick when no position is open.
+        Opens a firestorm-trigger position if the detector fires and all
+        gates pass."""
+        if not self.firestorm_trigger_enabled:
+            return
+        # Time cutoff
+        if cur_min_et > self.firestorm_trigger_time_cutoff_min:
+            return
+        # Per-symbol entry cap
+        cur = self._firestorm_entries_per_symbol.get(symbol, 0)
+        if cur >= self.firestorm_trigger_max_per_sym:
+            return
+        ft = self._firestorm_triggers.get(symbol)
+        if ft is None:
+            ft = FirestormTrigger(
+                min_ticks=self.firestorm_trigger_min_ticks,
+                min_gap_pct=self.firestorm_trigger_min_gap_pct,
+            )
+            self._firestorm_triggers[symbol] = ft
+        # Look up prior close lazily (only on tick-feed; tick_cache_root
+        # set by replay_ticks before this method is called).
+        prior_close = self._firestorm_prior_close.get(
+            (symbol, getattr(self, "_current_date_str", "")), None
+        )
+        fire = ft.update_and_check(
+            price=price, bar_minute=cur_min_et, prior_close=prior_close,
+        )
+        if fire is None:
+            return
+        # Trigger fired — open position.
+        self._open_firestorm_trigger_position(symbol, fire)
+
+    def _open_firestorm_trigger_position(self, symbol: str,
+                                          fire) -> None:
+        """Open a firestorm-trigger position. Entry = trigger_price + 20bps
+        slippage, stop = bar_low * 0.99. Reuses regime_shift exit framework
+        via setup_type='firestorm_trigger' (dispatched in the patched
+        _maintain_position below)."""
+        entry = float(fire.trigger_price)
+        # Stop at 1% below the firestorm bar's low (the "if this bar's low
+        # fails, the move is over" floor per the directive spec).
+        stop = round(fire.bar_low * 0.99, 4)
+        r = entry - stop
+        if r <= 0.01:
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} firestorm_trigger skip — "
+                f"r={r:.4f} too small (entry=${entry:.2f} stop=${stop:.2f})",
+                flush=True,
+            )
+            return
+        qty = self._compute_qty(entry, r, 60.0)  # score=60 per directive
+        if qty <= 0:
+            return
+        # Entry limit = trigger_price * 1.002 (20bps slippage allowance)
+        limit = round(entry * 1.002, 2)
+        gap_str = (f" gap={fire.gap_pct_vs_prior_close:.1f}%"
+                   if fire.gap_pct_vs_prior_close is not None else "")
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] 🚀 ENTRY FIRESTORM_TRIGGER {symbol} "
+            f"qty={qty} limit=${limit:.2f} (trigger@${entry:.2f}{gap_str}) "
+            f"stop=${stop:.2f} R=${r:.4f} ticks={fire.tick_count}",
+            flush=True,
+        )
+        try:
+            from alpaca.trading.requests import LimitOrderRequest
+            from alpaca.trading.enums import OrderSide, TimeInForce
+            req = LimitOrderRequest(
+                symbol=symbol, qty=qty, side=OrderSide.BUY,
+                time_in_force=TimeInForce.DAY, limit_price=limit,
+                extended_hours=True,
+            )
+            order = self.alpaca.submit_order(order_data=req)
+        except Exception as e:
+            print(f"{LOG_TAG} FIRESTORM_TRIGGER ENTRY REJECT {symbol}: {e!r}",
+                  flush=True)
+            return
+        self.position = SubPosition(
+            symbol=symbol, entry=entry, stop=stop, r=r, qty=qty,
+            score=60.0, time_et=now_iso_et(),
+            is_reentry=False, reentry_tag="",
+            setup_type="firestorm_trigger",
+        )
+        self.position.order_id_buy = str(order.id) if hasattr(order, "id") else None
+        fill_px, fill_qty = self._wait_for_fill(self.position.order_id_buy, timeout=15)
+        if fill_px is not None and fill_qty > 0:
+            self.position.fill_entry_price = fill_px
+            self.position.fill_entry_qty = fill_qty
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} firestorm_trigger entry "
+                f"FILLED @ ${fill_px:.4f} qty={fill_qty} (limit was ${limit:.2f})",
+                flush=True,
+            )
+            if fill_qty < qty:
+                self.position.qty = fill_qty
+            self._firestorm_entries_per_symbol[symbol] = (
+                self._firestorm_entries_per_symbol.get(symbol, 0) + 1
+            )
+        else:
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] {symbol} firestorm_trigger entry "
+                f"NOT FILLED — abandoning",
+                flush=True,
+            )
+            self.position = None
+            return
+        self.position.hh_count = self._sym_hh_count.get(symbol, 0)
+
+    def on_tick(self, symbol: str, price: float, ts_iso: str, size: int) -> None:
+        """Override to add FIRESTORM_TRIGGER check AFTER the base on_tick
+        finishes. The base call handles bar building, MovementStrike,
+        RegimeShiftDetector, _maintain_position, and _maybe_enter. If
+        none of those opened a position, FT gets a chance to arm."""
+        super().on_tick(symbol, price, ts_iso, size)
+        if not self.firestorm_trigger_enabled:
+            return
+        if self.position is not None:
+            # Either an existing position is being managed, or one of the
+            # base entry paths just opened. Either way, FT does not arm.
+            return
+        # Parse ET minute from ts_iso (tolerate UTC strings).
+        try:
+            from zoneinfo import ZoneInfo
+            ts = datetime.fromisoformat(ts_iso)
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            ts_et = ts.astimezone(ZoneInfo("America/New_York"))
+            cur_min = ts_et.hour * 60 + ts_et.minute
+        except Exception:
+            return
+        self._maybe_fire_firestorm_trigger(symbol, price, cur_min)
 
     # ─── trade-record emission ───────────────────────────────────────────
     def _record_closed_trade(self, p: SubPosition, exit_px: float, exit_reason: str):
@@ -244,6 +450,13 @@ class SubBotSim(MoveStrikeSubBot):
         if not cache_path.exists():
             print(f"[SIM] {symbol} {date_str}: no tick cache at {cache_path}", flush=True)
             return
+        # Stash current date for FIRESTORM_TRIGGER prior-close lookup.
+        self._current_date_str = date_str
+        # Pre-warm prior-close cache for FT (no-op if FT disabled).
+        if self.firestorm_trigger_enabled:
+            self._firestorm_prior_close[(symbol, date_str)] = (
+                self._firestorm_prior_close_for(symbol, date_str, tick_cache_root)
+            )
         try:
             with gzip.open(cache_path, "rt") as f:
                 ticks = json.load(f)
@@ -405,18 +618,21 @@ MoveStrikeSubBot._fire_regime_shift_partial = _fire_partial_with_capture
 # ════════════════════════════════════════════════════════════════════════
 TRADE_LINE_TEMPLATE = (
     "    1  {time:>5s}  {entry:>7.4f}  {stop:>7.4f}  {r:>6.4f}  "
-    "{score:>5.1f}  {exit:>7.4f}  {reason:<30s} {pnl:+d}"
+    "{score:>5.1f}  {exit:>7.4f}  {reason:<30s} {pnl:+d}  setup={setup}"
 )
 
 
 def emit_trade_lines(sim: SubBotSim) -> None:
     """Print trades in a TRADE_LINE_RE-compatible format so
     replay_live_universe.py (and a future replay_subbot_universe.py)
-    can parse them via existing regex."""
+    can parse them via existing regex. The `setup=` suffix (added
+    2026-05-28 for Phase 3 FT attribution) is parsed by the updated
+    TRADE_LINE_RE; absence is tolerated (backwards-compatible)."""
     for t in sim.emitted_trades:
         print(TRADE_LINE_TEMPLATE.format(
             time=t["time"], entry=t["entry"], stop=t["stop"], r=t["r"],
             score=t["score"], exit=t["exit"], reason=t["reason"], pnl=t["pnl"],
+            setup=t.get("setup") or "move_strike",
         ), flush=True)
 
 

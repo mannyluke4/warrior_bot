@@ -940,10 +940,15 @@ class MoveStrikeSubBot:
         # only. HWM trail is suppressed until partial fires (sim parity —
         # PCLA-class trades need runway). After partial fires, runner is
         # managed by hwm_evaluate at BE stop.
-        if p.setup_type == "regime_shift" and not p.move_partial_fired:
+        # FIRESTORM_TRIGGER (Phase 3 Stage 1, sim-only) reuses the same
+        # exit framework — dispatcher broadened to accept either setup_type.
+        # Bit-identical to pre-FT live behavior because live never produces
+        # firestorm_trigger positions.
+        if (p.setup_type in ("regime_shift", "firestorm_trigger")
+                and not p.move_partial_fired):
             # Hard stop
             if price <= p.stop:
-                self._close_position("regime_shift_hard_stop", price)
+                self._close_position(f"{p.setup_type}_hard_stop", price)
                 return
             # Target = entry + target_R * R. Fire partial when crossed.
             target_price = p.entry + self.regime_shift_target_r * p.r

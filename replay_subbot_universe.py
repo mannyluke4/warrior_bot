@@ -50,9 +50,10 @@ WORKDIR = Path(__file__).parent.resolve()
 
 # Trade-line format emitted by simulate_subbot.py — same regex as
 # replay_live_universe.py used for simulate.py output.
+# 2026-05-28 (Phase 3): optional trailing `setup=<type>` for FT attribution.
 TRADE_LINE_RE = re.compile(
     r"^\s+\d+\s+(\d{2}:\d{2})\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+"
-    r"([\d.]+)\s+([\d.]+)\s+(\S+)\s+([-+]?\d+)"
+    r"([\d.]+)\s+([\d.]+)\s+(\S+)\s+([-+]?\d+)(?:\s+setup=(\S+))?"
 )
 
 
@@ -143,7 +144,35 @@ def compute_symbol_windows_from_scanner(scanner_json_path: Path) -> dict[str, tu
     return {s: (first[s], last[s]) for s in first}
 
 
-def compute_symbol_windows(date: str, end_cap: str) -> tuple[dict[str, tuple[str, str]], str]:
+def compute_symbol_windows_from_tick_cache(date: str, start_default: str,
+                                           end_cap: str) -> dict[str, tuple[str, str]]:
+    """Fallback universe source #3: list tick_cache/<date>/*.json.gz files.
+
+    Use case: pre-May days when scanner_results files exist but are empty
+    (the YTD scanner-snapshot logger wasn't capturing candidates back then)
+    and no sub-bot log exists (sub-bots are May-onward). Tick-cache file
+    presence is the most reliable signal that the symbol was subscribed
+    that day.
+
+    Window: full session [start_default, end_cap]. We don't know the
+    actual first-tick time per symbol without reading each file, and the
+    simulate_subbot pre-window seeding handles arbitrary start times
+    anyway.
+    """
+    cache_dir = WORKDIR / "tick_cache" / date
+    if not cache_dir.is_dir():
+        return {}
+    syms: dict[str, tuple[str, str]] = {}
+    for p in cache_dir.glob("*.json.gz"):
+        # p.stem of "CYCN.json.gz" is "CYCN.json" — strip the trailing .json.
+        sym = p.name[:-len(".json.gz")]
+        if sym:
+            syms[sym] = (start_default, end_cap)
+    return syms
+
+
+def compute_symbol_windows(date: str, end_cap: str,
+                           tick_cache_start: str = "07:00") -> tuple[dict[str, tuple[str, str]], str]:
     """Combined universe source. Returns (windows, source_name)."""
     log_dir = WORKDIR / "logs"
     windows = compute_symbol_windows_from_subbot_log(log_dir, date, end_cap)
@@ -153,6 +182,12 @@ def compute_symbol_windows(date: str, end_cap: str) -> tuple[dict[str, tuple[str
     windows = compute_symbol_windows_from_scanner(scanner_json)
     if windows:
         return windows, "scanner_results"
+    # Last-resort fallback: enumerate tick_cache/<date>/*.json.gz.
+    # Necessary for pre-May days where scanner_results files exist but
+    # are empty and no sub-bot log exists yet.
+    windows = compute_symbol_windows_from_tick_cache(date, tick_cache_start, end_cap)
+    if windows:
+        return windows, "tick_cache"
     return {}, "none"
 
 
@@ -202,6 +237,7 @@ def run_sim_for_symbol(
                 "exit": float(m.group(6)),
                 "reason": m.group(7),
                 "pnl": int(m.group(8)),
+                "setup": m.group(9) if m.lastindex and m.lastindex >= 9 else None,
             })
     return trades
 
