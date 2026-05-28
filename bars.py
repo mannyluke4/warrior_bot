@@ -117,6 +117,13 @@ class TradeBarBuilder:
         self._bar_first_tick_ts: Dict[str, datetime] = {}
         self._bar_last_tick_ts: Dict[str, datetime] = {}
 
+        # Last COMPLETED bar's tick count per symbol (2026-05-28 FIRESTORM
+        # gate). Saved at bar-close before the in-progress counter resets.
+        # Sub-bot's firestorm gate reads this at entry-decision time to
+        # block entries on quiet bars. Persists across bar boundaries; 0
+        # if no bar has closed yet for symbol.
+        self._last_completed_bar_tick_count: Dict[str, int] = {}
+
     def get_vwap(self, symbol: str) -> Optional[float]:
         vol = self._vwap_vol.get(symbol, 0)
         if vol <= 0:
@@ -145,6 +152,13 @@ class TradeBarBuilder:
         in-progress bar for symbol. Resets at each bar boundary. Used as a
         stat-reliability gate for WB_TICK_LEVEL_ARM."""
         return self._tick_count_in_bar.get(symbol, 0)
+
+    def get_last_completed_bar_tick_count(self, symbol: str) -> int:
+        """Return the tick count of the most recently CLOSED bar for symbol.
+        Returns 0 if no bar has closed yet (first bar in progress, or symbol
+        unknown). Used by the sub-bot's FIRESTORM gate to block entries on
+        quiet bars — see move_strike_subbot.py."""
+        return self._last_completed_bar_tick_count.get(symbol, 0)
 
     def is_premarket(self, ts_utc: datetime) -> bool:
         """Check if timestamp is during premarket (4:00 AM - 9:30 AM ET)"""
@@ -294,6 +308,12 @@ class TradeBarBuilder:
 
         prev_bar = self._cur.get(symbol)
         if prev_bar is not None:
+            # Save the closing bar's tick count for FIRESTORM-gate queries
+            # via get_last_completed_bar_tick_count(). Must happen BEFORE
+            # the in-progress reset below.
+            self._last_completed_bar_tick_count[symbol] = (
+                self._tick_count_in_bar.get(symbol, 0)
+            )
             # Phase 3c bar-stream: emit BEFORE calling on_bar_close so the
             # logger captures the bar's tick-count and first/last timestamps
             # exactly as the bar was built (callback may mutate counters).

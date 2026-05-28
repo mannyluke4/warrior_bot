@@ -366,7 +366,13 @@ launch_subbot() {
 }
 
 # Launch all three.
-launch_subbot A "$A_KEY" "$A_SECRET" ""
+# Variant A re-purposed 2026-05-28: was the pure control; now tests the
+# FIRESTORM gate. Per cowork_reports/2026-05-28_ytd_tick_rate_audit.md
+# (TBD), the live-week and YTD-sim both showed entries on quiet bars
+# (prior-bar tick_count < 6000/min ≈ 100/sec) account for the bulk of
+# losses while contributing ~zero edge. Block any entry (REGIME_SHIFT,
+# MOVE_STRIKE, REENTRY) when prior bar's tick count is below threshold.
+launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000"
 launch_subbot B "$MAIN_APCA_KEY" "$MAIN_APCA_SECRET" "WB_MOVE_FADE_VWAP_ENABLED=1"
 # Variant C re-purposed 2026-05-27: was V4 BodyCV fade-gate (fired
 # exactly once on 5/27 and was immediately overridden by regime_shift),

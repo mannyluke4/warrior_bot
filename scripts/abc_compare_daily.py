@@ -33,7 +33,7 @@ REPORT_DIR = WORKDIR / "cowork_reports"
 RUNNING_TOTALS_PATH = REPORT_DIR / "abc_running_totals.json"
 
 VARIANTS = [
-    ("A", "control",  "APCA_API_KEY_ID",      "APCA_API_SECRET_KEY"),
+    ("A", "FIRESTORM-gate",  "APCA_API_KEY_ID",      "APCA_API_SECRET_KEY"),
     ("B", "V1 VWAP",  "MAIN_APCA_API_KEY_ID", "MAIN_APCA_API_SECRET_KEY"),
     ("C", "REENTRY-loss-gate", "VARIANT_C_APCA_API_KEY_ID", "VARIANT_C_APCA_API_SECRET_KEY"),
 ]
@@ -109,6 +109,11 @@ REENTRY_LOSS_GATE_BLOCK_RE = re.compile(
     r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"REENTRY_LOSS_GATE_BLOCK (\w+) reason=(\S+) window_age_min=(\d+)"
 )
+# FIRESTORM gate block (2026-05-28, Variant A).
+FIRESTORM_GATE_BLOCK_RE = re.compile(
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
+    r"FIRESTORM_GATE_BLOCK (\w+) setup=(\S+) prior_bar_ticks=(\d+) threshold=(\d+)"
+)
 REGIME_TRIGGER_RE = re.compile(
     r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
     r"REGIME_SHIFT_TRIGGER (\w+) bar_body=\$([\d.]+) baseline=\$([\d.]+) "
@@ -125,6 +130,7 @@ def parse_log(log_path: Path) -> dict:
     exits = []
     fade_blocks = []
     loss_gate_blocks = []
+    firestorm_blocks = []
     regime_triggers = []
     partials = []
     try:
@@ -142,6 +148,13 @@ def parse_log(log_path: Path) -> dict:
                         "symbol": m.group(1),
                         "prior_exit": m.group(2),
                         "window_age_min": int(m.group(3)),
+                    })
+                elif m := FIRESTORM_GATE_BLOCK_RE.search(line):
+                    firestorm_blocks.append({
+                        "symbol": m.group(1),
+                        "setup": m.group(2),
+                        "prior_bar_ticks": int(m.group(3)),
+                        "threshold": int(m.group(4)),
                     })
                 elif m := REGIME_TRIGGER_RE.search(line):
                     regime_triggers.append({
@@ -162,7 +175,9 @@ def parse_log(log_path: Path) -> dict:
         "fade_blocks_unique_syms": len({b["symbol"] for b in fade_blocks}),
         "loss_gate_blocks_total": len(loss_gate_blocks),
         "loss_gate_blocks_unique_syms": len({b["symbol"] for b in loss_gate_blocks}),
-        "gate_blocks_total": len(fade_blocks) + len(loss_gate_blocks),
+        "firestorm_blocks_total": len(firestorm_blocks),
+        "firestorm_blocks_unique_syms": len({b["symbol"] for b in firestorm_blocks}),
+        "gate_blocks_total": len(fade_blocks) + len(loss_gate_blocks) + len(firestorm_blocks),
         "regime_triggers": len(regime_triggers),
         "partials": len(partials),
         "symbols_traded": sorted({e["symbol"] for e in entries}),
@@ -436,6 +451,9 @@ def main():
             if l.get('loss_gate_blocks_total', 0) > 0:
                 lines.append(f"- REENTRY-loss-gate blocks: {l.get('loss_gate_blocks_total', 0)} "
                              f"({l.get('loss_gate_blocks_unique_syms', 0)} unique symbols)")
+            if l.get('firestorm_blocks_total', 0) > 0:
+                lines.append(f"- FIRESTORM-gate blocks: {l.get('firestorm_blocks_total', 0)} "
+                             f"({l.get('firestorm_blocks_unique_syms', 0)} unique symbols)")
             syms = l.get("symbols_traded", [])
             if syms:
                 lines.append(f"- Symbols traded: {', '.join(syms)}")

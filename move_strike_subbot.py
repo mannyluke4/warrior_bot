@@ -320,6 +320,20 @@ class MoveStrikeSubBot:
         )
         # symbol → (exit_reason, exit_minute_et). Populated in _close_position.
         self._last_exit_reason_by_symbol: dict[str, tuple[str, int]] = {}
+
+        # FIRESTORM gate (2026-05-28, Variant A live test). Block entries
+        # when the prior completed 1m bar's tick count is below threshold.
+        # Hypothesis (validated on live-week 5/26-5/28): the strategy's
+        # edge concentrates on high-tick-rate setups; entries on quiet
+        # bars are largely random losses. YTD-sim confirms 50% WR at
+        # ≥100 ticks/sec vs 19% at <5 ticks/sec — see
+        # cowork_reports/2026-05-28_ytd_tick_rate_audit.md (TBD).
+        self.firestorm_gate_enabled = (
+            os.getenv("WB_MOVE_FIRESTORM_GATE_ENABLED", "0") == "1"
+        )
+        self.firestorm_gate_min_ticks_per_min = int(
+            os.getenv("WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN", "6000")
+        )
         # Lever 2 (2026-05-26): active cancel + replace on slow exits.
         self.exit_retry_enabled = os.getenv("WB_EXIT_RETRY_ENABLED", "1") == "1"
         self.exit_max_retries = int(os.getenv("WB_EXIT_MAX_RETRIES", "3"))
@@ -946,6 +960,26 @@ class MoveStrikeSubBot:
     # ──────────────────────────────────────────────────────────────────
     # REGIME-SHIFT entry + partial mechanism (Stage 2 — 2026-05-23)
     # ──────────────────────────────────────────────────────────────────
+    def _firestorm_gate_blocks(self, symbol: str, setup: str) -> bool:
+        """Return True if the FIRESTORM gate should block this entry.
+
+        Reads the last completed 1m bar's tick count from the bar
+        builder. If below threshold (default 6000 = 100/sec × 60), block.
+        Logs FIRESTORM_GATE_BLOCK on block. No-op if gate disabled.
+        """
+        if not self.firestorm_gate_enabled:
+            return False
+        tc = self.bar_builder.get_last_completed_bar_tick_count(symbol)
+        if tc >= self.firestorm_gate_min_ticks_per_min:
+            return False
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] FIRESTORM_GATE_BLOCK {symbol} "
+            f"setup={setup} prior_bar_ticks={tc} "
+            f"threshold={self.firestorm_gate_min_ticks_per_min}",
+            flush=True,
+        )
+        return True
+
     def _maybe_fire_regime_shift(self, symbol: str, bar,
                                   rs_det: RegimeShiftDetector) -> None:
         """Run the regime-shift detector on this 1m bar close. If it
@@ -961,6 +995,9 @@ class MoveStrikeSubBot:
         # Per-symbol entry cap
         cur = self._regime_shift_entries_per_symbol.get(symbol, 0)
         if cur >= self.regime_shift_max_per_symbol:
+            return
+        # FIRESTORM gate — block entries on quiet bars (Variant A test).
+        if self._firestorm_gate_blocks(symbol, "regime_shift"):
             return
         # Trigger event log
         print(
@@ -1246,6 +1283,10 @@ class MoveStrikeSubBot:
         r: float, qty: int, score: float,
         is_reentry: bool, reentry_tag: str,
     ) -> None:
+        # FIRESTORM gate — block entries on quiet bars (Variant A test).
+        setup_label = f"reentry_{reentry_tag}" if is_reentry else "move_strike"
+        if self._firestorm_gate_blocks(symbol, setup_label):
+            return
         slip = max(0.07, entry * 0.01)
         base_limit = round(entry + slip, 2)
         # Alpaca-aware limit (2026-05-22): widen to alpaca_ask + buffer
