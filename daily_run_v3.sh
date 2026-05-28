@@ -229,7 +229,15 @@ WB_ENGINE_PUBLISH_ENABLED=1 \
 WB_SUB_WATCHDOG_ENABLED=1 \
 WB_BAR_STREAM_LOG_ENABLED=1 \
 WB_BAR_STREAM_LABEL=main_bot \
+WB_SCALE_NOTIONAL=1 \
+WB_BUYING_POWER_PCT=0.85 \
   python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+# WB_SCALE_NOTIONAL + WB_BUYING_POWER_PCT (2026-05-28): cap order
+# notional at 85% of IBKR AvailableFunds. Required for non-marginable
+# small-caps where IBKR demands ~100% initial margin (NCT/SPRC orders
+# 2026-05-28 were rejected by Error 201 because the bot sized to
+# $29,706 on a $29,118 AvailableFunds account). 15% buffer covers
+# limit-chase slippage during entry retries.
 # WB_SUB_WATCHDOG_ENABLED=1 — observability watchdog for IBKR Tier-2
 # subscription wedges, shipped 2026-05-26 per
 # cowork_reports/2026-05-26_subscription_watchdog_directive.md.

@@ -556,10 +556,23 @@ class IBKRBroker:
         return self._account_value("NetLiquidation")
 
     def get_buying_power(self) -> float:
-        """IBKR BuyingPower — the broker-reported max notional before
-        margin calls. Accounts under $25K get 2× (RegT); over $25K
-        get 4× (PDT). Caller multiplies by WB_BUYING_POWER_PCT to
-        get the effective position-size cap."""
+        """IBKR AvailableFunds — equity minus current initial margin,
+        i.e. the headroom for a NEW order's full initial margin. Safer
+        than the broker-advertised BuyingPower (4× Reg-T) for sub-$5
+        small-caps that IBKR puts on the non-marginable / hard-to-borrow
+        list (100% initial margin required). Sizing against AvailableFunds
+        means even a 100%-margin order fits, modulo the caller's
+        WB_BUYING_POWER_PCT safety buffer.
+
+        Background: 2026-05-28 NCT/SPRC entries on $29K account were
+        rejected (Error 201) — bot sized to $29,706 notional based on
+        BuyingPower (~$58K-116K), but actual non-marginable initial
+        margin requirement was $29,449, exceeding $29,118 AvailableFunds.
+        """
+        av = self._account_value("AvailableFunds")
+        if av > 0:
+            return av
+        # Fallback to BuyingPower if AvailableFunds isn't reported.
         return self._account_value("BuyingPower")
 
     def _account_value(self, tag: str) -> float:
