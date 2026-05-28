@@ -35,7 +35,7 @@ RUNNING_TOTALS_PATH = REPORT_DIR / "abc_running_totals.json"
 VARIANTS = [
     ("A", "control",  "APCA_API_KEY_ID",      "APCA_API_SECRET_KEY"),
     ("B", "V1 VWAP",  "MAIN_APCA_API_KEY_ID", "MAIN_APCA_API_SECRET_KEY"),
-    ("C", "REENTRY-HWM-gate", "VARIANT_C_APCA_API_KEY_ID", "VARIANT_C_APCA_API_SECRET_KEY"),
+    ("C", "REENTRY-loss-gate", "VARIANT_C_APCA_API_KEY_ID", "VARIANT_C_APCA_API_SECRET_KEY"),
 ]
 
 
@@ -104,10 +104,10 @@ FADE_BLOCK_LINE_RE = re.compile(
     r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
     r"MOVE_FADE_GATE_BLOCK (\w+) reason=(\S+)"
 )
-# REENTRY-HWM-gate block (2026-05-27, Variant C live test).
-REENTRY_HWM_GATE_BLOCK_RE = re.compile(
+# REENTRY-loss-gate block (broadened 2026-05-27 evening, Variant C).
+REENTRY_LOSS_GATE_BLOCK_RE = re.compile(
     r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
-    r"REENTRY_HWM_GATE_BLOCK (\w+) prior_exit=(\S+) min_ago=(\d+)"
+    r"REENTRY_LOSS_GATE_BLOCK (\w+) reason=(\S+) window_age_min=(\d+)"
 )
 REGIME_TRIGGER_RE = re.compile(
     r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
@@ -124,7 +124,7 @@ def parse_log(log_path: Path) -> dict:
     entries = []
     exits = []
     fade_blocks = []
-    hwm_gate_blocks = []
+    loss_gate_blocks = []
     regime_triggers = []
     partials = []
     try:
@@ -137,11 +137,11 @@ def parse_log(log_path: Path) -> dict:
                                   "reason": m.group(4)})
                 elif m := FADE_BLOCK_LINE_RE.search(line):
                     fade_blocks.append({"symbol": m.group(1), "reason": m.group(2)})
-                elif m := REENTRY_HWM_GATE_BLOCK_RE.search(line):
-                    hwm_gate_blocks.append({
+                elif m := REENTRY_LOSS_GATE_BLOCK_RE.search(line):
+                    loss_gate_blocks.append({
                         "symbol": m.group(1),
                         "prior_exit": m.group(2),
-                        "min_ago": int(m.group(3)),
+                        "window_age_min": int(m.group(3)),
                     })
                 elif m := REGIME_TRIGGER_RE.search(line):
                     regime_triggers.append({
@@ -160,9 +160,9 @@ def parse_log(log_path: Path) -> dict:
         "exits": len(exits),
         "fade_blocks_total": len(fade_blocks),
         "fade_blocks_unique_syms": len({b["symbol"] for b in fade_blocks}),
-        "hwm_gate_blocks_total": len(hwm_gate_blocks),
-        "hwm_gate_blocks_unique_syms": len({b["symbol"] for b in hwm_gate_blocks}),
-        "gate_blocks_total": len(fade_blocks) + len(hwm_gate_blocks),
+        "loss_gate_blocks_total": len(loss_gate_blocks),
+        "loss_gate_blocks_unique_syms": len({b["symbol"] for b in loss_gate_blocks}),
+        "gate_blocks_total": len(fade_blocks) + len(loss_gate_blocks),
         "regime_triggers": len(regime_triggers),
         "partials": len(partials),
         "symbols_traded": sorted({e["symbol"] for e in entries}),
@@ -410,7 +410,7 @@ def main():
             equity = day_pnl = orders = f"err: {a['error'][:20]}"
         log_entries = l.get("entries", "—")
         # Unified "Gate blocks" column = fade-gate blocks (A: 0, B: V1 VWAP)
-        # + REENTRY-HWM-gate blocks (C, post 2026-05-27 re-purpose).
+        # + REENTRY-loss-gate blocks (C, broadened 2026-05-27 evening).
         gate_blocks = l.get("gate_blocks_total", l.get("fade_blocks_total", "—"))
         regime = l.get("regime_triggers", "—")
         lines.append(
@@ -433,9 +433,9 @@ def main():
             lines.append(f"- Regime-shift partials fired: {l.get('partials', 0)}")
             lines.append(f"- Fade-gate blocks: {l.get('fade_blocks_total', 0)} "
                          f"({l.get('fade_blocks_unique_syms', 0)} unique symbols)")
-            if l.get('hwm_gate_blocks_total', 0) > 0:
-                lines.append(f"- REENTRY-HWM-gate blocks: {l.get('hwm_gate_blocks_total', 0)} "
-                             f"({l.get('hwm_gate_blocks_unique_syms', 0)} unique symbols)")
+            if l.get('loss_gate_blocks_total', 0) > 0:
+                lines.append(f"- REENTRY-loss-gate blocks: {l.get('loss_gate_blocks_total', 0)} "
+                             f"({l.get('loss_gate_blocks_unique_syms', 0)} unique symbols)")
             syms = l.get("symbols_traded", [])
             if syms:
                 lines.append(f"- Symbols traded: {', '.join(syms)}")

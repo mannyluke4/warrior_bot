@@ -304,18 +304,19 @@ class MoveStrikeSubBot:
         # Lever 3 (2026-05-26): periodic broker reconciliation.
         self.reconcile_interval_sec = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
         self._last_reconcile_at: Optional[float] = None
-        # REENTRY-HWM-gate (2026-05-27, Variant C live test).
-        # When enabled, blocks REENTRY GREEN entries whose most-recent
-        # prior exit on the same symbol was a move_hwm_exit within
-        # WB_MOVE_REENTRY_HWM_GATE_WINDOW_MIN. Per Day-1 deep-dive
-        # hypothesis: HWM-drawdown exits signal the prior move topped;
-        # green continuation bar is more likely the exhaustion bar
-        # than a re-entry signal. Live A/B/C tests the hypothesis.
-        self.reentry_hwm_gate_enabled = (
-            os.getenv("WB_MOVE_REENTRY_HWM_GATE_ENABLED", "0") == "1"
+        # REENTRY-loss-gate (2026-05-27 evening, Variant C live test).
+        # Broadened from the earlier HWM-only scope after today's AMSS
+        # 15:16 REENTRY GREEN disaster (-$577 in 1 second). The disaster's
+        # prior exit was regime_shift_hard_stop, which the HWM-narrow gate
+        # missed by one reason-string. The actual failure pattern is
+        # "REENTRY GREEN immediately after ANY loss-class exit on the
+        # same symbol within WINDOW_MIN" — see
+        # cowork_reports/2026-05-27_reentry_loss_gate_broaden_directive.md.
+        self.reentry_loss_gate_enabled = (
+            os.getenv("WB_MOVE_REENTRY_LOSS_GATE_ENABLED", "0") == "1"
         )
-        self.reentry_hwm_gate_window_min = float(
-            os.getenv("WB_MOVE_REENTRY_HWM_GATE_WINDOW_MIN", "30")
+        self.reentry_loss_gate_window_min = float(
+            os.getenv("WB_MOVE_REENTRY_LOSS_GATE_WINDOW_MIN", "30")
         )
         # symbol → (exit_reason, exit_minute_et). Populated in _close_position.
         self._last_exit_reason_by_symbol: dict[str, tuple[str, int]] = {}
@@ -865,22 +866,28 @@ class MoveStrikeSubBot:
         # we'd immediately stop out).
         if bar.close <= watch["stop"]:
             return
-        # REENTRY-HWM-gate (2026-05-27, Variant C live test): if the
-        # most-recent exit on this symbol was a move_hwm_exit AND it
-        # happened within WINDOW_MIN, refuse the re-entry. Per Day-1
-        # deep-dive hypothesis: HWM-drawdown exits signal the prior
-        # move topped; green continuation bars in that window are
-        # more often the exhaustion bar than a re-entry signal.
-        if self.reentry_hwm_gate_enabled:
+        # REENTRY-loss-gate (2026-05-27 evening, Variant C live test):
+        # block REENTRY GREEN when the most-recent exit on this symbol
+        # was a LOSS-CLASS exit within WINDOW_MIN. Broadened from the
+        # earlier HWM-only scope after today's AMSS 15:16 disaster
+        # (-$577 in 1 second after a regime_shift_hard_stop). False
+        # negatives (gate doesn't fire when it should) recover on
+        # the next cycle; false positives silently kill winners,
+        # so the list is explicit prefixes only.
+        if self.reentry_loss_gate_enabled:
             prev = self._last_exit_reason_by_symbol.get(symbol)
             if prev is not None:
                 prev_reason, prev_min = prev
-                if (prev_reason.startswith("move_hwm_exit")
-                        and (cur_min - prev_min) <= self.reentry_hwm_gate_window_min):
+                window_age = cur_min - prev_min
+                if (window_age <= self.reentry_loss_gate_window_min
+                        and (prev_reason.startswith("move_hwm_exit")
+                             or prev_reason.startswith("move_stop_prox_bail")
+                             or prev_reason.startswith("move_hard_stop")
+                             or prev_reason.startswith("regime_shift_hard_stop"))):
                     print(
-                        f"{LOG_TAG} [{now_iso_et()}] REENTRY_HWM_GATE_BLOCK "
-                        f"{symbol} prior_exit={prev_reason} "
-                        f"min_ago={cur_min - prev_min}",
+                        f"{LOG_TAG} [{now_iso_et()}] REENTRY_LOSS_GATE_BLOCK "
+                        f"{symbol} reason={prev_reason} "
+                        f"window_age_min={window_age}",
                         flush=True,
                     )
                     # Pop the watch — gate is decisive for this cycle.

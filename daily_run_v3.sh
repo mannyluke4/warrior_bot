@@ -362,11 +362,14 @@ launch_subbot A "$A_KEY" "$A_SECRET" ""
 launch_subbot B "$MAIN_APCA_KEY" "$MAIN_APCA_SECRET" "WB_MOVE_FADE_VWAP_ENABLED=1"
 # Variant C re-purposed 2026-05-27: was V4 BodyCV fade-gate (fired
 # exactly once on 5/27 and was immediately overridden by regime_shift),
-# now tests the REENTRY-HWM-gate. Per
-# cowork_reports/2026-05-27_reentry_hwm_gate_live_directive.md.
-# Blocks REENTRY GREEN entries within 30 min of a move_hwm_exit on
-# the same symbol (Day-1 hypothesis: those re-entries chase reversals).
-launch_subbot C "$VARIANT_C_KEY" "$VARIANT_C_SECRET" "WB_MOVE_REENTRY_HWM_GATE_ENABLED=1 WB_MOVE_REENTRY_HWM_GATE_WINDOW_MIN=30"
+# now tests the REENTRY-LOSS-gate (broadened 2026-05-27 evening). Per
+# cowork_reports/2026-05-27_reentry_loss_gate_broaden_directive.md.
+# Blocks REENTRY GREEN within WINDOW_MIN of ANY loss-class exit on
+# the same symbol: move_hwm_exit, move_stop_prox_bail, move_hard_stop,
+# regime_shift_hard_stop. Broadened after today's AMSS disaster
+# (15:16 REENTRY GREEN -$577 in 1s after a regime_shift_hard_stop
+# the HWM-narrow gate missed by one reason-string).
+launch_subbot C "$VARIANT_C_KEY" "$VARIANT_C_SECRET" "WB_MOVE_REENTRY_LOSS_GATE_ENABLED=1 WB_MOVE_REENTRY_LOSS_GATE_WINDOW_MIN=30"
 
 # Health check — non-fatal (any single variant crash doesn't abort the test).
 sleep 15
