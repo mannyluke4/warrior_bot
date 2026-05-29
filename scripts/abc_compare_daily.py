@@ -197,7 +197,14 @@ SUBSCRIPTION_AUDIT_PREFIX = "SUBSCRIPTION_AUDIT "
 # cowork_reports/2026-05-26_sub_bot_orphan_audit.md
 # cowork_reports/2026-05-26_sub_bot_orphan_fix_directive.md
 ORPHAN_BUG_INCIDENT_DATE = "2026-05-26"
-BOT_VS_BROKER_DIVERGENCE_THRESHOLD = 50.0  # USD
+# RAISE FROM 50 — INTERIM until daily_pnl persistence ships.
+# Per cowork_reports/2026-05-28_abc_compare_quality_fixes_directive.md
+# Phase A. Restart-accounting routinely produces $200-$800 gaps because
+# the bots track daily_pnl in-memory only — any mid-day restart wipes
+# the morning's wins. Phase B adds a startup-time rehydrate from
+# Alpaca's get_activities API; once that ships, restore threshold to
+# ~$50 so the alert reliably indicates true orphan-class divergence.
+BOT_VS_BROKER_DIVERGENCE_THRESHOLD = 1000.0  # USD
 
 
 def extract_bot_daily_pnl(log_path: Path) -> float | None:

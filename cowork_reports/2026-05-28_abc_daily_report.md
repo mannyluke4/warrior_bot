@@ -4,16 +4,6 @@ Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
 
 ⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
 
-## ⚠️ Bot vs Broker P&L divergence detected
-
-| Variant | Bot reported | Broker truth | Gap |
-|---|---:|---:|---:|
-| A ⚠️ | -$22.00 | +$585.24 | +$607.24 |
-| B ⚠️ | -$22.00 | +$142.69 | +$164.69 |
-| C ⚠️ | -$22.00 | +$580.45 | +$602.45 |
-
-Divergence threshold: ±$50. Investigate any flagged variant — likely partial-fill or orphan-class accounting issue. Bot's daily_pnl is no longer the canonical signal; broker truth is.
-
 ## Account / log snapshot
 
 | Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
