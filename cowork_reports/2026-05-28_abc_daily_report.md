@@ -18,34 +18,37 @@ Divergence threshold: ±$50. Investigate any flagged variant — likely partial-
 
 | Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
 |---|---|---:|---:|---:|---:|---:|---:|
-| A | FIRESTORM-gate | +$30,179.98 | +$585.24 | 4 / 9 | 0 | 0 | 0 |
-| B | V1 VWAP | +$27,072.67 | +$142.69 | 6 / 13 | 0 | 0 | 0 |
-| C | REENTRY-loss-gate | +$27,050.96 | +$580.45 | 3 / 7 | 0 | 1 | 0 |
+| A | FIRESTORM-gate | +$30,179.98 | +$585.24 | 4 / 9 | 4 | 0 | 3 |
+| B | V1 VWAP | +$27,072.67 | +$142.69 | 6 / 13 | 6 | 1 | 5 |
+| C | REENTRY-loss-gate | +$27,050.96 | +$580.45 | 3 / 7 | 3 | 1 | 3 |
 
 ### Variant A — FIRESTORM-gate
 
-- MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
-- Regime-shift partials fired: 0
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 3
+- Exits: 3
+- Regime-shift partials fired: 1
 - Fade-gate blocks: 0 (0 unique symbols)
+- Symbols traded: IOTR, NCT, SPRC
 
 ### Variant B — V1 VWAP
 
-- MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
-- Regime-shift partials fired: 0
-- Fade-gate blocks: 0 (0 unique symbols)
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 5
+- Exits: 501
+- Regime-shift partials fired: 1
+- Fade-gate blocks: 1 (1 unique symbols)
+- Symbols traded: IOTR, NCT, SPRC
 
 ### Variant C — REENTRY-loss-gate
 
 - MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
-- Regime-shift partials fired: 0
+- REGIME_SHIFT entries: 3
+- Exits: 2
+- Regime-shift partials fired: 1
 - Fade-gate blocks: 0 (0 unique symbols)
 - REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- Symbols traded: IOTR, NCT, SPRC
 
 ## Data Quality Audit
 

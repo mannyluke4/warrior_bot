@@ -87,21 +87,25 @@ def get_alpaca_day_stats(api_key: str, api_secret: str, target_date: str) -> dic
 
 
 # Log-parsing regexes — match move_strike_subbot.py log output.
+# 2026-05-28: timestamp is HH:MM:SS only (no YYYY-MM-DD prefix). The
+# earlier regexes were silently matching 0 lines, causing daily reports
+# to show 0 entries / 0 exits for every variant and bogus "bot vs broker
+# divergence" alerts. Fixed by reducing the timestamp pattern.
 ENTRY_LINE_RE = re.compile(
-    r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"(🟩 ENTRY|🚀 ENTRY REGIME_SHIFT)\s+(?:REENTRY\([^)]*\)\s+)?(\w+)"
 )
 EXIT_LINE_RE = re.compile(
-    r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"🟥 EXIT (?:REGIME_SHIFT |MOVE_STRIKE )?(\w+) qty=(\d+) "
     r"limit=\$[\d.]+ \(ref=\$([\d.]+)\) reason=(\S+)"
 )
 PARTIAL_LINE_RE = re.compile(
-    r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"🎯 PARTIAL REGIME_SHIFT (\w+) qty=(\d+)"
 )
 FADE_BLOCK_LINE_RE = re.compile(
-    r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"MOVE_FADE_GATE_BLOCK (\w+) reason=(\S+)"
 )
 # REENTRY-loss-gate block (broadened 2026-05-27 evening, Variant C).
@@ -115,7 +119,7 @@ FIRESTORM_GATE_BLOCK_RE = re.compile(
     r"FIRESTORM_GATE_BLOCK (\w+) setup=(\S+) prior_bar_ticks=(\d+) threshold=(\d+)"
 )
 REGIME_TRIGGER_RE = re.compile(
-    r"\[MOVE_SUB(?:_\w)?\] \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] "
+    r"\[MOVE_SUB(?:_\w)?\] \[\d{2}:\d{2}:\d{2}\] "
     r"REGIME_SHIFT_TRIGGER (\w+) bar_body=\$([\d.]+) baseline=\$([\d.]+) "
     r"ratio=([\d.]+)"
 )
