@@ -34,7 +34,7 @@ RUNNING_TOTALS_PATH = REPORT_DIR / "abc_running_totals.json"
 
 VARIANTS = [
     ("A", "FIRESTORM-gate",  "APCA_API_KEY_ID",      "APCA_API_SECRET_KEY"),
-    ("B", "V1 VWAP",  "MAIN_APCA_API_KEY_ID", "MAIN_APCA_API_SECRET_KEY"),
+    ("B", "FIRESTORM-gate + Track A",  "MAIN_APCA_API_KEY_ID", "MAIN_APCA_API_SECRET_KEY"),
     ("C", "REENTRY-loss-gate", "VARIANT_C_APCA_API_KEY_ID", "VARIANT_C_APCA_API_SECRET_KEY"),
 ]
 

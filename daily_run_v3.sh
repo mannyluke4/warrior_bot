@@ -373,7 +373,15 @@ launch_subbot() {
 # losses while contributing ~zero edge. Block any entry (REGIME_SHIFT,
 # MOVE_STRIKE, REENTRY) when prior bar's tick count is below threshold.
 launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000"
-launch_subbot B "$MAIN_APCA_KEY" "$MAIN_APCA_SECRET" "WB_MOVE_FADE_VWAP_ENABLED=1"
+# Variant B re-purposed 2026-05-29: V1 VWAP fade-gate retired after 4
+# straight losing weeks (cumulative ~$5K below week-start). Per
+# cowork_reports/2026-05-28_track_a_results.md and Manny's call to slot
+# Track A live alongside FIRESTORM-gate (orthogonal defenses — entry
+# filter + exit framework). Track A defaults: R floor max($0.10, 5% of
+# entry); phased drawdown 50%/30%/20% by 15/45 min boundaries;
+# force-flatten 15:30 ET. MAIN_APCA account being reset by Manny;
+# new keys may be repointed but env-var name stays.
+launch_subbot B "$MAIN_APCA_KEY" "$MAIN_APCA_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000 WB_EXIT_TRACK_A_ENABLED=1"
 # Variant C re-purposed 2026-05-27: was V4 BodyCV fade-gate (fired
 # exactly once on 5/27 and was immediately overridden by regime_shift),
 # now tests the REENTRY-LOSS-gate (broadened 2026-05-27 evening). Per
