@@ -709,6 +709,14 @@ class SimTradeManager:
             basis = max(entry, trigger_price)
             gap_pct = (basis - entry) / entry * 100.0 if entry > 0 else 0.0
             if gap_pct > max_trigger_gap_pct:
+                # 2026-05-29: was silent — surfaced per sim-vs-live audit
+                # `cowork_reports/2026-05-29_sim_vs_live_audit.md` §7 rec #2.
+                # Explains "sim shows N SIGNALS but only M ENTERED" gap.
+                t = self._current_time_str if hasattr(self, "_current_time_str") else "?"
+                print(f"  [{t}] SQ_TRIGGER_GAP_ABORT: {symbol} "
+                      f"basis=${basis:.4f} entry=${entry:.4f} "
+                      f"gap={gap_pct:.2f}% > cap={max_trigger_gap_pct:.1f}%",
+                      flush=True)
                 return None  # timeout simulation — ASK was above limit
             fill_price = basis
         else:
