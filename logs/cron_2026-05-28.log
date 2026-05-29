@@ -107,3 +107,84 @@ Pushing logs...
  create mode 100644 logs/cron_2026-05-28.log
 === V3 Hybrid daily run complete: Thu May 28 08:57:56 MDT 2026 ===
 === TRAP: cleanup at Thu May 28 08:57:56 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 39135 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 39219 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration ea533c5] auto: v3 daily logs 2026-05-28
+ 2 files changed, 36 insertions(+)
+=== Cleanup complete: Thu May 28 08:57:58 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 43366)
+=== V3 Hybrid daily run started: Thu May 28 08:58:37 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: ea533c5 (auto: v3 daily logs 2026-05-28)
+daily_run_v3.sh hash: 6891c7876c5b5fa60622aaae46c67ea3  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 6b30244f059a601027be32449f5af976  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EDC2D69E.C5960FA1 (3988969118.771820999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF891E94B0.9D34F82F80000000 (-1994484559.385910511)
+         delay: FFFFFFFF123D2961.3A69F05F00000000 (-3988969118.771821022)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:4000::31
+}
++0.031801 +/- 0.065926 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Thu May 28 14:58:39 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 43397)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 43407)
+Bot health check passed (still running after 15s, PID: 43407)
+HEALTH_OK: Bot connected at 2026-05-28 14:59:02 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-05-28_move_strike_subbot_A.log)...
+  variant A PID: 43440
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-05-28_move_strike_subbot_B.log)...
+  variant B PID: 43441
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-05-28_move_strike_subbot_C.log)...
+  variant C PID: 43442
+  variant A health-check OK (PID 43440)
+  variant B health-check OK (PID 43441)
+  variant C health-check OK (PID 43442)
+Gateway watchdog started (PID: 43459)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu May 28 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+WARN: sub-bot variant A died at Thu May 28 17:29:25 MDT 2026.
+WARN: sub-bot variant B died at Thu May 28 17:29:25 MDT 2026.
+WARN: sub-bot variant C died at Thu May 28 17:29:25 MDT 2026.
+ALERT: bot_v3_hybrid.py died at Thu May 28 18:01:26 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-05-28_daily.log.
+=== Shutting down at Thu May 28 18:01:26 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
