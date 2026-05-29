@@ -674,20 +674,13 @@ class SimTradeManager:
         if r <= 0 or r < max(self.min_r, self.min_absolute_r):
             return None
 
-        # Per-symbol re-entry cooldown (entry-count based)
+        # Sim-only post-entry cooldowns removed 2026-05-29 per
+        # cowork_reports/2026-05-29_sim_live_convergence_directive.md
+        # Component 1. Live has no equivalent re-entry brake; sim was
+        # silently restricting trades that live takes. Detector-level
+        # _attempts counter (squeeze_detector.py, shared with live)
+        # remains as the only re-entry brake — matches live behavior.
         now_min = self._time_to_minutes(time_str)
-        cooldown_until = self._symbol_cooldown_until.get(symbol)
-        if cooldown_until is not None:
-            if now_min < cooldown_until:
-                return None  # still in cooldown
-            else:
-                # Cooldown expired, reset
-                self._symbol_entry_count[symbol] = 0
-                self._symbol_cooldown_until.pop(symbol, None)
-
-        # Stop-hit cooldown: block re-entry for N bars after stop_hit
-        if symbol in self._stop_hit_cooldown:
-            return None
 
         # Quality gate: check cached fundamentals
         if self.stock_info is not None:
@@ -819,14 +812,10 @@ class SimTradeManager:
         if self.account_equity > 0:
             self.open_notional += qty * fill_price
 
-        # Track re-entry count and start cooldown when cap is reached
-        # Squeeze trades use their own counter (detector._attempts), don't count against MP
-        # MP V2 re-entry trades use mp_det._reentry_count, don't count against standard MP cooldown
-        if setup_type not in ("squeeze", "mp_reentry", "continuation", "dp_dip_entry"):
-            entry_count = self._symbol_entry_count.get(symbol, 0) + 1
-            self._symbol_entry_count[symbol] = entry_count
-            if entry_count >= self.max_entries_per_symbol:
-                self._symbol_cooldown_until[symbol] = now_min + self.symbol_cooldown_min
+        # Sim-only entry-count cooldown write removed 2026-05-29 per
+        # Component 1 of the sim/live convergence directive. The
+        # _symbol_cooldown_until dict is now unused; detector-level
+        # _attempts (shared with live) is the sole re-entry brake.
 
         return t
 
@@ -1851,10 +1840,9 @@ class SimTradeManager:
 
     def on_bar_close_1m_cooldown(self):
         """Decrement stop-hit cooldowns on each 1m bar close."""
-        for sym in list(self._stop_hit_cooldown):
-            self._stop_hit_cooldown[sym] -= 1
-            if self._stop_hit_cooldown[sym] <= 0:
-                del self._stop_hit_cooldown[sym]
+        # Sim-only stop-hit cooldown bar-decrement removed 2026-05-29
+        # per Component 1 of the sim/live convergence directive. Dict
+        # is no longer populated; this loop was dead code.
 
     def update_macd(self, symbol: str, close: float) -> None:
         """Per-bar MACD update. Standard 12/26/9 EMAs. Caller invokes on
@@ -2180,10 +2168,10 @@ class SimTradeManager:
             self.open_notional -= t.qty_total * t.entry  # release original notional
             self.open_notional = max(0.0, self.open_notional)  # safety clamp
             self.current_equity += t.pnl()  # adjust equity by P&L
-        # If closed by stop_hit or max_loss_hit, start re-entry cooldown
-        _loss_reasons = ("stop_hit", "max_loss_hit") if self._max_loss_triggers_cooldown else ("stop_hit",)
-        if self.reentry_cooldown_bars > 0 and t.core_exit_reason in _loss_reasons:
-            self._stop_hit_cooldown[t.symbol] = self.reentry_cooldown_bars
+        # Sim-only stop-hit cooldown write removed 2026-05-29 per
+        # Component 1 of the sim/live convergence directive. Live has
+        # no equivalent post-stop re-entry brake; detector-level
+        # _attempts (shared with live) handles re-entry counting.
         self.open_trade = None
         # Notify quality gate of trade result
         if self.on_trade_close is not None:
