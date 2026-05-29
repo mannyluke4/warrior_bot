@@ -215,6 +215,13 @@ class SubBotSim(MoveStrikeSubBot):
         except Exception:
             self.ft_force_flatten_min = 0  # disabled
 
+    def _current_min_for_age(self) -> int:
+        """Override: return the simulator's tracked historical minute
+        (set per-tick from the tick timestamp) instead of wall clock.
+        Needed for Track A's phased drawdown floor: age = current_minute
+        - entry_minute, both must be historical for sim correctness."""
+        return self._current_minute_et
+
     def _wait_for_fill(self, order_id: str, timeout: int = 15):
         """Override: read from MockAlpaca's deterministic fill record."""
         if not order_id:
@@ -320,21 +327,26 @@ class SubBotSim(MoveStrikeSubBot):
         _maintain_position below)."""
         entry = float(fire.trigger_price)
         # Stop at 1% below the firestorm bar's low — Stage 1 default.
-        # Stage 1.5 Run B / D: if either WB_FT_STOP_FLOOR_ABS or _PCT is
-        # set, widen the stop so that R is at least the larger of the
-        # two floors. Sub-$5 stocks otherwise generate $0.04 R that puts
-        # 1800+ shares behind a 4-cent stop — see Stage 1 POLA case.
         baseline_stop = fire.bar_low * 0.99
-        if self.ft_stop_floor_abs > 0 or self.ft_stop_floor_pct > 0:
+        # Track A (Phase 4) supersedes the Stage 1.5 FT-specific floor.
+        # When Track A is enabled, the helper enforces the unified
+        # framework's R floor across both setups. When Track A is OFF,
+        # fall through to the Stage 1.5 FT-specific floor (kept for
+        # sweep-reproducibility) or the Stage 1 raw stop.
+        from exit_track_a import track_a_enabled, compute_stop_with_r_floor
+        if track_a_enabled():
+            stop, r = compute_stop_with_r_floor(entry, baseline_stop)
+            stop = round(stop, 4)
+        elif self.ft_stop_floor_abs > 0 or self.ft_stop_floor_pct > 0:
             stop_floor_abs = self.ft_stop_floor_abs
             stop_floor_pct_abs = entry * self.ft_stop_floor_pct
             min_r = max(stop_floor_abs, stop_floor_pct_abs)
-            # Widen stop so R = max(baseline_R, min_r)
             widened_stop = entry - min_r
             stop = round(min(baseline_stop, widened_stop), 4)
+            r = entry - stop
         else:
             stop = round(baseline_stop, 4)
-        r = entry - stop
+            r = entry - stop
         if r <= 0.01:
             print(
                 f"{LOG_TAG} [{now_iso_et()}] {symbol} firestorm_trigger skip — "
@@ -579,7 +591,14 @@ class SubBotSim(MoveStrikeSubBot):
                 continue
             if (not had_pos and self.position is not None
                     and self._current_time_str_et):
+                # Phase 3b: overwrite wall-clock entry_time_et with the
+                # historical sim time captured at this tick.
                 self.position.entry_time_et = self._current_time_str_et
+                # Track A: stash historical entry minute on the
+                # sim-only field; do NOT touch entry_time_min (other
+                # code paths use it as wall-clock and depend on
+                # wall-clock-vs-wall-clock consistency).
+                self.position.entry_minute_sim = self._current_minute_et
             replayed += 1
         # NOTE: TradeBarBuilder has no flush API — the last in-flight bar
         # won't fire its on_bar_close callback. Acceptable: a partial

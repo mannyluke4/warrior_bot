@@ -177,6 +177,11 @@ class SubPosition:
         # awaiting fill. Set True before submit; cleared on full fill
         # (position itself goes away) or partial/no-fill (retry next tick).
         "exit_pending",
+        # Track A (Phase 4): historical entry minute, set only in sim
+        # via SubBotSim.replay_ticks. None in live — live uses the
+        # wall-clock entry_time_min for age computations. Track A's
+        # dispatcher prefers entry_minute_sim when present.
+        "entry_minute_sim",
     )
 
     def __init__(self, symbol: str, entry: float, stop: float, r: float,
@@ -195,6 +200,7 @@ class SubPosition:
         self.entry_time_et = time_et
         et = datetime.now(ET)
         self.entry_time_min = et.hour * 60 + et.minute
+        self.entry_minute_sim = None  # only set by SubBotSim in sim
         self.hh_count = 0
         self.prev_bar_high = 0.0
         self.order_id_buy: Optional[str] = None
@@ -797,6 +803,13 @@ class MoveStrikeSubBot:
     # ──────────────────────────────────────────────────────────────────
     # Per-tick processing
     # ──────────────────────────────────────────────────────────────────
+    def _current_min_for_age(self) -> int:
+        """Return the minute-of-day used by Track A's position-age
+        calculations. Default: now_minute_et() (live wall clock).
+        SubBotSim overrides this to return the historical sim minute
+        so age computations work correctly during backtest replay."""
+        return now_minute_et()
+
     def on_tick(self, symbol: str, price: float, ts_iso: str, size: int) -> None:
         self.ticks_received += 1
         self._ensure_symbol(symbol)
@@ -946,28 +959,67 @@ class MoveStrikeSubBot:
         # firestorm_trigger positions.
         if (p.setup_type in ("regime_shift", "firestorm_trigger")
                 and not p.move_partial_fired):
-            # Phase 3 Stage 1.5 (sim-only): if firestorm_trigger position
-            # AND WB_FT_DRAWDOWN_FLOOR_PCT > 0, replace the hard stop with
-            # a wide drawdown floor (% from entry). Test of the "trust the
-            # fluctuation" philosophy — no exit on noise within the
-            # initial runway, only on catastrophic drawdown. Defaults to
-            # 0 (hard stop active, bit-identical to Stage 1 behavior).
-            ft_dd_floor_pct = float(
-                os.getenv("WB_FT_DRAWDOWN_FLOOR_PCT", "0")
-            ) if p.setup_type == "firestorm_trigger" else 0.0
-            if ft_dd_floor_pct > 0:
-                drawdown = (p.entry - price) / p.entry if p.entry > 0 else 0
-                if drawdown >= ft_dd_floor_pct:
+            # Track A (Phase 4, env-gated, applies to BOTH regime_shift
+            # AND firestorm_trigger): phased drawdown floor replaces the
+            # hard stop. Three-phase schedule by position age (default
+            # 50%/30%/20% with 15/45 min boundaries). Plus force-flatten
+            # at WB_EXIT_FORCE_FLATTEN_TIME (default 15:30 ET).
+            #
+            # Stage 1.5 fallback (sim-only): if Track A is OFF and the
+            # FT-specific drawdown var is set, use that single static
+            # threshold. Preserves Stage 1.5 sweep reproducibility.
+            #
+            # Default (both Track A and Stage 1.5 vars off): original
+            # hard stop. Bit-identical to pre-Track-A live behavior.
+            from exit_track_a import (
+                track_a_enabled, phased_drawdown_threshold,
+                should_force_flatten,
+            )
+            if track_a_enabled():
+                # Force-flatten check first (overrides drawdown floor).
+                # _current_min_for_age() is polymorphic — wall clock in
+                # live, historical minute in sim. See SubBotSim override.
+                cur_min = self._current_min_for_age()
+                if should_force_flatten(cur_min):
                     self._close_position(
-                        "firestorm_trigger_drawdown_floor", price)
+                        f"{p.setup_type}_force_flatten", price)
                     return
-                # Skip the hard stop check — drawdown floor replaces it.
+                # Phased drawdown floor based on position age.
+                # Sim sets entry_minute_sim to the historical minute via
+                # the SubBotSim.replay_ticks transition logic; live
+                # leaves it None and uses the wall-clock entry_time_min.
+                entry_min = (p.entry_minute_sim
+                             if p.entry_minute_sim is not None
+                             else p.entry_time_min)
+                age_min = max(0, cur_min - entry_min)
+                dd_threshold = phased_drawdown_threshold(age_min)
+                drawdown = (
+                    (p.entry - price) / p.entry if p.entry > 0 else 0
+                )
+                if dd_threshold > 0 and drawdown >= dd_threshold:
+                    self._close_position(
+                        f"{p.setup_type}_drawdown_floor", price)
+                    return
             else:
-                # Hard stop (default behavior — regime_shift always uses
-                # this path; FT also uses it when the env var is unset).
-                if price <= p.stop:
-                    self._close_position(f"{p.setup_type}_hard_stop", price)
-                    return
+                # Stage 1.5 fallback or default hard-stop path.
+                ft_dd_floor_pct = float(
+                    os.getenv("WB_FT_DRAWDOWN_FLOOR_PCT", "0")
+                ) if p.setup_type == "firestorm_trigger" else 0.0
+                if ft_dd_floor_pct > 0:
+                    drawdown = (
+                        (p.entry - price) / p.entry if p.entry > 0 else 0
+                    )
+                    if drawdown >= ft_dd_floor_pct:
+                        self._close_position(
+                            "firestorm_trigger_drawdown_floor", price)
+                        return
+                else:
+                    # Hard stop (default behavior — bit-identical to
+                    # pre-Stage-1.5 live behavior).
+                    if price <= p.stop:
+                        self._close_position(
+                            f"{p.setup_type}_hard_stop", price)
+                        return
             # Target = entry + target_R * R. Fire partial when crossed.
             target_price = p.entry + self.regime_shift_target_r * p.r
             if price >= target_price:
@@ -1036,10 +1088,16 @@ class MoveStrikeSubBot:
         """Open a regime-shift position. Entry = bar.close, stop = bar.low.
         R = entry - stop. Probe-sized qty. Alpaca-aware limit. Sets
         setup_type='regime_shift' so _maintain_position routes through
-        the partial mechanism."""
+        the partial mechanism.
+
+        Track A (Phase 4, env-gated): R floor on the stop placement.
+        When WB_EXIT_TRACK_A_ENABLED=1, the raw stop = bar.low is widened
+        if R is below the configured floor (default max($0.10, 5% of
+        entry)). Default OFF — bit-identical to pre-Track-A behavior."""
         entry = float(bar.close)
-        stop = float(bar.low)
-        r = entry - stop
+        raw_stop = float(bar.low)
+        from exit_track_a import compute_stop_with_r_floor
+        stop, r = compute_stop_with_r_floor(entry, raw_stop)
         if r <= 0.01:
             print(
                 f"{LOG_TAG} [{now_iso_et()}] {symbol} regime_shift skip — "
