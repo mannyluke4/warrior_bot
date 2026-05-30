@@ -1,0 +1,72 @@
+# A/B/C Daily Report — 2026-05-29
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## ⚠️ Bot vs Broker P&L divergence detected
+
+| Variant | Bot reported | Broker truth | Gap |
+|---|---:|---:|---:|
+| A ✓ | +$0.00 | +$0.00 | +$0.00 |
+| B ⚠️ | -$1,783.00 | +$0.00 | +$1,783.00 |
+| C ✓ | -$470.00 | -$849.27 | -$379.27 |
+
+Divergence threshold: ±$1000. Investigate any flagged variant — likely partial-fill or orphan-class accounting issue. Bot's daily_pnl is no longer the canonical signal; broker truth is.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$30,179.79 | +$0.00 | 0 / 0 | 0 | 20304 | 0 |
+| B | FIRESTORM-gate + Track A | +$30,000.00 | +$0.00 | 0 / 0 | 7 | 3 | 3 |
+| C | REENTRY-loss-gate | +$26,201.54 | -$849.27 | 3 / 6 | 3 | 2 | 1 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 20304 (3 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- MOVE_STRIKE entries: 4
+- REGIME_SHIFT entries: 3
+- Exits: 6
+- Regime-shift partials fired: 1
+- Fade-gate blocks: 3 (3 unique symbols)
+- Symbols traded: OLOX, PRFX, STG
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 2
+- REGIME_SHIFT entries: 1
+- Exits: 120889
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 2 (1 unique symbols)
+- Symbols traded: PRFX, STG
+
+## Data Quality Audit
+
+- Audit lines parsed: 3648
+- Symbols flagged HEURISTIC_SUSPECT: 2
+- Symbols with DIRECT_QUERY_WEDGE events: 4
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| GRAN | 663 | 162 | 2 | 0.042 | 6324 / 3282 |
+| STG | 946 | 2 | 1 | 0.000 | 14918 / 4110 |
+| OLOX | 834 | 0 | 1 | 0.000 | 10646 / 5089 |
+| PRFX | 1036 | 0 | 1 | 0.029 | 21381 / 21014 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 5 | +$431.36 |
+| B | 5 | -$2,923.11 |
+| C | 5 | -$3,789.98 |

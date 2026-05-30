@@ -73,24 +73,48 @@
     },
     {
       "date": "2026-05-28",
-      "data_corrected": "broker_truth_used",
+      "data_corrected": false,
       "variants": {
         "A": {
           "day_pnl": 585.239999999998,
           "equity": 30179.98,
-          "entries": 0,
+          "entries": 4,
           "fade_blocks": 0
         },
         "B": {
           "day_pnl": 142.6899999999987,
           "equity": 27072.67,
-          "entries": 0,
-          "fade_blocks": 0
+          "entries": 6,
+          "fade_blocks": 1
         },
         "C": {
           "day_pnl": 580.4500000000007,
           "equity": 27050.96,
+          "entries": 3,
+          "fade_blocks": 0
+        }
+      }
+    },
+    {
+      "date": "2026-05-29",
+      "data_corrected": "broker_truth_used",
+      "variants": {
+        "A": {
+          "day_pnl": 0.0,
+          "equity": 30179.79,
           "entries": 0,
+          "fade_blocks": 0
+        },
+        "B": {
+          "day_pnl": 0.0,
+          "equity": 30000.0,
+          "entries": 7,
+          "fade_blocks": 3
+        },
+        "C": {
+          "day_pnl": -849.2700000000004,
+          "equity": 26201.54,
+          "entries": 3,
           "fade_blocks": 0
         }
       }
