@@ -213,39 +213,35 @@ if [ -z "$MAIN_APCA_KEY" ] || [ -z "$MAIN_APCA_SECRET" ]; then
 fi
 echo "Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)..."
 cd ~/warrior_bot_v2
+# launch_main_bot: (re)start bot_v3_hybrid.py and capture its PID into BOT_PID.
+# Factored into a function 2026-06-02 so the watchdog can auto-restart the main
+# bot IN PLACE rather than tearing down the whole stack (sub-bots included) when
+# it dies. See the watchdog loop below (WB_MAIN_BOT_AUTORESTART).
+#
 # WB_TICK_LEVEL_ARM=1 — tick-level arming live as of 2026-05-19 per Manny's
-# call. Backtest with this flag shows -53% vs $290K mechanical baseline,
-# but backtest assumes fills at arm price which doesn't reflect live
-# gap-up reality (MTVA/RUBI chase-cap aborts pre-patch). Running live to
-# measure actual fill-and-profit performance against the theoretical
-# backtest. Flag-OFF behavior preserved bit-identical in code; flip back
-# by editing this line or env-override.
-APCA_API_KEY_ID="$MAIN_APCA_KEY" \
-APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
-WB_BROKER=ibkr \
-WB_EXPECTED_BROKER=ibkr \
-WB_TICK_LEVEL_ARM=1 \
-WB_ENGINE_PUBLISH_ENABLED=1 \
-WB_SUB_WATCHDOG_ENABLED=1 \
-WB_BAR_STREAM_LOG_ENABLED=1 \
-WB_BAR_STREAM_LABEL=main_bot \
-WB_SCALE_NOTIONAL=1 \
-WB_BUYING_POWER_PCT=0.85 \
-  python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
-# WB_SCALE_NOTIONAL + WB_BUYING_POWER_PCT (2026-05-28): cap order
-# notional at 85% of IBKR AvailableFunds. Required for non-marginable
-# small-caps where IBKR demands ~100% initial margin (NCT/SPRC orders
-# 2026-05-28 were rejected by Error 201 because the bot sized to
-# $29,706 on a $29,118 AvailableFunds account). 15% buffer covers
-# limit-chase slippage during entry retries.
-# WB_SUB_WATCHDOG_ENABLED=1 — observability watchdog for IBKR Tier-2
-# subscription wedges, shipped 2026-05-26 per
-# cowork_reports/2026-05-26_subscription_watchdog_directive.md.
-# Emits SUBSCRIPTION_AUDIT JSON lines into $LOG_FILE; consumed by
-# scripts/abc_compare_daily.py. Side-effect-free for v1 — no
-# auto-resubscribe action until 1-2 days of data prove the trigger
-# heuristics are sound.
-BOT_PID=$!
+# call. Backtest shows -53% vs $290K baseline, but backtest assumes fills at arm
+# price (doesn't reflect live gap-up reality). Flag-OFF behavior preserved
+# bit-identical in code; flip back by editing this line or env-override.
+# WB_SCALE_NOTIONAL + WB_BUYING_POWER_PCT (2026-05-28): cap order notional at 85%
+# of IBKR AvailableFunds (non-marginable small-caps need ~100% initial margin).
+# WB_SUB_WATCHDOG_ENABLED=1: IBKR Tier-2 subscription-wedge observability (2026-05-26).
+launch_main_bot() {
+    cd ~/warrior_bot_v2
+    APCA_API_KEY_ID="$MAIN_APCA_KEY" \
+    APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
+    WB_BROKER=ibkr \
+    WB_EXPECTED_BROKER=ibkr \
+    WB_TICK_LEVEL_ARM=1 \
+    WB_ENGINE_PUBLISH_ENABLED=1 \
+    WB_SUB_WATCHDOG_ENABLED=1 \
+    WB_BAR_STREAM_LOG_ENABLED=1 \
+    WB_BAR_STREAM_LABEL=main_bot \
+    WB_SCALE_NOTIONAL=1 \
+    WB_BUYING_POWER_PCT=0.85 \
+      python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
+    BOT_PID=$!
+}
+launch_main_bot
 echo "Bot started (PID: $BOT_PID)"
 
 # 8. Post-launch health check
@@ -450,6 +446,13 @@ TARGET_HOUR=18
 TARGET_MIN=5
 TARGET_EPOCH=$(date -j -v${TARGET_HOUR}H -v${TARGET_MIN}M -v0S +%s)
 
+# Main-bot auto-restart accounting (2026-06-02). When the main bot dies mid-
+# session the watchdog now restarts it in place and leaves the sub-bots running,
+# instead of the old behavior that tore the whole stack down. Bounded so a hard
+# crash-loop can't thrash forever.
+BOT_RESTARTS=0
+MAX_BOT_RESTARTS="${WB_MAX_BOT_RESTARTS:-10}"
+
 echo "Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET ($(date -r $TARGET_EPOCH))..."
 echo "  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET"
 while true; do
@@ -458,9 +461,28 @@ while true; do
         echo "All trading windows closed. Proceeding to shutdown."
         break
     fi
-    if ! kill -0 "$BOT_PID" 2>/dev/null; then
-        echo "ALERT: bot_v3_hybrid.py died at $(date)! Session ended early. Check $LOG_FILE."
-        break
+    if [ -n "$BOT_PID" ] && ! kill -0 "$BOT_PID" 2>/dev/null; then
+        # Main bot died mid-session. OLD behavior: break → fall through to the
+        # shutdown that ALSO killed the sub-bots (cost us full sessions). NEW
+        # (2026-06-02): auto-restart the main bot in place and keep the sub-bots
+        # running. Set WB_MAIN_BOT_AUTORESTART=0 to restore tear-down-on-death.
+        if [ "${WB_MAIN_BOT_AUTORESTART:-1}" != "1" ]; then
+            echo "ALERT: bot_v3_hybrid.py died at $(date)! WB_MAIN_BOT_AUTORESTART=0 → ending session early. Check $LOG_FILE."
+            break
+        elif [ "$BOT_RESTARTS" -lt "$MAX_BOT_RESTARTS" ]; then
+            BOT_RESTARTS=$((BOT_RESTARTS + 1))
+            echo "ALERT: bot_v3_hybrid.py died at $(date). Auto-restarting in place (attempt $BOT_RESTARTS/$MAX_BOT_RESTARTS); sub-bots untouched. Check $LOG_FILE."
+            launch_main_bot
+            sleep 15
+            if kill -0 "$BOT_PID" 2>/dev/null; then
+                echo "Main bot restarted OK (PID: $BOT_PID)."
+            else
+                echo "WARN: restarted main bot died within 15s — will retry next tick."
+            fi
+        else
+            echo "ALERT: bot_v3_hybrid.py hit max restarts ($MAX_BOT_RESTARTS). Leaving the main bot DOWN but keeping sub-bots alive until EOD. Check $LOG_FILE."
+            BOT_PID=""   # stop re-checking a dead PID; loop runs on to TARGET_EPOCH
+        fi
     fi
     # Framework is non-critical — log if it dies but keep watching the main bot.
     if [ -n "$FRAMEWORK_PID" ] && ! kill -0 "$FRAMEWORK_PID" 2>/dev/null; then

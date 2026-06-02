@@ -97,7 +97,26 @@ def is_junk_security(symbol: str, name: str = "") -> bool:
 def load_float_cache() -> dict:
     if os.path.exists(FLOAT_CACHE_PATH):
         with open(FLOAT_CACHE_PATH) as f:
-            raw = json.load(f)
+            text = f.read()
+        try:
+            raw = json.loads(text)
+        except json.JSONDecodeError as e:
+            # Corrupt cache (e.g. concurrent-write "Extra data" trailing garbage,
+            # which crash-looped the bot on 2026-06-02). A regenerable cache must
+            # NEVER take the bot down: salvage the valid leading object if we can,
+            # otherwise back it up and start empty.
+            try:
+                raw, _ = json.JSONDecoder().raw_decode(text)
+                print(f"  [float_cache] WARN: recovered from corruption ({e}); kept {len(raw)} entries")
+                save_float_cache(raw)  # rewrite clean so the garbage is gone
+            except Exception:
+                backup = FLOAT_CACHE_PATH + ".corrupt"
+                try:
+                    os.replace(FLOAT_CACHE_PATH, backup)
+                except OSError:
+                    pass
+                print(f"  [float_cache] WARN: unrecoverable corruption ({e}); backed up to {backup}, starting empty")
+                return {}
         cleaned = {k: v for k, v in raw.items() if v is not None}
         dropped = len(raw) - len(cleaned)
         if dropped > 0:
@@ -109,8 +128,15 @@ def load_float_cache() -> dict:
 
 def save_float_cache(cache: dict):
     os.makedirs(SCANNER_DIR, exist_ok=True)
-    with open(FLOAT_CACHE_PATH, "w") as f:
+    # Atomic write: serialize to a temp file in the same dir, then os.replace()
+    # (atomic rename on POSIX). The main bot's scanner and live_scanner.py both
+    # write this file; the old plain `open(...,"w")` let two writers interleave
+    # and produce the "Extra data" corruption that crash-looped the bot on
+    # 2026-06-02. A rename can't be seen half-written, so last-writer-wins cleanly.
+    tmp = f"{FLOAT_CACHE_PATH}.tmp.{os.getpid()}"
+    with open(tmp, "w") as f:
         json.dump(cache, f, indent=2)
+    os.replace(tmp, FLOAT_CACHE_PATH)
 
 
 _EDGAR_CIK_MAP: dict = {}
