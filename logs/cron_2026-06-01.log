@@ -1,0 +1,68 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 1177)
+=== V3 Hybrid daily run started: Mon Jun  1 10:16:19 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 1617)
+=== V3 Hybrid daily run started: Mon Jun  1 10:23:05 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 9a3d5ac (auto: v3 daily logs 2026-05-29)
+daily_run_v3.sh hash: d8c2fe3d9197bdeedb9fc70176a3e5b3  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 6b30244f059a601027be32449f5af976  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.124601 +/- 0.067929 time.apple.com 17.253.6.37
+NTP sync skipped (non-root)
+System time: Mon Jun  1 16:23:38 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++
++[0m
+  attempt 2/72: port 4002 not ready yet, waiting 5s...
+Gateway is up on port 4002 (after ~15s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 1795)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 1810)
+Bot health check passed (still running after 15s, PID: 1810)
+HEALTH_OK: Bot connected at 2026-06-01 16:24:42 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-01_move_strike_subbot_A.log)...
+  variant A PID: 1848
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-06-01_move_strike_subbot_B.log)...
+  variant B PID: 1849
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-01_move_strike_subbot_C.log)...
+  variant C PID: 1850
+  variant A health-check OK (PID 1848)
+  variant B health-check OK (PID 1849)
+  variant C health-check OK (PID 1850)
+Gateway watchdog started (PID: 1885)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon Jun  1 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Mon Jun  1 18:00:06 MDT 2026! Session ended early. Check /Users/duffy/warrior_bot_v2/logs/2026-06-01_daily.log.
+=== Shutting down at Mon Jun  1 18:00:06 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...

@@ -1,0 +1,62 @@
+# A/B/C Daily Report — 2026-06-01
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$30,179.79 | +$0.00 | 0 / 0 | 0 | 7669 | 0 |
+| B | FIRESTORM-gate + Track A | +$30,000.00 | +$0.00 | 0 / 0 | 0 | 7669 | 0 |
+| C | REENTRY-loss-gate | +$26,199.51 | -$4.04 | 0 / 0 | 0 | 0 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 7669 (2 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 7669 (2 unique symbols)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+## Data Quality Audit
+
+- Audit lines parsed: 3783
+- Symbols flagged HEURISTIC_SUSPECT: 6
+- Symbols with DIRECT_QUERY_WEDGE events: 2
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| FOFO | 354 | 38 | 1 | 0.000 | 2818 / 300 |
+| AAOG | 369 | 19 | 1 | 0.000 | 1414 / 100 |
+| CRE | 332 | 127 | 0 | 0.132 | 1785 / 1655 |
+| MASK | 432 | 10 | 0 | 0.328 | 12353 / 3930 |
+| NAMM | 439 | 3 | 0 | 0.319 | 18003 / 4225 |
+| RKLZ | 440 | 1 | 0 | 0.324 | 92470 / 11759 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 6 | +$431.36 |
+| B | 6 | -$2,923.11 |
+| C | 6 | -$3,794.02 |
