@@ -941,6 +941,22 @@ class MoveStrikeSubBot:
 
     def _maintain_position(self, price: float) -> None:
         p = self.position
+        # Universal EOD force-flatten (2026-06-02): independent of Track A AND
+        # setup_type, so NOTHING is carried overnight. The old force-flatten was
+        # Track-A-only + regime/firestorm-only, so orphan_adopted residuals (e.g.
+        # PRFX, held for days through its $4.75 stop down to $1.92) survived.
+        # Fires on the first tick at/after the cutoff. Default OFF (preserves
+        # sim/backtest reproducibility); daily_run_v3.sh sets =1 for live. Time
+        # defaults to the 19:30 ET entry cutoff.
+        if os.getenv("WB_EOD_FORCE_FLATTEN_ENABLED", "0") == "1":
+            try:
+                _ffh, _ffm = (int(x) for x in os.getenv(
+                    "WB_EOD_FORCE_FLATTEN_TIME_ET", "19:30").split(":")[:2])
+                if now_minute_et() >= _ffh * 60 + _ffm:
+                    self._close_position("eod_force_flatten", price)
+                    return
+            except Exception:
+                pass
         if price > p.peak:
             p.peak = price
             p.peak_time = now_iso_et()
@@ -1025,6 +1041,19 @@ class MoveStrikeSubBot:
             if price >= target_price:
                 self._fire_regime_shift_partial(p, price)
             return  # no trail pre-partial
+
+        # Hard-stop safety net for setups WITHOUT their own pre-partial stop
+        # management (notably orphan_adopted). regime_shift/firestorm handle their
+        # stop in the branch above; everything else used to fall straight to
+        # hwm_evaluate, which only trails AFTER +min_gain profit — so a losing
+        # orphan (PRFX 2026-06-02: held through its $4.75 stop to $1.92) never
+        # exited. Enforce the hard stop here. Default OFF (preserves sim/backtest
+        # reproducibility); daily_run_v3.sh sets =1 for live.
+        if (os.getenv("WB_ORPHAN_HARD_STOP_ENABLED", "0") == "1"
+                and p.setup_type not in ("regime_shift", "firestorm_trigger")
+                and price <= p.stop):
+            self._close_position(f"{p.setup_type}_hard_stop", price)
+            return
 
         decision = hwm_evaluate(p, price, now_minute_et(), self.hwm_cfg)
         if decision is None:
