@@ -4386,3 +4386,20 @@ ALERT: bot_v3_hybrid.py died at Tue Jun  2 05:26:16 MDT 2026! Session ended earl
 === Shutting down at Tue Jun  2 05:26:16 MDT 2026 ===
 Generating A/B/C daily comparison report...
 Pushing logs...
+[v2-ibkr-migration 710a60f] auto: v3 daily logs 2026-06-02
+ 16 files changed, 40821 insertions(+)
+ create mode 100644 cowork_reports/2026-06-02_abc_daily_report.md
+ create mode 100644 logs/2026-06-02_abc_compare.log
+ create mode 100644 logs/2026-06-02_daily.log
+ create mode 100644 logs/2026-06-02_latency_diagnostic.jsonl
+ create mode 100644 logs/2026-06-02_move_strike_subbot_A.log
+ create mode 100644 logs/2026-06-02_move_strike_subbot_B.log
+ create mode 100644 logs/2026-06-02_move_strike_subbot_C.log
+ create mode 100644 logs/2026-06-02_scanner.log
+ create mode 100644 logs/bar_stream/2026-06-02_main_bot.jsonl
+ create mode 100644 logs/bar_stream/2026-06-02_subbot_A.jsonl
+ create mode 100644 logs/bar_stream/2026-06-02_subbot_B.jsonl
+ create mode 100644 logs/bar_stream/2026-06-02_subbot_C.jsonl
+ create mode 100644 logs/cron_2026-06-02.log
+=== V3 Hybrid daily run complete: Tue Jun  2 05:26:27 MDT 2026 ===
+=== TRAP: cleanup at Tue Jun  2 05:26:27 MDT 2026 ===
