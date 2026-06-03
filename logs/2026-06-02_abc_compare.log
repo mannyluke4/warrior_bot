@@ -9,51 +9,60 @@ Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
 
 | Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
 |---|---|---:|---:|---:|---:|---:|---:|
-| A | FIRESTORM-gate | +$30,179.79 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
-| B | FIRESTORM-gate + Track A | +$30,000.00 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
-| C | REENTRY-loss-gate | +$26,198.64 | -$0.99 | 0 / 0 | 0 | 0 | 0 |
+| A | FIRESTORM-gate | +$29,871.23 | -$308.56 | 2 / 3 | 2 | 12072 | 1 |
+| B | FIRESTORM-gate + Track A | +$29,713.00 | -$287.00 | 2 / 3 | 2 | 12072 | 1 |
+| C | REENTRY-loss-gate | +$25,776.17 | -$423.46 | 2 / 4 | 2 | 0 | 2 |
 
 ### Variant A — FIRESTORM-gate
 
-- MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 1
+- Exits: 1
 - Regime-shift partials fired: 0
 - Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 12072 (4 unique symbols)
+- Symbols traded: BJDX
 
 ### Variant B — FIRESTORM-gate + Track A
 
-- MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 1
+- Exits: 1
 - Regime-shift partials fired: 0
 - Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 12072 (4 unique symbols)
+- Symbols traded: BJDX
 
 ### Variant C — REENTRY-loss-gate
 
 - MOVE_STRIKE entries: 0
-- REGIME_SHIFT entries: 0
-- Exits: 0
+- REGIME_SHIFT entries: 2
+- Exits: 1
 - Regime-shift partials fired: 0
 - Fade-gate blocks: 0 (0 unique symbols)
+- Symbols traded: BJDX, ZJYL
 
 ## Data Quality Audit
 
-- Audit lines parsed: 277
-- Symbols flagged HEURISTIC_SUSPECT: 1
-- Symbols with DIRECT_QUERY_WEDGE events: 2
+- Audit lines parsed: 5045
+- Symbols flagged HEURISTIC_SUSPECT: 6
+- Symbols with DIRECT_QUERY_WEDGE events: 3
 
 | Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
 |---|---:|---:|---:|---:|---|
-| BJDX | 37 | 0 | 1 | 0.000 | 1865163 / 3453712 |
-| VSA | 46 | 0 | 1 | 0.000 | 60246 / 37684 |
-| ZJYL | 191 | 1 | 0 | 0.223 | 23185 / 28902 |
+| VSA | 713 | 16 | 1 | 0.000 | 3678 / 2600 |
+| GXAI | 680 | 1 | 1 | 0.000 | 23965 / 16295 |
+| BJDX | 718 | 0 | 1 | 0.000 | 16933 / 7799 |
+| ABTS | 664 | 19 | 0 | 0.228 | 6976 / 4219 |
+| ZJYL | 851 | 19 | 0 | 0.223 | 369 / 100 |
+| CTNT | 676 | 5 | 0 | 0.131 | 15773 / 4223 |
+| EVGN | 678 | 2 | 0 | 0.302 | 10373 / 9559 |
 
 ## Running totals (cumulative)
 
 | Variant | Days | Cumulative P&L |
 |---|---:|---:|
-| A | 7 | +$431.36 |
-| B | 7 | -$2,923.11 |
-| C | 7 | -$3,795.01 |
+| A | 7 | +$122.80 |
+| B | 7 | -$3,210.11 |
+| C | 7 | -$4,217.48 |
 
