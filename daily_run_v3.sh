@@ -441,6 +441,18 @@ FRAMEWORK_PID=""
 GW_WATCHDOG_PID=$!
 echo "Gateway watchdog started (PID: $GW_WATCHDOG_PID)"
 
+# 8d. Detached health watchdog (2026-06-03): session-independent auto-recovery
+# for whole-stack-down and TICK DROUGHT (bot alive but data-blind). Survives even
+# if this daily_run dies (it relaunches it). Idempotent — skip if already up.
+# Logs to logs/health_watchdog.log. Not tracked by the cleanup trap on purpose:
+# it self-exits at 20:10 ET and we WANT it alive if daily_run itself crashes.
+if ! pgrep -f health_watchdog.sh >/dev/null 2>&1; then
+    nohup /bin/zsh ~/warrior_bot_v2/health_watchdog.sh >/dev/null 2>&1 &
+    echo "Health watchdog started (detached)"
+else
+    echo "Health watchdog already running — reusing"
+fi
+
 # 9. Watchdog loop: wait until 6:05 PM MT (8:05 PM ET) — 5 min after evening window closes
 # Bot handles its own dual-window schedule (morning 7-12 ET, evening 4-8 PM ET)
 # and sleeps during the dead zone automatically. Watchdog just ensures it stays alive.
