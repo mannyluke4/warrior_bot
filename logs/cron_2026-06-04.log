@@ -1,0 +1,67 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 72142)
+=== V3 Hybrid daily run started: Thu Jun  4 02:00:05 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 0484cf5 (auto: v3 daily logs 2026-06-03)
+daily_run_v3.sh hash: c8bd1cafdc7cefc8b09bba6eed42fefe5f32cf8e
+bot_v3_hybrid.py hash: c5d95abb622cd0565f6600aed95cf92501d068d7
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EDCBAF07.E3F23CC8 (3989548807.890414999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF891A287C.0E06E19C00000000 (-1994774403.945207596)
+         delay: FFFFFFFF123450F8.1C0DC33800000000 (-3989548807.890415192)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:4000::31
+}
++0.035891 +/- 0.066172 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Thu Jun  4 08:00:09 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 72182)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 72192)
+Bot health check passed (still running after 15s, PID: 72192)
+HEALTH_OK: Bot connected at 2026-06-04 08:00:33 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-04_move_strike_subbot_A.log)...
+  variant A PID: 72213
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-06-04_move_strike_subbot_B.log)...
+  variant B PID: 72214
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-04_move_strike_subbot_C.log)...
+  variant C PID: 72215
+  variant A health-check OK (PID 72213)
+  variant B health-check OK (PID 72214)
+  variant C health-check OK (PID 72215)
+Gateway watchdog started (PID: 72220)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu Jun  4 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+=== TRAP: cleanup at Thu Jun  4 12:41:37 MDT 2026 ===
