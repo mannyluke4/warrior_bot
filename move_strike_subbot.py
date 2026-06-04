@@ -448,6 +448,62 @@ class MoveStrikeSubBot:
                 return float(o.filled_avg_price or 0), int(o.filled_qty or 0)
         return None, 0
 
+    def _cancel_open_sells(self, symbol: str) -> int:
+        """Cancel any open/parked SELL orders for `symbol`, releasing the
+        shares they hold (held_for_orders) before we resubmit an exit.
+
+        Fix for the 2026-06-04 FOXX partial oversell loop: a parked partial
+        SELL that never filled (and whose timeout-cancel silently failed) kept
+        holding shares, so every re-fired partial stacked a 2nd sell that
+        Alpaca rejected. Cancel-first makes the resubmit idempotent and
+        self-healing. Returns number of orders cancelled.
+        """
+        if self.alpaca is None:
+            return 0
+        n = 0
+        try:
+            from alpaca.trading.requests import GetOrdersRequest
+            from alpaca.trading.enums import QueryOrderStatus
+            orders = self.alpaca.get_orders(
+                filter=GetOrdersRequest(
+                    status=QueryOrderStatus.OPEN, symbols=[symbol]
+                )
+            )
+            for o in orders:
+                side = getattr(o, "side", None)
+                side_val = side.value if hasattr(side, "value") else str(side)
+                if side_val.lower() == "sell":
+                    try:
+                        self.alpaca.cancel_order_by_id(str(o.id))
+                        n += 1
+                    except Exception:
+                        pass
+        except Exception as e:
+            print(f"{LOG_TAG} PARTIAL CANCEL-OPEN FAIL {symbol}: {e!r}",
+                  flush=True)
+        if n:
+            time.sleep(0.4)  # let the broker release held shares
+        return n
+
+    def _broker_available_qty(self, symbol: str) -> Optional[int]:
+        """Shares actually sellable right now for `symbol` (broker truth =
+        total qty minus held_for_orders). Returns 0 if the broker holds no
+        position, or None on a transient read error (caller should not
+        over-react to None)."""
+        if self.alpaca is None:
+            return None
+        try:
+            pos = self.alpaca.get_open_position(symbol)
+        except Exception:
+            return 0  # 404 / no position → flat
+        try:
+            qa = getattr(pos, "qty_available", None)
+            if qa is not None:
+                return int(float(qa))
+            return int(float(pos.qty))
+        except (ValueError, TypeError, AttributeError):
+            return None
+
     def _compute_alpaca_aware_limit(self, symbol: str, signal_price: float,
                                      side: str, buffer_pct: float = 0.005) -> float:
         """Sub-bot copy of compute_alpaca_aware_limit (see bot_v3_hybrid.py:2775).
@@ -1202,6 +1258,41 @@ class MoveStrikeSubBot:
             # Always leave at least 1 share as runner.
             partial_qty = min(partial_qty, p.qty - 1)
         runner_qty = p.qty - partial_qty
+
+        # ── SAFE RESUBMIT (fix: 2026-06-04 FOXX partial oversell loop) ──────
+        # This partial re-fires on every target-cross tick until move_partial_
+        # fired flips True (only on a real fill). If a prior partial SELL is
+        # parked-unfilled at the broker it still holds shares (held_for_orders),
+        # so a fresh full-size partial stacks on top and Alpaca rejects it with
+        # "insufficient qty available" — and, after a manual flatten, with
+        # "cannot be sold short" — looping forever (21,945× on FOXX). Cancel any
+        # open SELL for this symbol to release the shares, then size to the
+        # broker's ACTUAL available qty so we can never over-sell. Gate defaults
+        # ON; set WB_MOVE_PARTIAL_SAFE_RESUBMIT=0 to revert to legacy behavior.
+        if os.getenv("WB_MOVE_PARTIAL_SAFE_RESUBMIT", "1") == "1":
+            self._cancel_open_sells(p.symbol)
+            avail = self._broker_available_qty(p.symbol)
+            if avail is not None:
+                if avail <= 0:
+                    # Broker flat / position closing elsewhere — nothing to
+                    # sell. Don't spam; reconcile clears local state.
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] PARTIAL SKIP {p.symbol}: "
+                        f"broker available qty={avail} (flat/closing) — "
+                        f"deferring to reconcile",
+                        flush=True,
+                    )
+                    return
+                capped = min(partial_qty, avail - 1) if avail > 1 else avail
+                capped = max(1, capped)
+                if capped != partial_qty:
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] PARTIAL QTY CAP {p.symbol}: "
+                        f"{partial_qty}→{capped} (broker available={avail})",
+                        flush=True,
+                    )
+                partial_qty = capped
+                runner_qty = max(0, avail - partial_qty)
         # Sell limit: floor at entry + 1.5R - slip (don't price above
         # current price — that would never fill).
         slip = max(0.05, price * 0.005)
