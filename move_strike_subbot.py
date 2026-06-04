@@ -1571,6 +1571,35 @@ class MoveStrikeSubBot:
         aware_limit = self._compute_alpaca_aware_limit(p.symbol, ref_price, "SELL")
         limit = min(aware_limit, base_limit)
         ordered_qty = p.qty
+        # ── SAFE EXIT QTY (fix: 2026-05-29 PRFX / 2026-05-28 SPRC oversell loops) ──
+        # The full-exit path requested p.qty even when the broker held far less
+        # (PRFX: tracked 2,631 vs broker 4, held_for_orders=0 → 120,887 EXIT
+        # REJECTs, position NEVER exited and carried). Cancel any parked SELL to
+        # release held shares, then cap the order to the broker's ACTUAL
+        # available qty so we can never request more than we hold. If the broker
+        # is already flat, clear local state and let reconcile finish. Gate
+        # defaults ON; set WB_MOVE_EXIT_AVAIL_CAP=0 to revert to legacy.
+        if os.getenv("WB_MOVE_EXIT_AVAIL_CAP", "1") == "1":
+            self._cancel_open_sells(p.symbol)
+            avail = self._broker_available_qty(p.symbol)
+            if avail is not None:
+                if avail <= 0:
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] EXIT SKIP {p.symbol}: broker "
+                        f"available qty={avail} (already flat) — clearing local "
+                        f"state, deferring to reconcile",
+                        flush=True,
+                    )
+                    self.position = None
+                    return
+                if avail < ordered_qty:
+                    print(
+                        f"{LOG_TAG} [{now_iso_et()}] EXIT QTY CAP {p.symbol}: "
+                        f"{ordered_qty}→{avail} (broker available)",
+                        flush=True,
+                    )
+                    ordered_qty = avail
+                    p.qty = avail
         _tag = "REGIME_SHIFT" if p.setup_type == "regime_shift" else "MOVE_STRIKE"
         print(
             f"{LOG_TAG} [{now_iso_et()}] 🟥 EXIT {_tag} {p.symbol} qty={ordered_qty} "
