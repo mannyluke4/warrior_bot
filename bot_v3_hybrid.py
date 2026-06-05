@@ -1395,6 +1395,13 @@ def subscribe_symbol(symbol: str):
     # add a tick-by-tick subscription on top.
     state.tier.setdefault(symbol, "snapshot")
     print(f"✅ Subscribed: {symbol}", flush=True)
+    # Discovery-gate OBSERVE-ONLY logging (WB_DISCOVERY_GATE_OBSERVE=1). No-op when
+    # off; never blocks the subscribe or alters trading. See discovery_gate.py.
+    try:
+        from discovery_gate import observe_discovery
+        observe_discovery(symbol, state.sq_detectors.get(symbol))
+    except Exception:
+        pass
     persist_watchlist()
 
 
