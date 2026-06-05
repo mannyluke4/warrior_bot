@@ -1,2 +1,3 @@
 2026-06-02 09:23:46 ET  cc-session-recovery  repair-json  float_cache.json  truncated double-write garbage after char 108704; bot crash-looped on load_float_cache
 2026-06-02 18:54:53 ET  cc-session-recovery  flatten-position  PRFX  4sh orphan on acct C held overnight, blew through $4.75 stop to $1.92; no EOD-flatten/orphan-stop in subbot (fix incoming)
+2026-06-05 11:28:01 ET  cc-session  manual-flatten  STI  unmanaged orphan (adopted but not subscribed/ticking; HWM trail never evaluated). Sold 230 on Variant A + 230 on Variant C @ ~$36.88 LIMIT to lock ~+$3.26K/leg before further give-back from $45.80 peak. Per Manny.

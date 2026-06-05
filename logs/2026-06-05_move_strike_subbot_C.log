@@ -1,0 +1,886 @@
+[MOVE_SUB_C] Alpaca PAPER connected — account=PA38Q69FQB6K equity=$28,397
+[MOVE_SUB_C] starting consume loop
+[MOVE_SUB_C] [04:00:34] connected to engine (/tmp/warrior_engine.sock) attempt=1
+[MOVE_SUB_C] [04:01:34] STATS ticks=0 symbols=0 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] RECONCILE ADOPT STI qty=230 avg=$22.2000 stop=$21.0900 setup=orphan_adopted — managing residual until exit
+[MOVE_SUB_C] [04:02:34] STATS ticks=0 symbols=0 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:03:34] STATS ticks=0 symbols=0 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:04:34] STATS ticks=0 symbols=0 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:05:20] new symbol BGMS — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:24] new symbol MTVA — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:27] new symbol MRLN — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:30] new symbol SOXS — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:33] new symbol NBIZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:36] new symbol SNDQ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:36] STATS ticks=15 symbols=6 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:05:39] new symbol DAMD — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:41] new symbol BTQ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:45] new symbol IONZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:48] new symbol RGTZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:50] new symbol IREZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:54] new symbol RKLZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:56] new symbol MNTS — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:05:59] new symbol VERU — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:02] new symbol MUD — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:05] new symbol HYLN — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:08] new symbol DXST — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:11] new symbol ASTN — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:14] new symbol SMU — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:17] new symbol NVD — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:06:37] STATS ticks=45 symbols=20 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:07:37] STATS ticks=45 symbols=20 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:08:37] STATS ticks=45 symbols=20 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:09:37] STATS ticks=45 symbols=20 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:10:37] STATS ticks=58 symbols=20 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:10:51] new symbol QBTZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:11:08] new symbol NOWL — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:11:38] STATS ticks=85 symbols=22 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:12:39] STATS ticks=85 symbols=22 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:13:39] STATS ticks=85 symbols=22 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:14:39] STATS ticks=85 symbols=22 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:15:24] new symbol DRCT — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:15:39] new symbol SMCZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:15:41] STATS ticks=101 symbols=24 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:15:58] new symbol CORD — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:16:42] STATS ticks=332 symbols=25 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:17:42] STATS ticks=820 symbols=25 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:18:43] STATS ticks=1961 symbols=25 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:19:43] STATS ticks=2882 symbols=25 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:20:25] new symbol DAIC — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:20:43] STATS ticks=3620 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:21:44] STATS ticks=4098 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:22:46] STATS ticks=4849 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:23:46] STATS ticks=6111 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:24:47] STATS ticks=6627 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:25:47] STATS ticks=7129 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:26:47] STATS ticks=7762 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:27:47] STATS ticks=8835 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:28:47] STATS ticks=9310 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:29:47] STATS ticks=11012 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:30:48] STATS ticks=11735 symbols=26 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:31:08] new symbol OKLL — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:31:48] STATS ticks=12400 symbols=27 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:32:48] STATS ticks=12732 symbols=27 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:33:49] STATS ticks=13120 symbols=27 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:34:50] STATS ticks=13634 symbols=27 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:35:32] new symbol BBCP — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:35:50] STATS ticks=14181 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:36:50] STATS ticks=14670 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:37:52] STATS ticks=15166 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:38:53] STATS ticks=15942 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:39:53] STATS ticks=16786 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:40:53] STATS ticks=18018 symbols=28 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:41:18] new symbol BTCZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:41:53] STATS ticks=18668 symbols=29 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:42:54] STATS ticks=19117 symbols=29 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:43:55] STATS ticks=19576 symbols=29 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:44:55] STATS ticks=19991 symbols=29 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:45:42] new symbol LITZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [04:45:55] STATS ticks=20703 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:46:55] STATS ticks=21932 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:47:56] STATS ticks=23178 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:48:56] STATS ticks=23942 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:49:57] STATS ticks=24525 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:50:57] STATS ticks=25112 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:51:59] STATS ticks=25574 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:53:00] STATS ticks=26240 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:54:00] STATS ticks=26574 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:55:00] STATS ticks=26938 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:56:01] STATS ticks=27219 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:57:01] STATS ticks=27593 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:58:01] STATS ticks=28298 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [04:59:02] STATS ticks=28947 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:00:03] STATS ticks=29273 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:01:03] STATS ticks=29577 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:02:06] STATS ticks=29906 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:03:06] STATS ticks=30226 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:04:06] STATS ticks=30489 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:05:07] STATS ticks=30808 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:06:07] STATS ticks=32021 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:07:07] STATS ticks=33572 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:08:07] STATS ticks=34457 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:09:08] STATS ticks=35293 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:10:08] STATS ticks=35671 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:11:08] STATS ticks=35916 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:12:08] STATS ticks=37190 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:13:09] STATS ticks=37652 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:14:09] STATS ticks=38001 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:15:09] STATS ticks=38420 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:16:09] STATS ticks=38796 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:17:10] STATS ticks=39073 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:18:10] STATS ticks=39235 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:19:11] STATS ticks=39471 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:20:12] STATS ticks=40112 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:21:13] STATS ticks=40512 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:22:14] STATS ticks=40873 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:23:14] STATS ticks=41254 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:24:16] STATS ticks=41425 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:25:16] STATS ticks=41587 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:26:17] STATS ticks=41826 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:27:18] STATS ticks=42006 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:28:18] STATS ticks=42128 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:29:19] STATS ticks=42403 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:30:21] STATS ticks=42638 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:31:21] STATS ticks=42918 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:32:22] STATS ticks=43063 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:33:23] STATS ticks=43168 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:34:24] STATS ticks=43281 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:35:24] STATS ticks=43379 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:36:25] STATS ticks=43573 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:37:25] STATS ticks=43654 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:38:26] STATS ticks=43770 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:39:27] STATS ticks=44041 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:40:27] STATS ticks=44170 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:41:28] STATS ticks=44339 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:42:28] STATS ticks=44663 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:43:28] STATS ticks=45213 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:44:29] STATS ticks=45678 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:45:29] STATS ticks=45991 symbols=30 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:46:11] new symbol SMR — detector + movement_strike instantiated
+[MOVE_SUB_C] [05:46:29] STATS ticks=46236 symbols=31 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:47:30] STATS ticks=46813 symbols=31 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:48:30] STATS ticks=47107 symbols=31 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:49:30] STATS ticks=47599 symbols=31 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:50:30] STATS ticks=49898 symbols=31 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:51:23] new symbol GNTA — detector + movement_strike instantiated
+[MOVE_SUB_C] [05:51:30] STATS ticks=51567 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:52:31] STATS ticks=52985 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:53:31] STATS ticks=54048 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:54:31] STATS ticks=55439 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:55:31] STATS ticks=57416 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:56:31] STATS ticks=59161 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:57:32] STATS ticks=60293 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:58:32] STATS ticks=61562 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [05:59:32] STATS ticks=62960 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:00:32] STATS ticks=63852 symbols=32 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:01:19] new symbol IMSR — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:01:28] new symbol SIDU — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:01:33] STATS ticks=65250 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:02:33] STATS ticks=66894 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:03:34] STATS ticks=67647 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:04:34] STATS ticks=68115 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:05:35] STATS ticks=68465 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:06:35] STATS ticks=68980 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:07:35] STATS ticks=69639 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:08:35] STATS ticks=70064 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:09:36] STATS ticks=70330 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:10:36] STATS ticks=70508 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:11:37] STATS ticks=70823 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:12:37] STATS ticks=71822 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:13:38] STATS ticks=72359 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:14:38] STATS ticks=72925 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:15:39] STATS ticks=73555 symbols=34 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:15:50] new symbol BNAI — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:16:39] STATS ticks=73947 symbols=35 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:17:40] STATS ticks=74222 symbols=35 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:18:41] STATS ticks=74642 symbols=35 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:19:41] STATS ticks=75166 symbols=35 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:20:42] STATS ticks=75556 symbols=35 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:20:59] new symbol SVCO — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:21:42] STATS ticks=76856 symbols=36 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:22:43] STATS ticks=77731 symbols=36 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:23:43] STATS ticks=78481 symbols=36 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:24:43] STATS ticks=79389 symbols=36 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:25:44] STATS ticks=79852 symbols=36 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:26:30] new symbol ADBG — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:26:45] STATS ticks=80173 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:27:46] STATS ticks=80649 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:28:46] STATS ticks=81028 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:29:47] STATS ticks=81279 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:30:47] STATS ticks=81701 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:31:48] STATS ticks=82196 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:32:48] STATS ticks=82791 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:33:48] STATS ticks=83249 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:34:49] STATS ticks=83651 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:35:50] STATS ticks=83987 symbols=37 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:35:53] new symbol BESS — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:36:50] STATS ticks=84256 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:37:50] STATS ticks=84495 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:38:51] STATS ticks=84911 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:39:51] STATS ticks=85059 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:40:52] STATS ticks=85252 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:41:52] STATS ticks=85542 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:42:53] STATS ticks=85686 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:43:54] STATS ticks=85926 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:44:54] STATS ticks=86066 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:45:54] STATS ticks=86188 symbols=38 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:46:33] new symbol AMPG — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:46:55] STATS ticks=86454 symbols=39 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:47:56] STATS ticks=86737 symbols=39 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:48:57] STATS ticks=87211 symbols=39 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:49:57] STATS ticks=88276 symbols=39 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:50:58] STATS ticks=90955 symbols=39 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:51:26] new symbol BCAB — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:51:58] STATS ticks=93459 symbols=40 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:52:58] STATS ticks=95401 symbols=40 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:53:59] STATS ticks=99403 symbols=40 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:54:00] BGMS ARMED entry=3.0200 stop=2.9000 R=0.1200 score=11.0 — movement_strike history reset
+[MOVE_SUB_C] [06:54:59] STATS ticks=104932 symbols=40 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:55:59] STATS ticks=110039 symbols=40 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:56:23] new symbol STAK — detector + movement_strike instantiated
+[MOVE_SUB_C] [06:56:59] STATS ticks=114361 symbols=41 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:57:59] STATS ticks=117357 symbols=41 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [06:59:00] STATS ticks=122062 symbols=41 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:00:00] STATS ticks=127572 symbols=41 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:01:00] STATS ticks=133408 symbols=41 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:01:21] new symbol TECS — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:01:27] new symbol DNUT — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:01:32] new symbol EDHL — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:02:00] STATS ticks=139274 symbols=44 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:03:00] STATS ticks=143828 symbols=44 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:04:01] STATS ticks=146472 symbols=44 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:05:01] STATS ticks=148270 symbols=44 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:06:02] STATS ticks=149571 symbols=44 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:06:08] new symbol LASE — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:06:22] new symbol NCT — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:07:02] STATS ticks=150441 symbols=46 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:08:03] STATS ticks=151408 symbols=46 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:09:03] STATS ticks=152250 symbols=46 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:10:03] STATS ticks=153656 symbols=46 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:10:52] new symbol WCT — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:11:04] STATS ticks=154182 symbols=47 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:12:04] STATS ticks=155460 symbols=47 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:13:04] STATS ticks=156533 symbols=47 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:14:04] STATS ticks=157653 symbols=47 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:15:05] STATS ticks=158409 symbols=47 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:15:55] new symbol FOXX — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:16:04] new symbol MASK — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:16:05] STATS ticks=159063 symbols=49 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:16:29] new symbol NAK — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:17:06] STATS ticks=159465 symbols=50 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:18:06] STATS ticks=159748 symbols=50 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:19:06] STATS ticks=160300 symbols=50 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:20:07] STATS ticks=160613 symbols=50 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:21:04] new symbol MSOX — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:21:07] STATS ticks=161073 symbols=51 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:22:08] STATS ticks=162187 symbols=51 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:23:08] STATS ticks=163892 symbols=51 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:24:08] STATS ticks=164731 symbols=51 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:25:08] STATS ticks=165174 symbols=51 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:26:02] new symbol MSOS — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:26:10] STATS ticks=165868 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:27:10] STATS ticks=166557 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:28:10] STATS ticks=167692 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:29:10] STATS ticks=170548 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:30:11] STATS ticks=172743 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:31:11] STATS ticks=176730 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:32:11] STATS ticks=178307 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:33:12] STATS ticks=180102 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:34:12] STATS ticks=181508 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:35:12] STATS ticks=182208 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:35:50] new symbol CMND — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:36:13] STATS ticks=182715 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:37:13] STATS ticks=183355 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:38:14] STATS ticks=184681 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:39:14] STATS ticks=185532 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:40:15] STATS ticks=186832 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:41:15] STATS ticks=187672 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:42:15] STATS ticks=188267 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:43:16] STATS ticks=188997 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:44:17] STATS ticks=189391 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:45:17] STATS ticks=190394 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:46:18] STATS ticks=190852 symbols=53 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:46:26] new symbol SMUP — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:47:18] STATS ticks=191390 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:48:19] STATS ticks=192187 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:49:19] STATS ticks=192718 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:50:20] STATS ticks=193066 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:51:20] STATS ticks=193294 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:52:21] STATS ticks=193700 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:53:21] STATS ticks=194355 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:54:22] STATS ticks=194716 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:55:22] STATS ticks=195108 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:56:23] STATS ticks=195634 symbols=54 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:56:27] new symbol TLRY — detector + movement_strike instantiated
+[MOVE_SUB_C] [07:57:25] STATS ticks=195873 symbols=55 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:58:26] STATS ticks=196216 symbols=55 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [07:59:26] STATS ticks=196566 symbols=55 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:00:26] STATS ticks=199124 symbols=55 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:01:26] STATS ticks=201218 symbols=55 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:01:42] new symbol MSTZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [08:02:27] STATS ticks=202520 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:03:27] STATS ticks=203365 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:04:27] STATS ticks=203836 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:05:27] STATS ticks=204710 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:06:27] STATS ticks=206156 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:07:27] STATS ticks=207268 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:08:27] STATS ticks=208038 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:09:28] STATS ticks=208430 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:10:28] STATS ticks=208814 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:11:28] STATS ticks=209579 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:12:29] STATS ticks=210010 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:13:29] STATS ticks=210310 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:14:29] STATS ticks=210737 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:15:29] STATS ticks=211155 symbols=56 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:16:23] new symbol IMNN — detector + movement_strike instantiated
+[MOVE_SUB_C] [08:16:30] STATS ticks=211448 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:17:30] STATS ticks=211666 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:18:31] STATS ticks=212008 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:19:32] STATS ticks=212249 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:20:33] STATS ticks=212578 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:21:33] STATS ticks=213360 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:22:34] STATS ticks=213884 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:23:34] STATS ticks=214391 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:24:34] STATS ticks=215059 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:25:35] STATS ticks=215573 symbols=57 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:25:53] new symbol RMSG — detector + movement_strike instantiated
+[MOVE_SUB_C] [08:26:35] STATS ticks=216043 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:27:35] STATS ticks=216472 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:28:35] STATS ticks=216930 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:29:35] STATS ticks=217259 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:30:36] STATS ticks=217491 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:31:37] STATS ticks=217754 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:32:37] STATS ticks=218076 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:33:38] STATS ticks=218493 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:34:38] STATS ticks=219026 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:35:38] STATS ticks=219744 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:36:38] STATS ticks=220233 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:37:39] STATS ticks=220754 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:38:39] STATS ticks=221271 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:39:39] STATS ticks=221506 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:40:40] STATS ticks=221880 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:41:41] STATS ticks=222439 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:42:41] STATS ticks=222764 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:43:41] STATS ticks=223002 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:44:42] STATS ticks=223321 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:45:42] STATS ticks=223556 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:46:43] STATS ticks=224069 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:47:43] STATS ticks=224427 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:48:43] STATS ticks=224656 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:49:43] STATS ticks=225189 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:50:43] STATS ticks=225491 symbols=58 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:51:16] new symbol MOGU — detector + movement_strike instantiated
+[MOVE_SUB_C] [08:51:43] STATS ticks=225817 symbols=59 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:52:44] STATS ticks=226429 symbols=59 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:53:44] STATS ticks=226905 symbols=59 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:54:44] STATS ticks=227190 symbols=59 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:55:46] STATS ticks=227476 symbols=59 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:56:16] new symbol PTLE — detector + movement_strike instantiated
+[MOVE_SUB_C] [08:56:47] STATS ticks=227762 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:57:47] STATS ticks=228458 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:58:49] STATS ticks=229060 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [08:59:49] STATS ticks=229553 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:00:50] STATS ticks=229774 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:01:50] STATS ticks=230229 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:02:51] STATS ticks=230644 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:03:51] STATS ticks=230996 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:04:52] STATS ticks=231356 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:05:52] STATS ticks=231561 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:06:52] STATS ticks=231780 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:07:54] STATS ticks=231932 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:08:54] STATS ticks=232103 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:09:55] STATS ticks=232294 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:10:55] STATS ticks=232533 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:11:56] STATS ticks=233053 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:12:57] STATS ticks=233481 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:13:57] STATS ticks=233817 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:14:57] STATS ticks=234221 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:15:57] STATS ticks=235181 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:16:58] STATS ticks=236897 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:17:58] STATS ticks=237979 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:18:58] STATS ticks=238478 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:19:58] STATS ticks=239098 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:20:59] STATS ticks=240088 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:21:59] STATS ticks=240424 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:22:59] STATS ticks=240680 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:24:00] STATS ticks=241434 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:25:00] STATS ticks=241779 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:26:00] STATS ticks=242207 symbols=60 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:26:29] new symbol EDSA — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:26:54] new symbol BCDA — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:27:01] STATS ticks=242647 symbols=62 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:28:01] STATS ticks=243284 symbols=62 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:29:02] STATS ticks=244301 symbols=62 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:30:02] STATS ticks=245896 symbols=62 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:31:02] STATS ticks=248172 symbols=62 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:31:37] new symbol MCRB — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:32:02] STATS ticks=253836 symbols=63 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:33:02] STATS ticks=259230 symbols=63 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:34:02] STATS ticks=263825 symbols=63 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:35:03] STATS ticks=277755 symbols=63 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:36:03] STATS ticks=284936 symbols=63 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:36:18] new symbol ROLR — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:36:24] new symbol APLZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:36:32] new symbol HCAT — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:37:03] STATS ticks=295452 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:38:03] STATS ticks=303326 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:39:03] STATS ticks=310741 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:40:03] STATS ticks=318726 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:41:03] STATS ticks=327892 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:41:31] new symbol CLSZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:41:42] new symbol NA — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:42:03] STATS ticks=337419 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:43:03] STATS ticks=342107 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:44:03] STATS ticks=346800 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:45:03] STATS ticks=357199 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:46:03] STATS ticks=366988 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:46:53] new symbol BEZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:47:03] STATS ticks=372101 symbols=69 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:48:03] STATS ticks=379657 symbols=69 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:49:03] STATS ticks=389824 symbols=69 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:49:14] new symbol CRCD — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:49:20] new symbol ZSL — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:49:28] new symbol SSG — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:49:37] new symbol AMDD — detector + movement_strike instantiated
+[MOVE_SUB_C] [09:50:03] STATS ticks=408920 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:51:03] STATS ticks=424545 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:52:04] STATS ticks=439662 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:53:04] STATS ticks=448933 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:54:04] STATS ticks=462994 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:55:04] STATS ticks=471311 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:56:04] STATS ticks=477093 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:57:04] STATS ticks=482867 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:58:04] STATS ticks=489293 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [09:59:04] STATS ticks=493792 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:00:04] STATS ticks=499991 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:01:04] STATS ticks=504768 symbols=73 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:01:16] new symbol AIFU — detector + movement_strike instantiated
+[MOVE_SUB_C] [10:02:05] STATS ticks=508914 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:03:05] STATS ticks=519623 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:04:05] STATS ticks=526484 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:05:05] STATS ticks=534878 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:06:05] STATS ticks=542560 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:07:05] STATS ticks=548546 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:08:05] STATS ticks=552368 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:09:05] STATS ticks=557590 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:10:05] STATS ticks=561283 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:11:05] STATS ticks=565701 symbols=74 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:11:08] new symbol SPHL — detector + movement_strike instantiated
+[MOVE_SUB_C] [10:12:05] STATS ticks=569383 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:13:06] STATS ticks=571865 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:14:06] STATS ticks=573414 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:15:06] STATS ticks=576275 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:16:06] STATS ticks=579691 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:17:06] STATS ticks=581828 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:18:06] STATS ticks=583576 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:19:06] STATS ticks=585450 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:20:06] STATS ticks=587494 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:21:06] STATS ticks=589272 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:22:07] STATS ticks=594546 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:23:07] STATS ticks=599239 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:24:07] STATS ticks=602084 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:25:07] STATS ticks=606648 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:26:07] STATS ticks=610796 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:27:07] STATS ticks=614536 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:28:07] STATS ticks=617135 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:29:07] STATS ticks=619693 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:30:07] STATS ticks=621658 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:31:07] STATS ticks=623649 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:32:08] STATS ticks=626103 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:33:08] STATS ticks=628411 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:34:08] STATS ticks=629788 symbols=75 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:34:26] new symbol SDOT — detector + movement_strike instantiated
+[MOVE_SUB_C] [10:35:08] STATS ticks=631414 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:36:08] STATS ticks=634707 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:37:08] STATS ticks=637155 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:38:09] STATS ticks=639520 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:39:09] STATS ticks=641398 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:40:09] STATS ticks=642923 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:41:09] STATS ticks=644255 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:42:09] STATS ticks=645539 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:43:09] STATS ticks=647117 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:44:09] STATS ticks=650425 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:45:09] STATS ticks=654402 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:46:10] STATS ticks=658516 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:47:10] STATS ticks=662349 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:48:10] STATS ticks=664253 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:49:10] STATS ticks=665483 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:50:10] STATS ticks=667141 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:51:10] STATS ticks=669296 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:52:10] STATS ticks=671723 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:53:11] STATS ticks=674227 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:54:11] STATS ticks=675993 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:55:11] STATS ticks=678555 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:56:11] STATS ticks=680553 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:57:12] STATS ticks=681462 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:58:12] STATS ticks=682538 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [10:59:12] STATS ticks=683594 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:00:12] STATS ticks=687005 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:01:12] STATS ticks=689679 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:02:13] STATS ticks=693816 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:03:13] STATS ticks=696990 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:04:13] STATS ticks=698924 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:05:13] STATS ticks=700335 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:06:13] STATS ticks=703659 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:07:13] STATS ticks=706357 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:08:14] STATS ticks=708165 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:09:14] STATS ticks=709688 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:10:14] STATS ticks=710979 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:11:14] STATS ticks=712484 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:12:14] STATS ticks=713329 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:13:14] STATS ticks=715022 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:14:14] STATS ticks=716374 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:15:14] STATS ticks=717637 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:16:14] STATS ticks=719175 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:17:14] STATS ticks=720678 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:18:14] STATS ticks=721724 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:19:14] STATS ticks=723489 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:20:15] STATS ticks=724732 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:21:15] STATS ticks=725391 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:22:15] STATS ticks=726722 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:23:15] STATS ticks=727329 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:24:16] STATS ticks=728013 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:25:16] STATS ticks=728698 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:26:16] STATS ticks=729549 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:27:16] STATS ticks=730495 symbols=76 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_C] RECONCILE FLATTEN STI: bot tracked but broker has no shares — clearing local state
+[MOVE_SUB_C] [11:28:16] STATS ticks=731348 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:29:16] STATS ticks=732215 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:30:17] STATS ticks=733192 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:31:17] STATS ticks=733729 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:32:17] STATS ticks=734690 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:33:17] STATS ticks=735529 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:34:17] STATS ticks=736401 symbols=76 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:34:31] new symbol AVD — detector + movement_strike instantiated
+[MOVE_SUB_C] [11:35:17] STATS ticks=737502 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:36:17] STATS ticks=739323 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:37:18] STATS ticks=740606 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:38:18] STATS ticks=741465 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:39:19] STATS ticks=743027 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:40:19] STATS ticks=744263 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:41:19] STATS ticks=746070 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:42:19] STATS ticks=748607 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:43:20] STATS ticks=749933 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:44:20] STATS ticks=751221 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:45:20] STATS ticks=752459 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:46:20] STATS ticks=753122 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:47:21] STATS ticks=754392 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:48:21] STATS ticks=755559 symbols=77 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:49:01] new symbol BMNZ — detector + movement_strike instantiated
+[MOVE_SUB_C] [11:49:21] STATS ticks=756890 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:50:21] STATS ticks=758104 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:51:21] STATS ticks=758967 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:51:24] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:26] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:27] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:28] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:32] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.590 arm=3.020 below=47.35% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.573 arm=3.020 below=47.90% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.578 arm=3.020 below=47.74% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.571 arm=3.020 below=47.97% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.571 arm=3.020 below=47.97% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.571 arm=3.020 below=47.97% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.572 arm=3.020 below=47.96% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:35] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:36] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:36] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:37] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.577 arm=3.020 below=47.77% (cap=3.0%)
+[MOVE_SUB_C] [11:51:37] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.579 arm=3.020 below=47.71% (cap=3.0%)
+[MOVE_SUB_C] [11:51:37] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:37] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.69% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.577 arm=3.020 below=47.79% (cap=3.0%)
+[MOVE_SUB_C] [11:51:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.577 arm=3.020 below=47.79% (cap=3.0%)
+[MOVE_SUB_C] [11:51:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.69% (cap=3.0%)
+[MOVE_SUB_C] [11:51:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.579 arm=3.020 below=47.72% (cap=3.0%)
+[MOVE_SUB_C] [11:51:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.573 arm=3.020 below=47.92% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.69% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.579 arm=3.020 below=47.73% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:51:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.69% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.572 arm=3.020 below=47.95% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:51:42] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:52:21] STATS ticks=760093 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:53:21] STATS ticks=760924 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:54:21] STATS ticks=761754 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:55:12] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:13] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:14] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:15] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:18] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.35% (cap=3.0%)
+[MOVE_SUB_C] [11:55:19] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:19] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:19] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.559 arm=3.020 below=48.37% (cap=3.0%)
+[MOVE_SUB_C] [11:55:21] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.558 arm=3.020 below=48.42% (cap=3.0%)
+[MOVE_SUB_C] [11:55:21] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:21] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.558 arm=3.020 below=48.42% (cap=3.0%)
+[MOVE_SUB_C] [11:55:22] STATS ticks=762381 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:55:22] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.35% (cap=3.0%)
+[MOVE_SUB_C] [11:55:22] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:22] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:23] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:24] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:24] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.558 arm=3.020 below=48.40% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:25] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:26] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:27] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:27] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.562 arm=3.020 below=48.29% (cap=3.0%)
+[MOVE_SUB_C] [11:55:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.03% (cap=3.0%)
+[MOVE_SUB_C] [11:55:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:29] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.03% (cap=3.0%)
+[MOVE_SUB_C] [11:55:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:30] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:31] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:31] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:31] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:32] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:32] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:32] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:32] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:33] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:33] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:34] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:36] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:37] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:38] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.568 arm=3.020 below=48.07% (cap=3.0%)
+[MOVE_SUB_C] [11:55:39] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.569 arm=3.020 below=48.05% (cap=3.0%)
+[MOVE_SUB_C] [11:55:40] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.569 arm=3.020 below=48.04% (cap=3.0%)
+[MOVE_SUB_C] [11:55:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:41] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:42] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:42] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:42] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.564 arm=3.020 below=48.21% (cap=3.0%)
+[MOVE_SUB_C] [11:55:42] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.564 arm=3.020 below=48.21% (cap=3.0%)
+[MOVE_SUB_C] [11:55:43] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:43] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:43] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:43] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:45] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:46] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:47] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:48] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:55:49] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:55:49] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:55:49] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:49] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.578 arm=3.020 below=47.75% (cap=3.0%)
+[MOVE_SUB_C] [11:55:49] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:50] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.84% (cap=3.0%)
+[MOVE_SUB_C] [11:55:51] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.68% (cap=3.0%)
+[MOVE_SUB_C] [11:55:51] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:51] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:52] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.580 arm=3.020 below=47.69% (cap=3.0%)
+[MOVE_SUB_C] [11:55:52] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:52] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.571 arm=3.020 below=47.96% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.578 arm=3.020 below=47.75% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.575 arm=3.020 below=47.85% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:53] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.02% (cap=3.0%)
+[MOVE_SUB_C] [11:55:54] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:56] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.564 arm=3.020 below=48.21% (cap=3.0%)
+[MOVE_SUB_C] [11:55:56] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.566 arm=3.020 below=48.16% (cap=3.0%)
+[MOVE_SUB_C] [11:55:56] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.570 arm=3.020 below=48.01% (cap=3.0%)
+[MOVE_SUB_C] [11:55:56] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:58] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.565 arm=3.020 below=48.18% (cap=3.0%)
+[MOVE_SUB_C] [11:55:59] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.562 arm=3.020 below=48.28% (cap=3.0%)
+[MOVE_SUB_C] [11:55:59] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:59] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:55:59] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.562 arm=3.020 below=48.29% (cap=3.0%)
+[MOVE_SUB_C] [11:55:59] BGMS BELOW-ARM-SKIP (arm preserved) trigger=1.560 arm=3.020 below=48.34% (cap=3.0%)
+[MOVE_SUB_C] [11:56:22] STATS ticks=762892 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:57:22] STATS ticks=763421 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] [11:58:22] STATS ticks=764105 symbols=78 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_C] signal 15 received — stopping
+[MOVE_SUB_C] signal 15 received — stopping
