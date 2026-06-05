@@ -995,6 +995,41 @@ class MoveStrikeSubBot:
         )
         self._reentry_watches.pop(symbol, None)
 
+    def _maybe_eod_flatten(self) -> None:
+        """Wall-clock EOD force-flatten — fires independently of whether the
+        held symbol is still ticking.
+
+        Fix for the 2026-06-04 STI overnight hold: the tick-driven flatten in
+        _maintain_position never ran because STI's last tick was 16:44 ET, ~3h
+        before the 19:30 cutoff, so the position carried overnight on A and C.
+        This is called from the consume() loop's periodic path (and on socket
+        timeouts), so a quiet symbol no longer slips past the cutoff. Uses a
+        live broker bid for the exit ref (engine ticks may be silent), falling
+        back to last peak/entry. Gated by WB_EOD_FORCE_FLATTEN_ENABLED like the
+        tick-driven path; _close_position is oversell-safe.
+        """
+        p = self.position
+        if p is None:
+            return
+        if os.getenv("WB_EOD_FORCE_FLATTEN_ENABLED", "0") != "1":
+            return
+        try:
+            _ffh, _ffm = (int(x) for x in os.getenv(
+                "WB_EOD_FORCE_FLATTEN_TIME_ET", "19:30").split(":")[:2])
+        except Exception:
+            return
+        if now_minute_et() < _ffh * 60 + _ffm:
+            return
+        ref = self._get_current_bid(p.symbol)
+        if ref is None or ref <= 0:
+            ref = p.peak or p.fill_entry_price or p.entry
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] EOD HEARTBEAT FLATTEN {p.symbol} "
+            f"(wall-clock trigger — symbol may be quiet) ref=${ref:.4f}",
+            flush=True,
+        )
+        self._close_position("eod_force_flatten", ref)
+
     def _maintain_position(self, price: float) -> None:
         p = self.position
         # Universal EOD force-flatten (2026-06-02): independent of Track A AND
@@ -1819,9 +1854,17 @@ class MoveStrikeSubBot:
             return
         buf = b""
         last_stats = time.time()
+        last_heartbeat = 0.0
         while not self._stop:
+            timed_out = False
             try:
                 chunk = sock.recv(65536)
+            except socket.timeout:
+                # No data within the recv timeout — NOT a disconnect. Fall
+                # through to the periodic/heartbeat path so the wall-clock EOD
+                # flatten still runs when the tape is silent.
+                timed_out = True
+                chunk = b""
             except (ConnectionResetError, OSError) as e:
                 print(f"{LOG_TAG} socket recv error: {e!r} — reconnecting", flush=True)
                 try:
@@ -1833,7 +1876,7 @@ class MoveStrikeSubBot:
                     return
                 buf = b""
                 continue
-            if not chunk:
+            if not timed_out and not chunk:
                 print(f"{LOG_TAG} socket closed by peer — reconnecting", flush=True)
                 try:
                     sock.close()
@@ -1844,26 +1887,35 @@ class MoveStrikeSubBot:
                     return
                 buf = b""
                 continue
-            buf += chunk
-            while b"\n" in buf:
-                line, buf = buf.split(b"\n", 1)
-                if not line.strip():
-                    continue
-                try:
-                    msg = decode(line)
-                except Exception as e:
-                    print(f"{LOG_TAG} decode error: {e!r} on {line[:120]!r}", flush=True)
-                    continue
-                self._dispatch(msg)
+            if chunk:
+                buf += chunk
+                while b"\n" in buf:
+                    line, buf = buf.split(b"\n", 1)
+                    if not line.strip():
+                        continue
+                    try:
+                        msg = decode(line)
+                    except Exception as e:
+                        print(f"{LOG_TAG} decode error: {e!r} on {line[:120]!r}", flush=True)
+                        continue
+                    self._dispatch(msg)
+            now = time.time()
+            # Wall-clock EOD force-flatten heartbeat (fix 2026-06-04 STI
+            # overnight hold). Runs every iteration incl. socket timeouts, so a
+            # held position whose symbol has gone quiet is still flattened at
+            # the cutoff rather than carried overnight.
+            if now - last_heartbeat >= 10:
+                self._maybe_eod_flatten()
+                last_heartbeat = now
             # Periodic stats + broker reconciliation (Lever 3, 2026-05-26).
-            if time.time() - last_stats > 60:
+            if now - last_stats > 60:
                 print(
                     f"{LOG_TAG} [{now_iso_et()}] STATS ticks={self.ticks_received} "
                     f"symbols={len(self.symbols_seen)} pos={'YES' if self.position else 'no'} "
                     f"daily_pnl={self.daily_pnl:+,.0f} drops={self._dropped_tick_count}",
                     flush=True,
                 )
-                last_stats = time.time()
+                last_stats = now
                 # Lever 3: periodic broker reconcile to catch any orphans
                 # the exit code path left behind. Idempotent — logs only
                 # on state change.
@@ -1872,7 +1924,7 @@ class MoveStrikeSubBot:
                     or (time.time() - self._last_reconcile_at) >= self.reconcile_interval_sec
                 ):
                     self._reconcile_with_broker()
-                    self._last_reconcile_at = time.time()
+                    self._last_reconcile_at = now
 
     def _connect_with_retry(self) -> Optional[socket.socket]:
         attempt = 0
@@ -1881,6 +1933,9 @@ class MoveStrikeSubBot:
             try:
                 s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                 s.connect(SOCKET_PATH)
+                # 5s recv timeout so the consume loop's wall-clock heartbeat
+                # (EOD flatten) runs even when no engine ticks arrive at all.
+                s.settimeout(5.0)
                 # On (re)connect, the publisher may have restarted with
                 # a fresh seq counter. Clear last-seen state so we don't
                 # log a spurious gap on the first tick of the new stream.
@@ -1947,6 +2002,15 @@ def main():
 
     print(f"{LOG_TAG} starting consume loop", flush=True)
     bot.consume()
+    # Shutdown backstop (fix 2026-06-04): on exit, flatten any open position
+    # IF we're at/after the EOD cutoff. _maybe_eod_flatten is no-op before the
+    # cutoff, so a mid-session watchdog restart (e.g. the 14:59 ET tick-drought
+    # restart) does NOT flatten — it still rehydrates per the session-
+    # persistence rule. Only an end-of-session shutdown closes the position.
+    try:
+        bot._maybe_eod_flatten()
+    except Exception as e:
+        print(f"{LOG_TAG} SHUTDOWN FLATTEN FAIL: {e!r}", flush=True)
     print(f"{LOG_TAG} consume loop exited", flush=True)
 
 
