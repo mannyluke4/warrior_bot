@@ -111861,3 +111861,1151 @@
 [MOVE_SUB_B] [14:40:59] STI CHASE-SKIP (arm preserved) trigger=21.700 arm=13.020 gap=66.67%
 [MOVE_SUB_B] signal 15 received — stopping
 [MOVE_SUB_B] signal 15 received — stopping
+[MOVE_SUB_B] socket closed by peer — reconnecting
+[MOVE_SUB_B] consume loop exited
+[MOVE_SUB_B] Alpaca PAPER connected — account=PA38TQW75KYK equity=$30,550
+[MOVE_SUB_B] starting consume loop
+[MOVE_SUB_B] [14:58:30] connected to engine (/tmp/warrior_engine.sock) attempt=1
+[MOVE_SUB_B] [14:58:31] new symbol ANSC — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:32] new symbol ASTI — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ASTI replayed 137 ticks from cache
+[MOVE_SUB_B] [14:58:34] new symbol BAOS — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED BAOS replayed 39 ticks from cache
+[MOVE_SUB_B] [14:58:36] new symbol BAYA — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:37] new symbol BB — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:39] new symbol BFLY — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED BFLY replayed 30 ticks from cache
+[MOVE_SUB_B] [14:58:40] new symbol BITO — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:42] new symbol BJDX — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED BJDX replayed 93 ticks from cache
+[MOVE_SUB_B] [14:58:44] new symbol BNAI — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED BNAI replayed 63 ticks from cache
+[MOVE_SUB_B] [14:58:46] new symbol CBTJ — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:47] new symbol CDTG — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED CDTG replayed 22 ticks from cache
+[MOVE_SUB_B] [14:58:49] new symbol CHEC — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:50] new symbol CIEG — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:52] new symbol EDHL — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED EDHL replayed 225 ticks from cache
+[MOVE_SUB_B] [14:58:54] new symbol EGG — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:56] new symbol FIGX — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:57] new symbol FOXX — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:58:57] FOXX ARMED entry=5.0200 stop=4.9000 R=0.1200 score=11.0 — movement_strike history reset
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=1736 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=608 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=1427 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=551 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=501 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=1592 threshold=6000
+[MOVE_SUB_B] [14:58:57] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=1371 threshold=6000
+[MOVE_SUB_B] SEED FOXX replayed 554,155 ticks from cache
+[MOVE_SUB_B] [14:58:59] new symbol GNT — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:59:00] new symbol INDP — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED INDP replayed 93 ticks from cache
+[MOVE_SUB_B] [14:59:02] new symbol KCCA — detector + movement_strike instantiated
+[MOVE_SUB_B] [14:59:04] new symbol LASE — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED LASE replayed 11 ticks from cache
+[MOVE_SUB_B] [14:59:05] new symbol LFVN — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED LFVN replayed 70 ticks from cache
+[MOVE_SUB_B] [14:59:07] new symbol LNZA — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED LNZA replayed 105 ticks from cache
+[MOVE_SUB_B] [14:59:09] new symbol LSE — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED LSE replayed 57 ticks from cache
+[MOVE_SUB_B] [14:59:10] new symbol MNTS — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED MNTS replayed 159 ticks from cache
+[MOVE_SUB_B] [14:59:12] new symbol MOBX — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED MOBX replayed 111 ticks from cache
+[MOVE_SUB_B] [14:59:14] new symbol MSOX — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED MSOX replayed 17 ticks from cache
+[MOVE_SUB_B] socket closed by peer — reconnecting
+[MOVE_SUB_B] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB_B] [14:59:46] connected to engine (/tmp/warrior_engine.sock) attempt=17
+[MOVE_SUB_B] [14:59:48] new symbol AACB — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED AACB replayed 2 ticks from cache
+[MOVE_SUB_B] [14:59:48] STATS ticks=79 symbols=28 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_B] [14:59:50] new symbol AAL — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED AAL replayed 4 ticks from cache
+[MOVE_SUB_B] [14:59:51] new symbol AAOG — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED AAOG replayed 31 ticks from cache
+[MOVE_SUB_B] [14:59:52] new symbol ABSI — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ABSI replayed 116 ticks from cache
+[MOVE_SUB_B] [14:59:54] new symbol ABTS — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ABTS replayed 50 ticks from cache
+[MOVE_SUB_B] [14:59:56] new symbol ACHR — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ACHR replayed 1 ticks from cache
+[MOVE_SUB_B] [14:59:57] new symbol ALVO — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ALVO replayed 67 ticks from cache
+[MOVE_SUB_B] [15:00:39] new symbol MSTU — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:41] new symbol NOK — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:43] new symbol NVD — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:44] new symbol ONDS — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:46] new symbol PCLA — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED PCLA replayed 22 ticks from cache
+[MOVE_SUB_B] [15:00:47] new symbol PLTD — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:49] new symbol PLUG — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:49] STATS ticks=183 symbols=41 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:00:51] new symbol SDOT — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED SDOT replayed 64 ticks from cache
+[MOVE_SUB_B] [15:00:52] new symbol SLNG — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED SLNG replayed 35 ticks from cache
+[MOVE_SUB_B] [15:00:54] new symbol SNAP — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:55] new symbol SOFI — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:00:57] new symbol SOXS — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED SOXS replayed 159 ticks from cache
+[MOVE_SUB_B] [15:00:59] new symbol SPCE — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED SPCE replayed 34 ticks from cache
+[MOVE_SUB_B] [15:01:00] new symbol SPRC — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED SPRC replayed 222 ticks from cache
+[MOVE_SUB_B] [15:01:02] new symbol STAK — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED STAK replayed 90 ticks from cache
+[MOVE_SUB_B] [15:01:04] new symbol TZA — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:01:05] new symbol VERU — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED VERU replayed 121 ticks from cache
+[MOVE_SUB_B] [15:01:35] new symbol STI — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:01:36] STI ARMED entry=13.0200 stop=12.9000 R=0.1200 score=10.0 — movement_strike history reset
+[MOVE_SUB_B] [15:01:36] REGIME_SHIFT_TRIGGER STI bar_body=$2.3300 baseline=$0.5700 ratio=4.09
+[MOVE_SUB_B] ALPACA_QUOTE_DIVERGENT STI: alpaca_ref=22.1500 signal=13.4800 >5% gap, using base
+[MOVE_SUB_B] [15:01:36] 🚀 ENTRY REGIME_SHIFT STI qty=349 limit=$13.61 (anomaly@$13.48) stop=$12.05 R=$1.4300 body=$2.3300 ratio=4.09
+[MOVE_SUB_B] [15:01:53] STI regime_shift entry NOT FILLED (timeout/cancel/reject) — abandoning trade
+[MOVE_SUB_B] [15:01:54] REGIME_SHIFT_TRIGGER STI bar_body=$3.2000 baseline=$0.6600 ratio=4.85
+[MOVE_SUB_B] ALPACA_QUOTE_DIVERGENT STI: alpaca_ref=22.0000 signal=16.1400 >5% gap, using base
+[MOVE_SUB_B] [15:01:54] 🚀 ENTRY REGIME_SHIFT STI qty=304 limit=$16.30 (anomaly@$16.14) stop=$14.50 R=$1.6400 body=$3.2000 ratio=4.85
+[MOVE_SUB_B] [15:02:11] STI regime_shift entry NOT FILLED (timeout/cancel/reject) — abandoning trade
+[MOVE_SUB_B] [15:02:12] REGIME_SHIFT_TRIGGER STI bar_body=$1.5700 baseline=$0.3000 ratio=5.23
+[MOVE_SUB_B] ALPACA_QUOTE_DIVERGENT STI: alpaca_ref=22.1000 signal=16.8500 >5% gap, using base
+[MOVE_SUB_B] [15:02:12] 🚀 ENTRY REGIME_SHIFT STI qty=416 limit=$17.02 (anomaly@$16.85) stop=$15.65 R=$1.2000 body=$1.5700 ratio=5.23
+[MOVE_SUB_B] [15:02:29] STI regime_shift entry NOT FILLED (timeout/cancel/reject) — abandoning trade
+[MOVE_SUB_B] [15:02:29] REGIME_SHIFT_TRIGGER STI bar_body=$2.7500 baseline=$0.5600 ratio=4.91
+[MOVE_SUB_B] [15:02:30] 🚀 ENTRY REGIME_SHIFT STI qty=230 limit=$22.31 (anomaly@$21.17) stop=$19.00 R=$2.1700 body=$2.7500 ratio=4.91
+[MOVE_SUB_B] [15:02:34] STI regime_shift entry FILLED @ $22.2000 qty=230 (limit was $22.31)
+[MOVE_SUB_B] SEED STI replayed 1,350,802 ticks from cache
+[MOVE_SUB_B] [15:02:35] STATS ticks=755 symbols=52 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:02:35] new symbol TEMT — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED TEMT replayed 25 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol RDTL — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED RDTL replayed 15 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol NCT — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED NCT replayed 3 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol IOVA — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED IOVA replayed 49 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol BTQ — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED BTQ replayed 143 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol RDW — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED RDW replayed 49 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol LPTH — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED LPTH replayed 33 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol OSCR — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED OSCR replayed 38 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol NTCL — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED NTCL replayed 8 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol NTLA — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED NTLA replayed 38 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol FJET — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:02:35] new symbol HYLN — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED HYLN replayed 15 ticks from cache
+[MOVE_SUB_B] [15:02:35] new symbol CAI — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED CAI replayed 1 ticks from cache
+[MOVE_SUB_B] [15:03:35] STATS ticks=4842 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:04:36] STATS ticks=7538 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:05:36] STATS ticks=10255 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:06:36] STATS ticks=13707 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:07:36] STATS ticks=17357 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:08:36] STATS ticks=20804 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:09:36] STATS ticks=22532 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:10:36] STATS ticks=23835 symbols=65 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:10:40] new symbol RCAX — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED RCAX replayed 10 ticks from cache
+[MOVE_SUB_B] [15:11:37] STATS ticks=25263 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:12:37] STATS ticks=28092 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:13:37] STATS ticks=30096 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:14:37] STATS ticks=31585 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:15:37] STATS ticks=35662 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:16:38] STATS ticks=38310 symbols=66 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:17:31] new symbol ANGX — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED ANGX replayed 12 ticks from cache
+[MOVE_SUB_B] [15:17:38] STATS ticks=42065 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:18:38] STATS ticks=45451 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:19:39] STATS ticks=50502 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:20:00] INDP ARMED entry=5.0200 stop=4.9000 R=0.1200 score=11.0 — movement_strike history reset
+[MOVE_SUB_B] [15:20:39] STATS ticks=53958 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:21:39] STATS ticks=56768 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:22:39] STATS ticks=59202 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:23:39] STATS ticks=63448 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:24:39] STATS ticks=68904 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:25:40] STATS ticks=73500 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:26:43] STATS ticks=78939 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:27:44] STATS ticks=86043 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:28:44] STATS ticks=92606 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:29:44] STATS ticks=96979 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:30:44] STATS ticks=100010 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:31:44] STATS ticks=103247 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:32:44] STATS ticks=106769 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:33:44] STATS ticks=109371 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:34:45] STATS ticks=112491 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:35:45] STATS ticks=116117 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:36:45] STATS ticks=118399 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:37:46] STATS ticks=119997 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:38:46] STATS ticks=123281 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:39:46] STATS ticks=125423 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:40:46] STATS ticks=128141 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:41:46] STATS ticks=130313 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:42:46] STATS ticks=132960 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:43:52] STATS ticks=138365 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:44:52] STATS ticks=143259 symbols=67 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:45:41] new symbol TRAX — detector + movement_strike instantiated
+[MOVE_SUB_B] [15:45:52] STATS ticks=145677 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:46:52] STATS ticks=148258 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:47:53] STATS ticks=150384 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:48:53] STATS ticks=152318 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:49:53] STATS ticks=153926 symbols=68 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:50:05] new symbol HCAT — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED HCAT replayed 2 ticks from cache
+[MOVE_SUB_B] [15:50:39] new symbol TLYS — detector + movement_strike instantiated
+[MOVE_SUB_B] SEED TLYS replayed 180 ticks from cache
+[MOVE_SUB_B] [15:50:53] STATS ticks=156585 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:51:53] STATS ticks=158485 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:52:53] STATS ticks=160057 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:53:53] STATS ticks=161623 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:54:54] STATS ticks=163795 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:55:54] STATS ticks=165913 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:56:54] STATS ticks=168194 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:57:54] STATS ticks=170652 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:58:54] STATS ticks=172236 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [15:59:54] STATS ticks=175065 symbols=70 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:00:45] new symbol RNAZ — detector + movement_strike instantiated
+[MOVE_SUB_B] [16:00:55] STATS ticks=178002 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:01:55] STATS ticks=182763 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:02:55] STATS ticks=188146 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:03:55] STATS ticks=193369 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:04:55] STATS ticks=195794 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:05:55] STATS ticks=197989 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:06:56] STATS ticks=199811 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:07:56] STATS ticks=200989 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:08:57] STATS ticks=202248 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:09:57] STATS ticks=203434 symbols=71 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:10:17] new symbol RMSG — detector + movement_strike instantiated
+[MOVE_SUB_B] [16:10:57] STATS ticks=204565 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:11:57] STATS ticks=205561 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:12:57] STATS ticks=206956 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:13:57] STATS ticks=208831 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:14:58] STATS ticks=210418 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:15:58] STATS ticks=212444 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:16:58] STATS ticks=213560 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:17:58] STATS ticks=214282 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:18:58] STATS ticks=215065 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:19:59] STATS ticks=216104 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:20:59] STATS ticks=217196 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:21:59] STATS ticks=217832 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:23:00] STATS ticks=218638 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:24:00] STATS ticks=219606 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:25:00] STATS ticks=220979 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:26:01] STATS ticks=221719 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:27:02] STATS ticks=222359 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:28:02] STATS ticks=223007 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:29:03] STATS ticks=223715 symbols=72 pos=YES daily_pnl=+0 drops=0
+[MOVE_SUB_B] [16:29:55] 🟥 EXIT REGIME_SHIFT STI qty=230 limit=$19.50 (ref=$19.76) reason=regime_shift_force_flatten
+[MOVE_SUB_B] real P&L=-598 daily=-598 (trade #1) entry=$22.2000 exit=$19.6000 qty=230
+[MOVE_SUB_B] [16:29:56] STI REENTRY WATCH set: high=23.190 stop=20.800 expires_in=30min
+[MOVE_SUB_B] [16:30:03] STATS ticks=224397 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:31:04] STATS ticks=225000 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:32:04] STATS ticks=225377 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:33:05] STATS ticks=225615 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:34:05] STATS ticks=226193 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:35:06] STATS ticks=226630 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:36:06] STATS ticks=227073 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:37:06] STATS ticks=227734 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:37:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.923 arm=5.020 below=41.77% (cap=3.0%)
+[MOVE_SUB_B] [16:37:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.63% (cap=3.0%)
+[MOVE_SUB_B] [16:37:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.63% (cap=3.0%)
+[MOVE_SUB_B] [16:37:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.924 arm=5.020 below=41.75% (cap=3.0%)
+[MOVE_SUB_B] [16:37:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.922 arm=5.020 below=41.79% (cap=3.0%)
+[MOVE_SUB_B] [16:37:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.929 arm=5.020 below=41.65% (cap=3.0%)
+[MOVE_SUB_B] [16:37:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.63% (cap=3.0%)
+[MOVE_SUB_B] [16:37:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.64% (cap=3.0%)
+[MOVE_SUB_B] [16:37:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.921 arm=5.020 below=41.81% (cap=3.0%)
+[MOVE_SUB_B] [16:37:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.63% (cap=3.0%)
+[MOVE_SUB_B] [16:37:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.932 arm=5.020 below=41.60% (cap=3.0%)
+[MOVE_SUB_B] [16:37:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.930 arm=5.020 below=41.63% (cap=3.0%)
+[MOVE_SUB_B] [16:37:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.940 arm=5.020 below=41.43% (cap=3.0%)
+[MOVE_SUB_B] [16:37:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.940 arm=5.020 below=41.43% (cap=3.0%)
+[MOVE_SUB_B] [16:37:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.940 arm=5.020 below=41.43% (cap=3.0%)
+[MOVE_SUB_B] [16:37:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.950 arm=5.020 below=41.24% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.940 arm=5.020 below=41.43% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.940 arm=5.020 below=41.43% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.950 arm=5.020 below=41.24% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.950 arm=5.020 below=41.24% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.960 arm=5.020 below=41.04% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.960 arm=5.020 below=41.04% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.960 arm=5.020 below=41.04% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.970 arm=5.020 below=40.84% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.970 arm=5.020 below=40.84% (cap=3.0%)
+[MOVE_SUB_B] [16:37:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.970 arm=5.020 below=40.84% (cap=3.0%)
+[MOVE_SUB_B] [16:37:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.969 arm=5.020 below=40.86% (cap=3.0%)
+[MOVE_SUB_B] [16:37:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=2.934 arm=5.020 below=41.55% (cap=3.0%)
+[MOVE_SUB_B] [16:38:06] STATS ticks=228293 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:39:06] STATS ticks=228754 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:40:07] STATS ticks=229210 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:41:07] STATS ticks=229668 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:41:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:41:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:41:33] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:41:34] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:41:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:41:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=10 threshold=6000
+[MOVE_SUB_B] [16:42:04] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:04] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:07] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:07] STATS ticks=230250 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:42:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:50] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:42:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=16 threshold=6000
+[MOVE_SUB_B] [16:43:08] STATS ticks=230778 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.311 arm=5.020 below=34.04% (cap=3.0%)
+[MOVE_SUB_B] [16:43:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.311 arm=5.020 below=34.05% (cap=3.0%)
+[MOVE_SUB_B] [16:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.311 arm=5.020 below=34.05% (cap=3.0%)
+[MOVE_SUB_B] [16:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:33] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.351 arm=5.020 below=33.25% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.354 arm=5.020 below=33.19% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.354 arm=5.020 below=33.19% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:35] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.370 arm=5.020 below=32.87% (cap=3.0%)
+[MOVE_SUB_B] [16:43:35] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.69% (cap=3.0%)
+[MOVE_SUB_B] [16:43:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.87% (cap=3.0%)
+[MOVE_SUB_B] [16:43:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.309 arm=5.020 below=34.08% (cap=3.0%)
+[MOVE_SUB_B] [16:43:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.309 arm=5.020 below=34.08% (cap=3.0%)
+[MOVE_SUB_B] [16:43:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.309 arm=5.020 below=34.08% (cap=3.0%)
+[MOVE_SUB_B] [16:43:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.319 arm=5.020 below=33.89% (cap=3.0%)
+[MOVE_SUB_B] [16:43:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.313 arm=5.020 below=34.01% (cap=3.0%)
+[MOVE_SUB_B] [16:43:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.307 arm=5.020 below=34.13% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.329 arm=5.020 below=33.68% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.326 arm=5.020 below=33.75% (cap=3.0%)
+[MOVE_SUB_B] [16:43:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [16:43:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.316 arm=5.020 below=33.94% (cap=3.0%)
+[MOVE_SUB_B] [16:43:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.320 arm=5.020 below=33.86% (cap=3.0%)
+[MOVE_SUB_B] [16:43:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [16:44:08] STATS ticks=231713 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:44:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.68% (cap=3.0%)
+[MOVE_SUB_B] [16:44:25] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.419 arm=5.020 below=31.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.418 arm=5.020 below=31.91% (cap=3.0%)
+[MOVE_SUB_B] [16:44:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.416 arm=5.020 below=31.95% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.416 arm=5.020 below=31.96% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.417 arm=5.020 below=31.92% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:35] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.429 arm=5.020 below=31.69% (cap=3.0%)
+[MOVE_SUB_B] [16:44:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.68% (cap=3.0%)
+[MOVE_SUB_B] [16:44:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.429 arm=5.020 below=31.70% (cap=3.0%)
+[MOVE_SUB_B] [16:44:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.417 arm=5.020 below=31.93% (cap=3.0%)
+[MOVE_SUB_B] [16:44:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.440 arm=5.020 below=31.47% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.469 arm=5.020 below=30.90% (cap=3.0%)
+[MOVE_SUB_B] [16:44:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:44:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.431 arm=5.020 below=31.65% (cap=3.0%)
+[MOVE_SUB_B] [16:44:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.431 arm=5.020 below=31.65% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.440 arm=5.020 below=31.47% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.440 arm=5.020 below=31.47% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.440 arm=5.020 below=31.47% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.409 arm=5.020 below=32.09% (cap=3.0%)
+[MOVE_SUB_B] [16:44:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.409 arm=5.020 below=32.09% (cap=3.0%)
+[MOVE_SUB_B] [16:44:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.406 arm=5.020 below=32.15% (cap=3.0%)
+[MOVE_SUB_B] [16:44:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.406 arm=5.020 below=32.15% (cap=3.0%)
+[MOVE_SUB_B] [16:44:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.406 arm=5.020 below=32.15% (cap=3.0%)
+[MOVE_SUB_B] [16:44:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.408 arm=5.020 below=32.11% (cap=3.0%)
+[MOVE_SUB_B] [16:44:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.420 arm=5.020 below=31.87% (cap=3.0%)
+[MOVE_SUB_B] [16:44:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [16:44:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:44:59] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [16:45:08] STATS ticks=232842 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:46:08] STATS ticks=234374 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:47:09] STATS ticks=235160 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:47:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:47:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:47:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [16:47:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:47:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.470 arm=5.020 below=30.88% (cap=3.0%)
+[MOVE_SUB_B] [16:47:22] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [16:47:22] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.499 arm=5.020 below=30.29% (cap=3.0%)
+[MOVE_SUB_B] [16:47:23] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.492 arm=5.020 below=30.43% (cap=3.0%)
+[MOVE_SUB_B] [16:47:23] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.499 arm=5.020 below=30.30% (cap=3.0%)
+[MOVE_SUB_B] [16:47:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [16:47:25] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [16:47:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [16:47:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [16:47:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [16:47:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [16:47:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [16:48:09] STATS ticks=235841 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:49:09] STATS ticks=236343 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:50:01] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:02] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:02] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:04] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:09] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:09] STATS ticks=236894 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:50:10] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:22] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:24] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:39] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:51] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:50:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:51:09] STATS ticks=237598 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:52:10] STATS ticks=238160 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:53:10] STATS ticks=238467 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:53:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.380 arm=5.020 below=32.67% (cap=3.0%)
+[MOVE_SUB_B] [16:53:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.374 arm=5.020 below=32.79% (cap=3.0%)
+[MOVE_SUB_B] [16:53:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.380 arm=5.020 below=32.67% (cap=3.0%)
+[MOVE_SUB_B] [16:54:11] STATS ticks=238781 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:55:11] STATS ticks=239045 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:56:11] STATS ticks=239230 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:57:12] STATS ticks=239411 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:57:17] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:57:17] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:57:18] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:57:23] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [16:58:12] STATS ticks=239630 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:59:13] STATS ticks=239877 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [16:59:20] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.370 arm=5.020 below=32.87% (cap=3.0%)
+[MOVE_SUB_B] [16:59:20] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.370 arm=5.020 below=32.87% (cap=3.0%)
+[MOVE_SUB_B] [16:59:20] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.370 arm=5.020 below=32.87% (cap=3.0%)
+[MOVE_SUB_B] [16:59:22] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.370 arm=5.020 below=32.87% (cap=3.0%)
+[MOVE_SUB_B] [16:59:22] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.366 arm=5.020 below=32.94% (cap=3.0%)
+[MOVE_SUB_B] [16:59:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.367 arm=5.020 below=32.93% (cap=3.0%)
+[MOVE_SUB_B] [16:59:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.369 arm=5.020 below=32.89% (cap=3.0%)
+[MOVE_SUB_B] [16:59:58] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [17:00:13] STATS ticks=240046 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:01:13] STATS ticks=240297 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:02:14] STATS ticks=240540 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:03:18] STATS ticks=240685 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:04:18] STATS ticks=241107 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:04:42] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:42] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:42] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:42] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:43] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:45] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:04:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:05:03] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=35 threshold=6000
+[MOVE_SUB_B] [17:05:18] STATS ticks=241297 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:06:19] STATS ticks=241601 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:07:19] STATS ticks=241814 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:08:20] STATS ticks=242085 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:09:21] STATS ticks=242338 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:09:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.193 arm=5.020 below=36.38% (cap=3.0%)
+[MOVE_SUB_B] [17:09:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.179 arm=5.020 below=36.67% (cap=3.0%)
+[MOVE_SUB_B] [17:09:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [17:09:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.198 arm=5.020 below=36.30% (cap=3.0%)
+[MOVE_SUB_B] [17:09:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:10:21] STATS ticks=242519 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:11:21] STATS ticks=242709 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:12:21] STATS ticks=242854 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:13:22] STATS ticks=243051 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:14:22] STATS ticks=243331 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:15:22] STATS ticks=243578 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:16:06] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.179 arm=5.020 below=36.68% (cap=3.0%)
+[MOVE_SUB_B] [17:16:07] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:16:22] STATS ticks=243763 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:16:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.176 arm=5.020 below=36.73% (cap=3.0%)
+[MOVE_SUB_B] [17:16:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:16:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:16:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.180 arm=5.020 below=36.65% (cap=3.0%)
+[MOVE_SUB_B] [17:16:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:16:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:16:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.177 arm=5.020 below=36.71% (cap=3.0%)
+[MOVE_SUB_B] [17:17:23] STATS ticks=243903 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:18:23] STATS ticks=244059 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:18:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.226 arm=5.020 below=35.73% (cap=3.0%)
+[MOVE_SUB_B] [17:18:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [17:18:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.210 arm=5.020 below=36.06% (cap=3.0%)
+[MOVE_SUB_B] [17:18:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [17:18:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [17:19:24] STATS ticks=244330 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:20:25] STATS ticks=244505 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:21:26] STATS ticks=244729 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:22:26] STATS ticks=244897 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:23:27] STATS ticks=245072 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:24:09] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=27 threshold=6000
+[MOVE_SUB_B] [17:24:27] STATS ticks=245251 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:24:29] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=27 threshold=6000
+[MOVE_SUB_B] [17:25:28] STATS ticks=245417 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:26:30] STATS ticks=245565 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:27:31] STATS ticks=245753 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:28:32] STATS ticks=245919 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:29:32] STATS ticks=246024 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:30:33] STATS ticks=246164 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:31:35] STATS ticks=246390 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:32:24] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:29] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:29] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:34] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:34] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:34] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:32:36] STATS ticks=246546 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:32:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [17:33:04] FIRESTORM_GATE_BLOCK FOXX setup=regime_shift prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [17:33:36] STATS ticks=246676 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:34:36] STATS ticks=246840 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:35:37] STATS ticks=247010 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:36:38] STATS ticks=247166 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:37:38] STATS ticks=247327 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:38:39] STATS ticks=247444 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:39:39] STATS ticks=247581 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:40:40] STATS ticks=247819 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:41:40] STATS ticks=248087 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:42:41] STATS ticks=248285 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:43:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.180 arm=5.020 below=36.65% (cap=3.0%)
+[MOVE_SUB_B] [17:43:41] STATS ticks=248592 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:43:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.180 arm=5.020 below=36.65% (cap=3.0%)
+[MOVE_SUB_B] [17:43:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:43:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:17] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:18] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:23] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:41] STATS ticks=248947 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:44:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:49] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:44:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:45:41] STATS ticks=249167 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:46:42] STATS ticks=249377 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:47:43] STATS ticks=249580 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] RECONCILE FAIL: ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'paper-api.alpaca.markets\', port=443): Max retries exceeded with url: /v2/positions (Caused by NameResolutionError("HTTPSConnection(host=\'paper-api.alpaca.markets\', port=443): Failed to resolve \'paper-api.alpaca.markets\' ([Errno 8] nodename nor servname provided, or not known)"))'))
+[MOVE_SUB_B] [17:48:45] STATS ticks=249712 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:49:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.120 arm=5.020 below=37.85% (cap=3.0%)
+[MOVE_SUB_B] [17:49:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.120 arm=5.020 below=37.85% (cap=3.0%)
+[MOVE_SUB_B] [17:49:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.120 arm=5.020 below=37.85% (cap=3.0%)
+[MOVE_SUB_B] [17:49:21] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.130 arm=5.020 below=37.66% (cap=3.0%)
+[MOVE_SUB_B] [17:49:22] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.130 arm=5.020 below=37.65% (cap=3.0%)
+[MOVE_SUB_B] [17:49:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.130 arm=5.020 below=37.65% (cap=3.0%)
+[MOVE_SUB_B] [17:49:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.120 arm=5.020 below=37.85% (cap=3.0%)
+[MOVE_SUB_B] [17:49:46] STATS ticks=249833 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:50:47] STATS ticks=249956 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:51:48] STATS ticks=250190 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:52:20] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:52:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:52:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:52:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.149 arm=5.020 below=37.28% (cap=3.0%)
+[MOVE_SUB_B] [17:52:28] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.149 arm=5.020 below=37.26% (cap=3.0%)
+[MOVE_SUB_B] [17:52:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:52:50] STATS ticks=250474 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:53:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.140 arm=5.020 below=37.45% (cap=3.0%)
+[MOVE_SUB_B] [17:53:51] STATS ticks=250622 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:53:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.140 arm=5.020 below=37.45% (cap=3.0%)
+[MOVE_SUB_B] [17:54:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:26] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.150 arm=5.020 below=37.25% (cap=3.0%)
+[MOVE_SUB_B] [17:54:51] STATS ticks=250770 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:55:41] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [17:55:41] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [17:55:53] STATS ticks=250899 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:55:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [17:56:54] STATS ticks=251001 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:57:54] STATS ticks=251120 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:58:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:37] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:37] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:46] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [17:58:56] STATS ticks=251191 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.86% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.86% (cap=3.0%)
+[MOVE_SUB_B] [17:59:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.86% (cap=3.0%)
+[MOVE_SUB_B] [17:59:13] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [17:59:13] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [17:59:14] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [17:59:18] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:59:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [17:59:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:59:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:59:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:59:33] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.195 arm=5.020 below=36.36% (cap=3.0%)
+[MOVE_SUB_B] [17:59:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.199 arm=5.020 below=36.27% (cap=3.0%)
+[MOVE_SUB_B] [17:59:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.199 arm=5.020 below=36.27% (cap=3.0%)
+[MOVE_SUB_B] [17:59:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.26% (cap=3.0%)
+[MOVE_SUB_B] [17:59:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.200 arm=5.020 below=36.25% (cap=3.0%)
+[MOVE_SUB_B] [17:59:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.86% (cap=3.0%)
+[MOVE_SUB_B] [17:59:49] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:49] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.170 arm=5.020 below=36.85% (cap=3.0%)
+[MOVE_SUB_B] [17:59:56] STATS ticks=251332 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [17:59:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.173 arm=5.020 below=36.79% (cap=3.0%)
+[MOVE_SUB_B] [17:59:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.190 arm=5.020 below=36.45% (cap=3.0%)
+[MOVE_SUB_B] [18:00:18] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:18] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:19] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:19] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:20] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:20] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:24] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:32] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:37] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:41] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:50] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:56] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:00:56] STATS ticks=251512 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:01:57] STATS ticks=251659 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:02:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:02:58] STATS ticks=251842 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:03:58] STATS ticks=251987 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:04:59] STATS ticks=252206 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:05:00] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:17] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:25] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:05:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:05:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:05:59] STATS ticks=252467 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:07:01] STATS ticks=252608 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:08:01] STATS ticks=252755 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:09:01] STATS ticks=252835 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:09:20] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.47% (cap=3.0%)
+[MOVE_SUB_B] [18:09:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:36] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:37] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.47% (cap=3.0%)
+[MOVE_SUB_B] [18:09:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.47% (cap=3.0%)
+[MOVE_SUB_B] [18:09:49] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.47% (cap=3.0%)
+[MOVE_SUB_B] [18:09:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:52] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:09:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:10:02] STATS ticks=252970 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:10:02] FIRESTORM_GATE_BLOCK INDP setup=regime_shift prior_bar_ticks=47 threshold=6000
+[MOVE_SUB_B] [18:10:14] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:10:23] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:10:23] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:10:31] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:11:02] STATS ticks=253131 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:11:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:11:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:11:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:12:02] STATS ticks=253300 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:13:03] STATS ticks=253399 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:14:04] STATS ticks=253516 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:15:07] STATS ticks=253665 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:15:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=21 threshold=6000
+[MOVE_SUB_B] [18:16:09] STATS ticks=253765 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:17:10] STATS ticks=253888 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:18:10] STATS ticks=254034 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:19:13] STATS ticks=254103 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:20:13] STATS ticks=254232 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:21:14] STATS ticks=254414 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:21:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:52] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:58] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:59] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:59] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:59] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:21:59] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=15 threshold=6000
+[MOVE_SUB_B] [18:22:14] STATS ticks=254528 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:23:15] STATS ticks=254738 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:24:15] STATS ticks=255005 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:24:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:24:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:24:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:24:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:24:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.220 arm=5.020 below=35.86% (cap=3.0%)
+[MOVE_SUB_B] [18:24:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.230 arm=5.020 below=35.66% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.250 arm=5.020 below=35.26% (cap=3.0%)
+[MOVE_SUB_B] [18:24:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:25:16] STATS ticks=255183 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:26:16] STATS ticks=255385 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:26:27] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:29] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:26:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:43] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:26:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:27:19] STATS ticks=255487 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:28:20] STATS ticks=255568 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:29:20] STATS ticks=255716 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:29:31] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:29:33] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:29:45] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:29:53] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=12 threshold=6000
+[MOVE_SUB_B] [18:30:21] STATS ticks=255860 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:31:21] STATS ticks=255980 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:32:22] STATS ticks=256072 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:33:22] STATS ticks=256215 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:34:25] STATS ticks=256333 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:35:26] STATS ticks=256433 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:36:27] STATS ticks=256536 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:37:28] STATS ticks=256621 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:38:29] STATS ticks=256732 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:39:21] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [18:39:21] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [18:39:21] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [18:39:34] STATS ticks=256817 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:39:39] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=5 threshold=6000
+[MOVE_SUB_B] [18:40:35] STATS ticks=256917 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:41:35] STATS ticks=257042 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:42:35] STATS ticks=257126 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.240 arm=5.020 below=35.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:43:31] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:43:36] STATS ticks=257182 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:43:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.260 arm=5.020 below=35.06% (cap=3.0%)
+[MOVE_SUB_B] [18:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:43:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:43:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:43:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:43:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:43:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:43:50] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:43:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:43:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:43:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:43:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:43:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:44:36] STATS ticks=257267 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:45:36] STATS ticks=257337 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:46:12] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:46:38] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:46:38] STATS ticks=257416 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:46:45] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [18:47:39] STATS ticks=257465 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:48:39] STATS ticks=257558 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:48:44] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=13 threshold=6000
+[MOVE_SUB_B] [18:48:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=13 threshold=6000
+[MOVE_SUB_B] [18:48:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=13 threshold=6000
+[MOVE_SUB_B] [18:49:43] STATS ticks=257622 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:50:44] STATS ticks=257695 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:51:44] STATS ticks=257809 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:52:44] STATS ticks=257858 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:53:49] STATS ticks=257914 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:53:54] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.270 arm=5.020 below=34.86% (cap=3.0%)
+[MOVE_SUB_B] [18:54:50] STATS ticks=257969 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:55:50] STATS ticks=258065 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:56:16] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:56:17] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:56:17] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:56:19] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:56:24] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.280 arm=5.020 below=34.66% (cap=3.0%)
+[MOVE_SUB_B] [18:56:34] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:56:41] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [18:56:52] STATS ticks=258147 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:56:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.290 arm=5.020 below=34.46% (cap=3.0%)
+[MOVE_SUB_B] [18:56:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:56:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.300 arm=5.020 below=34.26% (cap=3.0%)
+[MOVE_SUB_B] [18:57:56] STATS ticks=258240 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:58:03] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:04] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:08] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:09] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:38] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.360 arm=5.020 below=33.07% (cap=3.0%)
+[MOVE_SUB_B] [18:58:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:45] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:47] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:51] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:56] STATS ticks=258327 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [18:58:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=1 threshold=6000
+[MOVE_SUB_B] [18:58:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [18:58:58] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=1 threshold=6000
+[MOVE_SUB_B] [18:58:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.350 arm=5.020 below=33.27% (cap=3.0%)
+[MOVE_SUB_B] [18:58:58] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.359 arm=5.020 below=33.08% (cap=3.0%)
+[MOVE_SUB_B] [18:59:59] STATS ticks=258409 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:00:11] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:16] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:25] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:40] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:49] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=9 threshold=6000
+[MOVE_SUB_B] [19:00:59] STATS ticks=258502 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:02:01] STATS ticks=258588 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:03:02] STATS ticks=258661 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:04:02] STATS ticks=258766 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:04:12] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.310 arm=5.020 below=34.06% (cap=3.0%)
+[MOVE_SUB_B] [19:04:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.330 arm=5.020 below=33.67% (cap=3.0%)
+[MOVE_SUB_B] [19:04:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [19:04:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [19:04:55] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.340 arm=5.020 below=33.47% (cap=3.0%)
+[MOVE_SUB_B] [19:05:09] STATS ticks=258837 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:05:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:21] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:24] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:44] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:05:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=3 threshold=6000
+[MOVE_SUB_B] [19:06:10] STATS ticks=258929 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:07:00] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:00] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:02] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:12] STATS ticks=259008 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:07:13] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:14] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:15] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:19] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:40] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:43] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:43] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:43] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:56] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:56] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:56] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:07:56] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=11 threshold=6000
+[MOVE_SUB_B] [19:08:12] STATS ticks=259067 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.390 arm=5.020 below=32.47% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.400 arm=5.020 below=32.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.400 arm=5.020 below=32.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.400 arm=5.020 below=32.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.410 arm=5.020 below=32.07% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [19:08:30] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.440 arm=5.020 below=31.47% (cap=3.0%)
+[MOVE_SUB_B] [19:08:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:32] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:33] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:39] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:40] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:41] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:42] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:46] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:48] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:08:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.430 arm=5.020 below=31.67% (cap=3.0%)
+[MOVE_SUB_B] [19:08:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.480 arm=5.020 below=30.68% (cap=3.0%)
+[MOVE_SUB_B] [19:08:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [19:08:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [19:08:53] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.500 arm=5.020 below=30.28% (cap=3.0%)
+[MOVE_SUB_B] [19:08:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [19:08:56] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [19:08:57] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.490 arm=5.020 below=30.48% (cap=3.0%)
+[MOVE_SUB_B] [19:09:14] STATS ticks=259167 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:10:15] STATS ticks=259242 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:11:16] STATS ticks=259377 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:12:18] STATS ticks=259435 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:13:20] STATS ticks=259517 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:14:22] STATS ticks=259551 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:14:42] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=4 threshold=6000
+[MOVE_SUB_B] [19:15:23] STATS ticks=259625 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:16:25] STATS ticks=259752 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:17:25] STATS ticks=259804 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:18:27] STATS ticks=259912 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:19:28] STATS ticks=259989 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:19:44] INDP BELOW-ARM-SKIP (arm preserved) trigger=3.450 arm=5.020 below=31.27% (cap=3.0%)
+[MOVE_SUB_B] [19:20:29] STATS ticks=260060 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:21:30] STATS ticks=260191 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:22:33] STATS ticks=260254 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:23:34] STATS ticks=260306 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:23:54] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=21 threshold=6000
+[MOVE_SUB_B] [19:23:57] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=21 threshold=6000
+[MOVE_SUB_B] [19:24:36] STATS ticks=260360 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:25:38] STATS ticks=260442 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:26:39] STATS ticks=260525 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:27:36] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [19:27:40] STATS ticks=260605 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:27:55] FIRESTORM_GATE_BLOCK FOXX setup=move_strike prior_bar_ticks=8 threshold=6000
+[MOVE_SUB_B] [19:28:40] STATS ticks=260714 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:29:40] STATS ticks=260828 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:30:41] STATS ticks=260938 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:31:45] STATS ticks=261019 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:32:46] STATS ticks=261099 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:33:47] STATS ticks=261185 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:34:49] STATS ticks=261261 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:35:49] STATS ticks=261329 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:36:49] STATS ticks=261401 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:37:51] STATS ticks=261470 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:38:55] STATS ticks=261556 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:39:56] STATS ticks=261628 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:40:56] STATS ticks=261714 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:41:57] STATS ticks=261773 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:42:59] STATS ticks=261825 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:44:01] STATS ticks=261882 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:45:01] STATS ticks=261955 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:46:01] STATS ticks=262056 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:47:04] STATS ticks=262108 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:48:05] STATS ticks=262180 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:49:05] STATS ticks=262230 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:50:09] STATS ticks=262289 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:51:11] STATS ticks=262362 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:52:11] STATS ticks=262394 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:53:12] STATS ticks=262439 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:54:15] STATS ticks=262479 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:55:16] STATS ticks=262553 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:56:16] STATS ticks=262650 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:57:17] STATS ticks=262718 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:58:18] STATS ticks=262819 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] [19:59:19] STATS ticks=262948 symbols=72 pos=no daily_pnl=-598 drops=0
+[MOVE_SUB_B] socket closed by peer — reconnecting
+[MOVE_SUB_B] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB_B] [20:01:20] connected to engine (/tmp/warrior_engine.sock) attempt=39
+[MOVE_SUB_B] socket closed by peer — reconnecting
+[MOVE_SUB_B] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB_B] signal 15 received — stopping
+[MOVE_SUB_B] consume loop exited

@@ -1,0 +1,78 @@
+# A/B/C Daily Report — 2026-06-04
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## ⚠️ Bot vs Broker P&L divergence detected
+
+| Variant | Bot reported | Broker truth | Gap |
+|---|---:|---:|---:|
+| A ⚠️ | +$0.00 | +$1,272.97 | +$1,272.97 |
+| B ✓ | -$598.00 | +$217.21 | +$815.21 |
+| C ⚠️ | +$0.00 | +$2,094.31 | +$2,094.31 |
+
+Divergence threshold: ±$1000. Investigate any flagged variant — likely partial-fill or orphan-class accounting issue. Bot's daily_pnl is no longer the canonical signal; broker truth is.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$31,210.56 | +$1,272.97 | 6 / 9 | 6 | 483 | 5 |
+| B | FIRESTORM-gate + Track A | +$29,951.98 | +$217.21 | 6 / 10 | 6 | 648 | 5 |
+| C | REENTRY-loss-gate | +$27,554.88 | +$2,094.31 | 17 / 34 | 17 | 1 | 13 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 5
+- Exits: 2
+- Regime-shift partials fired: 1
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 483 (2 unique symbols)
+- Symbols traded: STI
+
+### Variant B — FIRESTORM-gate + Track A
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 5
+- Exits: 3
+- Regime-shift partials fired: 1
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 648 (3 unique symbols)
+- Symbols traded: STI
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 4
+- REGIME_SHIFT entries: 13
+- Exits: 5
+- Regime-shift partials fired: 21956
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- Symbols traded: ACCL, FOXX, STI
+
+## Data Quality Audit
+
+- Audit lines parsed: 4384
+- Symbols flagged HEURISTIC_SUSPECT: 4
+- Symbols with DIRECT_QUERY_WEDGE events: 6
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| STI | 529 | 0 | 4 | 0.000 | 249992 / 126815 |
+| ACCL | 642 | 5 | 2 | 0.000 | 20068 / 51139 |
+| FOXX | 871 | 2 | 1 | 0.000 | 5758 / 2148 |
+| INDP | 340 | 0 | 1 | 0.095 | 15803 / 9100 |
+| TWAV | 532 | 0 | 1 | 0.000 | 61138 / 114417 |
+| VERU | 340 | 0 | 1 | 0.064 | 15943 / 12814 |
+| SDOT | 321 | 20 | 0 | 0.542 | 11089 / 2821 |
+| EDHL | 337 | 4 | 0 | 0.181 | 10682 / 4766 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 9 | +$1,462.43 |
+| B | 9 | -$2,970.90 |
+| C | 9 | -$2,432.33 |
