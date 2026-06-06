@@ -214,6 +214,30 @@
           "fade_blocks": 0
         }
       }
+    },
+    {
+      "date": "2026-06-05",
+      "data_corrected": "broker_truth_used",
+      "variants": {
+        "A": {
+          "day_pnl": 3259.0999999999985,
+          "equity": 34131.46,
+          "entries": 0,
+          "fade_blocks": 0
+        },
+        "B": {
+          "day_pnl": 0.0,
+          "equity": 29951.84,
+          "entries": 0,
+          "fade_blocks": 0
+        },
+        "C": {
+          "day_pnl": 3176.3199999999997,
+          "equity": 30384.53,
+          "entries": 1,
+          "fade_blocks": 0
+        }
+      }
     }
   ]
 }

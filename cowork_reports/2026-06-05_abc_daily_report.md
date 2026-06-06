@@ -1,0 +1,72 @@
+# A/B/C Daily Report — 2026-06-05
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## ⚠️ Bot vs Broker P&L divergence detected
+
+| Variant | Bot reported | Broker truth | Gap |
+|---|---:|---:|---:|
+| A ⚠️ | +$0.00 | +$3,259.10 | +$3,259.10 |
+| B ✓ | +$0.00 | +$0.00 | +$0.00 |
+| C ⚠️ | -$83.00 | +$3,176.32 | +$3,259.32 |
+
+Divergence threshold: ±$1000. Investigate any flagged variant — likely partial-fill or orphan-class accounting issue. Bot's daily_pnl is no longer the canonical signal; broker truth is.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$34,131.46 | +$3,259.10 | 0 / 1 | 0 | 1 | 0 |
+| B | FIRESTORM-gate + Track A | +$29,951.84 | +$0.00 | 0 / 0 | 0 | 6403 | 0 |
+| C | REENTRY-loss-gate | +$30,384.53 | +$3,176.32 | 1 / 3 | 1 | 0 | 1 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 1 (1 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 6403 (1 unique symbols)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 1
+- Exits: 1
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- Symbols traded: BGMS
+
+## Data Quality Audit
+
+- Audit lines parsed: 3536
+- Symbols flagged HEURISTIC_SUSPECT: 3
+- Symbols with DIRECT_QUERY_WEDGE events: 2
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| BCDA | 169 | 0 | 1 | 0.000 | 463940 / 436723 |
+| RMSG | 699 | 0 | 1 | 0.000 | 81570 / 155409 |
+| BESS | 509 | 25 | 0 | 0.137 | 4950 / 2020 |
+| CMND | 524 | 10 | 0 | 0.236 | 6446 / 2047 |
+| IREZ | 533 | 1 | 0 | 0.647 | 10778 / 655 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 10 | +$4,721.53 |
+| B | 10 | -$2,970.90 |
+| C | 10 | +$743.99 |
