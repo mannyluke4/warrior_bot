@@ -52,7 +52,34 @@
 `WB_MOVE_STACK_ENABLED` (master, off) · `WB_MOVE_FIRESTORM_TRIGGER_ENABLED` (off) ·
 reuses existing `WB_BT_MOVE_*`, `WB_REGIME_SHIFT_*`, `WB_MOVE_FIRESTORM_GATE_*`.
 
-## Next: R2 — entry path swap
+## ⚠️ ARCHITECTURE CORRECTION (R1 amendment, 2026-06-09) — directive model is wrong
+
+While reading the entry path for R2, found that the directive's **"REPLACE SqueezeDetectorV2
+arming WITH MovementStrike + RegimeShift"** (directive §"What the main bot REPLACES") is
+**inaccurate**. Verified in `move_strike_subbot.py`:
+- `self.detectors[symbol]` is a **`SqueezeDetectorV2`** (:228, same class as main bot) created
+  unconditionally in `_ensure_symbol`.
+- `_maybe_enter` (:1405) only proceeds when **`det.armed is not None`** — i.e. it requires a
+  **squeeze arm**. `det.on_bar_close_1m` is fed purely to set `det.armed` (:789 comment:
+  *"this can set det.armed if conditions met"*).
+- **MovementStrike does NOT arm** — `ms.update_and_check` is the intra-bar *trigger*, and
+  `ms.get_consolidation_stop()` supplies the stop. The squeeze detector supplies the arm
+  (entry level, score).
+
+**So the real architecture is: SqueezeV2 ARMS → MovementStrike TRIGGERS → (parallel) RegimeShift
+fires on bar-close → Track A exits.** The squeeze detector is *repurposed as the arming engine*,
+not replaced. Its own entry/exit logic is bypassed (only `.armed` is consumed).
+
+**Consequence:** the directive's plan to set `WB_SQUEEZE_ENABLED=0` would **kill arming → zero
+move-strike entries.** Fixed in R1: `init_detectors` now creates the SqueezeDetectorV2 when
+`SQ_ENABLED OR MOVE_STACK_ENABLED` (the arm is produced; squeeze's own trade paths stay gated
+off via `SQ_ENABLED`). Smoke-tested: SQ-off + move-stack-on still yields an arming detector;
+both-off leaks nothing.
+
+**Directive needs updating** (Cowork): the "REPLACES SqueezeDetectorV2 arming" row is wrong —
+squeeze arming is KEPT (arm-only). R2/R3 are designed on the corrected model below.
+
+## Next: R2 — entry path swap (on the CORRECTED model)
 Add `_maybe_enter_move_strike` + `_maybe_fire_regime_shift` to `bot_v3_hybrid.py`, gate order
 FIRESTORM → REENTRY-loss → fade(off) → chase-cap → below-arm → BP-check → submit, reusing
 `_verify_fill_with_retry` + AvailableFunds sizing.

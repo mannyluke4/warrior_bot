@@ -1338,7 +1338,14 @@ def connect():
 
 def init_detectors(symbol: str):
     """Create squeeze + MP + CT detectors for a symbol."""
-    if SQ_ENABLED and symbol not in state.sq_detectors:
+    # SqueezeDetectorV2 is created when squeeze trading is on OR the move-stack is
+    # on. R1 correction (2026-06-09): the ported move-stack uses the squeeze
+    # detector as its ARMING engine (consumes det.armed only) — MovementStrike is
+    # the intra-bar trigger, not an arming detector. So with WB_SQUEEZE_ENABLED=0 +
+    # WB_MOVE_STACK_ENABLED=1 (the rebuild config) the arm must still be produced,
+    # else move-strike never triggers. The squeeze's own entry/exit stays gated off
+    # via SQ_ENABLED in the trade paths; only its arm is consumed by the move-stack.
+    if (SQ_ENABLED or MOVE_STACK_ENABLED) and symbol not in state.sq_detectors:
         sq = SqueezeDetector()
         sq.symbol = symbol
         state.sq_detectors[symbol] = sq
