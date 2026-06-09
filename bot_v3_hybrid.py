@@ -145,6 +145,11 @@ MOVE_REGIME_REQUIRE_ARMED = os.getenv("WB_REGIME_SHIFT_REQUIRE_ARMED", "1") == "
 MOVE_REGIME_MAX_PER_SYMBOL = int(os.getenv("WB_REGIME_SHIFT_MAX_PER_SYMBOL", "1"))
 MOVE_REGIME_TARGET_R = float(os.getenv("WB_REGIME_SHIFT_TARGET_R", "1.5"))
 MOVE_REGIME_PARTIAL_PCT = float(os.getenv("WB_REGIME_SHIFT_PARTIAL_PCT", "0.9"))
+# REENTRY-loss gate (R4, Variant C): block re-entry within N min of a loss-class exit.
+MOVE_REENTRY_LOSS_GATE_ENABLED = os.getenv("WB_MOVE_REENTRY_LOSS_GATE_ENABLED", "0") == "1"
+MOVE_REENTRY_LOSS_GATE_WINDOW_MIN = float(os.getenv("WB_MOVE_REENTRY_LOSS_GATE_WINDOW_MIN", "30"))
+_MOVE_LOSS_EXIT_PREFIXES = ("move_hwm_exit", "move_stop_prox_bail", "move_hard_stop",
+                            "regime_shift_hard_stop", "regime_shift_drawdown_floor")
 
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
@@ -435,6 +440,8 @@ class BotState:
         # RegimeShift entry bookkeeping (R2b).
         self.regime_shift_armed_today: set = set()      # symbols that armed for MOVE_STRIKE today
         self.regime_shift_entries_per_symbol: dict = {}  # symbol → regime-shift entry count
+        # REENTRY-loss gate (R4): symbol → (last_exit_reason, exit_minute_et).
+        self.last_exit_reason_by_symbol: dict = {}
 
         # Wave Breakout (parallel strategy; per-symbol detectors + per-symbol
         # positions stored separately from state.open_position so squeeze and
@@ -2746,6 +2753,34 @@ def _move_firestorm_blocks(symbol: str, setup: str) -> bool:
     return True
 
 
+def _move_exit_and_record(symbol: str, price: float, qty: int, reason: str):
+    """Close a move-stack position via exit_trade and record (reason, minute) for the
+    REENTRY-loss gate (R4). Used for full closes only (not the 1.5R partial)."""
+    now_et = datetime.now(ET)
+    state.last_exit_reason_by_symbol[symbol] = (reason, now_et.hour * 60 + now_et.minute)
+    exit_trade(symbol, price, qty, reason)
+
+
+def _reentry_loss_gate_blocks(symbol: str) -> bool:
+    """R4 (Variant C): block a new move-stack entry within
+    WB_MOVE_REENTRY_LOSS_GATE_WINDOW_MIN of a loss-class exit on the same symbol.
+    Ported from move_strike_subbot (explicit loss-class prefixes only — false
+    negatives self-heal next cycle; false positives silently kill winners)."""
+    if not MOVE_REENTRY_LOSS_GATE_ENABLED:
+        return False
+    prev = state.last_exit_reason_by_symbol.get(symbol)
+    if prev is None:
+        return False
+    reason, exit_min = prev
+    now_et = datetime.now(ET)
+    age = (now_et.hour * 60 + now_et.minute) - exit_min
+    if 0 <= age <= MOVE_REENTRY_LOSS_GATE_WINDOW_MIN and reason.startswith(_MOVE_LOSS_EXIT_PREFIXES):
+        print(f"[{now_et.strftime('%H:%M:%S')} ET] [MOVE] REENTRY_LOSS_GATE_BLOCK {symbol} "
+              f"reason={reason} window_age_min={age}", flush=True)
+        return True
+    return False
+
+
 def maybe_enter_move_strike(symbol: str, price: float):
     """MOVE_STRIKE entry path (R2): squeeze ARM + MovementStrike intra-bar trigger.
     Faithful port of move_strike_subbot._maybe_enter, routed to the main bot's
@@ -2790,6 +2825,9 @@ def maybe_enter_move_strike(symbol: str, price: float):
 
     # FIRESTORM gate — block on quiet prior bar (Variant A, the winning variant).
     if _move_firestorm_blocks(symbol, "move_strike"):
+        return
+    # REENTRY-loss gate (R4) — block re-entry shortly after a loss-class exit.
+    if _reentry_loss_gate_blocks(symbol):
         return
 
     now_str = now_et.strftime("%H:%M:%S")
@@ -2866,6 +2904,9 @@ def maybe_fire_regime_shift(symbol: str, bar):
         return
     # FIRESTORM gate (quiet-bar block).
     if _move_firestorm_blocks(symbol, "regime_shift"):
+        return
+    # REENTRY-loss gate (R4).
+    if _reentry_loss_gate_blocks(symbol):
         return
     # Entry-time cutoff (mirrors MOVE_STRIKE / squeeze).
     now_et = datetime.now(ET)
@@ -3973,18 +4014,18 @@ def _move_stack_exit(symbol: str, price: float, pos: dict):
     if setup_type == "regime_shift" and not pos["move_partial_fired"]:
         if track_a_enabled():
             if should_force_flatten(now_min):
-                exit_trade(symbol, price, qty, "regime_shift_force_flatten")
+                _move_exit_and_record(symbol, price, qty, "regime_shift_force_flatten")
                 return
             entry_min = pos["entry_time_min"] if pos["entry_time_min"] is not None else now_min
             age_min = max(0, now_min - entry_min)
             dd_threshold = phased_drawdown_threshold(age_min)
             drawdown = (entry - price) / entry if entry > 0 else 0.0
             if dd_threshold > 0 and drawdown >= dd_threshold:
-                exit_trade(symbol, price, qty, "regime_shift_drawdown_floor")
+                _move_exit_and_record(symbol, price, qty, "regime_shift_drawdown_floor")
                 return
         else:
             if price <= stop:
-                exit_trade(symbol, price, qty, "regime_shift_hard_stop")
+                _move_exit_and_record(symbol, price, qty, "regime_shift_hard_stop")
                 return
         if r > 0 and price >= entry + MOVE_REGIME_TARGET_R * r:
             _fire_move_partial(symbol, price, pos)
@@ -3994,7 +4035,7 @@ def _move_stack_exit(symbol: str, price: float, pos: dict):
     decision = hwm_evaluate(pos, price, now_min, _MOVE_HWM_CFG)
     if decision is not None:
         reason, exit_price = decision
-        exit_trade(symbol, exit_price, pos["qty"], reason)
+        _move_exit_and_record(symbol, exit_price, pos["qty"], reason)
 
 
 def _fire_move_partial(symbol: str, price: float, pos: dict):
