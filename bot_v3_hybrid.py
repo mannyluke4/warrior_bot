@@ -112,6 +112,18 @@ WB_MAX_CONCURRENT = int(os.getenv("WB_WB_MAX_CONCURRENT", "3"))
 if WAVE_BREAKOUT_ENABLED:
     from wave_breakout_detector import WaveBreakoutDetector, WaveBreakoutConfig
 
+# Move-stack (main-bot rebuild R1 — see cowork_reports/2026-06-08_main_bot_rebuild_directive.md).
+# Ports the proven sub-bot strategy stack (MovementStrike + RegimeShift + FirestormTrigger)
+# into the main bot. Gated OFF by default: when off, the import graph and runtime behavior
+# are identical to the current squeeze build, so the squeeze path remains the safe fallback.
+MOVE_STACK_ENABLED = os.getenv("WB_MOVE_STACK_ENABLED", "0") == "1"
+if MOVE_STACK_ENABLED:
+    from movement_strike import MovementStrike
+    from firestorm_trigger import FirestormTrigger
+    # RegimeShiftDetector currently lives in move_strike_subbot.py (clean __main__
+    # guard, no import side effects). TODO(rebuild cleanup): extract to its own module.
+    from move_strike_subbot import RegimeShiftDetector
+
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
 # a Unix socket to subscriber bots (e.g., move_strike_subbot.py running
@@ -387,6 +399,14 @@ class BotState:
         self.sq_detectors: dict[str, SqueezeDetector] = {}
         self.mp_detectors: dict[str, MicroPullbackDetector] = {}
         self.ct_detectors: dict[str, ContinuationDetector] = {}
+
+        # Move-stack detectors (main-bot rebuild R1). Per-symbol, populated only
+        # when WB_MOVE_STACK_ENABLED=1. FirestormTrigger stays gated off (entry
+        # signal not active live yet — the FIRESTORM *gate* is a separate quiet-bar
+        # filter applied in the entry path, not a detector here).
+        self.move_strikes: dict = {}             # symbol → MovementStrike
+        self.regime_shift_detectors: dict = {}   # symbol → RegimeShiftDetector
+        self.firestorm_triggers: dict = {}       # symbol → FirestormTrigger (gated off)
 
         # Wave Breakout (parallel strategy; per-symbol detectors + per-symbol
         # positions stored separately from state.open_position so squeeze and
@@ -1331,6 +1351,27 @@ def init_detectors(symbol: str):
     if CT_ENABLED and symbol not in state.ct_detectors:
         ct = ContinuationDetector()
         state.ct_detectors[symbol] = ct
+
+    # Move-stack: MovementStrike + RegimeShiftDetector (+ FirestormTrigger, gated
+    # off). Main-bot rebuild R1 (2026-06-08 directive). Mirrors the detector
+    # instantiation in move_strike_subbot._ensure_symbol so the entry/exit ports
+    # in R2/R3 consume identically-configured detectors.
+    if MOVE_STACK_ENABLED and symbol not in state.move_strikes:
+        state.move_strikes[symbol] = MovementStrike(
+            lookback_bars=int(os.getenv("WB_BT_MOVE_LOOKBACK", "5")),
+            multiplier=float(os.getenv("WB_BT_MOVE_MULT", "2.0")),
+            stop_lookback_bars=int(os.getenv("WB_BT_MOVE_STOP_LOOKBACK", "10")),
+        )
+        if os.getenv("WB_REGIME_SHIFT_ENABLED", "0") == "1":
+            state.regime_shift_detectors[symbol] = RegimeShiftDetector(
+                ratio_threshold=float(os.getenv("WB_REGIME_SHIFT_RATIO_THRESHOLD", "4.0")),
+                baseline_bars=int(os.getenv("WB_REGIME_SHIFT_BASELINE_BARS", "5")),
+                require_green=os.getenv("WB_REGIME_SHIFT_REQUIRE_GREEN_BAR", "1") == "1",
+            )
+        if os.getenv("WB_MOVE_FIRESTORM_TRIGGER_ENABLED", "0") == "1":
+            state.firestorm_triggers[symbol] = FirestormTrigger(
+                min_ticks=int(os.getenv("WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN", "6000")),
+            )
 
     # Wave Breakout — parallel strategy, separate detector per symbol.
     if WAVE_BREAKOUT_ENABLED and symbol not in state.wb_detectors:
