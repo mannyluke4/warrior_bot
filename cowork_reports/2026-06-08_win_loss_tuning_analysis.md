@@ -1,10 +1,24 @@
 # Win/Loss Tuning Analysis — 2026-06-08
 
 **Goal:** synthesize the day's research into concrete, gated tweaks that (a) maximize
-wins and (b) avoid losses, for both the main squeeze bot and the A/B/C MOVE_STRIKE
-sub-bots. All figures are from paper/live-session data (IBKR paper, acct DU…) — see
-**Caveats** before acting. Source artifacts: `/tmp/discovery_features_rows.csv`,
+wins and (b) avoid losses. All figures are from paper/live-session data (IBKR/Alpaca
+paper) — see **Caveats** before acting. Source artifacts: `/tmp/discovery_features_rows.csv`,
 `/tmp/live_giveback_rows.csv`, `/tmp/subbot_trades.csv`, today's daily + sub-bot logs.
+
+> ## ⚠️ STATUS (2026-06-08, per Manny) — the MAIN-BOT SQUEEZE STRATEGY IS BEING RETIRED
+>
+> **It is NOT under study.** Cowork: do **not** spend effort optimizing the main bot.
+> The record forced the call — the main-bot squeeze book has had **exactly one net-positive
+> day in May–June: 2026-05-29 (+$597)**. It is **0-for-6 in June (−$2,582)** and **≈−$7,954
+> net since going active on IBKR paper (~2026-05-15)** — 1 green day in ~16 trading days.
+>
+> The bot is kept running only for parallel/contrast data; **no main-bot-specific tuning is
+> planned.** The forward-looking value of this report is the **sub-bot (A/B/C) learnings**,
+> which will be ported to a future replacement strategy. The main bot here serves only as the
+> **cautionary case study** of the failure modes the successor must avoid. Main-bot-specific
+> recommendations below (**P1, P4**) are therefore **ARCHIVED / MOOT** — kept as the diagnostic
+> of *why* the strategy is retiring, not as work items. Supersedes the older
+> `project_main_bot_ibkr_validated` "do not retire" note.
 
 ---
 
@@ -22,9 +36,12 @@ Two independent levers fell out of the data, and **today's live session demonstr
    ran to $9.10. The sub-bots' entire **+$2,647** day was continuation re-entries the
    main bot declined. **This is where the real money is, and no gate addresses it.**
 
-**Headline recommendation:** pursue both, but weight **win-capture (continuation
-hold + re-entry on strong runners)** as the higher-value workstream — loss-gating caps
-the downside, continuation-capture is what turns the book green.
+**Headline recommendation (for the SUCCESSOR strategy — main bot is retiring, see Status):**
+both levers carry forward into the sub-bot-derived replacement, but weight **win-capture
+(continuation hold + re-entry on strong runners)** as the higher-value workstream — loss-gating
+caps the downside, continuation-capture is what turns the book green. The sub-bots already
+demonstrate the win-capture mechanic live (+$2,647 today); the main bot is the cautionary
+counter-example of what *not* to carry over.
 
 ---
 
@@ -120,9 +137,12 @@ main bot left a +200% runner entirely on the table.
 
 ## Recommended tweaks (prioritized, all gated / observe-first)
 
-### P1 — Win-capture: fix the runner shake-out + re-entry gap (highest value)
-The main bot's `bearish_engulfing_exit` cut SUNE at $3.06 before a +200% move, and its
-re-entry never fired despite 5 re-arms. Proposed, behind gates, OFF by default:
+### P1 — [ARCHIVED — main bot retiring] Win-capture: runner shake-out + re-entry gap
+**Not a work item** (main bot retired) — kept as the diagnostic of the core failure mode the
+*successor* strategy must avoid: the main bot's `bearish_engulfing_exit` cut SUNE at $3.06
+before a +200% move, and its re-entry never fired despite 5 re-arms. The principle to carry
+forward (validated live by the sub-bots, who *did* ride the continuation): a winning strategy
+must hold/​re-enter confirmed runners rather than shake out on a 10-sec reversal pattern.
 1. **Suppress the 10-sec bearish-engulfing / topping-wick exits on confirmed strong
    runners** (high RVOL + price extension), letting `WB_CONTINUATION_HOLD_ENABLED`
    carry the position. New gate e.g. `WB_RUNNER_EXIT_SUPPRESS` + RVOL/extension threshold.
@@ -146,10 +166,11 @@ re-entry never fired despite 5 re-arms. Proposed, behind gates, OFF by default:
    sub-bots) — would have prevented the **−$97 / −$80 late re-entries** force-flattened at
    19:28+. Mirrors the P2 time-gate logic on the close side.
 
-### P4 — Entry fill quality
-7. The main bot chased SUNE to **$3.09 vs the sub-bots' $3.00** (+$0.09 worse basis on the
-   same signal). Review `WB_ENTRY_SLIPPAGE_*` / chase logic — a worse entry basis directly
-   widens the give-back and lowers clean-rip odds.
+### P4 — [ARCHIVED — main bot retiring] Entry fill quality
+**Not a work item.** Diagnostic only: the main bot chased SUNE to **$3.09 vs the sub-bots'
+$3.00** (+$0.09 worse basis on the same signal). Principle for the successor: entry-basis
+discipline matters — a worse fill directly widens give-back and lowers clean-rip odds. The
+sub-bots' MOVE_STRIKE entry got the better basis on the identical signal.
 
 ---
 
@@ -170,9 +191,15 @@ re-entry never fired despite 5 re-arms. Proposed, behind gates, OFF by default:
 
 ---
 
-## Next steps
-1. **P1 audit** — trace the SUNE arm-but-no-re-entry path in today's daily log (highest ROI).
-2. Stage **`WB_ENTRY_TIME_CUTOFF_ET=11:00` observe-only** alongside the discovery gate.
-3. Let the **discovery gate** accumulate afternoon observe data through the week, then review.
-4. Backtest the **max-extension** and **late-entry-cutoff** sub-bot guards against the
-   MOVE_STRIKE history before proposing live.
+## Next steps (sub-bot-focused — main bot retired)
+1. **Reconcile A/B/C standings against broker** (equity − last_equity per account) — bot
+   `daily_pnl` is non-canonical (DIRECT_QUERY_WEDGE); establish which variant is *truly*
+   ahead before declaring a recipe to port. (Standings as reported: A +$5,507 · B −$2,153 ·
+   C +$1,787 over 11 days — verify before trusting.)
+2. **Characterize the winning sub-bot mechanic** — today's money was continuation re-entry on
+   a runner; determine which variant's gates let that through while cutting the top-chase /
+   late-entry losses. *That* recipe defines the successor strategy.
+3. Backtest the **max-extension** (P3.5) and **late-entry-cutoff** (P3.6) sub-bot guards
+   against MOVE_STRIKE history before proposing live.
+4. Let the **discovery gate** accumulate afternoon observe data through the week, then review.
+5. ~~P1 main-bot re-entry audit~~ — **dropped**; main bot retiring, not under study.
