@@ -124,6 +124,13 @@ if MOVE_STACK_ENABLED:
     # guard, no import side effects). TODO(rebuild cleanup): extract to its own module.
     from move_strike_subbot import RegimeShiftDetector
 
+# Move-stack entry config (R2, ported from move_strike_subbot). Read unconditionally
+# (cheap) but only consulted on the MOVE_STACK_ENABLED entry path.
+MOVE_FIRESTORM_GATE_ENABLED = os.getenv("WB_MOVE_FIRESTORM_GATE_ENABLED", "0") == "1"
+MOVE_FIRESTORM_MIN_TICKS = int(os.getenv("WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN", "6000"))
+MOVE_CHASE_CAP_PCT = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
+MOVE_MAX_BELOW_ARM_PCT = float(os.getenv("WB_BT_MOVE_MAX_BELOW_ARM_PCT", "0"))
+
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
 # a Unix socket to subscriber bots (e.g., move_strike_subbot.py running
@@ -407,6 +414,9 @@ class BotState:
         self.move_strikes: dict = {}             # symbol → MovementStrike
         self.regime_shift_detectors: dict = {}   # symbol → RegimeShiftDetector
         self.firestorm_triggers: dict = {}       # symbol → FirestormTrigger (gated off)
+        # Tracks the squeeze arm object per symbol across bars so the move-stack
+        # can reset MovementStrike history on a None→armed transition (R2).
+        self.move_prev_arm_state: dict = {}      # symbol → armed obj or None
 
         # Wave Breakout (parallel strategy; per-symbol detectors + per-symbol
         # positions stored separately from state.open_position so squeeze and
@@ -2455,8 +2465,11 @@ def on_bar_close_1m(bar):
         except Exception as e:
             print(f"[{now_str} ET] {symbol} CHART diagnostic error: {e}", flush=True)
 
-    # Squeeze detection
-    if SQ_ENABLED and symbol in state.sq_detectors:
+    # Squeeze detection — also runs as the ARMING engine for the move-stack
+    # (R2). When SQ_ENABLED=0 but MOVE_STACK_ENABLED=1 we still feed the
+    # detector so it produces det.armed for MovementStrike to trigger on; the
+    # squeeze's own entry/exit stays gated off in check_triggers/exit paths.
+    if (SQ_ENABLED or MOVE_STACK_ENABLED) and symbol in state.sq_detectors:
         sq = state.sq_detectors[symbol]
         if pm_high:
             pm_bf = state.bar_builder_1m.get_premarket_bull_flag_high(symbol) if state.bar_builder_1m else None
@@ -2469,6 +2482,14 @@ def on_bar_close_1m(bar):
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
             elif "SQ_REJECT" in sq_msg or "SQ_RESET" in sq_msg:
                 print(f"[{now_str} ET] {symbol} SQ | {sq_msg}", flush=True)
+        # Move-stack: reset MovementStrike history on a None→armed transition so
+        # its rolling average + consolidation low reflect only post-arm bars
+        # (mirrors move_strike_subbot:795-801).
+        if MOVE_STACK_ENABLED and symbol in state.move_strikes:
+            _prev_arm = state.move_prev_arm_state.get(symbol)
+            if sq.armed is not None and _prev_arm is None:
+                state.move_strikes[symbol].reset_history()
+            state.move_prev_arm_state[symbol] = sq.armed
 
     # Wave Breakout detection (parallel to squeeze; the detector returns
     # informational messages on bar close — actual entry triggers happen on
@@ -2669,6 +2690,114 @@ def on_bar_close_10s(bar):
                 return
 
 
+class _MoveArm:
+    """Arm-shaped adapter so move-stack entries reuse enter_trade(), which reads
+    trigger_high / stop_low / r / score / size_mult. R2 (main-bot rebuild)."""
+    __slots__ = ("trigger_high", "stop_low", "r", "score", "size_mult")
+
+    def __init__(self, trigger_high, stop_low, r, score, size_mult=1.0):
+        self.trigger_high = trigger_high
+        self.stop_low = stop_low
+        self.r = r
+        self.score = score
+        self.size_mult = size_mult
+
+
+def _move_firestorm_blocks(symbol: str, setup: str) -> bool:
+    """FIRESTORM gate (Variant A): block entries when the prior completed 1m bar's
+    tick count is below threshold (quiet bars = the bulk of losses). Ported from
+    move_strike_subbot._firestorm_gate_blocks."""
+    if not MOVE_FIRESTORM_GATE_ENABLED:
+        return False
+    bb = state.bar_builder_1m
+    tc = bb.get_last_completed_bar_tick_count(symbol) if bb else 0
+    if tc >= MOVE_FIRESTORM_MIN_TICKS:
+        return False
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+    print(f"[{now_str} ET] [MOVE] FIRESTORM_GATE_BLOCK {symbol} setup={setup} "
+          f"prior_bar_ticks={tc} threshold={MOVE_FIRESTORM_MIN_TICKS}", flush=True)
+    return True
+
+
+def maybe_enter_move_strike(symbol: str, price: float):
+    """MOVE_STRIKE entry path (R2): squeeze ARM + MovementStrike intra-bar trigger.
+    Faithful port of move_strike_subbot._maybe_enter, routed to the main bot's
+    enter_trade() (AvailableFunds sizing + _verify_fill_with_retry). Called per tick
+    from check_triggers; only acts when MOVE_STACK_ENABLED. The squeeze detector is
+    the arming engine — MovementStrike confirms the move and supplies the stop.
+
+    NOTE: REENTRY-loss gate is added in R4; fade-environment gate + stay-armed
+    continuation + regime-shift firing are R2b (not yet ported)."""
+    if not MOVE_STACK_ENABLED:
+        return
+    if state.open_position is not None:
+        return
+    sq = state.sq_detectors.get(symbol)
+    ms = state.move_strikes.get(symbol)
+    if sq is None or ms is None:
+        return
+
+    # Entry-time cutoff (WB_ENTRY_TIME_CUTOFF_ET), mirrors squeeze + sub-bot.
+    now_et = datetime.now(ET)
+    cutoff = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+    try:
+        _ch, _cm = (int(x) for x in cutoff.split(":")[:2])
+        if now_et.hour * 60 + now_et.minute >= _ch * 60 + _cm:
+            return  # past entry cutoff
+    except Exception:
+        pass
+
+    # Require a squeeze arm (the move-stack's arming engine).
+    if sq.armed is None:
+        return
+
+    # Feed MovementStrike this tick; only fires on an upward intra-bar anomaly.
+    # ms is reset on the arm transition (on_bar_close_1m), then fed every tick
+    # while armed, so its rolling average reflects post-arm bars only.
+    bar_minute = now_et.hour * 60 + now_et.minute
+    if not ms.update_and_check(price, bar_minute):
+        return
+    cons_stop = ms.get_consolidation_stop()
+    if cons_stop is None or price <= cons_stop:
+        return
+
+    # FIRESTORM gate — block on quiet prior bar (Variant A, the winning variant).
+    if _move_firestorm_blocks(symbol, "move_strike"):
+        return
+
+    now_str = now_et.strftime("%H:%M:%S")
+    # Chase cap + below-arm filter — preserve the arm (don't consume) so price can
+    # come back into range. Mirrors sub-bot:1442-1470.
+    arm_price = getattr(sq.armed, "entry_price", None) or getattr(sq.armed, "trigger_high", 0.0) or 0.0
+    if arm_price > 0:
+        gap_above = (price - arm_price) / arm_price * 100.0
+        if gap_above > MOVE_CHASE_CAP_PCT:
+            print(f"[{now_str} ET] [MOVE] {symbol} CHASE-SKIP (arm preserved) "
+                  f"trigger={price:.3f} arm={arm_price:.3f} gap={gap_above:.2f}%", flush=True)
+            return
+        if MOVE_MAX_BELOW_ARM_PCT > 0:
+            below = (arm_price - price) / arm_price * 100.0
+            if below > MOVE_MAX_BELOW_ARM_PCT:
+                print(f"[{now_str} ET] [MOVE] {symbol} BELOW-ARM-SKIP (arm preserved) "
+                      f"trigger={price:.3f} arm={arm_price:.3f} below={below:.2f}% "
+                      f"(cap={MOVE_MAX_BELOW_ARM_PCT}%)", flush=True)
+                return
+
+    r = price - cons_stop
+    if r <= 0:
+        return
+    score = float(getattr(sq.armed, "score", 0.0) or 0.0)
+    print(f"[{now_str} ET] [MOVE] MOVE_STRIKE TRIGGER {symbol} @ ${price:.4f} "
+          f"stop=${cons_stop:.4f} R=${r:.4f} score={score:.1f}", flush=True)
+    # Route to the main bot's submission path (sizing + fill-verify + open_position).
+    move_arm = _MoveArm(trigger_high=price, stop_low=cons_stop, r=r, score=score)
+    enter_trade(symbol, move_arm, "move_strike")
+    # Consume the arm (mirrors sub-bot:1494-1496); also clear prev-arm tracker so a
+    # later re-arm correctly triggers a fresh MovementStrike reset.
+    sq.armed = None
+    state.move_prev_arm_state[symbol] = None
+
+
 def check_triggers(symbol: str, price: float):
     """Check if any armed detector triggers on this price."""
     now_str = datetime.now(ET).strftime("%H:%M:%S")
@@ -2700,6 +2829,15 @@ def check_triggers(symbol: str, price: float):
         return
     if state.consecutive_losses >= MAX_CONSECUTIVE_LOSSES:
         return
+
+    # Move-stack trigger (MOVE_STRIKE entry, R2). Gated; consumes the squeeze arm +
+    # MovementStrike. In the rebuild config (WB_SQUEEZE_ENABLED=0) this is the only
+    # entry path; the squeeze block below is skipped. Runs after the same daily/risk
+    # guards above as squeeze.
+    if MOVE_STACK_ENABLED and symbol in state.move_strikes:
+        maybe_enter_move_strike(symbol, price)
+        if state.open_position is not None:
+            return  # entered — don't also evaluate squeeze/WB on the same tick
 
     # Squeeze trigger (priority)
     if SQ_ENABLED and symbol in state.sq_detectors:
