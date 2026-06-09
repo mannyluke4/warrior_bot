@@ -150,6 +150,12 @@ MOVE_REENTRY_LOSS_GATE_ENABLED = os.getenv("WB_MOVE_REENTRY_LOSS_GATE_ENABLED", 
 MOVE_REENTRY_LOSS_GATE_WINDOW_MIN = float(os.getenv("WB_MOVE_REENTRY_LOSS_GATE_WINDOW_MIN", "30"))
 _MOVE_LOSS_EXIT_PREFIXES = ("move_hwm_exit", "move_stop_prox_bail", "move_hard_stop",
                             "regime_shift_hard_stop", "regime_shift_drawdown_floor")
+# Halt-count entry gate (R4 addendum, 2026-06-09): block serially-halted names.
+# Observe-only by default (logs would-block, doesn't block). See
+# cowork_reports/2026-06-09_rebuild_addendum_halt_gate.md.
+MOVE_HALT_COUNT_GATE_ENABLED = os.getenv("WB_MOVE_HALT_COUNT_GATE_ENABLED", "0") == "1"
+MOVE_HALT_COUNT_GATE_THRESHOLD = int(os.getenv("WB_MOVE_HALT_COUNT_GATE_THRESHOLD", "3"))
+MOVE_HALT_COUNT_GATE_OBSERVE_ONLY = os.getenv("WB_MOVE_HALT_COUNT_GATE_OBSERVE_ONLY", "1") == "1"
 
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
@@ -442,6 +448,9 @@ class BotState:
         self.regime_shift_entries_per_symbol: dict = {}  # symbol → regime-shift entry count
         # REENTRY-loss gate (R4): symbol → (last_exit_reason, exit_minute_et).
         self.last_exit_reason_by_symbol: dict = {}
+        # Halt-count gate (R4 addendum): symbol → halts seen this session (daily-reset
+        # naturally via the 2 AM cron restart).
+        self.halt_count_today: dict = {}
 
         # Wave Breakout (parallel strategy; per-symbol detectors + per-symbol
         # positions stored separately from state.open_position so squeeze and
@@ -2781,6 +2790,26 @@ def _reentry_loss_gate_blocks(symbol: str) -> bool:
     return False
 
 
+def _halt_count_gate_blocks(symbol: str) -> bool:
+    """R4 addendum (2026-06-09): avoid serially-halted names (CCTG halted 34× today).
+    Halt count is knowable intraday and halt-prone names keep halting. Observe-only by
+    default — logs HALT_COUNT_GATE_WOULD_BLOCK and falls through; flip
+    WB_MOVE_HALT_COUNT_GATE_OBSERVE_ONLY=0 to enforce after the validation week."""
+    if not MOVE_HALT_COUNT_GATE_ENABLED:
+        return False
+    halts = state.halt_count_today.get(symbol, 0)
+    if halts < MOVE_HALT_COUNT_GATE_THRESHOLD:
+        return False
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+    if MOVE_HALT_COUNT_GATE_OBSERVE_ONLY:
+        print(f"[{now_str} ET] [MOVE] HALT_COUNT_GATE_WOULD_BLOCK {symbol} halts={halts} "
+              f"threshold={MOVE_HALT_COUNT_GATE_THRESHOLD} (OBSERVE)", flush=True)
+        return False  # observe-only — fall through
+    print(f"[{now_str} ET] [MOVE] HALT_COUNT_GATE_BLOCK {symbol} halts={halts} "
+          f"threshold={MOVE_HALT_COUNT_GATE_THRESHOLD}", flush=True)
+    return True
+
+
 def maybe_enter_move_strike(symbol: str, price: float):
     """MOVE_STRIKE entry path (R2): squeeze ARM + MovementStrike intra-bar trigger.
     Faithful port of move_strike_subbot._maybe_enter, routed to the main bot's
@@ -2825,6 +2854,9 @@ def maybe_enter_move_strike(symbol: str, price: float):
 
     # FIRESTORM gate — block on quiet prior bar (Variant A, the winning variant).
     if _move_firestorm_blocks(symbol, "move_strike"):
+        return
+    # Halt-count gate (R4 addendum) — avoid serially-halted names.
+    if _halt_count_gate_blocks(symbol):
         return
     # REENTRY-loss gate (R4) — block re-entry shortly after a loss-class exit.
     if _reentry_loss_gate_blocks(symbol):
@@ -2904,6 +2936,9 @@ def maybe_fire_regime_shift(symbol: str, bar):
         return
     # FIRESTORM gate (quiet-bar block).
     if _move_firestorm_blocks(symbol, "regime_shift"):
+        return
+    # Halt-count gate (R4 addendum) — avoid serially-halted names.
+    if _halt_count_gate_blocks(symbol):
         return
     # REENTRY-loss gate (R4).
     if _reentry_loss_gate_blocks(symbol):
@@ -4518,6 +4553,11 @@ def check_halts():
                     halt_type = "regulatory" if ticker.halted == 1 else "volatility"
                     print(f"⚠️ HALT DETECTED: {symbol} ({halt_type})", flush=True)
                     _halted_symbols.add(symbol)
+                    # Halt-count gate bookkeeping (R4 addendum): count halts per
+                    # symbol so the entry path can avoid serially-halted names.
+                    state.halt_count_today[symbol] = state.halt_count_today.get(symbol, 0) + 1
+                    print(f"[HALT_COUNT] {symbol} now {state.halt_count_today[symbol]} "
+                          f"halts today", flush=True)
             else:
                 if symbol in _halted_symbols:
                     print(f"✅ HALT RESUMED: {symbol}", flush=True)
