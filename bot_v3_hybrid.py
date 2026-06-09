@@ -123,6 +123,9 @@ if MOVE_STACK_ENABLED:
     # RegimeShiftDetector currently lives in move_strike_subbot.py (clean __main__
     # guard, no import side effects). TODO(rebuild cleanup): extract to its own module.
     from move_strike_subbot import RegimeShiftDetector
+    # Track A R-floor for entry-side stop placement (self-gated on
+    # WB_EXIT_TRACK_A_ENABLED; returns raw stop when off). Full exit framework = R3.
+    from exit_track_a import compute_stop_with_r_floor
 
 # Move-stack entry config (R2, ported from move_strike_subbot). Read unconditionally
 # (cheap) but only consulted on the MOVE_STACK_ENABLED entry path.
@@ -130,6 +133,8 @@ MOVE_FIRESTORM_GATE_ENABLED = os.getenv("WB_MOVE_FIRESTORM_GATE_ENABLED", "0") =
 MOVE_FIRESTORM_MIN_TICKS = int(os.getenv("WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN", "6000"))
 MOVE_CHASE_CAP_PCT = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
 MOVE_MAX_BELOW_ARM_PCT = float(os.getenv("WB_BT_MOVE_MAX_BELOW_ARM_PCT", "0"))
+MOVE_REGIME_REQUIRE_ARMED = os.getenv("WB_REGIME_SHIFT_REQUIRE_ARMED", "1") == "1"
+MOVE_REGIME_MAX_PER_SYMBOL = int(os.getenv("WB_REGIME_SHIFT_MAX_PER_SYMBOL", "1"))
 
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
@@ -417,6 +422,9 @@ class BotState:
         # Tracks the squeeze arm object per symbol across bars so the move-stack
         # can reset MovementStrike history on a None→armed transition (R2).
         self.move_prev_arm_state: dict = {}      # symbol → armed obj or None
+        # RegimeShift entry bookkeeping (R2b).
+        self.regime_shift_armed_today: set = set()      # symbols that armed for MOVE_STRIKE today
+        self.regime_shift_entries_per_symbol: dict = {}  # symbol → regime-shift entry count
 
         # Wave Breakout (parallel strategy; per-symbol detectors + per-symbol
         # positions stored separately from state.open_position so squeeze and
@@ -2490,6 +2498,15 @@ def on_bar_close_1m(bar):
             if sq.armed is not None and _prev_arm is None:
                 state.move_strikes[symbol].reset_history()
             state.move_prev_arm_state[symbol] = sq.armed
+            # Track armed-today for the regime-shift require_armed gate.
+            if sq.armed is not None:
+                state.regime_shift_armed_today.add(symbol)
+
+    # Move-stack: regime-shift entry fires on this 1m bar close (parallel path to
+    # the per-tick MOVE_STRIKE trigger). R2b. Runs after the arm feed above so
+    # require_armed sees today's arms.
+    if MOVE_STACK_ENABLED and symbol in state.regime_shift_detectors:
+        maybe_fire_regime_shift(symbol, bar)
 
     # Wave Breakout detection (parallel to squeeze; the detector returns
     # informational messages on bar close — actual entry triggers happen on
@@ -2796,6 +2813,75 @@ def maybe_enter_move_strike(symbol: str, price: float):
     # later re-arm correctly triggers a fresh MovementStrike reset.
     sq.armed = None
     state.move_prev_arm_state[symbol] = None
+
+
+def _move_risk_guards_block() -> bool:
+    """Shared entry guards for the move-stack (mirrors the daily/risk checks at the
+    top of check_triggers). Used by the bar-close regime-shift path, which doesn't
+    run through check_triggers. Returns True if a new entry should be blocked."""
+    if state.open_position is not None:
+        return True
+    if MAX_DAILY_ENTRIES > 0 and state.daily_entries >= MAX_DAILY_ENTRIES:
+        return True
+    if BOX_ENABLED and not BOX_SIMULTANEOUS and state.box_position is not None:
+        return True
+    eff_max_loss = max(MAX_DAILY_LOSS, STARTING_EQUITY * 0.02) if DAILY_LOSS_SCALE else MAX_DAILY_LOSS
+    if state.daily_pnl <= -eff_max_loss:
+        return True
+    if state.consecutive_losses >= MAX_CONSECUTIVE_LOSSES:
+        return True
+    return False
+
+
+def maybe_fire_regime_shift(symbol: str, bar):
+    """RegimeShift entry (R2b): fires on a 1m bar-close body anomaly — a parallel
+    entry path to MOVE_STRIKE. Faithful port of move_strike_subbot.
+    _maybe_fire_regime_shift + _open_regime_shift_position, routed to enter_trade.
+    Entry = bar.close, stop = bar.low (widened by Track A's R-floor when enabled)."""
+    if not MOVE_STACK_ENABLED:
+        return
+    if _move_risk_guards_block():
+        return
+    rs = state.regime_shift_detectors.get(symbol)
+    if rs is None:
+        return
+    rs_result = rs.check_on_bar_close(bar)
+    if not rs_result.get("fired"):
+        return
+    # require_armed — only fire on symbols that armed for MOVE_STRIKE today.
+    if MOVE_REGIME_REQUIRE_ARMED and symbol not in state.regime_shift_armed_today:
+        return
+    # Per-symbol regime-shift entry cap.
+    if state.regime_shift_entries_per_symbol.get(symbol, 0) >= MOVE_REGIME_MAX_PER_SYMBOL:
+        return
+    # FIRESTORM gate (quiet-bar block).
+    if _move_firestorm_blocks(symbol, "regime_shift"):
+        return
+    # Entry-time cutoff (mirrors MOVE_STRIKE / squeeze).
+    now_et = datetime.now(ET)
+    cutoff = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
+    try:
+        _ch, _cm = (int(x) for x in cutoff.split(":")[:2])
+        if now_et.hour * 60 + now_et.minute >= _ch * 60 + _cm:
+            return
+    except Exception:
+        pass
+    entry = float(bar.close)
+    raw_stop = float(bar.low)
+    stop, r = compute_stop_with_r_floor(entry, raw_stop)  # Track A R-floor (self-gated)
+    if r <= 0.01:
+        return
+    now_str = now_et.strftime("%H:%M:%S")
+    print(f"[{now_str} ET] [MOVE] REGIME_SHIFT_TRIGGER {symbol} "
+          f"body=${rs_result['body']:.4f} baseline=${rs_result['baseline']:.4f} "
+          f"ratio={rs_result['ratio']:.2f} → entry=${entry:.4f} stop=${stop:.4f} R=${r:.4f}",
+          flush=True)
+    # Count the entry attempt (mirrors sub-bot's per-symbol cap; bumped on submit
+    # rather than fill since enter_trade verifies fills asynchronously).
+    state.regime_shift_entries_per_symbol[symbol] = (
+        state.regime_shift_entries_per_symbol.get(symbol, 0) + 1)
+    move_arm = _MoveArm(trigger_high=entry, stop_low=stop, r=r, score=99.0)
+    enter_trade(symbol, move_arm, "regime_shift")
 
 
 def check_triggers(symbol: str, price: float):
