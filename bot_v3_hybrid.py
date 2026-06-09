@@ -123,9 +123,17 @@ if MOVE_STACK_ENABLED:
     # RegimeShiftDetector currently lives in move_strike_subbot.py (clean __main__
     # guard, no import side effects). TODO(rebuild cleanup): extract to its own module.
     from move_strike_subbot import RegimeShiftDetector
-    # Track A R-floor for entry-side stop placement (self-gated on
-    # WB_EXIT_TRACK_A_ENABLED; returns raw stop when off). Full exit framework = R3.
-    from exit_track_a import compute_stop_with_r_floor
+    # Track A entry-side R-floor + exit-side helpers (all self-gated on
+    # WB_EXIT_TRACK_A_ENABLED). R3 exit path.
+    from exit_track_a import (
+        compute_stop_with_r_floor, track_a_enabled,
+        phased_drawdown_threshold, should_force_flatten,
+    )
+    # HWM runner trail (read-only, dict-compatible — pass the position dict directly).
+    from hwm_exit import HWMExitConfig, evaluate as hwm_evaluate
+    _MOVE_HWM_CFG = HWMExitConfig()
+else:
+    _MOVE_HWM_CFG = None
 
 # Move-stack entry config (R2, ported from move_strike_subbot). Read unconditionally
 # (cheap) but only consulted on the MOVE_STACK_ENABLED entry path.
@@ -135,6 +143,8 @@ MOVE_CHASE_CAP_PCT = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
 MOVE_MAX_BELOW_ARM_PCT = float(os.getenv("WB_BT_MOVE_MAX_BELOW_ARM_PCT", "0"))
 MOVE_REGIME_REQUIRE_ARMED = os.getenv("WB_REGIME_SHIFT_REQUIRE_ARMED", "1") == "1"
 MOVE_REGIME_MAX_PER_SYMBOL = int(os.getenv("WB_REGIME_SHIFT_MAX_PER_SYMBOL", "1"))
+MOVE_REGIME_TARGET_R = float(os.getenv("WB_REGIME_SHIFT_TARGET_R", "1.5"))
+MOVE_REGIME_PARTIAL_PCT = float(os.getenv("WB_REGIME_SHIFT_PARTIAL_PCT", "0.9"))
 
 # Engine publisher (2026-05-20). Optional tick broadcaster — when enabled
 # via WB_ENGINE_PUBLISH_ENABLED=1, each processed tick is also sent over
@@ -3828,8 +3838,10 @@ def manage_exit(symbol: str, price: float):
     qty = pos["qty"]
     setup_type = pos["setup_type"]
 
-    # ── Bail timer ──
-    if BAIL_TIMER_ENABLED:
+    # ── Bail timer ── (skip move-stack: it uses HWM's own noact-bail at 30min,
+    # per move_strike_subbot parity — the 5-min bail would cut regime trades
+    # before their 1.5R target.)
+    if BAIL_TIMER_ENABLED and setup_type not in ("move_strike", "regime_shift"):
         minutes_in = (datetime.now(ET) - pos["entry_time"]).total_seconds() / 60
         if minutes_in >= BAIL_TIMER_MINUTES and price <= entry:
             exit_trade(symbol, price, qty, "bail_timer")
@@ -3837,6 +3849,8 @@ def manage_exit(symbol: str, price: float):
 
     if setup_type.startswith("epl_"):
         return  # EPL exits handled via strategy.manage_exit() in tick/bar processing
+    elif setup_type in ("move_strike", "regime_shift"):
+        _move_stack_exit(symbol, price, pos)
     elif setup_type in ("squeeze", "mp_reentry", "continuation"):
         _squeeze_exit(symbol, price, pos)
     else:
@@ -3927,6 +3941,84 @@ def _mp_exit(symbol: str, price: float, pos: dict):
     """MP exit — simplified signal mode."""
     if price <= pos["stop"]:
         exit_trade(symbol, price, pos["qty"], "stop_hit")
+
+
+def _move_stack_exit(symbol: str, price: float, pos: dict):
+    """Exit driver for MOVE_STRIKE / regime_shift positions (R3). Faithful port of
+    move_strike_subbot._maintain_position:
+      • regime_shift pre-partial — Track A phased-drawdown floor (when Track A on)
+        else hard stop; force-flatten at WB_EXIT_FORCE_FLATTEN_TIME; fire the 1.5R
+        partial. No HWM trail until the partial fires (runway for big runners).
+      • move_strike + post-partial runner — HWM trail (hwm_exit.evaluate handles its
+        own hard stop, stop-prox/noact bails, and adaptive drawdown trail).
+    Closes via the main bot's exit_trade(); manage_exit() already advances pos['peak']."""
+    entry = pos["entry"]; stop = pos["stop"]; r = pos["r"]; qty = pos["qty"]
+    setup_type = pos["setup_type"]
+
+    # Lazy-init + maintain the fields hwm_evaluate / drawdown logic read off the dict.
+    if "cum_low" not in pos:
+        pos["cum_low"] = entry
+    if price < pos["cum_low"]:
+        pos["cum_low"] = price
+    if "entry_time_min" not in pos:
+        _et = pos.get("entry_time")
+        pos["entry_time_min"] = (_et.astimezone(ET).hour * 60 + _et.astimezone(ET).minute) if _et else None
+    pos.setdefault("hh_count", 0)
+    pos.setdefault("move_partial_fired", False)
+
+    now_et = datetime.now(ET)
+    now_min = now_et.hour * 60 + now_et.minute
+
+    # ── regime_shift, pre-partial: loss-cut + 1.5R partial (no trail yet) ──
+    if setup_type == "regime_shift" and not pos["move_partial_fired"]:
+        if track_a_enabled():
+            if should_force_flatten(now_min):
+                exit_trade(symbol, price, qty, "regime_shift_force_flatten")
+                return
+            entry_min = pos["entry_time_min"] if pos["entry_time_min"] is not None else now_min
+            age_min = max(0, now_min - entry_min)
+            dd_threshold = phased_drawdown_threshold(age_min)
+            drawdown = (entry - price) / entry if entry > 0 else 0.0
+            if dd_threshold > 0 and drawdown >= dd_threshold:
+                exit_trade(symbol, price, qty, "regime_shift_drawdown_floor")
+                return
+        else:
+            if price <= stop:
+                exit_trade(symbol, price, qty, "regime_shift_hard_stop")
+                return
+        if r > 0 and price >= entry + MOVE_REGIME_TARGET_R * r:
+            _fire_move_partial(symbol, price, pos)
+        return  # no HWM trail pre-partial
+
+    # ── move_strike + post-partial runner: HWM trail (dict passed directly) ──
+    decision = hwm_evaluate(pos, price, now_min, _MOVE_HWM_CFG)
+    if decision is not None:
+        reason, exit_price = decision
+        exit_trade(symbol, exit_price, pos["qty"], reason)
+
+
+def _fire_move_partial(symbol: str, price: float, pos: dict):
+    """Sell MOVE_REGIME_PARTIAL_PCT of a regime_shift position at the 1.5R target,
+    raise the stop to break-even, and keep the runner under the HWM trail. Mirrors
+    the squeeze core/runner partial: exit_trade with the partial qty, then shrink
+    pos['qty'] AFTER the call so the remaining-qty math is correct."""
+    qty = pos["qty"]
+    qty_partial = max(1, int(round(qty * MOVE_REGIME_PARTIAL_PCT)))
+    if qty > 1:
+        qty_partial = min(qty_partial, qty - 1)  # always leave >=1 runner share
+    qty_runner = qty - qty_partial
+    now_str = datetime.now(ET).strftime("%H:%M:%S")
+    print(f"[{now_str} ET] [MOVE] {symbol} REGIME_PARTIAL fire qty={qty_partial} @ ${price:.4f} "
+          f"({MOVE_REGIME_TARGET_R}R target) — runner={qty_runner} to BE stop", flush=True)
+    if qty_runner > 0:
+        pos["move_partial_fired"] = True
+        pos["stop"] = max(pos["stop"], pos["entry"])  # break-even stop for the runner
+        exit_trade(symbol, price, qty_partial, "regime_shift_partial")
+        pos["qty"] = qty_runner          # AFTER exit_trade (squeeze pattern)
+        if state.open_position:
+            persist_open_trades()
+    else:
+        exit_trade(symbol, price, qty, "regime_shift_partial_full")
 
 
 # ══════════════════════════════════════════════════════════════════════
