@@ -81,6 +81,15 @@ class EnginePublisher:
         self._stats_published = 0
         self._stats_dropped = 0
         self._stats_lock = threading.Lock()
+        # Optional TCP listener (2026-06-10) so a REMOTE consumer (Manny's MBP
+        # manual bot) gets the identical broadcast over Tailscale — keeping the
+        # single IBKR session here and avoiding the competing-session conflict.
+        # 0 = disabled. Bind to the Tailscale interface IP so it's tailnet-only,
+        # never exposed to the public internet. Same newline-JSON wire format.
+        self.tcp_port = int(os.getenv("WB_ENGINE_TCP_PORT", "0") or "0")
+        self.tcp_bind = os.getenv("WB_ENGINE_TCP_BIND", "127.0.0.1")
+        self._tcp_server_sock: Optional[socket.socket] = None
+        self._tcp_accept_thread: Optional[threading.Thread] = None
 
     def start(self) -> None:
         """Open the server socket + spin up background threads. Idempotent."""
@@ -112,6 +121,31 @@ class EnginePublisher:
         )
         self._server_thread.start()
         self._broadcast_thread.start()
+
+        # Optional TCP listener for remote (tailnet) consumers. The accepted TCP
+        # sockets join the SAME self._clients set, so the existing broadcast loop
+        # fans ticks to them automatically — no broadcast changes needed.
+        if self.tcp_port > 0:
+            try:
+                self._tcp_server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self._tcp_server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                self._tcp_server_sock.bind((self.tcp_bind, self.tcp_port))
+                self._tcp_server_sock.listen(8)
+                self._tcp_accept_thread = threading.Thread(
+                    target=self._tcp_accept_loop, daemon=True, name="engine-pub-tcp-accept"
+                )
+                self._tcp_accept_thread.start()
+                print(
+                    f"[ENGINE_PUB] TCP listener on {self.tcp_bind}:{self.tcp_port} "
+                    f"(tailnet fan-out — newline-JSON, same stream as the Unix socket)",
+                    flush=True,
+                )
+            except Exception as e:
+                print(f"[ENGINE_PUB] TCP listener failed to start "
+                      f"({self.tcp_bind}:{self.tcp_port}): {e!r} — Unix socket unaffected",
+                      flush=True)
+                self._tcp_server_sock = None
+
         self._started = True
         print(
             f"[ENGINE_PUB] listening on {self.socket_path} "
@@ -127,6 +161,11 @@ class EnginePublisher:
         if self._server_sock is not None:
             try:
                 self._server_sock.close()
+            except Exception:
+                pass
+        if self._tcp_server_sock is not None:
+            try:
+                self._tcp_server_sock.close()
             except Exception:
                 pass
         with self._clients_lock:
@@ -211,6 +250,32 @@ class EnginePublisher:
                 self._clients.append(client_sock)
             print(
                 f"[ENGINE_PUB] client connected "
+                f"(total clients: {len(self._clients)})",
+                flush=True,
+            )
+
+    def _tcp_accept_loop(self) -> None:
+        """Accept remote (tailnet) TCP consumers. Accepted sockets join the same
+        self._clients set the Unix consumers use, so the broadcast loop serves them
+        identically. Mirrors _accept_loop."""
+        while not self._stop_event.is_set():
+            try:
+                client_sock, addr = self._tcp_server_sock.accept()
+            except OSError:
+                break
+            except Exception as e:
+                if not self._stop_event.is_set():
+                    print(f"[ENGINE_PUB] tcp accept error: {e!r}", flush=True)
+                continue
+            try:
+                client_sock.settimeout(None)
+                client_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            except Exception:
+                pass
+            with self._clients_lock:
+                self._clients.append(client_sock)
+            print(
+                f"[ENGINE_PUB] TCP client connected from {addr} "
                 f"(total clients: {len(self._clients)})",
                 flush=True,
             )
