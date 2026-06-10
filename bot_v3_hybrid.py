@@ -177,6 +177,14 @@ TBT_MAX_SUBSCRIPTIONS = int(os.getenv("WB_TBT_MAX", "5"))
 TBT_MANAGE_INTERVAL_SEC = int(os.getenv("WB_TBT_MANAGE_SEC", "30"))   # how often to re-rank
 # Lever 3 (2026-05-26): periodic broker reconciliation cadence.
 RECONCILE_INTERVAL_SEC = int(os.getenv("WB_RECONCILE_INTERVAL_SEC", "60"))
+# Orphan-halt ignore-list (P0, 2026-06-10). Symbols here are detected but NOT adopted
+# and NOT halted on — the bot keeps trading everything else and leaves the position at
+# the broker for manual handling. For stuck/untradeable orphans (e.g. sub-$1 penny names
+# whose orders IBKR's price-cap refuses) that would otherwise lock the whole bot out.
+# The orphan-halt safety stays fully in force for every OTHER symbol. Comma-separated.
+ORPHAN_HALT_IGNORE_SYMBOLS = {
+    s.strip().upper() for s in os.getenv("WB_ORPHAN_HALT_IGNORE_SYMBOLS", "").split(",") if s.strip()
+}
 TBT_COOLDOWN_SEC = int(os.getenv("WB_TBT_COOLDOWN_SEC", "300"))        # min Tier-1 hold time
 TBT_VOLUME_RESERVE_N = max(1, TBT_MAX_SUBSCRIPTIONS // 2)              # "active hunt" reserve
 # Priority weights — see DIRECTIVE_TICKBYTICK_MIGRATION.md.
@@ -965,6 +973,12 @@ def reconcile_positions_on_startup():
               f"(available={qty_available}) entry=${avg_entry:.2f} "
               f"unrealized=${unrealized_pnl:+,.2f} value=${market_value:,.2f}", flush=True)
 
+        if symbol.upper() in ORPHAN_HALT_IGNORE_SYMBOLS:
+            print(f"  → ORPHAN IGNORED: {symbol} on WB_ORPHAN_HALT_IGNORE_SYMBOLS — "
+                  f"NOT adopting, NOT halting. Bot keeps trading other names; position "
+                  f"left at broker for manual handling.", flush=True)
+            continue
+
         if state.open_position is None:
             state.open_position = {
                 "symbol": symbol,
@@ -1139,6 +1153,10 @@ def resume_reconcile():
 
         rec = by_symbol.get(sym)
         if rec is None:
+            if sym.upper() in ORPHAN_HALT_IGNORE_SYMBOLS:
+                print(f"  RESUME: orphan {sym} on WB_ORPHAN_HALT_IGNORE_SYMBOLS — "
+                      f"NOT halting; bot operates, position left at broker.", flush=True)
+                continue
             # No persisted record in any strategy → true orphan. Per project
             # rule (no auto-flatten), set the halt flag and let the operator
             # reconcile manually. flatten_orphan_position now only logs.
@@ -1311,6 +1329,10 @@ def periodic_position_sync():
             # Skip Wave Breakout positions — owned by WB state machine, not orphans.
             # (Patched 2026-05-05 after squeeze stole every WB entry on the sub-bot.)
             if symbol in state.wb_positions:
+                continue
+            if symbol.upper() in ORPHAN_HALT_IGNORE_SYMBOLS:
+                print(f"  → ORPHAN IGNORED (sync): {symbol} on WB_ORPHAN_HALT_IGNORE_SYMBOLS "
+                      f"— NOT adopting; bot keeps trading. Left at broker for manual handling.", flush=True)
                 continue
             print(f"  ⚠️ ORPHAN DETECTED: broker holds {symbol} qty={qty} "
                   f"(available={qty_available}) entry=${avg_entry:.2f} — bot unaware. Adopting.", flush=True)
