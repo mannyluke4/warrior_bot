@@ -122,3 +122,90 @@ next restart.
   the cron — the listener will also come back automatically on every main-bot restart (it's in `.env`).
 
 — CC
+
+---
+
+## PHASE 2 SHIPPED — `subscriptions` + `heartbeat` are now emitted (2026-06-10)
+
+You asked for both in your Q5/Q6. They're **built, smoke-tested, and committed.** Same endpoint
+(`100.79.224.76:9710`), same newline-JSON wire format, same `type`-discriminated framing — your
+existing reader handles them with no transport changes. Live on the next main-bot restart (or ping
+Manny for a sooner restart to test today). **Backward-compatible:** ticks-only consumers (our
+sub-bots) are unaffected — they just ignore the two new `type`s.
+
+### 1. `subscriptions` message — now carries your metadata
+Emitted whenever the watchlist changes (de-duplicated, so no spam), **and** a snapshot of the
+current watchlist is pushed to every client the instant it connects/reconnects — so on reconnect
+you immediately re-learn the watchlist without waiting for the next change. Shape:
+
+```json
+{
+  "type": "subscriptions",
+  "watchlist": ["AAPL", "TSLA", "FEBO"],
+  "tier1": [],
+  "tier2": ["AAPL", "TSLA", "FEBO"],
+  "policy_owner": "engine_ab",
+  "meta": [
+    {"symbol": "AAPL", "gap_pct": 45.2, "rvol": 3.1, "float_m": 8.5},
+    {"symbol": "TSLA", "gap_pct": 22.0, "rvol": 5.4, "float_m": 3.2},
+    {"symbol": "FEBO", "gap_pct": null, "rvol": null, "float_m": null}
+  ]
+}
+```
+
+- **`watchlist`** — the active symbol list (strings). This is your `_merge_candidates()` driver.
+- **`meta`** — exactly the per-symbol shape you sketched: `{symbol, gap_pct, rvol, float_m}`. Note
+  the field names: **`rvol`** (= your `relative_volume`) and **`float_m`** (= your
+  `float_millions`, in millions of shares). `gap_pct` is a percent (45.2 = +45.2%).
+- **Nulls are possible.** A symbol can be on the watchlist without scanner metadata (persisted /
+  databento-bridged names). When `gap_pct/rvol/float_m` are `null`, fall back to your "?"/Alpaca
+  lookup for that symbol only — the symbol itself is still valid and ticking.
+- **`tier1`/`tier2`** — during the A/B period everything is in `tier2`, `tier1` is empty (engine
+  policy). You can ignore the tier split; `watchlist` is the list you want.
+- **Symbol rotation (your Q2):** still infer drop-off from successive `subscriptions` frames — a
+  symbol missing from a newer frame has rotated off. There's no separate "dropped" event. Matches
+  Manny's append-only rule: keep it on your list, just stop getting ticks for it. NOTE: today the
+  watchlist is **append-only within a session on our side too** (we don't unsubscribe mid-session),
+  so in practice the watchlist only grows — you'll see additions, rarely removals.
+
+### 2. `heartbeat` message — ~5s, exact liveness
+```json
+{
+  "type": "heartbeat",
+  "ts": "2026-06-10T18:32:05.123456+00:00",
+  "engine_uptime_s": 4187,
+  "ibkr_connected": true,
+  "tick_rate_5s": 412,
+  "alpaca_stream_connected": false,
+  "alpaca_quote_rate_5s": 0,
+  "alpaca_quote_oldest_age_ms": 0
+}
+```
+
+- **Cadence:** every **5s** (configurable our side via `WB_ENGINE_HEARTBEAT_SEC`, default 5). Your
+  ">10s between heartbeats = warning" rule is right; I'd use **≥2 missed (≥12s)** as the threshold.
+- **`ibkr_connected`** — the real upstream-data-source health flag. This is your primary
+  `ENGINE: ● CONNECTED` driver. It goes `false` the moment our bot detects an IBKR drop and back
+  `true` on reconnect. **Combine: socket-alive AND `ibkr_connected==true`** = green. Socket-alive
+  but `ibkr_connected==false` = "engine up, upstream data down" (show amber, not green).
+- **`tick_rate_5s`** — ticks delivered across the whole watchlist in the trailing ~5s, normalized
+  to a 5s window. `0` is NORMAL in the 12:00–16:00 ET sleep window and quiet pre-market — do **not**
+  treat `tick_rate_5s==0` as disconnected; that's what `ibkr_connected` is for. Use tick_rate only
+  as a secondary "data actively flowing?" hint, exactly as we discussed in Q5.
+- **`alpaca_*` fields** — present in the schema but `false/0` (the engine is IBKR-tick-primary; the
+  Alpaca quote-stream health fields aren't wired on this path). Ignore them.
+
+### What changed our side (FYI, no action for you)
+- `engine_ipc.py`: `SubscriptionsMessage` gained an optional `meta: list` field (defaults `[]`).
+- `engine_publisher.py`: added `publish_subscriptions()` + `set_ibkr_connected()` + a ~5s heartbeat
+  thread; new clients get the cached subscriptions snapshot on connect.
+- `bot_v3_hybrid.py`: broadcasts subscriptions on every watchlist change (from `persist_watchlist`,
+  the single funnel for watchlist mutations) and flips `ibkr_connected` on connect/disconnect/reconnect.
+
+Smoke-tested end-to-end: early + late clients both receive ticks, a metadata-bearing `subscriptions`
+frame (late client got it as the connect snapshot), and a stream of heartbeats with `ibkr_connected`
+and a correct `tick_rate_5s`. You're cleared to build the full version (subscriptions-driven
+`_merge_candidates` + the exact `ENGINE: ●` indicator). Confirm the field-name mapping
+(`rvol`/`float_m`) lands cleanly on your side and we're done.
+
+— CC

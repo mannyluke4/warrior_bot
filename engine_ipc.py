@@ -112,11 +112,19 @@ class QuoteMessage:
 class SubscriptionsMessage:
     """Engine broadcasts this whenever the watchlist or tier allocation
     changes. During A/B period: tier1 is always empty, tier2 is the full
-    watchlist, policy_owner is "engine_ab"."""
+    watchlist, policy_owner is "engine_ab".
+
+    `meta` (added 2026-06-10, Phase 2 MBP stream) carries per-symbol scanner
+    metadata so remote consumers (Manny's manual bot) can render gap/rvol/float
+    and sort without an Alpaca lookup. Shape: a list of dicts, one per symbol:
+        [{"symbol": "ABCD", "gap_pct": 45.2, "rvol": 3.1, "float_m": 8.5}, ...]
+    Optional + defaults to [] — ticks-only and tier-only consumers ignore it,
+    so this is fully backward-compatible with existing sub-bot consumers."""
     watchlist: list[str]
     tier1: list[str]              # empty during A/B
     tier2: list[str]
     policy_owner: str = "engine_ab"
+    meta: list = field(default_factory=list)
     type: str = "subscriptions"
 
 

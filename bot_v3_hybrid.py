@@ -1392,6 +1392,10 @@ def connect():
             state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
             print(f"Connected: {state.ib.isConnected()}")
             print(f"Account: {state.ib.managedAccounts()}")
+            try:
+                _engine_pub.set_ibkr_connected(True)
+            except Exception:
+                pass
             return state.ib
         except Exception as e:
             print(f"Connection attempt {attempt}/3 failed: {e}", flush=True)
@@ -4999,6 +5003,46 @@ def persist_watchlist():
         ss.write_watchlist(entries)
     except Exception as e:
         print(f"⚠️  persist_watchlist error: {e}", flush=True)
+    # Phase 2 (2026-06-10): broadcast the watchlist + scanner metadata to engine
+    # consumers (sub-bots + Manny's MBP manual bot). De-duped + no-op when the
+    # publisher is disabled, so it's safe to call on every watchlist change.
+    _publish_subscriptions()
+
+
+def _publish_subscriptions():
+    """Push the current watchlist + per-symbol scanner metadata to engine
+    consumers. Metadata (gap_pct/rvol/float_m) comes from state.candidates;
+    symbols without a candidate record (e.g. persisted/databento-bridged) are
+    still listed, just with null metadata. Never raises into the caller."""
+    try:
+        if not _engine_pub.enabled:
+            return
+        watchlist = sorted(state.active_symbols)
+        by_symbol = {}
+        for c in (state.candidates or []):
+            sym = c.get("symbol")
+            if sym:
+                by_symbol[sym] = c
+        meta = []
+        for sym in watchlist:
+            c = by_symbol.get(sym)
+            if c:
+                meta.append({
+                    "symbol": sym,
+                    "gap_pct": c.get("gap_pct"),
+                    "rvol": c.get("relative_volume"),
+                    "float_m": c.get("float_millions"),
+                })
+            else:
+                meta.append({
+                    "symbol": sym,
+                    "gap_pct": None,
+                    "rvol": None,
+                    "float_m": None,
+                })
+        _engine_pub.publish_subscriptions(watchlist, meta=meta)
+    except Exception:
+        pass  # never let the publisher break the subscribe/persist path
 
 
 def _risk_flush_loop():
@@ -5676,6 +5720,10 @@ def main():
             # Issue 9: Connection watchdog — reconnect on disconnect
             if not state.ib.isConnected():
                 print("CONNECTION LOST — attempting reconnect...", flush=True)
+                try:
+                    _engine_pub.set_ibkr_connected(False)
+                except Exception:
+                    pass
                 for attempt in range(1, 6):
                     try:
                         state.ib.disconnect()
@@ -5699,6 +5747,10 @@ def main():
                             if c:
                                 ticker = state.ib.reqMktData(c, '233', False, False)
                                 state.tickers[sym] = ticker
+                        try:
+                            _engine_pub.set_ibkr_connected(True)
+                        except Exception:
+                            pass
                         print(f"  Reconnected on attempt {attempt}", flush=True)
                         break
                     except Exception as e:

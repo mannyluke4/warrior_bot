@@ -49,7 +49,13 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Optional
 
-from engine_ipc import TickMessage, encode, DEFAULT_SOCKET_PATH
+from engine_ipc import (
+    TickMessage,
+    SubscriptionsMessage,
+    HeartbeatMessage,
+    encode,
+    DEFAULT_SOCKET_PATH,
+)
 
 
 def _now_iso_utc() -> str:
@@ -90,6 +96,28 @@ class EnginePublisher:
         self.tcp_bind = os.getenv("WB_ENGINE_TCP_BIND", "127.0.0.1")
         self._tcp_server_sock: Optional[socket.socket] = None
         self._tcp_accept_thread: Optional[threading.Thread] = None
+        # --- Phase 2 (2026-06-10): subscriptions + heartbeat -----------------
+        # Engine uptime is measured from start() with a monotonic clock (wall
+        # clock not needed and avoids DST/skew). Heartbeat thread emits a
+        # HeartbeatMessage every ~5s so remote consumers get an exact liveness
+        # signal even when the market is quiet (no ticks ≠ dead pipe).
+        self._start_monotonic: Optional[float] = None
+        self._hb_interval_s = float(os.getenv("WB_ENGINE_HEARTBEAT_SEC", "5") or "5")
+        self._heartbeat_thread: Optional[threading.Thread] = None
+        # ibkr_connected defaults True: the publisher only runs inside a live,
+        # IBKR-connected main bot. The bot flips it via set_ibkr_connected() on
+        # an IBKR disconnect/reconnect so the consumer's indicator stays honest.
+        self._ibkr_connected = True
+        # Total ticks published (monotonic). The heartbeat thread snapshots the
+        # delta over each interval to derive tick_rate_5s.
+        self._tick_count_total = 0
+        self._hb_last_tick_count = 0
+        self._hb_last_monotonic: Optional[float] = None
+        # Last subscriptions frame (encoded). Re-sent to each newly-connected
+        # client so a (re)connecting consumer learns the current watchlist
+        # immediately instead of waiting for the next watchlist change.
+        self._last_subscriptions_encoded: Optional[bytes] = None
+        self._last_subscriptions_sig: Optional[tuple] = None
 
     def start(self) -> None:
         """Open the server socket + spin up background threads. Idempotent."""
@@ -113,14 +141,22 @@ class EnginePublisher:
         except OSError:
             pass
 
+        import time as _time
+        self._start_monotonic = _time.monotonic()
+        self._hb_last_monotonic = self._start_monotonic
+
         self._server_thread = threading.Thread(
             target=self._accept_loop, daemon=True, name="engine-pub-accept"
         )
         self._broadcast_thread = threading.Thread(
             target=self._broadcast_loop, daemon=True, name="engine-pub-broadcast"
         )
+        self._heartbeat_thread = threading.Thread(
+            target=self._heartbeat_loop, daemon=True, name="engine-pub-heartbeat"
+        )
         self._server_thread.start()
         self._broadcast_thread.start()
+        self._heartbeat_thread.start()
 
         # Optional TCP listener for remote (tailnet) consumers. The accepted TCP
         # sockets join the SAME self._clients set, so the existing broadcast loop
@@ -190,6 +226,7 @@ class EnginePublisher:
         """Enqueue a tick for broadcast. Non-blocking; drops on overflow."""
         if not self.enabled or not self._started:
             return
+        self._tick_count_total += 1
         self._seq_per_symbol[symbol] += 1
         msg = TickMessage(
             symbol=symbol,
@@ -211,6 +248,66 @@ class EnginePublisher:
                 pass
             with self._stats_lock:
                 self._stats_dropped += 1
+
+    def set_ibkr_connected(self, connected: bool) -> None:
+        """Main bot calls this on IBKR connect/disconnect so the heartbeat's
+        ibkr_connected flag is honest. No-op effect on tick flow."""
+        self._ibkr_connected = bool(connected)
+
+    def publish_subscriptions(
+        self,
+        watchlist: list,
+        meta: Optional[list] = None,
+    ) -> None:
+        """Broadcast the current watchlist (+ optional per-symbol scanner
+        metadata) to all consumers. De-duplicated: a frame is only emitted when
+        the watchlist or metadata actually changes, so calling this on every
+        scan loop is cheap. The latest frame is cached and re-sent to each
+        newly-connected client.
+
+        `watchlist` — list of symbol strings.
+        `meta` — optional list of dicts [{"symbol","gap_pct","rvol","float_m"}].
+        """
+        if not self.enabled or not self._started:
+            return
+        wl = [str(s) for s in (watchlist or [])]
+        meta = list(meta or [])
+        # Signature for de-dup: watchlist + a stable view of the metadata.
+        try:
+            meta_sig = tuple(
+                (
+                    m.get("symbol"),
+                    m.get("gap_pct"),
+                    m.get("rvol"),
+                    m.get("float_m"),
+                )
+                for m in meta
+            )
+        except AttributeError:
+            meta_sig = tuple()
+        sig = (tuple(wl), meta_sig)
+        if sig == self._last_subscriptions_sig:
+            return
+        # During the A/B period the engine policy puts everything in tier2
+        # (tier1 stays empty) — matches the SubscriptionsMessage docstring.
+        msg = SubscriptionsMessage(
+            watchlist=wl,
+            tier1=[],
+            tier2=wl,
+            meta=meta,
+        )
+        data = encode(msg)
+        self._last_subscriptions_encoded = data
+        self._last_subscriptions_sig = sig
+        try:
+            self._queue.put_nowait(data)
+        except queue.Full:
+            # Subscriptions are low-frequency + important — force room.
+            try:
+                self._queue.get_nowait()
+                self._queue.put_nowait(data)
+            except (queue.Empty, queue.Full):
+                pass
 
     def stats(self) -> dict:
         """Diagnostic snapshot."""
@@ -248,6 +345,7 @@ class EnginePublisher:
                 pass
             with self._clients_lock:
                 self._clients.append(client_sock)
+            self._send_subscriptions_snapshot(client_sock)
             print(
                 f"[ENGINE_PUB] client connected "
                 f"(total clients: {len(self._clients)})",
@@ -274,11 +372,66 @@ class EnginePublisher:
                 pass
             with self._clients_lock:
                 self._clients.append(client_sock)
+            self._send_subscriptions_snapshot(client_sock)
             print(
                 f"[ENGINE_PUB] TCP client connected from {addr} "
                 f"(total clients: {len(self._clients)})",
                 flush=True,
             )
+
+    def _send_subscriptions_snapshot(self, client_sock) -> None:
+        """Best-effort: push the cached subscriptions frame to one freshly
+        connected client so it learns the current watchlist immediately rather
+        than waiting for the next watchlist change. Failures are swallowed —
+        the broadcast loop reaps the socket if it's actually dead."""
+        data = self._last_subscriptions_encoded
+        if not data:
+            return
+        try:
+            client_sock.sendall(data)
+        except Exception:
+            pass
+
+    def _heartbeat_loop(self) -> None:
+        """Emit a HeartbeatMessage every ~5s onto the broadcast queue so all
+        consumers get an exact liveness signal (socket-alive + IBKR-up +
+        tick-rate) independent of whether the market is currently ticking."""
+        import time as _time
+        from datetime import datetime, timezone
+        while not self._stop_event.is_set():
+            # Wait the interval, but wake early on shutdown.
+            if self._stop_event.wait(self._hb_interval_s):
+                break
+            now_mono = _time.monotonic()
+            start_mono = self._start_monotonic or now_mono
+            uptime_s = int(max(0.0, now_mono - start_mono))
+            # tick_rate over the trailing interval, normalized to a 5s window so
+            # the field name (tick_rate_5s) stays meaningful regardless of the
+            # configured interval.
+            prev_count = self._hb_last_tick_count
+            cur_count = self._tick_count_total
+            prev_mono = self._hb_last_monotonic or now_mono
+            elapsed = max(1e-3, now_mono - prev_mono)
+            ticks_delta = max(0, cur_count - prev_count)
+            tick_rate_5s = int(round((ticks_delta / elapsed) * 5.0))
+            self._hb_last_tick_count = cur_count
+            self._hb_last_monotonic = now_mono
+            msg = HeartbeatMessage(
+                ts=datetime.now(timezone.utc).isoformat(),
+                engine_uptime_s=uptime_s,
+                ibkr_connected=bool(self._ibkr_connected),
+                tick_rate_5s=tick_rate_5s,
+            )
+            try:
+                self._queue.put_nowait(encode(msg))
+            except queue.Full:
+                # Heartbeat is important for the consumer's liveness indicator —
+                # force room by dropping the oldest queued frame.
+                try:
+                    self._queue.get_nowait()
+                    self._queue.put_nowait(encode(msg))
+                except (queue.Empty, queue.Full):
+                    pass
 
     def _broadcast_loop(self) -> None:
         import time as _time
