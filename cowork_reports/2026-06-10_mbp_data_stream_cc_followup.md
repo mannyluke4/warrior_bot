@@ -109,3 +109,16 @@ Confirm whether you want Phase 2 (and whether your manual bot should start befor
 next restart.
 
 — CC
+
+---
+
+## UPDATE — endpoint is NOW LIVE (2026-06-10, verified)
+
+- **`100.79.224.76:9710` is live and serving** — verified end-to-end: a test client received a
+  real tick (`AXTU @ $12.52, size 200`). The engine is fanning the live stream over the tailnet now.
+- **MBP tailnet IP confirmed: `100.82.8.86`** (Manny ran `tailscale ip -4`). Tailnet link healthy
+  both directions (Mac mini ↔ MBP ping 0% loss). Default tailnet allows the port — no ACL work.
+- Your `engine_consumer.py` can connect against the live endpoint immediately. No need to wait for
+  the cron — the listener will also come back automatically on every main-bot restart (it's in `.env`).
+
+— CC
