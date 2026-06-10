@@ -1,0 +1,66 @@
+Wrote: /Users/duffy/warrior_bot_v2/cowork_reports/2026-06-09_abc_daily_report.md
+# A/B/C Daily Report — 2026-06-09
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$32,904.32 | -$2,012.50 | 3 / 6 | 3 | 29059 | 2 |
+| B | FIRESTORM-gate + Track A | +$28,738.92 | -$2,030.43 | 3 / 6 | 3 | 24183 | 2 |
+| C | REENTRY-loss-gate | +$31,359.50 | -$63.92 | 30 / 76 | 30 | 26 | 7 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 2
+- Exits: 3
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 29059 (5 unique symbols)
+- Symbols traded: CCTG, CHAI, RGNT
+
+### Variant B — FIRESTORM-gate + Track A
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 2
+- Exits: 3
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 24183 (5 unique symbols)
+- Symbols traded: CCTG, CHAI, RGNT
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 23
+- REGIME_SHIFT entries: 7
+- Exits: 31
+- Regime-shift partials fired: 5
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 26 (5 unique symbols)
+- Symbols traded: CCTG, CHAI, EPSM, RGNT, ZTG
+
+## Data Quality Audit
+
+- Audit lines parsed: 4735
+- Symbols flagged HEURISTIC_SUSPECT: 2
+- Symbols with DIRECT_QUERY_WEDGE events: 3
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| ZTG | 827 | 145 | 2 | 0.000 | 2461 / 2353 |
+| CCTG | 816 | 0 | 1 | 0.000 | 11973 / 10839 |
+| RGNT | 983 | 0 | 1 | 0.000 | 5356 / 5128 |
+| EPSM | 942 | 5 | 0 | 0.252 | 15781 / 14124 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 12 | +$3,494.94 |
+| B | 12 | -$4,183.34 |
+| C | 12 | +$1,722.74 |
+
