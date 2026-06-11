@@ -1,0 +1,26 @@
+FEBO: broker holds 1377.0 (avg $0.9106) — flattening 1377 via SELL LIMIT
+  attempt 1: SELL 1377 @ $0.98 (bid=0.98 ask=1.16 last=1.1715)
+  attempt 1 unfilled — repricing
+  attempt 2: SELL 1377 @ $0.97 (bid=0.98 ask=1.16 last=1.1715)
+  attempt 2 unfilled — repricing
+  attempt 3: SELL 1377 @ $0.97 (bid=0.98 ask=1.16 last=1.1715)
+  attempt 3 unfilled — repricing
+  attempt 4: SELL 1377 @ $0.96 (bid=0.98 ask=1.16 last=1.1715)
+  attempt 4 unfilled — repricing
+⚠️ FEBO NOT filled after 4 attempts — left working/cancelled. Re-run when liquidity improves (e.g. 9:30 ET open).
+LOGGED: 2026-06-10 07:01:33 ET  cc-session  manual-flatten  FEBO  flatten ATTEMPTED but unfilled after 4 reprices (thin liquidity); halt NOT cleared — retry at open.
+FEBO: broker holds 1377.0 (avg $0.9106) — flattening 1377 via SELL LIMIT
+  attempt 1: SELL 1377 @ $0.98 (bid=0.98 ask=1.14 last=1.16)
+Error 10147, reqId 16: OrderId 16 that needs to be cancelled is not found.
+  attempt 1 unfilled — repricing
+  attempt 2: SELL 1377 @ $0.97 (bid=0.98 ask=1.14 last=1.16)
+Error 10147, reqId 18: OrderId 18 that needs to be cancelled is not found.
+  attempt 2 unfilled — repricing
+  attempt 3: SELL 1377 @ $0.97 (bid=0.98 ask=1.14 last=1.16)
+Error 10147, reqId 20: OrderId 20 that needs to be cancelled is not found.
+  attempt 3 unfilled — repricing
+  attempt 4: SELL 1377 @ $0.96 (bid=0.98 ask=1.14 last=1.16)
+Error 10147, reqId 22: OrderId 22 that needs to be cancelled is not found.
+  attempt 4 unfilled — repricing
+⚠️ FEBO NOT filled after 4 attempts — left working/cancelled. Re-run when liquidity improves (e.g. 9:30 ET open).
+LOGGED: 2026-06-10 09:32:33 ET  cc-session  manual-flatten  FEBO  flatten ATTEMPTED but unfilled after 4 reprices (thin liquidity); halt NOT cleared — retry at open.

@@ -1,0 +1,217 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 8278)
+=== V3 Hybrid daily run started: Wed Jun 10 02:00:05 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 443a8a8 (Add flatten_febo.py: idempotent orphan-flatten to clear the FEBO ORPHAN HALT)
+daily_run_v3.sh hash: c8bd1cafdc7cefc8b09bba6eed42fefe5f32cf8e
+bot_v3_hybrid.py hash: 8280f722f44f0b9ae9a1917f3bcd9e72bd2d3208
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.032871 +/- 0.064340 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Wed Jun 10 08:00:07 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 8317)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 8327)
+Bot health check passed (still running after 15s, PID: 8327)
+HEALTH_OK: Bot connected at 2026-06-10 08:00:32 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_A.log)...
+  variant A PID: 8348
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_B.log)...
+  variant B PID: 8349
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_C.log)...
+  variant C PID: 8350
+  variant A health-check OK (PID 8348)
+  variant B health-check OK (PID 8349)
+  variant C health-check OK (PID 8350)
+Gateway watchdog started (PID: 8354)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Jun 10 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 11:18:58 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 25884).
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 26346)
+=== V3 Hybrid daily run started: Wed Jun 10 11:59:28 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 593bd8a (P0: orphan-halt ignore-list so one stuck orphan can't lock out the whole bot)
+daily_run_v3.sh hash: fd1be382c921207835f1de96674f61fb  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 4513a97d029dd0c7c1eaf9d81936efb6  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.034276 +/- 0.067734 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Wed Jun 10 17:59:30 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 26430)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 26441)
+Bot health check passed (still running after 15s, PID: 26441)
+HEALTH_OK: Bot connected at 2026-06-10 18:00:28 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_A.log)...
+  variant A PID: 26464
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_B.log)...
+  variant B PID: 26465
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_C.log)...
+  variant C PID: 26466
+  variant A health-check OK (PID 26464)
+  variant B health-check OK (PID 26465)
+  variant C health-check OK (PID 26466)
+Gateway watchdog started (PID: 26468)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Jun 10 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 12:01:43 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 26541).
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
+WARNING: Gateway port 4002 dropped at 2026-06-10 18:11:43 UTC
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 12:11:58 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 27011).
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 27077)
+=== V3 Hybrid daily run started: Wed Jun 10 12:12:49 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 593bd8a (P0: orphan-halt ignore-list so one stuck orphan can't lock out the whole bot)
+daily_run_v3.sh hash: fd1be382c921207835f1de96674f61fb  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 4513a97d029dd0c7c1eaf9d81936efb6  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EDD427A2.CE18AC9F (3990103970.805063999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF8915EC2E.98F3A9B080000000 (-1995051985.402532101)
+         delay: FFFFFFFF122BD85D.31E7536100000000 (-3990103970.805064201)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:4000::31
+}
++0.034702 +/- 0.068400 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Wed Jun 10 18:12:51 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++
++[0m
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 27152)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 27163)
+Bot health check passed (still running after 15s, PID: 27163)
+HEALTH_OK: Bot connected at 2026-06-10 18:13:49 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_A.log)...
+  variant A PID: 27187
+Starting sub-bot variant B (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_B.log)...
+  variant B PID: 27188
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-10_move_strike_subbot_C.log)...
+  variant C PID: 27189
+  variant A health-check OK (PID 27187)
+  variant B health-check OK (PID 27188)
+  variant C health-check OK (PID 27189)
+Gateway watchdog started (PID: 27192)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Jun 10 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 12:15:04 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 27237).
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 12:25:19 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 27673).
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 12:35:35 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 28099).
+WARN: sub-bot variant B died at Wed Jun 10 13:23:50 MDT 2026.
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 14:24:52 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 32211).
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 14:42:07 MDT 2026. Auto-restarting in place (attempt 5/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+Main bot restarted OK (PID: 33183).
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 18:00:26 MDT 2026. Auto-restarting in place (attempt 6/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 18:01:41 MDT 2026. Auto-restarting in place (attempt 7/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 18:02:56 MDT 2026. Auto-restarting in place (attempt 8/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Wed Jun 10 18:04:11 MDT 2026. Auto-restarting in place (attempt 9/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-10_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Wed Jun 10 18:05:26 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
