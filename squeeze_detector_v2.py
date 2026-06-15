@@ -29,7 +29,16 @@ class SqueezeDetectorV2:
 
     def __init__(self):
         # --- Master gate ---
-        self.enabled = os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
+        # Arming is enabled when squeeze trading is on OR the move-stack is on.
+        # The move-stack (bot_v3_hybrid + move_strike_subbot) consumes det.armed
+        # as its ARMING engine, so the detector must produce arms even with
+        # WB_SQUEEZE_ENABLED=0. Squeeze's OWN entry/exit stays gated separately on
+        # SQ_ENABLED in the trade paths (bot_v3_hybrid:3041), so this does NOT
+        # revive squeeze trading. Fix 2026-06-15: WB_SQUEEZE_ENABLED=0 (set
+        # 2026-06-10) silently killed all arming stack-wide for 5 sessions — the
+        # R1 move-stack correction constructed this detector but never enabled it.
+        self.enabled = (os.getenv("WB_SQUEEZE_ENABLED", "0") == "1"
+                        or os.getenv("WB_MOVE_STACK_ENABLED", "0") == "1")
 
         # --- V1 detection thresholds (inherited) ---
         self.vol_mult = float(os.getenv("WB_SQ_VOL_MULT", "3.0"))
