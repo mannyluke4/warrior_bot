@@ -168,3 +168,29 @@ All trading windows closed. Proceeding to shutdown.
 === Shutting down at Mon Jun 15 18:05:13 MDT 2026 ===
 Generating A/B/C daily comparison report...
 Pushing logs...
+[v2-ibkr-migration 246448c] auto: v3 daily logs 2026-06-15
+ 29 files changed, 621699 insertions(+)
+ create mode 100644 cowork_reports/2026-06-15_abc_daily_report.md
+ create mode 100644 logs/2026-06-11_daily.log
+ create mode 100644 logs/2026-06-11_discovery_gate_observe.jsonl
+ create mode 100644 logs/2026-06-11_move_strike_subbot_A.log
+ create mode 100644 logs/2026-06-11_move_strike_subbot_C.log
+ create mode 100644 logs/2026-06-11_scanner.log
+ create mode 100644 logs/2026-06-11_wb_intraday_adder_observe.jsonl
+ create mode 100644 logs/2026-06-15_abc_compare.log
+ create mode 100644 logs/2026-06-15_daily.log
+ create mode 100644 logs/2026-06-15_discovery_gate_observe.jsonl
+ create mode 100644 logs/2026-06-15_move_strike_subbot_A.log
+ create mode 100644 logs/2026-06-15_move_strike_subbot_C.log
+ create mode 100644 logs/2026-06-15_scanner.log
+ create mode 100644 logs/2026-06-15_wb_intraday_adder_observe.jsonl
+ create mode 100644 logs/bar_stream/2026-06-15_main_bot.jsonl
+ create mode 100644 logs/bar_stream/2026-06-15_subbot_A.jsonl
+ create mode 100644 logs/bar_stream/2026-06-15_subbot_C.jsonl
+ create mode 100644 logs/bar_stream/2026-06-16_main_bot.jsonl
+ create mode 100644 logs/cron_2026-06-11.log
+ create mode 100644 logs/cron_2026-06-15.log
+ create mode 100644 logs/gateway_manual_2026-06-12.log
+ create mode 100644 logs/gateway_manual_2026-06-14.log
+=== V3 Hybrid daily run complete: Mon Jun 15 18:05:26 MDT 2026 ===
+=== TRAP: cleanup at Mon Jun 15 18:05:26 MDT 2026 ===
