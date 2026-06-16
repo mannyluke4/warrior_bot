@@ -23,3 +23,14 @@
 2026-06-08 04:00:48 ET === health_watchdog started (pid 36736) ===
 2026-06-08 20:10:28 ET === EOD — health_watchdog exiting ===
 2026-06-09 04:00:47 ET === health_watchdog started (pid 72333) ===
+2026-06-10 20:10:23 ET === EOD — health_watchdog exiting ===
+2026-06-11 04:00:48 ET === health_watchdog started (pid 43043) ===
+2026-06-15 04:00:48 ET === health_watchdog started (pid 29309) ===
+2026-06-15 07:00:13 ET tick-drought check: bar_stream stale 217s (strike 1/2)
+2026-06-15 07:03:45 ET tick-drought check: bar_stream stale 128s (strike 1/2)
+2026-06-15 07:04:15 ET tick-drought check: bar_stream stale 158s (strike 2/2)
+2026-06-15 07:04:15 ET TICK DROUGHT CONFIRMED: bar_stream stale 158s, watchlist=0
+0. Market is OPEN — this is a data wedge, not quiet. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe.
+2026-06-15 07:05:15 ET tick-drought check: bar_stream stale 218s (strike 1/2)
+2026-06-15 07:05:46 ET tick-drought check: bar_stream stale 249s (strike 2/2)
+2026-06-15 07:06:16 ET tick-drought check: bar_stream stale 279s (strike 3/2)
