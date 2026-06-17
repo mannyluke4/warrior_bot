@@ -292,6 +292,50 @@ ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
 # memory/project_main_bot_entry_fill_desync_orphan.
 ENTRY_RECONCILE_FILLS = os.getenv("WB_ENTRY_RECONCILE_FILLS", "1") == "1"
 
+# Strategy filters ported from the sub-bots (2026-06-17 plan). All OFF by
+# default; enabled via the main-bot launch env in daily_run_v3.sh.
+#   WB_EQUITY_PCT:  0 = off (existing risk/notional sizing). e.g. 0.70 → each
+#                   move-stack entry is 70% of current equity (STARTING_EQUITY +
+#                   daily_pnl), no leverage.
+#   WB_ENTRY_BLOCK_WINDOWS_ET: comma list of HH:MM-HH:MM ET windows to BLOCK new
+#                   entries (e.g. "09:30-11:00,13:00-14:00" — open chop + 1pm dead
+#                   hour where losses cluster). "" = off. (Same var the sub-bots use.)
+#   WB_SYMBOL_LOSS_LOCKOUT: 1 = once a symbol takes a net LOSS today, block all
+#                   further entries on it that day (kills revenge re-entries; keeps
+#                   win-continuations). Full-day; in-memory (resets on restart).
+EQUITY_PCT_SIZING = float(os.getenv("WB_EQUITY_PCT", "0"))
+SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
+ENTRY_BLOCK_WINDOWS = []  # [(start_min_et, end_min_et), ...]
+for _w in os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip().split(","):
+    _w = _w.strip()
+    if not _w or "-" not in _w:
+        continue
+    try:
+        _a, _b = _w.split("-")
+        _ah, _am = (int(x) for x in _a.split(":"))
+        _bh, _bm = (int(x) for x in _b.split(":"))
+        ENTRY_BLOCK_WINDOWS.append((_ah * 60 + _am, _bh * 60 + _bm))
+    except Exception:
+        print(f"[FILTERS] bad WB_ENTRY_BLOCK_WINDOWS_ET segment: {_w!r}", flush=True)
+
+
+def _strategy_filters_block(symbol: str, setup_type: str) -> bool:
+    """Time-window block + per-symbol same-day loss-lockout (sub-bot parity).
+    Return True to block this move-stack entry. Both gated; no-op unless enabled."""
+    if ENTRY_BLOCK_WINDOWS:
+        now = datetime.now(ET)
+        m = now.hour * 60 + now.minute
+        for s, e in ENTRY_BLOCK_WINDOWS:
+            if s <= m < e:
+                print(f"  TIME_WINDOW_BLOCK: {symbol} {setup_type} (et_min={m} in {s}-{e})",
+                      flush=True)
+                return True
+    if SYMBOL_LOSS_LOCKOUT and symbol in getattr(state, "_lossout_symbols", ()):
+        print(f"  LOSS_LOCKOUT_BLOCK: {symbol} {setup_type} (symbol already lost today)",
+              flush=True)
+        return True
+    return False
+
 # Exit-side slippage budget. Exits use SELL LIMITs (per project rule: never
 # market orders, never broker-side stops). Limit price = current_price -
 # max(EXIT_SLIPPAGE_MIN, current_price * EXIT_SLIPPAGE_PCT). On a BUY-to-
@@ -525,6 +569,9 @@ class BotState:
         self.daily_entries: int = 0  # PDT guard — counts entries, not round-trips
         self.consecutive_losses: int = 0
         self.closed_trades: list[dict] = []
+        # Strategy filters (2026-06-17 plan, sub-bot parity). In-memory per day.
+        self._lossout_symbols: set = set()   # symbols that took a net loss today
+        self._position_daily_pnl_at_open: float = 0.0  # snapshot for position-net
 
         # Scanner
         self.candidates: list[dict] = []
@@ -3746,6 +3793,15 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
         except Exception:
             pass
         return
+    # Plan filters (sub-bot parity): time-window block + per-symbol loss-lockout.
+    if _strategy_filters_block(symbol, setup_type):
+        try:
+            if latency_record is not None:
+                _finalize_latency_record(latency_record, terminal_state="no_order",
+                                         no_order_reason="strategy_filter_block")
+        except Exception:
+            pass
+        return
     entry = armed.trigger_high
     stop = armed.stop_low
     r = armed.r
@@ -3781,6 +3837,10 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
     qty = int(math.floor(risk_dollars / r))
     qty_notional = int(math.floor(effective_notional / max(entry, 0.01)))
     qty = min(qty, qty_notional, MAX_SHARES)
+    # 70%-equity sizing override (sub-bot parity): each entry = EQUITY_PCT of
+    # current equity (no leverage). Replaces risk/notional sizing when enabled.
+    if EQUITY_PCT_SIZING > 0 and entry > 0 and current_equity > 0:
+        qty = min(int((EQUITY_PCT_SIZING * current_equity) / entry), MAX_SHARES)
 
     notional = qty * entry
     print(f"  Sizing: equity=${current_equity:,.0f} risk=${risk_dollars:,.0f} "
@@ -3941,6 +4001,9 @@ def enter_trade(symbol: str, armed, setup_type: str, latency_record: dict = None
         "is_parabolic": "[PARABOLIC]" in (armed.score_detail or ""),
         "fill_confirmed": False,
     }
+    # Snapshot daily P&L at open so the loss-lockout can judge POSITION-net
+    # (final leg + any scaled-out partials) when this position fully closes.
+    state._position_daily_pnl_at_open = state.daily_pnl
     state.daily_entries += 1
 
     # Store pending order for timeout check (latency_record threaded for the
@@ -4633,6 +4696,14 @@ def exit_trade(symbol: str, price: float, qty: int, reason: str):
         if cur_pos is not None:
             if actual_qty >= cur_pos.get("qty", 0):
                 state.open_position = None
+                # Loss-lockout: if the POSITION (this leg + any prior scale-outs)
+                # netted a loss, block re-entry on this symbol for the rest of today.
+                if SYMBOL_LOSS_LOCKOUT:
+                    position_net = state.daily_pnl - state._position_daily_pnl_at_open
+                    if position_net < 0:
+                        state._lossout_symbols.add(symbol)
+                        print(f"  {symbol} → LOSS_LOCKOUT armed (position net "
+                              f"${position_net:+,.0f}; no re-entry today)", flush=True)
             else:
                 cur_pos["qty"] -= actual_qty
                 cur_pos["exit_in_flight"] = False

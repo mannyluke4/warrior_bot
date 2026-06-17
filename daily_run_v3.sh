@@ -238,6 +238,9 @@ launch_main_bot() {
     WB_BAR_STREAM_LABEL=main_bot \
     WB_SCALE_NOTIONAL=1 \
     WB_BUYING_POWER_PCT=0.85 \
+    WB_EQUITY_PCT=0.70 \
+    WB_ENTRY_BLOCK_WINDOWS_ET=09:30-11:00,13:00-14:00 \
+    WB_SYMBOL_LOSS_LOCKOUT=1 \
       python3 bot_v3_hybrid.py >> "$LOG_FILE" 2>&1 &
     BOT_PID=$!
 }
