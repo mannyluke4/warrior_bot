@@ -281,6 +281,16 @@ ENTRY_TIME_CUTOFF_ET = os.getenv("WB_ENTRY_TIME_CUTOFF_ET", "19:30")
 # available BP < required init margin. Prevents Reg-T rejection class (ATRA 5/7).
 PRESUBMIT_BP_CHECK_ENABLED = os.getenv("WB_PRESUBMIT_BP_CHECK_ENABLED", "1") == "1"
 ENTRY_RETRY_ENABLED = os.getenv("WB_ENTRY_RETRY_ENABLED", "1") == "1"
+# Partial-fill reconciliation (2026-06-17). The entry-retry loop only reacted to
+# STATUS_FILLED / cancel-reject; STATUS_PARTIALLY was ignored, and each retry
+# resubmitted the FULL qty (not the remainder). On a fast mover, partial fills
+# across retries accumulated at the broker unrecorded → re-detected as orphans
+# and adopted at a bad basis (CRVO 2026-06-16: -$1,257). When ON: every retry
+# sizes to the REMAINDER (qty - broker_held), and every entry-sequence terminal
+# reconciles the bot's position to the broker's actual holding (keep + manage
+# whatever filled; clear only if truly flat). See
+# memory/project_main_bot_entry_fill_desync_orphan.
+ENTRY_RECONCILE_FILLS = os.getenv("WB_ENTRY_RECONCILE_FILLS", "1") == "1"
 
 # Exit-side slippage budget. Exits use SELL LIMITs (per project rule: never
 # market orders, never broker-side stops). Limit price = current_price -
@@ -3420,7 +3430,97 @@ def _presubmit_bp_check(symbol: str, qty: int, limit_price: float,
     return True, f"ok (bp=${bp:,.2f}, notional=${notional:,.2f})"
 
 
+def _broker_qty_held(symbol: str, settle_sec: float = 0.0) -> tuple:
+    """Return (qty, avg_cost) the broker currently holds LONG for `symbol`
+    (0, 0.0 if flat/short). Best-effort — returns (0, 0.0) on any broker error
+    so a reconcile failure can never crash the entry thread. `settle_sec` lets
+    callers wait briefly for a just-cancelled order's partial fill to post."""
+    if settle_sec > 0:
+        time.sleep(settle_sec)
+    try:
+        for p in state.broker.get_positions():
+            if p.symbol == symbol and int(p.qty) > 0:
+                return int(p.qty), float(p.avg_entry_price)
+    except Exception as e:
+        print(f"  RECONCILE: get_positions({symbol}) failed: {e!r}", flush=True)
+    return 0, 0.0
+
+
+def _reconcile_entry_position(symbol: str, position_attr: str, reason: str,
+                              seed: dict = None, settle_sec: float = 1.0) -> bool:
+    """Sync the bot's position record to the broker's ACTUAL holding for
+    `symbol`. Called at every terminal of the entry-retry sequence so partial
+    fills accumulated across retries can never become an unrecorded orphan.
+
+    If the broker holds shares: keep + manage them (qty/entry from broker truth,
+    stop re-derived from avg_fill − r, fill_confirmed=True, persisted) so the
+    normal exit path protects them. If the broker is flat: clear the record.
+    `seed` is the pre-entry position snapshot — used to recover risk params
+    (r/stop/score/setup_type) when the core already cleared the live record on a
+    terminal. Returns True if shares were kept. Gated by WB_ENTRY_RECONCILE_FILLS."""
+    held, avg = _broker_qty_held(symbol, settle_sec=settle_sec)
+    # Live record if still present; otherwise fall back to the pre-entry seed so
+    # r/stop/setup_type survive the core's terminal clear.
+    pos = getattr(state, position_attr) or seed
+    if held > 0:
+        r = (pos or {}).get("r")
+        entry_px = avg if avg > 0 else (pos or {}).get("entry", avg)
+        new_stop = (entry_px - r) if (r is not None and entry_px) else (pos or {}).get("stop")
+        base = dict(pos) if isinstance(pos, dict) else {}
+        base.update({
+            "symbol": symbol,
+            "qty": held,
+            "entry": entry_px,
+            "stop": new_stop,
+            "peak": max(base.get("peak", entry_px) or entry_px, entry_px),
+            "fill_confirmed": True,
+        })
+        setattr(state, position_attr, base)
+        state.pending_order = None
+        print(f"  RECONCILE [{reason}]: {symbol} broker holds {held} sh @ "
+              f"${entry_px:.4f} — keeping + managing (stop=${(new_stop or 0):.4f})",
+              flush=True)
+        if position_attr == "open_position":
+            try:
+                persist_open_trades()
+            except Exception as e:
+                print(f"  RECONCILE: persist failed for {symbol}: {e!r}", flush=True)
+        return True
+    # Broker flat — genuinely no fill; clear any stale record.
+    setattr(state, position_attr, None)
+    state.pending_order = None
+    return False
+
+
 def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
+                             original_limit, position_attr, log_prefix="",
+                             latency_record: dict = None, score: float = 0.0):
+    """Entry fill-verification entry point. Delegates to the retry-loop core,
+    then (when WB_ENTRY_RECONCILE_FILLS=1) ALWAYS reconciles the bot's position
+    to the broker's actual holding in a finally — so however the loop exits
+    (full fill, partial+cancel, reject, timeout, chase-abort), the recorded
+    position matches the broker and no partial fill is left as a future orphan.
+    """
+    # Snapshot risk params before the core runs — the core clears the live
+    # record on a terminal, so the finally reconcile needs this to keep a stop.
+    seed = dict(getattr(state, position_attr) or {})
+    try:
+        _verify_fill_with_retry_core(
+            symbol, qty, r, initial_order_id, initial_limit, original_limit,
+            position_attr, log_prefix=log_prefix, latency_record=latency_record,
+            score=score,
+        )
+    finally:
+        if ENTRY_RECONCILE_FILLS:
+            try:
+                _reconcile_entry_position(symbol, position_attr, "post_entry_sync",
+                                          seed=seed)
+            except Exception as e:
+                print(f"  RECONCILE: post-entry sync failed for {symbol}: {e!r}",
+                      flush=True)
+
+
+def _verify_fill_with_retry_core(symbol, qty, r, initial_order_id, initial_limit,
                              original_limit, position_attr, log_prefix="",
                              latency_record: dict = None, score: float = 0.0):
     """Poll broker for fill. On timeout: cancel + reprice to current market +
@@ -3431,6 +3531,11 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
     Chase cap is score-gated (Cowork directive 2026-05-14_SQUEEZE_FILL_RATE_FIX
     §2): score >= ENTRY_SCORE_HIGH_THRESHOLD uses ENTRY_MAX_CHASE_PCT_HIGH,
     else ENTRY_MAX_CHASE_PCT_LOW. Default 0 score → low cap (conservative).
+
+    Partial fills (2026-06-17): when WB_ENTRY_RECONCILE_FILLS=1, each retry
+    resubmits only the REMAINDER (qty − broker_held) rather than the full qty,
+    so fills across retries can't over-accumulate. The caller's finally then
+    reconciles the recorded position to the broker holding.
     """
     cur_order_id = initial_order_id
     cur_limit = initial_limit
@@ -3568,11 +3673,27 @@ def _verify_fill_with_retry(symbol, qty, r, initial_order_id, initial_limit,
         slip = _entry_slippage_for(cur_price)
         new_limit = round(cur_price + slip, 2)
         attempt += 1
+        # Size the retry to the REMAINDER (qty - already filled at broker) so
+        # partial fills from prior attempts don't compound into an oversized
+        # position. If prior partials already cover the full qty, stop and let
+        # the caller's finally reconcile record them. Gated.
+        submit_qty = qty
+        if ENTRY_RECONCILE_FILLS:
+            held, _avg = _broker_qty_held(symbol)
+            remaining = qty - held
+            if remaining <= 0:
+                print(f"  {log_prefix}RECONCILE: {symbol} already filled {held}/{qty} "
+                      f"across retries — not resubmitting, finalizing", flush=True)
+                return
+            if held > 0:
+                print(f"  {log_prefix}RECONCILE: {symbol} {held}/{qty} filled so far "
+                      f"— retry sizes remainder {remaining}", flush=True)
+            submit_qty = remaining
         print(f"  {log_prefix}RETRY {attempt}/{ENTRY_MAX_RETRIES}: {symbol} market=${cur_price:.2f} "
-              f"new_limit=${new_limit:.2f} (slip=${slip:.3f})", flush=True)
+              f"new_limit=${new_limit:.2f} (slip=${slip:.3f}) qty={submit_qty}", flush=True)
 
         try:
-            new_order = state.broker.submit_limit(symbol, qty, "BUY", new_limit)
+            new_order = state.broker.submit_limit(symbol, submit_qty, "BUY", new_limit)
             prev_id = cur_order_id
             cur_order_id = new_order.order_id
             cur_limit = new_limit
