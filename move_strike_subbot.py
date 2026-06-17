@@ -83,6 +83,21 @@ RISK_DOLLARS = float(os.getenv("WB_SUBBOT_RISK_DOLLARS", "1000"))
 PROBE_SIZE_MULT = float(os.getenv("WB_SQ_PROBE_SIZE_MULT", "0.5"))
 MAX_NOTIONAL = float(os.getenv("WB_MAX_NOTIONAL", "50000"))
 MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
+
+# ── Strategy filters + sizing (2026-06-17, sub-bot live-validation plan) ──
+# All OFF by default; enabled per-variant via daily_run_v3.sh launch env.
+#   EQUITY_PCT_SIZING:  0 = off (use RISK_DOLLARS). e.g. 0.70 → each position is
+#                       70% of current equity (starting equity + realized daily P&L).
+#   ENTRY_BLOCK_WINDOWS_ET: comma list of HH:MM-HH:MM ET windows to BLOCK new
+#                       entries (e.g. "09:30-11:00,13:00-14:00" — the open chop +
+#                       1pm dead hour where losses cluster). "" = off.
+#   SYMBOL_LOSS_LOCKOUT: 1 = once a symbol takes a LOSS today, block all further
+#                       entries on it for the rest of the day (kills revenge
+#                       re-entries; keeps win-continuations). Full-day; stronger
+#                       than the 30-min reentry-loss gate.
+EQUITY_PCT_SIZING = float(os.getenv("WB_SUBBOT_EQUITY_PCT", "0"))
+ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
+SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
 _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
 LOG_TAG = f"[MOVE_SUB_{_SUBBOT_LOG_SUFFIX}]" if _SUBBOT_LOG_SUFFIX else "[MOVE_SUB]"
 
@@ -250,6 +265,26 @@ class MoveStrikeSubBot:
         # Daily P&L tracking
         self.daily_pnl = 0.0
         self.daily_trades_closed = 0
+        # Strategy filters (2026-06-17 plan). Process restarts daily via cron,
+        # so this in-memory state is naturally per-trading-day.
+        self._starting_equity = 0.0          # set at Alpaca connect; equity = this + daily_pnl
+        self._lossout_symbols: set = set()   # symbols that took a loss today (loss-lockout)
+        self._entry_block_windows = []       # [(start_min_et, end_min_et), ...]
+        for _w in ENTRY_BLOCK_WINDOWS_ET.split(","):
+            _w = _w.strip()
+            if not _w or "-" not in _w:
+                continue
+            try:
+                _a, _b = _w.split("-")
+                _ah, _am = (int(x) for x in _a.split(":"))
+                _bh, _bm = (int(x) for x in _b.split(":"))
+                self._entry_block_windows.append((_ah * 60 + _am, _bh * 60 + _bm))
+            except Exception:
+                print(f"{LOG_TAG} bad WB_ENTRY_BLOCK_WINDOWS_ET segment: {_w!r}", flush=True)
+        if self._entry_block_windows or SYMBOL_LOSS_LOCKOUT or EQUITY_PCT_SIZING > 0:
+            print(f"{LOG_TAG} filters: equity_pct={EQUITY_PCT_SIZING} "
+                  f"block_windows={self._entry_block_windows} "
+                  f"loss_lockout={SYMBOL_LOSS_LOCKOUT}", flush=True)
         # Stats
         self.ticks_received = 0
         self.symbols_seen: set[str] = set()
@@ -581,6 +616,7 @@ class MoveStrikeSubBot:
             self.alpaca_data = None
         try:
             acct = self.alpaca.get_account()
+            self._starting_equity = float(acct.equity)
             print(
                 f"{LOG_TAG} Alpaca PAPER connected — "
                 f"account={acct.account_number} equity=${float(acct.equity):,.0f}",
@@ -1155,6 +1191,27 @@ class MoveStrikeSubBot:
     # ──────────────────────────────────────────────────────────────────
     # REGIME-SHIFT entry + partial mechanism (Stage 2 — 2026-05-23)
     # ──────────────────────────────────────────────────────────────────
+    def _strategy_filters_block(self, symbol: str, setup_label: str) -> bool:
+        """Plan filters (2026-06-17). Return True to block this entry.
+
+        (1) Time-window block: skip entries inside configured ET windows (the
+            cash open + 1pm dead hour, where losses cluster).
+        (2) Per-symbol same-day loss-lockout: once a symbol takes a loss today,
+            block further entries on it (revenge re-entries lose 64-83%).
+        Both gated; no-op unless enabled via env. Called at every order path."""
+        if self._entry_block_windows:
+            m = now_minute_et()
+            for s, e in self._entry_block_windows:
+                if s <= m < e:
+                    print(f"{LOG_TAG} [{now_iso_et()}] {symbol} TIME_WINDOW_BLOCK "
+                          f"{setup_label} (et_min={m} in {s}-{e})", flush=True)
+                    return True
+        if SYMBOL_LOSS_LOCKOUT and symbol in self._lossout_symbols:
+            print(f"{LOG_TAG} [{now_iso_et()}] {symbol} LOSS_LOCKOUT_BLOCK "
+                  f"{setup_label} (symbol already lost today)", flush=True)
+            return True
+        return False
+
     def _firestorm_gate_blocks(self, symbol: str, setup: str) -> bool:
         """Return True if the FIRESTORM gate should block this entry.
 
@@ -1193,6 +1250,9 @@ class MoveStrikeSubBot:
             return
         # FIRESTORM gate — block entries on quiet bars (Variant A test).
         if self._firestorm_gate_blocks(symbol, "regime_shift"):
+            return
+        # Plan filters (time-window block + per-symbol loss-lockout).
+        if self._strategy_filters_block(symbol, "regime_shift"):
             return
         # Trigger event log
         print(
@@ -1496,6 +1556,18 @@ class MoveStrikeSubBot:
             self.prev_arm_state[symbol] = None
 
     def _compute_qty(self, price: float, r: float, score: float) -> int:
+        # Equity-% sizing (2026-06-17 plan): each position = EQUITY_PCT of current
+        # equity (starting equity + realized daily P&L → compounds intraday). No
+        # leverage. Overrides the fixed-RISK_DOLLARS path when enabled.
+        if EQUITY_PCT_SIZING > 0:
+            equity = self._starting_equity + self.daily_pnl
+            if equity > 0 and price > 0:
+                qty = int((EQUITY_PCT_SIZING * equity) / price)
+                return min(max(qty, 0), MAX_SHARES)
+            # Equity unavailable (auth/connect failure) → skip rather than mis-size.
+            print(f"{LOG_TAG} SIZING: equity unavailable (start={self._starting_equity} "
+                  f"daily={self.daily_pnl}) — skipping entry", flush=True)
+            return 0
         qty_risk = int(RISK_DOLLARS / max(r, 0.01))
         qty_notional = int(MAX_NOTIONAL / max(price, 0.01))
         qty = min(qty_risk, qty_notional, MAX_SHARES)
@@ -1522,6 +1594,9 @@ class MoveStrikeSubBot:
         # FIRESTORM gate — block entries on quiet bars (Variant A test).
         setup_label = f"reentry_{reentry_tag}" if is_reentry else "move_strike"
         if self._firestorm_gate_blocks(symbol, setup_label):
+            return
+        # Plan filters (time-window block + per-symbol loss-lockout).
+        if self._strategy_filters_block(symbol, setup_label):
             return
         slip = max(0.07, entry * 0.01)
         base_limit = round(entry + slip, 2)
@@ -1722,6 +1797,17 @@ class MoveStrikeSubBot:
                 f"entry=${entry_basis:.4f} exit=${sell_fill_px:.4f} qty={sell_fill_qty}",
                 flush=True,
             )
+            # Per-symbol loss-lockout: if the POSITION (final leg + any scaled-out
+            # partial) netted a loss, block further entries on this symbol today.
+            # Uses position net (not just the runner leg) so a 90%-at-target
+            # scale-out winner with a red 10% runner is NOT wrongly locked.
+            if SYMBOL_LOSS_LOCKOUT:
+                position_net = real_pnl + (getattr(p, "partial_pnl", 0.0) or 0.0)
+                if position_net < 0:
+                    self._lossout_symbols.add(p.symbol)
+                    print(f"{LOG_TAG} [{now_iso_et()}] {p.symbol} → LOSS_LOCKOUT armed "
+                          f"(position net ${position_net:+,.0f}; no re-entry today)",
+                          flush=True)
             self._register_reentry_watch(p)
             if self.move_stay_armed:
                 self._move_stay_armed_last_exit_min[p.symbol] = now_minute_et()
