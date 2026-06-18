@@ -5215,23 +5215,30 @@ def _publish_subscriptions():
             sym = c.get("symbol")
             if sym:
                 by_symbol[sym] = c
+        # Float backfill (2026-06-18): scan_catchup/bridged symbols carry no float,
+        # so the remote (manual-bot) consumer was falling back to yfinance. Resolve
+        # from the shared float_cache (cache-ONLY — no live lookup, never block the
+        # publish path) so the engine ships complete float and the MBP can drop its
+        # yfinance/Alpaca patch. See warrior_manual CC_TO_COWORK_DATA_WIRING doc.
+        try:
+            from float_cache import load_float_cache
+            _fcache = load_float_cache()
+        except Exception:
+            _fcache = {}
         meta = []
         for sym in watchlist:
             c = by_symbol.get(sym)
-            if c:
-                meta.append({
-                    "symbol": sym,
-                    "gap_pct": c.get("gap_pct"),
-                    "rvol": c.get("relative_volume"),
-                    "float_m": c.get("float_millions"),
-                })
-            else:
-                meta.append({
-                    "symbol": sym,
-                    "gap_pct": None,
-                    "rvol": None,
-                    "float_m": None,
-                })
+            fm = c.get("float_millions") if c else None
+            if fm is None:
+                _fs = _fcache.get(sym)
+                if _fs:
+                    fm = round(_fs / 1e6, 2)
+            meta.append({
+                "symbol": sym,
+                "gap_pct": c.get("gap_pct") if c else None,
+                "rvol": c.get("relative_volume") if c else None,
+                "float_m": fm,
+            })
         _engine_pub.publish_subscriptions(watchlist, meta=meta)
     except Exception:
         pass  # never let the publisher break the subscribe/persist path
