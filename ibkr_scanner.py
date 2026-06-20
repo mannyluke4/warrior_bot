@@ -20,6 +20,8 @@ from typing import Optional
 import pytz
 from ib_insync import IB, Stock, ScannerSubscription
 
+from scanner_rank import composite_rank
+
 # Reuse existing float lookup chain (FMP → yfinance → EDGAR → AlphaVantage)
 from float_cache import (
     get_float,
@@ -47,16 +49,15 @@ FLOAT_CACHE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sca
 # ── Ranking ──────────────────────────────────────────────────────────
 
 def rank_score(c: dict) -> float:
-    """Unified composite ranking: RVOL 40%, PM volume 30%, gap% 20%, float 10%."""
-    rvol = c.get("relative_volume", 0) or 0
-    pm_vol = c.get("pm_volume", 0) or 0
-    gap = c.get("gap_pct", 0) or 0
-    float_m = c.get("float_millions", 10) or 10
-    rvol_score = math.log10(min(rvol, 50) + 1) / math.log10(51)
-    vol_score = math.log10(max(pm_vol, 1)) / 8
-    gap_score = min(gap, 100) / 100
-    float_score = 1 - (min(float_m, 10) / 10)
-    return (0.40 * rvol_score) + (0.30 * vol_score) + (0.20 * gap_score) + (0.10 * float_score)
+    """Composite ranking. V1 default (RVOL 40/vol 30/gap 20/float 10); float-forward
+    V2 when WB_SCANNER_RANK_V2=1. See scanner_rank.py."""
+    return composite_rank(
+        rvol=c.get("relative_volume", 0),
+        pm_vol=c.get("pm_volume", 0),
+        gap=c.get("gap_pct", 0),
+        float_m=c.get("float_millions", 10),
+        price=c.get("pm_price"),
+    )
 
 
 # ── RVOL Computation (unified for live + backtest) ───────────────────

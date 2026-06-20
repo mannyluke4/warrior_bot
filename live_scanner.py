@@ -30,6 +30,8 @@ import databento as db
 import pandas as pd
 import pytz
 import requests
+
+from scanner_rank import composite_rank
 import yfinance as yf
 from dotenv import load_dotenv
 
@@ -481,14 +483,15 @@ class LiveScanner:
             return {sym: self.session_volume.get(sym, 0) for sym in symbols}
 
     def _rank_score(self, candidate: dict, volume: int, rvol: float) -> float:
-        """Composite ranking score: RVOL 40%, volume 30%, gap 20%, float 10%."""
-        gap_pct = candidate.get("gap_pct", 0)
-        float_m = candidate.get("float_millions", 10) or 10
-        rvol_score = math.log10(min(rvol, 50) + 1) / math.log10(51)
-        vol_score = math.log10(max(volume, 1)) / 8
-        gap_score = min(gap_pct, 100) / 100
-        float_score = 1 - (min(float_m, 10) / 10)
-        return (0.40 * rvol_score) + (0.30 * vol_score) + (0.20 * gap_score) + (0.10 * float_score)
+        """Composite ranking. V1 default; float-forward V2 when
+        WB_SCANNER_RANK_V2=1. See scanner_rank.py."""
+        return composite_rank(
+            rvol=rvol,
+            pm_vol=volume,
+            gap=candidate.get("gap_pct", 0),
+            float_m=candidate.get("float_millions", 10),
+            price=candidate.get("price"),
+        )
 
     # -----------------------------------------------------------------------
     # Watchlist output
