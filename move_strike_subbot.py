@@ -416,6 +416,11 @@ class MoveStrikeSubBot:
         self.regime_shift_detectors: dict[str, RegimeShiftDetector] = {}
         # Symbols that have ARMED (via squeeze detector) earlier today
         self._regime_shift_armed_today: set = set()
+        # Per-symbol ET minute when the CURRENT arm fired. Used by the
+        # time-window block so a setup that armed in a VALID window can still
+        # trigger inside a blocked window (the block targets new in-window
+        # setups, not entries from earlier valid arms). Re-arms overwrite it.
+        self._arm_minute_et: dict[str, int] = {}
         # Per-symbol entry counter
         self._regime_shift_entries_per_symbol: dict[str, int] = {}
 
@@ -845,6 +850,14 @@ class MoveStrikeSubBot:
             # Track for regime-shift require_armed gate.
             if self.regime_shift_enabled:
                 self._regime_shift_armed_today.add(symbol)
+            # Stamp the arm time for the time-window block (gate on arm, not
+            # entry). Use the BAR's ET time, not wall-clock, so a seed/replay
+            # restart re-stamps the true historical arm minute (not "now").
+            try:
+                _bar_et = bar.start_utc.astimezone(ET)
+                self._arm_minute_et[symbol] = _bar_et.hour * 60 + _bar_et.minute
+            except Exception:
+                self._arm_minute_et[symbol] = now_minute_et()
         self.prev_arm_state[symbol] = det.armed
 
         # HH tracking — global per-symbol (for an active position's exit)
@@ -1200,11 +1213,19 @@ class MoveStrikeSubBot:
             block further entries on it (revenge re-entries lose 64-83%).
         Both gated; no-op unless enabled via env. Called at every order path."""
         if self._entry_block_windows:
-            m = now_minute_et()
+            # Gate on ARM time, not entry time: a setup that armed in a valid
+            # window may still trigger inside a blocked window (per Manny
+            # 2026-06-22 — NXTS armed 08:48 valid, triggered in the 09:30-11:00
+            # block, and should have been allowed). Only setups that ARMED
+            # inside a window are new in-window setups → blocked. Fall back to
+            # current time if no arm stamp (e.g. non-MOVE_STRIKE paths).
+            arm_m = self._arm_minute_et.get(symbol)
+            check_m = arm_m if arm_m is not None else now_minute_et()
             for s, e in self._entry_block_windows:
-                if s <= m < e:
+                if s <= check_m < e:
+                    src = "armed_at" if arm_m is not None else "now"
                     print(f"{LOG_TAG} [{now_iso_et()}] {symbol} TIME_WINDOW_BLOCK "
-                          f"{setup_label} (et_min={m} in {s}-{e})", flush=True)
+                          f"{setup_label} ({src}={check_m} in {s}-{e})", flush=True)
                     return True
         if SYMBOL_LOSS_LOCKOUT and symbol in self._lossout_symbols:
             print(f"{LOG_TAG} [{now_iso_et()}] {symbol} LOSS_LOCKOUT_BLOCK "

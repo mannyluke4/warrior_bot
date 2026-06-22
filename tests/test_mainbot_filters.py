@@ -51,8 +51,25 @@ def test_time_window_block():
     assert b._strategy_filters_block("CRVO", "move_strike") is False
 
 
+def test_time_window_block_gates_on_arm_time():
+    b.state._lossout_symbols = set()
+    # Armed valid (08:48=528), trigger fires inside 9:30-11:00 block → ALLOW.
+    b.state._arm_minute_et = {"NXTS": 528}
+    _patch_time(10, 0)
+    assert b._strategy_filters_block("NXTS", "move_strike") is False
+    # New setup armed inside the window (10:00=600) → BLOCK.
+    b.state._arm_minute_et["LATE"] = 600
+    _patch_time(10, 5)
+    assert b._strategy_filters_block("LATE", "move_strike") is True
+    # No arm stamp → fall back to current time (in block) → BLOCK.
+    b.state._arm_minute_et = {}
+    _patch_time(10, 0)
+    assert b._strategy_filters_block("ZZZZ", "move_strike") is True
+
+
 if __name__ == "__main__":
     test_config_parsed()
     test_loss_lockout()
     test_time_window_block()
+    test_time_window_block_gates_on_arm_time()
     print("ALL MAIN-BOT FILTER TESTS PASSED")

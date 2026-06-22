@@ -28,13 +28,32 @@ def test_equity_pct_sizing_compounds():
 
 
 def test_time_window_block():
-    g = SimpleNamespace(_entry_block_windows=[(570, 660), (780, 840)], _lossout_symbols=set())
+    # No arm stamp → falls back to current time (legacy behavior preserved).
+    g = SimpleNamespace(_entry_block_windows=[(570, 660), (780, 840)],
+                        _lossout_symbols=set(), _arm_minute_et={})
     m.now_minute_et = lambda: 600   # 10:00 ET — inside open block
     assert m.MoveStrikeSubBot._strategy_filters_block(g, "CRVO", "move_strike") is True
     m.now_minute_et = lambda: 810   # 13:30 ET — inside 1pm block
     assert m.MoveStrikeSubBot._strategy_filters_block(g, "CRVO", "move_strike") is True
     m.now_minute_et = lambda: 720   # 12:00 ET — clear
     assert m.MoveStrikeSubBot._strategy_filters_block(g, "CRVO", "move_strike") is False
+
+
+def test_time_window_block_gates_on_arm_time():
+    # The NXTS case: armed 08:48 (528, valid) but trigger fires at 10:00 (in block).
+    # Gate on arm time → ALLOW (it's a setup from a valid window).
+    g = SimpleNamespace(_entry_block_windows=[(570, 660), (780, 840)],
+                        _lossout_symbols=set(), _arm_minute_et={"NXTS": 528})
+    m.now_minute_et = lambda: 600   # 10:00 ET — inside block, but arm was valid
+    assert m.MoveStrikeSubBot._strategy_filters_block(g, "NXTS", "move_strike") is False
+    # A NEW setup that armed inside the window (10:00) → BLOCK.
+    g._arm_minute_et["LATE"] = 600
+    m.now_minute_et = lambda: 605
+    assert m.MoveStrikeSubBot._strategy_filters_block(g, "LATE", "move_strike") is True
+    # Armed valid, trigger also valid → ALLOW.
+    g._arm_minute_et["MID"] = 720
+    m.now_minute_et = lambda: 730
+    assert m.MoveStrikeSubBot._strategy_filters_block(g, "MID", "move_strike") is False
 
 
 def test_loss_lockout():
@@ -47,5 +66,6 @@ def test_loss_lockout():
 if __name__ == "__main__":
     test_equity_pct_sizing_compounds()
     test_time_window_block()
+    test_time_window_block_gates_on_arm_time()
     test_loss_lockout()
     print("ALL SUBBOT FILTER TESTS PASSED")

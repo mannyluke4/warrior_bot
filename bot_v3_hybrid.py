@@ -323,11 +323,21 @@ def _strategy_filters_block(symbol: str, setup_type: str) -> bool:
     """Time-window block + per-symbol same-day loss-lockout (sub-bot parity).
     Return True to block this move-stack entry. Both gated; no-op unless enabled."""
     if ENTRY_BLOCK_WINDOWS:
-        now = datetime.now(ET)
-        m = now.hour * 60 + now.minute
+        # Gate on ARM time, not entry time (sub-bot parity, Manny 2026-06-22):
+        # a setup armed in a valid window may still trigger inside a blocked
+        # window; only setups that ARMED in-window are blocked. Fall back to
+        # current time if no arm stamp.
+        arm_m = getattr(state, "_arm_minute_et", {}).get(symbol)
+        if arm_m is not None:
+            m = arm_m
+            src = "armed_at"
+        else:
+            now = datetime.now(ET)
+            m = now.hour * 60 + now.minute
+            src = "now"
         for s, e in ENTRY_BLOCK_WINDOWS:
             if s <= m < e:
-                print(f"  TIME_WINDOW_BLOCK: {symbol} {setup_type} (et_min={m} in {s}-{e})",
+                print(f"  TIME_WINDOW_BLOCK: {symbol} {setup_type} ({src}={m} in {s}-{e})",
                       flush=True)
                 return True
     if SYMBOL_LOSS_LOCKOUT and symbol in getattr(state, "_lossout_symbols", ()):
@@ -505,6 +515,10 @@ class BotState:
         # Tracks the squeeze arm object per symbol across bars so the move-stack
         # can reset MovementStrike history on a None→armed transition (R2).
         self.move_prev_arm_state: dict = {}      # symbol → armed obj or None
+        # Per-symbol ET minute the current arm fired (bar time). Time-window
+        # block gates on this, not entry time, so a setup armed in a valid
+        # window can still trigger inside a blocked window (sub-bot parity).
+        self._arm_minute_et: dict = {}
         # RegimeShift entry bookkeeping (R2b).
         self.regime_shift_armed_today: set = set()      # symbols that armed for MOVE_STRIKE today
         self.regime_shift_entries_per_symbol: dict = {}  # symbol → regime-shift entry count
@@ -2606,6 +2620,13 @@ def on_bar_close_1m(bar):
             _prev_arm = state.move_prev_arm_state.get(symbol)
             if sq.armed is not None and _prev_arm is None:
                 state.move_strikes[symbol].reset_history()
+                # Stamp arm time (bar's ET minute) for the time-window block.
+                try:
+                    _bet = bar.start_utc.astimezone(ET)
+                    state._arm_minute_et[symbol] = _bet.hour * 60 + _bet.minute
+                except Exception:
+                    _n = datetime.now(ET)
+                    state._arm_minute_et[symbol] = _n.hour * 60 + _n.minute
             state.move_prev_arm_state[symbol] = sq.armed
             # Track armed-today for the regime-shift require_armed gate.
             if sq.armed is not None:
