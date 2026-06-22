@@ -106,6 +106,12 @@ echo "System time: $(date -u)"
 # 2. Activate venv
 source ~/warrior_bot_v2/venv/bin/activate
 
+# Float-forward scanner ranking (V2) — LIVE 2026-06-22 per Manny. Surfaces low-float
+# (2x clean-day) names to the top of the watchlist that feeds the engine + manual bot.
+# Also set =1 in .env (the robust source for load_dotenv consumers); exported here so
+# any child that skips .env still inherits it. YTD-validated; see scanner_rank.py.
+export WB_SCANNER_RANK_V2=1
+
 # 3. Pre-flight smoke test
 echo "Pre-flight: checking Python imports..."
 python3 -c "from ib_insync import IB; from squeeze_detector import SqueezeDetector; from ibkr_scanner import scan_premarket_live; from alpaca.trading.client import TradingClient; print('V3 Imports OK')" || {
