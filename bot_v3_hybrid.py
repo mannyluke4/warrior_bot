@@ -5246,18 +5246,50 @@ def _publish_subscriptions():
             _fcache = load_float_cache()
         except Exception:
             _fcache = {}
+        # Gap/rvol backfill (2026-06-23): symbols subscribed from the Databento
+        # watchlist.txt (e.g. GITS/BOLD) aren't in the IBKR scanner's
+        # state.candidates, so gap_pct/rvol came through null to the manual bot.
+        # watchlist.txt carries them (SYMBOL:gap:rvol:float:pm_volume) — parse it
+        # and fill any None. Cache-cheap, never blocks the publish path.
+        _wl_meta = {}
+        try:
+            with open("watchlist.txt") as _wf:
+                for _ln in _wf:
+                    _ln = _ln.strip()
+                    if not _ln or _ln.startswith("#"):
+                        continue
+                    _p = _ln.split(":")
+                    if len(_p) >= 3:
+                        def _f(x):
+                            try:
+                                return float(x)
+                            except (TypeError, ValueError):
+                                return None
+                        _wl_meta[_p[0]] = (_f(_p[1]), _f(_p[2]),
+                                           _f(_p[3]) if len(_p) >= 4 else None)
+        except Exception:
+            pass
         meta = []
         for sym in watchlist:
             c = by_symbol.get(sym)
+            _wg, _wr, _wf2 = _wl_meta.get(sym, (None, None, None))
+            gap = (c.get("gap_pct") if c else None)
+            if gap is None:
+                gap = _wg
+            rvol = (c.get("relative_volume") if c else None)
+            if rvol is None:
+                rvol = _wr
             fm = c.get("float_millions") if c else None
             if fm is None:
                 _fs = _fcache.get(sym)
                 if _fs:
                     fm = round(_fs / 1e6, 2)
+            if fm is None:
+                fm = _wf2
             meta.append({
                 "symbol": sym,
-                "gap_pct": c.get("gap_pct") if c else None,
-                "rvol": c.get("relative_volume") if c else None,
+                "gap_pct": gap,
+                "rvol": rvol,
                 "float_m": fm,
             })
         _engine_pub.publish_subscriptions(watchlist, meta=meta)
