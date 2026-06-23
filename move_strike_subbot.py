@@ -261,13 +261,17 @@ class MoveStrikeSubBot:
         self.move_chase_cap_pct = float(os.getenv("WB_BT_MOVE_CHASE_PCT", "2.0"))
         # Alpaca broker
         self.alpaca: Optional[TradingClient] = None
+        # Default MUST be set BEFORE _init_alpaca() — it used to live further down
+        # (after the call), which clobbered the broker equity _init_alpaca fetched
+        # back to 0 for the whole session. That zeroed equity-% sizing and silently
+        # blocked EVERY entry from 6/17 (when equity-% sizing went live) onward.
+        self._starting_equity = 0.0          # _init_alpaca() overrides from broker equity
         self._init_alpaca()
         # Daily P&L tracking
         self.daily_pnl = 0.0
         self.daily_trades_closed = 0
         # Strategy filters (2026-06-17 plan). Process restarts daily via cron,
         # so this in-memory state is naturally per-trading-day.
-        self._starting_equity = 0.0          # set at Alpaca connect; equity = this + daily_pnl
         self._lossout_symbols: set = set()   # symbols that took a loss today (loss-lockout)
         self._entry_block_windows = []       # [(start_min_et, end_min_et), ...]
         for _w in ENTRY_BLOCK_WINDOWS_ET.split(","):
