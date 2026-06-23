@@ -1581,11 +1581,27 @@ class MoveStrikeSubBot:
         # equity (starting equity + realized daily P&L → compounds intraday). No
         # leverage. Overrides the fixed-RISK_DOLLARS path when enabled.
         if EQUITY_PCT_SIZING > 0:
+            # Self-heal (2026-06-23): _starting_equity was observed dropping to 0
+            # mid-session (both bots, 13,983 skips on 6/23) and never recovering,
+            # silently blocking ALL entries for the day. If it's lost, re-fetch
+            # from the broker before skipping — throttled so a persistent auth
+            # failure can't spam get_account on every tick.
+            if self._starting_equity <= 0 and getattr(self, "alpaca", None) is not None:
+                _now = time.time()
+                if _now - getattr(self, "_last_equity_refetch", 0.0) > 5.0:
+                    self._last_equity_refetch = _now
+                    try:
+                        acct = self.alpaca.get_account()
+                        self._starting_equity = float(acct.equity)
+                        print(f"{LOG_TAG} SIZING: re-fetched lost equity → "
+                              f"${self._starting_equity:,.0f}", flush=True)
+                    except Exception as e:
+                        print(f"{LOG_TAG} SIZING: equity re-fetch failed: {e!r}", flush=True)
             equity = self._starting_equity + self.daily_pnl
             if equity > 0 and price > 0:
                 qty = int((EQUITY_PCT_SIZING * equity) / price)
                 return min(max(qty, 0), MAX_SHARES)
-            # Equity unavailable (auth/connect failure) → skip rather than mis-size.
+            # Equity still unavailable after re-fetch → skip rather than mis-size.
             print(f"{LOG_TAG} SIZING: equity unavailable (start={self._starting_equity} "
                   f"daily={self.daily_pnl}) — skipping entry", flush=True)
             return 0
