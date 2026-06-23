@@ -261,3 +261,6 @@
 2026-06-19 08:41:34 ET tick-drought check: bar_stream stale 45408s (strike 20/2)
 2026-06-19 08:41:34 ET TICK DROUGHT CONFIRMED: bar_stream stale 45408s, watchlist=0
 0. Market is OPEN — this is a data wedge, not quiet. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe.
+2026-06-19 20:10:25 ET === EOD — health_watchdog exiting ===
+2026-06-22 04:00:49 ET === health_watchdog started (pid 31709) ===
+2026-06-22 07:00:15 ET tick-drought check: bar_stream stale 218s (strike 1/2)
