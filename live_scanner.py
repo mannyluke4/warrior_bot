@@ -59,8 +59,14 @@ MAX_GAP_PCT_A = 999.0       # No gap ceiling (Ross traded 500%+ gaps)
 MAX_GAP_PCT_B = 999.0       # Same — no gap ceiling
 MIN_PRICE = float(os.getenv("WB_MIN_PRICE", "2.00"))
 MAX_PRICE = float(os.getenv("WB_MAX_PRICE", "20.00"))
-WINDOW_START_HOUR = 7
-WINDOW_START_MINUTE = 0
+# Watchlist-write start. The 07:00 default was a HUMAN-schedule convenience (Ross's
+# active hours); the bots run 24/7, so this can be moved earlier into pre-market
+# (acceptance already tracks candidates from 04:00 ET — see the timing filter).
+# WB_SCANNER_WINDOW_START_HHMM=0400 unlocks the early pre-market window. Validate
+# first: that tape is thin + fade-prone (see 2026-06-24 analysis).
+_ws_start = os.environ.get("WB_SCANNER_WINDOW_START_HHMM", "0700")
+WINDOW_START_HOUR = int(_ws_start[:2])
+WINDOW_START_MINUTE = int(_ws_start[2:])
 WINDOW_END_HOUR = 9              # Scanner stops adding new symbols at 9:30 (negative EV after)
 WINDOW_END_MINUTE = 30
 MIN_FLOAT = int(float(os.getenv("WB_MIN_FLOAT", "0.5")) * 1_000_000)
