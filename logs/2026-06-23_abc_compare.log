@@ -1,0 +1,57 @@
+Wrote: /Users/duffy/warrior_bot_v2/cowork_reports/2026-06-23_abc_daily_report.md
+# A/B/C Daily Report — 2026-06-23
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$3,067.89 | +$67.89 | 3 / 4 | 4 | 9 | 5 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$3,068.56 | +$68.56 | 3 / 4 | 4 | 9 | 5 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 4
+- Exits: 1
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- FIRESTORM-gate blocks: 8 (2 unique symbols)
+- Symbols traded: HSCS
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-06-23_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 4
+- Exits: 1
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- FIRESTORM-gate blocks: 8 (2 unique symbols)
+- Symbols traded: HSCS
+
+## Data Quality Audit
+
+- Audit lines parsed: 2502
+- Symbols flagged HEURISTIC_SUSPECT: 1
+- Symbols with DIRECT_QUERY_WEDGE events: 0
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| GITS | 869 | 5 | 0 | 0.180 | 4215 / 2161 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 20 | +$3,391.71 |
+| B | 20 | -$4,183.34 |
+| C | 20 | +$1,581.93 |
+

@@ -1,0 +1,59 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 67556)
+=== V3 Hybrid daily run started: Tue Jun 23 02:00:06 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 5fa46e0 (Scanner-feed health alarm + live-feed probe (P0 EQUS.MINI outage))
+daily_run_v3.sh hash: a0f70303c50ac665eee94c67621b8de773a9789f
+bot_v3_hybrid.py hash: 4dca23315d02bc98f67039e66ce4294eeaad76f6
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.034848 +/- 0.068161 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Tue Jun 23 08:00:08 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 67597)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 67607)
+Bot health check passed (still running after 15s, PID: 67607)
+HEALTH_OK: Bot connected at 2026-06-23 08:00:32 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-23_move_strike_subbot_A.log)...
+  variant A PID: 67628
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-23_move_strike_subbot_C.log)...
+  variant C PID: 67629
+  variant A health-check OK (PID 67628)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 67629)
+Gateway watchdog started (PID: 67632)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Tue Jun 23 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 534: 67628 Killed: 9               env WB_BT_MOVE_STRIKE=1 WB_BT_MOVE_HWM_EXIT=1 WB_BT_MOVE_LOOKBACK=5 WB_BT_MOVE_MULT=2.0 WB_BT_MOVE_STOP_LOOKBACK=10 WB_BT_MOVE_CHASE_PCT=2.0 WB_BT_MOVE_HWM_DRAWDOWN_PCT=0.25 WB_BT_MOVE_HWM_WIDE_DD_PCT=0.50 WB_BT_MOVE_HWM_HH_THRESHOLD=2 WB_BT_MOVE_HWM_MIN_GAIN_PCT=2.0 WB_BT_MOVE_HWM_STOP_PROX_PCT=25 WB_BT_MOVE_HWM_NOACT_MIN=30 WB_BT_MOVE_REENTRY_GREEN=1 WB_BT_MOVE_REENTRY_LOOKBACK=10 WB_BT_MOVE_REENTRY_WINDOW_MIN=30 WB_BT_MOVE_REENTRY_MAX_PER_SYM=1 WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR=1 WB_BT_MOVE_STAY_ARMED=1 WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN=15 WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT=2.0 WB_BT_MOVE_MAX_BELOW_ARM_PCT=3.0 WB_SUBBOT_RISK_DOLLARS=1000 WB_EOD_FORCE_FLATTEN_ENABLED=1 WB_ORPHAN_HARD_STOP_ENABLED=1 WB_REGIME_SHIFT_ENABLED=1 WB_REGIME_SHIFT_RATIO_THRESHOLD=4.0 WB_REGIME_SHIFT_BASELINE_BARS=5 WB_REGIME_SHIFT_TARGET_R=1.5 WB_REGIME_SHIFT_PARTIAL_PCT=0.9 WB_REGIME_SHIFT_REQUIRE_ARMED=1 WB_REGIME_SHIFT_REQUIRE_GREEN_BAR=1 WB_REGIME_SHIFT_RUNNER_STOP_TO_BE=1 WB_REGIME_SHIFT_MAX_PER_SYMBOL=1 WB_SUBBOT_EQUITY_PCT=0.70 WB_ENTRY_BLOCK_WINDOWS_ET=09:30-11:00,13:00-14:00 WB_SYMBOL_LOSS_LOCKOUT=1 WB_SUBBOT_LOG_SUFFIX="$suffix" WB_SUBBOT_APCA_API_KEY_ID="$apca_key" WB_SUBBOT_APCA_API_SECRET_KEY="$apca_secret" WB_BAR_STREAM_LOG_ENABLED=1 WB_BAR_STREAM_LABEL="subbot_$suffix" $fade_extra python3 move_strike_subbot.py >> "$log_path" 2>&1
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 534: 67629 Killed: 9               env WB_BT_MOVE_STRIKE=1 WB_BT_MOVE_HWM_EXIT=1 WB_BT_MOVE_LOOKBACK=5 WB_BT_MOVE_MULT=2.0 WB_BT_MOVE_STOP_LOOKBACK=10 WB_BT_MOVE_CHASE_PCT=2.0 WB_BT_MOVE_HWM_DRAWDOWN_PCT=0.25 WB_BT_MOVE_HWM_WIDE_DD_PCT=0.50 WB_BT_MOVE_HWM_HH_THRESHOLD=2 WB_BT_MOVE_HWM_MIN_GAIN_PCT=2.0 WB_BT_MOVE_HWM_STOP_PROX_PCT=25 WB_BT_MOVE_HWM_NOACT_MIN=30 WB_BT_MOVE_REENTRY_GREEN=1 WB_BT_MOVE_REENTRY_LOOKBACK=10 WB_BT_MOVE_REENTRY_WINDOW_MIN=30 WB_BT_MOVE_REENTRY_MAX_PER_SYM=1 WB_BT_MOVE_REENTRY_BLOCK_SAME_BAR=1 WB_BT_MOVE_STAY_ARMED=1 WB_BT_MOVE_STAY_ARMED_COOLDOWN_MIN=15 WB_BT_MOVE_STAY_ARMED_MIN_GAP_PCT=2.0 WB_BT_MOVE_MAX_BELOW_ARM_PCT=3.0 WB_SUBBOT_RISK_DOLLARS=1000 WB_EOD_FORCE_FLATTEN_ENABLED=1 WB_ORPHAN_HARD_STOP_ENABLED=1 WB_REGIME_SHIFT_ENABLED=1 WB_REGIME_SHIFT_RATIO_THRESHOLD=4.0 WB_REGIME_SHIFT_BASELINE_BARS=5 WB_REGIME_SHIFT_TARGET_R=1.5 WB_REGIME_SHIFT_PARTIAL_PCT=0.9 WB_REGIME_SHIFT_REQUIRE_ARMED=1 WB_REGIME_SHIFT_REQUIRE_GREEN_BAR=1 WB_REGIME_SHIFT_RUNNER_STOP_TO_BE=1 WB_REGIME_SHIFT_MAX_PER_SYMBOL=1 WB_SUBBOT_EQUITY_PCT=0.70 WB_ENTRY_BLOCK_WINDOWS_ET=09:30-11:00,13:00-14:00 WB_SYMBOL_LOSS_LOCKOUT=1 WB_SUBBOT_LOG_SUFFIX="$suffix" WB_SUBBOT_APCA_API_KEY_ID="$apca_key" WB_SUBBOT_APCA_API_SECRET_KEY="$apca_secret" WB_BAR_STREAM_LOG_ENABLED=1 WB_BAR_STREAM_LABEL="subbot_$suffix" $fade_extra python3 move_strike_subbot.py >> "$log_path" 2>&1
+WARN: sub-bot variant A died at Tue Jun 23 12:48:04 MDT 2026.
+WARN: sub-bot variant C died at Tue Jun 23 12:48:04 MDT 2026.
+ALERT: bot_v3_hybrid.py died at Tue Jun 23 18:00:39 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-23_daily.log.
+Main bot restarted OK (PID: 1969).
+ALERT: bot_v3_hybrid.py died at Tue Jun 23 18:01:54 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-23_daily.log.
+Main bot restarted OK (PID: 2001).
+ALERT: bot_v3_hybrid.py died at Tue Jun 23 18:03:10 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-23_daily.log.
+Main bot restarted OK (PID: 2044).
+ALERT: bot_v3_hybrid.py died at Tue Jun 23 18:04:25 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-23_daily.log.
+Main bot restarted OK (PID: 2070).
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Tue Jun 23 18:05:40 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
