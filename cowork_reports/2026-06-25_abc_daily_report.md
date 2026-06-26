@@ -1,0 +1,56 @@
+# A/B/C Daily Report — 2026-06-25
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$2,663.38 | +$0.00 | 0 / 0 | 0 | 29922 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$2,649.61 | +$0.00 | 0 / 0 | 0 | 29922 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 29922 (2 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-06-25_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- FIRESTORM-gate blocks: 29922 (2 unique symbols)
+
+## Data Quality Audit
+
+- Audit lines parsed: 3860
+- Symbols flagged HEURISTIC_SUSPECT: 2
+- Symbols with DIRECT_QUERY_WEDGE events: 4
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| EHGO | 764 | 7 | 1 | 0.017 | 7897 / 1003 |
+| FCUV | 770 | 1 | 1 | 0.001 | 4285 / 14376 |
+| KUST | 771 | 0 | 1 | 0.001 | 4493 / 3980 |
+| MIMI | 771 | 0 | 1 | 0.001 | 496 / 220 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 22 | +$2,987.61 |
+| B | 22 | -$4,183.34 |
+| C | 22 | +$1,163.39 |
