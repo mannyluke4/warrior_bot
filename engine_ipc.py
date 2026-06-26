@@ -65,6 +65,13 @@ class TickMessage:
     engine_seq: int         # monotonic per-symbol sequence number
     exchange: Optional[str] = None
     tier: str = "snapshot"
+    # NBBO (added 2026-06-26) — most recent top-of-book bid/ask at the time the
+    # trade tick fired, cached per-symbol from the IBKR reqMktData stream. Lets
+    # the manual bot price limits off the real spread instead of last-trade +
+    # fixed slippage. None when no quote has arrived yet (warmup); the consumer
+    # falls back to last-trade pricing in that case. No L2 — top-of-book only.
+    bid: Optional[float] = None
+    ask: Optional[float] = None
     type: str = "tick"
 
 

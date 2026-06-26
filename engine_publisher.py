@@ -222,8 +222,14 @@ class EnginePublisher:
         price: float,
         ts_iso: Optional[str] = None,
         size: int = 0,
+        bid: Optional[float] = None,
+        ask: Optional[float] = None,
     ) -> None:
-        """Enqueue a tick for broadcast. Non-blocking; drops on overflow."""
+        """Enqueue a tick for broadcast. Non-blocking; drops on overflow.
+
+        `bid`/`ask` are the latest NBBO at tick time (None until a quote has
+        arrived for the symbol) — forwarded so consumers can price off the
+        real spread."""
         if not self.enabled or not self._started:
             return
         self._tick_count_total += 1
@@ -234,6 +240,8 @@ class EnginePublisher:
             price=float(price),
             size=int(size or 0),
             engine_seq=self._seq_per_symbol[symbol],
+            bid=(float(bid) if bid is not None else None),
+            ask=(float(ask) if ask is not None else None),
         )
         try:
             self._queue.put_nowait(encode(msg))

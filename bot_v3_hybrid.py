@@ -602,6 +602,7 @@ class BotState:
         self.tick_counts: dict[str, int] = {}  # symbol -> ticks since last audit
         self.last_tick_time: dict[str, datetime] = {}  # symbol -> last tick timestamp
         self.last_tick_price: dict[str, float] = {}  # symbol -> last tick price
+        self.last_nbbo: dict[str, tuple] = {}  # symbol -> (bid, ask), latest top-of-book
         self.last_tick_audit: datetime = None
         self._last_position_sync: datetime = None
         self.sub_retry_counts: dict[str, int] = {}  # symbol -> resubscription attempts
@@ -4851,6 +4852,7 @@ def _drain_tick_by_tick_ticker(ticker):
     if not contract:
         return
     symbol = contract.symbol
+    _update_nbbo(symbol, ticker)
     tbt_events = list(ticker.tickByTicks or [])
 
     if tbt_events:
@@ -4884,6 +4886,26 @@ def _drain_tick_by_tick_ticker(ticker):
         state.last_tick_price[symbol] = float(last_attr)
 
 
+def _update_nbbo(symbol: str, ticker) -> None:
+    """Refresh the per-symbol NBBO cache from an ib_insync ticker (one Ticker
+    per contract serves both tiers). Keeps the last valid value for a side
+    that's momentarily nan/None so a single bad snapshot doesn't blank the
+    quote. Read at the publish_tick emit site to attach bid/ask to each tick."""
+    def _v(x):
+        try:
+            x = float(x)
+        except (TypeError, ValueError):
+            return None
+        return x if (x == x and x > 0) else None  # x == x filters NaN
+    b = _v(getattr(ticker, "bid", None))
+    a = _v(getattr(ticker, "ask", None))
+    if b is None and a is None:
+        return
+    pb, pa = state.last_nbbo.get(symbol, (None, None))
+    state.last_nbbo[symbol] = (b if b is not None else pb,
+                               a if a is not None else pa)
+
+
 def _process_ticker(ticker):
     """Tier 2 (snapshot) path. Receives one ticker from reqMktData updates
     delivered every ~250ms. Health-monitoring runs on every ticker update;
@@ -4892,6 +4914,7 @@ def _process_ticker(ticker):
     if not contract:
         return
     symbol = contract.symbol
+    _update_nbbo(symbol, ticker)
 
     # Determine if we have a valid trade price
     trade_price = ticker.last
@@ -4937,7 +4960,9 @@ def _process_trade_tick(symbol: str, price: float, size: int, ts):
     if _engine_pub.enabled:
         try:
             ts_iso = ts.astimezone(timezone.utc).isoformat() if ts else None
-            _engine_pub.publish_tick(symbol, price, ts_iso=ts_iso, size=size)
+            bid, ask = state.last_nbbo.get(symbol, (None, None))
+            _engine_pub.publish_tick(symbol, price, ts_iso=ts_iso, size=size,
+                                     bid=bid, ask=ask)
         except Exception:
             pass  # never let publisher break the tick path
 
