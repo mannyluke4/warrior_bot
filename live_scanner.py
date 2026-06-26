@@ -295,7 +295,6 @@ class LiveScanner:
 
         # Timing flags
         self._initial_watchlist_written = False
-        self._final_watchlist_written = False
 
     # -----------------------------------------------------------------------
     # Step 1: Previous day close via Databento Historical
@@ -678,25 +677,27 @@ class LiveScanner:
                 now_et = datetime.now(ET)
                 h, m = now_et.hour, now_et.minute
 
-                # Initial watchlist at 7:00 AM
-                if h == WINDOW_START_HOUR and m >= WINDOW_START_MINUTE and not self._initial_watchlist_written:
+                # Initial watchlist write at the configured window start. Uses
+                # a >= comparison (not h == WINDOW_START_HOUR) so a scanner that
+                # boots mid-window still does the first write immediately instead
+                # of waiting for the next day's start hour.
+                in_window = (h > WINDOW_START_HOUR
+                             or (h == WINDOW_START_HOUR and m >= WINDOW_START_MINUTE))
+                if in_window and not self._initial_watchlist_written:
                     self._initial_watchlist_written = True
                     self.write_watchlist("initial")
                     last_update_minute = m
-                    # Snapshot current symbols
                     _seen_symbols.update(self._get_current_symbols())
 
-                # Scheduled write at 7:14 AM
-                if not self._final_watchlist_written and (
-                    h > 7 or (h == 7 and m >= 14)
-                ):
-                    self._final_watchlist_written = True
-                    self.write_watchlist("7_14")
-                    last_update_minute = m
-                    _seen_symbols.update(self._get_current_symbols())
-
-                # After 7:14, write every 1 minute until 9:30 cutoff
-                if self._final_watchlist_written and m != last_update_minute:
+                # Continuous 1-minute updates from the window start until the
+                # cutoff. This was previously gated behind a HARDCODED 07:14
+                # checkpoint, so an early WB_SCANNER_WINDOW_START_HHMM (e.g. 0400)
+                # produced only ONE 4 AM snapshot and then nothing until 07:14 —
+                # the pre-market window never actually streamed updates (the
+                # "not a coincidence at 7am" symptom). Anchoring on the
+                # initial-write flag makes "scan + add candidates immediately
+                # from the window start" true for any configured start time.
+                if self._initial_watchlist_written and m != last_update_minute:
                     past_cutoff = (h > _new_symbol_cutoff_h or
                                    (h == _new_symbol_cutoff_h and m >= _new_symbol_cutoff_m))
                     if not past_cutoff:
