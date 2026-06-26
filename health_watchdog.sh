@@ -47,15 +47,23 @@ while true; do
     elif [ "$bot" = 1 ] && [ -f "$BS" ]; then
       # daily_run alive (it auto-restarts bot process-death). We own DATA-death.
       age=$(( now - $(stat -f %m "$BS") ))
-      if [ "$age" -gt "$STALE_SEC" ]; then
+      nsym=$(grep -vc '^#' watchlist.txt 2>/dev/null || echo 0)
+      # Only treat stale bars as a drought when symbols ARE subscribed — i.e.
+      # something that SHOULD be producing bars isn't. An empty watchlist (early
+      # pre-market before any candidate qualifies, or a feed/scanner outage)
+      # legitimately produces no bars; killing a bot that has nothing to
+      # subscribe to just kill-loops it every KILL_COOLDOWN. The RTH-empty case
+      # is surfaced by the SCANNER FEED ALARM below instead. (Fixed 2026-06-26:
+      # the old kill ran regardless of time/watchlist and falsely claimed
+      # "Market is OPEN", churning the bot ~every 10 min through pre-market.)
+      if [ "$age" -gt "$STALE_SEC" ] && [ "$nsym" -gt 0 ]; then
         drought_n=$((drought_n + 1))
-        log "tick-drought check: bar_stream stale ${age}s (strike ${drought_n}/2)"
+        log "tick-drought check: bar_stream stale ${age}s, watchlist=${nsym} (strike ${drought_n}/2)"
       else
         drought_n=0
       fi
       if [ "$drought_n" -ge 2 ] && [ $(( now - last_kill )) -gt "$KILL_COOLDOWN" ]; then
-        nsym=$(grep -vc '^#' watchlist.txt 2>/dev/null || echo 0)
-        log "TICK DROUGHT CONFIRMED: bar_stream stale ${age}s, watchlist=${nsym}. Market is OPEN — this is a data wedge, not quiet. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe."
+        log "TICK DROUGHT CONFIRMED: bar_stream stale ${age}s with ${nsym} symbols subscribed but no bars — data wedge. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe."
         pkill -f bot_v3_hybrid.py
         last_kill=$now; drought_n=0
       fi
