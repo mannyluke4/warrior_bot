@@ -5246,6 +5246,19 @@ def _publish_subscriptions():
             _fcache = load_float_cache()
         except Exception:
             _fcache = {}
+        # ATH backfill (2026-06-25): all-time high (Databento coverage high) for
+        # the manual bot's blue-sky alert + Info panel. Gated WB_ENGINE_ATH_ENABLED
+        # so the Databento spend is opt-in. Cache-or-None instantly; the async
+        # ath_cache worker fills unknowns over the next few minutes, never
+        # blocking the publish path.
+        _ath_enabled = os.getenv("WB_ENGINE_ATH_ENABLED", "0") == "1"
+        _acache = {}
+        if _ath_enabled:
+            try:
+                from ath_cache import load_ath_cache
+                _acache = load_ath_cache()
+            except Exception:
+                _acache = {}
         # Gap/rvol backfill (2026-06-23): symbols subscribed from the Databento
         # watchlist.txt (e.g. GITS/BOLD) aren't in the IBKR scanner's
         # state.candidates, so gap_pct/rvol came through null to the manual bot.
@@ -5286,12 +5299,21 @@ def _publish_subscriptions():
                     fm = round(_fs / 1e6, 2)
             if fm is None:
                 fm = _wf2
-            meta.append({
+            _meta_item = {
                 "symbol": sym,
                 "gap_pct": gap,
                 "rvol": rvol,
                 "float_m": fm,
-            })
+            }
+            if _ath_enabled:
+                try:
+                    from ath_cache import get_ath
+                    _ath = get_ath(sym, _acache)
+                    if _ath is not None:
+                        _meta_item["ath"] = round(_ath, 4)
+                except Exception:
+                    pass
+            meta.append(_meta_item)
         _engine_pub.publish_subscriptions(watchlist, meta=meta)
     except Exception:
         pass  # never let the publisher break the subscribe/persist path

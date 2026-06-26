@@ -117,9 +117,14 @@ class SubscriptionsMessage:
     `meta` (added 2026-06-10, Phase 2 MBP stream) carries per-symbol scanner
     metadata so remote consumers (Manny's manual bot) can render gap/rvol/float
     and sort without an Alpaca lookup. Shape: a list of dicts, one per symbol:
-        [{"symbol": "ABCD", "gap_pct": 45.2, "rvol": 3.1, "float_m": 8.5}, ...]
-    Optional + defaults to [] — ticks-only and tier-only consumers ignore it,
-    so this is fully backward-compatible with existing sub-bot consumers."""
+        [{"symbol": "ABCD", "gap_pct": 45.2, "rvol": 3.1, "float_m": 8.5,
+          "ath": 13.69}, ...]
+    `ath` (added 2026-06-25, gated WB_ENGINE_ATH_ENABLED) is the all-time high
+    = max daily high over Databento DBEQ.BASIC coverage; the manual bot uses it
+    for the Info-panel level and the blue-sky alert. Omitted until the async
+    ath_cache resolves it. Optional + defaults to [] — ticks-only and tier-only
+    consumers ignore it, so this is fully backward-compatible with existing
+    sub-bot consumers."""
     watchlist: list[str]
     tier1: list[str]              # empty during A/B
     tier2: list[str]

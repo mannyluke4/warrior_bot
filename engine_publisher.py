@@ -280,6 +280,7 @@ class EnginePublisher:
                     m.get("gap_pct"),
                     m.get("rvol"),
                     m.get("float_m"),
+                    m.get("ath"),
                 )
                 for m in meta
             )
