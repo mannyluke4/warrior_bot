@@ -1,0 +1,60 @@
+# A/B/C Daily Report — 2026-06-26
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$2,708.93 | +$45.55 | 1 / 2 | 1 | 15875 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$2,701.09 | +$51.48 | 1 / 2 | 1 | 15875 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 0
+- Exits: 1
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- FIRESTORM-gate blocks: 15874 (2 unique symbols)
+- Symbols traded: CANF
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-06-26_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 1
+- REGIME_SHIFT entries: 0
+- Exits: 1
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 1 (1 unique symbols)
+- FIRESTORM-gate blocks: 15874 (2 unique symbols)
+- Symbols traded: CANF
+
+## Data Quality Audit
+
+- Audit lines parsed: 3217
+- Symbols flagged HEURISTIC_SUSPECT: 3
+- Symbols with DIRECT_QUERY_WEDGE events: 4
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| ZDAI | 760 | 37 | 2 | 0.000 | 1509 / 2005 |
+| CANF | 817 | 32 | 1 | 0.002 | 13419 / 698 |
+| SHPH | 708 | 4 | 1 | 0.002 | 5116 / 4591 |
+| SNDQ | 854 | 0 | 1 | 0.028 | 25283 / 18392 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 23 | +$3,033.16 |
+| B | 23 | -$4,183.34 |
+| C | 23 | +$1,214.87 |
