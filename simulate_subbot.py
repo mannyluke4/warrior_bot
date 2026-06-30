@@ -66,6 +66,7 @@ os.environ.setdefault("WB_ALPACA_AWARE_LIMITS", "0")
 # live behavior at first-subscription.
 os.environ.setdefault("WB_SUBBOT_SEED_FROM_CACHE", "1")
 
+import move_strike_subbot as _mod  # noqa: E402  (for set_sim_now sim-time override)
 from move_strike_subbot import MoveStrikeSubBot, SubPosition, LOG_TAG, now_iso_et  # noqa: E402
 from firestorm_trigger import FirestormTrigger  # noqa: E402
 
@@ -88,6 +89,15 @@ class _MockOrder:
     """Mimics the parts of alpaca-py Order the sub-bot uses."""
     def __init__(self, order_id: str):
         self.id = order_id
+
+
+class _MockPosition:
+    """Mimics the alpaca-py Position fields the sub-bot reads."""
+    def __init__(self, symbol: str, qty: int, avg: float):
+        self.symbol = symbol
+        self.qty = str(qty)
+        self.qty_available = str(qty)   # sim has no held_for_orders
+        self.avg_entry_price = str(avg)
 
 
 class MockAlpaca:
@@ -117,6 +127,13 @@ class MockAlpaca:
         # real fills (UPC 6/29: sim $14.63 vs live $14.19). Default ON; set
         # WB_SUBBOT_SIM_REALISTIC_FILL=0 to revert to fill-at-limit.
         self._realistic_fill = os.getenv("WB_SUBBOT_SIM_REALISTIC_FILL", "1") == "1"
+        # Position tracking (2026-06-30): the regime_shift PARTIAL scale-out
+        # checks get_open_position()/get_all_positions() to confirm sellable
+        # shares before scaling. Without real position state the mock returned
+        # "flat", so the partial SKIPPED and a winning runner never closed
+        # (0 trades emitted). This only surfaces on WINNERS that reach the 1.5R
+        # partial — which the bleeding anomaly-close entry never produced.
+        self._positions: dict[str, dict] = {}  # symbol -> {qty, avg}
 
     def set_market_price(self, px: float) -> None:
         self._market_price = float(px)
@@ -136,15 +153,30 @@ class MockAlpaca:
             else:
                 # Marketable sell: fills at the bid ≈ market, never BELOW limit.
                 fill = max(mkt, limit)
+        qty = int(order_data.qty)
         self._orders[order_id] = {
             "symbol": order_data.symbol,
-            "qty": int(order_data.qty),
+            "qty": qty,
             "side": side,
             "limit_price": limit,
             "status": "FILLED",   # assume instant fill in sim
-            "filled_qty": int(order_data.qty),
+            "filled_qty": qty,
             "filled_avg_price": round(fill, 4),
         }
+        # Track the resulting position (instant fill) so get_open_position /
+        # get_all_positions report broker truth for the partial scale-out.
+        sym = order_data.symbol
+        pos = self._positions.get(sym, {"qty": 0, "avg": 0.0})
+        if side == "BUY":
+            new_qty = pos["qty"] + qty
+            pos["avg"] = ((pos["avg"] * pos["qty"]) + fill * qty) / new_qty if new_qty else fill
+            pos["qty"] = new_qty
+        else:  # SELL
+            pos["qty"] = max(0, pos["qty"] - qty)
+        if pos["qty"] <= 0:
+            self._positions.pop(sym, None)
+        else:
+            self._positions[sym] = pos
         return _MockOrder(order_id)
 
     def get_order_by_id(self, order_id):
@@ -169,10 +201,16 @@ class MockAlpaca:
             self._orders[order_id]["status"] = "CANCELED"
 
     def get_all_positions(self):
-        # Sim never needs broker positions — Lever 3 reconcile would only
-        # fire if there was a sync mismatch, which can't happen here
-        # because sim is the broker.
-        return []
+        return [_MockPosition(s, p["qty"], p["avg"])
+                for s, p in self._positions.items() if p["qty"] > 0]
+
+    def get_open_position(self, symbol):
+        # alpaca-py raises (404) when flat; the sub-bot's _broker_available_qty
+        # catches that and treats it as 0. Mirror that contract.
+        p = self._positions.get(symbol)
+        if not p or p["qty"] <= 0:
+            raise ValueError(f"no open position for {symbol}")
+        return _MockPosition(symbol, p["qty"], p["avg"])
 
     def get_orders(self, *args, **kwargs):
         # Exit path cancels any resting open orders before submitting the
@@ -617,9 +655,12 @@ class SubBotSim(MoveStrikeSubBot):
             if cur_min < start_min or cur_min > end_min:
                 skipped_window += 1
                 continue
-            # Update our notion of "now" for trade-record stamping.
+            # Update our notion of "now" for trade-record stamping AND for the
+            # bot's time-of-day gates (set_sim_now → now_minute_et/now_iso_et
+            # return the historical bar time, not wall-clock).
             self._current_minute_et = cur_min
             self._current_time_str_et = ts_et.strftime("%H:%M:%S")
+            _mod.set_sim_now(cur_min, self._current_time_str_et)
             # Feed the tick through the sub-bot's normal pipeline.
             # NOTE: on_tick takes an ISO string; we re-stringify for safety.
             #
@@ -730,16 +771,30 @@ class SubBotSim(MoveStrikeSubBot):
             cur_min = ts_et.hour * 60 + ts_et.minute
             if cur_min < start_min or cur_min > end_min:
                 continue
-            # Build the synthetic price path: open, high, low, then close-fill.
+            # Build a DENSE piecewise-linear intra-bar path open->high->low->
+            # close. Density matters: with a coarse [o,h,l,c] jump, a
+            # threshold exit (partial target, drawdown floor, stop, trail)
+            # triggers at the bar EXTREME instead of near its level — which
+            # over-states winners (partial fires at the high) AND losers
+            # (floor fires at the low), a directional bias. Stepping through
+            # the range makes each crossing fire within ~one step of its
+            # actual level, so the realistic-fill + trade-record logic stay
+            # accurate. The o->h->l->c ORDER is the standard bar-replay
+            # assumption (true intra-bar path is unknowable) — documented.
             n = max(1, min(tcount, _BAR_TICK_CAP))
-            if n >= 4:
-                prices = [o, h, l] + [c] * (n - 3)
-            elif n == 3:
-                prices = [o, h if c >= o else l, c]
-            elif n == 2:
-                prices = [o, c]
+            legs = [(o, h), (h, l), (l, c)]
+            seglens = [abs(b - a) for a, b in legs]
+            total = sum(seglens)
+            prices = []
+            if total <= 0:
+                prices = [c] * n            # flat bar
             else:
-                prices = [c]
+                for (a, b), sl in zip(legs, seglens):
+                    k = max(1, int(round(n * sl / total)))
+                    for i in range(k):
+                        prices.append(a + (b - a) * (i / k))
+                prices.append(c)            # guarantee last tick = close
+            n = len(prices)
             size_each = max(1, vol // n) if vol > 0 else 1
             step = 60.0 / n
             for i, px in enumerate(prices):
@@ -747,6 +802,7 @@ class SubBotSim(MoveStrikeSubBot):
                 tk_et = ts.astimezone(ET)
                 self._current_minute_et = tk_et.hour * 60 + tk_et.minute
                 self._current_time_str_et = tk_et.strftime("%H:%M:%S")
+                _mod.set_sim_now(self._current_minute_et, self._current_time_str_et)
                 self.alpaca.set_market_price(px)
                 had_pos = self.position is not None
                 try:

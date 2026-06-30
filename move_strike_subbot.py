@@ -102,11 +102,29 @@ _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
 LOG_TAG = f"[MOVE_SUB_{_SUBBOT_LOG_SUFFIX}]" if _SUBBOT_LOG_SUFFIX else "[MOVE_SUB]"
 
 
+# Sim-time override (2026-06-30). In live this stays None and the time
+# helpers read the wall clock. SubBotSim sets it per replayed tick so the
+# entry-time GATES (regime cutoff, entry-block windows, EOD flatten,
+# re-entry windows) evaluate against the HISTORICAL bar time — otherwise a
+# backtest's results depend on the real time-of-day it happens to run at
+# (non-deterministic + wrong). Set/cleared via set_sim_now().
+_SIM_NOW_OVERRIDE = None  # (minute_int, iso_str) or None
+
+
+def set_sim_now(minute_et, iso_et) -> None:
+    global _SIM_NOW_OVERRIDE
+    _SIM_NOW_OVERRIDE = None if minute_et is None else (int(minute_et), str(iso_et))
+
+
 def now_iso_et() -> str:
+    if _SIM_NOW_OVERRIDE is not None:
+        return _SIM_NOW_OVERRIDE[1]
     return datetime.now(ET).strftime("%H:%M:%S")
 
 
 def now_minute_et() -> int:
+    if _SIM_NOW_OVERRIDE is not None:
+        return _SIM_NOW_OVERRIDE[0]
     et = datetime.now(ET)
     return et.hour * 60 + et.minute
 
@@ -427,6 +445,35 @@ class MoveStrikeSubBot:
         self._arm_minute_et: dict[str, int] = {}
         # Per-symbol entry counter
         self._regime_shift_entries_per_symbol: dict[str, int] = {}
+
+        # --- REGIME-SHIFT pullback entry (2026-06-30) ---------------------
+        # The default entry buys the anomaly bar's CLOSE — the top of a
+        # vertical spike — with stop=bar.low, giving a huge R whose 1.5R
+        # de-risk target is unreachable, so the trade can't transition to the
+        # trailing exit and bleeds to the drawdown floor (see the UPC/PLSM/JEM
+        # losses). This entry instead ARMS on the anomaly, waits for the
+        # pullback, and enters on the first GREEN HIGHER-LOW bar that confirms
+        # continuation — entering LOWER, with a tight stop at the pullback low
+        # (small R → 1.5R reachable → trailing exit engages), and skipping
+        # spike-fades that never form a higher low. Gated; default OFF →
+        # bit-identical to the anomaly-close entry. setup_type stays
+        # "regime_shift" so the EXIT path is unchanged (entries-first research).
+        self.regime_shift_pullback_entry = (
+            os.getenv("WB_REGIME_SHIFT_PULLBACK_ENTRY", "0") == "1"
+        )
+        # How many bars after the anomaly to wait for confirmation before the
+        # watch expires (no entry).
+        self.regime_shift_pullback_max_bars = int(
+            os.getenv("WB_REGIME_SHIFT_PULLBACK_MAX_BARS", "10")
+        )
+        # Minimum pullback depth below the anomaly close (percent) before a
+        # confirmation can fire. 0 = any lower low qualifies as a pullback.
+        self.regime_shift_pullback_min_pct = float(
+            os.getenv("WB_REGIME_SHIFT_PULLBACK_MIN_PCT", "0.0")
+        )
+        # symbol → watch dict (anomaly levels, running pullback low, prev low,
+        # bars_left, saw_pullback flag, rs_result).
+        self._regime_shift_pullback_watch: dict[str, dict] = {}
 
         # --- MOVE_STRIKE Fade-Environment Gate (2026-05-23) ---
         # Mirror of simulate.py's fade-gate logic. Each enabled signal
@@ -892,6 +939,14 @@ class MoveStrikeSubBot:
                 and bar.close > bar.open):
             self._try_fire_green_reentry(symbol, bar)
 
+        # REGIME-SHIFT pullback confirm (2026-06-30): if a pullback watch is
+        # active for this symbol, try to confirm it on THIS bar (green
+        # higher-low) before evaluating a fresh anomaly. May open a position.
+        if (self.regime_shift_enabled and self.regime_shift_pullback_entry
+                and self.position is None
+                and symbol in self._regime_shift_pullback_watch):
+            self._try_fire_regime_pullback(symbol, bar)
+
         # REGIME-SHIFT detection (Stage 2 — 2026-05-23). Second-order
         # body anomaly on bar close. Skips if any position is open.
         # Skips if symbol has not armed today (require_armed gate).
@@ -1264,6 +1319,12 @@ class MoveStrikeSubBot:
         rs_result = rs_det.check_on_bar_close(bar)
         if not rs_result.get("fired"):
             return
+        # Pullback entry: if a watch is already active for this symbol, keep
+        # it — don't reset it on a fresh anomaly. (check_on_bar_close above
+        # still ran, so the baseline deque stays current.)
+        if (self.regime_shift_pullback_entry
+                and symbol in self._regime_shift_pullback_watch):
+            return
         # require_armed gate — only fire on symbols that have armed for
         # MOVE_STRIKE earlier today.
         if (self.regime_shift_require_armed
@@ -1287,20 +1348,89 @@ class MoveStrikeSubBot:
             f"ratio={rs_result['ratio']:.2f}",
             flush=True,
         )
+        if self.regime_shift_pullback_entry:
+            # Don't enter on the anomaly bar — arm a pullback watch and wait
+            # for a confirming green higher-low (see _try_fire_regime_pullback).
+            self._register_regime_pullback_watch(symbol, bar, rs_result)
+            return
         self._open_regime_shift_position(symbol, bar, rs_result)
 
-    def _open_regime_shift_position(self, symbol: str, bar, rs_result) -> None:
+    def _register_regime_pullback_watch(self, symbol: str, bar, rs_result) -> None:
+        """Arm a pullback watch on the anomaly bar. Entry is deferred to the
+        first green higher-low confirmation (or expires after max_bars)."""
+        self._regime_shift_pullback_watch[symbol] = {
+            "anomaly_close": float(bar.close),
+            "anomaly_high": float(bar.high),
+            "anomaly_low": float(bar.low),
+            "pullback_low": float(bar.low),   # running min of bar lows after anomaly
+            "prev_low": float(bar.low),        # prior bar's low (for higher-low test)
+            "saw_pullback": False,
+            "bars_left": self.regime_shift_pullback_max_bars,
+            "rs_result": rs_result,
+        }
+        print(
+            f"{LOG_TAG} [{now_iso_et()}] REGIME_PULLBACK_WATCH {symbol} "
+            f"anomaly_close=${float(bar.close):.4f} "
+            f"max_bars={self.regime_shift_pullback_max_bars}",
+            flush=True,
+        )
+
+    def _try_fire_regime_pullback(self, symbol: str, bar) -> None:
+        """On each bar close while a pullback watch is active: detect the
+        pullback, then enter on the first GREEN HIGHER-LOW bar that confirms
+        continuation. Entry = confirm bar close; stop = running pullback low."""
+        w = self._regime_shift_pullback_watch.get(symbol)
+        if w is None:
+            return
+        w["bars_left"] -= 1
+        if w["bars_left"] < 0:
+            print(f"{LOG_TAG} [{now_iso_et()}] REGIME_PULLBACK_EXPIRE {symbol} "
+                  f"(no confirmation)", flush=True)
+            self._regime_shift_pullback_watch.pop(symbol, None)
+            return
+        low, high = float(bar.low), float(bar.high)
+        close, openp = float(bar.close), float(bar.open)
+        # Running pullback low (the eventual stop).
+        if low < w["pullback_low"]:
+            w["pullback_low"] = low
+        # A pullback = price dipped at/below the anomaly close (minus min_pct).
+        thresh = w["anomaly_close"] * (1.0 - self.regime_shift_pullback_min_pct / 100.0)
+        if low <= thresh:
+            w["saw_pullback"] = True
+        is_green = close > openp
+        higher_low = low > w["prev_low"]
+        if w["saw_pullback"] and is_green and higher_low:
+            # Confirmed. Re-check time-window/loss-lockout at ENTRY time (the
+            # confirm bar may have drifted into a blocked window).
+            if self._strategy_filters_block(symbol, "regime_shift"):
+                w["prev_low"] = low
+                return
+            stop_px = w["pullback_low"]
+            print(f"{LOG_TAG} [{now_iso_et()}] REGIME_PULLBACK_CONFIRM {symbol} "
+                  f"entry=${close:.4f} pullback_low=${stop_px:.4f} "
+                  f"(anomaly_close=${w['anomaly_close']:.4f})", flush=True)
+            self._open_regime_shift_position(symbol, bar, w["rs_result"],
+                                             stop_override=stop_px)
+            self._regime_shift_pullback_watch.pop(symbol, None)
+            return
+        w["prev_low"] = low
+
+    def _open_regime_shift_position(self, symbol: str, bar, rs_result,
+                                     stop_override: float | None = None) -> None:
         """Open a regime-shift position. Entry = bar.close, stop = bar.low.
         R = entry - stop. Probe-sized qty. Alpaca-aware limit. Sets
         setup_type='regime_shift' so _maintain_position routes through
         the partial mechanism.
+
+        stop_override: when set (pullback entry), use this as the raw stop
+        (the pullback low) instead of bar.low — a tighter, lower-R stop.
 
         Track A (Phase 4, env-gated): R floor on the stop placement.
         When WB_EXIT_TRACK_A_ENABLED=1, the raw stop = bar.low is widened
         if R is below the configured floor (default max($0.10, 5% of
         entry)). Default OFF — bit-identical to pre-Track-A behavior."""
         entry = float(bar.close)
-        raw_stop = float(bar.low)
+        raw_stop = float(stop_override) if stop_override is not None else float(bar.low)
         from exit_track_a import compute_stop_with_r_floor
         stop, r = compute_stop_with_r_floor(entry, raw_stop)
         if r <= 0.01:
