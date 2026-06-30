@@ -194,7 +194,7 @@ def compute_symbol_windows(date: str, end_cap: str,
 def run_sim_for_symbol(
     symbol: str, date: str, start_et: str, end_et: str,
     slippage: float = 0.07, extra_env: dict | None = None,
-    timeout_sec: int = 180,
+    timeout_sec: int = 180, bars: bool = False, variant: str = "A",
 ) -> list[dict]:
     """Run simulate_subbot.py for one (symbol, date, window) tuple.
     Returns list of trade dicts (matches TRADE_LINE_RE captures)."""
@@ -204,6 +204,8 @@ def run_sim_for_symbol(
         "--ticks", "--tick-cache", "tick_cache/",
         "--slippage", str(slippage), "--no-fundamentals",
     ]
+    if bars:
+        cmd += ["--bars", "--variant", variant]
     env = dict(os.environ)
     if extra_env:
         env.update(extra_env)
@@ -254,6 +256,12 @@ def main():
                         "trades through evening session)")
     p.add_argument("--max-symbols-per-day", type=int, default=0,
                    help="If >0, cap symbols replayed per day (debug only)")
+    p.add_argument("--bars", action="store_true",
+                   help="Replay from the recorded live bar_stream (trade-for-trade "
+                        "parity) instead of the full tick cache. Requires a sub-bot "
+                        "bar_stream for the day.")
+    p.add_argument("--variant", default="A",
+                   help="bar_stream variant suffix (A or C) when --bars is set.")
     args = p.parse_args()
 
     overall_trades: list[dict] = []
@@ -285,13 +293,15 @@ def main():
             if t0 >= end_capped:
                 day_syms_skipped.append(f"{sym} (window after cap)")
                 continue
-            tick_cache_path = WORKDIR / "tick_cache" / date / f"{sym}.json.gz"
-            if not tick_cache_path.exists():
-                day_syms_skipped.append(f"{sym} (no tick cache)")
-                continue
+            if not args.bars:
+                tick_cache_path = WORKDIR / "tick_cache" / date / f"{sym}.json.gz"
+                if not tick_cache_path.exists():
+                    day_syms_skipped.append(f"{sym} (no tick cache)")
+                    continue
 
             trades = run_sim_for_symbol(
                 sym, date, t0, end_capped, slippage=args.slippage,
+                bars=args.bars, variant=args.variant,
             )
             for t in trades:
                 t["symbol"] = sym
