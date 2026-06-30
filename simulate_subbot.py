@@ -106,19 +106,44 @@ class MockAlpaca:
     def __init__(self):
         self._counter = 0
         self._orders: dict[str, dict] = {}  # order_id → {sym, side, qty, limit, status}
+        # Latest market (tick) price, fed by SubBotSim.replay_ticks before
+        # each on_tick. Used for the realistic fill model below.
+        self._market_price: Optional[float] = None
+        # Realistic-fill model (2026-06-30): a marketable limit fills at the
+        # PREVAILING MARKET PRICE when it arrives (≈ the decision-time tick),
+        # capped by the limit — NOT at the limit itself. Filling at the limit
+        # (entry+slip on buys, ref-slip on sells) systematically over-states
+        # slippage, making the sim ~$50-300/trade more pessimistic than the
+        # real fills (UPC 6/29: sim $14.63 vs live $14.19). Default ON; set
+        # WB_SUBBOT_SIM_REALISTIC_FILL=0 to revert to fill-at-limit.
+        self._realistic_fill = os.getenv("WB_SUBBOT_SIM_REALISTIC_FILL", "1") == "1"
+
+    def set_market_price(self, px: float) -> None:
+        self._market_price = float(px)
 
     def submit_order(self, order_data):
         self._counter += 1
         order_id = f"sim-{self._counter}"
         # alpaca-py LimitOrderRequest has: symbol, qty, side, limit_price, time_in_force, extended_hours
+        side = str(order_data.side).split(".")[-1].upper()  # "BUY" / "SELL"
+        limit = float(order_data.limit_price)
+        fill = limit
+        if self._realistic_fill and self._market_price is not None:
+            mkt = self._market_price
+            if side == "BUY":
+                # Marketable buy: fills at the ask ≈ market, never ABOVE limit.
+                fill = min(mkt, limit)
+            else:
+                # Marketable sell: fills at the bid ≈ market, never BELOW limit.
+                fill = max(mkt, limit)
         self._orders[order_id] = {
             "symbol": order_data.symbol,
             "qty": int(order_data.qty),
-            "side": str(order_data.side).split(".")[-1].upper(),  # "BUY" / "SELL"
-            "limit_price": float(order_data.limit_price),
+            "side": side,
+            "limit_price": limit,
             "status": "FILLED",   # assume instant fill in sim
             "filled_qty": int(order_data.qty),
-            "filled_avg_price": float(order_data.limit_price),
+            "filled_avg_price": round(fill, 4),
         }
         return _MockOrder(order_id)
 
@@ -605,6 +630,10 @@ class SubBotSim(MoveStrikeSubBot):
             # (direct SubPosition construction in _maybe_fire_regime_shift)
             # go through here.
             had_pos = self.position is not None
+            # Feed the realistic-fill model: an order submitted during this
+            # on_tick fills at ≈ this tick's market price (capped by limit),
+            # not at the limit. See MockAlpaca.submit_order.
+            self.alpaca.set_market_price(p)
             try:
                 self.on_tick(symbol, p, ts.isoformat(), s)
             except Exception as e:
@@ -658,12 +687,16 @@ def _close_position_with_capture(self, reason: str, ref_price: float) -> None:
     # fields BEFORE close, but those are gone now. Use ref_price as
     # exit_px — same convention simulate.py uses in its trade lines.
     if self.position is None:  # full close
-        # Reconstruct the exit price the bot used: it was the limit
-        # passed to MockAlpaca, but we don't have a back-reference here.
-        # Approximate as ref_price - slip (matches live's _close_position
-        # exit-limit formula at line ~1265: ref_price - max(0.05, ref*0.005)).
-        slip = max(0.05, ref_price * 0.005)
-        exit_px = round(ref_price - slip, 2)
+        # Realistic-fill model (2026-06-30): a marketable SELL fills at the
+        # prevailing bid ≈ ref_price (the price that triggered the exit), NOT
+        # at the ref-minus-slip limit. Filling at ref-slip over-states exit
+        # slippage symmetrically with the old entry pessimism. Keep the
+        # slip model only when realistic fill is disabled.
+        if os.getenv("WB_SUBBOT_SIM_REALISTIC_FILL", "1") == "1":
+            exit_px = round(ref_price, 4)
+        else:
+            slip = max(0.05, ref_price * 0.005)
+            exit_px = round(ref_price - slip, 2)
         self._record_closed_trade(p, exit_px, reason)
 
 MoveStrikeSubBot._close_position = _close_position_with_capture
