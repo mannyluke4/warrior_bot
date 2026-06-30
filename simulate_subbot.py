@@ -660,6 +660,109 @@ class SubBotSim(MoveStrikeSubBot):
               f"(skipped {skipped_window} outside window {start_et}-{end_et}); "
               f"emitted {len(self.emitted_trades)} trades", flush=True)
 
+    # ─── BAR replay: drive from the live bar_stream (trade-for-trade parity) ──
+    def replay_bars(
+        self,
+        symbol: str,
+        date_str: str,
+        start_et: str,
+        end_et: str,
+        variant: str = "A",
+        bar_stream_root: Path = Path("logs/bar_stream"),
+    ) -> None:
+        """Replay the EXACT bars the live sub-bot recorded to bar_stream,
+        instead of rebuilding bars from the full tick cache. This is the only
+        faithful way to reproduce live trade-for-trade: live ran on a
+        Tier-gated engine feed (sparse snapshot ticks until a symbol is
+        promoted to Tier-1), so cache-derived bars diverge from what live
+        actually saw during early discovery — which shifts arm timing and
+        which bar the regime_shift fires on. bar_stream is the ground truth
+        of live's bars.
+
+        Each recorded bar (o,h,l,c,v,tick_count) is turned into a short
+        synthetic tick sequence that rebuilds the identical bar: first=open,
+        then high, then low, then close, padded with the close price up to
+        the recorded tick_count (capped at _BAR_TICK_CAP — only matters for
+        the FIRESTORM tick-count gate, whose 6000/min threshold is preserved
+        because any bar above the cap is still above the threshold). Volume
+        is split evenly across the synthetic ticks.
+        """
+        _BAR_TICK_CAP = 8000
+        path = Path(bar_stream_root) / f"{date_str}_subbot_{variant}.jsonl"
+        if not path.exists():
+            print(f"[SIM] {symbol} {date_str}: no bar_stream at {path}", flush=True)
+            return
+        sh, sm = (int(x) for x in start_et.split(":")[:2])
+        eh, em = (int(x) for x in end_et.split(":")[:2])
+        start_min, end_min = sh * 60 + sm, eh * 60 + em
+        from zoneinfo import ZoneInfo
+        ET = ZoneInfo("America/New_York")
+        # Bar replay is self-contained: do NOT also seed from the tick cache
+        # (that would double-feed full ticks and reintroduce the divergence —
+        # and with _seed_cutoff_utc=None the seeder would use wall-clock now
+        # and pull the ENTIRE day). Force the seed gate off for this run.
+        self._seed_cutoff_utc = None
+        os.environ["WB_SUBBOT_SEED_FROM_CACHE"] = "0"
+
+        bars = []
+        for ln in open(path):
+            try:
+                b = json.loads(ln)
+            except Exception:
+                continue
+            if b.get("sym") != symbol:
+                continue
+            bars.append(b)
+        bars.sort(key=lambda b: b["ts"])
+
+        replayed_bars = 0
+        for b in bars:
+            try:
+                o, h, l, c = float(b["o"]), float(b["h"]), float(b["l"]), float(b["c"])
+                vol = int(b.get("v") or 0)
+                tcount = int(b.get("tick_count") or 1)
+                ts0 = datetime.fromisoformat(b["ts"])
+            except Exception:
+                continue
+            if ts0.tzinfo is None:
+                ts0 = ts0.replace(tzinfo=timezone.utc)
+            ts_et = ts0.astimezone(ET)
+            cur_min = ts_et.hour * 60 + ts_et.minute
+            if cur_min < start_min or cur_min > end_min:
+                continue
+            # Build the synthetic price path: open, high, low, then close-fill.
+            n = max(1, min(tcount, _BAR_TICK_CAP))
+            if n >= 4:
+                prices = [o, h, l] + [c] * (n - 3)
+            elif n == 3:
+                prices = [o, h if c >= o else l, c]
+            elif n == 2:
+                prices = [o, c]
+            else:
+                prices = [c]
+            size_each = max(1, vol // n) if vol > 0 else 1
+            step = 60.0 / n
+            for i, px in enumerate(prices):
+                ts = ts0 + timedelta(seconds=min(59.0, i * step))
+                tk_et = ts.astimezone(ET)
+                self._current_minute_et = tk_et.hour * 60 + tk_et.minute
+                self._current_time_str_et = tk_et.strftime("%H:%M:%S")
+                self.alpaca.set_market_price(px)
+                had_pos = self.position is not None
+                try:
+                    self.on_tick(symbol, px, ts.isoformat(), size_each)
+                except Exception as e:
+                    print(f"[SIM] {symbol} on_tick error: {e!r}", flush=True)
+                    continue
+                if (not had_pos and self.position is not None
+                        and self._current_time_str_et):
+                    self.position.entry_time_et = self._current_time_str_et
+                    self.position.entry_minute_sim = self._current_minute_et
+            replayed_bars += 1
+        print(f"[SIM] {symbol} {date_str}: replayed {replayed_bars} bars from "
+              f"{path.name} (window {start_et}-{end_et}); "
+              f"emitted {len(self.emitted_trades)} trades", flush=True)
+
 
 # ════════════════════════════════════════════════════════════════════════
 # Trade-line emission monkey-patch — wrap _close_position so we capture
@@ -770,6 +873,11 @@ def main():
                    help="Slippage in dollars (entry-only; exits use ref-price-minus-slip).")
     p.add_argument("--no-fundamentals", action="store_true",
                    help="Skip Alpaca fundamentals lookup (always-on in sub-bot sim).")
+    p.add_argument("--bars", action="store_true",
+                   help="Replay from the recorded live bar_stream (trade-for-trade "
+                        "parity) instead of rebuilding bars from the full tick cache.")
+    p.add_argument("--variant", default="A",
+                   help="bar_stream variant suffix to replay (A or C). --bars only.")
     args = p.parse_args()
 
     if not args.ticks:
@@ -778,13 +886,19 @@ def main():
 
     cache_root = Path(args.tick_cache).resolve()
     print(f"  Symbols: {args.symbol}  |  Date: {args.date}  "
-          f"|  Window: {args.start} -> {args.end} ET", flush=True)
+          f"|  Window: {args.start} -> {args.end} ET"
+          f"{'  [BARS]' if args.bars else ''}", flush=True)
     print("=" * 72, flush=True)
     print()
-    print(f"Replaying {args.symbol} via SubBotSim (cache={cache_root})...", flush=True)
 
     sim = SubBotSim()
-    sim.replay_ticks(args.symbol, args.date, args.start, args.end, cache_root)
+    if args.bars:
+        print(f"Replaying {args.symbol} via SubBotSim from bar_stream "
+              f"(variant {args.variant})...", flush=True)
+        sim.replay_bars(args.symbol, args.date, args.start, args.end, args.variant)
+    else:
+        print(f"Replaying {args.symbol} via SubBotSim (cache={cache_root})...", flush=True)
+        sim.replay_ticks(args.symbol, args.date, args.start, args.end, cache_root)
 
     print()
     print("=" * 72, flush=True)
