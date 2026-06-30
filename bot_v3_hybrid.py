@@ -186,6 +186,11 @@ ORPHAN_HALT_IGNORE_SYMBOLS = {
     s.strip().upper() for s in os.getenv("WB_ORPHAN_HALT_IGNORE_SYMBOLS", "").split(",") if s.strip()
 }
 TBT_COOLDOWN_SEC = int(os.getenv("WB_TBT_COOLDOWN_SEC", "300"))        # min Tier-1 hold time
+# How often to republish the subscription frame so the engine's session
+# HOD/LOD in the cached snapshot stay fresh for the manual bot (incl. the
+# frame re-sent to a reconnecting client). The publisher de-dups, so a
+# republish only emits a frame when the rounded HOD/LOD actually moved.
+LEVELS_PUBLISH_INTERVAL_SEC = int(os.getenv("WB_ENGINE_LEVELS_PUBLISH_SEC", "20"))
 TBT_VOLUME_RESERVE_N = max(1, TBT_MAX_SUBSCRIPTIONS // 2)              # "active hunt" reserve
 # Priority weights — see DIRECTIVE_TICKBYTICK_MIGRATION.md.
 TBT_PRI_OPEN_POSITION = 1000
@@ -5277,6 +5282,9 @@ def _publish_subscriptions():
         # ath_cache worker fills unknowns over the next few minutes, never
         # blocking the publish path.
         _ath_enabled = os.getenv("WB_ENGINE_ATH_ENABLED", "0") == "1"
+        # Session HOD/LOD shipping (2026-06-30). In-memory, no external cost, so
+        # default ON — set WB_ENGINE_LEVELS_ENABLED=0 to disable.
+        _levels_enabled = os.getenv("WB_ENGINE_LEVELS_ENABLED", "1") == "1"
         _acache = {}
         if _ath_enabled:
             try:
@@ -5330,6 +5338,24 @@ def _publish_subscriptions():
                 "rvol": rvol,
                 "float_m": fm,
             }
+            # Session HOD/LOD (2026-06-30): the manual bot used to compute these
+            # locally from its since-connect tick stream, so a mid-session
+            # restart lost the real high/low (GVH showed 4.23 vs the true 5.31).
+            # Ship the engine's authoritative session extremes — bar_builder_1m
+            # tracks them from the open (seeded), so they survive a manual-bot
+            # restart. Gated WB_ENGINE_LEVELS_ENABLED (default on — in-memory,
+            # no external cost unlike ATH). Periodically republished from the
+            # main loop so the on-connect snapshot stays fresh.
+            if _levels_enabled and state.bar_builder_1m is not None:
+                try:
+                    _h = state.bar_builder_1m.get_hod(sym)
+                    _l = state.bar_builder_1m.get_lod(sym)
+                    if isinstance(_h, (int, float)) and _h > 0:
+                        _meta_item["hod"] = round(float(_h), 4)
+                    if isinstance(_l, (int, float)) and _l > 0:
+                        _meta_item["lod"] = round(float(_l), 4)
+                except Exception:
+                    pass
             if _ath_enabled:
                 try:
                     from ath_cache import get_ath
@@ -5928,6 +5954,17 @@ def main():
 
                 # Tick-By-Tick tier rebalance (every 30s when WB_TBT_ENABLED=1).
                 manage_tier1_subscriptions()
+
+                # Periodic subscription republish (2026-06-30) so the engine's
+                # session HOD/LOD in the cached snapshot stay fresh for the
+                # manual bot — including the frame re-sent to a reconnecting
+                # client after a manual-bot restart. Throttled; the publisher
+                # de-dups, so this only emits when the rounded HOD/LOD moved.
+                _last_lvl_pub = getattr(state, "last_levels_publish", None)
+                if (_last_lvl_pub is None
+                        or (now - _last_lvl_pub).total_seconds() >= LEVELS_PUBLISH_INTERVAL_SEC):
+                    _publish_subscriptions()
+                    state.last_levels_publish = now
 
                 # Subscription wedge audit (every 60s heuristic, 300s direct
                 # query when WB_SUB_WATCHDOG_ENABLED=1). Side-effect-free —

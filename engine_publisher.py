@@ -289,6 +289,8 @@ class EnginePublisher:
                     m.get("rvol"),
                     m.get("float_m"),
                     m.get("ath"),
+                    m.get("hod"),
+                    m.get("lod"),
                 )
                 for m in meta
             )

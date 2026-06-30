@@ -99,6 +99,12 @@ class TradeBarBuilder:
         # High of day per symbol (ET session day)
         self._hod: Dict[str, float] = {}
 
+        # Low of day per symbol (ET session day). Mirror of _hod — seeded the
+        # same way (seed_bar_close + on_trade) so get_lod() is authoritative
+        # across the full session. Shipped to the manual bot in the engine
+        # subscription meta (HOD/LOD Info panel) — see _publish_subscriptions.
+        self._lod: Dict[str, float] = {}
+
         # Premarket tracking per symbol (resets on new ET date)
         self._premarket_high: Dict[str, float] = {}
         self._premarket_complete: Dict[str, bool] = {}
@@ -131,7 +137,16 @@ class TradeBarBuilder:
         return self._vwap_pv.get(symbol, 0.0) / vol
 
     def get_hod(self, symbol: str) -> Optional[float]:
-        return self._hod.get(symbol)
+        v = self._hod.get(symbol)
+        if v is None or v == float("-inf"):
+            return None
+        return v
+
+    def get_lod(self, symbol: str) -> Optional[float]:
+        v = self._lod.get(symbol)
+        if v is None or v == float("inf"):
+            return None
+        return v
 
     def get_premarket_high(self, symbol: str) -> Optional[float]:
         """Get the premarket high for this symbol (4 AM - 9:30 AM ET)"""
@@ -215,6 +230,7 @@ class TradeBarBuilder:
             self._vwap_pv[symbol] = 0.0
             self._vwap_vol[symbol] = 0
             self._hod[symbol] = float("-inf")
+            self._lod[symbol] = float("inf")
 
             # Reset premarket tracking on new day
             self._premarket_high[symbol] = float("-inf")
@@ -249,6 +265,9 @@ class TradeBarBuilder:
         # ✅ Seed the real HOD used by get_hod()
         self._hod[symbol] = max(self._hod.get(symbol, float("-inf")), float(h))
 
+        # ✅ Seed the real LOD used by get_lod()
+        self._lod[symbol] = min(self._lod.get(symbol, float("inf")), float(l))
+
         # ✅ Seed premarket high if in premarket
         if self.is_premarket(ts_utc):
             pm_high = self._premarket_high.get(symbol, float("-inf"))
@@ -266,6 +285,7 @@ class TradeBarBuilder:
         self._vwap_vol[symbol] = self._vwap_vol.get(symbol, 0) + int(size)
 
         self._hod[symbol] = max(self._hod.get(symbol, float("-inf")), price)
+        self._lod[symbol] = min(self._lod.get(symbol, float("inf")), price)
 
         # Track premarket high (4 AM - 9:30 AM ET)
         if self.is_premarket(ts_utc):
