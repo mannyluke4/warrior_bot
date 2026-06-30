@@ -59100,3 +59100,37 @@
 
 04:58:02    Wrote 0 symbols to /Users/duffy/warrior_bot_v2/watchlist.txt
 04:58:02    Snapshot: /Users/duffy/warrior_bot_v2/scanner_results/live_2026-06-29_update_0658.json
+05:03:41  Live Scanner starting — 2026-06-29 
+  [float_cache] Cleared 25 stale None entries — will re-attempt lookups
+05:03:41  [1/2] Fetching 21-day OHLCV (Databento EQUS.SUMMARY ohlcv-1d)...
+05:03:41  Initialized Historical(gateway=https://hist.databento.com)
+05:03:41        Requesting OHLCV from 2026-05-29 to 2026-06-26...
+05:04:04        13,026 symbols with avg daily volume
+05:04:04        13,026 symbols with prev close loaded
+05:04:04  [2/2] Connecting to Databento live stream (EQUS.MINI tbbo)...
+05:04:04  subscribing to schema=tbbo stype_in=raw_symbol symbols='ALL_SYMBOLS' start=2026-06-29 04:00:00-04:00 snapshot=False
+05:04:04  connecting to remote gateway
+Traceback (most recent call last):
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 745, in <module>
+    main()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 741, in main
+    scanner.run()
+  File "/Users/duffy/warrior_bot_v2/live_scanner.py", line 659, in run
+    live.subscribe(
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/live/client.py", line 577, in subscribe
+    return self._session.subscribe(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/live/session.py", line 522, in subscribe
+    self._connect(dataset=dataset)
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/live/session.py", line 615, in _connect
+    ).result()
+      ^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/duffy/warrior_bot/venv/lib/python3.12/site-packages/databento/live/session.py", line 643, in _connect_task
+    raise BentoError(
+databento.common.error.BentoError: Connection to equs-mini.lsg.databento.com:13000 timed out after 10.0 second(s).
+05:04:25  terminating live client

@@ -63,3 +63,117 @@ Health watchdog started (detached)
 Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon Jun 29 18:05:00 MDT 2026)...
   Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
 === TRAP: cleanup at Mon Jun 29 04:58:06 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 90878 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 90917 Terminated: 15          python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 90952 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 4330fa8] auto: v3 daily logs 2026-06-29
+ 14 files changed, 80187 insertions(+)
+ create mode 100644 logs/2026-06-29_daily.log
+ create mode 100644 logs/2026-06-29_discovery_gate_observe.jsonl
+ create mode 100644 logs/2026-06-29_move_strike_subbot_A.log
+ create mode 100644 logs/2026-06-29_move_strike_subbot_C.log
+ create mode 100644 logs/2026-06-29_scanner.log
+ create mode 100644 logs/bar_stream/2026-06-29_main_bot.jsonl
+ create mode 100644 logs/bar_stream/2026-06-29_subbot_A.jsonl
+ create mode 100644 logs/bar_stream/2026-06-29_subbot_C.jsonl
+ create mode 100644 logs/cron_2026-06-29.log
+=== Cleanup complete: Mon Jun 29 04:58:07 MDT 2026 ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 1086)
+=== V3 Hybrid daily run started: Mon Jun 29 05:02:26 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 4330fa8 (auto: v3 daily logs 2026-06-29)
+daily_run_v3.sh hash: 6564677ec8a2c20cf397f530678413ec  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 281e73348a40dfe7d2d24692e3faafaf  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EDECCF4B.BE0AFA2F (3991719755.742354999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF8909985A.20FA82E880000000 (-1995859877.871177435)
+         delay: FFFFFFFF121330B4.41F505D100000000 (-3991719755.742354870)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:3000::31
+}
++0.030385 +/- 0.062104 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Mon Jun 29 11:02:36 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++
++[0m
+  attempt 2/72: port 4002 not ready yet, waiting 5s...
+  attempt 3/72: port 4002 not ready yet, waiting 5s...
+  attempt 4/72: port 4002 not ready yet, waiting 5s...
+  attempt 5/72: port 4002 not ready yet, waiting 5s...
+  attempt 6/72: port 4002 not ready yet, waiting 5s...
+Gateway is up on port 4002 (after ~35s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 1267)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 1283)
+Bot health check passed (still running after 15s, PID: 1283)
+HEALTH_OK: Bot connected at 2026-06-29 11:04:00 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-06-29_move_strike_subbot_A.log)...
+  variant A PID: 1319
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-06-29_move_strike_subbot_C.log)...
+  variant C PID: 1320
+  variant A health-check OK (PID 1319)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 1320)
+Gateway watchdog started (PID: 1332)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Mon Jun 29 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Mon Jun 29 18:00:28 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-29_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Mon Jun 29 18:01:43 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-29_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Mon Jun 29 18:02:58 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-29_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Mon Jun 29 18:04:13 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-06-29_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Mon Jun 29 18:05:28 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
