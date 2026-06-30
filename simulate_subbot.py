@@ -149,6 +149,29 @@ class MockAlpaca:
         # because sim is the broker.
         return []
 
+    def get_orders(self, *args, **kwargs):
+        # Exit path cancels any resting open orders before submitting the
+        # SELL. In sim all orders fill instantly, so there are never open
+        # orders — return empty. (Missing method otherwise raises mid-exit:
+        # "PARTIAL CANCEL-OPEN FAIL ... no attribute 'get_orders'".)
+        return []
+
+    def get_account(self):
+        # Equity-% sizing (WB_SUBBOT_EQUITY_PCT) calls this to seed
+        # _starting_equity. Without it the live config sizes every entry to
+        # qty=0 and the sim emits ZERO trades — a parity break vs live, which
+        # sizes off the broker's real equity. Return a configurable equity
+        # (WB_SUBBOT_SIM_EQUITY) so sim qty/P&L matches live for the day under
+        # test. Default $3000 = the 2026-06-17 fresh-paper reset base.
+        class _Acct:
+            pass
+        a = _Acct()
+        a.equity = float(os.getenv("WB_SUBBOT_SIM_EQUITY", "3000"))
+        a.account_number = "SIM"
+        a.cash = a.equity
+        a.buying_power = a.equity
+        return a
+
 
 # ════════════════════════════════════════════════════════════════════════
 # SubBotSim — the actual sim driver.
