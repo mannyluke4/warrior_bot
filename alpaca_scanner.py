@@ -53,10 +53,17 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s",
 log = logging.getLogger("alpaca_scanner")
 
 
-def _get(url):
-    r = requests.get(url, headers=H, timeout=15)
-    r.raise_for_status()
-    return r.json()
+def _get(url, tries=4):
+    """GET with retry. SIP entitlement propagation makes large batches
+    intermittently 403 for a few minutes after subscribing — retry rides it."""
+    last = None
+    for _ in range(tries):
+        r = requests.get(url, headers=H, timeout=15)
+        if r.status_code == 200:
+            return r.json()
+        last = r.status_code
+        time.sleep(0.6)
+    raise RuntimeError(f"GET {last} after {tries} tries")
 
 
 def universe() -> list[str]:
@@ -83,8 +90,8 @@ def universe() -> list[str]:
 
 def snapshots(syms: list[str]) -> dict:
     out = {}
-    for i in range(0, len(syms), 100):
-        chunk = ",".join(syms[i:i + 100])
+    for i in range(0, len(syms), 40):
+        chunk = ",".join(syms[i:i + 40])
         try:
             out.update(_get(f"{DATA}/v2/stocks/snapshots?symbols={chunk}&feed={FEED}"))
         except Exception as e:
@@ -97,17 +104,20 @@ def avg_daily_vol(syms: list[str]) -> dict:
     if not syms:
         return {}
     out = {}
-    try:
-        chunk = ",".join(syms)
-        url = (f"{DATA}/v2/stocks/bars?symbols={chunk}&timeframe=1Day&limit=20"
-               f"&feed={FEED}&adjustment=split")
-        j = _get(url)
-        for sym, bars in (j.get("bars") or {}).items():
-            vols = [b.get("v", 0) for b in bars[:-1]]  # exclude today
-            if vols:
-                out[sym] = sum(vols) / len(vols)
-    except Exception as e:
-        log.warning(f"avg-vol fetch failed: {e}")
+    from datetime import date, timedelta
+    start = (date.today() - timedelta(days=40)).isoformat()  # bars endpoint needs a start
+    for i in range(0, len(syms), 40):
+        chunk = ",".join(syms[i:i + 40])
+        try:
+            url = (f"{DATA}/v2/stocks/bars?symbols={chunk}&timeframe=1Day"
+                   f"&start={start}&limit=1000&feed={FEED}&adjustment=split")
+            j = _get(url)
+            for sym, bars in (j.get("bars") or {}).items():
+                vols = [b.get("v", 0) for b in bars[:-1]]  # exclude today
+                if vols:
+                    out[sym] = sum(vols) / len(vols)
+        except Exception as e:
+            log.warning(f"avg-vol fetch failed: {e}")
     return out
 
 
@@ -173,7 +183,7 @@ def main() -> None:
         return
     ch, cm = (int(x) for x in CUTOFF.split(":")[:2])
     log.info(f"Alpaca gapper scanner: price ${MIN_PRICE}-${MAX_PRICE}, "
-             f"gap>={MIN_GAP}%, every {POLL_SEC}s until {CUTOFF} ET (IEX feed).")
+             f"gap>={MIN_GAP}%, every {POLL_SEC}s until {CUTOFF} ET (feed={FEED}).")
     fcache = load_floats()
     while True:
         now = datetime.now(ET)

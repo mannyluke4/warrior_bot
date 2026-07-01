@@ -55,15 +55,19 @@ _APCA_FEED = os.getenv("WB_ALPACA_FEED", "iex").lower()   # 'sip' once real-time
 
 def alpaca_snapshots(symbols: list[str]) -> dict:
     out = {}
-    for i in range(0, len(symbols), 100):
-        chunk = ",".join(symbols[i:i + 100])
-        try:
-            r = requests.get(f"{_APCA_DATA}/v2/stocks/snapshots?symbols={chunk}&feed={_APCA_FEED}",
-                             headers=_APCA_H, timeout=8)
-            if r.status_code == 200:
-                out.update(r.json())
-        except Exception:
-            pass
+    for i in range(0, len(symbols), 40):
+        chunk = ",".join(symbols[i:i + 40])
+        for _ in range(3):   # ride SIP-propagation 403 flakiness
+            try:
+                r = requests.get(
+                    f"{_APCA_DATA}/v2/stocks/snapshots?symbols={chunk}&feed={_APCA_FEED}",
+                    headers=_APCA_H, timeout=8)
+                if r.status_code == 200:
+                    out.update(r.json())
+                    break
+            except Exception:
+                pass
+            time.sleep(0.4)
     return out
 
 
