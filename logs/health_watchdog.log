@@ -297,3 +297,43 @@
 2026-06-26 20:10:13 ET === EOD — health_watchdog exiting ===
 2026-06-29 04:00:48 ET === health_watchdog started (pid 90955) ===
 2026-06-29 07:04:15 ET === health_watchdog started (pid 1335) ===
+2026-06-29 20:10:03 ET === EOD — health_watchdog exiting ===
+2026-06-30 04:00:48 ET === health_watchdog started (pid 34752) ===
+2026-06-30 18:01:05 ET tick-drought check: bar_stream stale 141s, watchlist=2 (strike 1/2)
+2026-06-30 18:01:36 ET tick-drought check: bar_stream stale 171s, watchlist=2 (strike 2/2)
+2026-06-30 18:01:36 ET TICK DROUGHT CONFIRMED: bar_stream stale 171s with 2 symbols subscribed but no bars — data wedge. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe.
+2026-06-30 18:05:07 ET tick-drought check: bar_stream stale 150s, watchlist=2 (strike 1/2)
+2026-06-30 18:05:37 ET tick-drought check: bar_stream stale 180s, watchlist=2 (strike 2/2)
+2026-06-30 18:06:07 ET tick-drought check: bar_stream stale 210s, watchlist=2 (strike 3/2)
+2026-06-30 18:06:37 ET tick-drought check: bar_stream stale 240s, watchlist=2 (strike 4/2)
+2026-06-30 18:07:08 ET tick-drought check: bar_stream stale 271s, watchlist=2 (strike 5/2)
+2026-06-30 18:07:38 ET tick-drought check: bar_stream stale 301s, watchlist=2 (strike 6/2)
+2026-06-30 18:08:08 ET tick-drought check: bar_stream stale 331s, watchlist=2 (strike 7/2)
+2026-06-30 18:08:38 ET tick-drought check: bar_stream stale 361s, watchlist=2 (strike 8/2)
+2026-06-30 18:09:09 ET tick-drought check: bar_stream stale 391s, watchlist=2 (strike 9/2)
+2026-06-30 18:09:39 ET tick-drought check: bar_stream stale 422s, watchlist=2 (strike 10/2)
+2026-06-30 18:10:09 ET tick-drought check: bar_stream stale 452s, watchlist=2 (strike 11/2)
+2026-06-30 18:10:39 ET tick-drought check: bar_stream stale 482s, watchlist=2 (strike 12/2)
+2026-06-30 18:11:09 ET tick-drought check: bar_stream stale 512s, watchlist=2 (strike 13/2)
+2026-06-30 18:11:40 ET tick-drought check: bar_stream stale 542s, watchlist=2 (strike 14/2)
+2026-06-30 18:11:40 ET TICK DROUGHT CONFIRMED: bar_stream stale 542s with 2 symbols subscribed but no bars — data wedge. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe.
+2026-06-30 18:14:11 ET tick-drought check: bar_stream stale 138s, watchlist=2 (strike 1/2)
+2026-06-30 18:14:41 ET tick-drought check: bar_stream stale 168s, watchlist=2 (strike 2/2)
+2026-06-30 18:15:11 ET tick-drought check: bar_stream stale 198s, watchlist=2 (strike 3/2)
+2026-06-30 18:15:41 ET tick-drought check: bar_stream stale 228s, watchlist=2 (strike 4/2)
+2026-06-30 18:16:11 ET tick-drought check: bar_stream stale 258s, watchlist=2 (strike 5/2)
+2026-06-30 18:16:42 ET tick-drought check: bar_stream stale 289s, watchlist=2 (strike 6/2)
+2026-06-30 18:17:12 ET tick-drought check: bar_stream stale 319s, watchlist=2 (strike 7/2)
+2026-06-30 18:17:42 ET tick-drought check: bar_stream stale 349s, watchlist=2 (strike 8/2)
+2026-06-30 18:18:12 ET tick-drought check: bar_stream stale 379s, watchlist=2 (strike 9/2)
+2026-06-30 18:18:43 ET tick-drought check: bar_stream stale 410s, watchlist=2 (strike 10/2)
+2026-06-30 18:19:13 ET tick-drought check: bar_stream stale 440s, watchlist=2 (strike 11/2)
+2026-06-30 18:19:43 ET tick-drought check: bar_stream stale 470s, watchlist=2 (strike 12/2)
+2026-06-30 18:20:13 ET tick-drought check: bar_stream stale 500s, watchlist=2 (strike 13/2)
+2026-06-30 18:20:44 ET tick-drought check: bar_stream stale 531s, watchlist=2 (strike 14/2)
+2026-06-30 18:21:14 ET tick-drought check: bar_stream stale 561s, watchlist=2 (strike 15/2)
+2026-06-30 18:21:44 ET tick-drought check: bar_stream stale 591s, watchlist=2 (strike 16/2)
+2026-06-30 18:21:44 ET TICK DROUGHT CONFIRMED: bar_stream stale 591s with 2 symbols subscribed but no bars — data wedge. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe.
+2026-06-30 18:22:14 ET tick-drought check: bar_stream stale 621s, watchlist=2 (strike 1/2)
+2026-06-30 18:22:44 ET tick-drought check: bar_stream stale 651s, watchlist=2 (strike 2/2)
+2026-06-30 18:23:15 ET tick-drought check: bar_stream stale 682s, watchlist=2 (strike 3/2)
