@@ -43,6 +43,7 @@ MAX_PRICE = float(os.getenv("WB_MAX_PRICE", "20.0"))
 MIN_GAP = float(os.getenv("WB_MIN_GAP_PCT", "10.0"))
 MIN_IEX_VOL = int(os.getenv("WB_ALPACA_MIN_IEX_VOL", "300"))   # liquidity floor (IEX undercounts)
 MAX_FLOAT_M = float(os.getenv("WB_MAX_FLOAT", "20"))           # keep it small-cap (float millions)
+FEED = os.getenv("WB_ALPACA_FEED", "iex").lower()             # 'sip' once real-time data is subscribed
 POLL_SEC = int(os.getenv("WB_ALPACA_SCAN_SEC", "45"))
 CUTOFF = os.getenv("WB_SCANNER_CUTOFF_ET", "20:00")
 WATCHLIST = os.getenv("WB_WATCHLIST_FILE", "watchlist.txt")
@@ -85,7 +86,7 @@ def snapshots(syms: list[str]) -> dict:
     for i in range(0, len(syms), 100):
         chunk = ",".join(syms[i:i + 100])
         try:
-            out.update(_get(f"{DATA}/v2/stocks/snapshots?symbols={chunk}&feed=iex"))
+            out.update(_get(f"{DATA}/v2/stocks/snapshots?symbols={chunk}&feed={FEED}"))
         except Exception as e:
             log.warning(f"snapshot chunk failed: {e}")
     return out
@@ -99,7 +100,7 @@ def avg_daily_vol(syms: list[str]) -> dict:
     try:
         chunk = ",".join(syms)
         url = (f"{DATA}/v2/stocks/bars?symbols={chunk}&timeframe=1Day&limit=20"
-               f"&feed=iex&adjustment=split")
+               f"&feed={FEED}&adjustment=split")
         j = _get(url)
         for sym, bars in (j.get("bars") or {}).items():
             vols = [b.get("v", 0) for b in bars[:-1]]  # exclude today

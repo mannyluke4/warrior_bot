@@ -50,6 +50,7 @@ _APCA_KEY = os.getenv("APCA_API_KEY_ID") or os.getenv("MAIN_APCA_API_KEY_ID")
 _APCA_SEC = os.getenv("APCA_API_SECRET_KEY") or os.getenv("MAIN_APCA_API_SECRET_KEY")
 _APCA_H = {"APCA-API-KEY-ID": _APCA_KEY, "APCA-API-SECRET-KEY": _APCA_SEC}
 _APCA_DATA = "https://data.alpaca.markets"
+_APCA_FEED = os.getenv("WB_ALPACA_FEED", "iex").lower()   # 'sip' once real-time is subscribed
 
 
 def alpaca_snapshots(symbols: list[str]) -> dict:
@@ -57,7 +58,7 @@ def alpaca_snapshots(symbols: list[str]) -> dict:
     for i in range(0, len(symbols), 100):
         chunk = ",".join(symbols[i:i + 100])
         try:
-            r = requests.get(f"{_APCA_DATA}/v2/stocks/snapshots?symbols={chunk}&feed=iex",
+            r = requests.get(f"{_APCA_DATA}/v2/stocks/snapshots?symbols={chunk}&feed={_APCA_FEED}",
                              headers=_APCA_H, timeout=8)
             if r.status_code == 200:
                 out.update(r.json())
