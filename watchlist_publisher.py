@@ -36,8 +36,79 @@ os.environ.setdefault("WB_ENGINE_PUBLISH_ENABLED", "1")
 from engine_publisher import get_publisher  # noqa: E402
 
 WATCHLIST_FILE = os.getenv("WB_WATCHLIST_FILE", "watchlist.txt")
-POLL_SEC = int(os.getenv("WB_WL_PUBLISH_SEC", "15"))
+POLL_SEC = int(os.getenv("WB_WL_PUBLISH_SEC", "15"))       # subscription refresh cadence
+PRICE_SEC = int(os.getenv("WB_WL_PRICE_SEC", "3"))         # price-tick cadence
 ATH_ENABLED = os.getenv("WB_ENGINE_ATH_ENABLED", "0") == "1"
+
+# Alpaca IEX price feed (2026-07-01): during the IBKR outage the manual bot
+# has no ticks, so it can't price/size an order. Poll Alpaca snapshots for the
+# watchlist symbols and publish last-trade + NBBO as ticks so the manual bot
+# shows live-ish prices and can trade. IEX-only (small-cap prints are sparse,
+# ~seconds latency) but far better than nothing.
+import requests  # noqa: E402
+_APCA_KEY = os.getenv("APCA_API_KEY_ID") or os.getenv("MAIN_APCA_API_KEY_ID")
+_APCA_SEC = os.getenv("APCA_API_SECRET_KEY") or os.getenv("MAIN_APCA_API_SECRET_KEY")
+_APCA_H = {"APCA-API-KEY-ID": _APCA_KEY, "APCA-API-SECRET-KEY": _APCA_SEC}
+_APCA_DATA = "https://data.alpaca.markets"
+
+
+def alpaca_snapshots(symbols: list[str]) -> dict:
+    out = {}
+    for i in range(0, len(symbols), 100):
+        chunk = ",".join(symbols[i:i + 100])
+        try:
+            r = requests.get(f"{_APCA_DATA}/v2/stocks/snapshots?symbols={chunk}&feed=iex",
+                             headers=_APCA_H, timeout=8)
+            if r.status_code == 200:
+                out.update(r.json())
+        except Exception:
+            pass
+    return out
+
+
+_MAX_AGE_SEC = int(os.getenv("WB_WL_PRICE_MAX_AGE_SEC", "600"))  # never publish stale prints
+
+
+def _age_sec(ts_iso):
+    """Seconds since an ISO8601 UTC timestamp, or None if unparseable."""
+    if not ts_iso:
+        return None
+    try:
+        from datetime import datetime, timezone
+        t = ts_iso.replace("Z", "+00:00")
+        # trim sub-second precision Alpaca sends beyond microseconds
+        if "." in t:
+            head, tail = t.split(".", 1)
+            frac = "".join(c for c in tail if c.isdigit())[:6]
+            off = tail[len(frac):] if not tail[len(frac):].isdigit() else "+00:00"
+            t = f"{head}.{frac}{'+00:00' if '+' not in off and '-' not in off else off}"
+        dt = datetime.fromisoformat(t)
+        return (datetime.now(timezone.utc) - dt).total_seconds()
+    except Exception:
+        return None
+
+
+def publish_prices(pub, symbols: list[str]) -> int:
+    """Publish last-trade + NBBO as ticks — ONLY when the print is fresh.
+    The free Alpaca IEX feed has no premarket data (frozen at yesterday's
+    close until RTH), so a staleness guard prevents publishing yesterday's
+    price as if it were live — which would be worse than no price."""
+    if not symbols or not (_APCA_KEY and _APCA_SEC):
+        return 0
+    snaps = alpaca_snapshots(symbols)
+    n = 0
+    for sym, s in snaps.items():
+        lt = s.get("latestTrade") or {}
+        q = s.get("latestQuote") or {}
+        age = _age_sec(lt.get("t"))
+        if age is None or age > _MAX_AGE_SEC:
+            continue  # stale (e.g. premarket with no IEX data) — don't publish
+        px = lt.get("p")
+        if px and px > 0:
+            pub.publish_tick(sym, px, ts_iso=lt.get("t"), size=int(lt.get("s") or 0),
+                             bid=q.get("bp"), ask=q.get("ap"))
+            n += 1
+    return n
 
 
 def _f(x):
@@ -124,21 +195,32 @@ def main() -> None:
               flush=True)
         return
     pub.start()
-    print(f"[WL_PUB] publishing {WATCHLIST_FILE} every {POLL_SEC}s "
-          f"(ATH={'on' if ATH_ENABLED else 'off'}). IBKR-free degraded mode.",
-          flush=True)
+    have_prices = bool(_APCA_KEY and _APCA_SEC)
+    print(f"[WL_PUB] subs every {POLL_SEC}s, Alpaca prices every {PRICE_SEC}s "
+          f"(ATH={'on' if ATH_ENABLED else 'off'}, prices={'on' if have_prices else 'OFF'}). "
+          f"IBKR-free degraded mode.", flush=True)
     last_sig = None
+    last_subs = 0.0
+    wl: list[str] = []
     while True:
-        wl = read_watchlist()
-        meta = build_meta(wl)
-        # publish_subscriptions de-dupes internally; the call is cheap. It
-        # also re-sends the latest frame to each newly-connected manual bot.
-        pub.publish_subscriptions(wl, meta=meta)
-        sig = (tuple(wl), len(meta))
-        if sig != last_sig:
-            print(f"[WL_PUB] published {len(wl)} symbols: {wl}", flush=True)
-            last_sig = sig
-        time.sleep(POLL_SEC)
+        now = time.time()
+        # Refresh the watchlist + metadata periodically (cheap, de-duped).
+        if now - last_subs >= POLL_SEC or not wl:
+            wl = read_watchlist()
+            meta = build_meta(wl)
+            pub.publish_subscriptions(wl, meta=meta)
+            last_subs = now
+            sig = (tuple(wl), len(meta))
+            if sig != last_sig:
+                print(f"[WL_PUB] published {len(wl)} symbols: {wl}", flush=True)
+                last_sig = sig
+        # Publish live-ish prices as ticks so the manual bot can quote/size/trade.
+        if have_prices:
+            try:
+                publish_prices(pub, wl)
+            except Exception as e:
+                print(f"[WL_PUB] price feed error: {e!r}", flush=True)
+        time.sleep(PRICE_SEC)
 
 
 if __name__ == "__main__":
