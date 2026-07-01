@@ -129,36 +129,37 @@ def load_floats() -> dict:
         return {}
 
 
-def scan_once(fcache: dict) -> list[tuple]:
-    uni = universe()
+def scan_once(fcache: dict, kept: set) -> list[tuple]:
+    """Append-only: NEW symbols must clear the full gate (gap/price/float/vol)
+    to qualify; a symbol already in `kept` (qualified earlier today) STAYS with
+    its live data as long as it's still priced in range — so a name that gaps,
+    fades, and comes back never falls off the watchlist. Universe = Alpaca
+    movers ∪ most-actives ∪ everything already kept."""
+    uni = list(set(universe()) | set(kept))
     snaps = snapshots(uni)
     rows = []
     for sym, s in snaps.items():
         lt = (s.get("latestTrade") or {}).get("p")
         pdc = (s.get("prevDailyBar") or {}).get("c")
-        db = (s.get("dailyBar") or {})
-        dv = db.get("v", 0)
+        dv = (s.get("dailyBar") or {}).get("v", 0)
         if not lt or not pdc or pdc <= 0:
             continue
         if not (MIN_PRICE <= lt <= MAX_PRICE):
-            continue
+            continue                                   # price gate drops kept names too
         gap = (lt - pdc) / pdc * 100.0
-        if gap < MIN_GAP:
-            continue
-        if dv < MIN_IEX_VOL:
-            continue
-        rows.append([sym, round(gap, 2), dv, lt])
-    # RVOL for the survivors (IEX-relative)
+        is_kept = sym in kept
+        if not is_kept and (gap < MIN_GAP or dv < MIN_IEX_VOL):
+            continue                                   # new name must clear the gate
+        rows.append([sym, round(gap, 2), dv, lt, is_kept])
     avg = avg_daily_vol([r[0] for r in rows])
     out = []
-    for sym, gap, dv, lt in rows:
+    for sym, gap, dv, lt, is_kept in rows:
         a = avg.get(sym, 0)
         rvol = round(dv / a, 2) if a > 0 else 0.0
         fs = fcache.get(sym)
         fm_val = round(fs / 1e6, 2) if fs else None
-        # Drop large-caps (known float over the cap); keep unknown-float names.
-        if fm_val is not None and fm_val > MAX_FLOAT_M:
-            continue
+        if not is_kept and fm_val is not None and fm_val > MAX_FLOAT_M:
+            continue                                   # float cap applies to NEW names only
         fm = fm_val if fm_val is not None else "?"
         out.append((sym, gap, rvol, fm, dv))
     out.sort(key=lambda r: -r[1])   # by gap desc
@@ -184,16 +185,19 @@ def main() -> None:
     ch, cm = (int(x) for x in CUTOFF.split(":")[:2])
     log.info(f"Alpaca gapper scanner: price ${MIN_PRICE}-${MAX_PRICE}, "
              f"gap>={MIN_GAP}%, every {POLL_SEC}s until {CUTOFF} ET (feed={FEED}).")
-    fcache = load_floats()
+    kept: set = set()   # symbols that have qualified today — append-only
     while True:
         now = datetime.now(ET)
         if now.hour * 60 + now.minute >= ch * 60 + cm:
             log.info("Cutoff reached — stopping.")
             break
         try:
-            rows = scan_once(fcache)
+            fcache = load_floats()   # reload each cycle so late float lookups land
+            rows = scan_once(fcache, kept)
+            kept = {r[0] for r in rows}   # carry qualified names forward
             write_watchlist(rows)
-            log.info(f"Wrote {len(rows)} gappers: {[r[0] for r in rows][:15]}")
+            log.info(f"Wrote {len(rows)} gappers ({len(kept)} kept): "
+                     f"{[r[0] for r in rows][:20]}")
         except Exception as e:
             log.warning(f"scan cycle error: {e!r}")
         time.sleep(POLL_SEC)
