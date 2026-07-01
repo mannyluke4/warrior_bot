@@ -44,6 +44,16 @@ SCANNER_PID=""
 GW_WATCHDOG_PID=""
 CAFFEINE_PID=""   # init early so cleanup trap can reference safely under set -u
 
+# DEGRADED MODE toggle (IBKR market-data outage, ~2026-07 window). Read from
+# .env so the 2 AM cron picks it up. When =1, launch_main_bot runs
+# watchlist_publisher.py (IBKR-free Databento watchlist for the manual bot)
+# instead of the tick-blind main bot, and the sub-bots are skipped. The
+# Databento scanner still runs and writes watchlist.txt. Set/clear it with a
+# single line in .env: WB_ENGINE_DATA_DEGRADED=1  (default 0 = normal).
+WB_ENGINE_DATA_DEGRADED=$(grep "^WB_ENGINE_DATA_DEGRADED=" ~/warrior_bot_v2/.env 2>/dev/null | tail -1 | cut -d'=' -f2 | tr -d ' "' )
+export WB_ENGINE_DATA_DEGRADED
+[ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ] && echo "=== WB_ENGINE_DATA_DEGRADED=1 — DEGRADED (watchlist-only) startup ==="
+
 # ── Step 0: Wake the display (no osascript, no keystroke) ────────────
 # Per DIRECTIVE_AUTOSTART_PERMANENT_FIX.md (2026-04-28):
 # osascript keystroke unlock fails silently when run from cron because
@@ -233,6 +243,23 @@ cd ~/warrior_bot_v2
 # WB_SUB_WATCHDOG_ENABLED=1: IBKR Tier-2 subscription-wedge observability (2026-05-26).
 launch_main_bot() {
     cd ~/warrior_bot_v2
+    # DEGRADED MODE (IBKR market-data outage, ~2026-07 window): the main bot
+    # is tick-blind and would kill-loop. Run the IBKR-free watchlist_publisher
+    # on the engine socket instead, so the manual bot still gets a Databento
+    # watchlist + %chg/float/RVOL/ATH. The scanner (Databento) still runs above
+    # and writes watchlist.txt; sub-bots are skipped below. This branch also
+    # covers the watchdog's auto-restart (it calls launch_main_bot). Flip
+    # WB_ENGINE_DATA_DEGRADED=1 (env/.env) to enable; default 0 = normal.
+    if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
+        echo "=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ==="
+        WB_ENGINE_PUBLISH_ENABLED=1 \
+        WB_ENGINE_TCP_PORT=9710 \
+        WB_ENGINE_TCP_BIND=100.79.224.76 \
+          python3 watchlist_publisher.py \
+            >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1 &
+        BOT_PID=$!
+        return
+    fi
     APCA_API_KEY_ID="$MAIN_APCA_KEY" \
     APCA_API_SECRET_KEY="$MAIN_APCA_SECRET" \
     WB_BROKER=ibkr \
@@ -386,6 +413,9 @@ launch_subbot() {
 # (prior-bar tick_count < 6000/min ≈ 100/sec) account for the bulk of
 # losses while contributing ~zero edge. Block any entry (REGIME_SHIFT,
 # MOVE_STRIKE, REENTRY) when prior bar's tick count is below threshold.
+if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
+    echo "=== DEGRADED MODE: skipping sub-bots (they consume engine ticks, which are down) ==="
+else
 launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000"
 # Variant B re-purposed 2026-05-29: V1 VWAP fade-gate retired after 4
 # straight losing weeks (cumulative ~$5K below week-start). Per
@@ -427,6 +457,7 @@ for suffix in A B C; do
         echo "  variant $suffix health-check OK (PID $pid)"
     fi
 done
+fi  # end WB_ENGINE_DATA_DEGRADED sub-bot skip
 
 # 8a-NEW. Healthy Fluctuation Framework live runner (Wave 4 paper).
 # DISABLED 2026-05-19 per Manny's call — running squeeze-only tomorrow.
