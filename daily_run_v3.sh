@@ -202,12 +202,23 @@ sleep 2
 echo "Wiping yesterday's watchlist.txt for a fresh session..."
 : > ~/warrior_bot_v2/watchlist.txt
 
-# 6b. Start Databento live scanner (writes watchlist.txt for the bot)
-echo "Starting live_scanner.py..."
+# 6b. Start the scanner (writes watchlist.txt). Normal = Databento
+# live_scanner.py; DEGRADED (IBKR outage) = alpaca_scanner.py, because the
+# real source (ibkr_scanner) is down AND the Databento EQUS.MINI live feed
+# delivers ~0 volume (see project_ibkr_outage_degraded_watchlist). The Alpaca
+# scanner filters on gap%+price (reliable on IEX) instead of volume.
 cd ~/warrior_bot_v2
-python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1 &
-SCANNER_PID=$!
-echo "Live scanner started (PID: $SCANNER_PID)"
+if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
+    echo "Starting alpaca_scanner.py (DEGRADED — Alpaca gapper scan)..."
+    python3 alpaca_scanner.py >> "$LOG_DIR/${TODAY}_alpaca_scanner.log" 2>&1 &
+    SCANNER_PID=$!
+    echo "Alpaca scanner started (PID: $SCANNER_PID)"
+else
+    echo "Starting live_scanner.py..."
+    python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1 &
+    SCANNER_PID=$!
+    echo "Live scanner started (PID: $SCANNER_PID)"
+fi
 sleep 5
 
 # 7. Start the V3 hybrid bot
