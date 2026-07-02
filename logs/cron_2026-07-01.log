@@ -1,0 +1,65 @@
+=== WB_ENGINE_DATA_DEGRADED=1 — DEGRADED (watchlist-only) startup ===
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 84080)
+=== V3 Hybrid daily run started: Wed Jul  1 02:00:06 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: a85cb8c (daily_run: WB_ENGINE_DATA_DEGRADED gate — auto watchlist-only mode)
+daily_run_v3.sh hash: bfe7af3371ed1060ab7f67a7a4779206f7823e63
+bot_v3_hybrid.py hash: 2d0c4a7ed1d7417f5b51a042dba514752cc3bc15
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.036489 +/- 0.068897 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Wed Jul  1 08:00:07 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 84119)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Bot started (PID: 84129)
+Bot health check passed (still running after 15s, PID: 84129)
+HEALTH_OK: Bot connected at 2026-07-01 08:00:32 UTC
+=== DEGRADED MODE: skipping sub-bots (they consume engine ticks, which are down) ===
+Gateway watchdog started (PID: 84148)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Jul  1 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 84119 Terminated: 15          python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 84129 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+ALERT: bot_v3_hybrid.py died at Wed Jul  1 05:28:58 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-07-01_daily.log.
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Main bot restarted OK (PID: 89560).
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 89560 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+ALERT: bot_v3_hybrid.py died at Wed Jul  1 05:31:14 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-07-01_daily.log.
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Main bot restarted OK (PID: 89703).
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 89703 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+ALERT: bot_v3_hybrid.py died at Wed Jul  1 05:34:29 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-07-01_daily.log.
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Main bot restarted OK (PID: 89879).
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 89879 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+ALERT: bot_v3_hybrid.py died at Wed Jul  1 05:40:44 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-07-01_daily.log.
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Main bot restarted OK (PID: 90199).
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 567: 90199 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+ALERT: bot_v3_hybrid.py died at Wed Jul  1 05:42:59 MDT 2026. Auto-restarting in place (attempt 5/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-07-01_daily.log.
+=== DEGRADED MODE: launching watchlist_publisher.py (no main bot / no sub-bots) ===
+Main bot restarted OK (PID: 90295).
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Wed Jul  1 18:05:40 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 576: 90295 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
+Generating A/B/C daily comparison report...
+Pushing logs...
