@@ -123,9 +123,41 @@ def _f(x):
         return None
 
 
+def session_hi_lo(symbols: list[str]) -> dict:
+    """Today's session HIGH/LOW per symbol from Alpaca 1-min bars (04:00 ET on).
+    Shipped as hod/lod so the manual bot seeds real session extremes instead of
+    its since-connect calc. (Alpaca's dailyBar is stale in premarket — shows
+    yesterday — so minute bars are the reliable source.)"""
+    if not symbols or not (_APCA_KEY and _APCA_SEC):
+        return {}
+    from datetime import datetime, timezone, timedelta
+    et = timezone(timedelta(hours=-4))   # EDT (this outage window is all July)
+    start = (datetime.now(et).replace(hour=4, minute=0, second=0, microsecond=0)
+             .astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+    out = {}
+    for i in range(0, len(symbols), 40):
+        chunk = ",".join(symbols[i:i + 40])
+        for _ in range(3):
+            try:
+                r = requests.get(
+                    f"{_APCA_DATA}/v2/stocks/bars?symbols={chunk}&timeframe=1Min"
+                    f"&start={start}&limit=10000&feed={_APCA_FEED}",
+                    headers=_APCA_H, timeout=12)
+                if r.status_code == 200:
+                    for sym, bars in (r.json().get("bars") or {}).items():
+                        if bars:
+                            out[sym] = (round(max(b["h"] for b in bars), 4),
+                                        round(min(b["l"] for b in bars), 4))
+                    break
+            except Exception:
+                pass
+            time.sleep(0.4)
+    return out
+
+
 def build_meta(watchlist: list[str]) -> list[dict]:
-    """Mirror bot_v3_hybrid._publish_subscriptions' meta assembly, minus the
-    IBKR/tick-derived fields (hod/lod). All inputs are Databento."""
+    """Mirror bot_v3_hybrid._publish_subscriptions' meta assembly. gap/rvol/
+    float/ath from scanner+caches; hod/lod from today's Alpaca minute bars."""
     # gap/rvol/float from the scanner's watchlist.txt line
     # (SYMBOL:gap:rvol:float:pm_volume).
     wl_meta: dict[str, tuple] = {}
@@ -157,6 +189,8 @@ def build_meta(watchlist: list[str]) -> list[dict]:
         except Exception:
             acache = {}
 
+    hilo = session_hi_lo(watchlist)
+
     meta = []
     for sym in watchlist:
         gap, rvol, fm = wl_meta.get(sym, (None, None, None))
@@ -165,6 +199,9 @@ def build_meta(watchlist: list[str]) -> list[dict]:
             if fs:
                 fm = round(fs / 1e6, 2)
         item = {"symbol": sym, "gap_pct": gap, "rvol": rvol, "float_m": fm}
+        hl = hilo.get(sym)
+        if hl:
+            item["hod"], item["lod"] = hl[0], hl[1]
         if ATH_ENABLED:
             try:
                 from ath_cache import get_ath
