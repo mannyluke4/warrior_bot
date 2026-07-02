@@ -44,6 +44,14 @@ MIN_GAP = float(os.getenv("WB_MIN_GAP_PCT", "10.0"))
 MIN_IEX_VOL = int(os.getenv("WB_ALPACA_MIN_IEX_VOL", "300"))   # liquidity floor (IEX undercounts)
 MAX_FLOAT_M = float(os.getenv("WB_MAX_FLOAT", "20"))           # keep it small-cap (float millions)
 FEED = os.getenv("WB_ALPACA_FEED", "iex").lower()             # 'sip' once real-time data is subscribed
+# IBKR server-side scanner as the universe source (works during the data
+# outage — reqScannerData runs on IBKR's servers, no per-symbol data sub).
+USE_IBKR_SCAN = os.getenv("WB_SCANNER_USE_IBKR", "1") == "1"
+IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
+IBKR_PORT = int(os.getenv("IBKR_PORT", "4002"))
+IBKR_CID = int(os.getenv("WB_SCANNER_IBKR_CLIENT_ID", "77"))
+IBKR_SCAN_MIN_VOL = int(os.getenv("WB_SCANNER_IBKR_MIN_VOL", "50000"))
+IBKR_SCAN_CODES = os.getenv("WB_SCANNER_IBKR_CODES", "TOP_PERC_GAIN,HOT_BY_VOLUME").split(",")
 POLL_SEC = int(os.getenv("WB_ALPACA_SCAN_SEC", "45"))
 CUTOFF = os.getenv("WB_SCANNER_CUTOFF_ET", "20:00")
 WATCHLIST = os.getenv("WB_WATCHLIST_FILE", "watchlist.txt")
@@ -66,7 +74,54 @@ def _get(url, tries=4):
     raise RuntimeError(f"GET {last} after {tries} tries")
 
 
-def universe() -> list[str]:
+def _clean(syms) -> set:
+    """Plain equity tickers only; drop 5-char warrants/units (…W / …U)."""
+    return {s for s in syms
+            if s and s.isalpha() and 1 <= len(s) <= 5
+            and not (len(s) == 5 and s[-1] in ("W", "U"))}
+
+
+def _ibkr_universe() -> set:
+    """Primary universe: IBKR server-side scanner (TOP_PERC_GAIN + HOT_BY_VOLUME),
+    price/volume filtered on IBKR's servers. Works during the market-data outage
+    (reqScannerData needs no per-symbol subscription). Connect/scan/disconnect
+    per call to avoid ib_insync event-loop keepalive issues. Returns {} on any
+    failure so the Alpaca universe still covers us."""
+    if not USE_IBKR_SCAN:
+        return set()
+    try:
+        from ib_insync import IB, ScannerSubscription, util
+        util.logToConsole("CRITICAL")
+    except Exception:
+        return set()
+    ib = IB()
+    syms = set()
+    try:
+        ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CID, timeout=12)
+        for code in IBKR_SCAN_CODES:
+            code = code.strip()
+            if not code:
+                continue
+            try:
+                sub = ScannerSubscription(
+                    instrument="STK", locationCode="STK.US.MAJOR", scanCode=code,
+                    abovePrice=MIN_PRICE, belowPrice=MAX_PRICE, aboveVolume=IBKR_SCAN_MIN_VOL)
+                for d in ib.reqScannerData(sub):
+                    syms.add(d.contractDetails.contract.symbol.upper())
+            except Exception as e:
+                log.warning(f"IBKR scan {code} failed: {e}")
+    except Exception as e:
+        log.warning(f"IBKR connect failed ({IBKR_HOST}:{IBKR_PORT} cid={IBKR_CID}): {e}")
+    finally:
+        try:
+            ib.disconnect()
+        except Exception:
+            pass
+    return _clean(syms)
+
+
+def _alpaca_universe() -> set:
+    """Supplement/fallback universe: Alpaca movers + most-actives."""
     syms = set()
     try:
         j = _get(f"{DATA}/v1beta1/screener/stocks/movers?top=50")
@@ -82,10 +137,15 @@ def universe() -> list[str]:
                 syms.add(a["symbol"].upper())
     except Exception as e:
         log.warning(f"most-actives fetch failed: {e}")
-    # plain equity tickers only; drop 5-char warrants/units (…W / …U)
-    return [s for s in syms
-            if s.isalpha() and 1 <= len(s) <= 5
-            and not (len(s) == 5 and s[-1] in ("W", "U"))]
+    return _clean(syms)
+
+
+def universe() -> list[str]:
+    ib_syms = _ibkr_universe()
+    alp_syms = _alpaca_universe()
+    log.info(f"universe: {len(ib_syms)} from IBKR scanner + "
+             f"{len(alp_syms - ib_syms)} extra from Alpaca")
+    return list(ib_syms | alp_syms)
 
 
 def snapshots(syms: list[str]) -> dict:
