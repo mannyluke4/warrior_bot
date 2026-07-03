@@ -1,0 +1,1286 @@
+[ENGINE_PUB] TCP listener on 100.79.224.76:9710 (tailnet fan-out — newline-JSON, same stream as the Unix socket)
+[ENGINE_PUB] listening on /tmp/warrior_engine.sock (queue_max=10000)
+[WL_PUB] subs every 15s, Alpaca prices every 3s (ATH=on, prices=on). IBKR-free degraded mode.
+[WL_PUB] published 0 symbols: []
+[WL_PUB] published 16 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'LHAI', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+  [ath_cache] AHMA: ATH $39.3850 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=176 dropped=0 clients=0
+  [ath_cache] CANF: ATH $13.4100 (max daily high since 2023-03-28)
+  [ath_cache] CORD: ATH $67.5300 (max daily high since 2023-03-28)
+  [ath_cache] EHGO: ATH $6.7300 (max daily high since 2023-03-28)
+  [ath_cache] ELTX: ATH $22.1900 (max daily high since 2023-03-28)
+  [ath_cache] GVH: ATH $12.0700 (max daily high since 2023-03-28)
+  [ath_cache] ICU: ATH $13.6900 (max daily high since 2023-03-28)
+  [ath_cache] JEM: ATH $12.5300 (max daily high since 2023-03-28)
+  [ath_cache] LHAI: ATH $21.9000 (max daily high since 2023-03-28)
+  [ath_cache] NBIZ: ATH $39.9900 (max daily high since 2023-03-28)
+  [ath_cache] RAAQ: ATH $13.4950 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=385 dropped=0 clients=0
+  [ath_cache] RGNT: ATH $15.5000 (max daily high since 2023-03-28)
+  [ath_cache] RNAZ: ATH $31.9700 (max daily high since 2023-03-28)
+  [ath_cache] SKIL: ATH $34.8300 (max daily high since 2023-03-28)
+  [ath_cache] SNDQ: ATH $27.4400 (max daily high since 2023-03-28)
+  [ath_cache] WTO: ATH $8.3550 (max daily high since 2023-03-28)
+  [ath_cache] RNAZ: ATH $31.9700 (max daily high since 2023-03-28)
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=575 dropped=0 clients=0
+[ENGINE_PUB] STATS published=755 dropped=0 clients=0
+[ENGINE_PUB] STATS published=945 dropped=0 clients=0
+[WL_PUB] published 16 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'LHAI', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=1,133 dropped=0 clients=0
+[ENGINE_PUB] STATS published=1,331 dropped=0 clients=0
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=1,515 dropped=0 clients=0
+[ENGINE_PUB] STATS published=1,695 dropped=0 clients=0
+[ENGINE_PUB] STATS published=1,875 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,055 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,235 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,415 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,595 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,775 dropped=0 clients=0
+[ENGINE_PUB] STATS published=2,948 dropped=0 clients=0
+[ENGINE_PUB] STATS published=3,102 dropped=0 clients=0
+[WL_PUB] published 16 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'LHAI', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=3,285 dropped=0 clients=0
+[ENGINE_PUB] STATS published=3,483 dropped=0 clients=0
+[ENGINE_PUB] STATS published=3,681 dropped=0 clients=0
+[ENGINE_PUB] STATS published=3,879 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,065 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,245 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,425 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,605 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,785 dropped=0 clients=0
+[ENGINE_PUB] STATS published=4,963 dropped=0 clients=0
+[ENGINE_PUB] STATS published=5,128 dropped=0 clients=0
+[ENGINE_PUB] STATS published=5,308 dropped=0 clients=0
+[ENGINE_PUB] STATS published=5,488 dropped=0 clients=0
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=5,666 dropped=0 clients=0
+[ENGINE_PUB] STATS published=5,828 dropped=0 clients=0
+[ENGINE_PUB] STATS published=5,990 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,152 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,314 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,476 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,647 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,804 dropped=0 clients=0
+[ENGINE_PUB] STATS published=6,948 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,092 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,236 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,380 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,524 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,668 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,812 dropped=0 clients=0
+[ENGINE_PUB] STATS published=7,948 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,092 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,222 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,355 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,481 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,615 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,759 dropped=0 clients=0
+[ENGINE_PUB] STATS published=8,895 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,039 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,191 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,335 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,479 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,615 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,767 dropped=0 clients=0
+[ENGINE_PUB] STATS published=9,911 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,055 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,191 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,343 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,487 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,623 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,767 dropped=0 clients=0
+[ENGINE_PUB] STATS published=10,919 dropped=0 clients=0
+[ENGINE_PUB] STATS published=11,064 dropped=0 clients=0
+[ENGINE_PUB] STATS published=11,226 dropped=0 clients=0
+[ENGINE_PUB] STATS published=11,388 dropped=0 clients=0
+[ENGINE_PUB] STATS published=11,550 dropped=0 clients=0
+[WL_PUB] published 16 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'LHAI', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=11,736 dropped=0 clients=0
+[ENGINE_PUB] STATS published=11,926 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,096 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,286 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,446 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,628 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,782 dropped=0 clients=0
+[ENGINE_PUB] STATS published=12,944 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,115 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,277 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,415 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,567 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,711 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,855 dropped=0 clients=0
+[ENGINE_PUB] STATS published=13,991 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,135 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,268 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,394 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,520 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,639 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,772 dropped=0 clients=0
+[ENGINE_PUB] STATS published=14,898 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,024 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,150 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,276 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,402 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,521 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,647 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,772 dropped=0 clients=0
+[ENGINE_PUB] STATS published=15,884 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,010 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,139 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,283 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,427 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,571 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,715 dropped=0 clients=0
+[ENGINE_PUB] STATS published=16,859 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,003 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,147 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,286 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,419 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,534 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,648 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,744 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,834 dropped=0 clients=0
+[ENGINE_PUB] STATS published=17,936 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,044 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,152 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,254 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,362 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,476 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,595 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,721 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,847 dropped=0 clients=0
+[ENGINE_PUB] STATS published=18,973 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,104 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,248 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,392 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,536 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,680 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,832 dropped=0 clients=0
+[ENGINE_PUB] STATS published=19,976 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,112 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,256 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,391 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,535 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,679 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,823 dropped=0 clients=0
+[ENGINE_PUB] STATS published=20,975 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,111 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,255 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,416 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,569 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,731 dropped=0 clients=0
+[ENGINE_PUB] STATS published=21,902 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,055 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,217 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,379 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,541 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,712 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,856 dropped=0 clients=0
+[ENGINE_PUB] STATS published=22,990 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,116 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,244 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,388 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,527 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,663 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,807 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,951 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,116 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,278 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,457 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,624 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,792 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,936 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,080 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,216 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,368 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,512 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,656 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,800 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,936 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,080 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,232 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,376 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,520 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,664 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,806 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,980 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,150 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,330 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,520 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,700 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,880 dropped=0 clients=0
+[ENGINE_PUB] STATS published=28,060 dropped=0 clients=0
+[ENGINE_PUB] STATS published=28,240 dropped=0 clients=0
+[ENGINE_PUB] STATS published=28,410 dropped=0 clients=0
+[WL_PUB] published 16 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'LHAI', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=28,604 dropped=0 clients=0
+[ENGINE_PUB] STATS published=28,802 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,000 dropped=0 clients=0
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=29,195 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,375 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,545 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,735 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,898 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,060 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,213 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,375 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,537 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,708 dropped=0 clients=0
+[ENGINE_PUB] STATS published=30,870 dropped=0 clients=0
+[ENGINE_PUB] STATS published=31,023 dropped=0 clients=0
+[ENGINE_PUB] STATS published=31,194 dropped=0 clients=0
+[ENGINE_PUB] STATS published=31,356 dropped=0 clients=0
+[ENGINE_PUB] TCP client connected from ('100.82.8.86', 54891) (total clients: 1)
+[ENGINE_PUB] STATS published=31,518 dropped=0 clients=1
+[ENGINE_PUB] STATS published=31,671 dropped=0 clients=1
+[ENGINE_PUB] STATS published=31,833 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,004 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,183 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,363 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,553 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,733 dropped=0 clients=1
+[ENGINE_PUB] STATS published=32,912 dropped=0 clients=1
+[ENGINE_PUB] STATS published=33,074 dropped=0 clients=1
+[ENGINE_PUB] STATS published=33,245 dropped=0 clients=1
+[ENGINE_PUB] STATS published=33,407 dropped=0 clients=1
+[ENGINE_PUB] STATS published=33,578 dropped=0 clients=1
+[ENGINE_PUB] STATS published=33,748 dropped=0 clients=1
+[ENGINE_PUB] TCP listener on 100.79.224.76:9710 (tailnet fan-out — newline-JSON, same stream as the Unix socket)
+[ENGINE_PUB] listening on /tmp/warrior_engine.sock (queue_max=10000)
+[WL_PUB] subs every 15s, Alpaca prices every 3s (ATH=on, prices=on). IBKR-free degraded mode.
+[ENGINE_PUB] TCP client connected from ('100.82.8.86', 57069) (total clients: 1)
+[WL_PUB] published 15 symbols: ['AHMA', 'CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] client connected (total clients: 2)
+[ENGINE_PUB] dropped 1 disconnected client(s)
+[ENGINE_PUB] STATS published=144 dropped=0 clients=1
+[ENGINE_PUB] STATS published=288 dropped=0 clients=1
+[ENGINE_PUB] dropped 1 disconnected client(s)
+[WL_PUB] published 14 symbols: ['CANF', 'CORD', 'EHGO', 'ELTX', 'GVH', 'ICU', 'JEM', 'NBIZ', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'WTO']
+[ENGINE_PUB] STATS published=423 dropped=0 clients=0
+[ENGINE_PUB] TCP client connected from ('100.82.8.86', 57395) (total clients: 1)
+[ENGINE_PUB] client connected (total clients: 2)
+[ENGINE_PUB] dropped 1 disconnected client(s)
+[ENGINE_PUB] STATS published=567 dropped=0 clients=1
+[ENGINE_PUB] STATS published=719 dropped=0 clients=1
+[ENGINE_PUB] STATS published=863 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,007 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,168 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,330 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,501 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,663 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,816 dropped=0 clients=1
+[ENGINE_PUB] STATS published=1,972 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,116 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,268 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,412 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,548 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,692 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,836 dropped=0 clients=1
+[ENGINE_PUB] STATS published=2,980 dropped=0 clients=1
+[ENGINE_PUB] STATS published=3,124 dropped=0 clients=1
+[ENGINE_PUB] STATS published=3,276 dropped=0 clients=1
+[ENGINE_PUB] STATS published=3,420 dropped=0 clients=1
+[ENGINE_PUB] STATS published=3,564 dropped=0 clients=1
+[ENGINE_PUB] STATS published=3,708 dropped=0 clients=1
+[WL_PUB] published 26 symbols: ['ADBG', 'AVXX', 'BMNG', 'CANF', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'USDE', 'WTO']
+  [ath_cache] ADBG: ATH $16.5800 (max daily high since 2023-03-28)
+  [ath_cache] AVXX: ATH $23.2300 (max daily high since 2023-03-28)
+  [ath_cache] BMNG: ATH $32.7300 (max daily high since 2023-03-28)
+  [ath_cache] COIG: ATH $71.9200 (max daily high since 2023-03-28)
+  [ath_cache] DSY: ATH $19.8800 (max daily high since 2023-03-28)
+  [ath_cache] ETHT: ATH $131.2400 (max daily high since 2023-03-28)
+  [ath_cache] IREZ: ATH $53.3700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=3,972 dropped=0 clients=1
+  [ath_cache] MUD: ATH $47.4100 (max daily high since 2023-03-28)
+  [ath_cache] MUZ: ATH $23.6500 (max daily high since 2023-03-28)
+  [ath_cache] NFXL: ATH $73.6000 (max daily high since 2023-03-28)
+  [ath_cache] NOWL: ATH $29.7900 (max daily high since 2023-03-28)
+  [ath_cache] PLTG: ATH $44.8350 (max daily high since 2023-03-28)
+  [ath_cache] SOLZ: ATH $27.0900 (max daily high since 2023-03-28)
+  [ath_cache] USDE: ATH $7.5100 (max daily high since 2023-03-28)
+  [ath_cache] IREZ: ATH $53.3700 (max daily high since 2023-03-28)
+  [ath_cache] NOWL: ATH $29.7900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=4,332 dropped=0 clients=1
+[ENGINE_PUB] STATS published=4,702 dropped=0 clients=1
+[ENGINE_PUB] STATS published=5,080 dropped=0 clients=1
+[ENGINE_PUB] STATS published=5,458 dropped=0 clients=1
+[WL_PUB] published 27 symbols: ['ADBG', 'AVXX', 'BMNG', 'CANF', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'USDE', 'WTO']
+  [ath_cache] JFB: ATH $34.7600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=5,846 dropped=0 clients=1
+[ENGINE_PUB] STATS published=6,242 dropped=0 clients=1
+[WL_PUB] published 28 symbols: ['ADBG', 'AVXX', 'BMNG', 'CANF', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] TGL: ATH $86.9900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=6,644 dropped=0 clients=1
+  [ath_cache] TGL: ATH $86.9900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=7,035 dropped=0 clients=1
+[ENGINE_PUB] STATS published=7,442 dropped=0 clients=1
+[ENGINE_PUB] STATS published=7,826 dropped=0 clients=1
+[ENGINE_PUB] STATS published=8,258 dropped=0 clients=1
+[ENGINE_PUB] STATS published=8,690 dropped=0 clients=1
+[WL_PUB] published 29 symbols: ['ADBG', 'AVXX', 'BMNG', 'CANF', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] MSFX: ATH $39.8200 (max daily high since 2023-03-28)
+  [ath_cache] MSFX: ATH $39.8200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=9,095 dropped=0 clients=1
+[WL_PUB] published 30 symbols: ['ADBG', 'AVXX', 'BMNG', 'CANF', 'CLRO', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] CLRO: ATH $17.2300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=9,541 dropped=0 clients=1
+[WL_PUB] published 31 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CLRO', 'COIG', 'CORD', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+[ENGINE_PUB] STATS published=9,967 dropped=0 clients=1
+[ENGINE_PUB] STATS published=10,435 dropped=0 clients=1
+[ENGINE_PUB] STATS published=10,903 dropped=0 clients=1
+[ENGINE_PUB] STATS published=11,370 dropped=0 clients=1
+[ENGINE_PUB] STATS published=11,802 dropped=0 clients=1
+[ENGINE_PUB] STATS published=12,270 dropped=0 clients=1
+[ENGINE_PUB] STATS published=12,738 dropped=0 clients=1
+[ENGINE_PUB] STATS published=13,206 dropped=0 clients=1
+[WL_PUB] published 34 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] CRCG: ATH $50.5900 (max daily high since 2023-03-28)
+  [ath_cache] OKLL: ATH $169.4300 (max daily high since 2023-03-28)
+  [ath_cache] SMU: ATH $51.7300 (max daily high since 2023-03-28)
+  [ath_cache] SMU: ATH $51.7300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=13,687 dropped=0 clients=1
+[WL_PUB] published 35 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] GSOL: ATH $14.6700 (max daily high since 2023-03-28)
+[WL_PUB] published 36 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] CETX: ATH $12.3100 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=14,231 dropped=0 clients=1
+  [ath_cache] CETX: ATH $12.3100 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=14,758 dropped=0 clients=1
+[ENGINE_PUB] STATS published=15,311 dropped=0 clients=1
+[ENGINE_PUB] STATS published=15,869 dropped=0 clients=1
+[WL_PUB] published 37 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] SHNY: ATH $268.6700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=16,412 dropped=0 clients=1
+[ENGINE_PUB] STATS published=16,988 dropped=0 clients=1
+[WL_PUB] published 38 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'PPCB', 'RAAQ', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] PPCB: ATH $9.3400 (max daily high since 2023-03-28)
+  [ath_cache] PPCB: ATH $9.3400 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=17,529 dropped=0 clients=1
+[ENGINE_PUB] STATS published=18,105 dropped=0 clients=1
+[WL_PUB] published 37 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+[ENGINE_PUB] STATS published=18,664 dropped=0 clients=1
+[ENGINE_PUB] STATS published=19,191 dropped=0 clients=1
+[ENGINE_PUB] STATS published=19,749 dropped=0 clients=1
+[ENGINE_PUB] STATS published=20,307 dropped=0 clients=1
+[ENGINE_PUB] STATS published=20,865 dropped=0 clients=1
+[ENGINE_PUB] STATS published=21,400 dropped=0 clients=1
+[ENGINE_PUB] STATS published=21,976 dropped=0 clients=1
+[ENGINE_PUB] dropped 1 disconnected client(s)
+[ENGINE_PUB] STATS published=22,520 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,096 dropped=0 clients=0
+[ENGINE_PUB] STATS published=23,640 dropped=0 clients=0
+[WL_PUB] published 38 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] RGC: ATH $927.5000 (max daily high since 2023-03-28)
+  [ath_cache] RGC: ATH $927.5000 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=24,224 dropped=0 clients=0
+[ENGINE_PUB] STATS published=24,774 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,301 dropped=0 clients=0
+[ENGINE_PUB] STATS published=25,859 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,403 dropped=0 clients=0
+[ENGINE_PUB] STATS published=26,947 dropped=0 clients=0
+[ENGINE_PUB] STATS published=27,523 dropped=0 clients=0
+[WL_PUB] published 39 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] PLTA: ATH $41.9600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=28,081 dropped=0 clients=0
+[WL_PUB] published 40 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'USDE', 'WTO']
+  [ath_cache] SOFX: ATH $54.9850 (max daily high since 2023-03-28)
+  [ath_cache] SOFX: ATH $54.9850 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=28,692 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,270 dropped=0 clients=0
+[ENGINE_PUB] STATS published=29,814 dropped=0 clients=0
+[WL_PUB] published 42 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] TSLG: ATH $19.7100 (max daily high since 2023-03-28)
+  [ath_cache] UNCY: ATH $8.7400 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=30,428 dropped=0 clients=0
+[ENGINE_PUB] STATS published=31,020 dropped=0 clients=0
+[WL_PUB] published 43 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'LGCL', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] LGCL: ATH $4.9300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=31,616 dropped=0 clients=0
+  [ath_cache] LGCL: ATH $4.9300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=32,224 dropped=0 clients=0
+[ENGINE_PUB] STATS published=32,832 dropped=0 clients=0
+[ENGINE_PUB] STATS published=33,455 dropped=0 clients=0
+[ENGINE_PUB] STATS published=34,074 dropped=0 clients=0
+[ENGINE_PUB] STATS published=34,682 dropped=0 clients=0
+[ENGINE_PUB] STATS published=35,290 dropped=0 clients=0
+[ENGINE_PUB] STATS published=35,860 dropped=0 clients=0
+[WL_PUB] published 42 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+[ENGINE_PUB] STATS published=36,491 dropped=0 clients=0
+[ENGINE_PUB] STATS published=37,046 dropped=0 clients=0
+[ENGINE_PUB] STATS published=37,619 dropped=0 clients=0
+[ENGINE_PUB] STATS published=38,195 dropped=0 clients=0
+[ENGINE_PUB] STATS published=38,771 dropped=0 clients=0
+[ENGINE_PUB] STATS published=39,331 dropped=0 clients=0
+[ENGINE_PUB] STATS published=39,891 dropped=0 clients=0
+[ENGINE_PUB] STATS published=40,451 dropped=0 clients=0
+[ENGINE_PUB] STATS published=41,003 dropped=0 clients=0
+[ENGINE_PUB] STATS published=41,551 dropped=0 clients=0
+[WL_PUB] published 43 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'CMBT', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] CMBT: ATH $18.4150 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=42,103 dropped=0 clients=0
+  [ath_cache] CMBT: ATH $18.4150 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=42,665 dropped=0 clients=0
+[ENGINE_PUB] STATS published=43,205 dropped=0 clients=0
+[WL_PUB] published 44 symbols: ['ADBG', 'AHMA', 'AVXX', 'BMNG', 'CANF', 'CETX', 'CLRO', 'CMBT', 'COIG', 'CORD', 'CRCG', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'PPCB', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+[ENGINE_PUB] STATS published=43,786 dropped=0 clients=0
+[ENGINE_PUB] STATS published=44,394 dropped=0 clients=0
+[ENGINE_PUB] STATS published=45,018 dropped=0 clients=0
+[ENGINE_PUB] STATS published=45,658 dropped=0 clients=0
+[ENGINE_PUB] STATS published=46,258 dropped=0 clients=0
+[ENGINE_PUB] STATS published=46,904 dropped=0 clients=0
+[WL_PUB] published 47 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BMNG', 'CANF', 'CETX', 'CLRO', 'CMBT', 'COIG', 'CORD', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'HODU', 'ICU', 'IREZ', 'JFB', 'MSFX', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'PPCB', 'RAAQ', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] BEZ: ATH $29.1100 (max daily high since 2023-03-28)
+  [ath_cache] CSTE: ATH $6.8100 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=47,510 dropped=0 clients=0
+  [ath_cache] HODU: ATH $34.3800 (max daily high since 2023-03-28)
+[WL_PUB] published 57 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BMNG', 'CANF', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIG', 'CORD', 'CRCA', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'PLTA', 'PLTG', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] CHNU: ATH $28.5200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=48,175 dropped=0 clients=0
+  [ath_cache] CLLS: ATH $5.4300 (max daily high since 2023-03-28)
+  [ath_cache] CRCA: ATH $92.2700 (max daily high since 2023-03-28)
+  [ath_cache] INFH: ATH $16.9700 (max daily high since 2023-03-28)
+[WL_PUB] published 61 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BMNG', 'CANF', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PLTA', 'PLTG', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] KTUP: ATH $67.7100 (max daily high since 2023-03-28)
+  [ath_cache] MSTP: ATH $65.0500 (max daily high since 2023-03-28)
+  [ath_cache] RCAX: ATH $30.8900 (max daily high since 2023-03-28)
+  [ath_cache] SMCX: ATH $149.0400 (max daily high since 2023-03-28)
+  [ath_cache] TENX: ATH $23.3600 (max daily high since 2023-03-28)
+  [ath_cache] CHNU: ATH $28.5200 (max daily high since 2023-03-28)
+  [ath_cache] CONX: ATH $27.4050 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=48,985 dropped=0 clients=0
+  [ath_cache] FRMM: ATH $6.0800 (max daily high since 2023-03-28)
+[WL_PUB] published 61 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USDE', 'WTO']
+  [ath_cache] INFH: ATH $16.9700 (max daily high since 2023-03-28)
+  [ath_cache] MST: ATH $39.3700 (max daily high since 2023-03-28)
+  [ath_cache] ONDL: ATH $57.6800 (max daily high since 2023-03-28)
+  [ath_cache] RCAX: ATH $30.8900 (max daily high since 2023-03-28)
+  [ath_cache] CONX: ATH $27.4050 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=49,870 dropped=0 clients=0
+  [ath_cache] BLSG: ATH $16.3200 (max daily high since 2023-03-28)
+  [ath_cache] FRMM: ATH $6.0800 (max daily high since 2023-03-28)
+[WL_PUB] published 64 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+  [ath_cache] PCSA: ATH $8.7400 (max daily high since 2023-03-28)
+  [ath_cache] USAU: ATH $23.6700 (max daily high since 2023-03-28)
+  [ath_cache] WHLRP: ATH $12.7800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=50,791 dropped=0 clients=0
+[WL_PUB] published 67 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+  [ath_cache] CAST: ATH $14.9600 (max daily high since 2023-03-28)
+  [ath_cache] SMCL: ATH $143.5600 (max daily high since 2023-03-28)
+  [ath_cache] SSK: ATH $39.0200 (max daily high since 2023-03-28)
+  [ath_cache] SMCL: ATH $143.5600 (max daily high since 2023-03-28)
+  [ath_cache] SSK: ATH $39.0200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=51,636 dropped=0 clients=0
+[WL_PUB] published 70 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+  [ath_cache] COIA: ATH $40.0800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=52,623 dropped=0 clients=0
+[WL_PUB] published 72 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+  [ath_cache] CRMT: ATH $128.0800 (max daily high since 2023-03-28)
+  [ath_cache] ETU: ATH $60.3200 (max daily high since 2023-03-28)
+  [ath_cache] COIA: ATH $40.0800 (max daily high since 2023-03-28)
+  [ath_cache] CBRZ: ATH $37.1000 (max daily high since 2023-03-28)
+  [ath_cache] MSTW: ATH $51.2600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=53,657 dropped=0 clients=0
+  [ath_cache] CBRZ: ATH $37.1000 (max daily high since 2023-03-28)
+[WL_PUB] published 75 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=54,664 dropped=0 clients=0
+  [ath_cache] FLYT: ATH $56.9500 (max daily high since 2023-03-28)
+  [ath_cache] IPW: ATH $28.9900 (max daily high since 2023-03-28)
+  [ath_cache] SBTU: ATH $23.3200 (max daily high since 2023-03-28)
+[WL_PUB] published 76 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+  [ath_cache] IPW: ATH $28.9900 (max daily high since 2023-03-28)
+  [ath_cache] PLYX: ATH $42.4300 (max daily high since 2023-03-28)
+  [ath_cache] SBTU: ATH $23.3200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=55,766 dropped=0 clients=0
+[WL_PUB] published 77 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=56,814 dropped=0 clients=0
+[ENGINE_PUB] STATS published=57,864 dropped=0 clients=0
+[ENGINE_PUB] STATS published=58,979 dropped=0 clients=0
+[ENGINE_PUB] STATS published=60,089 dropped=0 clients=0
+[WL_PUB] published 79 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=61,141 dropped=0 clients=0
+  [ath_cache] LUNL: ATH $55.7900 (max daily high since 2023-03-28)
+  [ath_cache] MPG: ATH $13.1200 (max daily high since 2023-03-28)
+[WL_PUB] published 80 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'WHLRP', 'WTO']
+  [ath_cache] ONDG: ATH $17.0000 (max daily high since 2023-03-28)
+  [ath_cache] MPG: ATH $13.1200 (max daily high since 2023-03-28)
+  [ath_cache] UUUG: ATH $29.9900 (max daily high since 2023-03-28)
+  [ath_cache] UUUG: ATH $29.9900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=62,062 dropped=0 clients=0
+[WL_PUB] published 79 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=63,132 dropped=0 clients=0
+[ENGINE_PUB] STATS published=64,210 dropped=0 clients=0
+[WL_PUB] published 81 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'WHLRP', 'WTO']
+  [ath_cache] UMAL: ATH $18.4500 (max daily high since 2023-03-28)
+  [ath_cache] UMAL: ATH $18.4500 (max daily high since 2023-03-28)
+[WL_PUB] published 81 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'WHLRP', 'WTO']
+  [ath_cache] CMMB: ATH $3.6800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=65,237 dropped=0 clients=0
+[ENGINE_PUB] STATS published=66,343 dropped=0 clients=0
+[WL_PUB] published 83 symbols: ['ADBG', 'AHMA', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'WHLRP', 'WTO']
+  [ath_cache] VELL: ATH $46.6700 (max daily high since 2023-03-28)
+  [ath_cache] VELL: ATH $46.6700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=67,374 dropped=0 clients=0
+[WL_PUB] published 85 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=68,514 dropped=0 clients=0
+  [ath_cache] AIRO: ATH $38.7400 (max daily high since 2023-03-28)
+  [ath_cache] VELO: ATH $31.7300 (max daily high since 2023-03-28)
+[WL_PUB] published 87 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WHLRP', 'WTO']
+  [ath_cache] MNDR: ATH $36.7700 (max daily high since 2023-03-28)
+  [ath_cache] PLBL: ATH $12.4800 (max daily high since 2023-03-28)
+  [ath_cache] VELO: ATH $31.7300 (max daily high since 2023-03-28)
+  [ath_cache] PLBL: ATH $12.4800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=69,686 dropped=0 clients=0
+[WL_PUB] published 88 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WHLRP', 'WTO']
+  [ath_cache] RDWU: ATH $59.0600 (max daily high since 2023-03-28)
+  [ath_cache] RDWU: ATH $59.0600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=70,791 dropped=0 clients=0
+[WL_PUB] published 89 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WHLRP', 'WTO']
+  [ath_cache] GLXU: ATH $55.6800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=71,984 dropped=0 clients=0
+  [ath_cache] GLXU: ATH $55.6800 (max daily high since 2023-03-28)
+[WL_PUB] published 90 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] WFCF: ATH $21.1750 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=73,020 dropped=0 clients=0
+[ENGINE_PUB] STATS published=74,236 dropped=0 clients=0
+[WL_PUB] published 92 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] BESS: ATH $6.3900 (max daily high since 2023-03-28)
+  [ath_cache] GMEX: ATH $3.0350 (max daily high since 2023-03-28)
+  [ath_cache] GMEX: ATH $3.0350 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=75,458 dropped=0 clients=0
+[WL_PUB] published 93 symbols: ['ADBG', 'AHMA', 'AIRO', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] ONDU: ATH $29.5500 (max daily high since 2023-03-28)
+  [ath_cache] ONDU: ATH $29.5500 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=76,523 dropped=0 clients=0
+[WL_PUB] published 94 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] AMPU: ATH $20.7200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=77,512 dropped=0 clients=0
+[WL_PUB] published 96 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] SHPH: ATH $6.7900 (max daily high since 2023-03-28)
+  [ath_cache] SMUP: ATH $28.1000 (max daily high since 2023-03-28)
+  [ath_cache] SMUP: ATH $28.1000 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=78,432 dropped=0 clients=0
+[ENGINE_PUB] STATS published=79,439 dropped=0 clients=0
+[WL_PUB] published 97 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=80,547 dropped=0 clients=0
+[WL_PUB] published 97 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] PLRZ: ATH $20.9200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=81,659 dropped=0 clients=0
+[ENGINE_PUB] STATS published=82,763 dropped=0 clients=0
+[WL_PUB] published 98 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=83,874 dropped=0 clients=0
+[WL_PUB] published 97 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=84,980 dropped=0 clients=0
+[ENGINE_PUB] STATS published=86,176 dropped=0 clients=0
+[ENGINE_PUB] STATS published=87,004 dropped=0 clients=0
+[WL_PUB] published 98 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=87,747 dropped=0 clients=0
+[ENGINE_PUB] STATS published=88,863 dropped=0 clients=0
+[WL_PUB] published 99 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] FIGG: ATH $35.3800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=89,971 dropped=0 clients=0
+  [ath_cache] FIGG: ATH $35.3800 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=91,180 dropped=0 clients=0
+[WL_PUB] published 98 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=92,383 dropped=0 clients=0
+[ENGINE_PUB] STATS published=93,499 dropped=0 clients=0
+[ENGINE_PUB] STATS published=94,422 dropped=0 clients=0
+[ENGINE_PUB] STATS published=95,526 dropped=0 clients=0
+[WL_PUB] published 97 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[WL_PUB] published 99 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] EQ: ATH $3.7400 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=96,624 dropped=0 clients=0
+  [ath_cache] EQ: ATH $3.7400 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=97,841 dropped=0 clients=0
+[WL_PUB] published 98 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UNCY', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+[ENGINE_PUB] STATS published=98,963 dropped=0 clients=0
+[WL_PUB] published 101 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SBTU', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSLG', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] UPC: ATH $17.9400 (max daily high since 2023-03-28)
+  [ath_cache] UPC: ATH $17.9400 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=100,071 dropped=0 clients=0
+[ENGINE_PUB] STATS published=101,298 dropped=0 clients=0
+[WL_PUB] published 102 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'PPCB', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO']
+  [ath_cache] TSDD: ATH $91.2850 (max daily high since 2023-03-28)
+  [ath_cache] WBX: ATH $7.6300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=102,556 dropped=0 clients=0
+[ENGINE_PUB] STATS published=103,928 dropped=0 clients=0
+[WL_PUB] published 103 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD']
+  [ath_cache] TSLZ: ATH $60.5300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=105,095 dropped=0 clients=0
+  [ath_cache] XHLD: ATH $9.8700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=106,281 dropped=0 clients=0
+[ENGINE_PUB] STATS published=107,568 dropped=0 clients=0
+[ENGINE_PUB] STATS published=108,855 dropped=0 clients=0
+[WL_PUB] published 104 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LITZ', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD']
+  [ath_cache] LITZ: ATH $29.7200 (max daily high since 2023-03-28)
+  [ath_cache] LITZ: ATH $29.7200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=110,151 dropped=0 clients=0
+[ENGINE_PUB] STATS published=111,047 dropped=0 clients=0
+[ENGINE_PUB] STATS published=112,036 dropped=0 clients=0
+[ENGINE_PUB] STATS published=113,016 dropped=0 clients=0
+[ENGINE_PUB] STATS published=114,094 dropped=0 clients=0
+[ENGINE_PUB] STATS published=115,264 dropped=0 clients=0
+[ENGINE_PUB] STATS published=116,327 dropped=0 clients=0
+[ENGINE_PUB] STATS published=117,401 dropped=0 clients=0
+[ENGINE_PUB] STATS published=118,490 dropped=0 clients=0
+[ENGINE_PUB] STATS published=119,680 dropped=0 clients=0
+[ENGINE_PUB] STATS published=120,868 dropped=0 clients=0
+[ENGINE_PUB] STATS published=121,956 dropped=0 clients=0
+[ENGINE_PUB] STATS published=123,144 dropped=0 clients=0
+[ENGINE_PUB] STATS published=124,341 dropped=0 clients=0
+[WL_PUB] published 105 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LITZ', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] ZSTK: ATH $17.8700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=125,544 dropped=0 clients=0
+  [ath_cache] ZSTK: ATH $17.8700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=126,865 dropped=0 clients=0
+[ENGINE_PUB] STATS published=127,780 dropped=0 clients=0
+[ENGINE_PUB] STATS published=128,992 dropped=0 clients=0
+[ENGINE_PUB] STATS published=130,104 dropped=0 clients=0
+[ENGINE_PUB] STATS published=131,222 dropped=0 clients=0
+[ENGINE_PUB] STATS published=132,426 dropped=0 clients=0
+[ENGINE_PUB] STATS published=133,529 dropped=0 clients=0
+[ENGINE_PUB] STATS published=134,621 dropped=0 clients=0
+[ENGINE_PUB] STATS published=135,713 dropped=0 clients=0
+[ENGINE_PUB] STATS published=136,913 dropped=0 clients=0
+[WL_PUB] published 105 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] TSXD: ATH $22.9700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=138,104 dropped=0 clients=0
+[WL_PUB] published 106 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LITZ', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=139,182 dropped=0 clients=0
+[ENGINE_PUB] STATS published=140,360 dropped=0 clients=0
+[WL_PUB] published 105 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=141,439 dropped=0 clients=0
+[ENGINE_PUB] STATS published=142,615 dropped=0 clients=0
+[WL_PUB] published 106 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LITZ', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=143,696 dropped=0 clients=0
+[ENGINE_PUB] STATS published=144,492 dropped=0 clients=0
+[ENGINE_PUB] STATS published=145,185 dropped=0 clients=0
+[ENGINE_PUB] STATS published=146,073 dropped=0 clients=0
+[ENGINE_PUB] STATS published=147,056 dropped=0 clients=0
+[ENGINE_PUB] STATS published=148,134 dropped=0 clients=0
+[WL_PUB] published 105 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=149,110 dropped=0 clients=0
+[ENGINE_PUB] STATS published=150,190 dropped=0 clients=0
+[ENGINE_PUB] STATS published=151,378 dropped=0 clients=0
+[ENGINE_PUB] STATS published=152,557 dropped=0 clients=0
+[ENGINE_PUB] STATS published=153,537 dropped=0 clients=0
+[ENGINE_PUB] STATS published=154,725 dropped=0 clients=0
+[ENGINE_PUB] STATS published=155,820 dropped=0 clients=0
+[ENGINE_PUB] STATS published=156,924 dropped=0 clients=0
+[ENGINE_PUB] STATS published=158,136 dropped=0 clients=0
+[ENGINE_PUB] STATS published=159,343 dropped=0 clients=0
+[ENGINE_PUB] STATS published=160,252 dropped=0 clients=0
+[ENGINE_PUB] STATS published=161,343 dropped=0 clients=0
+[WL_PUB] published 106 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] OTLY: ATH $18.8300 (max daily high since 2023-03-28)
+  [ath_cache] OTLY: ATH $18.8300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=162,517 dropped=0 clients=0
+[ENGINE_PUB] STATS published=163,689 dropped=0 clients=0
+[ENGINE_PUB] STATS published=164,865 dropped=0 clients=0
+[ENGINE_PUB] STATS published=166,044 dropped=0 clients=0
+[ENGINE_PUB] STATS published=167,225 dropped=0 clients=0
+[ENGINE_PUB] STATS published=168,389 dropped=0 clients=0
+[ENGINE_PUB] STATS published=169,543 dropped=0 clients=0
+[ENGINE_PUB] STATS published=170,804 dropped=0 clients=0
+[ENGINE_PUB] STATS published=171,887 dropped=0 clients=0
+[ENGINE_PUB] STATS published=173,161 dropped=0 clients=0
+[ENGINE_PUB] STATS published=174,424 dropped=0 clients=0
+[ENGINE_PUB] STATS published=175,768 dropped=0 clients=0
+[ENGINE_PUB] STATS published=176,922 dropped=0 clients=0
+[ENGINE_PUB] STATS published=177,885 dropped=0 clients=0
+[WL_PUB] published 107 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] CVKD: ATH $22.2950 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=178,968 dropped=0 clients=0
+[ENGINE_PUB] STATS published=180,057 dropped=0 clients=0
+[ENGINE_PUB] STATS published=181,244 dropped=0 clients=0
+[ENGINE_PUB] STATS published=182,320 dropped=0 clients=0
+[WL_PUB] published 108 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] SLBT: ATH $22.1900 (max daily high since 2023-03-28)
+  [ath_cache] SLBT: ATH $22.1900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=183,388 dropped=0 clients=0
+[ENGINE_PUB] STATS published=184,569 dropped=0 clients=0
+[ENGINE_PUB] STATS published=185,765 dropped=0 clients=0
+[ENGINE_PUB] STATS published=186,953 dropped=0 clients=0
+[ENGINE_PUB] STATS published=188,148 dropped=0 clients=0
+[WL_PUB] published 109 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] DRIO: ATH $17.5700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=189,347 dropped=0 clients=0
+  [ath_cache] DRIO: ATH $17.5700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=190,647 dropped=0 clients=0
+[ENGINE_PUB] STATS published=191,947 dropped=0 clients=0
+[ENGINE_PUB] STATS published=193,244 dropped=0 clients=0
+[ENGINE_PUB] STATS published=194,432 dropped=0 clients=0
+[ENGINE_PUB] STATS published=195,515 dropped=0 clients=0
+[ENGINE_PUB] STATS published=196,786 dropped=0 clients=0
+[ENGINE_PUB] STATS published=198,030 dropped=0 clients=0
+[ENGINE_PUB] STATS published=199,281 dropped=0 clients=0
+[ENGINE_PUB] STATS published=200,529 dropped=0 clients=0
+[ENGINE_PUB] STATS published=201,590 dropped=0 clients=0
+[WL_PUB] published 110 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMBT', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JEM', 'JFB', 'KTUP', 'LUNL', 'MNDR', 'MPG', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'ONDU', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SMU', 'SMUP', 'SNDQ', 'SOFX', 'SOLZ', 'SSK', 'TENX', 'TGL', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] SCYX: ATH $5.5250 (max daily high since 2023-03-28)
+  [ath_cache] SCYX: ATH $5.5250 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=202,372 dropped=0 clients=0
+[WL_PUB] published 91 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'EHGO', 'EQ', 'ETHT', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SMCL', 'SMCX', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=202,471 dropped=0 clients=0
+[WL_PUB] published 97 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=203,405 dropped=0 clients=0
+[ENGINE_PUB] STATS published=204,443 dropped=0 clients=0
+[WL_PUB] published 98 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=205,587 dropped=0 clients=0
+[WL_PUB] published 99 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=206,727 dropped=0 clients=0
+[WL_PUB] published 100 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'BSET', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] BSET: ATH $19.5500 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=207,862 dropped=0 clients=0
+  [ath_cache] BSET: ATH $19.5500 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=209,005 dropped=0 clients=0
+[ENGINE_PUB] STATS published=209,973 dropped=0 clients=0
+[ENGINE_PUB] STATS published=210,959 dropped=0 clients=0
+[ENGINE_PUB] STATS published=211,869 dropped=0 clients=0
+[ENGINE_PUB] STATS published=212,954 dropped=0 clients=0
+[ENGINE_PUB] STATS published=213,942 dropped=0 clients=0
+[ENGINE_PUB] STATS published=215,010 dropped=0 clients=0
+[WL_PUB] published 101 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'BSET', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] CODX: ATH $13.5100 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=215,910 dropped=0 clients=0
+[ENGINE_PUB] STATS published=216,895 dropped=0 clients=0
+[ENGINE_PUB] STATS published=217,963 dropped=0 clients=0
+[ENGINE_PUB] STATS published=219,027 dropped=0 clients=0
+[ENGINE_PUB] STATS published=220,004 dropped=0 clients=0
+[ENGINE_PUB] STATS published=220,893 dropped=0 clients=0
+[ENGINE_PUB] STATS published=221,950 dropped=0 clients=0
+[ENGINE_PUB] STATS published=223,025 dropped=0 clients=0
+[ENGINE_PUB] STATS published=224,093 dropped=0 clients=0
+[ENGINE_PUB] STATS published=225,181 dropped=0 clients=0
+[ENGINE_PUB] STATS published=226,182 dropped=0 clients=0
+[WL_PUB] published 100 symbols: ['ADBG', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=227,279 dropped=0 clients=0
+[ENGINE_PUB] STATS published=228,277 dropped=0 clients=0
+[ENGINE_PUB] STATS published=229,448 dropped=0 clients=0
+[ENGINE_PUB] STATS published=230,549 dropped=0 clients=0
+[WL_PUB] published 101 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] ADBU: ATH $31.1500 (max daily high since 2023-03-28)
+[WL_PUB] published 102 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HIBS', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=231,670 dropped=0 clients=0
+  [ath_cache] HIBS: ATH $63.0300 (max daily high since 2023-03-28)
+  [ath_cache] HIBS: ATH $63.0300 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=232,707 dropped=0 clients=0
+[WL_PUB] published 101 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=233,918 dropped=0 clients=0
+[ENGINE_PUB] STATS published=235,114 dropped=0 clients=0
+[ENGINE_PUB] STATS published=236,218 dropped=0 clients=0
+[ENGINE_PUB] STATS published=237,309 dropped=0 clients=0
+[ENGINE_PUB] STATS published=238,564 dropped=0 clients=0
+[WL_PUB] published 102 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] RGTZ: ATH $38.9100 (max daily high since 2023-03-28)
+  [ath_cache] RGTZ: ATH $38.9100 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=239,748 dropped=0 clients=0
+[WL_PUB] published 103 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] ISUL: ATH $40.1600 (max daily high since 2023-03-28)
+  [ath_cache] ISUL: ATH $40.1600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=240,681 dropped=0 clients=0
+[ENGINE_PUB] STATS published=241,526 dropped=0 clients=0
+[WL_PUB] published 105 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] NFLU: ATH $73.9600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=242,553 dropped=0 clients=0
+  [ath_cache] SSG: ATH $45.3900 (max daily high since 2023-03-28)
+[WL_PUB] published 107 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=243,613 dropped=0 clients=0
+  [ath_cache] IONZ: ATH $39.0500 (max daily high since 2023-03-28)
+  [ath_cache] TECS: ATH $101.7200 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=244,695 dropped=0 clients=0
+[ENGINE_PUB] STATS published=245,900 dropped=0 clients=0
+[ENGINE_PUB] STATS published=247,112 dropped=0 clients=0
+[ENGINE_PUB] STATS published=248,324 dropped=0 clients=0
+[ENGINE_PUB] STATS published=249,528 dropped=0 clients=0
+[ENGINE_PUB] STATS published=250,834 dropped=0 clients=0
+[ENGINE_PUB] STATS published=252,026 dropped=0 clients=0
+[ENGINE_PUB] STATS published=253,213 dropped=0 clients=0
+[ENGINE_PUB] STATS published=254,401 dropped=0 clients=0
+[ENGINE_PUB] STATS published=255,688 dropped=0 clients=0
+[WL_PUB] published 108 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] EXYN: ATH $7.1600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=256,987 dropped=0 clients=0
+[ENGINE_PUB] STATS published=258,287 dropped=0 clients=0
+[ENGINE_PUB] STATS published=259,377 dropped=0 clients=0
+[ENGINE_PUB] STATS published=260,565 dropped=0 clients=0
+[ENGINE_PUB] STATS published=261,757 dropped=0 clients=0
+[ENGINE_PUB] STATS published=262,954 dropped=0 clients=0
+[ENGINE_PUB] STATS published=264,252 dropped=0 clients=0
+[ENGINE_PUB] STATS published=265,428 dropped=0 clients=0
+[ENGINE_PUB] STATS published=266,604 dropped=0 clients=0
+[ENGINE_PUB] STATS published=267,860 dropped=0 clients=0
+[ENGINE_PUB] STATS published=269,178 dropped=0 clients=0
+[ENGINE_PUB] STATS published=270,306 dropped=0 clients=0
+[ENGINE_PUB] STATS published=271,518 dropped=0 clients=0
+[ENGINE_PUB] STATS published=272,643 dropped=0 clients=0
+[ENGINE_PUB] STATS published=273,876 dropped=0 clients=0
+[ENGINE_PUB] STATS published=275,101 dropped=0 clients=0
+[ENGINE_PUB] STATS published=276,335 dropped=0 clients=0
+[ENGINE_PUB] STATS published=277,093 dropped=0 clients=0
+[ENGINE_PUB] STATS published=277,943 dropped=0 clients=0
+[ENGINE_PUB] STATS published=278,894 dropped=0 clients=0
+[ENGINE_PUB] STATS published=279,957 dropped=0 clients=0
+[ENGINE_PUB] STATS published=281,028 dropped=0 clients=0
+[ENGINE_PUB] STATS published=281,820 dropped=0 clients=0
+[ENGINE_PUB] STATS published=283,008 dropped=0 clients=0
+[ENGINE_PUB] STATS published=283,996 dropped=0 clients=0
+[ENGINE_PUB] STATS published=285,084 dropped=0 clients=0
+[ENGINE_PUB] STATS published=286,158 dropped=0 clients=0
+[ENGINE_PUB] STATS published=287,020 dropped=0 clients=0
+[ENGINE_PUB] STATS published=288,074 dropped=0 clients=0
+[ENGINE_PUB] STATS published=289,018 dropped=0 clients=0
+[WL_PUB] published 109 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] BMGL: ATH $9.3600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=290,161 dropped=0 clients=0
+[ENGINE_PUB] STATS published=291,006 dropped=0 clients=0
+[WL_PUB] published 110 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] ELOX: ATH $16.5000 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=291,848 dropped=0 clients=0
+[ENGINE_PUB] STATS published=292,692 dropped=0 clients=0
+[ENGINE_PUB] STATS published=293,749 dropped=0 clients=0
+[ENGINE_PUB] STATS published=294,816 dropped=0 clients=0
+[ENGINE_PUB] STATS published=295,795 dropped=0 clients=0
+[ENGINE_PUB] STATS published=296,970 dropped=0 clients=0
+[ENGINE_PUB] STATS published=297,833 dropped=0 clients=0
+[ENGINE_PUB] STATS published=298,881 dropped=0 clients=0
+[ENGINE_PUB] STATS published=299,903 dropped=0 clients=0
+[ENGINE_PUB] STATS published=300,922 dropped=0 clients=0
+[ENGINE_PUB] STATS published=301,931 dropped=0 clients=0
+[ENGINE_PUB] STATS published=303,023 dropped=0 clients=0
+[ENGINE_PUB] STATS published=303,925 dropped=0 clients=0
+[ENGINE_PUB] STATS published=305,013 dropped=0 clients=0
+[ENGINE_PUB] STATS published=306,104 dropped=0 clients=0
+[WL_PUB] published 111 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] VCIG: ATH $33.0700 (max daily high since 2023-03-28)
+  [ath_cache] VCIG: ATH $33.0700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=307,027 dropped=0 clients=0
+[ENGINE_PUB] STATS published=307,950 dropped=0 clients=0
+[ENGINE_PUB] STATS published=308,962 dropped=0 clients=0
+[ENGINE_PUB] STATS published=309,882 dropped=0 clients=0
+[ENGINE_PUB] STATS published=310,796 dropped=0 clients=0
+[WL_PUB] published 112 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] VRAX: ATH $8.8900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=311,745 dropped=0 clients=0
+[ENGINE_PUB] STATS published=312,794 dropped=0 clients=0
+[ENGINE_PUB] STATS published=313,938 dropped=0 clients=0
+[ENGINE_PUB] STATS published=315,000 dropped=0 clients=0
+[ENGINE_PUB] STATS published=316,067 dropped=0 clients=0
+[ENGINE_PUB] STATS published=317,115 dropped=0 clients=0
+[ENGINE_PUB] STATS published=318,156 dropped=0 clients=0
+[ENGINE_PUB] STATS published=319,208 dropped=0 clients=0
+[ENGINE_PUB] STATS published=320,372 dropped=0 clients=0
+[ENGINE_PUB] STATS published=321,430 dropped=0 clients=0
+[ENGINE_PUB] STATS published=322,380 dropped=0 clients=0
+[ENGINE_PUB] STATS published=323,426 dropped=0 clients=0
+[ENGINE_PUB] STATS published=324,570 dropped=0 clients=0
+[ENGINE_PUB] STATS published=325,700 dropped=0 clients=0
+[ENGINE_PUB] STATS published=326,730 dropped=0 clients=0
+[ENGINE_PUB] STATS published=327,777 dropped=0 clients=0
+[WL_PUB] published 113 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IPW', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=328,929 dropped=0 clients=0
+[ENGINE_PUB] STATS published=330,100 dropped=0 clients=0
+[ENGINE_PUB] STATS published=331,283 dropped=0 clients=0
+[ENGINE_PUB] STATS published=332,383 dropped=0 clients=0
+[WL_PUB] published 112 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=333,380 dropped=0 clients=0
+[ENGINE_PUB] STATS published=334,560 dropped=0 clients=0
+[ENGINE_PUB] STATS published=335,750 dropped=0 clients=0
+[ENGINE_PUB] STATS published=336,933 dropped=0 clients=0
+[ENGINE_PUB] STATS published=337,896 dropped=0 clients=0
+[ENGINE_PUB] STATS published=338,567 dropped=0 clients=0
+[ENGINE_PUB] STATS published=339,338 dropped=0 clients=0
+[ENGINE_PUB] STATS published=340,281 dropped=0 clients=0
+[ENGINE_PUB] STATS published=341,125 dropped=0 clients=0
+[ENGINE_PUB] STATS published=342,073 dropped=0 clients=0
+[ENGINE_PUB] STATS published=342,925 dropped=0 clients=0
+[ENGINE_PUB] STATS published=343,975 dropped=0 clients=0
+[ENGINE_PUB] STATS published=344,906 dropped=0 clients=0
+[ENGINE_PUB] STATS published=345,930 dropped=0 clients=0
+[WL_PUB] published 111 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=346,868 dropped=0 clients=0
+[WL_PUB] published 112 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=347,705 dropped=0 clients=0
+[ENGINE_PUB] STATS published=348,831 dropped=0 clients=0
+[ENGINE_PUB] STATS published=349,668 dropped=0 clients=0
+[ENGINE_PUB] STATS published=350,775 dropped=0 clients=0
+[ENGINE_PUB] STATS published=351,528 dropped=0 clients=0
+[ENGINE_PUB] STATS published=352,300 dropped=0 clients=0
+[ENGINE_PUB] STATS published=353,373 dropped=0 clients=0
+[ENGINE_PUB] STATS published=354,355 dropped=0 clients=0
+[ENGINE_PUB] STATS published=355,323 dropped=0 clients=0
+[ENGINE_PUB] STATS published=356,300 dropped=0 clients=0
+[ENGINE_PUB] STATS published=357,385 dropped=0 clients=0
+[ENGINE_PUB] STATS published=358,372 dropped=0 clients=0
+[ENGINE_PUB] STATS published=359,561 dropped=0 clients=0
+[ENGINE_PUB] STATS published=360,662 dropped=0 clients=0
+[ENGINE_PUB] STATS published=361,639 dropped=0 clients=0
+[ENGINE_PUB] STATS published=362,717 dropped=0 clients=0
+[ENGINE_PUB] STATS published=363,792 dropped=0 clients=0
+[WL_PUB] published 111 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'HODU', 'ICU', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=364,841 dropped=0 clients=0
+[WL_PUB] published 112 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] GYRE: ATH $30.1000 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=365,961 dropped=0 clients=0
+[ENGINE_PUB] STATS published=366,616 dropped=0 clients=0
+[ENGINE_PUB] STATS published=367,448 dropped=0 clients=0
+[ENGINE_PUB] STATS published=368,378 dropped=0 clients=0
+[ENGINE_PUB] STATS published=369,312 dropped=0 clients=0
+[WL_PUB] published 113 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] IDAI: ATH $8.9600 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=370,335 dropped=0 clients=0
+  [ath_cache] IDAI: ATH $8.9600 (max daily high since 2023-03-28)
+[WL_PUB] published 114 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] CULP: ATH $6.7650 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=371,274 dropped=0 clients=0
+  [ath_cache] CULP: ATH $6.7650 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=372,315 dropped=0 clients=0
+[ENGINE_PUB] STATS published=373,354 dropped=0 clients=0
+[ENGINE_PUB] STATS published=374,400 dropped=0 clients=0
+[ENGINE_PUB] STATS published=375,455 dropped=0 clients=0
+[ENGINE_PUB] STATS published=376,500 dropped=0 clients=0
+[ENGINE_PUB] STATS published=377,452 dropped=0 clients=0
+[ENGINE_PUB] STATS published=378,618 dropped=0 clients=0
+[ENGINE_PUB] STATS published=379,621 dropped=0 clients=0
+[ENGINE_PUB] STATS published=380,806 dropped=0 clients=0
+[ENGINE_PUB] STATS published=381,694 dropped=0 clients=0
+[ENGINE_PUB] STATS published=382,684 dropped=0 clients=0
+[ENGINE_PUB] STATS published=383,779 dropped=0 clients=0
+[ENGINE_PUB] STATS published=384,799 dropped=0 clients=0
+[ENGINE_PUB] STATS published=385,924 dropped=0 clients=0
+[ENGINE_PUB] STATS published=387,144 dropped=0 clients=0
+[ENGINE_PUB] STATS published=388,255 dropped=0 clients=0
+[ENGINE_PUB] STATS published=389,348 dropped=0 clients=0
+[ENGINE_PUB] STATS published=390,625 dropped=0 clients=0
+[ENGINE_PUB] STATS published=391,703 dropped=0 clients=0
+[ENGINE_PUB] STATS published=392,706 dropped=0 clients=0
+[ENGINE_PUB] STATS published=393,910 dropped=0 clients=0
+[ENGINE_PUB] STATS published=395,111 dropped=0 clients=0
+[WL_PUB] published 115 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=396,331 dropped=0 clients=0
+[ENGINE_PUB] STATS published=397,555 dropped=0 clients=0
+[ENGINE_PUB] STATS published=398,473 dropped=0 clients=0
+[ENGINE_PUB] STATS published=399,392 dropped=0 clients=0
+[ENGINE_PUB] STATS published=400,509 dropped=0 clients=0
+[ENGINE_PUB] STATS published=401,519 dropped=0 clients=0
+[ENGINE_PUB] STATS published=402,614 dropped=0 clients=0
+[ENGINE_PUB] STATS published=403,602 dropped=0 clients=0
+[ENGINE_PUB] STATS published=404,690 dropped=0 clients=0
+[ENGINE_PUB] STATS published=405,890 dropped=0 clients=0
+[ENGINE_PUB] STATS published=407,001 dropped=0 clients=0
+[ENGINE_PUB] STATS published=408,126 dropped=0 clients=0
+[ENGINE_PUB] STATS published=409,266 dropped=0 clients=0
+[ENGINE_PUB] STATS published=410,493 dropped=0 clients=0
+[ENGINE_PUB] STATS published=411,705 dropped=0 clients=0
+[ENGINE_PUB] STATS published=413,029 dropped=0 clients=0
+[ENGINE_PUB] STATS published=414,040 dropped=0 clients=0
+[WL_PUB] published 114 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=415,126 dropped=0 clients=0
+[WL_PUB] published 115 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=416,120 dropped=0 clients=0
+[ENGINE_PUB] STATS published=417,341 dropped=0 clients=0
+[ENGINE_PUB] STATS published=418,464 dropped=0 clients=0
+[ENGINE_PUB] STATS published=419,681 dropped=0 clients=0
+[WL_PUB] published 115 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] SBMT: ATH $11.0500 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=420,772 dropped=0 clients=0
+[ENGINE_PUB] STATS published=421,977 dropped=0 clients=0
+[WL_PUB] published 116 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=423,085 dropped=0 clients=0
+[ENGINE_PUB] STATS published=424,315 dropped=0 clients=0
+[ENGINE_PUB] STATS published=425,548 dropped=0 clients=0
+[ENGINE_PUB] STATS published=426,698 dropped=0 clients=0
+[ENGINE_PUB] STATS published=427,945 dropped=0 clients=0
+[ENGINE_PUB] STATS published=429,201 dropped=0 clients=0
+[WL_PUB] published 115 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=430,368 dropped=0 clients=0
+[WL_PUB] published 116 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=431,644 dropped=0 clients=0
+[ENGINE_PUB] STATS published=432,292 dropped=0 clients=0
+[ENGINE_PUB] STATS published=433,372 dropped=0 clients=0
+[ENGINE_PUB] STATS published=434,452 dropped=0 clients=0
+[ENGINE_PUB] STATS published=435,625 dropped=0 clients=0
+[ENGINE_PUB] STATS published=436,579 dropped=0 clients=0
+[WL_PUB] published 117 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'EHGO', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] CCEL: ATH $9.4900 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=437,762 dropped=0 clients=0
+[ENGINE_PUB] STATS published=438,842 dropped=0 clients=0
+[ENGINE_PUB] STATS published=440,126 dropped=0 clients=0
+[ENGINE_PUB] STATS published=441,405 dropped=0 clients=0
+[ENGINE_PUB] STATS published=442,467 dropped=0 clients=0
+[ENGINE_PUB] STATS published=443,622 dropped=0 clients=0
+[ENGINE_PUB] STATS published=444,773 dropped=0 clients=0
+[ENGINE_PUB] STATS published=446,019 dropped=0 clients=0
+[ENGINE_PUB] STATS published=447,162 dropped=0 clients=0
+[ENGINE_PUB] STATS published=448,289 dropped=0 clients=0
+[ENGINE_PUB] STATS published=449,310 dropped=0 clients=0
+[ENGINE_PUB] STATS published=450,423 dropped=0 clients=0
+[ENGINE_PUB] STATS published=451,638 dropped=0 clients=0
+[ENGINE_PUB] STATS published=452,876 dropped=0 clients=0
+[ENGINE_PUB] STATS published=454,021 dropped=0 clients=0
+[ENGINE_PUB] STATS published=455,165 dropped=0 clients=0
+[ENGINE_PUB] STATS published=456,310 dropped=0 clients=0
+[ENGINE_PUB] STATS published=457,570 dropped=0 clients=0
+[ENGINE_PUB] STATS published=458,737 dropped=0 clients=0
+[ENGINE_PUB] STATS published=459,903 dropped=0 clients=0
+[ENGINE_PUB] STATS published=461,077 dropped=0 clients=0
+[ENGINE_PUB] STATS published=462,375 dropped=0 clients=0
+[ENGINE_PUB] STATS published=463,695 dropped=0 clients=0
+[ENGINE_PUB] STATS published=464,900 dropped=0 clients=0
+[ENGINE_PUB] STATS published=466,144 dropped=0 clients=0
+[ENGINE_PUB] STATS published=467,179 dropped=0 clients=0
+[ENGINE_PUB] STATS published=468,559 dropped=0 clients=0
+[ENGINE_PUB] STATS published=470,054 dropped=0 clients=0
+[ENGINE_PUB] STATS published=471,549 dropped=0 clients=0
+[ENGINE_PUB] STATS published=472,929 dropped=0 clients=0
+[ENGINE_PUB] STATS published=474,424 dropped=0 clients=0
+[ENGINE_PUB] STATS published=476,034 dropped=0 clients=0
+[WL_PUB] published 116 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=477,522 dropped=0 clients=0
+[ENGINE_PUB] STATS published=479,004 dropped=0 clients=0
+[ENGINE_PUB] STATS published=480,273 dropped=0 clients=0
+[ENGINE_PUB] STATS published=481,482 dropped=0 clients=0
+[ENGINE_PUB] STATS published=482,616 dropped=0 clients=0
+[ENGINE_PUB] STATS published=483,734 dropped=0 clients=0
+[ENGINE_PUB] STATS published=484,927 dropped=0 clients=0
+[ENGINE_PUB] STATS published=485,948 dropped=0 clients=0
+[ENGINE_PUB] STATS published=486,968 dropped=0 clients=0
+[ENGINE_PUB] STATS published=488,168 dropped=0 clients=0
+[ENGINE_PUB] STATS published=489,264 dropped=0 clients=0
+[ENGINE_PUB] STATS published=490,258 dropped=0 clients=0
+[ENGINE_PUB] STATS published=491,050 dropped=0 clients=0
+[ENGINE_PUB] STATS published=491,910 dropped=0 clients=0
+[ENGINE_PUB] STATS published=492,701 dropped=0 clients=0
+[ENGINE_PUB] STATS published=493,481 dropped=0 clients=0
+[ENGINE_PUB] STATS published=494,313 dropped=0 clients=0
+[ENGINE_PUB] STATS published=495,064 dropped=0 clients=0
+[ENGINE_PUB] STATS published=495,748 dropped=0 clients=0
+[ENGINE_PUB] STATS published=496,452 dropped=0 clients=0
+[ENGINE_PUB] STATS published=497,230 dropped=0 clients=0
+[ENGINE_PUB] STATS published=498,056 dropped=0 clients=0
+[ENGINE_PUB] STATS published=498,739 dropped=0 clients=0
+[ENGINE_PUB] STATS published=499,307 dropped=0 clients=0
+[ENGINE_PUB] STATS published=499,917 dropped=0 clients=0
+[ENGINE_PUB] STATS published=500,530 dropped=0 clients=0
+[ENGINE_PUB] STATS published=501,216 dropped=0 clients=0
+[ENGINE_PUB] STATS published=501,847 dropped=0 clients=0
+[ENGINE_PUB] STATS published=502,600 dropped=0 clients=0
+[ENGINE_PUB] STATS published=503,313 dropped=0 clients=0
+[ENGINE_PUB] STATS published=504,092 dropped=0 clients=0
+[ENGINE_PUB] STATS published=504,815 dropped=0 clients=0
+[ENGINE_PUB] STATS published=505,571 dropped=0 clients=0
+[ENGINE_PUB] STATS published=506,290 dropped=0 clients=0
+[ENGINE_PUB] STATS published=507,084 dropped=0 clients=0
+[ENGINE_PUB] STATS published=507,817 dropped=0 clients=0
+[ENGINE_PUB] STATS published=508,573 dropped=0 clients=0
+[ENGINE_PUB] STATS published=509,331 dropped=0 clients=0
+[ENGINE_PUB] STATS published=509,995 dropped=0 clients=0
+[ENGINE_PUB] STATS published=510,714 dropped=0 clients=0
+[ENGINE_PUB] STATS published=511,338 dropped=0 clients=0
+[ENGINE_PUB] STATS published=512,035 dropped=0 clients=0
+[ENGINE_PUB] STATS published=512,691 dropped=0 clients=0
+[ENGINE_PUB] STATS published=513,371 dropped=0 clients=0
+[ENGINE_PUB] STATS published=514,097 dropped=0 clients=0
+[ENGINE_PUB] STATS published=514,811 dropped=0 clients=0
+[ENGINE_PUB] STATS published=515,490 dropped=0 clients=0
+[ENGINE_PUB] STATS published=516,210 dropped=0 clients=0
+[ENGINE_PUB] STATS published=516,914 dropped=0 clients=0
+[ENGINE_PUB] STATS published=517,684 dropped=0 clients=0
+[ENGINE_PUB] STATS published=518,431 dropped=0 clients=0
+[ENGINE_PUB] STATS published=519,109 dropped=0 clients=0
+[WL_PUB] published 117 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'LHSW', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=519,847 dropped=0 clients=0
+  [ath_cache] LHSW: ATH $8.1700 (max daily high since 2023-03-28)
+  [ath_cache] LHSW: ATH $8.1700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=520,521 dropped=0 clients=0
+[ENGINE_PUB] STATS published=521,251 dropped=0 clients=0
+[ENGINE_PUB] STATS published=521,922 dropped=0 clients=0
+[ENGINE_PUB] STATS published=522,614 dropped=0 clients=0
+[ENGINE_PUB] STATS published=523,326 dropped=0 clients=0
+[ENGINE_PUB] STATS published=523,977 dropped=0 clients=0
+[ENGINE_PUB] STATS published=524,588 dropped=0 clients=0
+[ENGINE_PUB] STATS published=525,260 dropped=0 clients=0
+[ENGINE_PUB] STATS published=525,908 dropped=0 clients=0
+[ENGINE_PUB] STATS published=526,473 dropped=0 clients=0
+[ENGINE_PUB] STATS published=526,999 dropped=0 clients=0
+[ENGINE_PUB] STATS published=527,594 dropped=0 clients=0
+[ENGINE_PUB] STATS published=528,186 dropped=0 clients=0
+[ENGINE_PUB] STATS published=528,795 dropped=0 clients=0
+[ENGINE_PUB] STATS published=529,354 dropped=0 clients=0
+[ENGINE_PUB] STATS published=529,984 dropped=0 clients=0
+[ENGINE_PUB] STATS published=530,585 dropped=0 clients=0
+[ENGINE_PUB] STATS published=531,243 dropped=0 clients=0
+[ENGINE_PUB] STATS published=531,925 dropped=0 clients=0
+[ENGINE_PUB] STATS published=532,553 dropped=0 clients=0
+[ENGINE_PUB] STATS published=533,249 dropped=0 clients=0
+[ENGINE_PUB] STATS published=533,912 dropped=0 clients=0
+[ENGINE_PUB] STATS published=534,598 dropped=0 clients=0
+[ENGINE_PUB] STATS published=535,266 dropped=0 clients=0
+[WL_PUB] published 116 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=536,000 dropped=0 clients=0
+[ENGINE_PUB] STATS published=536,740 dropped=0 clients=0
+[ENGINE_PUB] STATS published=537,413 dropped=0 clients=0
+[ENGINE_PUB] STATS published=538,129 dropped=0 clients=0
+[ENGINE_PUB] STATS published=538,778 dropped=0 clients=0
+[ENGINE_PUB] STATS published=539,478 dropped=0 clients=0
+[ENGINE_PUB] STATS published=540,093 dropped=0 clients=0
+[ENGINE_PUB] STATS published=540,696 dropped=0 clients=0
+[ENGINE_PUB] STATS published=541,249 dropped=0 clients=0
+[ENGINE_PUB] STATS published=541,756 dropped=0 clients=0
+[ENGINE_PUB] STATS published=542,306 dropped=0 clients=0
+[ENGINE_PUB] STATS published=542,876 dropped=0 clients=0
+[ENGINE_PUB] STATS published=543,443 dropped=0 clients=0
+[ENGINE_PUB] STATS published=544,049 dropped=0 clients=0
+[ENGINE_PUB] STATS published=544,613 dropped=0 clients=0
+[WL_PUB] published 117 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RAYA', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+  [ath_cache] RAYA: ATH $7.0700 (max daily high since 2023-03-28)
+[ENGINE_PUB] STATS published=545,251 dropped=0 clients=0
+[ENGINE_PUB] STATS published=545,915 dropped=0 clients=0
+[ENGINE_PUB] STATS published=546,568 dropped=0 clients=0
+[ENGINE_PUB] STATS published=547,284 dropped=0 clients=0
+[ENGINE_PUB] STATS published=547,967 dropped=0 clients=0
+[ENGINE_PUB] STATS published=548,680 dropped=0 clients=0
+[ENGINE_PUB] STATS published=549,351 dropped=0 clients=0
+[ENGINE_PUB] STATS published=549,957 dropped=0 clients=0
+[ENGINE_PUB] STATS published=550,650 dropped=0 clients=0
+[ENGINE_PUB] STATS published=551,301 dropped=0 clients=0
+[ENGINE_PUB] STATS published=552,019 dropped=0 clients=0
+[ENGINE_PUB] STATS published=552,734 dropped=0 clients=0
+[ENGINE_PUB] STATS published=553,385 dropped=0 clients=0
+[ENGINE_PUB] STATS published=554,107 dropped=0 clients=0
+[ENGINE_PUB] STATS published=554,806 dropped=0 clients=0
+[ENGINE_PUB] STATS published=555,567 dropped=0 clients=0
+[ENGINE_PUB] STATS published=556,288 dropped=0 clients=0
+[ENGINE_PUB] STATS published=557,079 dropped=0 clients=0
+[ENGINE_PUB] STATS published=557,875 dropped=0 clients=0
+[ENGINE_PUB] STATS published=558,598 dropped=0 clients=0
+[ENGINE_PUB] STATS published=559,304 dropped=0 clients=0
+[ENGINE_PUB] STATS published=560,048 dropped=0 clients=0
+[ENGINE_PUB] STATS published=560,706 dropped=0 clients=0
+[ENGINE_PUB] STATS published=561,405 dropped=0 clients=0
+[ENGINE_PUB] STATS published=562,071 dropped=0 clients=0
+[ENGINE_PUB] STATS published=562,761 dropped=0 clients=0
+[ENGINE_PUB] STATS published=563,460 dropped=0 clients=0
+[ENGINE_PUB] STATS published=564,095 dropped=0 clients=0
+[ENGINE_PUB] STATS published=564,719 dropped=0 clients=0
+[ENGINE_PUB] STATS published=565,393 dropped=0 clients=0
+[WL_PUB] published 118 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'LHSW', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RAYA', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[WL_PUB] published 117 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RAYA', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=566,020 dropped=0 clients=0
+[ENGINE_PUB] STATS published=566,682 dropped=0 clients=0
+[ENGINE_PUB] STATS published=567,379 dropped=0 clients=0
+[ENGINE_PUB] STATS published=568,099 dropped=0 clients=0
+[ENGINE_PUB] STATS published=568,749 dropped=0 clients=0
+[ENGINE_PUB] STATS published=569,376 dropped=0 clients=0
+[ENGINE_PUB] STATS published=570,074 dropped=0 clients=0
+[ENGINE_PUB] STATS published=570,705 dropped=0 clients=0
+[ENGINE_PUB] STATS published=571,391 dropped=0 clients=0
+[ENGINE_PUB] STATS published=572,063 dropped=0 clients=0
+[ENGINE_PUB] STATS published=572,687 dropped=0 clients=0
+[ENGINE_PUB] STATS published=573,365 dropped=0 clients=0
+[ENGINE_PUB] STATS published=574,020 dropped=0 clients=0
+[ENGINE_PUB] STATS published=574,634 dropped=0 clients=0
+[ENGINE_PUB] STATS published=575,302 dropped=0 clients=0
+[ENGINE_PUB] STATS published=575,986 dropped=0 clients=0
+[ENGINE_PUB] STATS published=576,623 dropped=0 clients=0
+[ENGINE_PUB] STATS published=577,328 dropped=0 clients=0
+[ENGINE_PUB] STATS published=578,011 dropped=0 clients=0
+[ENGINE_PUB] STATS published=578,980 dropped=0 clients=0
+[ENGINE_PUB] STATS published=580,054 dropped=0 clients=0
+[ENGINE_PUB] STATS published=581,059 dropped=0 clients=0
+[ENGINE_PUB] STATS published=582,123 dropped=0 clients=0
+[ENGINE_PUB] STATS published=583,171 dropped=0 clients=0
+[ENGINE_PUB] STATS published=584,226 dropped=0 clients=0
+[ENGINE_PUB] STATS published=585,271 dropped=0 clients=0
+[ENGINE_PUB] STATS published=586,301 dropped=0 clients=0
+[ENGINE_PUB] STATS published=587,247 dropped=0 clients=0
+[ENGINE_PUB] STATS published=588,269 dropped=0 clients=0
+[ENGINE_PUB] STATS published=589,022 dropped=0 clients=0
+[ENGINE_PUB] STATS published=589,693 dropped=0 clients=0
+[ENGINE_PUB] STATS published=590,278 dropped=0 clients=0
+[ENGINE_PUB] STATS published=590,903 dropped=0 clients=0
+[ENGINE_PUB] STATS published=591,515 dropped=0 clients=0
+[ENGINE_PUB] STATS published=592,108 dropped=0 clients=0
+[WL_PUB] published 118 symbols: ['ADBG', 'ADBU', 'AHMA', 'AIRO', 'AMPU', 'AVXX', 'BESS', 'BEZ', 'BLSG', 'BMGL', 'BMNG', 'CANF', 'CAST', 'CBRZ', 'CCEL', 'CETX', 'CHNU', 'CLLS', 'CLRO', 'CMMB', 'CODX', 'COIA', 'COIG', 'CONX', 'CORD', 'CRCA', 'CRCG', 'CRMT', 'CSTE', 'CULP', 'CVKD', 'DRIO', 'DSY', 'ELOX', 'EQ', 'ETHT', 'ETU', 'EXYN', 'FIGG', 'FLYT', 'FRMM', 'GLXU', 'GMEX', 'GSOL', 'GVH', 'GYRE', 'HODU', 'ICU', 'IDAI', 'INFH', 'IONZ', 'IREZ', 'ISUL', 'JFB', 'KTUP', 'LHSW', 'MNDR', 'MSFX', 'MST', 'MSTP', 'MSTW', 'MUD', 'MUZ', 'NBIZ', 'NFLU', 'NFXL', 'NOWL', 'OKLL', 'ONDG', 'ONDL', 'OTLY', 'PCSA', 'PLBL', 'PLRZ', 'PLTA', 'PLTG', 'PLYX', 'RAAQ', 'RAYA', 'RCAX', 'RDWU', 'RGC', 'RGNT', 'RGTZ', 'RNAZ', 'SBMT', 'SCYX', 'SHNY', 'SHPH', 'SKIL', 'SLBT', 'SMCL', 'SMCX', 'SNDQ', 'SOFX', 'SSG', 'TECS', 'TENX', 'TSDD', 'TSLG', 'TSLZ', 'TSXD', 'UMAL', 'UNCY', 'UPC', 'USAU', 'USDE', 'UUUG', 'VCIG', 'VELL', 'VELO', 'VRAX', 'WBX', 'WFCF', 'WHLRP', 'WTO', 'XHLD', 'ZSTK']
+[ENGINE_PUB] STATS published=592,672 dropped=0 clients=0
+[ENGINE_PUB] STATS published=593,268 dropped=0 clients=0
+[ENGINE_PUB] STATS published=593,850 dropped=0 clients=0
+[ENGINE_PUB] STATS published=594,451 dropped=0 clients=0
+[ENGINE_PUB] STATS published=595,032 dropped=0 clients=0
+[ENGINE_PUB] STATS published=595,560 dropped=0 clients=0
+[ENGINE_PUB] STATS published=596,143 dropped=0 clients=0
+[ENGINE_PUB] STATS published=596,728 dropped=0 clients=0
+[ENGINE_PUB] STATS published=597,351 dropped=0 clients=0
+[ENGINE_PUB] STATS published=597,977 dropped=0 clients=0
+[ENGINE_PUB] STATS published=598,577 dropped=0 clients=0
+[ENGINE_PUB] STATS published=599,230 dropped=0 clients=0
+[ENGINE_PUB] STATS published=599,860 dropped=0 clients=0
+[ENGINE_PUB] STATS published=600,473 dropped=0 clients=0
+[ENGINE_PUB] STATS published=601,059 dropped=0 clients=0
+[ENGINE_PUB] STATS published=601,697 dropped=0 clients=0
+[ENGINE_PUB] STATS published=602,273 dropped=0 clients=0
+[ENGINE_PUB] STATS published=602,913 dropped=0 clients=0
+[ENGINE_PUB] STATS published=603,544 dropped=0 clients=0
+[ENGINE_PUB] STATS published=604,161 dropped=0 clients=0
+[ENGINE_PUB] STATS published=604,722 dropped=0 clients=0
+[ENGINE_PUB] STATS published=605,333 dropped=0 clients=0
+[ENGINE_PUB] STATS published=605,918 dropped=0 clients=0
+[ENGINE_PUB] STATS published=606,484 dropped=0 clients=0
+[ENGINE_PUB] STATS published=607,017 dropped=0 clients=0
+[ENGINE_PUB] STATS published=607,556 dropped=0 clients=0
+[ENGINE_PUB] STATS published=608,091 dropped=0 clients=0
+[ENGINE_PUB] STATS published=608,650 dropped=0 clients=0
+[ENGINE_PUB] STATS published=609,218 dropped=0 clients=0
+[ENGINE_PUB] STATS published=609,771 dropped=0 clients=0
+[ENGINE_PUB] STATS published=610,400 dropped=0 clients=0
+[ENGINE_PUB] STATS published=611,058 dropped=0 clients=0
+[ENGINE_PUB] STATS published=611,740 dropped=0 clients=0
+[ENGINE_PUB] STATS published=612,412 dropped=0 clients=0
+[ENGINE_PUB] STATS published=613,023 dropped=0 clients=0
+[ENGINE_PUB] STATS published=613,699 dropped=0 clients=0
+[ENGINE_PUB] STATS published=614,398 dropped=0 clients=0
+[ENGINE_PUB] STATS published=615,110 dropped=0 clients=0
+[ENGINE_PUB] STATS published=615,733 dropped=0 clients=0
+[ENGINE_PUB] STATS published=616,394 dropped=0 clients=0
+[ENGINE_PUB] STATS published=617,025 dropped=0 clients=0
+[ENGINE_PUB] STATS published=617,590 dropped=0 clients=0
+[ENGINE_PUB] STATS published=618,071 dropped=0 clients=0
+[ENGINE_PUB] STATS published=618,609 dropped=0 clients=0
+[ENGINE_PUB] STATS published=619,187 dropped=0 clients=0
+[ENGINE_PUB] STATS published=619,728 dropped=0 clients=0
+[ENGINE_PUB] STATS published=620,339 dropped=0 clients=0
+[ENGINE_PUB] STATS published=620,916 dropped=0 clients=0
+[ENGINE_PUB] STATS published=621,522 dropped=0 clients=0
+[ENGINE_PUB] STATS published=622,150 dropped=0 clients=0
+[ENGINE_PUB] STATS published=622,793 dropped=0 clients=0
+[ENGINE_PUB] STATS published=623,489 dropped=0 clients=0
+[ENGINE_PUB] STATS published=624,146 dropped=0 clients=0
+[ENGINE_PUB] STATS published=624,881 dropped=0 clients=0
+[ENGINE_PUB] STATS published=625,498 dropped=0 clients=0
+[ENGINE_PUB] STATS published=626,164 dropped=0 clients=0
+[ENGINE_PUB] STATS published=626,828 dropped=0 clients=0
+[ENGINE_PUB] STATS published=627,499 dropped=0 clients=0
+[ENGINE_PUB] STATS published=628,128 dropped=0 clients=0
+[ENGINE_PUB] STATS published=628,791 dropped=0 clients=0
+[ENGINE_PUB] STATS published=629,475 dropped=0 clients=0
+[ENGINE_PUB] STATS published=630,169 dropped=0 clients=0
+[ENGINE_PUB] STATS published=630,822 dropped=0 clients=0
+[ENGINE_PUB] STATS published=631,500 dropped=0 clients=0
+[ENGINE_PUB] STATS published=632,136 dropped=0 clients=0
+[ENGINE_PUB] STATS published=632,770 dropped=0 clients=0
+[ENGINE_PUB] STATS published=633,349 dropped=0 clients=0
+[ENGINE_PUB] STATS published=633,997 dropped=0 clients=0
+[ENGINE_PUB] STATS published=634,659 dropped=0 clients=0
+[ENGINE_PUB] STATS published=635,348 dropped=0 clients=0
+[ENGINE_PUB] STATS published=636,070 dropped=0 clients=0
+[ENGINE_PUB] STATS published=636,819 dropped=0 clients=0
+[ENGINE_PUB] STATS published=637,563 dropped=0 clients=0
+[ENGINE_PUB] STATS published=638,442 dropped=0 clients=0
+[ENGINE_PUB] STATS published=639,391 dropped=0 clients=0
+[ENGINE_PUB] STATS published=640,407 dropped=0 clients=0
+[ENGINE_PUB] STATS published=641,415 dropped=0 clients=0
+[ENGINE_PUB] STATS published=642,397 dropped=0 clients=0
+[ENGINE_PUB] STATS published=643,344 dropped=0 clients=0
