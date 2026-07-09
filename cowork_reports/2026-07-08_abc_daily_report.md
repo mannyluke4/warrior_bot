@@ -1,0 +1,35 @@
+# A/B/C Daily Report — 2026-07-08
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$2,032.14 | +$0.00 | 0 / 0 | — | — | — |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$2,005.06 | +$0.00 | 0 / 0 | — | — | — |
+
+### Variant A — FIRESTORM-gate
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-07-08_move_strike_subbot_A.log`)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-07-08_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-07-08_move_strike_subbot_C.log`)
+
+## Data Quality Audit
+
+- No `SUBSCRIPTION_AUDIT` lines found in the main bot log. Watchdog likely disabled (`WB_SUB_WATCHDOG_ENABLED=0`) or bot not started.
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 31 | +$2,356.60 |
+| B | 31 | -$4,183.34 |
+| C | 31 | +$519.07 |
