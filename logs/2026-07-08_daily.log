@@ -63,3 +63,13 @@ All trading windows closed. Proceeding to shutdown.
 /Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 587: 72020 Terminated: 15          WB_ENGINE_PUBLISH_ENABLED=1 WB_ENGINE_TCP_PORT=9710 WB_ENGINE_TCP_BIND=100.79.224.76 python3 watchlist_publisher.py >> "$LOG_DIR/${TODAY}_watchlist_publisher.log" 2>&1
 Generating A/B/C daily comparison report...
 Pushing logs...
+[v2-ibkr-migration 5518331] auto: v3 daily logs 2026-07-08
+ 10 files changed, 3841 insertions(+)
+ create mode 100644 cowork_reports/2026-07-08_abc_daily_report.md
+ create mode 100644 logs/2026-07-08_abc_compare.log
+ create mode 100644 logs/2026-07-08_alpaca_scanner.log
+ create mode 100644 logs/2026-07-08_daily.log
+ create mode 100644 logs/2026-07-08_watchlist_publisher.log
+ create mode 100644 logs/cron_2026-07-08.log
+=== V3 Hybrid daily run complete: Wed Jul  8 18:05:55 MDT 2026 ===
+=== TRAP: cleanup at Wed Jul  8 18:05:55 MDT 2026 ===
