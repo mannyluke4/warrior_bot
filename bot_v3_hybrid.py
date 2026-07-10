@@ -2073,6 +2073,15 @@ def seed_symbol(symbol: str):
             if BOX_ENABLED and state.box_bar_builder_1m:
                 state.box_bar_builder_1m.on_trade(symbol, price, size, ts_utc)
 
+        # HOD/LOD backstop (2026-07-10): the tick replay above only covers the
+        # ticks reqHistoricalTicks returned, which truncates to recent ticks —
+        # so a mid-session start leaves bar_builder._hod/_lod missing the earlier
+        # session (NVVE showed 14.86 vs the real 20.74, shipped wrong to the
+        # manual bot). Seed session extremes from full-day 1-min bars (one cheap
+        # request, whatToShow=TRADES, useRTH=False → includes premarket). max/min
+        # only, so it's safe on top of the tick replay and never touches VWAP.
+        _seed_session_hod_lod(symbol)
+
         # Count how many bars were built
         sq = state.sq_detectors.get(symbol)
         bar_count = len(sq.bars_1m) if sq else 0
@@ -2288,6 +2297,38 @@ def seed_symbol_from_cache(symbol: str) -> bool:
         return False
 
 
+def _seed_session_hod_lod(symbol: str):
+    """Seed bar_builder session HOD/LOD from today's full-day 1-min bars.
+    Restart-proof HOD/LOD for the manual bot's Info panel + level alerts.
+    Cheap (one request); max/min only (no VWAP/volume side effects). Never
+    raises into the caller."""
+    try:
+        if state.bar_builder_1m is None:
+            return
+        contract = state.contracts.get(symbol)
+        if contract is None:
+            return
+        bars = state.ib.reqHistoricalData(
+            contract, endDateTime='', durationStr='1 D',
+            barSizeSetting='1 min', whatToShow='TRADES',
+            useRTH=False, formatDate=1,
+        )
+        state.ib.sleep(0.3)
+        if not bars:
+            return
+        seeded = 0
+        for b in bars:
+            ts = getattr(b, 'date', None)
+            state.bar_builder_1m.seed_session_extremes(symbol, b.high, b.low, ts)
+            seeded += 1
+        h = state.bar_builder_1m.get_hod(symbol)
+        l = state.bar_builder_1m.get_lod(symbol)
+        print(f"  [{symbol}] HOD/LOD seeded from {seeded} bars → "
+              f"HOD={h} LOD={l}", flush=True)
+    except Exception as e:
+        print(f"  [{symbol}] HOD/LOD seed skipped: {e!r}", flush=True)
+
+
 def _seed_symbol_bars_fallback(symbol: str):
     """Fallback: seed with 1m historical bars (old method). Used when tick data unavailable."""
     contract = state.contracts.get(symbol)
@@ -2304,6 +2345,10 @@ def _seed_symbol_bars_fallback(symbol: str):
             return
         for b in bars:
             o, h, l, c, v = b.open, b.high, b.low, b.close, b.volume
+            # HOD/LOD for the manual bot (max/min, no VWAP side effect).
+            if state.bar_builder_1m is not None:
+                state.bar_builder_1m.seed_session_extremes(
+                    symbol, h, l, getattr(b, 'date', None))
             if SQ_ENABLED and symbol in state.sq_detectors:
                 state.sq_detectors[symbol].seed_bar_close(o, h, l, c, v)
             if (MP_ENABLED or MP_V2_ENABLED) and symbol in state.mp_detectors:

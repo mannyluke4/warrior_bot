@@ -136,6 +136,26 @@ class TradeBarBuilder:
             return None
         return self._vwap_pv.get(symbol, 0.0) / vol
 
+    def seed_session_extremes(self, symbol: str, high: float, low: float, ts_utc) -> None:
+        """Seed the session HOD/LOD from a historical bar WITHOUT touching VWAP
+        or volume. Safe to call alongside the tick replay (max/min are
+        idempotent). Fixes HOD/LOD truncation: the tick-based seed
+        (reqHistoricalTicks) only fetches recent ticks, so after a mid-session
+        start the bar builder's _hod/_lod miss the earlier session (NVVE showed
+        14.86 vs the real 20.74). Seeding from full-day 1-min bars closes that."""
+        if isinstance(ts_utc, datetime):
+            if ts_utc.tzinfo is None:
+                ts_utc = ts_utc.replace(tzinfo=timezone.utc)
+            else:
+                ts_utc = ts_utc.astimezone(timezone.utc)
+        else:
+            ts_utc = datetime.now(timezone.utc)
+        self._reset_session_if_needed(symbol, ts_utc)
+        if high and float(high) > 0:
+            self._hod[symbol] = max(self._hod.get(symbol, float("-inf")), float(high))
+        if low and float(low) > 0:
+            self._lod[symbol] = min(self._lod.get(symbol, float("inf")), float(low))
+
     def get_hod(self, symbol: str) -> Optional[float]:
         v = self._hod.get(symbol)
         if v is None or v == float("-inf"):
