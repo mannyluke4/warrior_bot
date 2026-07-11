@@ -1,0 +1,246 @@
+[MOVE_SUB_A] Alpaca PAPER connected — account=PA3S6LMKAHBR equity=$2,032
+[MOVE_SUB_A] filters: equity_pct=0.7 block_windows=[(570, 660), (780, 840)] loss_lockout=True
+[MOVE_SUB_A] starting consume loop
+[MOVE_SUB_A] [16:59:17] connected to engine (/tmp/warrior_engine.sock) attempt=1
+[MOVE_SUB_A] [16:59:18] new symbol CRY — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:20] new symbol EQPT — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:22] new symbol ESPR — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:23] new symbol F — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:25] new symbol FGI — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:27] new symbol FRMI — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:28] new symbol GMM — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:30] new symbol JLHL — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:31] new symbol KXIN — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:33] new symbol MARA — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:35] new symbol MESH — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:36] new symbol METD — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:38] new symbol MFLX — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:39] new symbol NMTC — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:41] new symbol NOK — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:43] new symbol NU — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:44] new symbol NVD — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:46] new symbol NVVE — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:47] new symbol ONDS — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:49] new symbol OOSP — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:50] new symbol OPEN — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:52] new symbol PATH — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:54] new symbol PBHC — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:55] new symbol PLBL — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:57] new symbol PLUG — detector + movement_strike instantiated
+[MOVE_SUB_A] [16:59:59] new symbol RFAM — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:00] new symbol RPID — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:02] new symbol RXT — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:04] new symbol SBND — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:05] new symbol SMDD — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:07] new symbol SNAL — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:08] new symbol SNDQ — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:10] new symbol SOFI — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:11] new symbol SOXS — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:13] new symbol SUNE — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:15] new symbol TKLF — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:16] new symbol TPTS — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:18] new symbol TSLL — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:18] STATS ticks=94 symbols=38 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:00:19] new symbol TZA — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:21] new symbol UBXG — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:23] new symbol VIVO — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:24] new symbol WNW — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:26] new symbol WOK — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:00:27] new symbol WRAP — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:01:20] STATS ticks=171 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:02:20] STATS ticks=303 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:03:21] STATS ticks=460 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:04:22] STATS ticks=641 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:05:22] STATS ticks=693 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:06:22] STATS ticks=791 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:07:22] STATS ticks=855 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:08:22] STATS ticks=935 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:09:23] STATS ticks=979 symbols=44 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:09:40] new symbol AARD — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED AARD replayed 2 ticks from cache
+[MOVE_SUB_A] [17:10:06] new symbol CBRG — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED CBRG replayed 3 ticks from cache
+[MOVE_SUB_A] [17:10:09] new symbol CBRX — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED CBRX replayed 2 ticks from cache
+[MOVE_SUB_A] [17:10:23] STATS ticks=1053 symbols=47 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:10:23] new symbol AIB — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED AIB replayed 2 ticks from cache
+[MOVE_SUB_A] [17:10:26] new symbol BNED — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED BNED replayed 4 ticks from cache
+[MOVE_SUB_A] [17:10:29] new symbol ALM — detector + movement_strike instantiated
+[MOVE_SUB_A] SEED ALM replayed 4 ticks from cache
+[MOVE_SUB_A] [17:11:23] STATS ticks=1107 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:12:23] STATS ticks=1158 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:13:23] STATS ticks=1183 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:14:23] STATS ticks=1236 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:15:23] STATS ticks=1302 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:16:23] STATS ticks=1362 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:17:23] STATS ticks=1410 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:18:23] STATS ticks=1439 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:19:23] STATS ticks=1463 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:20:23] STATS ticks=1527 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:21:23] STATS ticks=1595 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:22:23] STATS ticks=1645 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:23:23] STATS ticks=1686 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:24:23] STATS ticks=1745 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:25:23] STATS ticks=1853 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:26:23] STATS ticks=1896 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:27:23] STATS ticks=1948 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:28:23] STATS ticks=2000 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:29:24] STATS ticks=2041 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:30:24] STATS ticks=2118 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:31:24] STATS ticks=2174 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:32:24] STATS ticks=2214 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:33:24] STATS ticks=2257 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:34:24] STATS ticks=2303 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:35:24] STATS ticks=2379 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:36:24] STATS ticks=2422 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:37:24] STATS ticks=2495 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:38:24] STATS ticks=2530 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:39:24] STATS ticks=2566 symbols=50 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:39:40] new symbol JZXN — detector + movement_strike instantiated
+[MOVE_SUB_A] [17:40:24] STATS ticks=2645 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:41:25] STATS ticks=2689 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:42:25] STATS ticks=2733 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:43:25] STATS ticks=2776 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:44:25] STATS ticks=2825 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:45:25] STATS ticks=2908 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:46:25] STATS ticks=2941 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:47:25] STATS ticks=2992 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:48:25] STATS ticks=3028 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:49:25] STATS ticks=3067 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:50:25] STATS ticks=3214 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:51:25] STATS ticks=3276 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:52:25] STATS ticks=3336 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:53:25] STATS ticks=3356 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:54:26] STATS ticks=3391 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:55:26] STATS ticks=3451 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:56:26] STATS ticks=3523 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:57:26] STATS ticks=3593 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:58:26] STATS ticks=3665 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [17:59:26] STATS ticks=3712 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:00:26] STATS ticks=3825 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:01:26] STATS ticks=3983 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:02:26] STATS ticks=4048 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:03:26] STATS ticks=4141 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:04:26] STATS ticks=4252 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:05:26] STATS ticks=4363 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:06:27] STATS ticks=4415 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:07:27] STATS ticks=4470 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:08:27] STATS ticks=4506 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:09:27] STATS ticks=4548 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:10:27] STATS ticks=4627 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:11:27] STATS ticks=4720 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:12:27] STATS ticks=4784 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:13:27] STATS ticks=4846 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:14:27] STATS ticks=4912 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:15:27] STATS ticks=5002 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:16:27] STATS ticks=5050 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:17:27] STATS ticks=5088 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:18:27] STATS ticks=5120 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:19:27] STATS ticks=5147 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:20:28] STATS ticks=5219 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:21:28] STATS ticks=5268 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:22:28] STATS ticks=5301 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:23:28] STATS ticks=5339 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:24:28] STATS ticks=5382 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:25:28] STATS ticks=5430 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:26:28] STATS ticks=5490 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:27:28] STATS ticks=5529 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:28:28] STATS ticks=5566 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:29:28] STATS ticks=5606 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:30:28] STATS ticks=5663 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:31:28] STATS ticks=5724 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:32:29] STATS ticks=5755 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:33:29] STATS ticks=5784 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:34:29] STATS ticks=5827 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:35:29] STATS ticks=5883 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:36:29] STATS ticks=5924 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:37:29] STATS ticks=5958 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:38:29] STATS ticks=5992 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:39:29] STATS ticks=6012 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:40:29] STATS ticks=6060 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:41:29] STATS ticks=6128 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:42:29] STATS ticks=6215 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:43:29] STATS ticks=6309 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:44:29] STATS ticks=6359 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:45:29] STATS ticks=6423 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:46:29] STATS ticks=6482 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:47:29] STATS ticks=6510 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:48:29] STATS ticks=6557 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:49:29] STATS ticks=6616 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:50:29] STATS ticks=6677 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:51:29] STATS ticks=6776 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:52:30] STATS ticks=6833 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:53:30] STATS ticks=6875 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:54:30] STATS ticks=6932 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:55:30] STATS ticks=7037 symbols=51 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:55:52] new symbol SORA — detector + movement_strike instantiated
+[MOVE_SUB_A] [18:56:30] STATS ticks=7092 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:57:30] STATS ticks=7136 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:58:30] STATS ticks=7225 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [18:59:30] STATS ticks=7295 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:00:30] STATS ticks=7410 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:01:30] STATS ticks=7483 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:02:30] STATS ticks=7513 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:03:31] STATS ticks=7547 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:04:31] STATS ticks=7592 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:05:31] STATS ticks=7695 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:06:31] STATS ticks=7762 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:07:31] STATS ticks=7787 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:08:31] STATS ticks=7869 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:09:31] STATS ticks=7905 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:10:31] STATS ticks=7939 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:11:31] STATS ticks=7976 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:12:31] STATS ticks=7994 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:13:31] STATS ticks=8018 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:14:31] STATS ticks=8041 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:15:31] STATS ticks=8117 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:16:32] STATS ticks=8162 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:17:32] STATS ticks=8200 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:18:32] STATS ticks=8239 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:19:32] STATS ticks=8257 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:20:32] STATS ticks=8309 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:21:32] STATS ticks=8372 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:22:32] STATS ticks=8406 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:23:32] STATS ticks=8428 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:24:32] STATS ticks=8451 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:25:32] STATS ticks=8490 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:26:32] STATS ticks=8542 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:27:32] STATS ticks=8552 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:28:33] STATS ticks=8579 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:29:33] STATS ticks=8602 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:30:33] STATS ticks=8656 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:31:33] STATS ticks=8697 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:32:33] STATS ticks=8724 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:33:33] STATS ticks=8801 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:34:33] STATS ticks=8824 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:35:33] STATS ticks=8876 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:36:33] STATS ticks=8914 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:37:33] STATS ticks=8961 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:38:33] STATS ticks=9008 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:39:34] STATS ticks=9041 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:40:34] STATS ticks=9100 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:41:34] STATS ticks=9161 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:42:34] STATS ticks=9185 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:43:34] STATS ticks=9217 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:44:34] STATS ticks=9247 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:45:34] STATS ticks=9313 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:46:34] STATS ticks=9377 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:47:34] STATS ticks=9399 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:48:34] STATS ticks=9436 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:49:34] STATS ticks=9463 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:50:35] STATS ticks=9514 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:51:35] STATS ticks=9571 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:52:35] STATS ticks=9603 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:53:35] STATS ticks=9636 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:54:35] STATS ticks=9655 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:55:35] STATS ticks=9717 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:56:35] STATS ticks=9775 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:57:35] STATS ticks=9825 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:58:35] STATS ticks=9889 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] [19:59:35] STATS ticks=9952 symbols=52 pos=no daily_pnl=+0 drops=0
+[MOVE_SUB_A] socket closed by peer — reconnecting
+[MOVE_SUB_A] engine socket not ready yet (ConnectionRefusedError(61, 'Connection refused')) — retrying every 2s
+[MOVE_SUB_A] signal 15 received — stopping
+[MOVE_SUB_A] consume loop exited
