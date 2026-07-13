@@ -1,0 +1,45 @@
+Wrote: /Users/duffy/warrior_bot_v2/cowork_reports/2026-07-12_abc_daily_report.md
+# A/B/C Daily Report — 2026-07-12
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$2,032.14 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$2,005.06 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-07-12_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+## Data Quality Audit
+
+- No `SUBSCRIPTION_AUDIT` lines found in the main bot log. Watchdog likely disabled (`WB_SUB_WATCHDOG_ENABLED=0`) or bot not started.
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 34 | +$2,356.60 |
+| B | 34 | -$4,183.34 |
+| C | 34 | +$519.07 |
+

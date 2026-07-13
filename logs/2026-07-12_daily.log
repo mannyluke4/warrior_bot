@@ -1,0 +1,114 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 1263)
+=== V3 Hybrid daily run started: Sun Jul 12 23:17:27 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 34408ba (auto: v3 daily logs 2026-07-10)
+daily_run_v3.sh hash: 8160c46c0b12bf4dcfcfe8cc5d17cb6c  /Users/duffy/warrior_bot_v2/daily_run_v3.sh
+bot_v3_hybrid.py hash: 87e35bfcfe07a7d7f4c9930414a12f1f  /Users/duffy/warrior_bot_v2/bot_v3_hybrid.py
+bot_alpaca_subbot.py hash: a037c0761d9dd5e1d11f33df333ac1d7  /Users/duffy/warrior_bot_v2/bot_alpaca_subbot.py
+alpaca_feed.py hash: 870553116e841aac75c1f8ac28976191  /Users/duffy/warrior_bot_v2/alpaca_feed.py
+sntp: clock_settime: Operation not permitted
++0.033965 +/- 0.065562 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Mon Jul 13 05:17:29 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway port 4002 down — killing stale java and starting fresh...
+All stale processes cleared.
+Starting IB Gateway via IBC...
+Waiting for IB Gateway on port 4002...
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
+[1;32m+==============================================================================
++
++ IBC version 3.23.0
++
++ Running GATEWAY 10.37
++
++ Diagnostic information is logged in:
++
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Sunday.txt
++
++[0m
+Gateway is up on port 4002 (after ~10s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+Starting live_scanner.py...
+Live scanner started (PID: 1337)
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 1348)
+[ENGINE_PUB] TCP listener on 100.79.224.76:9710 (tailnet fan-out — newline-JSON, same stream as the Unix socket)
+[ENGINE_PUB] listening on /tmp/warrior_engine.sock (queue_max=10000)
+BOOT: COLD start (reason=no_marker)
+============================================================
+  WARRIOR BOT V3 — Hybrid (IBKR data + Alpaca execution)
+  Squeeze: OFF
+  MP: OFF
+  MP V2 (Re-Entry): OFF
+  Short: OFF
+  Max entries/day: unlimited
+  Buying power: 85% of 2x margin
+  Port: 4002
+  Risk: 3.5% per trade
+  Starting Equity: $30,000
+  Max Daily Loss: $3,000 (2% of equity, scaling)
+  Windows: 04:00-20:00
+  SQ Target R: 1.5
+============================================================
+⚠️  WARNING: WB_SQUEEZE_ENABLED is OFF — bot will not trade squeezes!
+  Set WB_SQUEEZE_ENABLED=1 in .env or environment to enable.
+
+Pre-flight port check:
+  Port 4002: IN USE
+  Port 7497: free
+  Watchdog: armed (kills bot if main thread frozen >120s)
+Alpaca connected (PAPER)
+Alpaca data client connected (for latency diagnostic / aware-limits)
+📦 Tick flush thread started (every 30s)
+📊 Risk flush thread started (every 60s)
+Connected: True
+Account: ['DUQ143444']
+Broker: IBKR
+SubscriptionWatchdog: ENABLED
+  ⚠️ ORPHAN POSITION FOUND: FEBO qty=219 (available=219) entry=$1.12 unrealized=$-66.95 value=$177.62
+  → ORPHAN IGNORED: FEBO on WB_ORPHAN_HALT_IGNORE_SYMBOLS — NOT adopting, NOT halting. Bot keeps trading other names; position left at broker for manual handling.
+Account equity: $25,869
+EPL initialized: 1 strategies registered
+
+Bot running. Windows: 04:00-20:00 ET. Ctrl+C to stop.
+
+💤 Dead zone (01:18 ET). Sleeping until next window...
+Bot health check passed (still running after 15s, PID: 1348)
+HEALTH_OK: Bot connected at 2026-07-13 05:18:28 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-07-12_move_strike_subbot_A.log)...
+  variant A PID: 1371
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-07-12_move_strike_subbot_C.log)...
+  variant C PID: 1372
+[ENGINE_PUB] client connected (total clients: 1)
+[ENGINE_PUB] client connected (total clients: 2)
+  variant A health-check OK (PID 1371)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 1372)
+Gateway watchdog started (PID: 1374)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Sun Jul 12 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Sun Jul 12 23:18:43 MDT 2026 ===
+
+🛑 SHUTDOWN SIGNAL RECEIVED
+  ⚠️ POSITION OPEN AT SHUTDOWN: FEBO qty=219 P&L=$-66.95
+  *** POSITIONS LEFT OPEN — WILL NEED MANUAL MANAGEMENT ***
+
+============================================================
+  SESSION SUMMARY
+  Momentum Trades: 0
+  Momentum P&L: $+0
+============================================================
+Generating A/B/C daily comparison report...
+Pushing logs...
