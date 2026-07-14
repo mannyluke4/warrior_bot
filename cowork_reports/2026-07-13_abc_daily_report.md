@@ -1,0 +1,60 @@
+# A/B/C Daily Report — 2026-07-13
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+⚠️ **DATA QUALITY DEGRADED** — one or more symbols had `DIRECT_QUERY_WEDGE` audit events today. Variant comparison below reflects partial data. See Data Quality Audit section.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$2,012.55 | -$19.59 | 3 / 20 | 3 | 87776 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$1,996.87 | -$8.19 | 3 / 21 | 3 | 87275 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 3
+- REGIME_SHIFT entries: 0
+- Exits: 17
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 3 (1 unique symbols)
+- FIRESTORM-gate blocks: 87773 (2 unique symbols)
+- Symbols traded: VEEE
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-07-13_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 3
+- REGIME_SHIFT entries: 0
+- Exits: 18
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+- REENTRY-loss-gate blocks: 3 (1 unique symbols)
+- FIRESTORM-gate blocks: 87272 (2 unique symbols)
+- Symbols traded: VEEE
+
+## Data Quality Audit
+
+- Audit lines parsed: 3518
+- Symbols flagged HEURISTIC_SUSPECT: 3
+- Symbols with DIRECT_QUERY_WEDGE events: 2
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| QTTB | 691 | 4 | 1 | 0.086 | 6882 / 4934 |
+| SKYQ | 695 | 0 | 1 | 0.075 | 73179 / 70701 |
+| PLSM | 657 | 39 | 0 | 0.142 | 2032 / 875 |
+| EHGO | 695 | 1 | 0 | 0.220 | 21286 / 3659 |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 35 | +$2,337.01 |
+| B | 35 | -$4,183.34 |
+| C | 35 | +$510.88 |
