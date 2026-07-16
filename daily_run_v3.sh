@@ -214,10 +214,15 @@ if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
     SCANNER_PID=$!
     echo "Alpaca scanner started (PID: $SCANNER_PID)"
 else
-    echo "Starting live_scanner.py..."
-    python3 live_scanner.py >> "$LOG_DIR/${TODAY}_scanner.log" 2>&1 &
-    SCANNER_PID=$!
-    echo "Live scanner started (PID: $SCANNER_PID)"
+    # Databento live_scanner.py RETIRED 2026-07-16 (Manny): proven dead weight.
+    # The engine's own IBKR scanner (bot_v3_hybrid → ibkr_scanner.scan_premarket_live
+    # / scan_catchup) is the SOLE scan source. Confirmed 7/16: with Databento
+    # 402-dead + watchlist.txt empty, the engine still published 111 IBKR-sourced
+    # symbols to all 4 clients (sub-bots + manual bot). No separate scanner process
+    # needed in normal mode. (Degraded-mode alpaca_scanner branch above unchanged
+    # for now; full Databento teardown tracked in project_subbot_* memory.)
+    echo "live_scanner.py retired — engine ibkr_scanner is the sole scan source."
+    SCANNER_PID=""
 fi
 sleep 5
 
