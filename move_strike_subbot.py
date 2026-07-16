@@ -96,6 +96,20 @@ MAX_SHARES = int(os.getenv("WB_MAX_SHARES", "100000"))
 #                       re-entries; keeps win-continuations). Full-day; stronger
 #                       than the 30-min reentry-loss gate.
 EQUITY_PCT_SIZING = float(os.getenv("WB_SUBBOT_EQUITY_PCT", "0"))
+# ── Daily-target strategy (2026-07-15, sub-bot A rebuild). All OFF by default. ──
+#   RISK_PCT_SIZING:    0 = off. e.g. 0.05 → size so a full stop-out loses 5% of
+#                       current equity (wide stop kept; loss capped by SIZE).
+#   MOVE_TARGET_R:      0 = off (legacy HWM trail). >0 → move_strike exits FULL at
+#                       entry + MOVE_TARGET_R×R (fixed target), no trail. With
+#                       RISK_PCT sizing, +1R target == +RISK_PCT account per win.
+#   DAILY_GOAL_PCT:     0 = off. >0 → once realized daily P&L ≥ GOAL×start-equity,
+#                       stop taking new entries for the day ("bank it and shut down").
+#   DAILY_LOSS_CAP_PCT: 0 = off. >0 → once realized daily P&L ≤ −CAP×start-equity,
+#                       stop taking new entries for the day.
+RISK_PCT_SIZING = float(os.getenv("WB_SUBBOT_RISK_PCT", "0"))
+MOVE_TARGET_R = float(os.getenv("WB_MOVE_TARGET_R", "0"))
+DAILY_GOAL_PCT = float(os.getenv("WB_SUBBOT_DAILY_GOAL_PCT", "0"))
+DAILY_LOSS_CAP_PCT = float(os.getenv("WB_SUBBOT_DAILY_LOSS_CAP_PCT", "0"))
 ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
 SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
 _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
@@ -1045,6 +1059,8 @@ class MoveStrikeSubBot:
         watch = self._reentry_watches.get(symbol)
         if watch is None:
             return
+        if self._daily_trading_halted():
+            return
         cur_min = now_minute_et()
         if cur_min > watch["expires_min"]:
             self._reentry_watches.pop(symbol, None)
@@ -1240,6 +1256,23 @@ class MoveStrikeSubBot:
             if price >= target_price:
                 self._fire_regime_shift_partial(p, price)
             return  # no trail pre-partial
+
+        # Fixed-target full-exit mode (2026-07-15 daily-target strategy). When
+        # MOVE_TARGET_R>0, move_strike/reentry positions exit on the hard stop OR a
+        # fixed +MOVE_TARGET_R target — NO HWM trail (validated: trailing gives back
+        # on reversion; a clean target is the "safe" frontier). Gated; default off
+        # falls through to the legacy hwm_evaluate path below unchanged.
+        if (MOVE_TARGET_R > 0
+                and p.setup_type not in ("regime_shift", "firestorm_trigger",
+                                         "orphan_adopted")):
+            if price <= p.stop:
+                self._close_position("move_target_hard_stop", price)
+                return
+            target_price = p.entry + MOVE_TARGET_R * p.r
+            if price >= target_price:
+                self._close_position(f"move_target_hit({MOVE_TARGET_R:g}R)", price)
+                return
+            return  # hold — no trail pre-target
 
         # Hard-stop safety net for setups WITHOUT their own pre-partial stop
         # management (notably orphan_adopted). regime_shift/firestorm handle their
@@ -1599,9 +1632,36 @@ class MoveStrikeSubBot:
         p.peak = price
         p.cum_low = price
 
+    def _daily_trading_halted(self) -> bool:
+        """True once the day's realized P&L has hit the +goal or −loss-cap, after
+        which no NEW entries are taken for the rest of the day (bank-and-shutdown).
+        An already-open position still runs to its own target/stop. Gated; both
+        thresholds 0 → never halts."""
+        if DAILY_GOAL_PCT <= 0 and DAILY_LOSS_CAP_PCT <= 0:
+            return False
+        se = self._starting_equity
+        if se <= 0:
+            return False
+        hit = None
+        if DAILY_GOAL_PCT > 0 and self.daily_pnl >= DAILY_GOAL_PCT * se:
+            hit = f"GOAL +{DAILY_GOAL_PCT*100:.0f}% (daily=${self.daily_pnl:+,.0f})"
+        elif DAILY_LOSS_CAP_PCT > 0 and self.daily_pnl <= -DAILY_LOSS_CAP_PCT * se:
+            hit = f"LOSS-CAP −{DAILY_LOSS_CAP_PCT*100:.0f}% (daily=${self.daily_pnl:+,.0f})"
+        if hit is None:
+            return False
+        if not getattr(self, "_daily_halt_logged", False):
+            self._daily_halt_logged = True
+            print(f"{LOG_TAG} [{now_iso_et()}] DAILY SHUTDOWN — {hit}; "
+                  f"no new entries for the rest of the day.", flush=True)
+        return True
+
     def _maybe_enter(self, symbol: str, price: float) -> None:
         det = self.detectors.get(symbol)
         if det is None:
+            return
+        # Daily goal / loss-cap shutdown (2026-07-15 daily-target strategy): once the
+        # day's realized P&L crosses +goal or −loss-cap, stop taking NEW entries.
+        if self._daily_trading_halted():
             return
         # Entry-time cutoff (2026-05-22 Manny directive: no new entries
         # after 19:30 ET). Mirrors main bot's WB_ENTRY_TIME_CUTOFF_ET
@@ -1711,6 +1771,29 @@ class MoveStrikeSubBot:
             self.prev_arm_state[symbol] = None
 
     def _compute_qty(self, price: float, r: float, score: float) -> int:
+        # Risk-% sizing (2026-07-15 daily-target strategy): size so a full stop-out
+        # loses RISK_PCT of current equity. qty = RISK_PCT*equity / R. Keeps the wide
+        # stop for breathing room but caps the loss by SIZE. Gated; when off, the
+        # equity-% / risk-$ paths below run byte-identical to before.
+        if RISK_PCT_SIZING > 0 and r > 0:
+            equity = self._starting_equity + self.daily_pnl
+            if equity <= 0 and getattr(self, "alpaca", None) is not None:
+                _now = time.time()
+                if _now - getattr(self, "_last_equity_refetch", 0.0) > 5.0:
+                    self._last_equity_refetch = _now
+                    try:
+                        self._starting_equity = float(self.alpaca.get_account().equity)
+                        equity = self._starting_equity + self.daily_pnl
+                        print(f"{LOG_TAG} SIZING: re-fetched lost equity → "
+                              f"${self._starting_equity:,.0f}", flush=True)
+                    except Exception as e:
+                        print(f"{LOG_TAG} SIZING: equity re-fetch failed: {e!r}", flush=True)
+            if equity > 0:
+                qty = int((RISK_PCT_SIZING * equity) / r)
+                return min(max(qty, 0), MAX_SHARES)
+            print(f"{LOG_TAG} SIZING: equity unavailable (start={self._starting_equity} "
+                  f"daily={self.daily_pnl}) — skipping entry", flush=True)
+            return 0
         # Equity-% sizing (2026-06-17 plan): each position = EQUITY_PCT of current
         # equity (starting equity + realized daily P&L → compounds intraday). No
         # leverage. Overrides the fixed-RISK_DOLLARS path when enabled.

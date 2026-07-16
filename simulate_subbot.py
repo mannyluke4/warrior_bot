@@ -604,8 +604,16 @@ class SubBotSim(MoveStrikeSubBot):
             with gzip.open(cache_path, "rt") as f:
                 ticks = json.load(f)
         except (gzip.BadGzipFile, OSError, EOFError) as e:
-            print(f"[SIM] {symbol} {date_str}: cache read failed: {e!r}", flush=True)
-            return
+            # Tick cache files are multi-member gzip (atomic-flush writes append
+            # members); a trailing partial member makes gzip.open raise BadGzipFile
+            # AFTER decoding the first member. zlib wbits=31 reads the first
+            # complete member (the full tick array) and ignores trailing bytes.
+            try:
+                import zlib
+                ticks = json.loads(zlib.decompress(cache_path.read_bytes(), 31))
+            except Exception:
+                print(f"[SIM] {symbol} {date_str}: cache read failed: {e!r}", flush=True)
+                return
 
         # Convert HH:MM strings to total-minutes-from-midnight ET
         sh, sm = (int(x) for x in start_et.split(":")[:2])

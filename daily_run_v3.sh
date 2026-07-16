@@ -391,7 +391,7 @@ launch_subbot() {
         WB_SUBBOT_RISK_DOLLARS=1000 \
         WB_EOD_FORCE_FLATTEN_ENABLED=1 \
         WB_ORPHAN_HARD_STOP_ENABLED=1 \
-        WB_REGIME_SHIFT_ENABLED=1 \
+        WB_REGIME_SHIFT_ENABLED=0 \
         WB_REGIME_SHIFT_RATIO_THRESHOLD=4.0 \
         WB_REGIME_SHIFT_BASELINE_BARS=5 \
         WB_REGIME_SHIFT_TARGET_R=1.5 \
@@ -427,7 +427,13 @@ launch_subbot() {
 if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
     echo "=== DEGRADED MODE: skipping sub-bots (they consume engine ticks, which are down) ==="
 else
-launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000"
+# Variant A rebuilt 2026-07-15 (daily-target strategy): proven entry stack KEPT
+# (FIRESTORM gate + shared entry-block-windows + loss-lockout + float-rank scanner);
+# NEW exit/sizing/shutdown — risk 5% of equity per trade (wide stop, small size),
+# full exit at +1R (= +5% account per win, no HWM trail), bank +5%/day then stop
+# taking entries, −10% daily loss cap. Fresh $5k account PA3RRCLS7OMI. See
+# project_subbot_daily_target_pivot memory + 2026-07-15 analysis.
+launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000 WB_SUBBOT_EQUITY_PCT=0 WB_SUBBOT_RISK_PCT=0.05 WB_MOVE_TARGET_R=1.0 WB_SUBBOT_DAILY_GOAL_PCT=0.05 WB_SUBBOT_DAILY_LOSS_CAP_PCT=0.10"
 # Variant B re-purposed 2026-05-29: V1 VWAP fade-gate retired after 4
 # straight losing weeks (cumulative ~$5K below week-start). Per
 # cowork_reports/2026-05-28_track_a_results.md and Manny's call to slot
