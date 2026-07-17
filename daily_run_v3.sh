@@ -432,13 +432,17 @@ launch_subbot() {
 if [ "${WB_ENGINE_DATA_DEGRADED:-0}" = "1" ]; then
     echo "=== DEGRADED MODE: skipping sub-bots (they consume engine ticks, which are down) ==="
 else
-# Variant A rebuilt 2026-07-15 (daily-target strategy): proven entry stack KEPT
-# (FIRESTORM gate + shared entry-block-windows + loss-lockout + float-rank scanner);
-# NEW exit/sizing/shutdown — risk 5% of equity per trade (wide stop, small size),
-# full exit at +1R (= +5% account per win, no HWM trail), bank +5%/day then stop
-# taking entries, −10% daily loss cap. Fresh $5k account PA3RRCLS7OMI. See
-# project_subbot_daily_target_pivot memory + 2026-07-15 analysis.
-launch_subbot A "$A_KEY" "$A_SECRET" "WB_MOVE_FIRESTORM_GATE_ENABLED=1 WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN=6000 WB_SUBBOT_EQUITY_PCT=0 WB_SUBBOT_RISK_PCT=0.05 WB_MOVE_TARGET_R=1.0 WB_SUBBOT_DAILY_GOAL_PCT=0.05 WB_SUBBOT_DAILY_LOSS_CAP_PCT=0.10"
+# Variant A rebuilt 2026-07-17 (EARLY-ENTRY strategy — the root-cause fix). Late
+# squeeze arms buy tops (median 59% of the move); micro-pullback arms enter ~30% in
+# with a tight pullback-low stop. Config: micro-pullback arm, risk 5%/trade,
+# TRAILING 1R exit (activate +1R, ride to peak−1R — lets winners run uncapped),
+# FLOAT ≤5M gate (low-float edge; unknown-float blocked), NO firestorm (backfired
+# on early entries), NO block-windows/loss-lockout (match validated backtest),
+# −10% daily loss cap kept, +5% goal DROPPED (don't cap winners). Fresh $5k acct
+# PA3RRCLS7OMI. Backtest: +32% Jan / +39% recent (float+trail, single-position
+# compounding, ~40-trade sample). See project_subbot_early_entry memory. LIGHTLY
+# validated — monitor closely.
+launch_subbot A "$A_KEY" "$A_SECRET" "WB_SUBBOT_ARM_MODE=micro_pullback WB_MOVE_FIRESTORM_GATE_ENABLED=0 WB_SUBBOT_EQUITY_PCT=0 WB_SUBBOT_RISK_PCT=0.05 WB_MOVE_TRAIL_R=1.0 WB_MOVE_TARGET_R=0 WB_SUBBOT_MAX_FLOAT_M=5 WB_SUBBOT_DAILY_GOAL_PCT=0 WB_SUBBOT_DAILY_LOSS_CAP_PCT=0.10 WB_ENTRY_BLOCK_WINDOWS_ET= WB_SYMBOL_LOSS_LOCKOUT=0"
 # Variant B re-purposed 2026-05-29: V1 VWAP fade-gate retired after 4
 # straight losing weeks (cumulative ~$5K below week-start). Per
 # cowork_reports/2026-05-28_track_a_results.md and Manny's call to slot

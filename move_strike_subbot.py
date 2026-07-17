@@ -120,6 +120,18 @@ DAILY_LOSS_CAP_PCT = float(os.getenv("WB_SUBBOT_DAILY_LOSS_CAP_PCT", "0"))
 # stop, ~30% into the move instead of ~59%. Pairs with MOVE_TARGET_R=2.0 (the +2R
 # room early entries unlock) and a LOWER firestorm floor (early bars are thinner).
 ARM_MODE = os.getenv("WB_SUBBOT_ARM_MODE", "squeeze")
+# Trailing-R exit (2026-07-17): 0 = off. >0 = once the position is up
+# TRAIL_ACTIVATE_R, trail the stop TRAIL_R below the high-water mark (in R). Lets
+# winners run (no cap) while locking gains — validated best for early entries
+# (WR 30%→43% vs fixed +3R at same net). Takes precedence over MOVE_TARGET_R.
+MOVE_TRAIL_R = float(os.getenv("WB_MOVE_TRAIL_R", "0"))
+MOVE_TRAIL_ACTIVATE_R = float(os.getenv("WB_MOVE_TRAIL_ACTIVATE_R", "1.0"))
+# Float gate (2026-07-17): 0 = off. >0 = reject entries on symbols whose float
+# (millions, from scanner_results/float_cache.json, engine-maintained) exceeds the
+# cap. Unknown float → blocked (conservative). Low-float edge; period-dependent.
+MAX_FLOAT_M = float(os.getenv("WB_SUBBOT_MAX_FLOAT_M", "0"))
+FLOAT_CACHE_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "scanner_results", "float_cache.json")
 ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
 SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
 _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
@@ -1268,6 +1280,27 @@ class MoveStrikeSubBot:
                 self._fire_regime_shift_partial(p, price)
             return  # no trail pre-partial
 
+        # Trailing-R exit (2026-07-17 early-entry strategy). Takes precedence over
+        # the fixed target. Hard stop OR a trailing stop that activates once up
+        # +ACTIVATE_R and then rides TRAIL_R below the high-water mark — lets big
+        # winners run uncapped while locking gains. Gated; default off.
+        if (MOVE_TRAIL_R > 0
+                and p.setup_type not in ("regime_shift", "firestorm_trigger",
+                                         "orphan_adopted")):
+            if price <= p.stop:
+                self._close_position("move_trail_hard_stop", price)
+                return
+            if p.r > 0:
+                max_r = (p.peak - p.entry) / p.r  # p.peak updated above this tick
+                if max_r >= MOVE_TRAIL_ACTIVATE_R:
+                    trail_stop = p.entry + (max_r - MOVE_TRAIL_R) * p.r
+                    if price <= trail_stop:
+                        self._close_position(
+                            f"move_trail_exit(peakR={max_r:.1f},trail={MOVE_TRAIL_R:g})",
+                            price)
+                        return
+            return  # hold — trailing not yet triggered
+
         # Fixed-target full-exit mode (2026-07-15 daily-target strategy). When
         # MOVE_TARGET_R>0, move_strike/reentry positions exit on the hard stop OR a
         # fixed +MOVE_TARGET_R target — NO HWM trail (validated: trailing gives back
@@ -1643,6 +1676,33 @@ class MoveStrikeSubBot:
         p.peak = price
         p.cum_low = price
 
+    def _float_ok(self, symbol: str) -> bool:
+        """Float gate (2026-07-17). True if the gate is off, or the symbol's float
+        (millions) is KNOWN and ≤ MAX_FLOAT_M. Unknown float → blocked (conservative,
+        matches backtest). Reads the engine-maintained float_cache.json, reloaded
+        at most once/60s. Returns (ok, float_m) via self._last_float_m for logging."""
+        self._last_float_m = None
+        if MAX_FLOAT_M <= 0:
+            return True
+        now = time.time()
+        if now - getattr(self, "_float_cache_loaded", 0.0) > 60.0:
+            try:
+                with open(FLOAT_CACHE_PATH) as f:
+                    self._float_cache = json.load(f)
+            except Exception:
+                self._float_cache = getattr(self, "_float_cache", {})
+            self._float_cache_loaded = now
+        v = getattr(self, "_float_cache", {}).get(symbol)
+        if isinstance(v, dict):
+            v = v.get("float") or v.get("shares") or v.get("shares_outstanding")
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            return False  # unknown float → block
+        float_m = v / 1e6 if v > 1e5 else v  # normalize raw-shares → millions
+        self._last_float_m = float_m
+        return float_m <= MAX_FLOAT_M
+
     def _daily_trading_halted(self) -> bool:
         """True once the day's realized P&L has hit the +goal or −loss-cap, after
         which no NEW entries are taken for the rest of the day (bank-and-shutdown).
@@ -1916,6 +1976,11 @@ class MoveStrikeSubBot:
         # FIRESTORM gate — block entries on quiet bars (Variant A test).
         setup_label = f"reentry_{reentry_tag}" if is_reentry else "move_strike"
         if self._firestorm_gate_blocks(symbol, setup_label):
+            return
+        # Float gate (2026-07-17) — reject entries on stocks above the float cap.
+        if not self._float_ok(symbol):
+            print(f"{LOG_TAG} [{now_iso_et()}] {symbol} FLOAT_GATE_BLOCK "
+                  f"float={self._last_float_m}M cap={MAX_FLOAT_M}M", flush=True)
             return
         # Plan filters (time-window block + per-symbol loss-lockout).
         if self._strategy_filters_block(symbol, setup_label):
