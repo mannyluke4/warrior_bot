@@ -62,6 +62,7 @@ from engine_ipc import (
     decode,
 )
 from squeeze_detector_v2 import SqueezeDetectorV2 as SqueezeDetector
+from micro_pullback import MicroPullbackDetector  # early-entry arm (impulse→pullback)
 from movement_strike import MovementStrike
 from hwm_exit import HWMExitConfig, evaluate as hwm_evaluate
 from bars import TradeBarBuilder
@@ -110,6 +111,12 @@ RISK_PCT_SIZING = float(os.getenv("WB_SUBBOT_RISK_PCT", "0"))
 MOVE_TARGET_R = float(os.getenv("WB_MOVE_TARGET_R", "0"))
 DAILY_GOAL_PCT = float(os.getenv("WB_SUBBOT_DAILY_GOAL_PCT", "0"))
 DAILY_LOSS_CAP_PCT = float(os.getenv("WB_SUBBOT_DAILY_LOSS_CAP_PCT", "0"))
+# Arm mode (2026-07-17 early-entry rebuild). "squeeze" = late breakout-confirmation
+# arm (SqueezeDetectorV2, current). "micro_pullback" = EARLY impulse→pullback arm
+# (MicroPullbackDetector): enter on the resumption break with a tight pullback-low
+# stop, ~30% into the move instead of ~59%. Pairs with MOVE_TARGET_R=2.0 (the +2R
+# room early entries unlock) and a LOWER firestorm floor (early bars are thinner).
+ARM_MODE = os.getenv("WB_SUBBOT_ARM_MODE", "squeeze")
 ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
 SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
 _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
@@ -702,7 +709,8 @@ class MoveStrikeSubBot:
     def _ensure_symbol(self, symbol: str) -> None:
         if symbol in self.detectors:
             return
-        det = SqueezeDetector()
+        # Arm source: late squeeze (default) or early micro-pullback (2026-07-17).
+        det = MicroPullbackDetector() if ARM_MODE == "micro_pullback" else SqueezeDetector()
         det.symbol = symbol
         self.detectors[symbol] = det
         self.move_strikes[symbol] = MovementStrike(
@@ -1655,6 +1663,59 @@ class MoveStrikeSubBot:
                   f"no new entries for the rest of the day.", flush=True)
         return True
 
+    def _maybe_enter_micropullback(self, symbol: str, price: float) -> None:
+        """Early-entry path (2026-07-17 rebuild). The MicroPullbackDetector arms on
+        an impulse→pullback; we enter when price reclaims the resumption level
+        (arm.trigger_high) with the stop at the pullback low (arm.stop_low) — a tight-R
+        entry ~30% into the move instead of the late ~59% breakout. Reuses firestorm /
+        time-window / loss-lockout gates via _open_position and risk-% sizing; pairs
+        with MOVE_TARGET_R=2.0 for the +2R exit. Backtest-first: validate on SubBotSim
+        before going live."""
+        det = self.detectors.get(symbol)
+        if det is None:
+            return
+        arm = getattr(det, "armed", None)
+        if arm is None:
+            return
+        # Trigger: price reclaims the resumption level (higher-high off the pullback).
+        if price < arm.trigger_high:
+            return
+        # Chase cap: if price has already run past the resumption level, DON'T chase —
+        # the whole point of early entry is a tight-R fill near the trigger, not buying
+        # an extended spike. Preserve the arm (a later pullback may re-offer it).
+        if arm.trigger_high > 0:
+            gap = (price - arm.trigger_high) / arm.trigger_high * 100.0
+            if gap > self.move_chase_cap_pct:
+                print(f"{LOG_TAG} [{now_iso_et()}] {symbol} MP CHASE-SKIP "
+                      f"price={price:.3f} trigger={arm.trigger_high:.3f} gap={gap:.1f}% "
+                      f"(cap={self.move_chase_cap_pct}%)", flush=True)
+                return
+        stop = arm.stop_low
+        r = price - stop
+        if r <= 0:
+            return
+        # Fade-environment gate (parity with the squeeze entry path).
+        try:
+            _fade_vwap = self.bar_builder.get_vwap(symbol)
+        except Exception:
+            _fade_vwap = None
+        _fade_blocked, _fade_reason = self.is_in_fade_environment(symbol, price, _fade_vwap)
+        if _fade_blocked and _fade_reason != "session-blocked":
+            print(f"{LOG_TAG} [{now_iso_et()}] MOVE_FADE_GATE_BLOCK {symbol} "
+                  f"(micro_pullback) reason={_fade_reason} price=${price:.4f}", flush=True)
+            return
+        if _fade_blocked:
+            return
+        score = getattr(arm, "score", 50.0)
+        qty = self._compute_qty(price, r, score)
+        if qty <= 0:
+            return
+        # _open_position → _open_position_with_tag applies firestorm + time-window +
+        # loss-lockout gates and submits; fixed-target exit (MOVE_TARGET_R) manages it.
+        self._open_position(symbol, price, stop, r, qty, score)
+        det.armed = None
+        self.prev_arm_state[symbol] = None
+
     def _maybe_enter(self, symbol: str, price: float) -> None:
         det = self.detectors.get(symbol)
         if det is None:
@@ -1675,6 +1736,10 @@ class MoveStrikeSubBot:
                 return  # past entry cutoff
         except Exception:
             pass  # bad cutoff value — allow entry
+        # Early-entry (micro-pullback) dispatch: different arm + entry mechanics.
+        if ARM_MODE == "micro_pullback":
+            self._maybe_enter_micropullback(symbol, price)
+            return
         # Real arm OR stay-armed mode (no detector arm, but symbol
         # previously fired MOVE_STRIKE today).
         has_real_arm = det.armed is not None
