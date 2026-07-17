@@ -73,7 +73,10 @@ from alpaca.trading.requests import LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 
 
-ET = timezone(timedelta(hours=-4))  # EDT; for May 2026
+from zoneinfo import ZoneInfo
+ET = ZoneInfo("America/New_York")  # DST-aware (EDT/EST); was hardcoded -4 (EDT-only),
+# which silently mis-timed block-windows/cutoffs by 1h in EST months (Nov–Mar).
+# Fixed 2026-07-17 after a January backtest read an hour off. EDT months unchanged.
 
 
 # ══════════════════════════════════════════════════════════════════════
