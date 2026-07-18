@@ -1,0 +1,73 @@
+[2026-06-08] 0 trades, P&L=$+0 (138 symbols watched, 0 traded, 0 skipped)
+[2026-06-09] 3 trades, P&L=$+0 (124 symbols watched, 3 traded, 0 skipped)
+[2026-06-10] 3 trades, P&L=$-455 (160 symbols watched, 3 traded, 1 skipped)
+[2026-06-11] 2 trades, P&L=$-303 (136 symbols watched, 2 traded, 0 skipped)
+[2026-06-12] no universe source available — skip
+[2026-06-13] no universe source available — skip
+[2026-06-14] no universe source available — skip
+[2026-06-15] 2 trades, P&L=$+151 (146 symbols watched, 2 traded, 0 skipped)
+[2026-06-16] 1 trades, P&L=$-150 (147 symbols watched, 1 traded, 0 skipped)
+[2026-06-17] 1 trades, P&L=$-151 (128 symbols watched, 1 traded, 0 skipped)
+[2026-06-18] 2 trades, P&L=$-300 (124 symbols watched, 2 traded, 0 skipped)
+[2026-06-19] universe from scanner_results (no sub-bot log — coverage may be incomplete)
+[2026-06-19] 0 trades, P&L=$+0 (11 symbols watched, 0 traded, 11 skipped)
+[2026-06-20] no universe source available — skip
+[2026-06-21] no universe source available — skip
+  [NXTS] 2026-06-22 sim exit=1 err=Traceback (most recent call last): |   File "/Users/duffy/warrior_bot_v2/simulate_subbot.py", line 980, in <module> |     main() |   File "/Users/duffy/warrior_bot_v2/simulate_subbot.py", line 965, in main | 
+[2026-06-22] 2 trades, P&L=$+69 (129 symbols watched, 1 traded, 0 skipped)
+[2026-06-23] 2 trades, P&L=$-300 (118 symbols watched, 2 traded, 1 skipped)
+[2026-06-24] 1 trades, P&L=$-150 (134 symbols watched, 1 traded, 0 skipped)
+[2026-06-25] 1 trades, P&L=$-150 (132 symbols watched, 1 traded, 0 skipped)
+  [SHPH] 2026-06-26 sim exit=1 err=Traceback (most recent call last): |   File "/Users/duffy/warrior_bot_v2/simulate_subbot.py", line 980, in <module> |     main() |   File "/Users/duffy/warrior_bot_v2/simulate_subbot.py", line 965, in main | 
+[2026-06-26] 0 trades, P&L=$+0 (139 symbols watched, 0 traded, 0 skipped)
+[2026-06-27] no universe source available — skip
+[2026-06-28] no universe source available — skip
+[2026-06-29] 1 trades, P&L=$-151 (136 symbols watched, 1 traded, 1 skipped)
+[2026-06-30] 4 trades, P&L=$-157 (173 symbols watched, 2 traded, 5 skipped)
+[2026-07-01] no universe source available — skip
+[2026-07-02] no universe source available — skip
+[2026-07-03] no universe source available — skip
+[2026-07-04] no universe source available — skip
+[2026-07-05] no universe source available — skip
+[2026-07-06] no universe source available — skip
+[2026-07-07] no universe source available — skip
+[2026-07-08] no universe source available — skip
+[2026-07-09] no universe source available — skip
+[2026-07-10] 0 trades, P&L=$+0 (52 symbols watched, 0 traded, 0 skipped)
+[2026-07-11] no universe source available — skip
+[2026-07-12] no universe source available — skip
+[2026-07-13] 4 trades, P&L=$-172 (120 symbols watched, 3 traded, 1 skipped)
+[2026-07-14] 0 trades, P&L=$+0 (145 symbols watched, 0 traded, 0 skipped)
+[2026-07-15] 1 trades, P&L=$+304 (156 symbols watched, 1 traded, 0 skipped)
+[2026-07-16] 0 trades, P&L=$+0 (117 symbols watched, 0 traded, 0 skipped)
+
+=== mp_fs300 | 2026-06-08 → 2026-07-16 ===
+Total: 30 trades, 6W / 24L (20% WR)
+Gross P&L: $-1,915
+Avg winner: $+297
+Avg loser:  $-155
+
+Per-day:
+  2026-06-08: 0 trades, $+0 (138 watched, 0 traded, 0 skipped)
+  2026-06-09: 3 trades, $+0 (124 watched, 3 traded, 0 skipped)
+  2026-06-10: 3 trades, $-455 (160 watched, 3 traded, 1 skipped)
+  2026-06-11: 2 trades, $-303 (136 watched, 2 traded, 0 skipped)
+  2026-06-15: 2 trades, $+151 (146 watched, 2 traded, 0 skipped)
+  2026-06-16: 1 trades, $-150 (147 watched, 1 traded, 0 skipped)
+  2026-06-17: 1 trades, $-151 (128 watched, 1 traded, 0 skipped)
+  2026-06-18: 2 trades, $-300 (124 watched, 2 traded, 0 skipped)
+  2026-06-19: 0 trades, $+0 (11 watched, 0 traded, 11 skipped)
+  2026-06-22: 2 trades, $+69 (129 watched, 1 traded, 0 skipped)
+  2026-06-23: 2 trades, $-300 (118 watched, 2 traded, 1 skipped)
+  2026-06-24: 1 trades, $-150 (134 watched, 1 traded, 0 skipped)
+  2026-06-25: 1 trades, $-150 (132 watched, 1 traded, 0 skipped)
+  2026-06-26: 0 trades, $+0 (139 watched, 0 traded, 0 skipped)
+  2026-06-29: 1 trades, $-151 (136 watched, 1 traded, 1 skipped)
+  2026-06-30: 4 trades, $-157 (173 watched, 2 traded, 5 skipped)
+  2026-07-10: 0 trades, $+0 (52 watched, 0 traded, 0 skipped)
+  2026-07-13: 4 trades, $-172 (120 watched, 3 traded, 1 skipped)
+  2026-07-14: 0 trades, $+0 (145 watched, 0 traded, 0 skipped)
+  2026-07-15: 1 trades, $+304 (156 watched, 1 traded, 0 skipped)
+  2026-07-16: 0 trades, $+0 (117 watched, 0 traded, 0 skipped)
+
+Detail: /Users/duffy/warrior_bot_v2/backtest_status/replay_subbot_mp_fs300_2026-06-08_2026-07-16.json
