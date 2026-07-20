@@ -77,3 +77,12 @@ Pushing logs...
  create mode 100644 logs/sq_late_backtest.log
 === V3 Hybrid daily run complete: Fri Jul 17 18:06:09 MDT 2026 ===
 === TRAP: cleanup at Fri Jul 17 18:06:09 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 71689 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 71763 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 6424d26] auto: v3 daily logs 2026-07-17
+ 2 files changed, 46 insertions(+)
+=== Cleanup complete: Fri Jul 17 18:06:11 MDT 2026 ===
