@@ -45,6 +45,7 @@ import gzip
 import json
 import os
 import sys
+import zlib
 from collections import deque
 from datetime import datetime, timedelta, timezone
 from statistics import median
@@ -726,13 +727,17 @@ class SubBotSim(MoveStrikeSubBot):
         try:
             with gzip.open(cache_path, "rt") as f:
                 ticks = json.load(f)
-        except (gzip.BadGzipFile, OSError, EOFError) as e:
+        # zlib.error ("invalid block type") is NOT an OSError subclass, so a
+        # corrupt member used to escape this handler and kill the whole symbol
+        # instead of falling through to the single-member reader below.
+        # Hit on FOXX 2026-06-04. Ditto a JSON payload truncated mid-object.
+        except (gzip.BadGzipFile, OSError, EOFError,
+                zlib.error, json.JSONDecodeError) as e:
             # Tick cache files are multi-member gzip (atomic-flush writes append
             # members); a trailing partial member makes gzip.open raise BadGzipFile
             # AFTER decoding the first member. zlib wbits=31 reads the first
             # complete member (the full tick array) and ignores trailing bytes.
             try:
-                import zlib
                 ticks = json.loads(zlib.decompress(cache_path.read_bytes(), 31))
             except Exception:
                 print(f"[SIM] {symbol} {date_str}: cache read failed: {e!r}", flush=True)

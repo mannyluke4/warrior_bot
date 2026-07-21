@@ -1818,6 +1818,13 @@ class MoveStrikeSubBot:
         w = self._tape.get(symbol)
         if not w:
             return True  # fail open — no tape recorded yet
+        # A full deque means the window was truncated by maxlen, i.e. the
+        # symbol printed >=TAPE_MAXLEN ticks inside the lookback. That is
+        # self-evidently liquid. Must short-circuit: a truncated window
+        # under-counts volume, which would INFLATE our position-vs-volume
+        # ratio and block the most liquid names — backwards.
+        if w.maxlen is not None and len(w) >= w.maxlen:
+            return True
         n = len(w)
         dollars = sum(p * s for _, p, s in w)
         shares = sum(s for _, _, s in w)
