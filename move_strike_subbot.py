@@ -1076,17 +1076,19 @@ class MoveStrikeSubBot:
         except Exception:
             ts = datetime.now(timezone.utc)
 
-        # Rolling tape window for the liquidity gate. Cheap (append + trim);
-        # no-op cost when the gate is off, so it always stays warm.
-        if LIQ_GATE_ENABLED:
-            try:
-                w = self._tape.setdefault(symbol, deque())
-                w.append((ts.timestamp(), price, int(size or 0)))
-                cutoff = ts.timestamp() - LIQ_LOOKBACK_SEC
-                while w and w[0][0] < cutoff:
-                    w.popleft()
-            except Exception:
-                pass
+        # Rolling tape window: feeds the liquidity gate AND the entry-time
+        # tape fingerprint. Always recorded (append + trim is cheap) so the
+        # fingerprint is available even with the gate off. maxlen bounds
+        # memory on very fast tapes — a symbol printing >5000 ticks in the
+        # lookback is self-evidently liquid, so a shorter window is fine.
+        try:
+            w = self._tape.setdefault(symbol, deque(maxlen=5000))
+            w.append((ts.timestamp(), price, int(size or 0)))
+            cutoff = ts.timestamp() - LIQ_LOOKBACK_SEC
+            while w and w[0][0] < cutoff:
+                w.popleft()
+        except Exception:
+            pass
         # Feed the bar builder (triggers our on_bar_close_1m via callback)
         try:
             self.bar_builder.on_trade(symbol, price, size, ts)
@@ -1839,6 +1841,49 @@ class MoveStrikeSubBot:
                 return False
         return True
 
+    def _log_tape_fingerprint(self, symbol: str, entry: float, r: float,
+                              qty: int) -> None:
+        """Record the tape's shape at entry. Measurement only — changes no
+        behavior.
+
+        Rationale (2026-07-21): every tape-quality gate that improved
+        SIMULATED P&L on the 2026-05-20+ sample also blocked one of the two
+        REAL verified winners — the sample's 72 trades are sim output, not
+        fills. CBRG (86 ticks/min, 1.6% stop, 1.6% range) and ZYBT (2,039
+        ticks/min, 5.9% stop, 10.3% range) sit at opposite ends, so with
+        n=2 any discriminating threshold kills one of them. Rather than fit
+        another firestorm, log the fingerprint on real fills and design the
+        gate once there is real evidence.
+        """
+        try:
+            w = self._tape.get(symbol)
+            if not w:
+                return
+            span = max(w[-1][0] - w[0][0], 1.0)
+            n = len(w)
+            dollars = sum(p * s for _, p, s in w)
+            shares = sum(s for _, _, s in w)
+            px = [p for _, p, _ in w]
+            lo, hi = min(px), max(px)
+            rate = n / (span / 60.0)
+            # Acceleration: last 60s rate vs the whole window's rate.
+            t1 = w[-1][0] - 60.0
+            n1 = sum(1 for ts_, _, _ in w if ts_ >= t1)
+            accel = (n1 / 1.0) / max(rate, 0.5)
+            print(
+                f"{LOG_TAG} [{now_iso_et()}] TAPE_FINGERPRINT {symbol} "
+                f"stop_pct={100*r/max(entry,.01):.2f} "
+                f"rate_per_min={rate:,.0f} accel={accel:.2f}x "
+                f"range_pct={100*(hi-lo)/max(entry,.01):.2f} "
+                f"ticks={n} dollars={dollars:,.0f} "
+                f"pos_pct_of_vol={100*qty/max(shares,1):.2f} "
+                f"window_sec={span:.0f}",
+                flush=True,
+            )
+        except Exception as e:
+            print(f"{LOG_TAG} TAPE_FINGERPRINT failed {symbol}: {e!r}",
+                  flush=True)
+
     def _daily_trading_halted(self) -> bool:
         """True once the day's realized P&L has hit the +goal or −loss-cap, after
         which no NEW entries are taken for the rest of the day (bank-and-shutdown).
@@ -2182,6 +2227,8 @@ class MoveStrikeSubBot:
         # Liquidity-trap gate (2026-07-21) — refuse tape we could not exit.
         if not self._liquidity_ok(symbol, qty):
             return
+        # Measurement only — no behavior change. See _log_tape_fingerprint.
+        self._log_tape_fingerprint(symbol, entry, r, qty)
         # Plan filters (time-window block + per-symbol loss-lockout).
         if self._strategy_filters_block(symbol, setup_label):
             return
