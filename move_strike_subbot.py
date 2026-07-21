@@ -45,7 +45,7 @@ import signal
 import socket
 import sys
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 
@@ -130,6 +130,31 @@ MOVE_TRAIL_ACTIVATE_R = float(os.getenv("WB_MOVE_TRAIL_ACTIVATE_R", "1.0"))
 # (millions, from scanner_results/float_cache.json, engine-maintained) exceeds the
 # cap. Unknown float → blocked (conservative). Low-float edge; period-dependent.
 MAX_FLOAT_M = float(os.getenv("WB_SUBBOT_MAX_FLOAT_M", "0"))
+
+# ── Liquidity-trap gate (2026-07-21) ───────────────────────────────────
+# COIG 2026-07-21 printed 2 ticks / $28,750 in the 5 min before entry and
+# 40 ticks in the 2h16m AFTER it. The sim (which now tracks live within ~4%)
+# reproduces the entry exactly and then emits ZERO trades: the trailing-R
+# exit is tick-driven, so on dead tape it never evaluates. The position is
+# not merely hard to sell — the exit algorithm effectively stops running,
+# and the trade can only end at the EOD force-flatten.
+#
+# Thresholds from the 80 trustworthy-window trades (2026-05-20+). That
+# sample is bimodal: bottom quartile <=2 ticks / $3.5k per 5 min, median
+# 251 ticks / $145k, top quartile 14,918 ticks / $6.6M. 33 of 80 entries
+# (41%) were on tape at or below COIG's level.
+#
+# NOTE ON EVIDENCE: the backtest CANNOT price illiquidity harm — its fill
+# model fills at the tick price regardless of size — so the measured
+# +$1,332 P&L improvement is a floor, not the real benefit. The gate is
+# justified by exit feasibility, not by curve-fitting P&L.
+LIQ_GATE_ENABLED = os.getenv("WB_SUBBOT_LIQUIDITY_GATE_ENABLED", "0") == "1"
+LIQ_LOOKBACK_SEC = int(os.getenv("WB_SUBBOT_LIQ_LOOKBACK_SEC", "300"))
+LIQ_MIN_TICKS = int(os.getenv("WB_SUBBOT_LIQ_MIN_TICKS", "20"))
+LIQ_MIN_DOLLARS = float(os.getenv("WB_SUBBOT_LIQ_MIN_DOLLARS", "100000"))
+# Block if our intended position would be this % of the lookback's volume.
+# COIG would have been 23.7% — i.e. we ARE the market, and cannot exit.
+LIQ_MAX_POS_PCT = float(os.getenv("WB_SUBBOT_LIQ_MAX_POS_PCT", "10.0"))
 FLOAT_CACHE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "scanner_results", "float_cache.json")
 ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
@@ -364,6 +389,9 @@ class MoveStrikeSubBot:
                   f"loss_lockout={SYMBOL_LOSS_LOCKOUT}", flush=True)
         # Stats
         self.ticks_received = 0
+        # {symbol: deque[(epoch_sec, price, size)]} — rolling tape window
+        # for the liquidity-trap gate. Only populated when the gate is on.
+        self._tape: dict = {}
         self.symbols_seen: set[str] = set()
         # Per-symbol HH-count state (only matters once a position is open)
         # We pre-track on each bar so HH is correct at any moment.
@@ -1039,6 +1067,18 @@ class MoveStrikeSubBot:
             ts = datetime.fromisoformat(ts_iso)
         except Exception:
             ts = datetime.now(timezone.utc)
+
+        # Rolling tape window for the liquidity gate. Cheap (append + trim);
+        # no-op cost when the gate is off, so it always stays warm.
+        if LIQ_GATE_ENABLED:
+            try:
+                w = self._tape.setdefault(symbol, deque())
+                w.append((ts.timestamp(), price, int(size or 0)))
+                cutoff = ts.timestamp() - LIQ_LOOKBACK_SEC
+                while w and w[0][0] < cutoff:
+                    w.popleft()
+            except Exception:
+                pass
         # Feed the bar builder (triggers our on_bar_close_1m via callback)
         try:
             self.bar_builder.on_trade(symbol, price, size, ts)
@@ -1748,6 +1788,49 @@ class MoveStrikeSubBot:
         self._last_float_m = float_m
         return float_m <= MAX_FLOAT_M
 
+    def _liquidity_ok(self, symbol: str, qty: int) -> bool:
+        """False when the recent tape is too thin to manage a position on.
+
+        Two independent refusals, either of which blocks:
+          1. DEAD TAPE — fewer than LIQ_MIN_TICKS prints AND less than
+             LIQ_MIN_DOLLARS traded in the lookback. Both must be low; a
+             handful of large block prints is not a trap, and a busy tape
+             of odd lots is not either.
+          2. WE ARE THE MARKET — the intended position exceeds
+             LIQ_MAX_POS_PCT of everything that traded in the lookback.
+
+        See the LIQ_* constants for the COIG evidence. No-op when gated off,
+        and fails OPEN (allows the entry) if the tape window is missing, so
+        a cold start can never silently halt trading.
+        """
+        if not LIQ_GATE_ENABLED:
+            return True
+        w = self._tape.get(symbol)
+        if not w:
+            return True  # fail open — no tape recorded yet
+        n = len(w)
+        dollars = sum(p * s for _, p, s in w)
+        shares = sum(s for _, _, s in w)
+        mins = LIQ_LOOKBACK_SEC / 60.0
+
+        if n < LIQ_MIN_TICKS and dollars < LIQ_MIN_DOLLARS:
+            print(f"{LOG_TAG} [{now_iso_et()}] {symbol} LIQUIDITY_GATE_BLOCK "
+                  f"dead tape: {n} ticks (<{LIQ_MIN_TICKS}) and "
+                  f"${dollars:,.0f} (<${LIQ_MIN_DOLLARS:,.0f}) in last "
+                  f"{mins:.0f}m — exit algorithm would starve", flush=True)
+            return False
+
+        if shares > 0 and LIQ_MAX_POS_PCT > 0:
+            pos_pct = 100.0 * qty / shares
+            if pos_pct > LIQ_MAX_POS_PCT:
+                print(f"{LOG_TAG} [{now_iso_et()}] {symbol} "
+                      f"LIQUIDITY_GATE_BLOCK size: qty={qty} is "
+                      f"{pos_pct:.1f}% of the last {mins:.0f}m volume "
+                      f"({shares:,} sh, cap {LIQ_MAX_POS_PCT:.0f}%) — "
+                      f"could not exit without moving the tape", flush=True)
+                return False
+        return True
+
     def _daily_trading_halted(self) -> bool:
         """True once the day's realized P&L has hit the +goal or −loss-cap, after
         which no NEW entries are taken for the rest of the day (bank-and-shutdown).
@@ -2087,6 +2170,9 @@ class MoveStrikeSubBot:
         if not self._float_ok(symbol):
             print(f"{LOG_TAG} [{now_iso_et()}] {symbol} FLOAT_GATE_BLOCK "
                   f"float={self._last_float_m}M cap={MAX_FLOAT_M}M", flush=True)
+            return
+        # Liquidity-trap gate (2026-07-21) — refuse tape we could not exit.
+        if not self._liquidity_ok(symbol, qty):
             return
         # Plan filters (time-window block + per-symbol loss-lockout).
         if self._strategy_filters_block(symbol, setup_label):
