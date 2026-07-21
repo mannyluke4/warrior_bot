@@ -474,8 +474,16 @@ class MoveStrikeSubBot:
         # bars are largely random losses. YTD-sim confirms 50% WR at
         # ≥100 ticks/sec vs 19% at <5 ticks/sec — see
         # cowork_reports/2026-05-28_ytd_tick_rate_audit.md (TBD).
+        # FORECLOSED under PURE_MP (2026-07-21). The 6000-ticks/min (100/sec)
+        # threshold blocks essentially every trade this strategy takes, not
+        # just thin tape: CBRG 2026-07-21 (+$878, the best trade of the
+        # project) had 82 prior-bar ticks and ZYBT 2026-07-20 (+$369) had
+        # 3,012 — both would have been blocked. It stops COIG-style traps
+        # only because it stops everything. Use the liquidity-trap gate
+        # (LIQ_* above) instead, which passes both winners and blocks COIG.
         self.firestorm_gate_enabled = (
-            os.getenv("WB_MOVE_FIRESTORM_GATE_ENABLED", "0") == "1"
+            not PURE_MP
+            and os.getenv("WB_MOVE_FIRESTORM_GATE_ENABLED", "0") == "1"
         )
         self.firestorm_gate_min_ticks_per_min = int(
             os.getenv("WB_MOVE_FIRESTORM_GATE_MIN_TICKS_PER_MIN", "6000")
