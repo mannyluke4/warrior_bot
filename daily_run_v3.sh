@@ -181,8 +181,36 @@ for i in $(seq 1 72); do
     sleep 5
 done
 
+# Retry once (2026-07-20): the 2 AM cron aborted today because the FIRST fresh
+# gateway restart didn't authenticate within 6 min, but a SECOND fresh restart
+# (manual re-run) came up in ~10s. So retry the kill+restart+wait once before
+# giving up, rather than losing the whole morning session to a slow auth.
 if [ "$GW_READY" -eq 0 ]; then
-    echo "FATAL: IB Gateway did not open port $IBKR_PORT within 360 seconds. Aborting."
+    echo "Gateway did not open port $IBKR_PORT in 360s — RETRYING gateway restart once..."
+    pkill -9 -f "java.*ibgateway" 2>/dev/null || true
+    pkill -9 -f "java.*IBGateway" 2>/dev/null || true
+    pkill -9 -f "java.*tws" 2>/dev/null || true
+    pkill -9 -f "java.*Jts" 2>/dev/null || true
+    pkill -9 -f "java.*ibc" 2>/dev/null || true
+    pkill -9 -f "java.*IBC" 2>/dev/null || true
+    sleep 30
+    if pgrep -f "java" > /dev/null 2>&1; then pkill -9 -f "java" 2>/dev/null || true; sleep 3; fi
+    echo "Restarting IB Gateway via IBC (attempt 2)..."
+    ~/ibc/gatewaystartmacos.sh -inline &
+    IBC_PID=$!
+    for i in $(seq 1 72); do
+        if python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2>/dev/null; then
+            echo "Gateway is up on port $IBKR_PORT after retry (~$((i*5))s)"
+            GW_READY=1
+            break
+        fi
+        echo "  retry attempt $i/72: port $IBKR_PORT not ready yet, waiting 5s..."
+        sleep 5
+    done
+fi
+
+if [ "$GW_READY" -eq 0 ]; then
+    echo "FATAL: IB Gateway did not open port $IBKR_PORT after 2 restart attempts. Aborting."
     exit 1
 fi
 
