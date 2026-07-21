@@ -44,6 +44,27 @@ SCANNER_PID=""
 GW_WATCHDOG_PID=""
 CAFFEINE_PID=""   # init early so cleanup trap can reference safely under set -u
 
+# ── Self-dedup (2026-07-21) ────────────────────────────────────────────────
+# Kill any PRIOR daily_run_v3 supervisor so THIS start cleanly takes over. Two
+# concurrent supervisors each auto-restart the engine on its death (the line
+# ~584 watch loop) → duplicate bot_v3_hybrid engines race to bind
+# /tmp/warrior_engine.sock. The loser's unlink+bind leaves the socket path
+# pointing at a listening socket nobody accept()s on, so it refuses ALL new
+# clients while still serving the ones connected before the clobber. That is
+# exactly what stranded sub-bot A after the 2026-07-21 restart (the COIG
+# fallout). Root cause: no prior guard against a stale supervisor. We exclude
+# our OWN process group so we can never kill this instance or its subshells;
+# only a stale supervisor (a different pgid) is killed.
+MY_PGID=$(ps -o pgid= -p $$ | tr -d ' ')
+for _pid in $(pgrep -f "daily_run_v3.sh" 2>/dev/null || true); do
+    _pgid=$(ps -o pgid= -p "$_pid" 2>/dev/null | tr -d ' ' || true)
+    if [ -n "$_pgid" ] && [ "$_pgid" != "$MY_PGID" ]; then
+        echo "Self-dedup: killing stale daily_run supervisor PID $_pid (pgid $_pgid)"
+        kill "$_pid" 2>/dev/null || true
+    fi
+done
+sleep 2
+
 # DEGRADED MODE toggle (IBKR market-data outage, ~2026-07 window). Read from
 # .env so the 2 AM cron picks it up. When =1, launch_main_bot runs
 # watchlist_publisher.py (IBKR-free Databento watchlist for the manual bot)
