@@ -120,27 +120,59 @@ def compute_symbol_windows_from_scanner(scanner_json_path: Path) -> dict[str, tu
         return {}
     try:
         with open(scanner_json_path, "r") as f:
-            snapshots = json.load(f)
+            payload = json.load(f)
     except Exception:
         return {}
-    if not isinstance(snapshots, list):
+    if not isinstance(payload, list) or not payload:
         return {}
+
     first: dict[str, str] = {}
     last: dict[str, str] = {}
-    for snap in snapshots:
-        if not isinstance(snap, dict):
-            continue
-        scan_time = snap.get("scan_time_et", "")
-        if len(scan_time) < 5:
-            continue
-        hhmm = scan_time[:5]
-        for cand in snap.get("candidates", []) or []:
-            sym = cand.get("symbol") if isinstance(cand, dict) else None
+
+    # Two on-disk formats:
+    #   A (current): list of SNAPSHOTS, each {scan_time_et, candidates:[...]}
+    #   B (pre-May): a FLAT list of candidate dicts — no snapshot wrapper,
+    #                no scan_time_et; the whole file is one scan.
+    # Before 2026-07-21 format B silently parsed to {} (every row failed the
+    # scan_time_et check), so the caller fell through to the raw tick_cache
+    # glob. That is how 63% of YTD days ended up replaying EVERY symbol in
+    # the cache instead of the scanner's actual picks — e.g. 2026-01-16 had
+    # a 1-symbol scanner list but the sim traded all 14 cached symbols.
+    is_snapshots = any(
+        isinstance(s, dict) and "candidates" in s for s in payload
+    )
+
+    if is_snapshots:
+        for snap in payload:
+            if not isinstance(snap, dict):
+                continue
+            scan_time = snap.get("scan_time_et", "")
+            if len(scan_time) < 5:
+                continue
+            hhmm = scan_time[:5]
+            for cand in snap.get("candidates", []) or []:
+                sym = cand.get("symbol") if isinstance(cand, dict) else None
+                if not sym:
+                    continue
+                if sym not in first:
+                    first[sym] = hhmm
+                last[sym] = hhmm
+    else:
+        for cand in payload:
+            if not isinstance(cand, dict):
+                continue
+            sym = cand.get("symbol")
             if not sym:
                 continue
-            if sym not in first:
+            # Flat rows carry their own discovery stamp.
+            hhmm = str(cand.get("sim_start") or cand.get("first_seen_et")
+                       or cand.get("discovery_time") or "09:30")[:5]
+            if len(hhmm) < 5:
+                hhmm = "09:30"
+            if sym not in first or hhmm < first[sym]:
                 first[sym] = hhmm
-            last[sym] = hhmm
+            last[sym] = "16:00"
+
     return {s: (first[s], last[s]) for s in first}
 
 
@@ -171,6 +203,25 @@ def compute_symbol_windows_from_tick_cache(date: str, start_default: str,
     return syms
 
 
+# ─── Data-provenance guards (2026-07-21 audit) ──────────────────────────
+#
+# FIRST_LIVE_CAPTURE_DATE — before this, tick_cache holds a bulk BACKFILL,
+# not a live recording. Every 2026-01-02..2026-03-23 cache file was written
+# in one pass at 2026-03-25 13:15; the repo's first commit is 2026-02-26,
+# so no live scanner or bot existed to produce those days. `scanner_results`
+# for those dates were likewise reconstructed after the fact (the
+# 2026-01-16 file was written 2026-05-06).
+FIRST_LIVE_CAPTURE_DATE = "2026-03-24"
+# FIRST_SUBBOT_LOG_DATE — before this there is no sub-bot log, so no record
+# of which symbols the sub-bot actually saw. This is the only universe
+# source that is genuinely authoritative.
+FIRST_SUBBOT_LOG_DATE = "2026-05-20"
+# The raw tick_cache glob is NOT a watchlist — it is every symbol the engine
+# ever subscribed to that day (100-144 on live days). Using it silently
+# overstates how selective the strategy was. Opt in explicitly.
+ALLOW_GLOB_UNIVERSE = os.getenv("WB_REPLAY_ALLOW_GLOB_UNIVERSE", "0") == "1"
+
+
 def compute_symbol_windows(date: str, end_cap: str,
                            tick_cache_start: str = "07:00") -> tuple[dict[str, tuple[str, str]], str]:
     """Combined universe source. Returns (windows, source_name)."""
@@ -182,11 +233,13 @@ def compute_symbol_windows(date: str, end_cap: str,
     windows = compute_symbol_windows_from_scanner(scanner_json)
     if windows:
         return windows, "scanner_results"
-    # Last-resort fallback: enumerate tick_cache/<date>/*.json.gz.
-    # Necessary for pre-May days where scanner_results files exist but
-    # are empty and no sub-bot log exists yet.
+    # Last resort: enumerate tick_cache/<date>/*.json.gz. This is NOT a
+    # watchlist — see ALLOW_GLOB_UNIVERSE above. Gated OFF so a day with no
+    # real universe is SKIPPED rather than silently replaying everything.
     windows = compute_symbol_windows_from_tick_cache(date, tick_cache_start, end_cap)
     if windows:
+        if not ALLOW_GLOB_UNIVERSE:
+            return {}, "skipped_no_universe"
         return windows, "tick_cache"
     return {}, "none"
 
@@ -268,14 +321,37 @@ def main():
     per_day: list[dict] = []
     skipped: dict[str, list[str]] = defaultdict(list)
 
+    source_counts: dict[str, int] = defaultdict(int)
+
     for date in daterange(args.start, args.end):
         windows, source = compute_symbol_windows(date, args.end_cap)
+        source_counts[source] += 1
+        if source == "skipped_no_universe":
+            print(f"[{date}] SKIPPED — no real universe (only a raw tick_cache "
+                  f"glob, which is every symbol the engine subscribed to, not "
+                  f"a watchlist). Set WB_REPLAY_ALLOW_GLOB_UNIVERSE=1 to "
+                  f"replay it anyway.", flush=True)
+            continue
         if not windows:
             print(f"[{date}] no universe source available — skip", flush=True)
             continue
         if source == "scanner_results":
             print(f"[{date}] universe from scanner_results "
                   f"(no sub-bot log — coverage may be incomplete)", flush=True)
+        if source == "tick_cache":
+            print(f"[{date}] ⚠️  universe from RAW TICK_CACHE GLOB "
+                  f"({len(windows)} symbols) — this is NOT a watchlist; "
+                  f"selectivity is overstated.", flush=True)
+        # Provenance warnings — see the constants above for the evidence.
+        if date < FIRST_LIVE_CAPTURE_DATE:
+            print(f"[{date}] ⚠️  PRE-LIVE DATA — tick_cache for this date is a "
+                  f"bulk backfill written 2026-03-25, not a live recording "
+                  f"(repo's first commit is 2026-02-26). Treat as "
+                  f"illustrative, not evidence.", flush=True)
+        elif date < FIRST_SUBBOT_LOG_DATE:
+            print(f"[{date}] ⚠️  no sub-bot log exists before "
+                  f"{FIRST_SUBBOT_LOG_DATE} — universe is inferred, not the "
+                  f"symbol set the sub-bot actually saw.", flush=True)
 
         # Optional cap for fast iteration
         if args.max_symbols_per_day > 0:
@@ -346,6 +422,21 @@ def main():
               f"({d['symbols_watched']} watched, {d['symbols_traded']} traded, "
               f"{d['symbols_skipped']} skipped)")
 
+    # --- Universe provenance (2026-07-21 audit) ---
+    # Recorded in the output so a result can never again be quoted without
+    # the caveat about where its universe came from.
+    print("")
+    print("Universe provenance:")
+    for src, n in sorted(source_counts.items(), key=lambda kv: -kv[1]):
+        note = {
+            "subbot_log": "authoritative — what the sub-bot actually saw",
+            "scanner_results": "scanner picks (no sub-bot log)",
+            "tick_cache": "RAW GLOB — not a watchlist, selectivity overstated",
+            "skipped_no_universe": "skipped: no real universe available",
+            "none": "no data",
+        }.get(src, "")
+        print(f"  {src:22} {n:4} day(s)   {note}")
+
     # --- Write JSON detail ---
     out_path = WORKDIR / "backtest_status" / f"replay_subbot_{args.label}_{args.start}_{args.end}.json"
     out_path.parent.mkdir(exist_ok=True)
@@ -354,6 +445,9 @@ def main():
             "label": args.label, "start": args.start, "end": args.end,
             "trades": overall_trades, "per_day": per_day,
             "skipped_by_date": dict(skipped),
+            "universe_sources": dict(source_counts),
+            "badprint_filter": os.getenv("WB_SIM_BADPRINT_FILTER", "0"),
+            "allow_glob_universe": os.getenv("WB_REPLAY_ALLOW_GLOB_UNIVERSE", "0"),
             "total_pnl": total_pnl,
         }, f, indent=2)
     print(f"\nDetail: {out_path}")

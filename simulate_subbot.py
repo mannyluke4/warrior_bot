@@ -45,7 +45,9 @@ import gzip
 import json
 import os
 import sys
+from collections import deque
 from datetime import datetime, timedelta, timezone
+from statistics import median
 from pathlib import Path
 from typing import Optional
 
@@ -234,6 +236,127 @@ class MockAlpaca:
         a.cash = a.equity
         a.buying_power = a.equity
         return a
+
+
+# ════════════════════════════════════════════════════════════════════════
+# Bad-print filter (2026-07-21). Gated OFF by default per CLAUDE.md.
+# ════════════════════════════════════════════════════════════════════════
+# WHY THIS EXISTS
+#   The tick cache contains single erroneous prints — one tick 20-40% away
+#   from the market that reverts within the same minute. Verified examples:
+#     EEIQ 2026-03-30 08:34  median $10.84, one print $7.20 (-34%), back
+#                            to $11.01 in the same minute → sim booked -$5,899
+#     ELAB 2026-03-24 08:00  median $5.25, range $3.61-$6.13 in one minute,
+#                            $5.06 before and $5.05 after → sim booked -$4,214
+#   They cluster at exactly 08:00 ET across unrelated symbols and dates
+#   (CYN 03-11, ELAB 03-24, AIFF 03-26), i.e. a feed/stitching artifact,
+#   not market behavior.
+#
+#   The sim treats such a print as an executable fill, so an internal stop
+#   "triggers" and books a catastrophic loss. LIVE CANNOT DO THIS: per the
+#   project's hard rule, stops are internal price comparisons that fire a
+#   SELL LIMIT — a single reverting tick does not fill a limit order. The
+#   position simply rides through and price snaps back.
+#
+#   Nine such trades accounted for -$13,987 of the -$14,381 YTD result
+#   (audit 2026-07-21). Filtering them is a FILL-MODEL FIDELITY fix, not a
+#   strategy change — it makes the sim stop transacting on prices live
+#   could never have transacted on.
+#
+# WHAT THE DATA ACTUALLY SHOWS (EEIQ 2026-03-30 08:34:12-08:34:16)
+#   [350634] 08:34:13  p=11.120      <- real EEIQ
+#   [350635] 08:34:13  p= 7.770      <- a DIFFERENT instrument
+#   [350636] 08:34:14  p= 7.840
+#   [350639] 08:34:14  p=11.100      <- back to real EEIQ
+#   A $7.27-7.85 stream is woven tick-by-tick into EEIQ's $11.03-11.10
+#   stream for seconds at a time. This is not a stray print, it is FEED
+#   CONTAMINATION: a second security's trades landed in this symbol's
+#   cache file.
+#
+# HOW IT WORKS (no look-ahead on trade outcome)
+#   Discriminator: within any one second the REAL stream is the majority of
+#   ticks, so a per-second median lands on the real price and is immune to
+#   a minority contaminant. Neither run-length nor time-persistence works
+#   here — the foreign stream both interleaves AND runs contiguously for
+#   several ticks at a stretch.
+#
+#   1. Bucket ticks by whole second; take each second's median price.
+#   2. Reference for a tick = median of the per-second medians within
+#      +/- WINDOW_SEC (robust if one whole second is mostly junk).
+#   3. Drop the tick if it deviates >= PCT from that reference.
+#
+#   A genuine gap or vertical move carries the WHOLE second with it, so the
+#   per-second medians follow and nothing is dropped. Only prices that
+#   disagree with their own neighbourhood — i.e. a second instrument — are
+#   removed. The +/- WINDOW_SEC lookahead is in tick time only and never
+#   consults the trade's eventual result, so it does not reintroduce the
+#   look-ahead bias class flagged in the 2026-05 forensic-abandon audit.
+BADPRINT_FILTER = os.getenv("WB_SIM_BADPRINT_FILTER", "0") == "1"
+BADPRINT_PCT = float(os.getenv("WB_SIM_BADPRINT_PCT", "0.12"))
+BADPRINT_WINDOW_SEC = int(os.getenv("WB_SIM_BADPRINT_WINDOW_SEC", "2"))
+# Drop rate above this (%) means the cache file holds a second security.
+BADPRINT_WARN_PCT = float(os.getenv("WB_SIM_BADPRINT_WARN_PCT", "1.0"))
+
+
+def filter_bad_prints(ticks, pct=None):
+    """Drop interleaved off-instrument ticks from a symbol's tick stream.
+
+    Returns (kept_ticks, dropped_count). No-op (returns the input
+    unchanged) when the filter is gated off.
+    """
+    if not BADPRINT_FILTER:
+        return ticks, 0
+    pct = BADPRINT_PCT if pct is None else pct
+    if pct <= 0:
+        return ticks, 0
+
+    # Pass 1 — price + whole-second bucket per tick.
+    prices, buckets = [], []
+    by_sec = {}
+    for tk in ticks:
+        try:
+            p = float(tk["p"])
+            if p <= 0:
+                raise ValueError
+        except (KeyError, ValueError, TypeError):
+            prices.append(None)
+            buckets.append(None)
+            continue
+        try:
+            b = int(datetime.fromisoformat(tk["t"]).timestamp())
+        except (KeyError, ValueError, TypeError):
+            prices.append(p)
+            buckets.append(None)
+            continue
+        prices.append(p)
+        buckets.append(b)
+        by_sec.setdefault(b, []).append(p)
+
+    if not by_sec:
+        return ticks, 0
+
+    # Pass 2 — per-second median, then the local reference around it.
+    sec_med = {b: median(v) for b, v in by_sec.items()}
+    ref_at = {}
+    for b in sec_med:
+        near = [sec_med[b + o] for o in range(-BADPRINT_WINDOW_SEC,
+                                              BADPRINT_WINDOW_SEC + 1)
+                if (b + o) in sec_med]
+        ref_at[b] = median(near) if near else sec_med[b]
+
+    # Pass 3 — emit.
+    kept, dropped = [], 0
+    for i, tk in enumerate(ticks):
+        p, b = prices[i], buckets[i]
+        if p is None or b is None:
+            kept.append(tk)
+            continue
+        r = ref_at.get(b)
+        if r and r > 0 and abs(p - r) / r >= pct:
+            dropped += 1
+            continue
+        kept.append(tk)
+    return kept, dropped
 
 
 # ════════════════════════════════════════════════════════════════════════
@@ -614,6 +737,30 @@ class SubBotSim(MoveStrikeSubBot):
             except Exception:
                 print(f"[SIM] {symbol} {date_str}: cache read failed: {e!r}", flush=True)
                 return
+
+        # Fill-model fidelity: drop unconfirmed single-tick dislocations that
+        # live could never have filled a SELL LIMIT against. Gated OFF by
+        # default (WB_SIM_BADPRINT_FILTER=1 to enable). See filter_bad_prints.
+        if BADPRINT_FILTER:
+            _n_before = len(ticks)
+            ticks, _dropped = filter_bad_prints(ticks)
+            if _dropped:
+                _rate = 100.0 * _dropped / max(_n_before, 1)
+                print(f"[SIM] {symbol} {date_str}: BADPRINT_FILTER dropped "
+                      f"{_dropped} off-instrument tick(s) ({_rate:.2f}%, "
+                      f">={BADPRINT_PCT*100:.0f}% from per-second median)",
+                      flush=True)
+                # A high drop rate means the cache file holds more than one
+                # security (verified: SPHL 2026-01-15 17:07:22 interleaves
+                # $4.02 and $17.68). The filter keeps the MAJORITY stream,
+                # which is not guaranteed to be the right one — surface it
+                # rather than silently "cleaning" a corrupt file.
+                if _rate >= BADPRINT_WARN_PCT:
+                    print(f"[SIM] ⚠️  {symbol} {date_str}: CONTAMINATED TICK "
+                          f"CACHE — {_rate:.2f}% of ticks are off-instrument. "
+                          f"Results for this symbol-day are UNRELIABLE; the "
+                          f"cache file likely contains a second security.",
+                          flush=True)
 
         # Convert HH:MM strings to total-minutes-from-midnight ET
         sh, sm = (int(x) for x in start_et.split(":")[:2])
