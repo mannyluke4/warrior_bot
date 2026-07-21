@@ -470,7 +470,14 @@ else
 # PA3RRCLS7OMI. Backtest: +32% Jan / +39% recent (float+trail, single-position
 # compounding, ~40-trade sample). See project_subbot_early_entry memory. LIGHTLY
 # validated — monitor closely.
-launch_subbot A "$A_KEY" "$A_SECRET" "WB_SUBBOT_ARM_MODE=micro_pullback WB_MOVE_FIRESTORM_GATE_ENABLED=0 WB_SUBBOT_EQUITY_PCT=0 WB_SUBBOT_RISK_PCT=0.05 WB_MOVE_TRAIL_R=1.0 WB_MOVE_TARGET_R=0 WB_SUBBOT_MAX_FLOAT_M=5 WB_SUBBOT_DAILY_GOAL_PCT=0 WB_SUBBOT_DAILY_LOSS_CAP_PCT=0.10 WB_ENTRY_BLOCK_WINDOWS_ET= WB_SYMBOL_LOSS_LOCKOUT=0 WB_BT_MOVE_REENTRY_GREEN=0"
+# PURE_MP (2026-07-21): master gate that forecloses EVERY legacy path for A —
+# squeeze/stay-armed entry, GREEN/BREAK re-entry, regime-shift, legacy HWM exit,
+# fixed-target, AND the orphan_adopted downgrade. Also persists A's open position
+# + exit plan to disk so a restart REHYDRATES the micro-pullback plan (trailing-R)
+# instead of re-adopting from the broker as a generic orphan. Fixes the COIG
+# 2026-07-21 incident where a restart handed A's own position to the legacy HWM
+# trail. The other WB_* overrides remain for defense-in-depth / clarity.
+launch_subbot A "$A_KEY" "$A_SECRET" "WB_SUBBOT_PURE_MP=1 WB_SUBBOT_ARM_MODE=micro_pullback WB_MOVE_FIRESTORM_GATE_ENABLED=0 WB_SUBBOT_EQUITY_PCT=0 WB_SUBBOT_RISK_PCT=0.05 WB_MOVE_TRAIL_R=1.0 WB_MOVE_TRAIL_ACTIVATE_R=1.0 WB_MOVE_TARGET_R=0 WB_SUBBOT_MAX_FLOAT_M=5 WB_SUBBOT_DAILY_GOAL_PCT=0 WB_SUBBOT_DAILY_LOSS_CAP_PCT=0.10 WB_ENTRY_BLOCK_WINDOWS_ET= WB_SYMBOL_LOSS_LOCKOUT=0 WB_BT_MOVE_REENTRY_GREEN=0"
 # Variant B re-purposed 2026-05-29: V1 VWAP fade-gate retired after 4
 # straight losing weeks (cumulative ~$5K below week-start). Per
 # cowork_reports/2026-05-28_track_a_results.md and Manny's call to slot

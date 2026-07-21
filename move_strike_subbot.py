@@ -137,6 +137,25 @@ SYMBOL_LOSS_LOCKOUT = os.getenv("WB_SYMBOL_LOSS_LOCKOUT", "0") == "1"
 _SUBBOT_LOG_SUFFIX = os.getenv("WB_SUBBOT_LOG_SUFFIX", "").strip()
 LOG_TAG = f"[MOVE_SUB_{_SUBBOT_LOG_SUFFIX}]" if _SUBBOT_LOG_SUFFIX else "[MOVE_SUB]"
 
+# ── PURE micro-pullback mode (2026-07-21, sub-bot A legacy purge) ──────────
+# One master gate. When ON, ONLY the validated micro-pullback strategy can
+# execute — every legacy path is structurally foreclosed regardless of its own
+# env var: squeeze/stay-armed entry, GREEN/BREAK re-entry, regime-shift, the
+# legacy HWM exit, the fixed-target exit, AND the orphan_adopted downgrade.
+# It also closes the persistence gap that caused the 2026-07-21 COIG incident:
+# the sub-bot had no disk persistence ("fresh start each session"), so a restart
+# could only recover a held position by re-adopting it from the broker as a
+# generic orphan — discarding the micro-pullback exit plan and handing the
+# position to the legacy HWM trail. In pure mode the open position + full exit
+# plan persist to disk and are REHYDRATED on reconcile (trailing-R managed),
+# never downgraded. Default OFF → byte-identical to prior behavior (variant C,
+# SubBotSim backtester). Enabled only for sub-bot A via daily_run_v3.sh.
+PURE_MP = os.getenv("WB_SUBBOT_PURE_MP", "0") == "1"
+if PURE_MP:
+    # Force the arm mode so pure mode can never be misconfigured onto the late
+    # squeeze arm, independent of WB_SUBBOT_ARM_MODE.
+    ARM_MODE = "micro_pullback"
+
 
 # Sim-time override (2026-06-30). In live this stays None and the time
 # helpers read the wall clock. SubBotSim sets it per replayed tick so the
@@ -971,7 +990,7 @@ class MoveStrikeSubBot:
 
         # GREEN re-entry trigger: at bar close, if no position AND watch
         # exists for this symbol AND bar is green (close > open) → fire.
-        if (self.position is None and self.reentry_green
+        if (not PURE_MP and self.position is None and self.reentry_green
                 and symbol in self._reentry_watches
                 and bar.close > bar.open):
             self._try_fire_green_reentry(symbol, bar)
@@ -979,7 +998,8 @@ class MoveStrikeSubBot:
         # REGIME-SHIFT pullback confirm (2026-06-30): if a pullback watch is
         # active for this symbol, try to confirm it on THIS bar (green
         # higher-low) before evaluating a fresh anomaly. May open a position.
-        if (self.regime_shift_enabled and self.regime_shift_pullback_entry
+        if (not PURE_MP and self.regime_shift_enabled
+                and self.regime_shift_pullback_entry
                 and self.position is None
                 and symbol in self._regime_shift_pullback_watch):
             self._try_fire_regime_pullback(symbol, bar)
@@ -988,7 +1008,7 @@ class MoveStrikeSubBot:
         # body anomaly on bar close. Skips if any position is open.
         # Skips if symbol has not armed today (require_armed gate).
         # Per-symbol max-1 by default.
-        if self.regime_shift_enabled and self.position is None:
+        if not PURE_MP and self.regime_shift_enabled and self.position is None:
             rs_det = self.regime_shift_detectors.get(symbol)
             if rs_det is not None:
                 # Past entry-time cutoff?
@@ -1198,10 +1218,35 @@ class MoveStrikeSubBot:
         if price > p.peak:
             p.peak = price
             p.peak_time = now_iso_et()
+            # Persist the advanced high-water so a restart rehydrates the trail
+            # at the correct peak (PURE_MP only; no-op otherwise).
+            self._persist_position()
         if price < p.cum_low:
             p.cum_low = price
         # Sync HH count from per-symbol tracker (updated on bar closes)
         p.hh_count = self._sym_hh_count.get(p.symbol, 0)
+
+        # ── PURE micro-pullback exit (2026-07-21) ─────────────────────────
+        # In pure mode EVERY position — a fresh micro-pullback entry, a
+        # rehydrated plan, or even a foreign orphan — is managed by exactly two
+        # rules: the hard stop, then a trailing-R stop that activates once up
+        # +ACTIVATE_R and rides TRAIL_R below the high-water mark. This returns
+        # BEFORE any legacy branch (regime / fixed-target / HWM), so the legacy
+        # exit machinery is structurally unreachable. Nothing gets through.
+        if PURE_MP:
+            if price <= p.stop:
+                self._close_position("mp_hard_stop", price)
+                return
+            if MOVE_TRAIL_R > 0 and p.r > 0:
+                max_r = (p.peak - p.entry) / p.r  # p.peak updated this tick
+                if max_r >= MOVE_TRAIL_ACTIVATE_R:
+                    trail_stop = p.entry + (max_r - MOVE_TRAIL_R) * p.r
+                    if price <= trail_stop:
+                        self._close_position(
+                            f"mp_trail_exit(peakR={max_r:.1f},"
+                            f"trail={MOVE_TRAIL_R:g})", price)
+                        return
+            return  # hold — trailing not yet triggered
 
         # Regime-shift positions: pre-partial uses hard-stop + 1.5R target
         # only. HWM trail is suppressed until partial fires (sim parity —
@@ -1726,6 +1771,65 @@ class MoveStrikeSubBot:
                   f"no new entries for the rest of the day.", flush=True)
         return True
 
+    # ──────────────────────────────────────────────────────────────────
+    # Position persistence (PURE_MP, 2026-07-21). Closes the gap that
+    # downgraded COIG on restart: the full micro-pullback exit plan is
+    # written to disk so a reconcile REHYDRATES it (trailing-R managed)
+    # instead of re-adopting from the broker as a generic orphan. No-op
+    # when PURE_MP is off (preserves the "fresh start each session"
+    # contract for variant C and the SubBotSim backtester).
+    # ──────────────────────────────────────────────────────────────────
+    def _persist_paths(self):
+        d = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "session_state",
+            datetime.now(ET).strftime("%Y-%m-%d"))
+        fname = f"subbot_{_SUBBOT_LOG_SUFFIX or 'X'}_position.json"
+        return d, os.path.join(d, fname)
+
+    def _persist_position(self) -> None:
+        """Atomically write the open position + exit plan, or remove the file
+        when flat. Reflects self.position. PURE_MP only."""
+        if not PURE_MP:
+            return
+        try:
+            d, path = self._persist_paths()
+            p = self.position
+            if p is None:
+                if os.path.exists(path):
+                    os.remove(path)
+                return
+            os.makedirs(d, exist_ok=True)
+            rec = {
+                "symbol": p.symbol, "entry": p.entry, "stop": p.stop,
+                "r": p.r, "qty": p.qty, "score": p.score, "peak": p.peak,
+                "peak_time": p.peak_time, "setup_type": p.setup_type,
+                "entry_time_et": p.entry_time_et,
+                "fill_entry_price": p.fill_entry_price,
+                "fill_entry_qty": p.fill_entry_qty,
+                "ts": datetime.now(ET).isoformat(),
+            }
+            tmp = path + ".tmp"
+            with open(tmp, "w") as f:
+                json.dump(rec, f)
+            os.replace(tmp, path)
+        except Exception as e:
+            print(f"{LOG_TAG} persist_position error: {e!r}", flush=True)
+
+    def _load_persisted_position(self, symbol: str) -> Optional[dict]:
+        """Return today's persisted plan for `symbol`, or None. PURE_MP only."""
+        if not PURE_MP:
+            return None
+        try:
+            _d, path = self._persist_paths()
+            if not os.path.exists(path):
+                return None
+            with open(path) as f:
+                rec = json.load(f)
+            return rec if rec.get("symbol") == symbol else None
+        except Exception as e:
+            print(f"{LOG_TAG} load_persisted error: {e!r}", flush=True)
+            return None
+
     def _maybe_enter_micropullback(self, symbol: str, price: float) -> None:
         """Early-entry path (2026-07-17 rebuild). The MicroPullbackDetector arms on
         an impulse→pullback; we enter when price reclaims the resumption level
@@ -1800,7 +1904,9 @@ class MoveStrikeSubBot:
         except Exception:
             pass  # bad cutoff value — allow entry
         # Early-entry (micro-pullback) dispatch: different arm + entry mechanics.
-        if ARM_MODE == "micro_pullback":
+        # PURE_MP forces this path — the squeeze/stay-armed entry below is
+        # structurally unreachable in pure mode.
+        if PURE_MP or ARM_MODE == "micro_pullback":
             self._maybe_enter_micropullback(symbol, price)
             return
         # Real arm OR stay-armed mode (no detector arm, but symbol
@@ -2040,6 +2146,8 @@ class MoveStrikeSubBot:
             return
         # Sync HH count from current per-symbol tracker
         self.position.hh_count = self._sym_hh_count.get(symbol, 0)
+        # Persist the full exit plan so a restart rehydrates it (PURE_MP).
+        self._persist_position()
 
     def _close_position(self, reason: str, ref_price: float) -> None:
         """Submit an exit SELL LIMIT and reconcile the bot's position state
@@ -2088,6 +2196,7 @@ class MoveStrikeSubBot:
                         flush=True,
                     )
                     self.position = None
+                    self._persist_position()  # clear persisted plan (flat)
                     return
                 if avail < ordered_qty:
                     print(
@@ -2203,6 +2312,7 @@ class MoveStrikeSubBot:
             # the gate's decision on subsequent REENTRY GREEN attempts.
             self._last_exit_reason_by_symbol[p.symbol] = (reason, now_minute_et())
             self.position = None
+            self._persist_position()  # clear persisted plan (flat)
             return
 
         # ── CASE 2: Partial fill — record realized, keep residual alive. ──
@@ -2273,6 +2383,7 @@ class MoveStrikeSubBot:
                 flush=True,
             )
             self.position = None
+            self._persist_position()  # clear persisted plan (flat)
             bot_sym = None
 
         # Case B: broker has positions the bot doesn't track.
@@ -2297,6 +2408,41 @@ class MoveStrikeSubBot:
                     flush=True,
                 )
                 continue
+            # PURE_MP: if we persisted a micro-pullback plan for this symbol
+            # today, this "orphan" is almost certainly OUR OWN position seen
+            # across a restart/reconnect. Rehydrate the full plan (real entry,
+            # stop, R, high-water peak) tagged move_strike so the pure trailing-R
+            # exit manages it — NOT the legacy HWM orphan downgrade that gave up
+            # COIG's exit plan on 2026-07-21. Only a genuinely foreign position
+            # (no persisted plan) falls through to orphan_adopted below.
+            _rec = self._load_persisted_position(sym)
+            if _rec is not None:
+                try:
+                    reh = SubPosition(
+                        symbol=sym, entry=float(_rec["entry"]),
+                        stop=float(_rec["stop"]), r=float(_rec["r"]),
+                        qty=adopted_qty, score=float(_rec.get("score", 0.0)),
+                        time_et=_rec.get("entry_time_et", now_iso_et()),
+                        setup_type="move_strike",
+                    )
+                    # Preserve the high-water so the trail resumes where it was.
+                    reh.peak = max(float(_rec.get("peak", _rec["entry"])), avg_entry)
+                    reh.fill_entry_price = float(
+                        _rec.get("fill_entry_price") or avg_entry)
+                    reh.fill_entry_qty = adopted_qty
+                    self.position = reh
+                    self._persist_position()
+                    print(
+                        f"{LOG_TAG} RECONCILE REHYDRATE {sym} qty={adopted_qty} "
+                        f"entry=${reh.entry:.4f} stop=${reh.stop:.4f} "
+                        f"peak=${reh.peak:.4f} R=${reh.r:.4f} setup=move_strike "
+                        f"(micro-pullback plan restored — trailing-R, NOT orphan)",
+                        flush=True,
+                    )
+                    continue
+                except Exception as e:
+                    print(f"{LOG_TAG} REHYDRATE FAIL {sym}: {e!r} — "
+                          f"falling back to orphan adopt", flush=True)
             # Adopt with conservative ±5% defaults. Mark setup_type so
             # exit handlers (if they branch on setup_type) treat it as a
             # special case rather than MOVE_STRIKE / regime_shift logic.
