@@ -202,6 +202,31 @@ TBT_PRI_WB_OBS_MED = 50          # WAVE_OBSERVING (any). The directive distingui
 TBT_PRI_VOLUME_FLOOR = 20
 TBT_PRI_VOLUME_CEIL = 50
 
+# ── Price-momentum Tier-1 promotion (2026-07-22) ───────────────────────
+# Fixes the deadlock exposed by LABT 2026-07-22: it ran +301% ($1.74→$6.98)
+# in 2m32s and the engine left it in the SNAPSHOT tier for 40 minutes with
+# THREE free tier1 slots (tier1=['INM','SXTC'], capacity 2/5), promoting it
+# only at 08:45 — long after the move. Root cause: every existing promotion
+# signal is derived from RECEIVED TICKS — detector state needs ticks to arm,
+# and _compute_5m_volume_rank sums bar.volume which is ~0 for a snapshot
+# symbol. So a symbol with no tick-by-tick data can never generate the signal
+# that would earn it tick-by-tick data. Deadlock.
+#
+# Price (HOD/LOD/last) IS delivered at snapshot resolution — LABT's snapshot
+# HOD visibly climbed 5.00→6.18→6.47. So promote on price action, which needs
+# no prior full-tick stream. LOD is seeded from full-day history on subscribe
+# (seed_session_extremes), so gain-from-LOD reflects the true low.
+#
+# Gated OFF by default per CLAUDE.md. Priority band sits above the volume
+# reserve (grabs a free slot, as LABT had) but below PRIMED (won't evict a
+# real squeeze setup) — the conservative fix for the actual failure.
+TBT_MOMENTUM_ENABLED = os.getenv("WB_TBT_MOMENTUM_ENABLED", "0") == "1"
+TBT_MOMENTUM_MIN_PCT = float(os.getenv("WB_TBT_MOMENTUM_MIN_PCT", "30"))       # min gain from LOD to qualify
+TBT_MOMENTUM_FULL_PCT = float(os.getenv("WB_TBT_MOMENTUM_FULL_PCT", "100"))    # gain at which priority maxes
+TBT_MOMENTUM_MIN_RANGE_POS = float(os.getenv("WB_TBT_MOMENTUM_MIN_RANGE_POS", "0.5"))  # must sit in upper half of day range
+TBT_PRI_MOMENTUM_FLOOR = 60      # just above the volume ceiling (50)
+TBT_PRI_MOMENTUM_CEIL = 190      # just below PRIMED (200)
+
 # Short strategy (prototyped 2026-04-16 from DIRECTIVE_SHORT_STRATEGY_RESEARCH).
 # Default B — Lower-High Short — won head-to-head against A/C in backtests
 # (88% WR, +$3,241, +0.39R avg on the in-universe 8 stocks). A and C are
@@ -1730,6 +1755,11 @@ def compute_tier1_priority(symbol: str) -> int:
         elif wb_state == "WAVE_OBSERVING":
             pri = max(pri, TBT_PRI_WB_OBS_MED)
 
+    # Price-momentum: promote a violent mover on price alone, so a symbol
+    # with no tick-by-tick data yet can still earn a slot. See the
+    # TBT_MOMENTUM_* block for the LABT 2026-07-22 deadlock this fixes.
+    pri = max(pri, _momentum_priority(symbol))
+
     if pri > 0:
         return pri
 
@@ -1744,6 +1774,42 @@ def compute_tier1_priority(symbol: str) -> int:
     return 0
 
 
+def _momentum_priority(symbol: str) -> int:
+    """Tier-1 priority from price action alone — usable at snapshot resolution.
+
+    Qualifies when a symbol is up >= TBT_MOMENTUM_MIN_PCT from its session low
+    AND still sits in the upper TBT_MOMENTUM_MIN_RANGE_POS of its day range
+    (i.e. running, not a faded spike that round-tripped). Unlike detector state
+    and volume rank, this reads HOD/LOD/last price — all delivered even to
+    snapshot-tier symbols — so it can promote a mover that has no tick-by-tick
+    data yet. Score scales with the gain between FLOOR and CEIL; 0 if it does
+    not qualify or the gate is off. See the TBT_MOMENTUM_* constants."""
+    if not TBT_MOMENTUM_ENABLED:
+        return 0
+    bb = state.bar_builder_1m
+    if bb is None:
+        return 0
+    price = state.last_tick_price.get(symbol) or 0.0
+    lod = bb.get_lod(symbol) or 0.0
+    hod = bb.get_hod(symbol) or 0.0
+    if price <= 0 or lod <= 0 or hod <= 0:
+        return 0
+    gain = (price - lod) / lod * 100.0
+    if gain < TBT_MOMENTUM_MIN_PCT:
+        return 0
+    rng = hod - lod
+    if rng <= 0:
+        return 0
+    # 1.0 = at the high, 0 = back at the low. Blocks a spike that has faded
+    # into the lower part of its own range.
+    if (price - lod) / rng < TBT_MOMENTUM_MIN_RANGE_POS:
+        return 0
+    span = max(1.0, TBT_MOMENTUM_FULL_PCT - TBT_MOMENTUM_MIN_PCT)
+    frac = min(1.0, (gain - TBT_MOMENTUM_MIN_PCT) / span)
+    return int(TBT_PRI_MOMENTUM_FLOOR
+               + (TBT_PRI_MOMENTUM_CEIL - TBT_PRI_MOMENTUM_FLOOR) * frac)
+
+
 def _tier1_priority_reason(priority: int) -> str:
     """Map a priority score to the human-readable reason logged with
     [TIER] PROMOTE."""
@@ -1753,6 +1819,8 @@ def _tier1_priority_reason(priority: int) -> str:
         return "detector_armed"
     if priority >= TBT_PRI_PRIMED:
         return "detector_primed"
+    if priority >= TBT_PRI_MOMENTUM_FLOOR:
+        return "price_momentum"
     if priority >= TBT_PRI_WB_OBS_MED:
         return "wave_observing"
     if priority >= TBT_PRI_VOLUME_FLOOR:
