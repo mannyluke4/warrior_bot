@@ -29844,3 +29844,22 @@ Pushing logs...
  create mode 100644 logs/bar_stream/2026-07-21_main_bot.jsonl
 === V3 Hybrid daily run complete: Mon Jul 20 18:06:14 MDT 2026 ===
 === TRAP: cleanup at Mon Jul 20 18:06:14 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 73508 Terminated: 15          caffeinate -dims -w $$
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 73685 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 9d4ed57] auto: v3 daily logs 2026-07-20
+ 2 files changed, 28 insertions(+)
+=== Cleanup complete: Mon Jul 20 18:06:15 MDT 2026 ===
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m

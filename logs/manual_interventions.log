@@ -3,3 +3,7 @@
 2026-06-05 11:28:01 ET  cc-session  manual-flatten  STI  unmanaged orphan (adopted but not subscribed/ticking; HWM trail never evaluated). Sold 230 on Variant A + 230 on Variant C @ ~$36.88 LIMIT to lock ~+$3.26K/leg before further give-back from $45.80 peak. Per Manny.
 2026-07-01 00:55:47 ET  cc-session  set-degraded-mode  .env  WB_ENGINE_DATA_DEGRADED=1 for IBKR data outage ~7/1-7/7 (watchlist_publisher instead of tick-blind bots)
 2026-07-10 16:58:25 ET  cc-session  exit-degraded  .env  WB_ENGINE_DATA_DEGRADED=0, IBKR data restored, full restart
+2026-07-21 10:11:13 ET  manny  manual-shutdown  COIG  legacy orphan_adopted downgrade on restart — unacceptable, killed position + directive to purge legacy from sub-bot A
+2026-07-21 10:22:09 ET  cc-session  restart-subbot-A  A  hot-redeploy with WB_SUBBOT_PURE_MP=1 (legacy purge + persistence fix); A was flat
+2026-07-21 10:27:12 ET  cc-session  stop-subbot-A  A  engine socket corrupted by AM 326-race (double-bind); A cannot attach — deferring pure-MP launch to 2AM cron clean start
+2026-07-21 10:40:56 ET  cc-session  full-stack-restart  ALL  controlled restart (Manny approved) to clear AM 326-race double-bound engine socket + bring A up in pure mode
