@@ -153,8 +153,26 @@ LIQ_LOOKBACK_SEC = int(os.getenv("WB_SUBBOT_LIQ_LOOKBACK_SEC", "300"))
 LIQ_MIN_TICKS = int(os.getenv("WB_SUBBOT_LIQ_MIN_TICKS", "20"))
 LIQ_MIN_DOLLARS = float(os.getenv("WB_SUBBOT_LIQ_MIN_DOLLARS", "100000"))
 # Block if our intended position would be this % of the lookback's volume.
-# COIG would have been 23.7% — i.e. we ARE the market, and cannot exit.
-LIQ_MAX_POS_PCT = float(os.getenv("WB_SUBBOT_LIQ_MAX_POS_PCT", "10.0"))
+#
+# Set on MECHANISM, deliberately not fitted. Exiting 25% of the trailing
+# 5-minute volume needs roughly 1.25 min of full tape, which a resting limit
+# can plausibly do. LABT (304%) and RKLX (430%) cannot be exited at all.
+#
+# DO NOT "calibrate" this against the historical trade logs. Of the 133 real
+# fills on disk, only 5 come from this strategy (sub-bot A, 2026-07-20+).
+# The other 128 are variants B/C and older A configs running a different
+# sizing model (70%-equity / fixed $1000 risk), which produced positions like
+# ZTG qty=2,380 and VCIG qty=16,666. Judging this threshold against those
+# says nothing about the current 5%-risk sizing — an earlier pass did exactly
+# that, "found" that 10% blocked 7 winners, and was wrong.
+#
+# For the current strategy the observed values are 0.10, 0.18, 1.56, 143.5,
+# 304 percent — nothing between 1.56% and 143%. So any cap in ~2%..140% is
+# equivalent today and the DEAD-TAPE rule is doing all the real work. This
+# will start to bind as the account grows (5% risk on a larger account means
+# larger positions), which is why the number is chosen on exit feasibility
+# rather than on a backtest.
+LIQ_MAX_POS_PCT = float(os.getenv("WB_SUBBOT_LIQ_MAX_POS_PCT", "25.0"))
 FLOAT_CACHE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "scanner_results", "float_cache.json")
 ENTRY_BLOCK_WINDOWS_ET = os.getenv("WB_ENTRY_BLOCK_WINDOWS_ET", "").strip()
