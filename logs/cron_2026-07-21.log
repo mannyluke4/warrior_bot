@@ -12265,3 +12265,12 @@ Pushing logs...
  create mode 100644 logs/cron_2026-07-21.log
 === V3 Hybrid daily run complete: Tue Jul 21 18:05:20 MDT 2026 ===
 === TRAP: cleanup at Tue Jul 21 18:05:20 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  4735 Terminated: 15          caffeinate -dims -w $$
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  4808 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration d87a086] auto: v3 daily logs 2026-07-21
+ 2 files changed, 28 insertions(+)
+=== Cleanup complete: Tue Jul 21 18:05:22 MDT 2026 ===
