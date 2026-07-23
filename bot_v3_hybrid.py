@@ -227,6 +227,25 @@ TBT_MOMENTUM_MIN_RANGE_POS = float(os.getenv("WB_TBT_MOMENTUM_MIN_RANGE_POS", "0
 TBT_PRI_MOMENTUM_FLOOR = 60      # just above the volume ceiling (50)
 TBT_PRI_MOMENTUM_CEIL = 190      # just below PRIMED (200)
 
+# ── Scanner-wedge self-recovery (2026-07-23) ───────────────────────────
+# On 2026-07-23 the IBKR scanner wedged at the 04:00 cron start: the very
+# first reqScannerData failed with Error 162 ("API scanner subscription
+# cancelled") and EVERY subsequent 5-min scan inherited the stuck state —
+# 25 scans, 0 candidates, for 5.5 hours. Empty watchlist → "no symbols" →
+# no subscriptions → no ticks → no trading, all morning. Only a full process
+# restart (fresh IBKR connection) cleared it.
+#
+# Recovery: if consecutive scans return 0 candidates AND Error 162 fired this
+# scan (the wedge signature — distinct from a genuinely quiet premarket, which
+# has 0 candidates but NO 162s), exit(1) so the supervisor's
+# WB_MAIN_BOT_AUTORESTART restarts us with a fresh connection. Once ANY symbol
+# is subscribed active_symbols stays >0 for the session, so this can only fire
+# at startup — it cannot churn a healthy mid-session engine. The supervisor's
+# 10-restart cap is the backstop against an IBKR-side outage that a restart
+# can't fix.
+SCANNER_WEDGE_RECOVERY = os.getenv("WB_SCANNER_WEDGE_RECOVERY", "1") == "1"
+SCANNER_WEDGE_MAX = int(os.getenv("WB_SCANNER_WEDGE_MAX", "3"))  # consecutive empty+162 scans before exit
+
 # Short strategy (prototyped 2026-04-16 from DIRECTIVE_SHORT_STRATEGY_RESEARCH).
 # Default B — Lower-High Short — won head-to-head against A/C in backtests
 # (88% WR, +$3,241, +0.39R avg on the in-universe 8 stocks). A and C are
@@ -620,6 +639,10 @@ class BotState:
         # Scanner
         self.candidates: list[dict] = []
         self.last_scan_time: datetime = None
+        # Scanner-wedge self-recovery (2026-07-23): count Error 162s and
+        # consecutive empty-with-162 scans. See SCANNER_WEDGE_* constants.
+        self.scanner_162_count: int = 0
+        self.scanner_wedge_streak: int = 0
         self.last_intraday_adder_time: datetime = None
         self.intraday_adder_poll_n: int = 0
         self.in_dead_zone: bool = False  # True while between trading windows
@@ -2451,6 +2474,10 @@ def run_scanner():
 
     is_first_scan = state.last_scan_time is None
 
+    # Snapshot the Error-162 counter so we can tell whether the scanner
+    # subscription got cancelled DURING this scan (the wedge signature).
+    _162_before = state.scanner_162_count
+
     if is_first_scan:
         # First scan of session: wide catchup to find everything that moved today
         print(f"\n🔄 CATCHUP SCAN at {now.strftime('%H:%M:%S')} ET (first scan — casting wide net)...", flush=True)
@@ -2461,6 +2488,7 @@ def run_scanner():
         state.candidates = scan_premarket_live(state.ib)
 
     state.last_scan_time = now
+    _162_this_scan = state.scanner_162_count - _162_before
 
     # Subscribe to new candidates (top 5 from catchup, or all new from rescan)
     max_new = 5 if is_first_scan else 5
@@ -2482,6 +2510,28 @@ def run_scanner():
 
     print(f"📊 Scanner: {len(state.candidates)} new candidates, "
           f"{new_subs} new subs, {len(state.active_symbols)} total watching", flush=True)
+
+    # Scanner-wedge self-recovery (2026-07-23). Wedge signature: we are watching
+    # NOTHING and Error 162 (scanner subscription cancelled) fired this scan.
+    # A genuinely quiet premarket also has 0 candidates but produces NO 162s, so
+    # it never trips this. Once anything is subscribed active_symbols stays >0
+    # for the rest of the session, so this only ever fires at a wedged startup.
+    if SCANNER_WEDGE_RECOVERY:
+        if len(state.active_symbols) == 0 and _162_this_scan > 0:
+            state.scanner_wedge_streak += 1
+            print(f"⚠️ SCANNER WEDGE suspected: 0 symbols watching + "
+                  f"{_162_this_scan} Error-162 this scan "
+                  f"(streak {state.scanner_wedge_streak}/{SCANNER_WEDGE_MAX})",
+                  flush=True)
+        else:
+            state.scanner_wedge_streak = 0
+        if state.scanner_wedge_streak >= SCANNER_WEDGE_MAX:
+            print(f"🔥 SCANNER WEDGE CONFIRMED — {state.scanner_wedge_streak} "
+                  f"consecutive scans with 0 symbols and Error 162. "
+                  f"reqScannerData is stuck; only a fresh IBKR connection clears "
+                  f"it. Exiting for supervisor auto-restart "
+                  f"(2026-07-23 blind-morning fix).", flush=True)
+            sys.exit(1)
 
 
 def _maybe_session_end_force_exit() -> None:
@@ -5540,6 +5590,11 @@ def on_ib_error(reqId, errorCode, errorString, contract):
         # Log non-informational errors
         sym = contract.symbol if contract else "?"
         print(f"IBKR ERROR {errorCode}: {errorString} (reqId={reqId}, symbol={sym})", flush=True)
+        # Error 162 = "API scanner subscription cancelled" — the wedge signature.
+        # run_scanner() reads this counter to detect a stuck scanner. See
+        # SCANNER_WEDGE_* constants.
+        if errorCode == 162:
+            state.scanner_162_count += 1
 
 
 def preflight_port_check():

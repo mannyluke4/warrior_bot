@@ -21,6 +21,7 @@ log() { echo "$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S ET') $1" >> "$LOG";
 log "=== health_watchdog started (pid $$) ==="
 drought_n=0; last_kill=0; last_relaunch=0
 scanner_empty_n=0; last_scanner_alarm=0
+wedge_n=0; last_wedge_kill=0
 STALE_SEC=120              # bar_stream stale beyond this = suspect
 KILL_COOLDOWN=600          # >=10 min between drought-kills (anti-thrash)
 RELAUNCH_COOLDOWN=600      # >=10 min between stack relaunches
@@ -66,6 +67,33 @@ while true; do
         log "TICK DROUGHT CONFIRMED: bar_stream stale ${age}s with ${nsym} symbols subscribed but no bars — data wedge. Killing data-blind bot; daily_run watchdog will restart it fresh to re-subscribe."
         pkill -f bot_v3_hybrid.py
         last_kill=$now; drought_n=0
+      fi
+    fi
+
+    # Scanner-WEDGE self-heal (2026-07-23): distinct from the Databento
+    # empty-watchlist alarm below. On 2026-07-23 the IBKR scanner wedged at the
+    # 04:00 start — reqScannerData returned Error 162 ("API scanner subscription
+    # cancelled") on every scan and never recovered, so the engine watched 0
+    # symbols for 5.5h. Unlike the Databento upstream case, a fresh IBKR
+    # connection (restart) DOES clear this — proven 2026-07-23. Engine-side
+    # WB_SCANNER_WEDGE_RECOVERY handles most of it; this is the external backstop
+    # and covers full scan hours (07:00-16:00), including the pre-market window
+    # the alarm below misses. Signature: engine currently watching nothing AND
+    # Error 162 fired recently (a genuinely quiet tape produces no 162s).
+    DAILY_LOG="logs/${TODAY}_daily.log"
+    if [ "$bot" = 1 ] && [ -f "$DAILY_LOG" ] && [ "$ehm" -ge 700 ] && [ "$ehm" -lt 1600 ]; then
+      nosym=$(tail -200 "$DAILY_LOG" | grep -c "no symbols")
+      recent162=$(tail -2000 "$DAILY_LOG" | grep -c "IBKR ERROR 162")
+      if [ "$nosym" -ge 5 ] && [ "$recent162" -gt 0 ]; then
+        wedge_n=$((wedge_n + 1))
+        log "scanner-wedge check: engine watching 0 symbols + ${recent162} recent Error-162 (strike ${wedge_n}/4)"
+      else
+        wedge_n=0
+      fi
+      if [ "$wedge_n" -ge 4 ] && [ $(( now - last_wedge_kill )) -gt "$KILL_COOLDOWN" ]; then
+        log "SCANNER WEDGE CONFIRMED: engine watching 0 symbols with Error-162 scanner cancellations — reqScannerData stuck. Restarting engine (daily_run auto-restarts fresh to clear the wedge)."
+        pkill -f bot_v3_hybrid.py
+        last_wedge_kill=$now; wedge_n=0
       fi
     fi
 
