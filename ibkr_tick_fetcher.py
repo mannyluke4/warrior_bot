@@ -42,15 +42,29 @@ def fetch_ticks(ib: IB, symbol: str, date: str, start_et: str = "04:00", end_et:
     ET = pytz.timezone("US/Eastern")
 
     all_ticks = []
-    # Start from the beginning of the requested window
-    # IBKR format: "yyyymmdd hh:mm:ss US/Eastern"
     date_compact = date.replace("-", "")
-    current_start = f"{date_compact} {start_et}:00 US/Eastern"
 
-    # Build end datetime in ET for comparison
+    # Build ET window bounds for comparison.
     end_dt_et = ET.localize(datetime.strptime(f"{date} {end_et}", "%Y-%m-%d %H:%M"))
-    max_iterations = 2000  # Safety limit (dense stocks can have many pages)
+    start_dt_et = ET.localize(datetime.strptime(f"{date} {start_et}", "%Y-%m-%d %H:%M"))
+    max_iterations = 6000  # Safety limit (dense full days can have thousands of pages)
     pages = 0
+
+    # Gap handling (2026-07-22): a mid-session THIN PATCH (e.g. an illiquid
+    # premarket stretch) makes reqHistoricalTicks return an empty or partial
+    # page. The old loop treated that as end-of-data and stopped — so LABT's
+    # fetch died at 08:05:38 and never reached the heavy 08:06+ tape (which
+    # IBKR does have: a direct 08:06 fetch returns 33k+ ticks). Now we SKIP
+    # forward past empties instead of stopping, and only give up after a long
+    # continuous no-data span.
+    EMPTY_STEP_SEC = 120           # advance this far when a window is empty
+    MAX_EMPTY_GAP_SEC = 5400       # 90 min of continuous emptiness = truly done
+    empty_span_sec = 0
+
+    # `current_start` is the IBKR startDateTime string; keep a parallel ET
+    # datetime for stepping across empty windows.
+    current_start = f"{date_compact} {start_et}:00 US/Eastern"
+    current_dt_et = start_dt_et
 
     for i in range(max_iterations):
         try:
@@ -67,7 +81,15 @@ def fetch_ticks(ib: IB, symbol: str, date: str, start_et: str = "04:00", end_et:
             break
 
         if not ticks:
-            break
+            # Thin/empty patch — step forward rather than stop.
+            empty_span_sec += EMPTY_STEP_SEC
+            if empty_span_sec >= MAX_EMPTY_GAP_SEC:
+                break
+            current_dt_et = current_dt_et + timedelta(seconds=EMPTY_STEP_SEC)
+            if current_dt_et >= end_dt_et:
+                break
+            current_start = current_dt_et.strftime("%Y%m%d %H:%M:%S") + " US/Eastern"
+            continue
 
         pages += 1
         past_end = False
@@ -87,25 +109,25 @@ def fetch_ticks(ib: IB, symbol: str, date: str, start_et: str = "04:00", end_et:
         if past_end:
             break
 
-        # Advance past the last tick's timestamp for next page
+        empty_span_sec = 0  # got data — reset the empty-run counter
+
+        # Advance past the last tick's timestamp for the next page.
         last_time = ticks[-1].time
-        # Use the exact last timestamp + tiny offset to avoid duplicates
         next_start = last_time.strftime("%Y%m%d %H:%M:%S") + " UTC"
         if current_start == next_start:
-            # Same second — all ticks in this second, advance by 1s
+            # Same second — all ticks shared this second; advance by 1s.
             next_start = (last_time + timedelta(seconds=1)).strftime("%Y%m%d %H:%M:%S") + " UTC"
         current_start = next_start
+        current_dt_et = last_time.astimezone(ET)
 
-        # Progress every 10 pages
         if pages % 10 == 0:
-            tick_et = last_time.astimezone(ET)
-            print(f"    {len(all_ticks):,} ticks, up to {tick_et.strftime('%H:%M:%S')} ET...", flush=True)
+            print(f"    {len(all_ticks):,} ticks, up to {last_time.astimezone(ET).strftime('%H:%M:%S')} ET...", flush=True)
 
-        # Rate limit (IBKR pacing)
-        time_mod.sleep(0.3)
+        time_mod.sleep(0.3)  # IBKR pacing
 
-        if len(ticks) < 1000:
-            break
+        # NOTE: the old `if len(ticks) < 1000: break` was REMOVED — a short
+        # page routinely precedes a thin patch that has more data after it.
+        # Termination is now past_end, MAX_EMPTY_GAP_SEC, or max_iterations.
 
     return all_ticks
 
