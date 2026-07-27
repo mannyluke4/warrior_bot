@@ -223,7 +223,7 @@ TBT_PRI_VOLUME_CEIL = 50
 TBT_MOMENTUM_ENABLED = os.getenv("WB_TBT_MOMENTUM_ENABLED", "0") == "1"
 TBT_MOMENTUM_MIN_PCT = float(os.getenv("WB_TBT_MOMENTUM_MIN_PCT", "30"))       # min gain from LOD to qualify
 TBT_MOMENTUM_FULL_PCT = float(os.getenv("WB_TBT_MOMENTUM_FULL_PCT", "100"))    # gain at which priority maxes
-TBT_MOMENTUM_MIN_RANGE_POS = float(os.getenv("WB_TBT_MOMENTUM_MIN_RANGE_POS", "0.5"))  # must sit in upper half of day range
+TBT_MOMENTUM_MIN_RANGE_POS = float(os.getenv("WB_TBT_MOMENTUM_MIN_RANGE_POS", "0.25"))  # reject a fully round-tripped/crashed spike (2026-07-27: was 0.5, missed VEEE/DFNS that faded to mid-range)
 TBT_PRI_MOMENTUM_FLOOR = 60      # just above the volume ceiling (50)
 TBT_PRI_MOMENTUM_CEIL = 190      # just below PRIMED (200)
 
@@ -1800,13 +1800,22 @@ def compute_tier1_priority(symbol: str) -> int:
 def _momentum_priority(symbol: str) -> int:
     """Tier-1 priority from price action alone — usable at snapshot resolution.
 
-    Qualifies when a symbol is up >= TBT_MOMENTUM_MIN_PCT from its session low
-    AND still sits in the upper TBT_MOMENTUM_MIN_RANGE_POS of its day range
-    (i.e. running, not a faded spike that round-tripped). Unlike detector state
-    and volume rank, this reads HOD/LOD/last price — all delivered even to
-    snapshot-tier symbols — so it can promote a mover that has no tick-by-tick
-    data yet. Score scales with the gain between FLOOR and CEIL; 0 if it does
-    not qualify or the gate is off. See the TBT_MOMENTUM_* constants."""
+    Qualifies on the PEAK move: HOD is >= TBT_MOMENTUM_MIN_PCT above LOD (the
+    symbol ran hard at some point today), AND current price still sits in the
+    upper TBT_MOMENTUM_MIN_RANGE_POS of that range (not a fully round-tripped /
+    crashed spike). Reads HOD/LOD/last — all delivered even to snapshot-tier
+    symbols, and LOD/HOD are seeded from full-day history on subscribe — so it
+    promotes a mover that has no tick-by-tick data yet.
+
+    Peak-based, not current-price-based (fix 2026-07-27): the old rule measured
+    current-price-vs-LOD on a 30s poll, so a brief spike that faded before a
+    poll (VEEE +53%→mid-range, DFNS +38%) was missed even though it clearly ran.
+    Measuring HOD-vs-LOD catches the move regardless of when the poll lands; the
+    range-position floor still rejects a spike that fully round-tripped (EDBL,
+    which crashed 63% back to the bottom of its range). Priority scales with the
+    size of the peak move; a currently-running mover (price near HOD) is further
+    de-rated UP vs a faded one so it wins the limited slots. 0 if it does not
+    qualify or the gate is off. See the TBT_MOMENTUM_* constants."""
     if not TBT_MOMENTUM_ENABLED:
         return 0
     bb = state.bar_builder_1m
@@ -1817,20 +1826,23 @@ def _momentum_priority(symbol: str) -> int:
     hod = bb.get_hod(symbol) or 0.0
     if price <= 0 or lod <= 0 or hod <= 0:
         return 0
-    gain = (price - lod) / lod * 100.0
-    if gain < TBT_MOMENTUM_MIN_PCT:
-        return 0
     rng = hod - lod
     if rng <= 0:
         return 0
-    # 1.0 = at the high, 0 = back at the low. Blocks a spike that has faded
-    # into the lower part of its own range.
-    if (price - lod) / rng < TBT_MOMENTUM_MIN_RANGE_POS:
+    peak_gain = rng / lod * 100.0            # how far it ran, high vs low
+    if peak_gain < TBT_MOMENTUM_MIN_PCT:
+        return 0
+    range_pos = (price - lod) / rng          # 1.0 = at the high, 0 = back at the low
+    if range_pos < TBT_MOMENTUM_MIN_RANGE_POS:
         return 0
     span = max(1.0, TBT_MOMENTUM_FULL_PCT - TBT_MOMENTUM_MIN_PCT)
-    frac = min(1.0, (gain - TBT_MOMENTUM_MIN_PCT) / span)
-    return int(TBT_PRI_MOMENTUM_FLOOR
-               + (TBT_PRI_MOMENTUM_CEIL - TBT_PRI_MOMENTUM_FLOOR) * frac)
+    frac = min(1.0, (peak_gain - TBT_MOMENTUM_MIN_PCT) / span)
+    base = TBT_PRI_MOMENTUM_FLOOR + (TBT_PRI_MOMENTUM_CEIL - TBT_PRI_MOMENTUM_FLOOR) * frac
+    # Tilt priority toward symbols currently near their high so an active runner
+    # outranks a faded one for the limited slots (0.7..1.0 of base across the
+    # allowed range-position band). Never drops below the floor.
+    tilt = 0.7 + 0.3 * min(1.0, range_pos)
+    return max(TBT_PRI_MOMENTUM_FLOOR, int(base * tilt))
 
 
 def _tier1_priority_reason(priority: int) -> str:
