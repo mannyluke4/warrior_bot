@@ -309,6 +309,13 @@ def main():
                         "trades through evening session)")
     p.add_argument("--max-symbols-per-day", type=int, default=0,
                    help="If >0, cap symbols replayed per day (debug only)")
+    p.add_argument("--lead-in-start", default=os.getenv("WB_REPLAY_LEADIN_START", "07:00"),
+                   help="Floor each symbol's window start at this ET time (default "
+                        "07:00). The seed-from-cache does NOT fully reconstruct the "
+                        "detector's mid-setup state, so a window that starts after a "
+                        "setup's buildup silently misses the arm (CBRG 2026-07-21: a "
+                        "12:00 start showed 0 trades; 11:00 reproduced the +$855 win). "
+                        "Starting early replays the buildup live so arms are caught.")
     p.add_argument("--bars", action="store_true",
                    help="Replay from the recorded live bar_stream (trade-for-trade "
                         "parity) instead of the full tick cache. Requires a sub-bot "
@@ -364,6 +371,10 @@ def main():
         day_syms_skipped: list[str] = []
 
         for sym, (t0, t1) in sorted(windows.items()):
+            # Floor the start so the detector replays the setup's buildup live
+            # (the seed alone doesn't reconstruct mid-setup detector state). Start
+            # at the EARLIER of discovery-time and the lead-in floor.
+            t0 = min(t0, args.lead_in_start)
             # Cap window end at end_cap (e.g., evening session cutoff).
             end_capped = min(t1, args.end_cap)
             if t0 >= end_capped:
