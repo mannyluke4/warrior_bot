@@ -235,7 +235,11 @@ class MockAlpaca:
         a.equity = float(os.getenv("WB_SUBBOT_SIM_EQUITY", "3000"))
         a.account_number = "SIM"
         a.cash = a.equity
-        a.buying_power = a.equity
+        # Buying power = equity * margin multiplier (2026-07-28, for the BP-cap
+        # sizing fix). Default 1.0 = cash/PDT-constrained (the account's current
+        # state: POLA 2026-07-28 had buying_power == equity). Set 4.0 to model
+        # the 4× Reg-T margin the account carried on e.g. 2026-07-21 (CBRG).
+        a.buying_power = a.equity * float(os.getenv("WB_SUBBOT_SIM_BP_MULT", "1.0"))
         return a
 
 

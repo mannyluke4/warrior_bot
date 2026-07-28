@@ -111,6 +111,17 @@ EQUITY_PCT_SIZING = float(os.getenv("WB_SUBBOT_EQUITY_PCT", "0"))
 #   DAILY_LOSS_CAP_PCT: 0 = off. >0 → once realized daily P&L ≤ −CAP×start-equity,
 #                       stop taking new entries for the day.
 RISK_PCT_SIZING = float(os.getenv("WB_SUBBOT_RISK_PCT", "0"))
+# Buying-power cap (2026-07-28). Risk-% sizing (qty = RISK_PCT*equity / R) has no
+# notional check, so a tight R on a low-priced stock demands more shares than the
+# account holds. POLA 2026-07-28: 4006 sh @ $2.17 = $8,693 vs $5,609 BP → Alpaca
+# rejected the two better (earlier, lower) entries and only the worst, highest one
+# fit — turning a −$187 trade into −$280. Single-position cash bot: BP ≈ equity.
+# Cap against the LIMIT-side price (entry + the same slippage the order uses) so a
+# slightly-higher fill can't re-trigger the reject. BP_USE_FRACTION leaves a small
+# buffer for fees/rounding. Always applied — it can only ever REDUCE qty toward
+# what the account can actually buy, so there is no regression path.
+BP_USE_FRACTION = float(os.getenv("WB_SUBBOT_BP_USE_FRACTION", "0.98"))
+BP_CACHE_TTL_SEC = float(os.getenv("WB_SUBBOT_BP_CACHE_TTL_SEC", "15"))  # reuse a fetched BP across a re-arm burst
 MOVE_TARGET_R = float(os.getenv("WB_MOVE_TARGET_R", "0"))
 DAILY_GOAL_PCT = float(os.getenv("WB_SUBBOT_DAILY_GOAL_PCT", "0"))
 DAILY_LOSS_CAP_PCT = float(os.getenv("WB_SUBBOT_DAILY_LOSS_CAP_PCT", "0"))
@@ -2165,6 +2176,48 @@ class MoveStrikeSubBot:
             det.armed = None
             self.prev_arm_state[symbol] = None
 
+    def _available_buying_power(self, equity_fallback: float) -> float:
+        """Actual account buying power. NOT equity: the account may carry margin
+        (CBRG 2026-07-21 filled a $17k notional on ~$5.2k equity = 4× Reg-T) or be
+        cash/PDT-constrained (POLA 2026-07-28: buying_power == equity == $5,609).
+        Capping against equity would wrongly shrink margin-backed winners, so read
+        the broker's real buying_power. Cached briefly (a re-arm burst fires the
+        sizer several times in seconds) and falls back to equity if unavailable."""
+        _now = time.time()
+        if (_now - getattr(self, "_bp_cache_ts", 0.0) < BP_CACHE_TTL_SEC
+                and getattr(self, "_bp_cache", 0.0) > 0):
+            return self._bp_cache
+        if getattr(self, "alpaca", None) is not None:
+            try:
+                bp = float(self.alpaca.get_account().buying_power)
+                if bp > 0:
+                    self._bp_cache = bp
+                    self._bp_cache_ts = _now
+                    return bp
+            except Exception as e:
+                print(f"{LOG_TAG} SIZING: buying_power fetch failed: {e!r} "
+                      f"— falling back to equity", flush=True)
+        return equity_fallback
+
+    def _bp_cap_qty(self, qty: int, price: float, equity: float) -> int:
+        """Cap qty so the order's notional fits available buying power. Cap against
+        the LIMIT-side price (entry + the same max($0.07, 1%) slippage the buy order
+        uses) so a fill at the limit can't exceed BP. See the BP_USE_FRACTION note.
+        Only ever reduces qty."""
+        if qty <= 0 or price <= 0:
+            return qty
+        bp = self._available_buying_power(equity)
+        if bp <= 0:
+            return qty
+        limit_est = price + max(0.07, price * 0.01)   # mirrors _open_position_with_tag
+        bp_qty = int((bp * BP_USE_FRACTION) / limit_est)
+        if bp_qty < qty:
+            print(f"{LOG_TAG} SIZING: BP-cap qty {qty}→{max(bp_qty, 0)} "
+                  f"(notional ${qty * limit_est:,.0f} > BP ${bp:,.0f}; "
+                  f"price=${price:.2f})", flush=True)
+            return max(bp_qty, 0)
+        return qty
+
     def _compute_qty(self, price: float, r: float, score: float) -> int:
         # Risk-% sizing (2026-07-15 daily-target strategy): size so a full stop-out
         # loses RISK_PCT of current equity. qty = RISK_PCT*equity / R. Keeps the wide
@@ -2185,6 +2238,7 @@ class MoveStrikeSubBot:
                         print(f"{LOG_TAG} SIZING: equity re-fetch failed: {e!r}", flush=True)
             if equity > 0:
                 qty = int((RISK_PCT_SIZING * equity) / r)
+                qty = self._bp_cap_qty(qty, price, equity)
                 return min(max(qty, 0), MAX_SHARES)
             print(f"{LOG_TAG} SIZING: equity unavailable (start={self._starting_equity} "
                   f"daily={self.daily_pnl}) — skipping entry", flush=True)
@@ -2212,6 +2266,7 @@ class MoveStrikeSubBot:
             equity = self._starting_equity + self.daily_pnl
             if equity > 0 and price > 0:
                 qty = int((EQUITY_PCT_SIZING * equity) / price)
+                qty = self._bp_cap_qty(qty, price, equity)
                 return min(max(qty, 0), MAX_SHARES)
             # Equity still unavailable after re-fetch → skip rather than mis-size.
             print(f"{LOG_TAG} SIZING: equity unavailable (start={self._starting_equity} "
