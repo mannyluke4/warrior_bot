@@ -224,6 +224,15 @@ TBT_MOMENTUM_ENABLED = os.getenv("WB_TBT_MOMENTUM_ENABLED", "0") == "1"
 TBT_MOMENTUM_MIN_PCT = float(os.getenv("WB_TBT_MOMENTUM_MIN_PCT", "30"))       # min gain from LOD to qualify
 TBT_MOMENTUM_FULL_PCT = float(os.getenv("WB_TBT_MOMENTUM_FULL_PCT", "100"))    # gain at which priority maxes
 TBT_MOMENTUM_MIN_RANGE_POS = float(os.getenv("WB_TBT_MOMENTUM_MIN_RANGE_POS", "0.25"))  # reject a fully round-tripped/crashed spike (2026-07-27: was 0.5, missed VEEE/DFNS that faded to mid-range)
+# Promote from the FULL bar-tracked universe, not just active_symbols (2026-07-28).
+# The scanner subscribes a WIDE catchup net (~120 symbols) and the engine builds
+# bars for all of them, but only the top FILTERED candidates land in
+# active_symbols — the pool the promotion scored. When the scanner wedges,
+# active_symbols collapses to ~1 (POLA 2026-07-28) and the promotion has nothing
+# to score even though real movers (BIYA +84%) sit in the snapshot data with 4
+# tick-by-tick slots FREE all day. Scoring every bar-tracked symbol lets a mover
+# earn a slot regardless of the scanner. Default ON — it fixes a severe flaw.
+PROMOTE_FROM_FULL_UNIVERSE = os.getenv("WB_TBT_PROMOTE_FULL_UNIVERSE", "1") == "1"
 TBT_PRI_MOMENTUM_FLOOR = 60      # just above the volume ceiling (50)
 TBT_PRI_MOMENTUM_CEIL = 190      # just below PRIMED (200)
 
@@ -1672,8 +1681,20 @@ def subscribe_tick_by_tick(symbol: str, reason: str = "manual") -> bool:
         return False
     contract = state.contracts.get(symbol)
     if not contract:
-        print(f"[TIER] PROMOTE {symbol} BLOCKED — no contract registered", flush=True)
-        return False
+        # Broad-universe mover (from the catchup net, never subscribe_symbol'd)
+        # has no registered contract. Qualify on demand so it can still be
+        # promoted — the whole point of PROMOTE_FROM_FULL_UNIVERSE. Blocking
+        # (~100-300ms) but promotion is infrequent.
+        try:
+            contract = Stock(symbol, "SMART", "USD")
+            state.ib.qualifyContracts(contract)
+            if not getattr(contract, "conId", 0):
+                raise ValueError("qualify returned no conId")
+            state.contracts[symbol] = contract
+        except Exception as e:
+            print(f"[TIER] PROMOTE {symbol} BLOCKED — could not qualify contract "
+                  f"on demand: {e}", flush=True)
+            return False
     try:
         tbt_ticker = state.ib.reqTickByTickData(contract, "AllLast", 0, False)
     except Exception as e:
@@ -1730,12 +1751,26 @@ def _maintain_tier1_volume_bucket(bar) -> None:
         del buckets[: len(buckets) - 5]
 
 
+def _promotion_pool() -> set:
+    """Symbols the tier-1 promotion should score. Historically just
+    active_symbols (the scanner's filtered picks). With
+    PROMOTE_FROM_FULL_UNIVERSE, also every symbol the engine has built bars for
+    — tier1_volume_buckets is appended on EVERY bar close
+    (_maintain_tier1_volume_bucket), so its keys are exactly the symbols with
+    usable HOD/LOD/volume. This is what lets a mover be promoted when the scanner
+    has wedged active_symbols down to ~1. See PROMOTE_FROM_FULL_UNIVERSE."""
+    pool = set(state.active_symbols)
+    if PROMOTE_FROM_FULL_UNIVERSE:
+        pool |= set(state.tier1_volume_buckets.keys())
+    return pool
+
+
 def _compute_5m_volume_rank() -> dict:
     """Returns {symbol: 1-based rank} for the top TBT_VOLUME_RESERVE_N
     symbols by sum of the last 5 1m-bar volumes. Symbols outside the
     reserve are not included in the dict."""
     sums = []
-    for sym in state.active_symbols:
+    for sym in _promotion_pool():
         buckets = state.tier1_volume_buckets.get(sym, [])
         total = sum(v for _, v in buckets)
         if total > 0:
@@ -1890,8 +1925,12 @@ def manage_tier1_subscriptions() -> None:
     # Refresh volume rank once per cycle.
     state.tier1_volume_rank = _compute_5m_volume_rank()
 
-    # Score every active symbol.
-    candidates = [(sym, compute_tier1_priority(sym)) for sym in state.active_symbols]
+    # Score every symbol in the promotion pool (active_symbols plus, when
+    # PROMOTE_FROM_FULL_UNIVERSE, the whole bar-tracked universe). Momentum /
+    # volume / detector scoring naturally keeps flat symbols at priority 0, so a
+    # wider pool just means the top movers win the slots — regardless of whether
+    # the scanner surfaced them.
+    candidates = [(sym, compute_tier1_priority(sym)) for sym in _promotion_pool()]
     candidates.sort(key=lambda x: (-x[1], x[0]))
 
     # Top N with non-zero priority are the target Tier 1.
