@@ -296,6 +296,43 @@ def _assert_broker_matches() -> None:
 IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
 IBKR_PORT = int(os.getenv("IBKR_PORT", "4002"))  # 4002 = Gateway paper
 IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", "1"))
+# Engine clientId with wedge-rotation (2026-07-28). The scanner wedges PER
+# CLIENTID on the gateway: root-caused via scanner_wedge_probe.py — a fresh
+# clientId returns rows, while the engine's wedged clientId returns 0 all day,
+# and a restart with the SAME clientId re-inherits the wedge (why 7/24/27/28
+# restarts never fixed it). So on a confirmed wedge we rotate to a fresh clientId,
+# persist it, and the restart connects clean. Range 21-29 avoids the other
+# clients (engine default 1, manual 11, probes 87-89, fetcher 99).
+_ENGINE_CLIENTID_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     "state", "engine_clientid.txt")
+_CLIENTID_ROTATE_MIN, _CLIENTID_ROTATE_MAX = 21, 29
+
+
+def _resolve_engine_client_id() -> int:
+    """clientId to connect with: a persisted rotated id if a prior wedge rotated,
+    else the configured default. Rotation persists so the next boot stays on the
+    fresh clientId — the old one keeps its wedged gateway session."""
+    try:
+        with open(_ENGINE_CLIENTID_FILE) as f:
+            cid = int(f.read().strip())
+            if cid > 0:
+                return cid
+    except Exception:
+        pass
+    return IBKR_CLIENT_ID
+
+
+def _rotate_engine_client_id() -> int:
+    """Advance to the next clientId in the rotation range, persist it, return it."""
+    cur = _resolve_engine_client_id()
+    nxt = cur + 1 if _CLIENTID_ROTATE_MIN <= cur < _CLIENTID_ROTATE_MAX else _CLIENTID_ROTATE_MIN
+    try:
+        os.makedirs(os.path.dirname(_ENGINE_CLIENTID_FILE), exist_ok=True)
+        with open(_ENGINE_CLIENTID_FILE, "w") as f:
+            f.write(str(nxt))
+    except Exception as e:
+        print(f"⚠️ clientId rotation persist failed: {e!r}", flush=True)
+    return nxt
 
 # ── Risk ─────────────────────────────────────────────────────────────
 STARTING_EQUITY = float(os.getenv("WB_STARTING_EQUITY", "30000"))
@@ -1521,9 +1558,13 @@ def wait_for_fill(order_id: str, timeout: int = 15):
 def connect():
     """Connect to IBKR with retry logic."""
     state.ib = IB()
+    _cid = _resolve_engine_client_id()
+    if _cid != IBKR_CLIENT_ID:
+        print(f"Using ROTATED engine clientId {_cid} (a prior scanner wedge rotated "
+              f"off the default {IBKR_CLIENT_ID}). See _rotate_engine_client_id.", flush=True)
     for attempt in range(1, 4):
         try:
-            state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+            state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=_cid)
             print(f"Connected: {state.ib.isConnected()}")
             print(f"Account: {state.ib.managedAccounts()}")
             try:
@@ -2577,11 +2618,14 @@ def run_scanner():
         else:
             state.scanner_wedge_streak = 0
         if state.scanner_wedge_streak >= SCANNER_WEDGE_MAX:
+            new_cid = _rotate_engine_client_id()
             print(f"🔥 SCANNER WEDGE CONFIRMED — {state.scanner_wedge_streak} "
-                  f"consecutive scans with 0 symbols and Error 162. "
-                  f"reqScannerData is stuck; only a fresh IBKR connection clears "
-                  f"it. Exiting for supervisor auto-restart "
-                  f"(2026-07-23 blind-morning fix).", flush=True)
+                  f"consecutive scans with 0 symbols and Error 162. Root cause "
+                  f"(2026-07-28, scanner_wedge_probe.py): the wedge is stuck to this "
+                  f"clientId's gateway session, so a restart on the SAME clientId "
+                  f"re-inherits it (why 7/24/27/28 restarts failed). ROTATING engine "
+                  f"clientId → {new_cid} and exiting; the supervisor restart will "
+                  f"connect fresh and the scanner will clear.", flush=True)
             sys.exit(1)
 
 
@@ -6283,7 +6327,7 @@ def main():
                     try:
                         state.ib.disconnect()
                         time.sleep(10)
-                        state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=IBKR_CLIENT_ID)
+                        state.ib.connect(IBKR_HOST, IBKR_PORT, clientId=_resolve_engine_client_id())
                         # Re-wire events
                         state.ib.pendingTickersEvent += on_ticker_update
                         state.ib.pendingTickersEvent += on_pending_tickers_backup
