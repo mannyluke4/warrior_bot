@@ -1126,6 +1126,30 @@
           "fade_blocks": 0
         }
       }
+    },
+    {
+      "date": "2026-07-30",
+      "data_corrected": false,
+      "variants": {
+        "A": {
+          "day_pnl": -482.3899999999994,
+          "equity": 4840.02,
+          "entries": 7,
+          "fade_blocks": 0
+        },
+        "B": {
+          "day_pnl": 0,
+          "equity": null,
+          "entries": 0,
+          "fade_blocks": 0
+        },
+        "C": {
+          "day_pnl": 28.559999999999945,
+          "equity": 1817.46,
+          "entries": 4,
+          "fade_blocks": 0
+        }
+      }
     }
   ]
 }
