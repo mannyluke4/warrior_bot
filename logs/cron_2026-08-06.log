@@ -1,0 +1,54 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 76720)
+=== V3 Hybrid daily run started: Thu Aug  6 02:00:07 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: ef5b179 (auto: v3 daily logs 2026-08-05)
+daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
+bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.029744 +/- 0.064618 time.apple.com 2620:149:a18:3000::31
+NTP sync skipped (non-root)
+System time: Thu Aug  6 08:00:09 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+live_scanner.py retired — engine ibkr_scanner is the sole scan source.
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 76769)
+Bot health check passed (still running after 15s, PID: 76769)
+HEALTH_OK: Bot connected at 2026-08-06 08:00:33 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-08-06_move_strike_subbot_A.log)...
+  variant A PID: 76791
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-08-06_move_strike_subbot_C.log)...
+  variant C PID: 76792
+  variant A health-check OK (PID 76791)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 76792)
+Gateway watchdog started (PID: 76796)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Thu Aug  6 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Thu Aug  6 18:00:04 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-06_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Thu Aug  6 18:01:19 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-06_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Thu Aug  6 18:02:34 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-06_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Thu Aug  6 18:03:50 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-06_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Thu Aug  6 18:05:05 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
