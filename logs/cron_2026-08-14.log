@@ -1,0 +1,77 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 17805)
+=== V3 Hybrid daily run started: Fri Aug 14 02:00:08 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: b3a3678 (auto: v3 daily logs 2026-08-13)
+daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
+bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE29498A.10626F60 (3995683210.064001999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88EB5B3A.F7CEC85000000000 (-1997841605.032001019)
+         delay: FFFFFFFF11D6B675.EF9D90A000000000 (-3995683210.064002037)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:3000::31
+}
++0.033147 +/- 0.066354 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Fri Aug 14 08:00:11 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+live_scanner.py retired — engine ibkr_scanner is the sole scan source.
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 17855)
+Bot health check passed (still running after 15s, PID: 17855)
+HEALTH_OK: Bot connected at 2026-08-14 08:00:35 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-08-14_move_strike_subbot_A.log)...
+  variant A PID: 17878
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-08-14_move_strike_subbot_C.log)...
+  variant C PID: 17879
+  variant A health-check OK (PID 17878)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 17879)
+Gateway watchdog started (PID: 17881)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri Aug 14 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Fri Aug 14 09:33:54 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-14_daily.log.
+Main bot restarted OK (PID: 37601).
+ALERT: bot_v3_hybrid.py died at Fri Aug 14 18:00:19 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-14_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Fri Aug 14 18:01:34 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-14_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Fri Aug 14 18:02:50 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-14_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+ALERT: bot_v3_hybrid.py died at Fri Aug 14 18:04:05 MDT 2026. Auto-restarting in place (attempt 5/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-14_daily.log.
+WARN: restarted main bot died within 15s — will retry next tick.
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Fri Aug 14 18:05:20 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
