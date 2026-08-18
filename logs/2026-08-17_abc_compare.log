@@ -1,0 +1,60 @@
+Wrote: /Users/duffy/warrior_bot_v2/cowork_reports/2026-08-17_abc_daily_report.md
+# A/B/C Daily Report — 2026-08-17
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | +$4,588.98 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$1,817.41 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-08-17_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+## Data Quality Audit
+
+- Audit lines parsed: 17318
+- Symbols flagged HEURISTIC_SUSPECT: 10
+- Symbols with DIRECT_QUERY_WEDGE events: 0
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| FIEE | 200 | 854 | 0 | n/a | n/a |
+| IPST | 200 | 854 | 0 | n/a | n/a |
+| JLHL | 152 | 854 | 0 | n/a | n/a |
+| WETO | 33 | 854 | 0 | n/a | n/a |
+| XPON | 15 | 854 | 0 | n/a | n/a |
+| SLE | 26 | 833 | 0 | n/a | n/a |
+| JFU | 167 | 756 | 0 | n/a | n/a |
+| APUS | 158 | 714 | 0 | n/a | n/a |
+| GRNQ | 47 | 220 | 0 | n/a | n/a |
+| MYSZ | 852 | 4 | 0 | n/a | n/a |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 60 | +$1,662.94 |
+| B | 60 | -$4,183.34 |
+| C | 60 | +$331.63 |
+
