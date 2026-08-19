@@ -65,3 +65,12 @@ Pushing logs...
  create mode 100644 logs/cron_2026-08-18.log
 === V3 Hybrid daily run complete: Tue Aug 18 18:06:12 MDT 2026 ===
 === TRAP: cleanup at Tue Aug 18 18:06:12 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 51888 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 51962 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 637291f] auto: v3 daily logs 2026-08-18
+ 2 files changed, 26 insertions(+)
+=== Cleanup complete: Tue Aug 18 18:06:15 MDT 2026 ===

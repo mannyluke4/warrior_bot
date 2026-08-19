@@ -1,0 +1,65 @@
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 2366)
+=== V3 Hybrid daily run started: Wed Aug 19 02:00:08 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: 637291f (auto: v3 daily logs 2026-08-18)
+daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
+bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: clock_settime: Operation not permitted
++0.033454 +/- 0.065319 time.apple.com 2620:149:a16:3000::31
+NTP sync skipped (non-root)
+System time: Wed Aug 19 08:00:12 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+live_scanner.py retired — engine ibkr_scanner is the sole scan source.
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 2417)
+Bot health check passed (still running after 15s, PID: 2417)
+HEALTH_OK: Bot connected at 2026-08-19 08:00:36 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-08-19_move_strike_subbot_A.log)...
+  variant A PID: 2441
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-08-19_move_strike_subbot_C.log)...
+  variant C PID: 2442
+  variant A health-check OK (PID 2441)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 2442)
+Gateway watchdog started (PID: 2444)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Wed Aug 19 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:13:41 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17315).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:14:56 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17386).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:16:12 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17440).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:17:27 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17520).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:18:42 MDT 2026. Auto-restarting in place (attempt 5/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17572).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:19:58 MDT 2026. Auto-restarting in place (attempt 6/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17643).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:21:13 MDT 2026. Auto-restarting in place (attempt 7/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17697).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:22:28 MDT 2026. Auto-restarting in place (attempt 8/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17763).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:23:43 MDT 2026. Auto-restarting in place (attempt 9/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17816).
+ALERT: bot_v3_hybrid.py died at Wed Aug 19 08:24:59 MDT 2026. Auto-restarting in place (attempt 10/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+Main bot restarted OK (PID: 17876).
+ALERT: bot_v3_hybrid.py hit max restarts (10). Leaving the main bot DOWN but keeping sub-bots alive until EOD. Check /Users/duffy/warrior_bot_v2/logs/2026-08-19_daily.log.
+WARNING: Gateway port 4002 dropped at 2026-08-19 18:58:50 UTC
+=== TRAP: cleanup at Wed Aug 19 13:02:24 MDT 2026 ===
