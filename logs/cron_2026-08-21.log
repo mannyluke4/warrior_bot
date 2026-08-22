@@ -1,25 +1,121 @@
-WARNING: Gateway port 4002 dropped at 2026-04-03 08:04:58 UTC
-WARNING: Gateway port 4002 dropped at 2026-04-03 11:07:57 UTC
-WARNING: Gateway port 4002 dropped at 2026-04-03 11:17:50 UTC
-WARNING: Gateway port 4002 dropped at 2026-04-15 14:48:20 UTC
-WARNING: Gateway port 4002 dropped at 2026-04-30 16:43:02 UTC
-WARNING: Gateway port 4002 dropped at 2026-04-30 16:58:43 UTC
-WARNING: Gateway port 4002 dropped at 2026-05-14 19:55:31 UTC
-WARNING: Gateway port 4002 dropped at 2026-07-21 13:57:52 UTC
-WARNING: Gateway port 4002 dropped at 2026-08-19 18:58:50 UTC
+=== Waking screen ===
+Display wake (caffeinate -u) sent
+Display state: unknown (continuing — caffeinate keeps system awake regardless)
+Persistent caffeinate started (PID: 99325)
+=== V3 Hybrid daily run started: Fri Aug 21 02:00:07 MDT 2026 ===
+From github.com:mannyluke4/warrior_bot
+ * branch            v2-ibkr-migration -> FETCH_HEAD
+Already up to date.
+Code version: ec96b53 (auto: v3 daily logs 2026-08-20)
+daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
+bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
+bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
+alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
+sntp: Exchange failed: Timeout
+sntp: Exchange failed: Timeout
+sntp: clock_settime: Operation not permitted
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE328409.1864DC22 (3996288009.095288999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88E6BDFB.73CD91EF00000000 (-1998144004.547644615)
+         delay: FFFFFFFF11CD7BF6.E79B23DE00000000 (-3996288009.095289230)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:3000::31
+}
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE32840A.52C1D29D (3996288010.323269999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88E6BDFA.D69F16B180000000 (-1998144005.161634922)
+         delay: FFFFFFFF11CD7BF5.AD3E2D6300000000 (-3996288010.323269844)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a16:3000::31
+}
++0.037564 +/- 0.071823 time.apple.com 2620:149:a16:4000::31
+NTP sync skipped (non-root)
+System time: Fri Aug 21 08:00:11 UTC 2026
+Pre-flight: checking Python imports...
+V3 Imports OK
+Sub-bot Imports OK
+Killing stale processes...
+Gateway already up on port 4002 — reusing existing session (no kill/restart)
+Waiting for IB Gateway on port 4002...
+Gateway is up on port 4002 (after ~5s)
+Cleaning up stale connections...
+Wiping yesterday's watchlist.txt for a fresh session...
+live_scanner.py retired — engine ibkr_scanner is the sole scan source.
+Starting bot_v3_hybrid.py (IBKR paper execution — squeeze re-enabled 2026-05-26)...
+Bot started (PID: 99374)
+Bot health check passed (still running after 15s, PID: 99374)
+HEALTH_OK: Bot connected at 2026-08-21 08:00:36 UTC
+Starting sub-bot variant A (log: /Users/duffy/warrior_bot_v2/logs/2026-08-21_move_strike_subbot_A.log)...
+  variant A PID: 99395
+Starting sub-bot variant C (log: /Users/duffy/warrior_bot_v2/logs/2026-08-21_move_strike_subbot_C.log)...
+  variant C PID: 99396
+  variant A health-check OK (PID 99395)
+  variant B not launched (missing keys)
+  variant C health-check OK (PID 99396)
+Gateway watchdog started (PID: 99398)
+Health watchdog started (detached)
+Watchdog: monitoring bot until 6:05 PM MT / 8:05 PM ET (Fri Aug 21 18:05:00 MDT 2026)...
+  Bot runs: morning 7:00-12:00 ET, sleeps 12:00-16:00, evening 16:00-20:00 ET
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:46:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:46:43 MDT 2026. Auto-restarting in place (attempt 1/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38587).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:47:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:47:58 MDT 2026. Auto-restarting in place (attempt 2/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38646).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:48:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:49:14 MDT 2026. Auto-restarting in place (attempt 3/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:49:24 UTC
+Main bot restarted OK (PID: 38697).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:50:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:50:29 MDT 2026. Auto-restarting in place (attempt 4/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38739).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:51:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:51:44 MDT 2026. Auto-restarting in place (attempt 5/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38791).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:52:24 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:52:59 MDT 2026. Auto-restarting in place (attempt 6/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38827).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:53:25 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:54:14 MDT 2026. Auto-restarting in place (attempt 7/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:54:25 UTC
+Main bot restarted OK (PID: 38867).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:55:25 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:55:30 MDT 2026. Auto-restarting in place (attempt 8/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38924).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:56:25 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:56:45 MDT 2026. Auto-restarting in place (attempt 9/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 38964).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:57:25 UTC
+ALERT: bot_v3_hybrid.py died at Fri Aug 21 15:58:00 MDT 2026. Auto-restarting in place (attempt 10/10); sub-bots untouched. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
+Main bot restarted OK (PID: 39015).
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:58:25 UTC
+ALERT: bot_v3_hybrid.py hit max restarts (10). Leaving the main bot DOWN but keeping sub-bots alive until EOD. Check /Users/duffy/warrior_bot_v2/logs/2026-08-21_daily.log.
 WARNING: Gateway port 4002 dropped at 2026-08-21 21:59:26 UTC
 WARNING: Gateway port 4002 dropped at 2026-08-21 22:00:26 UTC
 WARNING: Gateway port 4002 dropped at 2026-08-21 22:01:26 UTC
@@ -146,3 +242,7 @@ WARNING: Gateway port 4002 dropped at 2026-08-22 00:01:47 UTC
 WARNING: Gateway port 4002 dropped at 2026-08-22 00:02:47 UTC
 WARNING: Gateway port 4002 dropped at 2026-08-22 00:03:47 UTC
 WARNING: Gateway port 4002 dropped at 2026-08-22 00:04:47 UTC
+All trading windows closed. Proceeding to shutdown.
+=== Shutting down at Fri Aug 21 18:05:30 MDT 2026 ===
+Generating A/B/C daily comparison report...
+Pushing logs...
