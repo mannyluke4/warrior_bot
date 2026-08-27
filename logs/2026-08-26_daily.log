@@ -68482,3 +68482,16 @@ All trading windows closed. Proceeding to shutdown.
 === Shutting down at Wed Aug 26 18:05:21 MDT 2026 ===
 Generating A/B/C daily comparison report...
 Pushing logs...
+[v2-ibkr-migration e4e5208] auto: v3 daily logs 2026-08-26
+ 13 files changed, 71747 insertions(+)
+ create mode 100644 cowork_reports/2026-08-26_abc_daily_report.md
+ create mode 100644 logs/2026-08-26_abc_compare.log
+ create mode 100644 logs/2026-08-26_daily.log
+ create mode 100644 logs/2026-08-26_discovery_gate_observe.jsonl
+ create mode 100644 logs/2026-08-26_move_strike_subbot_A.log
+ create mode 100644 logs/2026-08-26_move_strike_subbot_C.log
+ create mode 100644 logs/2026-08-26_wb_intraday_adder_observe.jsonl
+ create mode 100644 logs/bar_stream/2026-08-26_main_bot.jsonl
+ create mode 100644 logs/cron_2026-08-26.log
+=== V3 Hybrid daily run complete: Wed Aug 26 18:05:35 MDT 2026 ===
+=== TRAP: cleanup at Wed Aug 26 18:05:35 MDT 2026 ===
