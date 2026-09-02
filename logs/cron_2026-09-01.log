@@ -662,3 +662,12 @@ Pushing logs...
 WARN: git push failed
 === V3 Hybrid daily run complete: Tue Sep  1 18:05:50 MDT 2026 ===
 === TRAP: cleanup at Tue Sep  1 18:05:50 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 59358 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 59436 Terminated: 15          ( while true; do
+    sleep 60; if ! python3 -c "import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1',$IBKR_PORT)); s.close()" 2> /dev/null; then
+        echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$LOG_DIR/gateway_watchdog.log"; echo "WARNING: Gateway port $IBKR_PORT dropped at $(date -u '+%Y-%m-%d %H:%M:%S UTC')";
+    fi;
+done )
+[v2-ibkr-migration 416d2a9] auto: v3 daily logs 2026-09-01
+ 3 files changed, 29 insertions(+)
+=== Cleanup complete: Tue Sep  1 18:05:51 MDT 2026 ===
