@@ -1,23 +1,24 @@
+Self-dedup: killing stale daily_run supervisor PID 1957 (pgid 1951)
 === Waking screen ===
 Display wake (caffeinate -u) sent
 Display state: unknown (continuing — caffeinate keeps system awake regardless)
-Persistent caffeinate started (PID: 1982)
-=== V3 Hybrid daily run started: Wed Sep  2 02:00:08 MDT 2026 ===
+Persistent caffeinate started (PID: 19009)
+=== V3 Hybrid daily run started: Thu Sep  3 02:00:07 MDT 2026 ===
 ssh: connect to host github.com port 22: Can't assign requested address
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
 WARN: git pull failed
-Code version: 416d2a9 (auto: v3 daily logs 2026-09-01)
+Code version: 0a21219 (auto: v3 daily logs 2026-09-02)
 daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
 bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
 bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
 alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
 sntp: clock_settime: Operation not permitted
-+0.033352 +/- 0.065539 time.apple.com 2620:149:a10:4000::31
++0.034876 +/- 0.069233 time.apple.com 2620:149:a10:4000::31
 NTP sync skipped (non-root)
-System time: Wed Sep  2 08:00:09 UTC 2026
+System time: Thu Sep  3 08:00:08 UTC 2026
 Pre-flight: checking Python imports...
 V3 Imports OK
 Sub-bot Imports OK
@@ -35,7 +36,7 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Thursday.txt
 +
 +[0m
   attempt 2/72: port 4002 not ready yet, waiting 5s...
@@ -121,6 +122,7 @@ Gateway did not open port 4002 in 360s — RETRYING gateway restart once...
 +
 +==============================================================================[0m
 Restarting IB Gateway via IBC (attempt 2)...
+  retry attempt 1/72: port 4002 not ready yet, waiting 5s...
 [1;32m+==============================================================================
 +
 + IBC version 3.23.0
@@ -129,10 +131,9 @@ Restarting IB Gateway via IBC (attempt 2)...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Thursday.txt
 +
 +[0m
-  retry attempt 1/72: port 4002 not ready yet, waiting 5s...
   retry attempt 2/72: port 4002 not ready yet, waiting 5s...
   retry attempt 3/72: port 4002 not ready yet, waiting 5s...
   retry attempt 4/72: port 4002 not ready yet, waiting 5s...
@@ -205,20 +206,4 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 71/72: port 4002 not ready yet, waiting 5s...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
-=== TRAP: cleanup at Wed Sep  2 02:13:34 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21:  1982 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration 0a21219] auto: v3 daily logs 2026-09-02
- 7 files changed, 455 insertions(+)
- create mode 100644 logs/2026-09-02_daily.log
- create mode 100644 logs/cron_2026-09-02.log
-=== Cleanup complete: Wed Sep  2 02:13:35 MDT 2026 ===
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Thu Sep  3 02:13:34 MDT 2026 ===
