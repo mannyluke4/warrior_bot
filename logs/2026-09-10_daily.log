@@ -1,45 +1,24 @@
-Self-dedup: killing stale daily_run supervisor PID 59186 (pgid 59180)
+Self-dedup: killing stale daily_run supervisor PID 96842 (pgid 96836)
 === Waking screen ===
 Display wake (caffeinate -u) sent
 Display state: unknown (continuing — caffeinate keeps system awake regardless)
-Persistent caffeinate started (PID: 96868)
-=== V3 Hybrid daily run started: Wed Sep  9 02:00:07 MDT 2026 ===
+Persistent caffeinate started (PID: 34626)
+=== V3 Hybrid daily run started: Thu Sep 10 02:00:07 MDT 2026 ===
 ssh: connect to host github.com port 22: Can't assign requested address
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
 WARN: git pull failed
-Code version: 15dfcd0 (auto: v3 daily logs 2026-09-08)
+Code version: 8c1b0ed (auto: v3 daily logs 2026-09-09)
 daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
 bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
 bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
 alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
-sntp: Exchange failed: Timeout
 sntp: clock_settime: Operation not permitted
-sntp_exchange {
-        result: 6 (Timeout)
-        header: 00 (li:0 vn:0 mode:0)
-       stratum: 00 (0)
-          poll: 00 (1)
-     precision: 00 (1.000000e+00)
-         delay: 0000.0000 (0.000000000)
-    dispersion: 0000.0000 (0.000000000)
-           ref: 00000000 ("    ")
-         t_ref: 00000000.00000000 (0.000000000)
-            t1: EE4B9088.535F8099 (3997929608.325675999)
-            t2: 00000000.00000000 (0.000000000)
-            t3: 00000000.00000000 (0.000000000)
-            t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88DA37BB.D6503FB380000000 (-1998964804.162837982)
-         delay: FFFFFFFF11B46F77.ACA07F6700000000 (-3997929608.325675964)
-          mean: 0000000000000000.0000000000000000 (0.000000000)
-         error: 0000000000000000.0000000000000000 (0.000000000)
-          addr: 2620:149:a18:3000::31
-}
-+0.035528 +/- 0.071019 time.apple.com 2620:149:a18:4000::31
++0.028541 +/- 0.050897 time.apple.com 2620:149:a21:4000::1f1
 NTP sync skipped (non-root)
-System time: Wed Sep  9 08:00:10 UTC 2026
+System time: Thu Sep 10 08:00:08 UTC 2026
 Pre-flight: checking Python imports...
 V3 Imports OK
 Sub-bot Imports OK
@@ -57,7 +36,7 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Thursday.txt
 +
 +[0m
   attempt 2/72: port 4002 not ready yet, waiting 5s...
@@ -151,7 +130,7 @@ Restarting IB Gateway via IBC (attempt 2)...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Wednesday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Thursday.txt
 +
 +[0m
   retry attempt 1/72: port 4002 not ready yet, waiting 5s...
@@ -227,20 +206,4 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 71/72: port 4002 not ready yet, waiting 5s...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
-=== TRAP: cleanup at Wed Sep  9 02:13:57 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 96868 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration 8c1b0ed] auto: v3 daily logs 2026-09-09
- 4 files changed, 492 insertions(+)
- create mode 100644 logs/2026-09-09_daily.log
- create mode 100644 logs/cron_2026-09-09.log
-=== Cleanup complete: Wed Sep  9 02:13:59 MDT 2026 ===
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Thu Sep 10 02:13:35 MDT 2026 ===
