@@ -1,24 +1,128 @@
-Self-dedup: killing stale daily_run supervisor PID 34596 (pgid 34590)
+Self-dedup: killing stale daily_run supervisor PID 71961 (pgid 71955)
 === Waking screen ===
 Display wake (caffeinate -u) sent
 Display state: unknown (continuing — caffeinate keeps system awake regardless)
-Persistent caffeinate started (PID: 71988)
-=== V3 Hybrid daily run started: Fri Sep 11 02:00:07 MDT 2026 ===
+Persistent caffeinate started (PID: 82220)
+=== V3 Hybrid daily run started: Mon Sep 14 02:00:08 MDT 2026 ===
 ssh: connect to host github.com port 22: Can't assign requested address
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
 WARN: git pull failed
-Code version: 3f9b040 (auto: v3 daily logs 2026-09-10)
+Code version: 5f7d34e (auto: v3 daily logs 2026-09-11)
 daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
 bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
 bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
 alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
-sntp: clock_settime: Operation not permitted
-+0.025167 +/- 0.069765 time.apple.com 2620:149:a18:3000::31
+sntp: Exchange failed: Timeout
+sntp: Exchange failed: Timeout
+sntp: Exchange failed: Timeout
+sntp: Exchange failed: Timeout
+sntp: Exchange failed: Timeout
+sntp: Clock select failed
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE522825.FF8E7DDC (3998361637.998267999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88D6EBED.0038C11200000000 (-1999180818.999134064)
+         delay: FFFFFFFF11ADD7DA.0071822400000000 (-3998361637.998268127)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:3000::31
+}
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE522828.07CA1059 (3998361640.030426999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88D6EBEB.FC1AF7D380000000 (-1999180820.015213490)
+         delay: FFFFFFFF11ADD7D7.F835EFA700000000 (-3998361640.030426979)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:3000::31
+}
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE52282A.1711409A (3998361642.090106999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88D6EBEA.F4775FB300000000 (-1999180821.045053482)
+         delay: FFFFFFFF11ADD7D5.E8EEBF6600000000 (-3998361642.090106964)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a10:4000::31
+}
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE52282C.234117F8 (3998361644.137711999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88D6EBE9.EE5F740400000000 (-1999180822.068856001)
+         delay: FFFFFFFF11ADD7D3.DCBEE80800000000 (-3998361644.137712002)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a10:4000::31
+}
+sntp_exchange {
+        result: 6 (Timeout)
+        header: 00 (li:0 vn:0 mode:0)
+       stratum: 00 (0)
+          poll: 00 (1)
+     precision: 00 (1.000000e+00)
+         delay: 0000.0000 (0.000000000)
+    dispersion: 0000.0000 (0.000000000)
+           ref: 00000000 ("    ")
+         t_ref: 00000000.00000000 (0.000000000)
+            t1: EE52282E.3735C182 (3998361646.215663999)
+            t2: 00000000.00000000 (0.000000000)
+            t3: 00000000.00000000 (0.000000000)
+            t4: 00000000.00000000 (0.000000000)
+        offset: FFFFFFFF88D6EBE8.E4651F3F00000000 (-1999180823.107831955)
+         delay: FFFFFFFF11ADD7D1.C8CA3E7E00000000 (-3998361646.215663910)
+          mean: 0000000000000000.0000000000000000 (0.000000000)
+         error: 0000000000000000.0000000000000000 (0.000000000)
+          addr: 2620:149:a18:4000::31
+}
 NTP sync skipped (non-root)
-System time: Fri Sep 11 08:00:12 UTC 2026
+System time: Mon Sep 14 08:00:47 UTC 2026
 Pre-flight: checking Python imports...
 V3 Imports OK
 Sub-bot Imports OK
@@ -36,7 +140,7 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Friday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
 +
 +[0m
   attempt 2/72: port 4002 not ready yet, waiting 5s...
@@ -130,7 +234,7 @@ Restarting IB Gateway via IBC (attempt 2)...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Friday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
 +
 +[0m
   retry attempt 1/72: port 4002 not ready yet, waiting 5s...
@@ -206,20 +310,4 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 71/72: port 4002 not ready yet, waiting 5s...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
-=== TRAP: cleanup at Fri Sep 11 02:14:00 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 71988 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration 5f7d34e] auto: v3 daily logs 2026-09-11
- 4 files changed, 450 insertions(+)
- create mode 100644 logs/2026-09-11_daily.log
- create mode 100644 logs/cron_2026-09-11.log
-=== Cleanup complete: Fri Sep 11 02:14:01 MDT 2026 ===
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Mon Sep 14 02:14:40 MDT 2026 ===
