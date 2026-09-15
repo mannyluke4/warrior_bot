@@ -1,26 +1,23 @@
-Self-dedup: killing stale daily_run supervisor PID 71961 (pgid 71955)
+Self-dedup: killing stale daily_run supervisor PID 82192 (pgid 82186)
 === Waking screen ===
 Display wake (caffeinate -u) sent
 Display state: unknown (continuing — caffeinate keeps system awake regardless)
-Persistent caffeinate started (PID: 82220)
-=== V3 Hybrid daily run started: Mon Sep 14 02:00:08 MDT 2026 ===
+Persistent caffeinate started (PID: 19356)
+=== V3 Hybrid daily run started: Tue Sep 15 02:00:07 MDT 2026 ===
 ssh: connect to host github.com port 22: Can't assign requested address
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
 WARN: git pull failed
-Code version: 5f7d34e (auto: v3 daily logs 2026-09-11)
+Code version: 2cd039d (auto: v3 daily logs 2026-09-14)
 daily_run_v3.sh hash: fe9222dd63e0ce208ca08a3330c95f5bd40ed9d7
 bot_v3_hybrid.py hash: eebc6fea2803847adc6de410409fc1d361bdb101
 bot_alpaca_subbot.py hash: 35c2164aba4247ce13052023d9b27ab1e3c05d66
 alpaca_feed.py hash: 682a855ab7d4135ad611baa7e19a941a00690a38
 sntp: Exchange failed: Timeout
 sntp: Exchange failed: Timeout
-sntp: Exchange failed: Timeout
-sntp: Exchange failed: Timeout
-sntp: Exchange failed: Timeout
-sntp: Clock select failed
+sntp: clock_settime: Operation not permitted
 sntp_exchange {
         result: 6 (Timeout)
         header: 00 (li:0 vn:0 mode:0)
@@ -31,12 +28,12 @@ sntp_exchange {
     dispersion: 0000.0000 (0.000000000)
            ref: 00000000 ("    ")
          t_ref: 00000000.00000000 (0.000000000)
-            t1: EE522825.FF8E7DDC (3998361637.998267999)
+            t1: EE537988.FCDA7F3C (3998448008.987708999)
             t2: 00000000.00000000 (0.000000000)
             t3: 00000000.00000000 (0.000000000)
             t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88D6EBED.0038C11200000000 (-1999180818.999134064)
-         delay: FFFFFFFF11ADD7DA.0071822400000000 (-3998361637.998268127)
+        offset: FFFFFFFF88D6433B.8192C06200000000 (-1999224004.493854523)
+         delay: FFFFFFFF11AC8677.032580C400000000 (-3998448008.987709045)
           mean: 0000000000000000.0000000000000000 (0.000000000)
          error: 0000000000000000.0000000000000000 (0.000000000)
           addr: 2620:149:a18:3000::31
@@ -51,78 +48,19 @@ sntp_exchange {
     dispersion: 0000.0000 (0.000000000)
            ref: 00000000 ("    ")
          t_ref: 00000000.00000000 (0.000000000)
-            t1: EE522828.07CA1059 (3998361640.030426999)
+            t1: EE53798A.0FC73EEE (3998448010.061633999)
             t2: 00000000.00000000 (0.000000000)
             t3: 00000000.00000000 (0.000000000)
             t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88D6EBEB.FC1AF7D380000000 (-1999180820.015213490)
-         delay: FFFFFFFF11ADD7D7.F835EFA700000000 (-3998361640.030426979)
+        offset: FFFFFFFF88D6433A.F81C608900000000 (-1999224005.030817032)
+         delay: FFFFFFFF11AC8675.F038C11200000000 (-3998448010.061634064)
           mean: 0000000000000000.0000000000000000 (0.000000000)
          error: 0000000000000000.0000000000000000 (0.000000000)
           addr: 2620:149:a18:3000::31
 }
-sntp_exchange {
-        result: 6 (Timeout)
-        header: 00 (li:0 vn:0 mode:0)
-       stratum: 00 (0)
-          poll: 00 (1)
-     precision: 00 (1.000000e+00)
-         delay: 0000.0000 (0.000000000)
-    dispersion: 0000.0000 (0.000000000)
-           ref: 00000000 ("    ")
-         t_ref: 00000000.00000000 (0.000000000)
-            t1: EE52282A.1711409A (3998361642.090106999)
-            t2: 00000000.00000000 (0.000000000)
-            t3: 00000000.00000000 (0.000000000)
-            t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88D6EBEA.F4775FB300000000 (-1999180821.045053482)
-         delay: FFFFFFFF11ADD7D5.E8EEBF6600000000 (-3998361642.090106964)
-          mean: 0000000000000000.0000000000000000 (0.000000000)
-         error: 0000000000000000.0000000000000000 (0.000000000)
-          addr: 2620:149:a10:4000::31
-}
-sntp_exchange {
-        result: 6 (Timeout)
-        header: 00 (li:0 vn:0 mode:0)
-       stratum: 00 (0)
-          poll: 00 (1)
-     precision: 00 (1.000000e+00)
-         delay: 0000.0000 (0.000000000)
-    dispersion: 0000.0000 (0.000000000)
-           ref: 00000000 ("    ")
-         t_ref: 00000000.00000000 (0.000000000)
-            t1: EE52282C.234117F8 (3998361644.137711999)
-            t2: 00000000.00000000 (0.000000000)
-            t3: 00000000.00000000 (0.000000000)
-            t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88D6EBE9.EE5F740400000000 (-1999180822.068856001)
-         delay: FFFFFFFF11ADD7D3.DCBEE80800000000 (-3998361644.137712002)
-          mean: 0000000000000000.0000000000000000 (0.000000000)
-         error: 0000000000000000.0000000000000000 (0.000000000)
-          addr: 2620:149:a10:4000::31
-}
-sntp_exchange {
-        result: 6 (Timeout)
-        header: 00 (li:0 vn:0 mode:0)
-       stratum: 00 (0)
-          poll: 00 (1)
-     precision: 00 (1.000000e+00)
-         delay: 0000.0000 (0.000000000)
-    dispersion: 0000.0000 (0.000000000)
-           ref: 00000000 ("    ")
-         t_ref: 00000000.00000000 (0.000000000)
-            t1: EE52282E.3735C182 (3998361646.215663999)
-            t2: 00000000.00000000 (0.000000000)
-            t3: 00000000.00000000 (0.000000000)
-            t4: 00000000.00000000 (0.000000000)
-        offset: FFFFFFFF88D6EBE8.E4651F3F00000000 (-1999180823.107831955)
-         delay: FFFFFFFF11ADD7D1.C8CA3E7E00000000 (-3998361646.215663910)
-          mean: 0000000000000000.0000000000000000 (0.000000000)
-         error: 0000000000000000.0000000000000000 (0.000000000)
-          addr: 2620:149:a18:4000::31
-}
++0.036279 +/- 0.073053 time.apple.com 2620:149:a18:4000::31
 NTP sync skipped (non-root)
-System time: Mon Sep 14 08:00:47 UTC 2026
+System time: Tue Sep 15 08:00:11 UTC 2026
 Pre-flight: checking Python imports...
 V3 Imports OK
 Sub-bot Imports OK
@@ -131,7 +69,6 @@ Gateway port 4002 down — killing stale java and starting fresh...
 All stale processes cleared.
 Starting IB Gateway via IBC...
 Waiting for IB Gateway on port 4002...
-  attempt 1/72: port 4002 not ready yet, waiting 5s...
 [1;32m+==============================================================================
 +
 + IBC version 3.23.0
@@ -140,9 +77,10 @@ Waiting for IB Gateway on port 4002...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Tuesday.txt
 +
 +[0m
+  attempt 1/72: port 4002 not ready yet, waiting 5s...
   attempt 2/72: port 4002 not ready yet, waiting 5s...
   attempt 3/72: port 4002 not ready yet, waiting 5s...
   attempt 4/72: port 4002 not ready yet, waiting 5s...
@@ -234,7 +172,7 @@ Restarting IB Gateway via IBC (attempt 2)...
 +
 + Diagnostic information is logged in:
 +
-+ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Monday.txt
++ /Users/duffy/ibc/logs/ibc-3.23.0_GATEWAY-10.37_Tuesday.txt
 +
 +[0m
   retry attempt 1/72: port 4002 not ready yet, waiting 5s...
@@ -310,20 +248,4 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 71/72: port 4002 not ready yet, waiting 5s...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
-=== TRAP: cleanup at Mon Sep 14 02:14:40 MDT 2026 ===
-/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 82220 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
-[v2-ibkr-migration 2cd039d] auto: v3 daily logs 2026-09-14
- 4 files changed, 658 insertions(+)
- create mode 100644 logs/2026-09-14_daily.log
- create mode 100644 logs/cron_2026-09-14.log
-=== Cleanup complete: Mon Sep 14 02:14:41 MDT 2026 ===
-[1;31m+==============================================================================
-+
-+                       **** An error has occurred ****
-+
-+                     Please look in the diagnostics file 
-+                   mentioned above for further information
-+
-+                           Press enter to continue.
-+
-+==============================================================================[0m
+=== TRAP: cleanup at Tue Sep 15 02:14:21 MDT 2026 ===
