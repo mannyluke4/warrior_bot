@@ -1,0 +1,62 @@
+# A/B/C Daily Report — 2026-10-07
+
+Per `cowork_reports/2026-05-23_live_abc_fade_gate_test_directive.md`.
+
+## Account / log snapshot
+
+| Variant | Label | Equity | Day P&L | Day orders (buy/total) | Log entries | Gate blocks | Regime triggers |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | FIRESTORM-gate | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | 0 | 0 | 0 |
+| B | FIRESTORM-gate + Track A | err: {"message": "unautho | err: {"message": "unautho | err: {"message": "unautho | — | — | — |
+| C | REENTRY-loss-gate | +$1,817.41 | +$0.00 | 0 / 0 | 0 | 0 | 0 |
+
+### Variant A — FIRESTORM-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+### Variant B — FIRESTORM-gate + Track A
+
+- log error: `no_log` (path: `/Users/duffy/warrior_bot_v2/logs/2026-10-07_move_strike_subbot_B.log`)
+
+### Variant C — REENTRY-loss-gate
+
+- MOVE_STRIKE entries: 0
+- REGIME_SHIFT entries: 0
+- Exits: 0
+- Regime-shift partials fired: 0
+- Fade-gate blocks: 0 (0 unique symbols)
+
+## Data Quality Audit
+
+- Audit lines parsed: 20322
+- Symbols flagged HEURISTIC_SUSPECT: 14
+- Symbols with DIRECT_QUERY_WEDGE events: 0
+
+| Symbol | OK | Suspect | Wedge | Min obs/truth | Last obs vs truth |
+|---|---:|---:|---:|---:|---|
+| AAOZ | 200 | 891 | 0 | n/a | n/a |
+| BMNZ | 200 | 891 | 0 | n/a | n/a |
+| BYAH | 200 | 891 | 0 | n/a | n/a |
+| SDEV | 45 | 891 | 0 | n/a | n/a |
+| SMST | 33 | 891 | 0 | n/a | n/a |
+| SSPC | 11 | 891 | 0 | n/a | n/a |
+| LPCN | 85 | 761 | 0 | n/a | n/a |
+| NXTS | 0 | 690 | 0 | n/a | n/a |
+| SPAI | 0 | 671 | 0 | n/a | n/a |
+| ICU | 138 | 652 | 0 | n/a | n/a |
+| LBGJ | 69 | 333 | 0 | n/a | n/a |
+| KIDZ | 631 | 58 | 0 | n/a | n/a |
+| APUS | 686 | 52 | 0 | n/a | n/a |
+| FEAM | 614 | 4 | 0 | n/a | n/a |
+
+## Running totals (cumulative)
+
+| Variant | Days | Cumulative P&L |
+|---|---:|---:|
+| A | 88 | +$1,662.94 |
+| B | 88 | -$4,183.34 |
+| C | 88 | +$331.63 |
