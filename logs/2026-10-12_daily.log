@@ -224,3 +224,19 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
 === TRAP: cleanup at Mon Oct 12 02:13:38 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 24618 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration fea969b] auto: v3 daily logs 2026-10-12
+ 5 files changed, 471 insertions(+)
+ create mode 100644 logs/2026-10-12_daily.log
+ create mode 100644 logs/cron_2026-10-12.log
+=== Cleanup complete: Mon Oct 12 02:13:42 MDT 2026 ===
+[1;31m+==============================================================================
++
++                       **** An error has occurred ****
++
++                     Please look in the diagnostics file 
++                   mentioned above for further information
++
++                           Press enter to continue.
++
++==============================================================================[0m
