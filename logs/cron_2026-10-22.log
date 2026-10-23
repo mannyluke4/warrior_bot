@@ -204,3 +204,16 @@ Restarting IB Gateway via IBC (attempt 2)...
   retry attempt 72/72: port 4002 not ready yet, waiting 5s...
 FATAL: IB Gateway did not open port 4002 after 2 restart attempts. Aborting.
 === TRAP: cleanup at Thu Oct 22 02:13:38 MDT 2026 ===
+/Users/duffy/warrior_bot_v2/daily_run_v3.sh: line 21: 51798 Terminated: 15          caffeinate -dims -w $$  (wd: ~)
+[v2-ibkr-migration 8dce729] auto: v3 daily logs 2026-10-22
+ 4 files changed, 444 insertions(+)
+ create mode 100644 logs/2026-10-22_daily.log
+ create mode 100644 logs/cron_2026-10-22.log
+=== Cleanup complete: Thu Oct 22 02:13:41 MDT 2026 ===
+/Users/duffy/ibc/scripts/displaybannerandlaunch.sh: line 77: 52389 Terminated: 15          "${IBC_PATH}/scripts/ibcstart.sh" "${TWS_MAJOR_VRSN}" ${gw_flag} "--tws-path=${TWS_PATH}" "--tws-settings-path=${TWS_SETTINGS_PATH}" "--ibc-path=${IBC_PATH}" "--ibc-ini=${IBC_INI}" "--user=${TWSUSERID}" "--pw=${TWSPASSWORD}" "--fix-user=${FIXUSERID}" "--fix-pw=${FIXPASSWORD}" "--java-path=${JAVA_PATH}" "--mode=${TRADING_MODE}" "--on2fatimeout=${TWOFA_TIMEOUT_ACTION}" >> "${log_file}" 2>&1
+[1;32m+
++ IBC terminated by SIGTERM
++
+[1;32m+ GATEWAY 10.37 has finished
++
++==============================================================================[0m
